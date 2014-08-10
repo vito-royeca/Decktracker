@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>D50F7050-7EB9-459B-B230-C41480A9727D</string>
+	<key>IDESourceControlProjectName</key>
+	<string>DataSource</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>DC8C0228-A8F2-4B2D-883C-698AE44D5B04</key>
+		<string>https://bitbucket.org/jovito/decktracker.git</string>
+		<key>E0E1499F-54C3-411D-A66F-7081D69D1A8A</key>
+		<string>https://bitbucket.org/jovito/jjj.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>DataSource/DataSource.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>DC8C0228-A8F2-4B2D-883C-698AE44D5B04</key>
+		<string>../..</string>
+		<key>E0E1499F-54C3-411D-A66F-7081D69D1A8A</key>
+		<string>../../jjj</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://bitbucket.org/jovito/decktracker.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>DC8C0228-A8F2-4B2D-883C-698AE44D5B04</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>DC8C0228-A8F2-4B2D-883C-698AE44D5B04</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Decktracker</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>E0E1499F-54C3-411D-A66F-7081D69D1A8A</string>
+			<key>IDESourceControlWCCName</key>
+			<string>jjj</string>
+		</dict>
+	</array>
+</dict>
+</plist>

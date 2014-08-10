@@ -1,0 +1,735 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3B4C647F452847188AFC81E6 /* libPods-Decktracker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63356387201A4E73BA1685FC /* libPods-Decktracker.a */; };
+		8C1DFDD819913D2100174054 /* CardDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1DFDD719913D2100174054 /* CardDetailsViewController.m */; };
+		8C2E13F11990741100023BAA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2E13F01990741100023BAA /* Foundation.framework */; };
+		8C2E13F31990741100023BAA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2E13F21990741100023BAA /* CoreGraphics.framework */; };
+		8C2E13F51990741100023BAA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2E13F41990741100023BAA /* UIKit.framework */; };
+		8C2E13F71990741100023BAA /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2E13F61990741100023BAA /* CoreData.framework */; };
+		8C2E13FD1990741100023BAA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8C2E13FB1990741100023BAA /* InfoPlist.strings */; };
+		8C2E13FF1990741100023BAA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2E13FE1990741100023BAA /* main.m */; };
+		8C2E14031990741100023BAA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2E14021990741100023BAA /* AppDelegate.m */; };
+		8C2E14081990741100023BAA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C2E14071990741100023BAA /* Images.xcassets */; };
+		8C2E140F1990741100023BAA /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2E140E1990741100023BAA /* XCTest.framework */; };
+		8C2E14101990741100023BAA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2E13F01990741100023BAA /* Foundation.framework */; };
+		8C2E14111990741200023BAA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2E13F41990741100023BAA /* UIKit.framework */; };
+		8C2E14121990741200023BAA /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2E13F61990741100023BAA /* CoreData.framework */; };
+		8C2E141A1990741200023BAA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8C2E14181990741200023BAA /* InfoPlist.strings */; };
+		8C2E141C1990741200023BAA /* DecktrackerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2E141B1990741200023BAA /* DecktrackerTests.m */; };
+		8C2E142A1990748C00023BAA /* database.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8C2E14281990748C00023BAA /* database.xcdatamodeld */; };
+		8C2E142E199085A900023BAA /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2E142D199085A900023BAA /* MainViewController.m */; };
+		8C2E1431199085C700023BAA /* Database.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2E1430199085C700023BAA /* Database.m */; };
+		8C60EB6E19927C1D00C5EEF9 /* UIImage+Scale.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C60EB6D19927C1D00C5EEF9 /* UIImage+Scale.m */; };
+		8CADEF1719923DDE004D7658 /* images in Resources */ = {isa = PBXBuildFile; fileRef = 8CADEF1619923DDE004D7658 /* images */; };
+		8CCA76511990F3F000A24420 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CCA76501990F3F000A24420 /* SearchViewController.m */; };
+		8CDE32DB1994B69700BD6AA4 /* Set.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CDE32DA1994B69700BD6AA4 /* Set.m */; };
+		8CDE32DE1994B69800BD6AA4 /* CardRarity.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CDE32DD1994B69800BD6AA4 /* CardRarity.m */; };
+		8CDE32E11994B69800BD6AA4 /* CardType.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CDE32E01994B69800BD6AA4 /* CardType.m */; };
+		8CDE32E41994B69800BD6AA4 /* Format.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CDE32E31994B69800BD6AA4 /* Format.m */; };
+		8CDE32E71994B69800BD6AA4 /* Block.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CDE32E61994B69800BD6AA4 /* Block.m */; };
+		8CDE32EA1994B69800BD6AA4 /* SetType.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CDE32E91994B69800BD6AA4 /* SetType.m */; };
+		8CDE32ED1994B69800BD6AA4 /* Artist.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CDE32EC1994B69800BD6AA4 /* Artist.m */; };
+		8CDE32F01994B69800BD6AA4 /* Card.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CDE32EF1994B69800BD6AA4 /* Card.m */; };
+		8CDE32F31994B69800BD6AA4 /* CardForeignName.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CDE32F21994B69800BD6AA4 /* CardForeignName.m */; };
+		8CDE32F61994B69900BD6AA4 /* CardLegality.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CDE32F51994B69900BD6AA4 /* CardLegality.m */; };
+		8CDE32F91994B69900BD6AA4 /* CardRuling.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CDE32F81994B69900BD6AA4 /* CardRuling.m */; };
+		8CF0C9D71991CD8300349F35 /* libJJJ.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF0C9C11991CD0500349F35 /* libJJJ.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8C2E14131990741200023BAA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8C2E13E51990741100023BAA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8C2E13EC1990741100023BAA;
+			remoteInfo = Decktracker;
+		};
+		8CF0C9C01991CD0500349F35 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8CF0C9BA1991CD0500349F35 /* JJJ.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 580E1D4C189E8DDA00336A44;
+			remoteInfo = JJJ;
+		};
+		8CF0C9C21991CD0500349F35 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8CF0C9BA1991CD0500349F35 /* JJJ.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 580E1D5C189E8DDB00336A44;
+			remoteInfo = JJJTests;
+		};
+		8CF0C9C41991CD0500349F35 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8CF0C9BA1991CD0500349F35 /* JJJ.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 580E1D79189E8F4000336A44;
+			remoteInfo = JJJBundle;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		309BCACD310044B894E67292 /* Pods-Decktracker.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Decktracker.xcconfig"; path = "Pods/Pods-Decktracker.xcconfig"; sourceTree = "<group>"; };
+		63356387201A4E73BA1685FC /* libPods-Decktracker.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Decktracker.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C1DFDD619913D2100174054 /* CardDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardDetailsViewController.h; sourceTree = "<group>"; };
+		8C1DFDD719913D2100174054 /* CardDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardDetailsViewController.m; sourceTree = "<group>"; };
+		8C2E13ED1990741100023BAA /* Decktracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Decktracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C2E13F01990741100023BAA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		8C2E13F21990741100023BAA /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		8C2E13F41990741100023BAA /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		8C2E13F61990741100023BAA /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		8C2E13FA1990741100023BAA /* Decktracker-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Decktracker-Info.plist"; sourceTree = "<group>"; };
+		8C2E13FC1990741100023BAA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		8C2E13FE1990741100023BAA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		8C2E14001990741100023BAA /* Decktracker-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Decktracker-Prefix.pch"; sourceTree = "<group>"; };
+		8C2E14011990741100023BAA /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		8C2E14021990741100023BAA /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		8C2E14071990741100023BAA /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		8C2E140D1990741100023BAA /* DecktrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DecktrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C2E140E1990741100023BAA /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		8C2E14171990741200023BAA /* DecktrackerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DecktrackerTests-Info.plist"; sourceTree = "<group>"; };
+		8C2E14191990741200023BAA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		8C2E141B1990741200023BAA /* DecktrackerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DecktrackerTests.m; sourceTree = "<group>"; };
+		8C2E14291990748C00023BAA /* database.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = database.xcdatamodel; sourceTree = "<group>"; };
+		8C2E142B199074A900023BAA /* Magic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Magic.h; sourceTree = "<group>"; };
+		8C2E142C199085A900023BAA /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		8C2E142D199085A900023BAA /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		8C2E142F199085C700023BAA /* Database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Database.h; sourceTree = "<group>"; };
+		8C2E1430199085C700023BAA /* Database.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Database.m; sourceTree = "<group>"; };
+		8C60EB6C19927C1D00C5EEF9 /* UIImage+Scale.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Scale.h"; sourceTree = "<group>"; };
+		8C60EB6D19927C1D00C5EEF9 /* UIImage+Scale.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Scale.m"; sourceTree = "<group>"; };
+		8CADEF1619923DDE004D7658 /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
+		8CCA764F1990F3F000A24420 /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
+		8CCA76501990F3F000A24420 /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
+		8CDE32D91994B69700BD6AA4 /* Set.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Set.h; sourceTree = "<group>"; };
+		8CDE32DA1994B69700BD6AA4 /* Set.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Set.m; sourceTree = "<group>"; };
+		8CDE32DC1994B69800BD6AA4 /* CardRarity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardRarity.h; sourceTree = "<group>"; };
+		8CDE32DD1994B69800BD6AA4 /* CardRarity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardRarity.m; sourceTree = "<group>"; };
+		8CDE32DF1994B69800BD6AA4 /* CardType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardType.h; sourceTree = "<group>"; };
+		8CDE32E01994B69800BD6AA4 /* CardType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardType.m; sourceTree = "<group>"; };
+		8CDE32E21994B69800BD6AA4 /* Format.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Format.h; sourceTree = "<group>"; };
+		8CDE32E31994B69800BD6AA4 /* Format.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Format.m; sourceTree = "<group>"; };
+		8CDE32E51994B69800BD6AA4 /* Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Block.h; sourceTree = "<group>"; };
+		8CDE32E61994B69800BD6AA4 /* Block.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Block.m; sourceTree = "<group>"; };
+		8CDE32E81994B69800BD6AA4 /* SetType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetType.h; sourceTree = "<group>"; };
+		8CDE32E91994B69800BD6AA4 /* SetType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SetType.m; sourceTree = "<group>"; };
+		8CDE32EB1994B69800BD6AA4 /* Artist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Artist.h; sourceTree = "<group>"; };
+		8CDE32EC1994B69800BD6AA4 /* Artist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Artist.m; sourceTree = "<group>"; };
+		8CDE32EE1994B69800BD6AA4 /* Card.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Card.h; sourceTree = "<group>"; };
+		8CDE32EF1994B69800BD6AA4 /* Card.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Card.m; sourceTree = "<group>"; };
+		8CDE32F11994B69800BD6AA4 /* CardForeignName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardForeignName.h; sourceTree = "<group>"; };
+		8CDE32F21994B69800BD6AA4 /* CardForeignName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardForeignName.m; sourceTree = "<group>"; };
+		8CDE32F41994B69900BD6AA4 /* CardLegality.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardLegality.h; sourceTree = "<group>"; };
+		8CDE32F51994B69900BD6AA4 /* CardLegality.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardLegality.m; sourceTree = "<group>"; };
+		8CDE32F71994B69900BD6AA4 /* CardRuling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardRuling.h; sourceTree = "<group>"; };
+		8CDE32F81994B69900BD6AA4 /* CardRuling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardRuling.m; sourceTree = "<group>"; };
+		8CF0C9BA1991CD0500349F35 /* JJJ.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JJJ.xcodeproj; path = ../jjj/JJJ/JJJ.xcodeproj; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8C2E13EA1990741100023BAA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8CF0C9D71991CD8300349F35 /* libJJJ.a in Frameworks */,
+				8C2E13F31990741100023BAA /* CoreGraphics.framework in Frameworks */,
+				8C2E13F71990741100023BAA /* CoreData.framework in Frameworks */,
+				8C2E13F51990741100023BAA /* UIKit.framework in Frameworks */,
+				8C2E13F11990741100023BAA /* Foundation.framework in Frameworks */,
+				3B4C647F452847188AFC81E6 /* libPods-Decktracker.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8C2E140A1990741100023BAA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8C2E140F1990741100023BAA /* XCTest.framework in Frameworks */,
+				8C2E14121990741200023BAA /* CoreData.framework in Frameworks */,
+				8C2E14111990741200023BAA /* UIKit.framework in Frameworks */,
+				8C2E14101990741100023BAA /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		8C2E13E41990741100023BAA = {
+			isa = PBXGroup;
+			children = (
+				8CF0C9BA1991CD0500349F35 /* JJJ.xcodeproj */,
+				8C2E13F81990741100023BAA /* Decktracker */,
+				8C2E14151990741200023BAA /* DecktrackerTests */,
+				8C2E13EF1990741100023BAA /* Frameworks */,
+				8C2E13EE1990741100023BAA /* Products */,
+				309BCACD310044B894E67292 /* Pods-Decktracker.xcconfig */,
+			);
+			sourceTree = "<group>";
+		};
+		8C2E13EE1990741100023BAA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8C2E13ED1990741100023BAA /* Decktracker.app */,
+				8C2E140D1990741100023BAA /* DecktrackerTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8C2E13EF1990741100023BAA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8C2E13F01990741100023BAA /* Foundation.framework */,
+				8C2E13F21990741100023BAA /* CoreGraphics.framework */,
+				8C2E13F41990741100023BAA /* UIKit.framework */,
+				8C2E13F61990741100023BAA /* CoreData.framework */,
+				8C2E140E1990741100023BAA /* XCTest.framework */,
+				63356387201A4E73BA1685FC /* libPods-Decktracker.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8C2E13F81990741100023BAA /* Decktracker */ = {
+			isa = PBXGroup;
+			children = (
+				8C2E14321990862900023BAA /* Data */,
+				8C2E14011990741100023BAA /* AppDelegate.h */,
+				8C2E14021990741100023BAA /* AppDelegate.m */,
+				8C2E14271990747300023BAA /* Controller */,
+				8C2E14071990741100023BAA /* Images.xcassets */,
+				8C2E142B199074A900023BAA /* Magic.h */,
+				8C2E14251990744E00023BAA /* Model */,
+				8C2E13F91990741100023BAA /* Supporting Files */,
+				8C2E14261990746100023BAA /* View */,
+			);
+			path = Decktracker;
+			sourceTree = "<group>";
+		};
+		8C2E13F91990741100023BAA /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				8C2E13FA1990741100023BAA /* Decktracker-Info.plist */,
+				8C2E13FB1990741100023BAA /* InfoPlist.strings */,
+				8C2E13FE1990741100023BAA /* main.m */,
+				8C2E14001990741100023BAA /* Decktracker-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8C2E14151990741200023BAA /* DecktrackerTests */ = {
+			isa = PBXGroup;
+			children = (
+				8C2E141B1990741200023BAA /* DecktrackerTests.m */,
+				8C2E14161990741200023BAA /* Supporting Files */,
+			);
+			path = DecktrackerTests;
+			sourceTree = "<group>";
+		};
+		8C2E14161990741200023BAA /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				8C2E14171990741200023BAA /* DecktrackerTests-Info.plist */,
+				8C2E14181990741200023BAA /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8C2E14251990744E00023BAA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8CDE32EB1994B69800BD6AA4 /* Artist.h */,
+				8CDE32EC1994B69800BD6AA4 /* Artist.m */,
+				8CDE32E51994B69800BD6AA4 /* Block.h */,
+				8CDE32E61994B69800BD6AA4 /* Block.m */,
+				8CDE32EE1994B69800BD6AA4 /* Card.h */,
+				8CDE32EF1994B69800BD6AA4 /* Card.m */,
+				8CDE32F11994B69800BD6AA4 /* CardForeignName.h */,
+				8CDE32F21994B69800BD6AA4 /* CardForeignName.m */,
+				8CDE32F41994B69900BD6AA4 /* CardLegality.h */,
+				8CDE32F51994B69900BD6AA4 /* CardLegality.m */,
+				8CDE32DC1994B69800BD6AA4 /* CardRarity.h */,
+				8CDE32DD1994B69800BD6AA4 /* CardRarity.m */,
+				8CDE32F71994B69900BD6AA4 /* CardRuling.h */,
+				8CDE32F81994B69900BD6AA4 /* CardRuling.m */,
+				8CDE32DF1994B69800BD6AA4 /* CardType.h */,
+				8CDE32E01994B69800BD6AA4 /* CardType.m */,
+				8C2E14281990748C00023BAA /* database.xcdatamodeld */,
+				8CDE32E21994B69800BD6AA4 /* Format.h */,
+				8CDE32E31994B69800BD6AA4 /* Format.m */,
+				8CDE32D91994B69700BD6AA4 /* Set.h */,
+				8CDE32DA1994B69700BD6AA4 /* Set.m */,
+				8CDE32E81994B69800BD6AA4 /* SetType.h */,
+				8CDE32E91994B69800BD6AA4 /* SetType.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		8C2E14261990746100023BAA /* View */ = {
+			isa = PBXGroup;
+			children = (
+				8C1DFDD619913D2100174054 /* CardDetailsViewController.h */,
+				8C1DFDD719913D2100174054 /* CardDetailsViewController.m */,
+				8C2E142C199085A900023BAA /* MainViewController.h */,
+				8C2E142D199085A900023BAA /* MainViewController.m */,
+				8CCA764F1990F3F000A24420 /* SearchViewController.h */,
+				8CCA76501990F3F000A24420 /* SearchViewController.m */,
+				8C60EB6C19927C1D00C5EEF9 /* UIImage+Scale.h */,
+				8C60EB6D19927C1D00C5EEF9 /* UIImage+Scale.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		8C2E14271990747300023BAA /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				8C2E142F199085C700023BAA /* Database.h */,
+				8C2E1430199085C700023BAA /* Database.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		8C2E14321990862900023BAA /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				8CADEF1619923DDE004D7658 /* images */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		8CF0C9BB1991CD0500349F35 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8CF0C9C11991CD0500349F35 /* libJJJ.a */,
+				8CF0C9C31991CD0500349F35 /* JJJTests.xctest */,
+				8CF0C9C51991CD0500349F35 /* JJJBundle.bundle */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8C2E13EC1990741100023BAA /* Decktracker */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8C2E141F1990741200023BAA /* Build configuration list for PBXNativeTarget "Decktracker" */;
+			buildPhases = (
+				AF72BD75F43140CE8720FA0F /* Check Pods Manifest.lock */,
+				8C2E13E91990741100023BAA /* Sources */,
+				8C2E13EA1990741100023BAA /* Frameworks */,
+				8C2E13EB1990741100023BAA /* Resources */,
+				292518D7BD4C4E218BB76A5A /* Copy Pods Resources */,
+				8C1DFDD3199135C300174054 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Decktracker;
+			productName = Decktracker;
+			productReference = 8C2E13ED1990741100023BAA /* Decktracker.app */;
+			productType = "com.apple.product-type.application";
+		};
+		8C2E140C1990741100023BAA /* DecktrackerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8C2E14221990741200023BAA /* Build configuration list for PBXNativeTarget "DecktrackerTests" */;
+			buildPhases = (
+				8C2E14091990741100023BAA /* Sources */,
+				8C2E140A1990741100023BAA /* Frameworks */,
+				8C2E140B1990741100023BAA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8C2E14141990741200023BAA /* PBXTargetDependency */,
+			);
+			name = DecktrackerTests;
+			productName = DecktrackerTests;
+			productReference = 8C2E140D1990741100023BAA /* DecktrackerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8C2E13E51990741100023BAA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = "Jovito Royeca";
+				TargetAttributes = {
+					8C2E140C1990741100023BAA = {
+						TestTargetID = 8C2E13EC1990741100023BAA;
+					};
+				};
+			};
+			buildConfigurationList = 8C2E13E81990741100023BAA /* Build configuration list for PBXProject "Decktracker" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 8C2E13E41990741100023BAA;
+			productRefGroup = 8C2E13EE1990741100023BAA /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 8CF0C9BB1991CD0500349F35 /* Products */;
+					ProjectRef = 8CF0C9BA1991CD0500349F35 /* JJJ.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				8C2E13EC1990741100023BAA /* Decktracker */,
+				8C2E140C1990741100023BAA /* DecktrackerTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		8CF0C9C11991CD0500349F35 /* libJJJ.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libJJJ.a;
+			remoteRef = 8CF0C9C01991CD0500349F35 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8CF0C9C31991CD0500349F35 /* JJJTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = JJJTests.xctest;
+			remoteRef = 8CF0C9C21991CD0500349F35 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8CF0C9C51991CD0500349F35 /* JJJBundle.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = JJJBundle.bundle;
+			remoteRef = 8CF0C9C41991CD0500349F35 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8C2E13EB1990741100023BAA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8CADEF1719923DDE004D7658 /* images in Resources */,
+				8C2E13FD1990741100023BAA /* InfoPlist.strings in Resources */,
+				8C2E14081990741100023BAA /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8C2E140B1990741100023BAA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8C2E141A1990741200023BAA /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		292518D7BD4C4E218BB76A5A /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-Decktracker-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8C1DFDD3199135C300174054 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "bN=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbN=$((0x$bN))\nbN=$(($bN + 1))\nbN=$(printf \"%X\" $bN)\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $bN\" \"$INFOPLIST_FILE\"";
+		};
+		AF72BD75F43140CE8720FA0F /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8C2E13E91990741100023BAA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8CDE32E11994B69800BD6AA4 /* CardType.m in Sources */,
+				8C2E142A1990748C00023BAA /* database.xcdatamodeld in Sources */,
+				8CDE32F31994B69800BD6AA4 /* CardForeignName.m in Sources */,
+				8CCA76511990F3F000A24420 /* SearchViewController.m in Sources */,
+				8CDE32F61994B69900BD6AA4 /* CardLegality.m in Sources */,
+				8CDE32DE1994B69800BD6AA4 /* CardRarity.m in Sources */,
+				8CDE32ED1994B69800BD6AA4 /* Artist.m in Sources */,
+				8CDE32E41994B69800BD6AA4 /* Format.m in Sources */,
+				8C60EB6E19927C1D00C5EEF9 /* UIImage+Scale.m in Sources */,
+				8CDE32DB1994B69700BD6AA4 /* Set.m in Sources */,
+				8C2E1431199085C700023BAA /* Database.m in Sources */,
+				8CDE32E71994B69800BD6AA4 /* Block.m in Sources */,
+				8C2E14031990741100023BAA /* AppDelegate.m in Sources */,
+				8CDE32F01994B69800BD6AA4 /* Card.m in Sources */,
+				8C2E13FF1990741100023BAA /* main.m in Sources */,
+				8C1DFDD819913D2100174054 /* CardDetailsViewController.m in Sources */,
+				8CDE32EA1994B69800BD6AA4 /* SetType.m in Sources */,
+				8CDE32F91994B69900BD6AA4 /* CardRuling.m in Sources */,
+				8C2E142E199085A900023BAA /* MainViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8C2E14091990741100023BAA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8C2E141C1990741200023BAA /* DecktrackerTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8C2E14141990741200023BAA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8C2E13EC1990741100023BAA /* Decktracker */;
+			targetProxy = 8C2E14131990741200023BAA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		8C2E13FB1990741100023BAA /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8C2E13FC1990741100023BAA /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		8C2E14181990741200023BAA /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8C2E14191990741200023BAA /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		8C2E141D1990741200023BAA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8C2E141E1990741200023BAA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8C2E14201990741200023BAA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 309BCACD310044B894E67292 /* Pods-Decktracker.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Decktracker/Decktracker-Prefix.pch";
+				INFOPLIST_FILE = "Decktracker/Decktracker-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		8C2E14211990741200023BAA /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 309BCACD310044B894E67292 /* Pods-Decktracker.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Decktracker/Decktracker-Prefix.pch";
+				INFOPLIST_FILE = "Decktracker/Decktracker-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		8C2E14231990741200023BAA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Decktracker.app/Decktracker";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Decktracker/Decktracker-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "DecktrackerTests/DecktrackerTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		8C2E14241990741200023BAA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Decktracker.app/Decktracker";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Decktracker/Decktracker-Prefix.pch";
+				INFOPLIST_FILE = "DecktrackerTests/DecktrackerTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8C2E13E81990741100023BAA /* Build configuration list for PBXProject "Decktracker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8C2E141D1990741200023BAA /* Debug */,
+				8C2E141E1990741200023BAA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8C2E141F1990741200023BAA /* Build configuration list for PBXNativeTarget "Decktracker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8C2E14201990741200023BAA /* Debug */,
+				8C2E14211990741200023BAA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8C2E14221990741200023BAA /* Build configuration list for PBXNativeTarget "DecktrackerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8C2E14231990741200023BAA /* Debug */,
+				8C2E14241990741200023BAA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		8C2E14281990748C00023BAA /* database.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				8C2E14291990748C00023BAA /* database.xcdatamodel */,
+			);
+			currentVersion = 8C2E14291990748C00023BAA /* database.xcdatamodel */;
+			path = database.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 8C2E13E51990741100023BAA /* Project object */;
+}
