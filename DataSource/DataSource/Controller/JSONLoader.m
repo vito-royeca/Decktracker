@@ -15,7 +15,6 @@
 #import "CardLegality.h"
 #import "CardRarity.h"
 #import "CardRuling.h"
-#import "CardType.h"
 #import "Database.h"
 #import "Format.h"
 #import "Magic.h"
@@ -48,6 +47,22 @@
         NSSet *cards = [self parseCards:[dict objectForKey:@"cards"] forSet:set];
         set.numberOfCards = [NSNumber numberWithInt:(int)cards.count];
         [currentContext MR_save];
+    }
+    
+    for (NSString *setName in [json allKeys])
+    {
+        NSDictionary * dict = [json objectForKey:setName];
+        Set *set = [self parseSet:dict];
+
+        for (NSDictionary *dictCard in [dict objectForKey:@"cards"])
+        {
+            Card *card = [[Database sharedInstance] findCard:[dictCard objectForKey:@"name"] inSet:set.code];
+            card.rulings = [self createRulings:[dictCard objectForKey:@"rulings"]];
+            card.foreignNames = [self createForeignNames:[dictCard objectForKey:@"foreignNames"]];
+            card.legalities = [self createLegalities:[dictCard objectForKey:@"legalities"]];
+
+            [currentContext MR_save];
+        }
     }
     
     for (NSString *setName in [json allKeys])
@@ -99,7 +114,7 @@
         set.code = [dict objectForKey:@"code"];
         set.gathererCode = [dict objectForKey:@"gathererCode"];
         set.oldCode = [dict objectForKey:@"oldCode"];
-        set.releaseDate = [self parseDate:[dict objectForKey:@"releaseDate"] withFormat:@"YYYY-MM-dd"];
+        set.releaseDate = [JJJUtil parseDate:[dict objectForKey:@"releaseDate"] withFormat:@"YYYY-MM-dd"];
         set.border = [self capitalizeFirstLetterOfWords:[dict objectForKey:@"border"]];
         set.type = [self findSetType:[dict objectForKey:@"type"]];
         set.block = [self findBlock:[dict objectForKey:@"block"]];
@@ -117,7 +132,6 @@
         return nil;
     }
 
-    NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
     NSString *cap = [self capitalizeFirstLetterOfWords:name];
     SetType *setType = [SetType MR_findFirstByAttribute:@"name"
                                               withValue:cap];
@@ -126,7 +140,6 @@
     {
         setType = [SetType MR_createEntity];
         setType.name = cap;
-        [currentContext MR_save];
     }
     return setType;
 }
@@ -138,7 +151,6 @@
         return nil;
     }
     
-    NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
     Block *block = [Block MR_findFirstByAttribute:@"name"
                                         withValue:name];
     
@@ -146,7 +158,6 @@
     {
         block = [Block MR_createEntity];
         block.name = name;
-        [currentContext MR_save];
     }
     return block;
 }
@@ -158,7 +169,6 @@
         return nil;
     }
 
-    NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
     NSString *cap = [self capitalizeFirstLetterOfWords:name];
     CardRarity *cardRarity = [CardRarity MR_findFirstByAttribute:@"name"
                                                        withValue:cap];
@@ -167,7 +177,6 @@
     {
         cardRarity = [CardRarity MR_createEntity];
         cardRarity.name = cap;
-        [currentContext MR_save];
     }
     return cardRarity;
 }
@@ -188,25 +197,6 @@
         card.manaCost = [dict objectForKey:@"manaCost"];
         card.convertedManaCost = [NSNumber numberWithFloat:[[dict objectForKey:@"cmc"] floatValue]];
         card.type = [dict objectForKey:@"type"];
-        //            card.colors =
-//        NSMutableSet *types = [[NSMutableSet alloc] init];
-//        for (NSString *type in [dict objectForKey:@"supertypes"])
-//        {
-//            [types addObject:[self findCardType:type]];
-//        }
-//        card.superTypes = types;
-//        types = [[NSMutableSet alloc] init];
-//        for (NSString *type in [dict objectForKey:@"subtypes"])
-//        {
-//            [types addObject:[self findCardType:type]];
-//        }
-//        card.subTypes = types;
-//        types = [[NSMutableSet alloc] init];
-//        for (NSString *type in [dict objectForKey:@"types"])
-//        {
-//            [types addObject:[self findCardType:type]];
-//        }
-//        card.types = types;
         card.rarity = [self findCardRarity:[dict objectForKey:@"rarity"]];
         card.text = [dict objectForKey:@"text"];
         card.flavor = [dict objectForKey:@"flavor"];
@@ -221,13 +211,9 @@
         card.border = [dict objectForKey:@"border"];
         card.timeshifted = [NSNumber numberWithBool:[[dict objectForKey:@"timeshifted"] boolValue]];
         card.handModifier = [NSNumber numberWithInt:[[dict objectForKey:@"hand"] intValue]];
-        card.lifeModifier = [NSNumber numberWithInt:[[dict objectForKey:@"life"] intValue]];
-        card.rulings = [self createRulings:[dict objectForKey:@"rulings"] forCard:card];
-        card.foreignNames = [self createForeignNames:[dict objectForKey:@"foreignNames"] forCard:card];
         card.printings = [self findSets:[dict objectForKey:@"printings"]];
         card.originalText = [dict objectForKey:@"originalText"];
-//        card.originalType = [self findCardType:[dict objectForKey:@"originalType"]];
-        card.legalities = [self createLegalities:[dict objectForKey:@"legalities"] forCard:card];
+        card.lifeModifier = [NSNumber numberWithInt:[[dict objectForKey:@"life"] intValue]];
         card.set = set;
 
         [currentContext MR_save];
@@ -238,26 +224,6 @@
     return cards;
 }
 
--(CardType*) findCardType:(NSString*) name
-{
-    if (!name || name.length == 0)
-    {
-        return nil;
-    }
-    
-    NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
-    CardType *cardType = [CardType MR_findFirstByAttribute:@"name"
-                                                       withValue:name];
-    
-    if (!cardType)
-    {
-        cardType = [CardType MR_createEntity];
-        cardType.name = name;
-        [currentContext MR_save];
-    }
-    return cardType;
-}
-
 -(Artist*) findArtist:(NSString*) name
 {
     if (!name || name.length == 0)
@@ -265,7 +231,6 @@
         return nil;
     }
     
-    NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
     Artist *artist = [Artist MR_findFirstByAttribute:@"name"
                                                  withValue:name];
     
@@ -273,12 +238,11 @@
     {
         artist = [Artist MR_createEntity];
         artist.name = name;
-        [currentContext MR_save];
     }
     return artist;
 }
 
--(NSSet*) createRulings:(NSArray*) array forCard:(Card*) card
+-(NSSet*) createRulings:(NSArray*) array
 {
     if (!array || array.count <= 0)
     {
@@ -286,8 +250,6 @@
     }
     
     NSMutableSet *set = [[NSMutableSet alloc] init];
-    
-    NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
     
     for (NSDictionary *dict in array)
     {
@@ -297,22 +259,20 @@
         {
             if ([key isEqualToString:@"date"])
             {
-                ruling.date = [self parseDate:[dict objectForKey:key] withFormat:@"YYYY-MM-dd"];
+                ruling.date = [JJJUtil parseDate:[dict objectForKey:key] withFormat:@"YYYY-MM-dd"];
             }
             else if ([key isEqualToString:@"text"])
             {
                 ruling.text = [dict objectForKey:key];
             }
         }
-        ruling.card = card;
-        [currentContext MR_save];
         [set addObject:ruling];
     }
     
     return set;
 }
 
--(NSSet*) createForeignNames:(NSArray*) array forCard:(Card*) card
+-(NSSet*) createForeignNames:(NSArray*) array
 {
     if (!array || array.count <= 0)
     {
@@ -320,8 +280,6 @@
     }
     
     NSMutableSet *set = [[NSMutableSet alloc] init];
-    
-    NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
     
     for (NSDictionary *dict in array)
     {
@@ -338,8 +296,6 @@
                 foreignName.name = [dict objectForKey:key];
             }
         }
-        foreignName.card = card;
-        [currentContext MR_save];
         [set addObject:foreignName];
     }
     
@@ -372,7 +328,7 @@
     return set;
 }
 
--(NSSet*) createLegalities:(NSDictionary*) dict forCard:(Card*) card
+-(NSSet*) createLegalities:(NSDictionary*) dict
 {
     if (!dict || dict.count <= 0)
     {
@@ -381,16 +337,12 @@
     
     NSMutableSet *set = [[NSMutableSet alloc] init];
     
-    NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
-    
     for (NSString *key in [dict allKeys])
     {
         CardLegality *legality = [CardLegality MR_createEntity];
         
         legality.name = [dict objectForKey:key];
         legality.format = [self findFormat:key];
-        legality.card = card;
-        [currentContext MR_save];
         [set addObject:legality];
     }
     
@@ -404,7 +356,6 @@
         return nil;
     }
     
-    NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
     Format *format = [Format MR_findFirstByAttribute:@"name"
                                            withValue:name];
     
@@ -412,7 +363,6 @@
     {
         format = [Format MR_createEntity];
         format.name = name;
-        [currentContext MR_save];
     }
     return format;
 }
@@ -455,21 +405,6 @@
 }
 
 #pragma mark - Utility methods
--(NSDate*)parseDate:(NSString*)date withFormat:(NSString*) format
-{
-    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-    
-    [dateFormat setDateFormat:format];
-    return [dateFormat dateFromString:date];
-}
-
--(NSString*)formatDate:(NSDate *)date withFormat:(NSString*) format
-{
-    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-    
-    [dateFormat setDateFormat:format];
-    return [dateFormat stringFromDate:date];
-}
 
 -(NSString*) capitalizeFirstLetterOfWords:(NSString*) phrase
 {

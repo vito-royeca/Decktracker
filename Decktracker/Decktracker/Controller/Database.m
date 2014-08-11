@@ -107,4 +107,12 @@ static Database *_me;
 }
 #endif
 
+-(Card*) findCard:(NSString*) cardName inSet:(NSString*) setCode
+{
+    NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"name == %@", cardName];
+    NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"set.code == %@", setCode];
+    
+    return [Card MR_findFirstWithPredicate:[NSCompoundPredicate andPredicateWithSubpredicates:@[pred1, pred2]]];
+}
+
 @end

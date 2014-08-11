@@ -32,7 +32,7 @@
         <relationship name="foreignNames" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CardForeignName" inverseName="card" inverseEntity="CardForeignName" syncable="YES"/>
         <relationship name="legalities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CardLegality" inverseName="card" inverseEntity="CardLegality" syncable="YES"/>
         <relationship name="names" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="names" inverseEntity="Card" syncable="YES"/>
-        <relationship name="printings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Set" inverseName="printings" inverseEntity="Set" syncable="YES"/>
+        <relationship name="printings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Set" inverseName="printing" inverseEntity="Set" syncable="YES"/>
         <relationship name="rarity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CardRarity" inverseName="cards" inverseEntity="CardRarity" syncable="YES"/>
         <relationship name="rulings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CardRuling" inverseName="card" inverseEntity="CardRuling" syncable="YES"/>
         <relationship name="set" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Set" inverseName="cards" inverseEntity="Set" syncable="YES"/>
@@ -46,7 +46,7 @@
     <entity name="CardLegality" representedClassName="CardLegality" syncable="YES">
         <attribute name="name" attributeType="String" syncable="YES"/>
         <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Card" inverseName="legalities" inverseEntity="Card" syncable="YES"/>
-        <relationship name="format" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Format" inverseName="legality" inverseEntity="Format" syncable="YES"/>
+        <relationship name="format" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Format" inverseName="legalities" inverseEntity="Format" syncable="YES"/>
     </entity>
     <entity name="CardRarity" representedClassName="CardRarity" syncable="YES">
         <attribute name="name" attributeType="String" syncable="YES"/>
@@ -55,14 +55,11 @@
     <entity name="CardRuling" representedClassName="CardRuling" syncable="YES">
         <attribute name="date" attributeType="Date" syncable="YES"/>
         <attribute name="text" attributeType="String" syncable="YES"/>
-        <relationship name="card" maxCount="1" deletionRule="Nullify" destinationEntity="Card" inverseName="rulings" inverseEntity="Card" syncable="YES"/>
-    </entity>
-    <entity name="CardType" representedClassName="CardType" syncable="YES">
-        <attribute name="name" attributeType="String" syncable="YES"/>
+        <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Card" inverseName="rulings" inverseEntity="Card" syncable="YES"/>
     </entity>
     <entity name="Format" representedClassName="Format" syncable="YES">
         <attribute name="name" attributeType="String" syncable="YES"/>
-        <relationship name="legality" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CardLegality" inverseName="format" inverseEntity="CardLegality" syncable="YES"/>
+        <relationship name="legalities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CardLegality" inverseName="format" inverseEntity="CardLegality" syncable="YES"/>
     </entity>
     <entity name="Set" representedClassName="Set" syncable="YES">
         <attribute name="border" optional="YES" attributeType="String" syncable="YES"/>
@@ -73,14 +70,15 @@
         <attribute name="oldCode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="onlineOnly" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="releaseDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="tcgPlayerName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="block" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Block" inverseName="sets" inverseEntity="Block" syncable="YES"/>
         <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="set" inverseEntity="Card" syncable="YES"/>
-        <relationship name="printings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="printings" inverseEntity="Card" syncable="YES"/>
-        <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SetType" inverseName="set" inverseEntity="SetType" syncable="YES"/>
+        <relationship name="printing" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Card" inverseName="printings" inverseEntity="Card" syncable="YES"/>
+        <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SetType" inverseName="sets" inverseEntity="SetType" syncable="YES"/>
     </entity>
     <entity name="SetType" representedClassName="SetType" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="set" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Set" inverseName="type" inverseEntity="Set" syncable="YES"/>
+        <relationship name="sets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Set" inverseName="type" inverseEntity="Set" syncable="YES"/>
     </entity>
     <elements>
         <element name="Artist" positionX="-18" positionY="90" width="128" height="73"/>
@@ -90,9 +88,8 @@
         <element name="CardLegality" positionX="0" positionY="162" width="128" height="88"/>
         <element name="CardRarity" positionX="27" positionY="180" width="128" height="73"/>
         <element name="CardRuling" positionX="-9" positionY="162" width="128" height="88"/>
-        <element name="CardType" positionX="-18" positionY="135" width="128" height="58"/>
-        <element name="Format" positionX="27" positionY="189" width="128" height="75"/>
-        <element name="Set" positionX="-54" positionY="-9" width="128" height="225"/>
+        <element name="Format" positionX="27" positionY="189" width="128" height="73"/>
+        <element name="Set" positionX="-54" positionY="-9" width="128" height="238"/>
         <element name="SetType" positionX="-18" positionY="135" width="128" height="73"/>
     </elements>
 </model>

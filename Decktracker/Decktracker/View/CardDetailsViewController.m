@@ -11,6 +11,7 @@
 #import "JJJ/JJJUtil.h"
 #import "Artist.h"
 #import "CardRarity.h"
+#import "Magic.h"
 #import "Set.h"
 #import "UIImage+Scale.h"
 
@@ -192,13 +193,6 @@
     return rows;
 }
 
-//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-//{
-//    id <NSFetchedResultsSectionInfo> theSection = [[self.fetchedResultsController sections] objectAtIndex:section];
-//
-//    return [theSection name];
-//}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"SearchResultsCell";
@@ -253,39 +247,34 @@
 - (NSString*) composeDetails
 {
     NSMutableString *html = [[NSMutableString alloc] init];
-    
-    NSString *manaPath = [NSString stringWithFormat:@"%@/images/mana", [[NSBundle mainBundle] bundlePath]];
     NSString *setPath = [NSString stringWithFormat:@"%@/images/set", [[NSBundle mainBundle] bundlePath]];
     
     [html appendFormat:@"<html><head><style>td {font-family: Helvetica; font-size: 14px;}</style></head><body>"];
     [html appendFormat:@"<table>"];
-    if  (self.card.manaCost)
-    {
-        NSArray *manas = [[[self.card.manaCost stringByReplacingOccurrencesOfString:@"{" withString:@""] stringByReplacingOccurrencesOfString:@"/" withString:@""] componentsSeparatedByString: @"}"];
-        NSMutableString *manaCost = [[NSMutableString alloc] init];
-        for (NSString *mana in manas)
-        {
-            if ([mana isEqualToString:@""])
-            {
-                continue;
-            }
-            [manaCost appendFormat:@"<img src=\"%@/%@/24.png\" border=\"0\" />", manaPath, mana];
-        }
-        [html appendFormat:@"<tr><td><strong>Mana Cost</strong></td><td>%@</td></tr>", manaCost];
-    }
-    [html appendFormat:@"<tr><td><strong>Converted Mana Cost</strong></td><td><img src=\"%@/%d/24.png\" border=\"0\" /></td></tr>", manaPath, [self.card.convertedManaCost intValue]];
+    
+    [html appendFormat:@"<tr><td colspan=\"2\"><strong>Mana Cost</strong><td></tr>"];
+    [html appendFormat:@"<tr><td colspan=\"2\"><td>%@</td></tr>", self.card.manaCost ? [self replaceSymbolsInText:self.card.manaCost] : @"None"];
+    
+    [html appendFormat:@"<tr><td colspan=\"2\"><strong>Converted Mana Cost</strong></td></tr>"];
+    [html appendFormat:@"<tr><td colspan=\"2\"><td>%@</td></tr>", self.card.convertedManaCost ? [self replaceSymbolsInText:[self.card.convertedManaCost stringValue]] : @"None"];
+    
     [html appendFormat:@"<tr><td colspan=\"2\"><strong>Type</strong></td></tr>"];
     [html appendFormat:@"<tr><td colspan=\"2\">%@</td></tr>", self.card.type];
     [html appendFormat:@"<tr><td colspan=\"2\"><strong>Rarity</strong></td></tr>"];
     [html appendFormat:@"<tr><td colspan=\"2\"><img src=\"%@/%@/%@/24.png\" border=\"0\" /> %@ - %@</td></tr>", setPath, self.card.set.code, [[self.card.rarity.name substringToIndex:1] uppercaseString], self.card.set.name, self.card.rarity.name];
+    [html appendFormat:@"<tr><td><strong>Power/Toughness</strong></td></tr>"];
     if (self.card.power || self.card.toughness)
     {
-        [html appendFormat:@"<tr><td><strong>Power/Toughness</strong></td><td>%@/%@</td></tr>", self.card.power, self.card.toughness];
+        [html appendFormat:@"<tr><td colspan=\"2\">%@/%@</td></tr>", self.card.power, self.card.toughness];
+    }
+    else
+    {
+        [html appendFormat:@"<tr><td colspan=\"2\">None</td></tr>"];
     }
     [html appendFormat:@"<tr><td colspan=\"2\"><strong>Oracle Text</strong></td></tr>"];
-    [html appendFormat:@"<tr><td colspan=\"2\">%@</td></tr>", self.card.text];
+    [html appendFormat:@"<tr><td colspan=\"2\">%@</td></tr>", [self replaceSymbolsInText:self.card.text]];
     [html appendFormat:@"<tr><td colspan=\"2\"><strong>Original Text</v></td></tr>"];
-    [html appendFormat:@"<tr><td colspan=\"2\">%@</td></tr>", self.card.originalText];
+    [html appendFormat:@"<tr><td colspan=\"2\">%@</td></tr>", [self replaceSymbolsInText:self.card.originalText]];
     if (self.card.flavor)
     {
         [html appendFormat:@"<tr><td colspan=\"2\"><strong>Flavor Text</strong></td></tr>"];
@@ -295,14 +284,55 @@
     [html appendFormat:@"<tr><td colspan=\"2\">%@</td></tr>", self.card.artist.name];
     [html appendFormat:@"<tr><td colspan=\"2\"><strong>Sets</strong></td></tr>"];
 
-//    NSArray *arrSets = ];
     for (Set *set in [[self.card.printings allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"releaseDate" ascending:YES]]])
     {
-        [html appendFormat:@"<tr><td colspan=\"2\"><img src=\"%@/%@/%@/24.png\" border=\"0\" /> %@</td></tr>", setPath, set.code, [[self.card.rarity.name substringToIndex:1] uppercaseString], set.name];
+        [html appendFormat:@"<tr><td><img src=\"%@/%@/%@/24.png\" border=\"0\" /></td><td>%@</td></tr>", setPath, set.code, [[self.card.rarity.name substringToIndex:1] uppercaseString], set.name];
     }
     
-    [html appendFormat:@"</table>"];
-    [html appendFormat:@"</body></html>"];
+    [html appendFormat:@"</table></body></html>"];
     return html;
 }
+
+-(NSString*) replaceSymbolsInText:(NSString*) text
+{
+    NSMutableArray *arrSymbols = [[NSMutableArray alloc] init];
+    
+    for (int i=0; i<text.length; i++)
+    {
+        if ([text characterAtIndex:i] == '{' &&
+            [text characterAtIndex:i+2] == '}')
+        {
+            [arrSymbols addObject:[text substringWithRange:NSMakeRange(i, 3)]];
+        }
+    }
+    
+    for (NSString *symbol in arrSymbols)
+    {
+        NSString *center = [symbol substringWithRange:NSMakeRange(1, symbol.length-2)];
+        BOOL bFound = NO;
+        
+        for (NSString *mana in kManaSymbols)
+        {
+            if ([mana isEqualToString:center])
+            {
+                text = [text stringByReplacingOccurrencesOfString:symbol withString:[NSString stringWithFormat:@"%@/images/mana/%@/24.png", [[NSBundle mainBundle] bundlePath], center]];
+                bFound = YES;
+            }
+        }
+        
+        if (!bFound)
+        {
+            for (NSString *mana in kOtherSymbols)
+            {
+                if ([mana isEqualToString:center])
+                {
+                    text = [text stringByReplacingOccurrencesOfString:symbol withString:[NSString stringWithFormat:@"%@/images/other/%@/24.png", [[NSBundle mainBundle] bundlePath], center]];
+                }
+            }
+        }
+    }
+    
+    return text;
+}
+
 @end

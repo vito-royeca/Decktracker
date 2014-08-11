@@ -2,7 +2,7 @@
 //  SetType.h
 //  Decktracker
 //
-//  Created by Jovit Royeca on 8/8/14.
+//  Created by Jovit Royeca on 8/11/14.
 //  Copyright (c) 2014 Jovito Royeca. All rights reserved.
 //
 
@@ -14,6 +14,14 @@
 @interface SetType : NSManagedObject
 
 @property (nonatomic, retain) NSString * name;
-@property (nonatomic, retain) Set *set;
+@property (nonatomic, retain) NSSet *sets;
+@end
+
+@interface SetType (CoreDataGeneratedAccessors)
+
+- (void)addSetsObject:(Set *)value;
+- (void)removeSetsObject:(Set *)value;
+- (void)addSets:(NSSet *)values;
+- (void)removeSets:(NSSet *)values;
 
 @end

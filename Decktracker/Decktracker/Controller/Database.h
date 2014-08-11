@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "JJJ/JJJ.h"
+#import "Card.h"
 
 #define kFetchBatchSize       100
 #define kDatabaseStore        @"database.sqlite"
@@ -23,5 +24,7 @@
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
 -(NSFetchedResultsController*) search:(NSString*)query;
 #endif
+
+-(Card*) findCard:(NSString*) card inSet:(NSString*) setCode;
 
 @end

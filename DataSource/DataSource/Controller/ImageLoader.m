@@ -35,7 +35,7 @@
             NSString *filePath = [dirPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.png", size]];
             
             NSLog(@"Downloading... %@", url);
-            [self downloadResource:url toPath:filePath];
+            [JJJUtil downloadResource:url toPath:filePath];
         }
     }
 }
@@ -59,7 +59,7 @@
             NSString *filePath = [dirPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.png", size]];
             
             NSLog(@"Downloading... %@", url);
-            [self downloadResource:url toPath:filePath];
+            [JJJUtil downloadResource:url toPath:filePath];
         }
     }
 }
@@ -91,7 +91,7 @@
                 NSString *filePath = [rarityPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.png", size]];
                 
                 NSLog(@"Downloading... %@", url);
-                [self downloadResource:url toPath:filePath];
+                [JJJUtil downloadResource:url toPath:filePath];
             }
             
             //delete if empty
@@ -135,12 +135,12 @@
                 NSString *filePath = [setPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.hq.jpg", card.imageName]];
                 
                 NSLog(@"Downloading... %@", url);
-                [self downloadResource:url toPath:filePath];
+                [JJJUtil downloadResource:url toPath:filePath];
                 
                 url = [NSURL URLWithString:[[NSString stringWithFormat:@"http://mtgimage.com/set/%@/%@.crop.jpg", set.code, card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
                 filePath = [setPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.crop.jpg", card.imageName]];
                 NSLog(@"Downloading... %@", url);
-                [self downloadResource:url toPath:filePath];
+                [JJJUtil downloadResource:url toPath:filePath];
             }
             
             //delete if empty

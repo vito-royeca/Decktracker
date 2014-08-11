@@ -2,7 +2,7 @@
 //  Format.h
 //  Decktracker
 //
-//  Created by Jovit Royeca on 8/8/14.
+//  Created by Jovit Royeca on 8/11/14.
 //  Copyright (c) 2014 Jovito Royeca. All rights reserved.
 //
 
@@ -14,6 +14,14 @@
 @interface Format : NSManagedObject
 
 @property (nonatomic, retain) NSString * name;
-@property (nonatomic, retain) CardLegality *legality;
+@property (nonatomic, retain) NSSet *legalities;
+@end
+
+@interface Format (CoreDataGeneratedAccessors)
+
+- (void)addLegalitiesObject:(CardLegality *)value;
+- (void)removeLegalitiesObject:(CardLegality *)value;
+- (void)addLegalities:(NSSet *)values;
+- (void)removeLegalities:(NSSet *)values;
 
 @end
