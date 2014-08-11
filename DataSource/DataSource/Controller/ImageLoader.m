@@ -155,35 +155,52 @@
     [[Database sharedInstance] closeDb];
 }
 
--(void) convertCardsToLowResolution
+-(void) convertCardsToLowResolution:(float) quality
 {
+    NSDate *dateStart = [NSDate date];
+    
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *path = [documentsDirectory stringByAppendingPathComponent:@"/images-low/card"];
+    NSString *inputPath = [documentsDirectory stringByAppendingPathComponent:@"/images-raw/card"];
+    NSString *outputPath = [documentsDirectory stringByAppendingPathComponent:@"/images-low/card"];
     
-    for (NSString *dir in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil])
+    for (NSString *dir in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:inputPath error:nil])
     {
-        NSString *setPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", dir]];
+        NSString *setInputPath = [inputPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", dir]];
+        NSString *setOutputPath = [outputPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", dir]];
         
-        for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:setPath error:nil])
+        if (![[NSFileManager defaultManager] fileExistsAtPath:setOutputPath])
+        {
+            [self createDir:setOutputPath];
+        }
+
+        for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:setInputPath error:nil])
         {
             if ([file rangeOfString:@".crop.jpg"].location != NSNotFound)
             {
                 continue;
             }
             
-            NSString *input = [setPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", file]];
-            NSString *output = [input stringByReplacingOccurrencesOfString:@".hq.jpg" withString:@".jpg"];;
+            NSString *input = [setInputPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", file]];
+            NSString *output = [setOutputPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", [file stringByReplacingOccurrencesOfString:@".hq.jpg" withString:@".jpg"]]];
+            
             
             if ([[NSFileManager defaultManager] fileExistsAtPath:output])
             {
-                [[NSFileManager defaultManager] removeItemAtPath:output error:nil];
+                continue;
             }
-            
-            [JJJUtil  runCommand:[NSString stringWithFormat:@"convert \"%@\" -strip -quality 50 \"%@\"", input, output]];
-            [[NSFileManager defaultManager] removeItemAtPath:input error:nil];
+            else
+            {
+                [JJJUtil  runCommand:[NSString stringWithFormat:@"convert \"%@\" -strip -quality %.2f \"%@\"", input, quality, output]];
+            }
         }
     }
+    
+    NSDate *dateEnd = [NSDate date];
+    NSTimeInterval timeDifference = [dateEnd timeIntervalSinceDate:dateStart];
+    NSLog(@"Started: %@", dateStart);
+    NSLog(@"Ended: %@", dateEnd);
+    NSLog(@"Time Elapsed: %@",  [JJJUtil formatInterval:timeDifference]);
 }
 
 -(BOOL) createDir:(NSString*) path
