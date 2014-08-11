@@ -79,7 +79,7 @@
     {
         case 0:
         {
-            _cardPath = [NSString stringWithFormat:@"%@/images/cards/%@/%@.jpg", [[NSBundle mainBundle] bundlePath], self.card.set.code, self.card.imageName];
+            _cardPath = [NSString stringWithFormat:@"%@/images/card/%@/%@.jpg", [[NSBundle mainBundle] bundlePath], self.card.set.code, self.card.imageName];
 
             if (![[NSFileManager defaultManager] fileExistsAtPath:_cardPath])
             {
