@@ -49,35 +49,35 @@
         [currentContext MR_save];
     }
     
-    for (NSString *setName in [json allKeys])
-    {
-        NSDictionary * dict = [json objectForKey:setName];
-        Set *set = [self parseSet:dict];
-
-        for (NSDictionary *dictCard in [dict objectForKey:@"cards"])
-        {
-            Card *card = [[Database sharedInstance] findCard:[dictCard objectForKey:@"name"] inSet:set.code];
-            card.rulings = [self createRulings:[dictCard objectForKey:@"rulings"]];
-            card.foreignNames = [self createForeignNames:[dictCard objectForKey:@"foreignNames"]];
-            card.legalities = [self createLegalities:[dictCard objectForKey:@"legalities"]];
-
-            [currentContext MR_save];
-        }
-    }
-    
-    for (NSString *setName in [json allKeys])
-    {
-        NSDictionary * dict = [json objectForKey:setName];
-        
-        for (NSDictionary *dictNames in [dict objectForKey:@"cards"])
-        {
-            NSString *cardName = [dictNames objectForKey:@"name"];
-            NSArray *names = [dictNames objectForKey:@"names"];
-            NSArray *variations = [dictNames objectForKey:@"variations"];
-            
-            [self setNames:names andVariations:variations forCard:cardName];
-        }
-    }
+//    for (NSString *setName in [json allKeys])
+//    {
+//        NSDictionary * dict = [json objectForKey:setName];
+//        Set *set = [self parseSet:dict];
+//
+//        for (NSDictionary *dictCard in [dict objectForKey:@"cards"])
+//        {
+//            Card *card = [[Database sharedInstance] findCard:[dictCard objectForKey:@"name"] inSet:set.code];
+//            card.rulings = [self createRulings:[dictCard objectForKey:@"rulings"]];
+//            card.foreignNames = [self createForeignNames:[dictCard objectForKey:@"foreignNames"]];
+//            card.legalities = [self createLegalities:[dictCard objectForKey:@"legalities"]];
+//
+//            [currentContext MR_save];
+//        }
+//    }
+//    
+//    for (NSString *setName in [json allKeys])
+//    {
+//        NSDictionary * dict = [json objectForKey:setName];
+//        
+//        for (NSDictionary *dictNames in [dict objectForKey:@"cards"])
+//        {
+//            NSString *cardName = [dictNames objectForKey:@"name"];
+//            NSArray *names = [dictNames objectForKey:@"names"];
+//            NSArray *variations = [dictNames objectForKey:@"variations"];
+//            
+//            [self setNames:names andVariations:variations forCard:cardName];
+//        }
+//    }
     
     [[Database sharedInstance] closeDb];
     

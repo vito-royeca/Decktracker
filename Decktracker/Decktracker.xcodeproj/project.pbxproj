@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3B4C647F452847188AFC81E6 /* libPods-Decktracker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63356387201A4E73BA1685FC /* libPods-Decktracker.a */; };
+		8C019AA01998A10F00FB22D7 /* database.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 8C019A9F1998A10F00FB22D7 /* database.sqlite */; };
 		8C1DFDD819913D2100174054 /* CardDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1DFDD719913D2100174054 /* CardDetailsViewController.m */; };
 		8C2E13F11990741100023BAA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2E13F01990741100023BAA /* Foundation.framework */; };
 		8C2E13F31990741100023BAA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2E13F21990741100023BAA /* CoreGraphics.framework */; };
@@ -76,6 +77,7 @@
 /* Begin PBXFileReference section */
 		309BCACD310044B894E67292 /* Pods-Decktracker.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Decktracker.xcconfig"; path = "Pods/Pods-Decktracker.xcconfig"; sourceTree = "<group>"; };
 		63356387201A4E73BA1685FC /* libPods-Decktracker.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Decktracker.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C019A9F1998A10F00FB22D7 /* database.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = database.sqlite; sourceTree = "<group>"; };
 		8C1DFDD619913D2100174054 /* CardDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardDetailsViewController.h; sourceTree = "<group>"; };
 		8C1DFDD719913D2100174054 /* CardDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardDetailsViewController.m; sourceTree = "<group>"; };
 		8C2E13ED1990741100023BAA /* Decktracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Decktracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -291,6 +293,7 @@
 		8C2E14321990862900023BAA /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				8C019A9F1998A10F00FB22D7 /* database.sqlite */,
 				8CADEF1619923DDE004D7658 /* images */,
 			);
 			path = Data;
@@ -414,6 +417,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C019AA01998A10F00FB22D7 /* database.sqlite in Resources */,
 				8CADEF1719923DDE004D7658 /* images in Resources */,
 				8C2E13FD1990741100023BAA /* InfoPlist.strings in Resources */,
 				8C2E14081990741100023BAA /* Images.xcassets in Resources */,

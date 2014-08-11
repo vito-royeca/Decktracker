@@ -32,7 +32,7 @@
         <relationship name="foreignNames" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CardForeignName" inverseName="card" inverseEntity="CardForeignName" syncable="YES"/>
         <relationship name="legalities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CardLegality" inverseName="card" inverseEntity="CardLegality" syncable="YES"/>
         <relationship name="names" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="names" inverseEntity="Card" syncable="YES"/>
-        <relationship name="printings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Set" inverseName="printing" inverseEntity="Set" syncable="YES"/>
+        <relationship name="printings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Set" inverseName="printings" inverseEntity="Set" syncable="YES"/>
         <relationship name="rarity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CardRarity" inverseName="cards" inverseEntity="CardRarity" syncable="YES"/>
         <relationship name="rulings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CardRuling" inverseName="card" inverseEntity="CardRuling" syncable="YES"/>
         <relationship name="set" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Set" inverseName="cards" inverseEntity="Set" syncable="YES"/>
@@ -73,7 +73,7 @@
         <attribute name="tcgPlayerName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="block" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Block" inverseName="sets" inverseEntity="Block" syncable="YES"/>
         <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="set" inverseEntity="Card" syncable="YES"/>
-        <relationship name="printing" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Card" inverseName="printings" inverseEntity="Card" syncable="YES"/>
+        <relationship name="printings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="printings" inverseEntity="Card" syncable="YES"/>
         <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SetType" inverseName="sets" inverseEntity="SetType" syncable="YES"/>
     </entity>
     <entity name="SetType" representedClassName="SetType" syncable="YES">
@@ -89,7 +89,7 @@
         <element name="CardRarity" positionX="27" positionY="180" width="128" height="73"/>
         <element name="CardRuling" positionX="-9" positionY="162" width="128" height="88"/>
         <element name="Format" positionX="27" positionY="189" width="128" height="73"/>
-        <element name="Set" positionX="-54" positionY="-9" width="128" height="238"/>
+        <element name="Set" positionX="-54" positionY="-9" width="128" height="240"/>
         <element name="SetType" positionX="-18" positionY="135" width="128" height="73"/>
     </elements>
 </model>

@@ -24,7 +24,7 @@
 @property (nonatomic, retain) NSDate * releaseDate;
 @property (nonatomic, retain) Block *block;
 @property (nonatomic, retain) NSSet *cards;
-@property (nonatomic, retain) Card *printing;
+@property (nonatomic, retain) NSSet *printing;
 @property (nonatomic, retain) SetType *type;
 @end
 
@@ -34,5 +34,10 @@
 - (void)removeCardsObject:(Card *)value;
 - (void)addCards:(NSSet *)values;
 - (void)removeCards:(NSSet *)values;
+
+- (void)addPrintingsObject:(Card *)value;
+- (void)removePrintingsObject:(Card *)value;
+- (void)addPrintings:(NSSet *)values;
+- (void)removePrintings:(NSSet *)values;
 
 @end

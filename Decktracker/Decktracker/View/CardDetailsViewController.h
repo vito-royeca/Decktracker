@@ -11,7 +11,7 @@
 #import "Card.h"
 #import "MBProgressHUD.h"
 
-@interface CardDetailsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, MBProgressHUDDelegate>
+@interface CardDetailsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, MBProgressHUDDelegate, UIWebViewDelegate>
 
 @property(strong, nonatomic) Card *card;
 @property(strong, nonatomic) UISegmentedControl *segmentedControl;

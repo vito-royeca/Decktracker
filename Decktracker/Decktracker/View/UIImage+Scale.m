@@ -47,7 +47,7 @@
     }
     else
     {
-        NSLog(@"Potrait");
+        NSLog(@"Portait");
         size1=CGSizeMake(size1.width,(self.size.height/self.size.width)*size1.width);
     }
     

@@ -11,6 +11,7 @@
 #import "JJJ/JJJUtil.h"
 #import "Artist.h"
 #import "CardRarity.h"
+#import "Database.h"
 #import "Magic.h"
 #import "Set.h"
 #import "UIImage+Scale.h"
@@ -101,6 +102,7 @@
             
             self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
             [self.webView loadHTMLString:[self composeDetails] baseURL:baseURL];
+            self.webView.delegate = self;
             [self.view addSubview:self.webView];
             break;
         }
@@ -216,21 +218,6 @@
     {
         case 1:
         {
-//            switch(indexPath.row)
-//            {
-//                case 0:
-//                {
-//                    cell.textLabel.text = @"Legalities";
-//                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-//                    break;
-//                }
-//                case 1:
-//                {
-//                    cell.textLabel.text = @"Language";
-//                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-//                    break;
-//                }
-//            }
             break;
         }
         case 2:
@@ -248,45 +235,58 @@
 {
     NSMutableString *html = [[NSMutableString alloc] init];
     NSString *setPath = [NSString stringWithFormat:@"%@/images/set", [[NSBundle mainBundle] bundlePath]];
+    NSString *manaPath = [NSString stringWithFormat:@"%@/images/mana", [[NSBundle mainBundle] bundlePath]];
     
     [html appendFormat:@"<html><head><style>td {font-family: Helvetica; font-size: 14px;}</style></head><body>"];
     [html appendFormat:@"<table>"];
     
-    [html appendFormat:@"<tr><td colspan=\"2\"><strong>Mana Cost</strong><td></tr>"];
-    [html appendFormat:@"<tr><td colspan=\"2\"><td>%@</td></tr>", self.card.manaCost ? [self replaceSymbolsInText:self.card.manaCost] : @"None"];
+    if (self.card.manaCost)
+    {
+        [html appendFormat:@"<tr><td colspan=\"2\"><strong>Mana Cost</strong></td></tr>"];
+        [html appendFormat:@"<tr><td colspan=\"2\">%@</td></tr>", [self replaceSymbolsInText:self.card.manaCost]];
+    }
     
-    [html appendFormat:@"<tr><td colspan=\"2\"><strong>Converted Mana Cost</strong></td></tr>"];
-    [html appendFormat:@"<tr><td colspan=\"2\"><td>%@</td></tr>", self.card.convertedManaCost ? [self replaceSymbolsInText:[self.card.convertedManaCost stringValue]] : @"None"];
+    if (self.card.convertedManaCost)
+    {
+        [html appendFormat:@"<tr><td colspan=\"2\"><strong>Converted Mana Cost</strong></td></tr>"];
+        [html appendFormat:@"<tr><td colspan=\"2\"><img src=\"%@/%@/16.png\" border=\"0\" /></td></tr>", manaPath, [self.card.convertedManaCost stringValue]];
+    }
     
     [html appendFormat:@"<tr><td colspan=\"2\"><strong>Type</strong></td></tr>"];
     [html appendFormat:@"<tr><td colspan=\"2\">%@</td></tr>", self.card.type];
+    
     [html appendFormat:@"<tr><td colspan=\"2\"><strong>Rarity</strong></td></tr>"];
-    [html appendFormat:@"<tr><td colspan=\"2\"><img src=\"%@/%@/%@/24.png\" border=\"0\" /> %@ - %@</td></tr>", setPath, self.card.set.code, [[self.card.rarity.name substringToIndex:1] uppercaseString], self.card.set.name, self.card.rarity.name];
-    [html appendFormat:@"<tr><td><strong>Power/Toughness</strong></td></tr>"];
+    [html appendFormat:@"<tr><td><img src=\"%@/%@/%@/24.png\" border=\"0\" /></td><td>%@ - %@</td></tr>", setPath, self.card.set.code, [[self.card.rarity.name substringToIndex:1] uppercaseString], self.card.set.name, self.card.rarity.name];
+    
     if (self.card.power || self.card.toughness)
     {
+        [html appendFormat:@"<tr><td colspan=\"2\"><strong>Power/Toughness</strong></td></tr>"];
         [html appendFormat:@"<tr><td colspan=\"2\">%@/%@</td></tr>", self.card.power, self.card.toughness];
     }
-    else
-    {
-        [html appendFormat:@"<tr><td colspan=\"2\">None</td></tr>"];
-    }
+    
     [html appendFormat:@"<tr><td colspan=\"2\"><strong>Oracle Text</strong></td></tr>"];
     [html appendFormat:@"<tr><td colspan=\"2\">%@</td></tr>", [self replaceSymbolsInText:self.card.text]];
+    
     [html appendFormat:@"<tr><td colspan=\"2\"><strong>Original Text</v></td></tr>"];
     [html appendFormat:@"<tr><td colspan=\"2\">%@</td></tr>", [self replaceSymbolsInText:self.card.originalText]];
+    
     if (self.card.flavor)
     {
         [html appendFormat:@"<tr><td colspan=\"2\"><strong>Flavor Text</strong></td></tr>"];
         [html appendFormat:@"<tr><td colspan=\"2\"><i>%@</i></td></tr>", self.card.flavor];
     }
+    
     [html appendFormat:@"<tr><td colspan=\"2\"><strong>Artist</strong></td></tr>"];
     [html appendFormat:@"<tr><td colspan=\"2\">%@</td></tr>", self.card.artist.name];
+    
     [html appendFormat:@"<tr><td colspan=\"2\"><strong>Sets</strong></td></tr>"];
-
     for (Set *set in [[self.card.printings allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"releaseDate" ascending:YES]]])
     {
-        [html appendFormat:@"<tr><td><img src=\"%@/%@/%@/24.png\" border=\"0\" /></td><td>%@</td></tr>", setPath, set.code, [[self.card.rarity.name substringToIndex:1] uppercaseString], set.name];
+        Card *card = [[Database sharedInstance] findCard:self.card.name inSet:set.code];
+        
+        NSString *link = [[NSString stringWithFormat:@"card?name=%@&set=%@", card.name, set.code] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        
+        [html appendFormat:@"<tr><td><a href=\"%@\"><img src=\"%@/%@/%@/24.png\" border=\"0\" /></a></td><td><a href=\"%@\">%@</a></td></tr>", link, setPath, set.code, [[card.rarity.name substringToIndex:1] uppercaseString], link, set.name];
     }
     
     [html appendFormat:@"</table></body></html>"];
@@ -315,7 +315,7 @@
         {
             if ([mana isEqualToString:center])
             {
-                text = [text stringByReplacingOccurrencesOfString:symbol withString:[NSString stringWithFormat:@"%@/images/mana/%@/24.png", [[NSBundle mainBundle] bundlePath], center]];
+                text = [text stringByReplacingOccurrencesOfString:symbol withString:[NSString stringWithFormat:@"<img src=\"%@/images/mana/%@/16.png\"/>", [[NSBundle mainBundle] bundlePath], center]];
                 bFound = YES;
             }
         }
@@ -326,13 +326,41 @@
             {
                 if ([mana isEqualToString:center])
                 {
-                    text = [text stringByReplacingOccurrencesOfString:symbol withString:[NSString stringWithFormat:@"%@/images/other/%@/24.png", [[NSBundle mainBundle] bundlePath], center]];
+                    text = [text stringByReplacingOccurrencesOfString:symbol withString:[NSString stringWithFormat:@"<img src=\"%@/images/other/%@/16.png\"/>", [[NSBundle mainBundle] bundlePath], center]];
                 }
             }
         }
     }
     
     return text;
+}
+
+#pragma mark - UIWebViewDelegate
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    NSString * q = [[request URL] query];
+    NSArray * pairs = [q componentsSeparatedByString:@"&"];
+    NSMutableDictionary * kvPairs = [NSMutableDictionary dictionary];
+    for (NSString * pair in pairs)
+    {
+        NSArray * bits = [pair componentsSeparatedByString:@"="];
+        NSString * key = [[bits objectAtIndex:0] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString * value = [[bits objectAtIndex:1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        [kvPairs setObject:value forKey:key];
+    }
+    
+    if ([kvPairs objectForKey:@"name"] && [kvPairs objectForKey:@"set"])
+    {
+    
+        Card *card = [[Database sharedInstance] findCard:[kvPairs objectForKey:@"name"]
+                                                   inSet:[kvPairs objectForKey:@"set"]];
+    
+        self.navigationController.title = card.name;
+        self.card = card;
+        [self switchView:nil];
+    }
+    
+    return YES;
 }
 
 @end
