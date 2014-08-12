@@ -11,6 +11,8 @@
 #import "CardDetailsViewController.h"
 #import "CardRarity.h"
 #import "Database.h"
+#import "MMDrawerBarButtonItem.h"
+#import "MMDrawerController.h"
 #import "Set.h"
 
 @interface SearchViewController ()
@@ -20,7 +22,6 @@
 @implementation SearchViewController
 
 @synthesize selectedIndex = _selectedIndex;
-@synthesize filterButton = _filterButton;
 @synthesize searchBar  = _searchBar;
 @synthesize tblResults = _tblResults;
 @synthesize fetchedResultsController = _fetchedResultsController;
@@ -55,9 +56,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 
-    self.filterButton = [[UIBarButtonItem alloc] init];
-    self.filterButton.image = [UIImage imageNamed:@"filter-25.png"];
-
     CGFloat dX = 0;
     CGFloat dY = 0;
     CGFloat dWidth = self.view.frame.size.width;
@@ -76,13 +74,31 @@
     self.tblResults.scrollEnabled = YES;
     self.tblResults.userInteractionEnabled = YES;
     
-    self.navigationItem.leftBarButtonItem = self.filterButton;
     self.navigationItem.titleView = self.searchBar;
     [self.view addSubview:self.tblResults];
     
     // remove the "< Back" title in back buttons
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60)
                                                          forBarMetrics:UIBarMetricsDefault];
+    MMDrawerBarButtonItem * leftDrawerButton = [[MMDrawerBarButtonItem alloc] initWithTarget:self action:@selector(leftDrawerButtonPress:)];
+    [self.navigationItem setLeftBarButtonItem:leftDrawerButton animated:YES];
+}
+
+-(void) leftDrawerButtonPress:(id) sender
+{
+    UIViewController *parentViewController = self.parentViewController;
+    MMDrawerController *drawer;
+    
+    while (parentViewController != nil)
+    {
+        if([parentViewController isKindOfClass:[MMDrawerController class]])
+        {
+            drawer = (MMDrawerController*)parentViewController;
+        }
+        parentViewController = parentViewController.parentViewController;
+    }
+    
+    [drawer toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -90,7 +106,8 @@
     if (self.selectedIndex != -1)
     {
         NSIndexPath *indexPath=[NSIndexPath indexPathForRow:self.selectedIndex inSection:0];
-        [self.tblResults selectRowAtIndexPath:indexPath animated:YES  scrollPosition:UITableViewScrollPositionMiddle];
+        
+        [self.tblResults selectRowAtIndexPath:indexPath animated:NO  scrollPosition:UITableViewScrollPositionMiddle];
     }
 }
 

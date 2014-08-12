@@ -57,14 +57,15 @@
     self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Card", @"Details", @"Pricing",]];
     self.segmentedControl.frame = CGRectMake(dX, dY, dWidth, dHeight);
     [self.segmentedControl addTarget:self
-                              action:@selector(switchView:)
+                              action:@selector(switchView)
                     forControlEvents:UIControlEventValueChanged];
     self.segmentedControl.selectedSegmentIndex = 0;
     
     self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.segmentedControl];
-    [self switchView:nil];
+    [self switchView];
 }
+    
 
 - (void)didReceiveMemoryWarning
 {
@@ -72,7 +73,7 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void) switchView:(id) sender
+-(void) switchView
 {
     CGFloat dX = 10;
     CGFloat dY = self.segmentedControl.frame.origin.y + self.segmentedControl.frame.size.height +5;
@@ -86,6 +87,9 @@
     {
         case 0:
         {
+            dX = 0;
+            dWidth += 20;
+            dHeight += 10;
             self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
             self.webView.scalesPageToFit = YES;
             self.webView.delegate = self;
@@ -170,7 +174,7 @@
     NSString *path = [[NSBundle mainBundle] bundlePath];
     NSURL *baseURL = [NSURL fileURLWithPath:path];
 
-    dHeight -= 60;
+    dHeight -= 40;
     UIImage *cardImage = [[UIImage alloc] initWithContentsOfFile:_cardPath];
     CGFloat xDim = ((cardImage.size.width * dHeight) / cardImage.size.height);
     self.navigationItem.title = self.card.name;
@@ -416,7 +420,7 @@
     
         [self setCard:card];
         self.segmentedControl.selectedSegmentIndex = 0;
-        [self switchView:nil];
+        [self switchView];
     }
     
     return YES;

@@ -7,6 +7,7 @@ target "Decktracker" do
 pod "AFNetworking"
 pod "MagicalRecord"
 pod "MBProgressHUD"
+pod "MMDrawerController"
 
 end
 

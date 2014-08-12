@@ -12,7 +12,6 @@
 @interface SearchViewController : UIViewController<UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate, MBProgressHUDDelegate>
 
 @property(nonatomic) NSInteger selectedIndex;
-@property(strong,nonatomic) UIBarButtonItem *filterButton;
 @property(strong,nonatomic) UISearchBar *searchBar;
 @property(strong,nonatomic) UITableView *tblResults;
 @property(strong,nonatomic) NSFetchedResultsController *fetchedResultsController;

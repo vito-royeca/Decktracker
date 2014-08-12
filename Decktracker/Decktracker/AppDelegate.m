@@ -9,6 +9,8 @@
 #import "AppDelegate.h"
 #import "Database.h"
 #import "MainViewController.h"
+#import "MMDrawerController.h"
+#import "SearchViewController.h"
 
 @implementation AppDelegate
 
@@ -23,7 +25,14 @@
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone ||
         [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
     {
-        viewController = [[MainViewController alloc] init];
+        UIViewController *leftDrawer = [[UIViewController alloc] init];
+        UIViewController *center = [[SearchViewController alloc] init];
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:center];
+        
+        MMDrawerController *drawerController = [[MMDrawerController alloc]
+                                                 initWithCenterViewController:navigationController
+                                                 leftDrawerViewController:leftDrawer];
+        viewController = drawerController;
     }
     
     self.window.rootViewController = viewController;
