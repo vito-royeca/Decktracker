@@ -19,6 +19,7 @@
 
 @implementation SearchViewController
 
+@synthesize selectedIndex = _selectedIndex;
 @synthesize filterButton = _filterButton;
 @synthesize searchBar  = _searchBar;
 @synthesize tblResults = _tblResults;
@@ -41,8 +42,10 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
+    if (self)
+    {
         // Custom initialization
+        self.selectedIndex = -1;
     }
     return self;
 }
@@ -80,7 +83,15 @@
     // remove the "< Back" title in back buttons
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60)
                                                          forBarMetrics:UIBarMetricsDefault];
+}
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    if (self.selectedIndex != -1)
+    {
+        NSIndexPath *indexPath=[NSIndexPath indexPathForRow:self.selectedIndex inSection:0];
+        [self.tblResults selectRowAtIndexPath:indexPath animated:YES  scrollPosition:UITableViewScrollPositionMiddle];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -90,18 +101,6 @@
 }
 
 #pragma - mark UITableViewDataSource
-//- (NSArray*) sectionIndexTitlesForTableView:(UITableView *)tableView
-//{
-//    NSMutableArray *arrSections = [[NSMutableArray alloc] init];
-//    
-//    for (id <NSFetchedResultsSectionInfo> info in [self.fetchedResultsController sections])
-//    {
-//        [arrSections addObject:[info name]];
-//    }
-//    
-//    return arrSections;
-//}
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     NSInteger count = [[self.fetchedResultsController sections] count];
@@ -114,13 +113,6 @@
     
 	return [sectionInfo numberOfObjects];
 }
-
-//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-//{
-//    id <NSFetchedResultsSectionInfo> theSection = [[self.fetchedResultsController sections] objectAtIndex:section];
-//    
-//    return [theSection name];
-//}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -165,9 +157,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Card *card = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    
     CardDetailsViewController *cardView = [[CardDetailsViewController alloc] init];
-    cardView.card = card;
+    Card *card = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    cardView.fetchedResultsController = self.fetchedResultsController;
+    [cardView setCard:card];
     
     [self.navigationController pushViewController:cardView animated:YES];
 }

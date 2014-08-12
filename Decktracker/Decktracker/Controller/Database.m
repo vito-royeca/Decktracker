@@ -103,7 +103,7 @@ static Database *_me;
     return [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                managedObjectContext:moc
                                                  sectionNameKeyPath:nil
-                                                          cacheName:@"CardCache"];
+                                                          cacheName:nil];
 }
 #endif
 

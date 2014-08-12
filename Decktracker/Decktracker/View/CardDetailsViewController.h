@@ -14,8 +14,8 @@
 @interface CardDetailsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, MBProgressHUDDelegate, UIWebViewDelegate>
 
 @property(strong, nonatomic) Card *card;
+@property(strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property(strong, nonatomic) UISegmentedControl *segmentedControl;
-@property(strong, nonatomic) UIImageView *imageView;
 @property(strong, nonatomic) UIWebView *webView;
 @property(strong, nonatomic) UITableView *tableView;
 

@@ -13,6 +13,7 @@
 #import "CardRarity.h"
 #import "Database.h"
 #import "Magic.h"
+#import "SearchViewController.h"
 #import "Set.h"
 #import "UIImage+Scale.h"
 
@@ -22,6 +23,7 @@
 }
 
 @synthesize card = _card;
+@synthesize fetchedResultsController = _fetchedResultsController;
 @synthesize segmentedControl = _segmentedControl;
 @synthesize webView = _webView;
 @synthesize tableView = _tableView;
@@ -36,14 +38,21 @@
     return self;
 }
 
+-(void) setCard:(Card*) card
+{
+    _card = card;
+    
+    _cardPath = [NSString stringWithFormat:@"%@/images/card/%@/%@.jpg", [[NSBundle mainBundle] bundlePath], self.card.set.code, self.card.imageName];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    CGFloat dX = 5;
-    CGFloat dY = [UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height+5;
-    CGFloat dWidth = self.view.frame.size.width-10;
+    CGFloat dX = 10;
+    CGFloat dY = [UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height+10;
+    CGFloat dWidth = self.view.frame.size.width-20;
     CGFloat dHeight = 30;
     self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Card", @"Details", @"Pricing",]];
     self.segmentedControl.frame = CGRectMake(dX, dY, dWidth, dHeight);
@@ -53,7 +62,6 @@
     self.segmentedControl.selectedSegmentIndex = 0;
     
     self.view.backgroundColor = [UIColor whiteColor];
-    self.navigationItem.title = self.card.name;
     [self.view addSubview:self.segmentedControl];
     [self switchView:nil];
 }
@@ -66,12 +74,11 @@
 
 -(void) switchView:(id) sender
 {
-    CGFloat dX = 5;
+    CGFloat dX = 10;
     CGFloat dY = self.segmentedControl.frame.origin.y + self.segmentedControl.frame.size.height +5;
-    CGFloat dWidth = self.view.frame.size.width-10;
-    CGFloat dHeight = self.view.frame.size.height - dY - self.tabBarController.tabBar.frame.size.height -5;
+    CGFloat dWidth = self.view.frame.size.width-20;
+    CGFloat dHeight = self.view.frame.size.height - dY - self.tabBarController.tabBar.frame.size.height -10;
     
-    [self.imageView removeFromSuperview];
     [self.webView removeFromSuperview];
     [self.tableView removeFromSuperview];
     
@@ -79,8 +86,20 @@
     {
         case 0:
         {
-            _cardPath = [NSString stringWithFormat:@"%@/images/card/%@/%@.jpg", [[NSBundle mainBundle] bundlePath], self.card.set.code, self.card.imageName];
-
+            self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
+            self.webView.scalesPageToFit = YES;
+            self.webView.delegate = self;
+            UISwipeGestureRecognizer *rightSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeGesture:)];
+            UISwipeGestureRecognizer *leftSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeGesture:)];
+            rightSwipeGesture.direction = UISwipeGestureRecognizerDirectionRight;
+            leftSwipeGesture.direction = UISwipeGestureRecognizerDirectionLeft;
+            [self.view addGestureRecognizer:rightSwipeGesture];
+            [self.view addGestureRecognizer:leftSwipeGesture];
+            
+            [_webView.scrollView.panGestureRecognizer requireGestureRecognizerToFail:rightSwipeGesture];
+            [_webView.scrollView.panGestureRecognizer requireGestureRecognizerToFail:leftSwipeGesture];
+            [self.view addSubview:self.webView];
+            
             if (![[NSFileManager defaultManager] fileExistsAtPath:_cardPath])
             {
                 MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
@@ -88,10 +107,7 @@
                 hud.delegate = self;
                 [hud showWhileExecuting:@selector(downloadCard) onTarget:self withObject:nil animated:NO];
             }
-            else
-            {
-                [self displayCard];
-            }
+            [self displayCard];
             break;
         }
             
@@ -101,9 +117,9 @@
             NSURL *baseURL = [NSURL fileURLWithPath:path];
             
             self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
-            [self.webView loadHTMLString:[self composeDetails] baseURL:baseURL];
             self.webView.delegate = self;
             [self.view addSubview:self.webView];
+            [self.webView loadHTMLString:[self composeDetails] baseURL:baseURL];
             break;
         }
         case 2:
@@ -148,18 +164,50 @@
 
 - (void) displayCard
 {
-    CGFloat dX = 5;
     CGFloat dY = self.segmentedControl.frame.origin.y + self.segmentedControl.frame.size.height +5;
-    CGFloat dWidth = self.view.frame.size.width-10;
-    CGFloat dHeight = self.view.frame.size.height - dY - self.tabBarController.tabBar.frame.size.height -5;
+    CGFloat dHeight = self.view.frame.size.height - dY - self.tabBarController.tabBar.frame.size.height;
+
+    NSString *path = [[NSBundle mainBundle] bundlePath];
+    NSURL *baseURL = [NSURL fileURLWithPath:path];
+
+    dHeight -= 60;
+    UIImage *cardImage = [[UIImage alloc] initWithContentsOfFile:_cardPath];
+    CGFloat xDim = ((cardImage.size.width * dHeight) / cardImage.size.height);
+    self.navigationItem.title = self.card.name;
+    [self.webView loadHTMLString:[self composeCardImageWithWidth:xDim andHeight:dHeight andScale:dHeight/cardImage.size.height] baseURL:baseURL];
     
-    UIImage *image = [[UIImage alloc] initWithContentsOfFile:_cardPath];
-    CGFloat xDim = (image.size.width * dHeight) / image.size.height;
-    image = [image scaleProportionalToSize:CGSizeMake(xDim, dHeight)];
-    dX = ((dWidth - xDim) / 2)+5;
-    self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(dX, dY, xDim, dHeight)];
-    self.imageView.image = image;
-    [self.view addSubview:self.imageView];
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
+    SearchViewController *parent = [self.navigationController.viewControllers firstObject];
+    parent.selectedIndex = [sectionInfo.objects indexOfObject:self.card];
+}
+
+-(void) handleSwipeGesture:(id) sender
+{
+    UISwipeGestureRecognizer *swipe = (UISwipeGestureRecognizer*) sender;
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
+    
+    NSInteger index = [sectionInfo.objects indexOfObject:self.card];
+
+    if (swipe.direction == UISwipeGestureRecognizerDirectionRight)
+    {
+        index--;
+        if (index < 0)
+        {
+            index = 0;
+        }
+    }
+    else if (swipe.direction == UISwipeGestureRecognizerDirectionLeft)
+    {
+        index++;
+        if (index > sectionInfo.objects.count-1)
+        {
+            index = sectionInfo.objects.count-1;
+        }
+    }
+    
+    Card *card = sectionInfo.objects[index];
+    [self setCard:card];
+    [self displayCard];
 }
 
 #pragma mark - MBProgressHUDDelegate methods
@@ -231,13 +279,24 @@
     }
 }
 
+- (NSString*) composeCardImageWithWidth:(CGFloat) width andHeight:(CGFloat) height andScale:(CGFloat) scale
+{
+    NSMutableString *html = [[NSMutableString alloc] init];
+    
+    [html appendFormat:@"<html><head><meta name=\"viewport\" content=\"initial-scale=%f,maximum-scale=10.0\"/><link rel=\"stylesheet\" type=\"text/css\" href=\"%@/style.css\"></head><body background=\"%@/images/Gray_Patterned_BG.jpg\">", scale, [[NSBundle mainBundle] bundlePath], [[NSBundle mainBundle] bundlePath]];
+    [html appendFormat:@"<img src=\"%@\" border=\"0\" class=\"img_center\"/>", _cardPath];
+    [html appendFormat:@"</table></body></html>"];
+    
+    return html;
+}
+
 - (NSString*) composeDetails
 {
     NSMutableString *html = [[NSMutableString alloc] init];
     NSString *setPath = [NSString stringWithFormat:@"%@/images/set", [[NSBundle mainBundle] bundlePath]];
     NSString *manaPath = [NSString stringWithFormat:@"%@/images/mana", [[NSBundle mainBundle] bundlePath]];
     
-    [html appendFormat:@"<html><head><style>td {font-family: Helvetica; font-size: 14px;}</style></head><body>"];
+    [html appendFormat:@"<html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"%@/style.css\"></head><body>", [[NSBundle mainBundle] bundlePath]];
     [html appendFormat:@"<table>"];
     
     if (self.card.manaCost)
@@ -355,8 +414,8 @@
         Card *card = [[Database sharedInstance] findCard:[kvPairs objectForKey:@"name"]
                                                    inSet:[kvPairs objectForKey:@"set"]];
     
-        self.navigationController.title = card.name;
-        self.card = card;
+        [self setCard:card];
+        self.segmentedControl.selectedSegmentIndex = 0;
         [self switchView:nil];
     }
     
