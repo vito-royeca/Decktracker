@@ -28,6 +28,7 @@
 		8C2E142E199085A900023BAA /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2E142D199085A900023BAA /* MainViewController.m */; };
 		8C2E1431199085C700023BAA /* Database.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2E1430199085C700023BAA /* Database.m */; };
 		8C3277FD199A464D00899790 /* style.css in Resources */ = {isa = PBXBuildFile; fileRef = 8C3277FC199A464D00899790 /* style.css */; };
+		8C5BDD70199B3B7D007AF140 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5BDD6F199B3B7D007AF140 /* MenuViewController.m */; };
 		8C60EB6E19927C1D00C5EEF9 /* UIImage+Scale.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C60EB6D19927C1D00C5EEF9 /* UIImage+Scale.m */; };
 		8CADEF1719923DDE004D7658 /* images in Resources */ = {isa = PBXBuildFile; fileRef = 8CADEF1619923DDE004D7658 /* images */; };
 		8CCA76511990F3F000A24420 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CCA76501990F3F000A24420 /* SearchViewController.m */; };
@@ -105,6 +106,8 @@
 		8C2E142F199085C700023BAA /* Database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Database.h; sourceTree = "<group>"; };
 		8C2E1430199085C700023BAA /* Database.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Database.m; sourceTree = "<group>"; };
 		8C3277FC199A464D00899790 /* style.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = style.css; sourceTree = "<group>"; };
+		8C5BDD6E199B3B7D007AF140 /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
+		8C5BDD6F199B3B7D007AF140 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 		8C60EB6C19927C1D00C5EEF9 /* UIImage+Scale.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Scale.h"; sourceTree = "<group>"; };
 		8C60EB6D19927C1D00C5EEF9 /* UIImage+Scale.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Scale.m"; sourceTree = "<group>"; };
 		8CADEF1619923DDE004D7658 /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
@@ -275,6 +278,8 @@
 				8C1DFDD719913D2100174054 /* CardDetailsViewController.m */,
 				8C2E142C199085A900023BAA /* MainViewController.h */,
 				8C2E142D199085A900023BAA /* MainViewController.m */,
+				8C5BDD6E199B3B7D007AF140 /* MenuViewController.h */,
+				8C5BDD6F199B3B7D007AF140 /* MenuViewController.m */,
 				8CCA764F1990F3F000A24420 /* SearchViewController.h */,
 				8CCA76501990F3F000A24420 /* SearchViewController.m */,
 				8C60EB6C19927C1D00C5EEF9 /* UIImage+Scale.h */,
@@ -493,6 +498,7 @@
 				8CFF0D5E1997E17100FC563A /* SetType.m in Sources */,
 				8CFF0D521997E17000FC563A /* CardForeignName.m in Sources */,
 				8CFF0D641997E17100FC563A /* Block.m in Sources */,
+				8C5BDD70199B3B7D007AF140 /* MenuViewController.m in Sources */,
 				8C2E142A1990748C00023BAA /* database.xcdatamodeld in Sources */,
 				8CFF0D551997E17000FC563A /* CardRarity.m in Sources */,
 				8CFF0D611997E17100FC563A /* Card.m in Sources */,

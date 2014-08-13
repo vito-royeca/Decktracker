@@ -8,14 +8,22 @@
 
 #import "AppDelegate.h"
 #import "Database.h"
-#import "MainViewController.h"
+#import "MenuViewController.h"
 #import "MMDrawerController.h"
 #import "SearchViewController.h"
+
+#import "GAI.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // Google Analytics
+    [GAI sharedInstance].trackUncaughtExceptions = YES;
+    [GAI sharedInstance].dispatchInterval = 20;
+    [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelInfo];
+    [[GAI sharedInstance] trackerWithTrackingId:@"UA-53780226-1"];
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     
@@ -25,7 +33,7 @@
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone ||
         [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
     {
-        UIViewController *leftDrawer = [[UIViewController alloc] init];
+        UIViewController *leftDrawer = [[MenuViewController alloc] init];
         UIViewController *center = [[SearchViewController alloc] init];
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:center];
         

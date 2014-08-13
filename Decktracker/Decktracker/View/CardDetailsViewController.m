@@ -169,6 +169,7 @@
 - (void) displayCard
 {
     CGFloat dY = self.segmentedControl.frame.origin.y + self.segmentedControl.frame.size.height +5;
+    CGFloat dWidth = self.view.frame.size.width;
     CGFloat dHeight = self.view.frame.size.height - dY - self.tabBarController.tabBar.frame.size.height;
 
     NSString *path = [[NSBundle mainBundle] bundlePath];
@@ -176,9 +177,14 @@
 
     dHeight -= 40;
     UIImage *cardImage = [[UIImage alloc] initWithContentsOfFile:_cardPath];
-    CGFloat xDim = ((cardImage.size.width * dHeight) / cardImage.size.height);
+    CGFloat xDim = cardImage.size.height > cardImage.size.width ?
+        ((cardImage.size.width * dHeight) / cardImage.size.height) :
+        ((cardImage.size.height * dWidth) / cardImage.size.width);
+    CGFloat scale = cardImage.size.height > cardImage.size.width ?
+        dHeight/cardImage.size.height :
+        dWidth/cardImage.size.width;
     self.navigationItem.title = self.card.name;
-    [self.webView loadHTMLString:[self composeCardImageWithWidth:xDim andHeight:dHeight andScale:dHeight/cardImage.size.height] baseURL:baseURL];
+    [self.webView loadHTMLString:[self composeCardImageWithWidth:cardImage.size.width andHeight:cardImage.size.height andScale:scale] baseURL:baseURL];
     
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
     SearchViewController *parent = [self.navigationController.viewControllers firstObject];
@@ -288,7 +294,7 @@
     NSMutableString *html = [[NSMutableString alloc] init];
     
     [html appendFormat:@"<html><head><meta name=\"viewport\" content=\"initial-scale=%f,maximum-scale=10.0\"/><link rel=\"stylesheet\" type=\"text/css\" href=\"%@/style.css\"></head><body background=\"%@/images/Gray_Patterned_BG.jpg\">", scale, [[NSBundle mainBundle] bundlePath], [[NSBundle mainBundle] bundlePath]];
-    [html appendFormat:@"<img src=\"%@\" border=\"0\" class=\"img_center\"/>", _cardPath];
+    [html appendFormat:@"<img src=\"%@\" border=\"0\" width=\"%f\" height=\"%f\" class=\"img_center\"/>", _cardPath, width, height];
     [html appendFormat:@"</table></body></html>"];
     
     return html;
