@@ -8,17 +8,24 @@
 
 #import "MenuViewController.h"
 
-@interface MenuViewController ()
-
-@end
-
 @implementation MenuViewController
+{
+    NSArray *_menuItems;
+}
+
+@synthesize tblMenu = _tblMenu;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
+    if (self)
+    {
         // Custom initialization
+        _menuItems = @[@"Search",
+                       @"Browse",
+                       @"Decks",
+                       @"Collections",
+                       @"Settings"];
     }
     return self;
 }
@@ -27,6 +34,13 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    self.tblMenu = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    [self.tblMenu setDelegate:self];
+    [self.tblMenu setDataSource:self];
+    [self.view addSubview:self.tblMenu];
+    [self.tblMenu setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -35,15 +49,30 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+#pragma mark - UITableView
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    return 1;
 }
-*/
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return _menuItems.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"Cell";
+    
+    UITableViewCell *cell = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+
+    cell.textLabel.text = [_menuItems objectAtIndex:indexPath.row];
+    
+    return cell;
+}
 
 @end
