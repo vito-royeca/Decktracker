@@ -11,9 +11,10 @@
 #import "JJJ/JJJUtil.h"
 #import "Artist.h"
 #import "CardRarity.h"
+#import "CardType.h"
 #import "Database.h"
 #import "Magic.h"
-#import "SearchViewController.h"
+#import "SearchResultsViewController.h"
 #import "Set.h"
 #import "UIImage+Scale.h"
 
@@ -187,7 +188,7 @@
     [self.webView loadHTMLString:[self composeCardImageWithWidth:cardImage.size.width andHeight:cardImage.size.height andScale:scale] baseURL:baseURL];
     
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
-    SearchViewController *parent = [self.navigationController.viewControllers firstObject];
+    SearchResultsViewController *parent = [self.navigationController.viewControllers firstObject];
     parent.selectedIndex = [sectionInfo.objects indexOfObject:self.card];
 }
 
@@ -315,17 +316,14 @@
         [html appendFormat:@"<tr><td colspan=\"2\">%@</td></tr>", [self replaceSymbolsInText:self.card.manaCost]];
     }
     
-    if (self.card.convertedManaCost)
+    if (self.card.cmc)
     {
         [html appendFormat:@"<tr><td colspan=\"2\"><strong>Converted Mana Cost</strong></td></tr>"];
-        [html appendFormat:@"<tr><td colspan=\"2\"><img src=\"%@/%@/16.png\" border=\"0\" /></td></tr>", manaPath, [self.card.convertedManaCost stringValue]];
+        [html appendFormat:@"<tr><td colspan=\"2\"><img src=\"%@/%@/16.png\" border=\"0\" /></td></tr>", manaPath, [self.card.cmc stringValue]];
     }
     
     [html appendFormat:@"<tr><td colspan=\"2\"><strong>Type</strong></td></tr>"];
     [html appendFormat:@"<tr><td colspan=\"2\">%@</td></tr>", self.card.type];
-    
-    [html appendFormat:@"<tr><td colspan=\"2\"><strong>Rarity</strong></td></tr>"];
-    [html appendFormat:@"<tr><td><img src=\"%@/%@/%@/24.png\" border=\"0\" /></td><td>%@ - %@</td></tr>", setPath, self.card.set.code, [[self.card.rarity.name substringToIndex:1] uppercaseString], self.card.set.name, self.card.rarity.name];
     
     if (self.card.power || self.card.toughness)
     {
@@ -333,11 +331,20 @@
         [html appendFormat:@"<tr><td colspan=\"2\">%@/%@</td></tr>", self.card.power, self.card.toughness];
     }
     
-    [html appendFormat:@"<tr><td colspan=\"2\"><strong>Oracle Text</strong></td></tr>"];
-    [html appendFormat:@"<tr><td colspan=\"2\">%@</td></tr>", [self replaceSymbolsInText:self.card.text]];
+    [html appendFormat:@"<tr><td colspan=\"2\"><strong>Rarity</strong></td></tr>"];
+    [html appendFormat:@"<tr><td><img src=\"%@/%@/%@/24.png\" border=\"0\" /></td><td>%@ - %@</td></tr>", setPath, self.card.set.code, [[self.card.rarity.name substringToIndex:1] uppercaseString], self.card.set.name, self.card.rarity.name];
     
-    [html appendFormat:@"<tr><td colspan=\"2\"><strong>Original Text</v></td></tr>"];
-    [html appendFormat:@"<tr><td colspan=\"2\">%@</td></tr>", [self replaceSymbolsInText:self.card.originalText]];
+    if (self.card.text)
+    {
+        [html appendFormat:@"<tr><td colspan=\"2\"><strong>Oracle Text</strong></td></tr>"];
+        [html appendFormat:@"<tr><td colspan=\"2\">%@</td></tr>", [self replaceSymbolsInText:self.card.text]];
+    }
+    
+    if (self.card.originalText)
+    {
+        [html appendFormat:@"<tr><td colspan=\"2\"><strong>Original Text</v></td></tr>"];
+        [html appendFormat:@"<tr><td colspan=\"2\">%@</td></tr>", [self replaceSymbolsInText:self.card.originalText]];
+    }
     
     if (self.card.flavor)
     {

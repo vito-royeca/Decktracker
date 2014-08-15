@@ -10,7 +10,7 @@
     </entity>
     <entity name="Card" representedClassName="Card" syncable="YES">
         <attribute name="border" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="convertedManaCost" optional="YES" attributeType="Float" defaultValueString="0" syncable="YES"/>
+        <attribute name="cmc" optional="YES" attributeType="Float" defaultValueString="0" syncable="YES"/>
         <attribute name="flavor" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="handModifier" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="imageName" optional="YES" attributeType="String" syncable="YES"/>
@@ -36,6 +36,9 @@
         <relationship name="rarity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CardRarity" inverseName="cards" inverseEntity="CardRarity" syncable="YES"/>
         <relationship name="rulings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CardRuling" inverseName="card" inverseEntity="CardRuling" syncable="YES"/>
         <relationship name="set" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Set" inverseName="cards" inverseEntity="Set" syncable="YES"/>
+        <relationship name="subTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CardType" inverseName="cardSubTypes" inverseEntity="CardType" syncable="YES"/>
+        <relationship name="superTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CardType" inverseName="cardSuperTypes" inverseEntity="CardType" syncable="YES"/>
+        <relationship name="types" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CardType" inverseName="cardTypes" inverseEntity="CardType" syncable="YES"/>
         <relationship name="variations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="variations" inverseEntity="Card" syncable="YES"/>
     </entity>
     <entity name="CardForeignName" representedClassName="CardForeignName" syncable="YES">
@@ -56,6 +59,12 @@
         <attribute name="date" attributeType="Date" syncable="YES"/>
         <attribute name="text" attributeType="String" syncable="YES"/>
         <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Card" inverseName="rulings" inverseEntity="Card" syncable="YES"/>
+    </entity>
+    <entity name="CardType" representedClassName="CardType" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="cardSubTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="subTypes" inverseEntity="Card" syncable="YES"/>
+        <relationship name="cardSuperTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="superTypes" inverseEntity="Card" syncable="YES"/>
+        <relationship name="cardTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="types" inverseEntity="Card" syncable="YES"/>
     </entity>
     <entity name="Format" representedClassName="Format" syncable="YES">
         <attribute name="name" attributeType="String" syncable="YES"/>
@@ -83,11 +92,12 @@
     <elements>
         <element name="Artist" positionX="-18" positionY="90" width="128" height="73"/>
         <element name="Block" positionX="-36" positionY="9" width="128" height="75"/>
-        <element name="Card" positionX="-63" positionY="-18" width="128" height="463"/>
+        <element name="Card" positionX="-63" positionY="-18" width="128" height="510"/>
         <element name="CardForeignName" positionX="-9" positionY="171" width="128" height="88"/>
         <element name="CardLegality" positionX="0" positionY="162" width="128" height="88"/>
         <element name="CardRarity" positionX="27" positionY="180" width="128" height="73"/>
         <element name="CardRuling" positionX="-9" positionY="162" width="128" height="88"/>
+        <element name="CardType" positionX="-18" positionY="135" width="128" height="103"/>
         <element name="Format" positionX="27" positionY="189" width="128" height="73"/>
         <element name="Set" positionX="-54" positionY="-9" width="128" height="240"/>
         <element name="SetType" positionX="-18" positionY="135" width="128" height="73"/>

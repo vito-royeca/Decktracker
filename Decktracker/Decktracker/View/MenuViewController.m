@@ -22,7 +22,7 @@
     {
         // Custom initialization
         _menuItems = @[@"Search",
-                       @"Browse",
+                       @"Advance Search",
                        @"Decks",
                        @"Collections",
                        @"Settings"];

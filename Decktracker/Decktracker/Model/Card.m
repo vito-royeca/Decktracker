@@ -2,7 +2,7 @@
 //  Card.m
 //  Decktracker
 //
-//  Created by Jovit Royeca on 8/11/14.
+//  Created by Jovit Royeca on 8/14/14.
 //  Copyright (c) 2014 Jovito Royeca. All rights reserved.
 //
 
@@ -13,13 +13,14 @@
 #import "CardLegality.h"
 #import "CardRarity.h"
 #import "CardRuling.h"
+#import "CardType.h"
 #import "Set.h"
 
 
 @implementation Card
 
 @dynamic border;
-@dynamic convertedManaCost;
+@dynamic cmc;
 @dynamic flavor;
 @dynamic handModifier;
 @dynamic imageName;
@@ -45,6 +46,9 @@
 @dynamic rarity;
 @dynamic rulings;
 @dynamic set;
+@dynamic subTypes;
+@dynamic superTypes;
+@dynamic types;
 @dynamic variations;
 
 @end

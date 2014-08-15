@@ -15,6 +15,7 @@
 #import "CardLegality.h"
 #import "CardRarity.h"
 #import "CardRuling.h"
+#import "CardType.h"
 #import "Database.h"
 #import "Format.h"
 #import "Magic.h"
@@ -57,14 +58,18 @@
 //        for (NSDictionary *dictCard in [dict objectForKey:@"cards"])
 //        {
 //            Card *card = [[Database sharedInstance] findCard:[dictCard objectForKey:@"name"] inSet:set.code];
-//            card.rulings = [self createRulings:[dictCard objectForKey:@"rulings"]];
-//            card.foreignNames = [self createForeignNames:[dictCard objectForKey:@"foreignNames"]];
-//            card.legalities = [self createLegalities:[dictCard objectForKey:@"legalities"]];
+//            
+//            if (card)
+//            {
+//                card.rulings = [self createRulings:[dictCard objectForKey:@"rulings"]];
+//                card.foreignNames = [self createForeignNames:[dictCard objectForKey:@"foreignNames"]];
+//                card.legalities = [self createLegalities:[dictCard objectForKey:@"legalities"]];
 //
-//            [currentContext MR_save];
+//                [currentContext MR_save];
+//            }
 //        }
 //    }
-//    
+//
 //    for (NSString *setName in [json allKeys])
 //    {
 //        NSDictionary * dict = [json objectForKey:setName];
@@ -195,7 +200,7 @@
         card.layout = [dict objectForKey:@"layout"];
         card.name = [dict objectForKey:@"name"];
         card.manaCost = [dict objectForKey:@"manaCost"];
-        card.convertedManaCost = [NSNumber numberWithFloat:[[dict objectForKey:@"cmc"] floatValue]];
+        card.cmc = [NSNumber numberWithFloat:[[dict objectForKey:@"cmc"] floatValue]];
         card.type = [dict objectForKey:@"type"];
         card.rarity = [self findCardRarity:[dict objectForKey:@"rarity"]];
         card.text = [dict objectForKey:@"text"];
@@ -214,6 +219,9 @@
         card.printings = [self findSets:[dict objectForKey:@"printings"]];
         card.originalText = [dict objectForKey:@"originalText"];
         card.lifeModifier = [NSNumber numberWithInt:[[dict objectForKey:@"life"] intValue]];
+        card.types = [self findTypes:[dict objectForKey:@"types"]];
+        card.superTypes = [self findTypes:[dict objectForKey:@"supertypes"]];
+        card.subTypes = [self findTypes:[dict objectForKey:@"subtypes"]];
         card.set = set;
 
         [currentContext MR_save];
@@ -325,6 +333,32 @@
         [set addObject:printing];
     }
 
+    return set;
+}
+
+-(NSSet*) findTypes:(NSArray*) array
+{
+    if (!array || array.count <= 0)
+    {
+        return nil;
+    }
+    
+    NSMutableSet *set = [[NSMutableSet alloc] init];
+    
+    for (NSString *name in array)
+    {
+        CardType *type = [CardType MR_findFirstByAttribute:@"name"
+                                                 withValue:name];
+        
+        if (!type)
+        {
+            type = [CardType MR_createEntity];
+            
+            type.name = name;
+        }
+        [set addObject:type];
+    }
+    
     return set;
 }
 

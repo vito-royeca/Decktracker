@@ -2,43 +2,27 @@
 //  SearchViewController.m
 //  Decktracker
 //
-//  Created by Jovit Royeca on 8/5/14.
+//  Created by Jovit Royeca on 8/15/14.
 //  Copyright (c) 2014 Jovito Royeca. All rights reserved.
 //
 
 #import "SearchViewController.h"
-#import "Card.h"
-#import "CardDetailsViewController.h"
+#import "Artist.h"
 #import "CardRarity.h"
-#import "Database.h"
-#import "MMDrawerBarButtonItem.h"
-#import "MMDrawerController.h"
+#import "CardType.h"
+#import "FilterInputViewController.h"
+#import "Format.h"
 #import "Set.h"
 
-@interface SearchViewController ()
-
-@end
-
 @implementation SearchViewController
-
-@synthesize selectedIndex = _selectedIndex;
-@synthesize searchBar  = _searchBar;
-@synthesize tblResults = _tblResults;
-@synthesize fetchedResultsController = _fetchedResultsController;
-
-- (NSFetchedResultsController *)fetchedResultsController
 {
-    if (_fetchedResultsController != nil)
-    {
-        return _fetchedResultsController;
-    }
-    
-    NSFetchedResultsController *nsfrc = [[Database sharedInstance] search:self.searchBar.text];
-    
-    self.fetchedResultsController = nsfrc;
-    _fetchedResultsController.delegate = self;
-    return _fetchedResultsController;
+    NSMutableArray *_currentQuery;
+    NSArray *_arrFilters;
+    NSArray *_cardTypes;
 }
+
+@synthesize segmentedControl = _segmentedControl;
+@synthesize tblView = _tblView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -46,7 +30,6 @@
     if (self)
     {
         // Custom initialization
-        self.selectedIndex = -1;
     }
     return self;
 }
@@ -55,60 +38,36 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-
+    
+    _arrFilters = @[@"Name", @"Sets", @"Rarities", @"Formats", @"Types", @"Subtypes", @"Colors", @"Text", @"Flavor Text",
+                    @"Artist"];
+    _cardTypes = @[@"Artifact", @"Basic", @"Conspiracy", @"Creature", @"Enchantment", @"Instant", @"Land",
+                   @"Legendary", @"Ongoing", @"Phenomenon", @"Plane", @"Planeswalker", @"Scheme", @"Snow",
+                   @"Sorcery", @"Tribal", @"Vanguard", @"World"];
+    
     CGFloat dX = 0;
-    CGFloat dY = 0;
+    CGFloat dY = [UIApplication sharedApplication].statusBarFrame.size.height +
+        self.navigationController.navigationBar.frame.size.height;
     CGFloat dWidth = self.view.frame.size.width;
-    CGFloat dHeight = self.navigationController.navigationBar.frame.size.height;
-    CGRect frame = CGRectMake(dX, dY, dWidth, dHeight);
-    self.searchBar = [[UISearchBar alloc] init];
-    self.searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    self.searchBar.placeholder = @"Search";
-    self.searchBar.delegate = self;
+    CGFloat dHeight = 40;
     
-    dHeight = self.view.frame.size.height - self.tabBarController.tabBar.frame.size.height;
-    frame = CGRectMake(dX, dY, dWidth, dHeight);
-    self.tblResults = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
-    self.tblResults.delegate = self;
-    self.tblResults.dataSource = self;
-    self.tblResults.scrollEnabled = YES;
-    self.tblResults.userInteractionEnabled = YES;
+    self.segmentedControl = [[HMSegmentedControl alloc] initWithSectionTitles:@[@"Filter", @"Sorter", @"Current Query", @"Saved Queries"]];
+    self.segmentedControl.frame = CGRectMake(dX, dY, dWidth, dHeight);
+    self.segmentedControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationDown;
+    self.segmentedControl.segmentWidthStyle = HMSegmentedControlSegmentWidthStyleDynamic;
+    [self.segmentedControl addTarget:self
+                              action:@selector(segmentedControlChangedValue:)
+                    forControlEvents:UIControlEventValueChanged];
     
-    self.navigationItem.titleView = self.searchBar;
-    [self.view addSubview:self.tblResults];
     
-    // remove the "< Back" title in back buttons
-    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60)
-                                                         forBarMetrics:UIBarMetricsDefault];
-    MMDrawerBarButtonItem * leftDrawerButton = [[MMDrawerBarButtonItem alloc] initWithTarget:self action:@selector(leftDrawerButtonPress:)];
-    [self.navigationItem setLeftBarButtonItem:leftDrawerButton animated:YES];
-}
-
--(void) leftDrawerButtonPress:(id) sender
-{
-    UIViewController *parentViewController = self.parentViewController;
-    MMDrawerController *drawer;
+    dY = self.segmentedControl.frame.origin.y + self.segmentedControl.frame.size.height;
+    dHeight = self.view.frame.size.height - dY;
+    self.tblView = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight) style:UITableViewStylePlain];
+    self.tblView.delegate = self;
+    self.tblView.dataSource = self;
     
-    while (parentViewController != nil)
-    {
-        if([parentViewController isKindOfClass:[MMDrawerController class]])
-        {
-            drawer = (MMDrawerController*)parentViewController;
-        }
-        parentViewController = parentViewController.parentViewController;
-    }
-    
-    [drawer toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    if (self.selectedIndex != -1)
-    {
-        NSIndexPath *indexPath=[NSIndexPath indexPathForRow:self.selectedIndex inSection:0];
-        
-        [self.tblResults selectRowAtIndexPath:indexPath animated:NO  scrollPosition:UITableViewScrollPositionMiddle];
-    }
+    [self.view addSubview:self.segmentedControl];
+    [self.view addSubview:self.tblView];
 }
 
 - (void)didReceiveMemoryWarning
@@ -117,23 +76,35 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma - mark UITableViewDataSource
+-(void) segmentedControlChangedValue:(id) sender
+{
+    [self.tblView reloadData];
+}
+
+#pragma mark - UITableView
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    NSInteger count = [[self.fetchedResultsController sections] count];
-	return count;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
-    
-	return [sectionInfo numberOfObjects];
+    switch (self.segmentedControl.selectedSegmentIndex)
+    {
+        case 0:
+        {
+            return _arrFilters.count;
+        }
+        default:
+        {
+            return 1;
+        }
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"SearchResultsCell";
+    static NSString *CellIdentifier = @"Cell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil)
@@ -142,164 +113,78 @@
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
-    [self configureCell:cell atIndexPath:indexPath];
+    switch (self.segmentedControl.selectedSegmentIndex)
+    {
+        case 0:
+        {
+            cell.textLabel.text = [_arrFilters objectAtIndex:indexPath.row];
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
     
     return cell;
-}
-
-- (void) configureCell:(UITableViewCell *)cell
-           atIndexPath:(NSIndexPath *)indexPath
-{
-    Card *card = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    NSMutableString *type = [[NSMutableString alloc] initWithFormat:@"%@", card.type];
-    if (card.power || card.toughness)
-    {
-        [type appendFormat:@" (%@/%@)", card.power, card.toughness];
-    }
-    
-    cell.textLabel.text = card.name;
-    cell.detailTextLabel.text = type;
-
-    NSString *path = [NSString stringWithFormat:@"%@/images/set/%@/%@/24.png", [[NSBundle mainBundle] bundlePath], card.set.code, [[card.rarity.name substringToIndex:1] uppercaseString]];
-    
-    if (![[NSFileManager defaultManager] fileExistsAtPath:path])
-    {
-        cell.imageView.image = [UIImage imageNamed:@"blank-24.png"];
-    }
-    else
-    {
-        cell.imageView.image = [[UIImage alloc] initWithContentsOfFile:path];
-    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    CardDetailsViewController *cardView = [[CardDetailsViewController alloc] init];
-    Card *card = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    cardView.fetchedResultsController = self.fetchedResultsController;
-    [cardView setCard:card];
+    FilterInputViewController *inputView = [[FilterInputViewController alloc] init];
+    NSArray *arrFilterOptions;
     
-    [self.navigationController pushViewController:cardView animated:YES];
-}
-
-#pragma mark - MBProgressHUDDelegate methods
-- (void)hudWasHidden:(MBProgressHUD *)hud
-{
-	[hud removeFromSuperview];
-}
-
-#pragma mark - UISearchBarDelegate
-- (void)searchBarSearchButtonClicked:(UISearchBar *)bar
-{
-    if ([self.searchBar canResignFirstResponder])
+    switch (indexPath.row)
     {
-        [self.searchBar resignFirstResponder];
-    }
-
-    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:hud];
-    hud.delegate = self;
-    [hud showWhileExecuting:@selector(doSearch) onTarget:self withObject:nil animated:NO];
-}
-
-- (void) doSearch
-{
-    self.fetchedResultsController = nil;
-    
-    NSError *error;
-    if (![[self fetchedResultsController] performFetch:&error])
-    {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-    }
-    
-    [self.tblResults reloadData];
-}
-
-#pragma mark - NSFetchedResultsControllerDelegate
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
-{
-    // The fetch controller is about to start sending change notifications, so prepare the table view for updates.
-    [self.tblResults beginUpdates];
-    NSLog(@"%d %s %s", __LINE__, __PRETTY_FUNCTION__, __FUNCTION__);
-}
-
-- (void)controller:(NSFetchedResultsController *)controller
-   didChangeObject:(id)anObject
-       atIndexPath:(NSIndexPath *)indexPath
-     forChangeType:(NSFetchedResultsChangeType)type
-      newIndexPath:(NSIndexPath *)newIndexPath
-{
-    NSLog(@"%d %s %s", __LINE__, __PRETTY_FUNCTION__, __FUNCTION__);
-    
-    UITableView *tableView = self.tblResults;
-    
-    switch(type)
-    {
-        case NSFetchedResultsChangeInsert:
+        case 1:
         {
-            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]
-                             withRowAnimation:UITableViewRowAnimationFade];
+            arrFilterOptions = [Set MR_findAllSortedBy:@"name" ascending:YES];
             break;
         }
-        case NSFetchedResultsChangeDelete:
+        case 2:
         {
-            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
-                             withRowAnimation:UITableViewRowAnimationFade];
+            arrFilterOptions = [CardRarity MR_findAll];
             break;
         }
-        case NSFetchedResultsChangeUpdate:
+        case 3:
         {
-            [self configureCell:[tableView cellForRowAtIndexPath:indexPath]
-                    atIndexPath:indexPath];
+            arrFilterOptions = [Format MR_findAllSortedBy:@"name" ascending:YES];
             break;
         }
-        case NSFetchedResultsChangeMove:
+        case 4:
         {
-            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
-                             withRowAnimation:UITableViewRowAnimationFade];
-            
-            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]
-                             withRowAnimation:UITableViewRowAnimationFade];
+            arrFilterOptions = [CardType MR_findAllSortedBy:@"name" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"name IN %@", _cardTypes]];
+            break;
+        }
+        case 5:
+        {
+            arrFilterOptions = [CardType MR_findAllSortedBy:@"name" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"NOT (name IN %@)", _cardTypes]];
+//            arrFilterOptions = [CardType MR_findAllSortedBy:@"name" ascending:YES];
+//            arrFilterOptions = [arrFilterOptions filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"NOT (name IN %@)", _cardTypes]];
+            break;
+        }
+        case 6:
+        {
+            arrFilterOptions = @[@"Black", @"Blue", @"Green", @"Red", @"White", @"Colorless"];
+            break;
+        }
+        case 9:
+        {
+            arrFilterOptions = [Artist MR_findAllSortedBy:@"name" ascending:YES];
+            break;
+        }
+        default:
+        {
+            arrFilterOptions = @[@"High"];
             break;
         }
     }
+    
+    inputView.filterOptions = arrFilterOptions;
+    inputView.navigationItem.title = [_arrFilters objectAtIndex:indexPath.row];
+    [self.navigationController pushViewController:inputView animated:YES];
 }
 
-- (void)controller:(NSFetchedResultsController *)controller
-  didChangeSection:(id )sectionInfo
-           atIndex:(NSUInteger)sectionIndex
-     forChangeType:(NSFetchedResultsChangeType)type
-{
-    NSLog(@"%d %s %s", __LINE__, __PRETTY_FUNCTION__, __FUNCTION__);
-    
-    UITableView *tableView = self.tblResults;
-    
-    switch(type)
-    {
-        case NSFetchedResultsChangeInsert:
-        {
-            [tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]
-                     withRowAnimation:UITableViewRowAnimationFade];
-            break;
-        }
-        case NSFetchedResultsChangeDelete:
-        {
-            [tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex]
-                     withRowAnimation:UITableViewRowAnimationFade];
-            break;
-        }
-    }
-}
-
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
-{
-    NSLog(@"%d %s %s", __LINE__, __PRETTY_FUNCTION__, __FUNCTION__);
-    
-    UITableView *tableView = self.tblResults;
-    
-    // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
-    [tableView endUpdates];
-}
 
 @end

@@ -2,7 +2,7 @@
 //  Set.m
 //  Decktracker
 //
-//  Created by Jovit Royeca on 8/11/14.
+//  Created by Jovit Royeca on 8/14/14.
 //  Copyright (c) 2014 Jovito Royeca. All rights reserved.
 //
 
@@ -18,14 +18,14 @@
 @dynamic code;
 @dynamic gathererCode;
 @dynamic name;
-@dynamic tcgPlayerName;
 @dynamic numberOfCards;
 @dynamic oldCode;
 @dynamic onlineOnly;
 @dynamic releaseDate;
+@dynamic tcgPlayerName;
 @dynamic block;
 @dynamic cards;
-@dynamic printing;
+@dynamic printings;
 @dynamic type;
 
 @end

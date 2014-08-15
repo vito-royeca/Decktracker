@@ -21,17 +21,7 @@
 #define LayoutVanguard                   @"Vanguard"
 typedef NSString* Layout;
 
-#define BorderBlack                      @"Black"
-#define BorderSilver                     @"Silver"
-#define BorderWhite                      @"White"
-typedef NSString* Border;
-
-#define LegalityLegal                    @"Legal"
-#define LegalityRestricted               @"Restricted"
-#define LegalityBanned                   @"Banned"
-typedef NSString* Legality;
-
-#define kManaSymbols                  @[@"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", \
+#define kManaSymbols                   @[@"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", \
                                          @"10", @"11", @"12", @"13", @"14", @"15", @"16", @"17", \
                                          @"18", @"19", @"20", @"100", @"1000000", @"W", @"U", @"B", \
                                          @"R", @"G", @"S", @"X", @"Y", @"Z", @"WU", @"WB", @"UB", \
@@ -41,11 +31,11 @@ typedef NSString* Legality;
                                          @"HR", @"HG"]
 
 
-#define kOtherSymbols                  @[@"T", @"Q", @"artifact", @"creature", \
+#define kOtherSymbols                  @[@"T", @"Q", @"C", @"artifact", @"creature", \
                                          @"enchantment", @"instant", @"land", @"multiple", \
                                          @"planeswalker", @"sorcery", @"power", @"toughness", \
                                          @"chaosdice", @"planeswalk", @"forwardslash"]
 
-#define kImageSizes                     @[@"8", @"16", @"24", @"32", @"48", @"64", @"96"]
+#define kImageSizes                    @[@"8", @"16", @"24", @"32", @"48", @"64", @"96"]
 
 #endif

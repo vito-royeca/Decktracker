@@ -2,19 +2,19 @@
 //  Card.h
 //  Decktracker
 //
-//  Created by Jovit Royeca on 8/11/14.
+//  Created by Jovit Royeca on 8/14/14.
 //  Copyright (c) 2014 Jovito Royeca. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Artist, Card, CardForeignName, CardLegality, CardRarity, CardRuling, Set;
+@class Artist, Card, CardForeignName, CardLegality, CardRarity, CardRuling, CardType, Set;
 
 @interface Card : NSManagedObject
 
 @property (nonatomic, retain) NSString * border;
-@property (nonatomic, retain) NSNumber * convertedManaCost;
+@property (nonatomic, retain) NSNumber * cmc;
 @property (nonatomic, retain) NSString * flavor;
 @property (nonatomic, retain) NSNumber * handModifier;
 @property (nonatomic, retain) NSString * imageName;
@@ -40,6 +40,9 @@
 @property (nonatomic, retain) CardRarity *rarity;
 @property (nonatomic, retain) NSSet *rulings;
 @property (nonatomic, retain) Set *set;
+@property (nonatomic, retain) NSSet *subTypes;
+@property (nonatomic, retain) NSSet *superTypes;
+@property (nonatomic, retain) NSSet *types;
 @property (nonatomic, retain) NSSet *variations;
 @end
 
@@ -69,6 +72,21 @@
 - (void)removeRulingsObject:(CardRuling *)value;
 - (void)addRulings:(NSSet *)values;
 - (void)removeRulings:(NSSet *)values;
+
+- (void)addSubTypesObject:(CardType *)value;
+- (void)removeSubTypesObject:(CardType *)value;
+- (void)addSubTypes:(NSSet *)values;
+- (void)removeSubTypes:(NSSet *)values;
+
+- (void)addSuperTypesObject:(CardType *)value;
+- (void)removeSuperTypesObject:(CardType *)value;
+- (void)addSuperTypes:(NSSet *)values;
+- (void)removeSuperTypes:(NSSet *)values;
+
+- (void)addTypesObject:(CardType *)value;
+- (void)removeTypesObject:(CardType *)value;
+- (void)addTypes:(NSSet *)values;
+- (void)removeTypes:(NSSet *)values;
 
 - (void)addVariationsObject:(Card *)value;
 - (void)removeVariationsObject:(Card *)value;

@@ -6,6 +6,7 @@ target "Decktracker" do
 
 pod "AFNetworking"
 pod "GoogleAnalytics-iOS-SDK"
+pod "HMSegmentedControl"
 pod "MagicalRecord"
 pod "MBProgressHUD"
 pod "MMDrawerController"

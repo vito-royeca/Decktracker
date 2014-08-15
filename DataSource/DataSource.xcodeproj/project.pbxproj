@@ -15,18 +15,19 @@
 		8C80A0C2198D01D600BADA6C /* JSONLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C80A0C1198D01D600BADA6C /* JSONLoader.m */; };
 		8C80A0CC198D040500BADA6C /* Database.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C80A0CB198D040500BADA6C /* Database.m */; };
 		8C80A0D2198D0EB600BADA6C /* AllSets-x.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C1B4DDC198CF21700B4C948 /* AllSets-x.json */; };
+		8CEA778F199C742300DF0D42 /* Artist.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEA777A199C742300DF0D42 /* Artist.m */; };
+		8CEA7790199C742300DF0D42 /* Block.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEA777C199C742300DF0D42 /* Block.m */; };
+		8CEA7791199C742300DF0D42 /* Card.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEA777E199C742300DF0D42 /* Card.m */; };
+		8CEA7792199C742300DF0D42 /* CardForeignName.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEA7780199C742300DF0D42 /* CardForeignName.m */; };
+		8CEA7793199C742300DF0D42 /* CardLegality.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEA7782199C742300DF0D42 /* CardLegality.m */; };
+		8CEA7794199C742300DF0D42 /* CardRarity.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEA7784199C742300DF0D42 /* CardRarity.m */; };
+		8CEA7795199C742300DF0D42 /* CardRuling.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEA7786199C742300DF0D42 /* CardRuling.m */; };
+		8CEA7796199C742300DF0D42 /* CardType.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEA7788199C742300DF0D42 /* CardType.m */; };
+		8CEA7797199C742300DF0D42 /* Format.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEA778A199C742300DF0D42 /* Format.m */; };
+		8CEA7798199C742300DF0D42 /* Set.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEA778C199C742300DF0D42 /* Set.m */; };
+		8CEA7799199C742300DF0D42 /* SetType.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEA778E199C742300DF0D42 /* SetType.m */; };
 		8CF0C9DC1991CDB900349F35 /* libJJJ.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF0C9CD1991CD5500349F35 /* libJJJ.a */; };
 		8CFD32F2198E7B2900F1AFC3 /* ImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CFD32F1198E7B2900F1AFC3 /* ImageLoader.m */; };
-		8CFF0D831997E1C100FC563A /* Artist.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CFF0D701997E1C100FC563A /* Artist.m */; };
-		8CFF0D841997E1C100FC563A /* Block.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CFF0D721997E1C100FC563A /* Block.m */; };
-		8CFF0D851997E1C100FC563A /* Card.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CFF0D741997E1C100FC563A /* Card.m */; };
-		8CFF0D861997E1C100FC563A /* CardForeignName.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CFF0D761997E1C100FC563A /* CardForeignName.m */; };
-		8CFF0D871997E1C100FC563A /* CardLegality.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CFF0D781997E1C100FC563A /* CardLegality.m */; };
-		8CFF0D881997E1C100FC563A /* CardRarity.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CFF0D7A1997E1C100FC563A /* CardRarity.m */; };
-		8CFF0D891997E1C100FC563A /* CardRuling.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CFF0D7C1997E1C100FC563A /* CardRuling.m */; };
-		8CFF0D8A1997E1C100FC563A /* Format.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CFF0D7E1997E1C100FC563A /* Format.m */; };
-		8CFF0D8B1997E1C100FC563A /* Set.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CFF0D801997E1C100FC563A /* Set.m */; };
-		8CFF0D8C1997E1C100FC563A /* SetType.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CFF0D821997E1C100FC563A /* SetType.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,29 +80,31 @@
 		8C80A0CA198D040500BADA6C /* Database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Database.h; path = ../../../DeckTracker/DeckTracker/Controller/Database.h; sourceTree = "<group>"; };
 		8C80A0CB198D040500BADA6C /* Database.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Database.m; path = ../../../DeckTracker/DeckTracker/Controller/Database.m; sourceTree = "<group>"; };
 		8C80A0CD198D052A00BADA6C /* Magic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Magic.h; path = ../../DeckTracker/DeckTracker/Magic.h; sourceTree = "<group>"; };
+		8CEA7779199C742300DF0D42 /* Artist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Artist.h; path = ../../Decktracker/Decktracker/Model/Artist.h; sourceTree = "<group>"; };
+		8CEA777A199C742300DF0D42 /* Artist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Artist.m; path = ../../Decktracker/Decktracker/Model/Artist.m; sourceTree = "<group>"; };
+		8CEA777B199C742300DF0D42 /* Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Block.h; path = ../../Decktracker/Decktracker/Model/Block.h; sourceTree = "<group>"; };
+		8CEA777C199C742300DF0D42 /* Block.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Block.m; path = ../../Decktracker/Decktracker/Model/Block.m; sourceTree = "<group>"; };
+		8CEA777D199C742300DF0D42 /* Card.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Card.h; path = ../../Decktracker/Decktracker/Model/Card.h; sourceTree = "<group>"; };
+		8CEA777E199C742300DF0D42 /* Card.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Card.m; path = ../../Decktracker/Decktracker/Model/Card.m; sourceTree = "<group>"; };
+		8CEA777F199C742300DF0D42 /* CardForeignName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CardForeignName.h; path = ../../Decktracker/Decktracker/Model/CardForeignName.h; sourceTree = "<group>"; };
+		8CEA7780199C742300DF0D42 /* CardForeignName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CardForeignName.m; path = ../../Decktracker/Decktracker/Model/CardForeignName.m; sourceTree = "<group>"; };
+		8CEA7781199C742300DF0D42 /* CardLegality.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CardLegality.h; path = ../../Decktracker/Decktracker/Model/CardLegality.h; sourceTree = "<group>"; };
+		8CEA7782199C742300DF0D42 /* CardLegality.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CardLegality.m; path = ../../Decktracker/Decktracker/Model/CardLegality.m; sourceTree = "<group>"; };
+		8CEA7783199C742300DF0D42 /* CardRarity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CardRarity.h; path = ../../Decktracker/Decktracker/Model/CardRarity.h; sourceTree = "<group>"; };
+		8CEA7784199C742300DF0D42 /* CardRarity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CardRarity.m; path = ../../Decktracker/Decktracker/Model/CardRarity.m; sourceTree = "<group>"; };
+		8CEA7785199C742300DF0D42 /* CardRuling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CardRuling.h; path = ../../Decktracker/Decktracker/Model/CardRuling.h; sourceTree = "<group>"; };
+		8CEA7786199C742300DF0D42 /* CardRuling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CardRuling.m; path = ../../Decktracker/Decktracker/Model/CardRuling.m; sourceTree = "<group>"; };
+		8CEA7787199C742300DF0D42 /* CardType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CardType.h; path = ../../Decktracker/Decktracker/Model/CardType.h; sourceTree = "<group>"; };
+		8CEA7788199C742300DF0D42 /* CardType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CardType.m; path = ../../Decktracker/Decktracker/Model/CardType.m; sourceTree = "<group>"; };
+		8CEA7789199C742300DF0D42 /* Format.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Format.h; path = ../../Decktracker/Decktracker/Model/Format.h; sourceTree = "<group>"; };
+		8CEA778A199C742300DF0D42 /* Format.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Format.m; path = ../../Decktracker/Decktracker/Model/Format.m; sourceTree = "<group>"; };
+		8CEA778B199C742300DF0D42 /* Set.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Set.h; path = ../../Decktracker/Decktracker/Model/Set.h; sourceTree = "<group>"; };
+		8CEA778C199C742300DF0D42 /* Set.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Set.m; path = ../../Decktracker/Decktracker/Model/Set.m; sourceTree = "<group>"; };
+		8CEA778D199C742300DF0D42 /* SetType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SetType.h; path = ../../Decktracker/Decktracker/Model/SetType.h; sourceTree = "<group>"; };
+		8CEA778E199C742300DF0D42 /* SetType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SetType.m; path = ../../Decktracker/Decktracker/Model/SetType.m; sourceTree = "<group>"; };
 		8CF0C9C61991CD5400349F35 /* JJJ.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JJJ.xcodeproj; path = ../jjj/JJJ/JJJ.xcodeproj; sourceTree = "<group>"; };
 		8CFD32F0198E7B2900F1AFC3 /* ImageLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageLoader.h; sourceTree = "<group>"; };
 		8CFD32F1198E7B2900F1AFC3 /* ImageLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageLoader.m; sourceTree = "<group>"; };
-		8CFF0D6F1997E1C100FC563A /* Artist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Artist.h; path = ../../Decktracker/Decktracker/Model/Artist.h; sourceTree = "<group>"; };
-		8CFF0D701997E1C100FC563A /* Artist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Artist.m; path = ../../Decktracker/Decktracker/Model/Artist.m; sourceTree = "<group>"; };
-		8CFF0D711997E1C100FC563A /* Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Block.h; path = ../../Decktracker/Decktracker/Model/Block.h; sourceTree = "<group>"; };
-		8CFF0D721997E1C100FC563A /* Block.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Block.m; path = ../../Decktracker/Decktracker/Model/Block.m; sourceTree = "<group>"; };
-		8CFF0D731997E1C100FC563A /* Card.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Card.h; path = ../../Decktracker/Decktracker/Model/Card.h; sourceTree = "<group>"; };
-		8CFF0D741997E1C100FC563A /* Card.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Card.m; path = ../../Decktracker/Decktracker/Model/Card.m; sourceTree = "<group>"; };
-		8CFF0D751997E1C100FC563A /* CardForeignName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CardForeignName.h; path = ../../Decktracker/Decktracker/Model/CardForeignName.h; sourceTree = "<group>"; };
-		8CFF0D761997E1C100FC563A /* CardForeignName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CardForeignName.m; path = ../../Decktracker/Decktracker/Model/CardForeignName.m; sourceTree = "<group>"; };
-		8CFF0D771997E1C100FC563A /* CardLegality.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CardLegality.h; path = ../../Decktracker/Decktracker/Model/CardLegality.h; sourceTree = "<group>"; };
-		8CFF0D781997E1C100FC563A /* CardLegality.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CardLegality.m; path = ../../Decktracker/Decktracker/Model/CardLegality.m; sourceTree = "<group>"; };
-		8CFF0D791997E1C100FC563A /* CardRarity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CardRarity.h; path = ../../Decktracker/Decktracker/Model/CardRarity.h; sourceTree = "<group>"; };
-		8CFF0D7A1997E1C100FC563A /* CardRarity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CardRarity.m; path = ../../Decktracker/Decktracker/Model/CardRarity.m; sourceTree = "<group>"; };
-		8CFF0D7B1997E1C100FC563A /* CardRuling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CardRuling.h; path = ../../Decktracker/Decktracker/Model/CardRuling.h; sourceTree = "<group>"; };
-		8CFF0D7C1997E1C100FC563A /* CardRuling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CardRuling.m; path = ../../Decktracker/Decktracker/Model/CardRuling.m; sourceTree = "<group>"; };
-		8CFF0D7D1997E1C100FC563A /* Format.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Format.h; path = ../../Decktracker/Decktracker/Model/Format.h; sourceTree = "<group>"; };
-		8CFF0D7E1997E1C100FC563A /* Format.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Format.m; path = ../../Decktracker/Decktracker/Model/Format.m; sourceTree = "<group>"; };
-		8CFF0D7F1997E1C100FC563A /* Set.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Set.h; path = ../../Decktracker/Decktracker/Model/Set.h; sourceTree = "<group>"; };
-		8CFF0D801997E1C100FC563A /* Set.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Set.m; path = ../../Decktracker/Decktracker/Model/Set.m; sourceTree = "<group>"; };
-		8CFF0D811997E1C100FC563A /* SetType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SetType.h; path = ../../Decktracker/Decktracker/Model/SetType.h; sourceTree = "<group>"; };
-		8CFF0D821997E1C100FC563A /* SetType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SetType.m; path = ../../Decktracker/Decktracker/Model/SetType.m; sourceTree = "<group>"; };
 		AA9812F902A74C339C3CEB23 /* libPods-DataSource.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DataSource.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D78BFC86CC4841A2ABA174A0 /* Pods-DataSource.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DataSource.xcconfig"; path = "Pods/Pods-DataSource.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -182,27 +185,29 @@
 		8C21506E1993C5FF00B0128C /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				8CFF0D6F1997E1C100FC563A /* Artist.h */,
-				8CFF0D701997E1C100FC563A /* Artist.m */,
-				8CFF0D711997E1C100FC563A /* Block.h */,
-				8CFF0D721997E1C100FC563A /* Block.m */,
-				8CFF0D731997E1C100FC563A /* Card.h */,
-				8CFF0D741997E1C100FC563A /* Card.m */,
-				8CFF0D751997E1C100FC563A /* CardForeignName.h */,
-				8CFF0D761997E1C100FC563A /* CardForeignName.m */,
-				8CFF0D771997E1C100FC563A /* CardLegality.h */,
-				8CFF0D781997E1C100FC563A /* CardLegality.m */,
-				8CFF0D791997E1C100FC563A /* CardRarity.h */,
-				8CFF0D7A1997E1C100FC563A /* CardRarity.m */,
-				8CFF0D7B1997E1C100FC563A /* CardRuling.h */,
-				8CFF0D7C1997E1C100FC563A /* CardRuling.m */,
+				8CEA7779199C742300DF0D42 /* Artist.h */,
+				8CEA777A199C742300DF0D42 /* Artist.m */,
+				8CEA777B199C742300DF0D42 /* Block.h */,
+				8CEA777C199C742300DF0D42 /* Block.m */,
+				8CEA777D199C742300DF0D42 /* Card.h */,
+				8CEA777E199C742300DF0D42 /* Card.m */,
+				8CEA777F199C742300DF0D42 /* CardForeignName.h */,
+				8CEA7780199C742300DF0D42 /* CardForeignName.m */,
+				8CEA7781199C742300DF0D42 /* CardLegality.h */,
+				8CEA7782199C742300DF0D42 /* CardLegality.m */,
+				8CEA7783199C742300DF0D42 /* CardRarity.h */,
+				8CEA7784199C742300DF0D42 /* CardRarity.m */,
+				8CEA7785199C742300DF0D42 /* CardRuling.h */,
+				8CEA7786199C742300DF0D42 /* CardRuling.m */,
+				8CEA7787199C742300DF0D42 /* CardType.h */,
+				8CEA7788199C742300DF0D42 /* CardType.m */,
+				8CEA7789199C742300DF0D42 /* Format.h */,
+				8CEA778A199C742300DF0D42 /* Format.m */,
+				8CEA778B199C742300DF0D42 /* Set.h */,
+				8CEA778C199C742300DF0D42 /* Set.m */,
+				8CEA778D199C742300DF0D42 /* SetType.h */,
+				8CEA778E199C742300DF0D42 /* SetType.m */,
 				8C21507F1993C66200B0128C /* database.xcdatamodeld */,
-				8CFF0D7D1997E1C100FC563A /* Format.h */,
-				8CFF0D7E1997E1C100FC563A /* Format.m */,
-				8CFF0D7F1997E1C100FC563A /* Set.h */,
-				8CFF0D801997E1C100FC563A /* Set.m */,
-				8CFF0D811997E1C100FC563A /* SetType.h */,
-				8CFF0D821997E1C100FC563A /* SetType.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -346,20 +351,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8CFF0D871997E1C100FC563A /* CardLegality.m in Sources */,
-				8CFF0D861997E1C100FC563A /* CardForeignName.m in Sources */,
-				8CFF0D8B1997E1C100FC563A /* Set.m in Sources */,
-				8CFF0D8A1997E1C100FC563A /* Format.m in Sources */,
-				8CFF0D891997E1C100FC563A /* CardRuling.m in Sources */,
-				8CFF0D8C1997E1C100FC563A /* SetType.m in Sources */,
+				8CEA7793199C742300DF0D42 /* CardLegality.m in Sources */,
+				8CEA7792199C742300DF0D42 /* CardForeignName.m in Sources */,
+				8CEA7799199C742300DF0D42 /* SetType.m in Sources */,
+				8CEA7795199C742300DF0D42 /* CardRuling.m in Sources */,
+				8CEA7798199C742300DF0D42 /* Set.m in Sources */,
 				8C80A0CC198D040500BADA6C /* Database.m in Sources */,
+				8CEA7797199C742300DF0D42 /* Format.m in Sources */,
 				8C80A0C2198D01D600BADA6C /* JSONLoader.m in Sources */,
 				8C2150911993C66200B0128C /* database.xcdatamodeld in Sources */,
-				8CFF0D851997E1C100FC563A /* Card.m in Sources */,
+				8CEA7791199C742300DF0D42 /* Card.m in Sources */,
 				8CFD32F2198E7B2900F1AFC3 /* ImageLoader.m in Sources */,
-				8CFF0D841997E1C100FC563A /* Block.m in Sources */,
-				8CFF0D881997E1C100FC563A /* CardRarity.m in Sources */,
-				8CFF0D831997E1C100FC563A /* Artist.m in Sources */,
+				8CEA7790199C742300DF0D42 /* Block.m in Sources */,
+				8CEA7794199C742300DF0D42 /* CardRarity.m in Sources */,
+				8CEA778F199C742300DF0D42 /* Artist.m in Sources */,
+				8CEA7796199C742300DF0D42 /* CardType.m in Sources */,
 				8C1B4DCE198CF0C000B4C948 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
