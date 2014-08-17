@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Jovito Royeca. All rights reserved.
 //
 
-#import "SearchViewController.h"
+#import "AdvanceSearchViewController.h"
 #import "Artist.h"
 #import "CardRarity.h"
 #import "CardType.h"
@@ -14,7 +14,7 @@
 #import "Format.h"
 #import "Set.h"
 
-@implementation SearchViewController
+@implementation AdvanceSearchViewController
 {
     NSMutableArray *_currentQuery;
     NSArray *_arrFilters;

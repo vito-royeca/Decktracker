@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Jovito Royeca. All rights reserved.
 //
 
-#import "SearchResultsViewController.h"
+#import "SimpleSearchViewController.h"
 #import "Card.h"
 #import "CardDetailsViewController.h"
 #import "CardRarity.h"
@@ -15,11 +15,11 @@
 #import "MMDrawerController.h"
 #import "Set.h"
 
-@interface SearchResultsViewController ()
+@interface SimpleSearchViewController ()
 
 @end
 
-@implementation SearchResultsViewController
+@implementation SimpleSearchViewController
 
 @synthesize selectedIndex = _selectedIndex;
 @synthesize searchBar  = _searchBar;

@@ -10,7 +10,7 @@
 #import "Database.h"
 #import "MenuViewController.h"
 #import "MMDrawerController.h"
-#import "SearchViewController.h"
+#import "SimpleSearchViewController.h"
 
 #import "GAI.h"
 
@@ -34,7 +34,7 @@
         [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
     {
         UIViewController *leftDrawer = [[MenuViewController alloc] init];
-        UIViewController *center = [[SearchViewController alloc] init];
+        UIViewController *center = [[SimpleSearchViewController alloc] init];
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:center];
         
         MMDrawerController *drawerController = [[MMDrawerController alloc]

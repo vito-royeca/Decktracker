@@ -155,44 +155,52 @@
     [[Database sharedInstance] closeDb];
 }
 
--(void) convertCardsToLowResolution:(float) quality
+-(void) convertCardsToLowResolution
 {
     NSDate *dateStart = [NSDate date];
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *inputPath = [documentsDirectory stringByAppendingPathComponent:@"/images-raw/card"];
-    NSString *outputPath = [documentsDirectory stringByAppendingPathComponent:@"/images-low/card"];
+    NSString *inputDir = [documentsDirectory stringByAppendingPathComponent:@"/images-raw/card"];
+    NSString *outputDir = [documentsDirectory stringByAppendingPathComponent:@"/images-low"];
     
-    for (NSString *dir in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:inputPath error:nil])
+    for (NSString *dir in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:inputDir error:nil])
     {
-        NSString *setInputPath = [inputPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", dir]];
-        NSString *setOutputPath = [outputPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", dir]];
+        NSString *inputPath = [inputDir stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", dir]];
+        NSString *outputPath = [outputDir stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", dir]];
         
-        if (![[NSFileManager defaultManager] fileExistsAtPath:setOutputPath])
+        for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:inputPath error:nil])
         {
-            [self createDir:setOutputPath];
-        }
-
-        for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:setInputPath error:nil])
-        {
+            NSString *input = [inputPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", file]];
+            NSImage *image = [[NSImage alloc] initWithContentsOfFile:input];
+            NSString *output;
+            CGFloat quality = 0;
+            
             if ([file rangeOfString:@".crop.jpg"].location != NSNotFound)
             {
-                continue;
+                outputPath = [outputPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/crop"]];
+                output = [outputPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", [file stringByReplacingOccurrencesOfString:@".crop.jpg" withString:@".jpg"]]];
+                quality = 20;
             }
-            
-            NSString *input = [setInputPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", file]];
-            NSString *output = [setOutputPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", [file stringByReplacingOccurrencesOfString:@".hq.jpg" withString:@".jpg"]]];
-            
-            
-            if ([[NSFileManager defaultManager] fileExistsAtPath:output])
+            else if ([file rangeOfString:@".hq.jpg"].location != NSNotFound)
             {
-                continue;
+                outputPath = [outputPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/card"]];
+                output = [outputPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", [file stringByReplacingOccurrencesOfString:@".hq.jpg" withString:@".jpg"]]];
+                quality = image.size.width >= 480 ? 10 : 50;
             }
-            else
+            
+            if (![[NSFileManager defaultManager] fileExistsAtPath:outputPath])
+            {
+                [self createDir:outputPath];
+            }
+            
+            if (![[NSFileManager defaultManager] fileExistsAtPath:output])
             {
                 [JJJUtil  runCommand:[NSString stringWithFormat:@"convert \"%@\" -strip -quality %.2f \"%@\"", input, quality, output]];
             }
+            
+            // reset outputPath
+            outputPath = [outputDir stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", dir]];
         }
     }
     

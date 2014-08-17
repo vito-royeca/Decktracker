@@ -21,7 +21,7 @@
     if (self)
     {
         // Custom initialization
-        _menuItems = @[@"Search",
+        _menuItems = @[@"Simple Search",
                        @"Advance Search",
                        @"Decks",
                        @"Collections",
@@ -38,6 +38,7 @@
     self.tblMenu = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     [self.tblMenu setDelegate:self];
     [self.tblMenu setDataSource:self];
+    [self.tblMenu selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO  scrollPosition:UITableViewScrollPositionTop];
     [self.view addSubview:self.tblMenu];
     [self.tblMenu setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
     
@@ -73,6 +74,24 @@
     cell.textLabel.text = [_menuItems objectAtIndex:indexPath.row];
     
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    switch (indexPath.row)
+    {
+        case 0:
+        {
+            break;
+        }
+        case 1:
+        {
+            break;
+        }
+    }
+    
+    
 }
 
 @end

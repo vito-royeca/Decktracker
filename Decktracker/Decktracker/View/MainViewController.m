@@ -7,7 +7,7 @@
 //
 
 #import "MainViewController.h"
-#import "SearchResultsViewController.h"
+#import "SimpleSearchViewController.h"
 
 @interface MainViewController ()
 
@@ -31,7 +31,7 @@
     // Do any additional setup after loading the view.
     
     UINavigationController *nc1 = [[UINavigationController alloc] init];
-    UIViewController *vc1 = [[SearchResultsViewController alloc] initWithNibName:nil bundle:nil];
+    UIViewController *vc1 = [[SimpleSearchViewController alloc] initWithNibName:nil bundle:nil];
     nc1.viewControllers = [NSArray arrayWithObjects:vc1, nil];
     nc1.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Search"
                                                    image:[UIImage imageNamed:@"search-25.png"]

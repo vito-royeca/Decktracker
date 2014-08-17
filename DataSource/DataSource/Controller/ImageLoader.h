@@ -14,6 +14,6 @@
 -(void) downloadOtherSymbols;
 -(void) downloadSets;
 -(void) downloadCards;
--(void) convertCardsToLowResolution:(float) quality;
+-(void) convertCardsToLowResolution;
 
 @end

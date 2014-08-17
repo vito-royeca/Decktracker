@@ -14,7 +14,7 @@
 #import "CardType.h"
 #import "Database.h"
 #import "Magic.h"
-#import "SearchResultsViewController.h"
+#import "SimpleSearchViewController.h"
 #import "Set.h"
 #import "UIImage+Scale.h"
 
@@ -188,7 +188,7 @@
     [self.webView loadHTMLString:[self composeCardImageWithWidth:cardImage.size.width andHeight:cardImage.size.height andScale:scale] baseURL:baseURL];
     
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
-    SearchResultsViewController *parent = [self.navigationController.viewControllers firstObject];
+    SimpleSearchViewController *parent = [self.navigationController.viewControllers firstObject];
     parent.selectedIndex = [sectionInfo.objects indexOfObject:self.card];
 }
 

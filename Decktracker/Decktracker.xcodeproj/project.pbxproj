@@ -10,7 +10,7 @@
 		3B4C647F452847188AFC81E6 /* libPods-Decktracker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63356387201A4E73BA1685FC /* libPods-Decktracker.a */; };
 		8C019AA01998A10F00FB22D7 /* database.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 8C019A9F1998A10F00FB22D7 /* database.sqlite */; };
 		8C1DFDD819913D2100174054 /* CardDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1DFDD719913D2100174054 /* CardDetailsViewController.m */; };
-		8C1F8E03199D170C00C101E4 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1F8E02199D170C00C101E4 /* SearchViewController.m */; };
+		8C1F8E03199D170C00C101E4 /* AdvanceSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1F8E02199D170C00C101E4 /* AdvanceSearchViewController.m */; };
 		8C1F8E06199D232D00C101E4 /* FilterInputViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1F8E05199D232D00C101E4 /* FilterInputViewController.m */; };
 		8C2E13F11990741100023BAA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2E13F01990741100023BAA /* Foundation.framework */; };
 		8C2E13F31990741100023BAA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2E13F21990741100023BAA /* CoreGraphics.framework */; };
@@ -33,7 +33,7 @@
 		8C5BDD70199B3B7D007AF140 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5BDD6F199B3B7D007AF140 /* MenuViewController.m */; };
 		8C60EB6E19927C1D00C5EEF9 /* UIImage+Scale.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C60EB6D19927C1D00C5EEF9 /* UIImage+Scale.m */; };
 		8CADEF1719923DDE004D7658 /* images in Resources */ = {isa = PBXBuildFile; fileRef = 8CADEF1619923DDE004D7658 /* images */; };
-		8CCA76511990F3F000A24420 /* SearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CCA76501990F3F000A24420 /* SearchResultsViewController.m */; };
+		8CCA76511990F3F000A24420 /* SimpleSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CCA76501990F3F000A24420 /* SimpleSearchViewController.m */; };
 		8CEA775A199C73CB00DF0D42 /* Format.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEA7759199C73CB00DF0D42 /* Format.m */; };
 		8CEA775D199C73CC00DF0D42 /* CardLegality.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEA775C199C73CC00DF0D42 /* CardLegality.m */; };
 		8CEA7760199C73CC00DF0D42 /* CardForeignName.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEA775F199C73CC00DF0D42 /* CardForeignName.m */; };
@@ -85,8 +85,8 @@
 		8C019A9F1998A10F00FB22D7 /* database.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = database.sqlite; sourceTree = "<group>"; };
 		8C1DFDD619913D2100174054 /* CardDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardDetailsViewController.h; sourceTree = "<group>"; };
 		8C1DFDD719913D2100174054 /* CardDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardDetailsViewController.m; sourceTree = "<group>"; };
-		8C1F8E01199D170C00C101E4 /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
-		8C1F8E02199D170C00C101E4 /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
+		8C1F8E01199D170C00C101E4 /* AdvanceSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvanceSearchViewController.h; sourceTree = "<group>"; };
+		8C1F8E02199D170C00C101E4 /* AdvanceSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvanceSearchViewController.m; sourceTree = "<group>"; };
 		8C1F8E04199D232D00C101E4 /* FilterInputViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterInputViewController.h; sourceTree = "<group>"; };
 		8C1F8E05199D232D00C101E4 /* FilterInputViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterInputViewController.m; sourceTree = "<group>"; };
 		8C2E13ED1990741100023BAA /* Decktracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Decktracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -118,8 +118,8 @@
 		8C60EB6C19927C1D00C5EEF9 /* UIImage+Scale.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Scale.h"; sourceTree = "<group>"; };
 		8C60EB6D19927C1D00C5EEF9 /* UIImage+Scale.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Scale.m"; sourceTree = "<group>"; };
 		8CADEF1619923DDE004D7658 /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
-		8CCA764F1990F3F000A24420 /* SearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultsViewController.h; sourceTree = "<group>"; };
-		8CCA76501990F3F000A24420 /* SearchResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultsViewController.m; sourceTree = "<group>"; };
+		8CCA764F1990F3F000A24420 /* SimpleSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleSearchViewController.h; sourceTree = "<group>"; };
+		8CCA76501990F3F000A24420 /* SimpleSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleSearchViewController.m; sourceTree = "<group>"; };
 		8CEA7758199C73CB00DF0D42 /* Format.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Format.h; sourceTree = "<group>"; };
 		8CEA7759199C73CB00DF0D42 /* Format.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Format.m; sourceTree = "<group>"; };
 		8CEA775B199C73CC00DF0D42 /* CardLegality.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardLegality.h; sourceTree = "<group>"; };
@@ -293,10 +293,10 @@
 				8C5BDD6F199B3B7D007AF140 /* MenuViewController.m */,
 				8C1F8E04199D232D00C101E4 /* FilterInputViewController.h */,
 				8C1F8E05199D232D00C101E4 /* FilterInputViewController.m */,
-				8CCA764F1990F3F000A24420 /* SearchResultsViewController.h */,
-				8CCA76501990F3F000A24420 /* SearchResultsViewController.m */,
-				8C1F8E01199D170C00C101E4 /* SearchViewController.h */,
-				8C1F8E02199D170C00C101E4 /* SearchViewController.m */,
+				8CCA764F1990F3F000A24420 /* SimpleSearchViewController.h */,
+				8CCA76501990F3F000A24420 /* SimpleSearchViewController.m */,
+				8C1F8E01199D170C00C101E4 /* AdvanceSearchViewController.h */,
+				8C1F8E02199D170C00C101E4 /* AdvanceSearchViewController.m */,
 				8C60EB6C19927C1D00C5EEF9 /* UIImage+Scale.h */,
 				8C60EB6D19927C1D00C5EEF9 /* UIImage+Scale.m */,
 			);
@@ -512,7 +512,7 @@
 				8C5BDD70199B3B7D007AF140 /* MenuViewController.m in Sources */,
 				8C2E142A1990748C00023BAA /* database.xcdatamodeld in Sources */,
 				8CEA7766199C73CE00DF0D42 /* Set.m in Sources */,
-				8CCA76511990F3F000A24420 /* SearchResultsViewController.m in Sources */,
+				8CCA76511990F3F000A24420 /* SimpleSearchViewController.m in Sources */,
 				8CEA776F199C73CE00DF0D42 /* Card.m in Sources */,
 				8C60EB6E19927C1D00C5EEF9 /* UIImage+Scale.m in Sources */,
 				8CEA7769199C73CE00DF0D42 /* SetType.m in Sources */,
@@ -522,7 +522,7 @@
 				8CEA775D199C73CC00DF0D42 /* CardLegality.m in Sources */,
 				8CEA776C199C73CE00DF0D42 /* Artist.m in Sources */,
 				8CEA7763199C73CC00DF0D42 /* CardRarity.m in Sources */,
-				8C1F8E03199D170C00C101E4 /* SearchViewController.m in Sources */,
+				8C1F8E03199D170C00C101E4 /* AdvanceSearchViewController.m in Sources */,
 				8C2E13FF1990741100023BAA /* main.m in Sources */,
 				8C1F8E06199D232D00C101E4 /* FilterInputViewController.m in Sources */,
 				8CEA7760199C73CC00DF0D42 /* CardForeignName.m in Sources */,

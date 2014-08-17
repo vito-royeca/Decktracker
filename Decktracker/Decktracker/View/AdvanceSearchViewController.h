@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "HMSegmentedControl.h"
 
-@interface SearchViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
+@interface AdvanceSearchViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
 
 @property(strong,nonatomic) HMSegmentedControl *segmentedControl;
 @property(strong,nonatomic) UITableView *tblView;
