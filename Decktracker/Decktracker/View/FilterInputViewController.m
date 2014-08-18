@@ -92,12 +92,12 @@
                            @"Condition": _selectedOperator};
     
     [self.delegate addFilter:dict];
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:NO];
 }
 
 -(void) btnCancelTapped:(id) sender
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:NO];
 }
 
 #pragma mark - UITableView

@@ -7,16 +7,19 @@
 //
 
 #import "NewAdvanceSearchViewController.h"
+#import "AdvanceSearchResultsViewController.h"
 #import "Artist.h"
 #import "CardRarity.h"
 #import "CardType.h"
+#import "Database.h"
 #import "Format.h"
 #import "Magic.h"
 #import "Set.h"
 
 @implementation NewAdvanceSearchViewController
 {
-    NSMutableArray *_currentQuery;
+    UIBarButtonItem *_btnPlay;
+    
     NSArray *_arrFilters;
     NSArray *_arrSorters;
     NSArray *_cardTypes;
@@ -24,7 +27,22 @@
 
 @synthesize segmentedControl = _segmentedControl;
 @synthesize tblView = _tblView;
-@synthesize arrCurrentQuery = _arrCurrentQuery;
+@synthesize dictCurrentQuery = _dictCurrentQuery;
+@synthesize dictCurrentSort = _dictCurrentSort;
+@synthesize fetchedResultsController = _fetchedResultsController;
+
+- (NSFetchedResultsController *)fetchedResultsController
+{
+    if (_fetchedResultsController != nil)
+    {
+        return _fetchedResultsController;
+    }
+    
+    NSFetchedResultsController *nsfrc = [[Database sharedInstance] advanceSearch:self.dictCurrentQuery withSorter:self.dictCurrentSort];
+    
+    self.fetchedResultsController = nsfrc;
+    return _fetchedResultsController;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -40,7 +58,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.arrCurrentQuery = [[NSMutableArray alloc] init];
+    self.dictCurrentQuery = [[NSMutableDictionary alloc] init];
     _arrFilters = @[@"Name", @"Set", @"Rarity", @"Format", @"Type", @"Subtype", @"Color", @"Text", @"Flavor Text",
                     @"Artist"];
     
@@ -50,22 +68,22 @@
                    @"Legendary", @"Ongoing", @"Phenomenon", @"Plane", @"Planeswalker", @"Scheme", @"Snow",
                    @"Sorcery", @"Tribal", @"Vanguard", @"World"];
     
-    CGFloat dX = 0;
-    CGFloat dY = [UIApplication sharedApplication].statusBarFrame.size.height +
-    self.navigationController.navigationBar.frame.size.height;
-    CGFloat dWidth = self.view.frame.size.width;
-    CGFloat dHeight = 40;
+    CGFloat dX = 10;
+    CGFloat dY = [UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height+10;
+    CGFloat dWidth = self.view.frame.size.width - 20;
+    CGFloat dHeight = 30;
     
-    self.segmentedControl = [[HMSegmentedControl alloc] initWithSectionTitles:@[@"Filter", @"Sorter", @"Current Search"]];
+    self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Filter", @"Sorter", @"Search Criteria"]];
     self.segmentedControl.frame = CGRectMake(dX, dY, dWidth, dHeight);
-    self.segmentedControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationDown;
-    self.segmentedControl.segmentWidthStyle = HMSegmentedControlSegmentWidthStyleDynamic;
+    self.segmentedControl.selectedSegmentIndex = 0;
     [self.segmentedControl addTarget:self
                               action:@selector(segmentedControlChangedValue:)
                     forControlEvents:UIControlEventValueChanged];
     
     
-    dY = self.segmentedControl.frame.origin.y + self.segmentedControl.frame.size.height;
+    dX = 0;
+    dY = self.segmentedControl.frame.origin.y + self.segmentedControl.frame.size.height +5;
+    dWidth += 20;
     dHeight = self.view.frame.size.height - dY - self.tabBarController.tabBar.frame.size.height;
     self.tblView = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight) style:UITableViewStylePlain];
     self.tblView.delegate = self;
@@ -73,14 +91,14 @@
     
     [self.view addSubview:self.segmentedControl];
     [self.view addSubview:self.tblView];
+    self.view.backgroundColor = [UIColor whiteColor];
     
-    UIBarButtonItem *btnSave = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
-                                                                             target:self
-                                                                             action:@selector(btnSaveTapped:)];
+    _btnPlay = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay
+                                                             target:self
+                                                             action:@selector(btnPlayTapped:)];
     UIBarButtonItem *btnCancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                                target:self
                                                                                action:@selector(btnCancelTapped:)];
-    self.navigationItem.rightBarButtonItem = btnSave;
     self.navigationItem.leftBarButtonItem = btnCancel;
 
     self.navigationItem.title = @"New Advance Search";
@@ -92,14 +110,40 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void) btnSaveTapped:(id) sender
+-(void) btnPlayTapped:(id) sender
 {
-    
+    if (self.dictCurrentQuery.count == 0)
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Select at least one filter."
+                                                       delegate:nil
+                                              cancelButtonTitle:@"Ok"
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:hud];
+        hud.delegate = self;
+        [hud showWhileExecuting:@selector(doSearch) onTarget:self withObject:nil animated:NO];
+    }
 }
 
 -(void) btnCancelTapped:(id) sender
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:NO];
+}
+
+-(void) doSearch
+{
+    self.fetchedResultsController = nil;
+    
+    NSError *error;
+    if (![[self fetchedResultsController] performFetch:&error])
+    {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
 }
 
 -(void) segmentedControlChangedValue:(id) sender
@@ -108,12 +152,14 @@
     {
         case 2:
         {
-            [self.tblView setEditing:YES];
+            self.tblView.editing = YES;
+            self.navigationItem.rightBarButtonItem = _btnPlay;
             break;
         }
         default:
         {
-            [self.tblView setEditing:NO];
+            self.tblView.editing = NO;
+            self.navigationItem.rightBarButtonItem = nil;
             break;
         }
     }
@@ -127,43 +173,17 @@
     {
         if (editingStyle == UITableViewCellEditingStyleDelete)
         {
-            NSMutableArray *sections = [[NSMutableArray alloc] init];
-            for (NSDictionary *dict in self.arrCurrentQuery)
-            {
-                if (![sections containsObject:[dict objectForKey:@"Filter"]])
-                {
-                    [sections addObject:[dict objectForKey:@"Filter"]];
-                }
-            }
-            NSString *sectionName = [sections objectAtIndex:indexPath.section];
-            NSString *stringValue;
-            NSDictionary *dead;
+            NSString *key = [[self.dictCurrentQuery allKeys] objectAtIndex:indexPath.section];
+            NSMutableArray *rows = [self.dictCurrentQuery objectForKey:key];
+            [rows removeObjectAtIndex:indexPath.row];
+            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
             
-            for (NSDictionary *dict in self.arrCurrentQuery)
+            if (rows.count == 0)
             {
-                if ([[dict objectForKey:@"Filter"] isEqualToString:sectionName])
-                {
-                    id value = [dict objectForKey:@"Value"];
-                    
-                    if ([value isKindOfClass:[NSManagedObject class]])
-                    {
-                        stringValue = [value performSelector:@selector(name) withObject:nil];
-                    }
-                    else if ([value isKindOfClass:[NSString class]])
-                    {
-                        stringValue = value;
-                    }
-                    
-                    dead = dict;
-                    break;
-                }
+                [self.dictCurrentQuery removeObjectForKey:key];
             }
-
-            if (dead)
-            {
-                [self.arrCurrentQuery removeObject:dead];
-                [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            }
+            
+//            [tableView reloadData];
         }
     }
 }
@@ -205,16 +225,7 @@
     {
         case 2:
         {
-            NSMutableArray *sections = [[NSMutableArray alloc] init];
-            
-            for (NSDictionary *dict in self.arrCurrentQuery)
-            {
-                if (![sections containsObject:[dict objectForKey:@"Filter"]])
-                {
-                    [sections addObject:[dict objectForKey:@"Filter"]];
-                }
-            }
-            return [sections objectAtIndex:section];
+            return [[self.dictCurrentQuery allKeys] objectAtIndex:section];
         }
         default:
         {
@@ -229,15 +240,7 @@
     {
         case 2:
         {
-            NSMutableArray *sections = [[NSMutableArray alloc] init];
-            for (NSDictionary *dict in self.arrCurrentQuery)
-            {
-                if (![sections containsObject:[dict objectForKey:@"Filter"]])
-                {
-                    [sections addObject:[dict objectForKey:@"Filter"]];
-                }
-            }
-            return sections.count;
+            return [self.dictCurrentQuery allKeys].count;
         }
         default:
         {
@@ -260,25 +263,10 @@
         }
         case 2:
         {
-            NSMutableArray *sections = [[NSMutableArray alloc] init];
-            int rows = 0;
+            NSString *key = [[self.dictCurrentQuery allKeys] objectAtIndex:section];
+            NSMutableArray *rows = [self.dictCurrentQuery objectForKey:key];
             
-            for (NSDictionary *dict in self.arrCurrentQuery)
-            {
-                if (![sections containsObject:[dict objectForKey:@"Filter"]])
-                {
-                    [sections addObject:[dict objectForKey:@"Filter"]];
-                }
-            }
-            NSString *sectionName = [sections objectAtIndex:section];
-            for (NSDictionary *dict in self.arrCurrentQuery)
-            {
-                if ([[dict objectForKey:@"Filter"] isEqualToString:sectionName])
-                {
-                    rows++;
-                }
-            }
-            return rows;
+            return rows.count;
         }
         default:
         {
@@ -313,36 +301,24 @@
         }
         case 2:
         {
-            cell.accessoryType = UITableViewCellAccessoryNone;
+            NSString *key = [[self.dictCurrentQuery allKeys] objectAtIndex:indexPath.section];
+            NSMutableArray *rows = [self.dictCurrentQuery objectForKey:key];
+            NSDictionary *dict = [rows objectAtIndex:indexPath.row];
+            NSString *stringValue;
+            id value = [[dict allValues] firstObject];
             
-            NSMutableArray *sections = [[NSMutableArray alloc] init];
-            for (NSDictionary *dict in self.arrCurrentQuery)
+            if ([value isKindOfClass:[NSManagedObject class]])
             {
-                if (![sections containsObject:[dict objectForKey:@"Filter"]])
-                {
-                    [sections addObject:[dict objectForKey:@"Filter"]];
-                }
+                stringValue = [value performSelector:@selector(name) withObject:nil];
             }
-            NSString *sectionName = [sections objectAtIndex:indexPath.section];
-            for (NSDictionary *dict in self.arrCurrentQuery)
+            else if ([value isKindOfClass:[NSString class]])
             {
-                if ([[dict objectForKey:@"Filter"] isEqualToString:sectionName])
-                {
-                    NSString *stringValue;
-                    id value = [dict objectForKey:@"Value"];
-                    
-                    if ([value isKindOfClass:[NSManagedObject class]])
-                    {
-                        stringValue = [value performSelector:@selector(name) withObject:nil];
-                    }
-                    else if ([value isKindOfClass:[NSString class]])
-                    {
-                        stringValue = value;
-                    }
-                    
-                    cell.textLabel.text = [NSString stringWithFormat:@"%@ %@ contains '%@'", [dict objectForKey:@"Condition"], sectionName, stringValue];
-                }
+                stringValue = value;
             }
+            
+            cell.textLabel.text = [NSString stringWithFormat:@"%@ %@ = '%@'", [[dict allKeys] firstObject], key, stringValue];
+            cell.accessoryType = UITableViewCellAccessoryNone;
+
             break;
         }
         default:
@@ -414,10 +390,31 @@
 #pragma mark - FilterInputViewControllerDelegate
 -(void) addFilter:(NSDictionary*) filter
 {
-    [self.arrCurrentQuery addObject:filter];
+    NSMutableArray *arrRows = [self.dictCurrentQuery objectForKey:[filter objectForKey:@"Filter"]];
+    
+    if (!arrRows)
+    {
+        arrRows = [[NSMutableArray alloc] init];
+        [self.dictCurrentQuery setObject:arrRows forKey:[filter objectForKey:@"Filter"]];
+    }
+    [arrRows addObject:@{[filter objectForKey:@"Condition"] : [filter objectForKey:@"Value"]}];
+    
     self.segmentedControl.selectedSegmentIndex = 2;
-    [self.tblView setEditing:YES];
+    self.tblView.editing = YES;
+    self.navigationItem.rightBarButtonItem = _btnPlay;
     [self.tblView reloadData];
+}
+
+#pragma mark - MBProgressHUDDelegate methods
+- (void)hudWasHidden:(MBProgressHUD *)hud
+{
+	[hud removeFromSuperview];
+    
+    AdvanceSearchResultsViewController *advanceSearchResultsView = [[AdvanceSearchResultsViewController alloc] init];
+    advanceSearchResultsView.fetchedResultsController = self.fetchedResultsController;
+    advanceSearchResultsView.fetchedResultsController.delegate = advanceSearchResultsView;
+    advanceSearchResultsView.navigationItem.title = [NSString stringWithFormat:@"%tu Search Results", [self.fetchedResultsController.fetchedObjects count]];
+    [self.navigationController pushViewController:advanceSearchResultsView animated:NO];
 }
 
 @end

@@ -1,43 +1,25 @@
 //
-//  SearchViewController.m
+//  AdvanceSearchResultsViewController.m
 //  Decktracker
 //
-//  Created by Jovit Royeca on 8/5/14.
+//  Created by Jovit Royeca on 8/19/14.
 //  Copyright (c) 2014 Jovito Royeca. All rights reserved.
 //
 
-#import "SimpleSearchViewController.h"
-#import "AdvanceSearchViewController.h"
+#import "AdvanceSearchResultsViewController.h"
 #import "Card.h"
 #import "CardDetailsViewController.h"
 #import "CardRarity.h"
-#import "Database.h"
 #import "Set.h"
 
-@interface SimpleSearchViewController ()
+@interface AdvanceSearchResultsViewController ()
 
 @end
 
-@implementation SimpleSearchViewController
+@implementation AdvanceSearchResultsViewController
 
-@synthesize selectedIndex = _selectedIndex;
-@synthesize searchBar  = _searchBar;
-@synthesize tblResults = _tblResults;
 @synthesize fetchedResultsController = _fetchedResultsController;
-
-- (NSFetchedResultsController *)fetchedResultsController
-{
-    if (_fetchedResultsController != nil)
-    {
-        return _fetchedResultsController;
-    }
-    
-    NSFetchedResultsController *nsfrc = [[Database sharedInstance] search:self.searchBar.text];
-    
-    self.fetchedResultsController = nsfrc;
-    _fetchedResultsController.delegate = self;
-    return _fetchedResultsController;
-}
+@synthesize tblResults = _tblResults;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -45,7 +27,6 @@
     if (self)
     {
         // Custom initialization
-        self.selectedIndex = -1;
     }
     return self;
 }
@@ -54,52 +35,27 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-
+    
     CGFloat dX = 0;
     CGFloat dY = 0;
     CGFloat dWidth = self.view.frame.size.width;
-    CGFloat dHeight = self.navigationController.navigationBar.frame.size.height - self.tabBarController.tabBar.frame.size.height;
-    self.searchBar = [[UISearchBar alloc] init];
-    self.searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    self.searchBar.placeholder = @"Search";
-    self.searchBar.delegate = self;
+    CGFloat dHeight = self.view.frame.size.height - dY - self.tabBarController.tabBar.frame.size.height;
     
-    dHeight = self.view.frame.size.height - self.tabBarController.tabBar.frame.size.height;
-    self.tblResults = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)
-                                                   style:UITableViewStylePlain];
+    self.tblResults = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight) style:UITableViewStylePlain];
     self.tblResults.delegate = self;
     self.tblResults.dataSource = self;
     
-    self.navigationItem.titleView = self.searchBar;
     [self.view addSubview:self.tblResults];
     
-    // remove the "< Back" title in back buttons
-    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60)
-                                                         forBarMetrics:UIBarMetricsDefault];
-    
-    UIBarButtonItem *btnAdvance = [[UIBarButtonItem alloc] initWithTitle:@"Advance"
-                                                                   style:UIBarButtonItemStylePlain
-                                                                  target:self
-                                                                  action:@selector(btnAdvanceTapped:)];
-    self.navigationItem.leftBarButtonItem = btnAdvance;
-
+    UIBarButtonItem *btnSave = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
+                                                                            target:self
+                                                                            action:@selector(btnSaveTapped:)];
+    self.navigationItem.rightBarButtonItem = btnSave;
 }
 
--(void) btnAdvanceTapped:(id) sender
+-(void) viewDidAppear:(BOOL)animated
 {
-    AdvanceSearchViewController *advanceView = [[AdvanceSearchViewController alloc] init];
-    
-    [self.navigationController pushViewController:advanceView animated:NO];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    if (self.selectedIndex != -1)
-    {
-        NSIndexPath *indexPath=[NSIndexPath indexPathForRow:self.selectedIndex inSection:0];
-        
-        [self.tblResults selectRowAtIndexPath:indexPath animated:NO  scrollPosition:UITableViewScrollPositionNone];
-    }
+    [self.tblResults reloadData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -108,7 +64,14 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma - mark UITableViewDataSource
+-(void) btnSaveTapped:(id) sender
+{
+//    NewAdvanceSearchViewController *newAdvanceView = [[NewAdvanceSearchViewController alloc] init];
+//    
+//    [self.navigationController pushViewController:newAdvanceView animated:NO];
+}
+
+#pragma mark - UITableView
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     NSInteger count = [[self.fetchedResultsController sections] count];
@@ -150,7 +113,7 @@
     
     cell.textLabel.text = card.name;
     cell.detailTextLabel.text = type;
-
+    
     NSString *path = [NSString stringWithFormat:@"%@/images/set/%@/%@/24.png", [[NSBundle mainBundle] bundlePath], card.set.code, [[card.rarity.name substringToIndex:1] uppercaseString]];
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:path])
@@ -165,46 +128,12 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     CardDetailsViewController *cardView = [[CardDetailsViewController alloc] init];
     Card *card = [self.fetchedResultsController objectAtIndexPath:indexPath];
     cardView.fetchedResultsController = self.fetchedResultsController;
     [cardView setCard:card];
     
     [self.navigationController pushViewController:cardView animated:YES];
-}
-
-#pragma mark - MBProgressHUDDelegate methods
-- (void)hudWasHidden:(MBProgressHUD *)hud
-{
-	[hud removeFromSuperview];
-}
-
-#pragma mark - UISearchBarDelegate
-- (void)searchBarSearchButtonClicked:(UISearchBar *)bar
-{
-    if ([self.searchBar canResignFirstResponder])
-    {
-        [self.searchBar resignFirstResponder];
-    }
-
-    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:hud];
-    hud.delegate = self;
-    [hud showWhileExecuting:@selector(doSearch) onTarget:self withObject:nil animated:NO];
-}
-
-- (void) doSearch
-{
-    self.fetchedResultsController = nil;
-    
-    NSError *error;
-    if (![[self fetchedResultsController] performFetch:&error])
-    {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-    }
-    
-    [self.tblResults reloadData];
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate

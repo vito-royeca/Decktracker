@@ -14,9 +14,8 @@
     
 }
 
-@synthesize tblView = _tblView;
-
 @synthesize arrAdvanceSearches = _arrAdvanceSearches;
+@synthesize tblView = _tblView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -85,7 +84,7 @@
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.accessoryType = UITableViewCellAccessoryDetailButton;
     }
     
     cell.textLabel.text = [self.arrAdvanceSearches objectAtIndex:indexPath.row];

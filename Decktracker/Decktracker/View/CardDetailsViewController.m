@@ -75,10 +75,10 @@
 
 -(void) switchView
 {
-    CGFloat dX = 10;
-    CGFloat dY = self.segmentedControl.frame.origin.y + self.segmentedControl.frame.size.height +5;
-    CGFloat dWidth = self.view.frame.size.width-20;
-    CGFloat dHeight = self.view.frame.size.height - dY - self.tabBarController.tabBar.frame.size.height -10;
+    CGFloat dX = 0;
+    CGFloat dY = self.segmentedControl.frame.origin.y + self.segmentedControl.frame.size.height +10;
+    CGFloat dWidth = self.view.frame.size.width;
+    CGFloat dHeight = self.view.frame.size.height - dY - self.tabBarController.tabBar.frame.size.height;
     
     [self.webView removeFromSuperview];
     
@@ -86,9 +86,6 @@
     {
         case 0:
         {
-            dX = 0;
-            dWidth += 20;
-            dHeight += 10;
             self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
             self.webView.scalesPageToFit = YES;
             self.webView.delegate = self;

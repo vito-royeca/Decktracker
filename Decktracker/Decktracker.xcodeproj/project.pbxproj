@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3B4C647F452847188AFC81E6 /* libPods-Decktracker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63356387201A4E73BA1685FC /* libPods-Decktracker.a */; };
 		8C019AA01998A10F00FB22D7 /* decktracker.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 8C019A9F1998A10F00FB22D7 /* decktracker.sqlite */; };
+		8C11F79919A25F8200DED703 /* AdvanceSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C11F79819A25F8200DED703 /* AdvanceSearchResultsViewController.m */; };
 		8C1DFDD819913D2100174054 /* CardDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1DFDD719913D2100174054 /* CardDetailsViewController.m */; };
 		8C1F8E03199D170C00C101E4 /* AdvanceSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1F8E02199D170C00C101E4 /* AdvanceSearchViewController.m */; };
 		8C1F8E06199D232D00C101E4 /* FilterInputViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1F8E05199D232D00C101E4 /* FilterInputViewController.m */; };
@@ -84,6 +85,8 @@
 		309BCACD310044B894E67292 /* Pods-Decktracker.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Decktracker.xcconfig"; path = "Pods/Pods-Decktracker.xcconfig"; sourceTree = "<group>"; };
 		63356387201A4E73BA1685FC /* libPods-Decktracker.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Decktracker.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C019A9F1998A10F00FB22D7 /* decktracker.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = decktracker.sqlite; sourceTree = "<group>"; };
+		8C11F79719A25F8200DED703 /* AdvanceSearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvanceSearchResultsViewController.h; sourceTree = "<group>"; };
+		8C11F79819A25F8200DED703 /* AdvanceSearchResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvanceSearchResultsViewController.m; sourceTree = "<group>"; };
 		8C1DFDD619913D2100174054 /* CardDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardDetailsViewController.h; sourceTree = "<group>"; };
 		8C1DFDD719913D2100174054 /* CardDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardDetailsViewController.m; sourceTree = "<group>"; };
 		8C1F8E01199D170C00C101E4 /* AdvanceSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvanceSearchViewController.h; sourceTree = "<group>"; };
@@ -288,6 +291,8 @@
 		8C2E14261990746100023BAA /* View */ = {
 			isa = PBXGroup;
 			children = (
+				8C11F79719A25F8200DED703 /* AdvanceSearchResultsViewController.h */,
+				8C11F79819A25F8200DED703 /* AdvanceSearchResultsViewController.m */,
 				8C1F8E01199D170C00C101E4 /* AdvanceSearchViewController.h */,
 				8C1F8E02199D170C00C101E4 /* AdvanceSearchViewController.m */,
 				8C1DFDD619913D2100174054 /* CardDetailsViewController.h */,
@@ -514,6 +519,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C11F79919A25F8200DED703 /* AdvanceSearchResultsViewController.m in Sources */,
 				8C5BDD70199B3B7D007AF140 /* MenuViewController.m in Sources */,
 				8C2E142A1990748C00023BAA /* database.xcdatamodeld in Sources */,
 				8CEA7766199C73CE00DF0D42 /* Set.m in Sources */,

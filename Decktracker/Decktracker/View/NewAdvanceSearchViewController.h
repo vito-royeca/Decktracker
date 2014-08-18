@@ -8,12 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "FilterInputViewController.h"
-#import "HMSegmentedControl.h"
+#import "MBProgressHUD.h"
 
-@interface NewAdvanceSearchViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, FilterInputViewControllerDelegate>
+@interface NewAdvanceSearchViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, FilterInputViewControllerDelegate, MBProgressHUDDelegate>
 
-@property(strong,nonatomic) HMSegmentedControl *segmentedControl;
+@property(strong,nonatomic) UISegmentedControl *segmentedControl;
 @property(strong,nonatomic) UITableView *tblView;
-@property(strong,nonatomic) NSMutableArray *arrCurrentQuery;
+@property(strong,nonatomic) NSMutableDictionary *dictCurrentQuery;
+@property(strong,nonatomic) NSMutableDictionary *dictCurrentSort;
+@property(strong,nonatomic) NSFetchedResultsController *fetchedResultsController;
 
 @end

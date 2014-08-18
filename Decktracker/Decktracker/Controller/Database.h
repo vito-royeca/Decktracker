@@ -23,6 +23,7 @@
 
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
 -(NSFetchedResultsController*) search:(NSString*)query;
+-(NSFetchedResultsController*) advanceSearch:(NSDictionary*)query withSorter:(NSDictionary*) sorter;
 #endif
 
 -(Card*) findCard:(NSString*) card inSet:(NSString*) setCode;

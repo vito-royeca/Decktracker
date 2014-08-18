@@ -105,6 +105,75 @@ static Database *_me;
                                                  sectionNameKeyPath:nil
                                                           cacheName:nil];
 }
+
+-(NSFetchedResultsController*) advanceSearch:(NSDictionary*)query withSorter:(NSDictionary*) sorter
+{
+    NSPredicate *predicate;
+
+    for (NSString *key in [query allKeys])
+    {
+        NSString *fieldName;
+        
+        if ([key isEqualToString:@"Set"])
+        {
+            fieldName = @"set.name";
+        }
+        
+        else if ([key isEqualToString:@"Artist"])
+        {
+            fieldName = @"artist.name";
+        }
+        
+        for (NSDictionary *dict in [query objectForKey:key])
+        {
+            NSString *condition = [[dict allKeys] firstObject];
+            NSString *stringValue;
+            id value = [[dict allValues] firstObject];
+            
+            if ([value isKindOfClass:[NSManagedObject class]])
+            {
+                stringValue = [value performSelector:@selector(name) withObject:nil];
+            }
+            else if ([value isKindOfClass:[NSString class]])
+            {
+                stringValue = value;
+            }
+            
+            NSPredicate *pred = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", fieldName, stringValue];
+            
+            if ([condition isEqualToString:@"And"])
+            {
+                predicate = predicate ? [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, pred]] : pred;
+            }
+            else if ([condition isEqualToString:@"Or"])
+            {
+                predicate = predicate ? [NSCompoundPredicate orPredicateWithSubpredicates:@[predicate, pred]] : pred;
+            }
+            else if ([condition isEqualToString:@"Not"])
+            {
+                predicate = predicate ? [NSCompoundPredicate notPredicateWithSubpredicate:pred] : pred;
+            }
+        }
+    }
+    
+    NSManagedObjectContext *moc = [NSManagedObjectContext MR_defaultContext];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name"
+                                                                   ascending:YES];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Card"
+                                              inManagedObjectContext:moc];
+    
+    [fetchRequest setPredicate:predicate];
+    [fetchRequest setEntity:entity];
+    [fetchRequest setSortDescriptors:@[sortDescriptor]];
+    [fetchRequest setFetchBatchSize:kFetchBatchSize];
+    
+    return [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                               managedObjectContext:moc
+                                                 sectionNameKeyPath:nil
+                                                          cacheName:nil];
+}
+
 #endif
 
 -(Card*) findCard:(NSString*) cardName inSet:(NSString*) setCode
