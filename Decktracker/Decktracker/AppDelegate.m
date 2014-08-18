@@ -8,9 +8,7 @@
 
 #import "AppDelegate.h"
 #import "Database.h"
-#import "MenuViewController.h"
-#import "MMDrawerController.h"
-#import "SimpleSearchViewController.h"
+#import "MainViewController.h"
 
 #import "GAI.h"
 
@@ -33,14 +31,15 @@
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone ||
         [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
     {
-        UIViewController *leftDrawer = [[MenuViewController alloc] init];
-        UIViewController *center = [[SimpleSearchViewController alloc] init];
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:center];
-        
-        MMDrawerController *drawerController = [[MMDrawerController alloc]
-                                                 initWithCenterViewController:navigationController
-                                                 leftDrawerViewController:leftDrawer];
-        viewController = drawerController;
+//        UIViewController *leftDrawer = [[MenuViewController alloc] init];
+//        UIViewController *center = [[SimpleSearchViewController alloc] init];
+//        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:center];
+//        
+//        MMDrawerController *drawerController = [[MMDrawerController alloc]
+//                                                 initWithCenterViewController:navigationController
+//                                                 leftDrawerViewController:leftDrawer];
+//        viewController = drawerController;
+        viewController = [[MainViewController alloc] init];
     }
     
     self.window.rootViewController = viewController;

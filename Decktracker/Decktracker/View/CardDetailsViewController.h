@@ -17,6 +17,5 @@
 @property(strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property(strong, nonatomic) UISegmentedControl *segmentedControl;
 @property(strong, nonatomic) UIWebView *webView;
-@property(strong, nonatomic) UITableView *tableView;
 
 @end

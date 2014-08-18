@@ -27,7 +27,6 @@
 @synthesize fetchedResultsController = _fetchedResultsController;
 @synthesize segmentedControl = _segmentedControl;
 @synthesize webView = _webView;
-@synthesize tableView = _tableView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -82,7 +81,6 @@
     CGFloat dHeight = self.view.frame.size.height - dY - self.tabBarController.tabBar.frame.size.height -10;
     
     [self.webView removeFromSuperview];
-    [self.tableView removeFromSuperview];
     
     switch (self.segmentedControl.selectedSegmentIndex)
     {
@@ -129,10 +127,6 @@
         }
         case 2:
         {
-            self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight) style:UITableViewStylePlain];
-            self.tableView.dataSource = self;
-            self.tableView.delegate = self;
-            [self.view addSubview:self.tableView];
             break;
         }
     }

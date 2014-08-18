@@ -12,7 +12,7 @@
 #import "Card.h"
 
 #define kFetchBatchSize       100
-#define kDatabaseStore        @"database.sqlite"
+#define kDatabaseStore        @"decktracker.sqlite"
 
 @interface Database : NSObject
 

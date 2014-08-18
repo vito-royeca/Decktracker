@@ -38,4 +38,6 @@ typedef NSString* Layout;
 
 #define kImageSizes                    @[@"8", @"16", @"24", @"32", @"48", @"64", @"96"]
 
+#define kManaColors                    @[@"Black", @"Blue", @"Green", @"Red", @"White", @"Colorless"]
+
 #endif

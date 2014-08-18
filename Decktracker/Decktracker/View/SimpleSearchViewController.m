@@ -7,6 +7,7 @@
 //
 
 #import "SimpleSearchViewController.h"
+#import "AdvanceSearchViewController.h"
 #import "Card.h"
 #import "CardDetailsViewController.h"
 #import "CardRarity.h"
@@ -59,7 +60,7 @@
     CGFloat dX = 0;
     CGFloat dY = 0;
     CGFloat dWidth = self.view.frame.size.width;
-    CGFloat dHeight = self.navigationController.navigationBar.frame.size.height;
+    CGFloat dHeight = self.navigationController.navigationBar.frame.size.height - self.tabBarController.tabBar.frame.size.height;
     self.searchBar = [[UISearchBar alloc] init];
     self.searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.searchBar.placeholder = @"Search";
@@ -77,25 +78,40 @@
     // remove the "< Back" title in back buttons
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60)
                                                          forBarMetrics:UIBarMetricsDefault];
-    MMDrawerBarButtonItem * leftDrawerButton = [[MMDrawerBarButtonItem alloc] initWithTarget:self action:@selector(leftDrawerButtonPress:)];
-    [self.navigationItem setLeftBarButtonItem:leftDrawerButton animated:YES];
+    
+//    MMDrawerBarButtonItem * leftDrawerButton = [[MMDrawerBarButtonItem alloc] initWithTarget:self action:@selector(leftDrawerButtonPress:)];
+//    [self.navigationItem setLeftBarButtonItem:leftDrawerButton animated:YES];
+    
+    UIBarButtonItem *btnAdvance = [[UIBarButtonItem alloc] initWithTitle:@"Advance"
+                                                                   style:UIBarButtonItemStylePlain
+                                                                  target:self
+                                                                  action:@selector(btnAdvanceTapped:)];
+    self.navigationItem.leftBarButtonItem = btnAdvance;
+
 }
 
--(void) leftDrawerButtonPress:(id) sender
+//-(void) leftDrawerButtonPress:(id) sender
+//{
+//    UIViewController *parentViewController = self.parentViewController;
+//    MMDrawerController *drawer;
+//    
+//    while (parentViewController != nil)
+//    {
+//        if([parentViewController isKindOfClass:[MMDrawerController class]])
+//        {
+//            drawer = (MMDrawerController*)parentViewController;
+//        }
+//        parentViewController = parentViewController.parentViewController;
+//    }
+//    
+//    [drawer toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+//}
+
+-(void) btnAdvanceTapped:(id) sender
 {
-    UIViewController *parentViewController = self.parentViewController;
-    MMDrawerController *drawer;
+    AdvanceSearchViewController *advanceView = [[AdvanceSearchViewController alloc] init];
     
-    while (parentViewController != nil)
-    {
-        if([parentViewController isKindOfClass:[MMDrawerController class]])
-        {
-            drawer = (MMDrawerController*)parentViewController;
-        }
-        parentViewController = parentViewController.parentViewController;
-    }
-    
-    [drawer toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+    [self.navigationController pushViewController:advanceView animated:NO];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -104,7 +120,7 @@
     {
         NSIndexPath *indexPath=[NSIndexPath indexPathForRow:self.selectedIndex inSection:0];
         
-        [self.tblResults selectRowAtIndexPath:indexPath animated:NO  scrollPosition:UITableViewScrollPositionMiddle];
+        [self.tblResults selectRowAtIndexPath:indexPath animated:NO  scrollPosition:UITableViewScrollPositionNone];
     }
 }
 
