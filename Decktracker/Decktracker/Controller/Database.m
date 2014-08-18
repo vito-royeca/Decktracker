@@ -118,7 +118,22 @@ static Database *_me;
         {
             fieldName = @"set.name";
         }
-        
+        else if ([key isEqualToString:@"Rarity"])
+        {
+            fieldName = @"rarity.name";
+        }
+        else if ([key isEqualToString:@"Type"])
+        {
+            fieldName = @"types.name";
+        }
+        else if ([key isEqualToString:@"Subtype"])
+        {
+            fieldName = @"subTypes.name";
+        }
+//        else if ([key isEqualToString:@"Color"])
+//        {
+//            fieldName = @"manaCost";
+//        }
         else if ([key isEqualToString:@"Artist"])
         {
             fieldName = @"artist.name";

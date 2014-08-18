@@ -305,46 +305,55 @@
     {
         [html appendFormat:@"<tr><td colspan=\"2\"><strong>Mana Cost</strong></td></tr>"];
         [html appendFormat:@"<tr><td colspan=\"2\">%@</td></tr>", [self replaceSymbolsInText:self.card.manaCost]];
+        [html appendFormat:@"<tr><td colspan=\"2\">&nbsp;</td></tr>"];
     }
     
     if (self.card.cmc)
     {
         [html appendFormat:@"<tr><td colspan=\"2\"><strong>Converted Mana Cost</strong></td></tr>"];
         [html appendFormat:@"<tr><td colspan=\"2\"><img src=\"%@/%@/16.png\" border=\"0\" /></td></tr>", manaPath, [self.card.cmc stringValue]];
+        [html appendFormat:@"<tr><td colspan=\"2\">&nbsp;</td></tr>"];
     }
     
     [html appendFormat:@"<tr><td colspan=\"2\"><strong>Type</strong></td></tr>"];
     [html appendFormat:@"<tr><td colspan=\"2\">%@</td></tr>", self.card.type];
+    [html appendFormat:@"<tr><td colspan=\"2\">&nbsp;</td></tr>"];
     
     if (self.card.power || self.card.toughness)
     {
         [html appendFormat:@"<tr><td colspan=\"2\"><strong>Power/Toughness</strong></td></tr>"];
         [html appendFormat:@"<tr><td colspan=\"2\">%@/%@</td></tr>", self.card.power, self.card.toughness];
+        [html appendFormat:@"<tr><td colspan=\"2\">&nbsp;</td></tr>"];
     }
     
     [html appendFormat:@"<tr><td colspan=\"2\"><strong>Rarity</strong></td></tr>"];
     [html appendFormat:@"<tr><td><img src=\"%@/%@/%@/24.png\" border=\"0\" /></td><td>%@ - %@</td></tr>", setPath, self.card.set.code, [[self.card.rarity.name substringToIndex:1] uppercaseString], self.card.set.name, self.card.rarity.name];
+    [html appendFormat:@"<tr><td colspan=\"2\">&nbsp;</td></tr>"];
     
     if (self.card.text)
     {
         [html appendFormat:@"<tr><td colspan=\"2\"><strong>Oracle Text</strong></td></tr>"];
         [html appendFormat:@"<tr><td colspan=\"2\">%@</td></tr>", [self replaceSymbolsInText:self.card.text]];
+        [html appendFormat:@"<tr><td colspan=\"2\">&nbsp;</td></tr>"];
     }
     
     if (self.card.originalText)
     {
         [html appendFormat:@"<tr><td colspan=\"2\"><strong>Original Text</v></td></tr>"];
         [html appendFormat:@"<tr><td colspan=\"2\">%@</td></tr>", [self replaceSymbolsInText:self.card.originalText]];
+        [html appendFormat:@"<tr><td colspan=\"2\">&nbsp;</td></tr>"];
     }
     
     if (self.card.flavor)
     {
         [html appendFormat:@"<tr><td colspan=\"2\"><strong>Flavor Text</strong></td></tr>"];
         [html appendFormat:@"<tr><td colspan=\"2\"><i>%@</i></td></tr>", self.card.flavor];
+        [html appendFormat:@"<tr><td colspan=\"2\">&nbsp;</td></tr>"];
     }
     
     [html appendFormat:@"<tr><td colspan=\"2\"><strong>Artist</strong></td></tr>"];
     [html appendFormat:@"<tr><td colspan=\"2\">%@</td></tr>", self.card.artist.name];
+    [html appendFormat:@"<tr><td colspan=\"2\">&nbsp;</td></tr>"];
     
     [html appendFormat:@"<tr><td colspan=\"2\"><strong>Sets</strong></td></tr>"];
     for (Set *set in [[self.card.printings allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"releaseDate" ascending:YES]]])
@@ -399,7 +408,7 @@
         }
     }
     
-    return text;
+    return [text stringByReplacingOccurrencesOfString:@"\n" withString:@"<br>"];
 }
 
 #pragma mark - UIWebViewDelegate
