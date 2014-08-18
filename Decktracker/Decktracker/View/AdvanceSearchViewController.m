@@ -16,6 +16,8 @@
 
 @synthesize tblView = _tblView;
 
+@synthesize arrAdvanceSearches = _arrAdvanceSearches;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -31,8 +33,10 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    self.arrAdvanceSearches = [[NSMutableArray alloc] initWithObjects:@"Angels and Demons", @"Pain Lands", @"Wurms", nil];
+    
     CGFloat dX = 0;
-    CGFloat dY = [UIApplication sharedApplication].statusBarFrame.size.height;
+    CGFloat dY = 0;
     CGFloat dWidth = self.view.frame.size.width;
     CGFloat dHeight = self.view.frame.size.height - dY - self.tabBarController.tabBar.frame.size.height;
     
@@ -70,7 +74,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    return self.arrAdvanceSearches.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -83,6 +87,8 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
+    
+    cell.textLabel.text = [self.arrAdvanceSearches objectAtIndex:indexPath.row];
     
     return cell;
 }

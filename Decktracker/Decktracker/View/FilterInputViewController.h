@@ -8,8 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol FilterInputViewControllerDelegate <NSObject>
+
+-(void) addFilter:(NSDictionary*) filter;
+
+@end
+
 @interface FilterInputViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
 
+@property(strong,nonatomic) id<FilterInputViewControllerDelegate> delegate;
+
+@property(strong,nonatomic) NSString  *filterName;
 @property(strong,nonatomic) NSArray  *filterOptions;
 @property(strong,nonatomic) NSArray  *operatorOptions;
 @property(strong,nonatomic) UITableView *tblFilter;

@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FilterInputViewController.h"
+#import "HMSegmentedControl.h"
 
-@interface NewAdvanceSearchViewController : UIViewController
+@interface NewAdvanceSearchViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, FilterInputViewControllerDelegate>
+
+@property(strong,nonatomic) HMSegmentedControl *segmentedControl;
+@property(strong,nonatomic) UITableView *tblView;
+@property(strong,nonatomic) NSMutableArray *arrCurrentQuery;
 
 @end

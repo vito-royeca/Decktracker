@@ -10,6 +10,7 @@
 
 @interface AdvanceSearchViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
 
+@property(strong,nonatomic) NSMutableArray *arrAdvanceSearches;
 @property(strong,nonatomic) UITableView *tblView;
 
 @end

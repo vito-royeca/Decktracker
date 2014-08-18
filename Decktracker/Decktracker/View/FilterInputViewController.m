@@ -16,10 +16,13 @@
 
 @implementation FilterInputViewController
 {
-    int _selectedFilter;
-    int _selectedOperator;
+    int _selectedFilterIndex;
+    int _selectedOperatorIndex;
+    id _selectedFilter;
+    NSString *_selectedOperator;
 }
 
+@synthesize filterName = _filterName;
 @synthesize filterOptions = _filterOptions;
 @synthesize operatorOptions = _operatorOptions;
 @synthesize tblFilter = _tblFilter;
@@ -41,8 +44,11 @@
     // Do any additional setup after loading the view.
     
     self.operatorOptions = @[@"And", @"Or", @"Not"];
-    _selectedFilter = 0;
-    _selectedOperator = 0;
+    _selectedFilterIndex = 0;
+    _selectedOperatorIndex = 0;
+    _selectedFilter = [self.filterOptions firstObject];
+    _selectedOperator = [self.operatorOptions firstObject];
+
     
     CGFloat dX = 0;
     CGFloat dY = 0;
@@ -81,6 +87,11 @@
 
 -(void) btnOkTapped:(id) sender
 {
+    NSDictionary *dict = @{@"Filter": self.filterName,
+                           @"Value": _selectedFilter,
+                           @"Condition": _selectedOperator};
+    
+    [self.delegate addFilter:dict];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -213,12 +224,12 @@
             }
         }
         
-        cell.accessoryType = indexPath.row == _selectedFilter ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+        cell.accessoryType = indexPath.row == _selectedFilterIndex ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
     }
     else if (tableView == self.tblOperator)
     {
         cell.textLabel.text = [self.operatorOptions objectAtIndex:indexPath.row];
-        cell.accessoryType = indexPath.row == _selectedOperator ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+        cell.accessoryType = indexPath.row == _selectedOperatorIndex ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
     }
     
     return cell;
@@ -228,11 +239,13 @@
 {
     if (tableView == self.tblFilter)
     {
-        _selectedFilter = (int)indexPath.row;
+        _selectedFilterIndex = (int)indexPath.row;
+        _selectedFilter = [self.filterOptions objectAtIndex:indexPath.row];
     }
     else if (tableView == self.tblOperator)
     {
-        _selectedOperator = (int)indexPath.row;
+        _selectedOperatorIndex = (int)indexPath.row;
+        _selectedOperator = [self.operatorOptions objectAtIndex:indexPath.row];
     }
     
     [tableView reloadData];
