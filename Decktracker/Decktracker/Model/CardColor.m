@@ -1,18 +1,18 @@
 //
-//  Block.m
+//  CardColor.m
 //  Decktracker
 //
 //  Created by Jovit Royeca on 8/19/14.
 //  Copyright (c) 2014 Jovito Royeca. All rights reserved.
 //
 
-#import "Block.h"
-#import "Set.h"
+#import "CardColor.h"
+#import "Card.h"
 
 
-@implementation Block
+@implementation CardColor
 
 @dynamic name;
-@dynamic sets;
+@dynamic cards;
 
 @end

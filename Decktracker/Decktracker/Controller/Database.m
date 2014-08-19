@@ -130,10 +130,10 @@ static Database *_me;
         {
             fieldName = @"subTypes.name";
         }
-//        else if ([key isEqualToString:@"Color"])
-//        {
-//            fieldName = @"manaCost";
-//        }
+        else if ([key isEqualToString:@"Color"])
+        {
+            fieldName = @"colors.name";
+        }
         else if ([key isEqualToString:@"Artist"])
         {
             fieldName = @"artist.name";

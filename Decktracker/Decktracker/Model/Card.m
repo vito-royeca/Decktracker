@@ -2,13 +2,14 @@
 //  Card.m
 //  Decktracker
 //
-//  Created by Jovit Royeca on 8/14/14.
+//  Created by Jovit Royeca on 8/19/14.
 //  Copyright (c) 2014 Jovito Royeca. All rights reserved.
 //
 
 #import "Card.h"
 #import "Artist.h"
 #import "Card.h"
+#import "CardColor.h"
 #import "CardForeignName.h"
 #import "CardLegality.h"
 #import "CardRarity.h"
@@ -39,6 +40,7 @@
 @dynamic type;
 @dynamic watermark;
 @dynamic artist;
+@dynamic colors;
 @dynamic foreignNames;
 @dynamic legalities;
 @dynamic names;

@@ -13,15 +13,15 @@ int main(int argc, const char * argv[])
 {
     @autoreleasepool
     {
-//        JSONLoader *jsonLoader = [[JSONLoader alloc] init];
-//        [jsonLoader parseJSON];
+        JSONLoader *jsonLoader = [[JSONLoader alloc] init];
+        [jsonLoader parseJSON];
 
-        ImageLoader *imageLoader = [[ImageLoader alloc] init];
+//        ImageLoader *imageLoader = [[ImageLoader alloc] init];
 //        [imageLoader downloadSymbols];
 //        [imageLoader downloadOtherSymbols];
 //        [imageLoader downloadSets];
 //        [imageLoader downloadCards];
-        [imageLoader convertCardsToLowResolution];
+//        [imageLoader convertCardsToLowResolution];
     }
     return 0;
 }

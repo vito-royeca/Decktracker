@@ -1,5 +1,5 @@
 //
-//  Artist.h
+//  CardColor.h
 //  Decktracker
 //
 //  Created by Jovit Royeca on 8/19/14.
@@ -11,13 +11,13 @@
 
 @class Card;
 
-@interface Artist : NSManagedObject
+@interface CardColor : NSManagedObject
 
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSSet *cards;
 @end
 
-@interface Artist (CoreDataGeneratedAccessors)
+@interface CardColor (CoreDataGeneratedAccessors)
 
 - (void)addCardsObject:(Card *)value;
 - (void)removeCardsObject:(Card *)value;

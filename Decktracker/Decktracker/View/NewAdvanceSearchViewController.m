@@ -9,6 +9,7 @@
 #import "NewAdvanceSearchViewController.h"
 #import "AdvanceSearchResultsViewController.h"
 #import "Artist.h"
+#import "CardColor.h"
 #import "CardRarity.h"
 #import "CardType.h"
 #import "Database.h"
@@ -365,7 +366,7 @@
         }
         case 6:
         {
-            arrFilterOptions = kManaColors;
+            arrFilterOptions = [CardColor MR_findAllSortedBy:@"name" ascending:YES];;
             break;
         }
         case 9:

@@ -8,6 +8,7 @@
 
 #import "FilterInputViewController.h"
 #import "Artist.h"
+#import "CardColor.h"
 #import "CardRarity.h"
 #import "CardType.h"
 #import "Format.h"
@@ -191,22 +192,21 @@
                 Artist *artist = [self.filterOptions objectAtIndex:indexPath.row];
                 cell.textLabel.text = artist.name;
             }
-            else if ([[self.filterOptions firstObject] isKindOfClass:[NSString class]] &&
-                     [[self.filterOptions firstObject] isEqualToString:[kManaColors firstObject]])
+            else if ([[self.filterOptions firstObject] isKindOfClass:[CardColor class]])
             {
-                NSString *color = [self.filterOptions objectAtIndex:indexPath.row];
+                CardColor *color = [self.filterOptions objectAtIndex:indexPath.row];
                 NSString *colorInitial;
-                if ([color isEqualToString:@"Blue"])
+                if ([color.name isEqualToString:@"Blue"])
                 {
                     colorInitial = @"U";
                 }
-                else if ([color isEqualToString:@"Colorless"])
+                else if ([color.name isEqualToString:@"Colorless"])
                 {
                     colorInitial = @"1";
                 }
                 else
                 {
-                    colorInitial = [color substringToIndex:1];
+                    colorInitial = [color.name substringToIndex:1];
                 }
                 
                 NSString *path = [NSString stringWithFormat:@"%@/images/mana/%@/24.png", [[NSBundle mainBundle] bundlePath], colorInitial];
@@ -220,7 +220,7 @@
                     cell.imageView.image = [[UIImage alloc] initWithContentsOfFile:path];
                 }
                 
-                cell.textLabel.text = color;
+                cell.textLabel.text = color.name;
             }
         }
         

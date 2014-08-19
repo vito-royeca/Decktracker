@@ -11,6 +11,7 @@
 #import "Artist.h"
 #import "Block.h"
 #import "Card.h"
+#import "CardColor.h"
 #import "CardForeignName.h"
 #import "CardLegality.h"
 #import "CardRarity.h"
@@ -221,6 +222,7 @@
         card.types = [self findTypes:[dict objectForKey:@"types"]];
         card.superTypes = [self findTypes:[dict objectForKey:@"supertypes"]];
         card.subTypes = [self findTypes:[dict objectForKey:@"subtypes"]];
+        card.colors = [self findColors:[dict objectForKey:@"colors"]];
         card.set = set;
 
         [currentContext MR_save];
@@ -356,6 +358,32 @@
             type.name = name;
         }
         [set addObject:type];
+    }
+    
+    return set;
+}
+
+-(NSSet*) findColors:(NSArray*) array
+{
+    if (!array || array.count <= 0)
+    {
+        return nil;
+    }
+    
+    NSMutableSet *set = [[NSMutableSet alloc] init];
+    
+    for (NSString *name in array)
+    {
+        CardColor *color = [CardColor MR_findFirstByAttribute:@"name"
+                                                    withValue:name];
+        
+        if (!color)
+        {
+            color = [CardColor MR_createEntity];
+            
+            color.name = name;
+        }
+        [set addObject:color];
     }
     
     return set;

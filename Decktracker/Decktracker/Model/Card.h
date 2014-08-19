@@ -2,14 +2,14 @@
 //  Card.h
 //  Decktracker
 //
-//  Created by Jovit Royeca on 8/14/14.
+//  Created by Jovit Royeca on 8/19/14.
 //  Copyright (c) 2014 Jovito Royeca. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Artist, Card, CardForeignName, CardLegality, CardRarity, CardRuling, CardType, Set;
+@class Artist, Card, CardColor, CardForeignName, CardLegality, CardRarity, CardRuling, CardType, Set;
 
 @interface Card : NSManagedObject
 
@@ -33,6 +33,7 @@
 @property (nonatomic, retain) NSString * type;
 @property (nonatomic, retain) NSString * watermark;
 @property (nonatomic, retain) Artist *artist;
+@property (nonatomic, retain) NSSet *colors;
 @property (nonatomic, retain) NSSet *foreignNames;
 @property (nonatomic, retain) NSSet *legalities;
 @property (nonatomic, retain) NSSet *names;
@@ -47,6 +48,11 @@
 @end
 
 @interface Card (CoreDataGeneratedAccessors)
+
+- (void)addColorsObject:(CardColor *)value;
+- (void)removeColorsObject:(CardColor *)value;
+- (void)addColors:(NSSet *)values;
+- (void)removeColors:(NSSet *)values;
 
 - (void)addForeignNamesObject:(CardForeignName *)value;
 - (void)removeForeignNamesObject:(CardForeignName *)value;

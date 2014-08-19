@@ -2,7 +2,7 @@
 //  SetType.h
 //  Decktracker
 //
-//  Created by Jovit Royeca on 8/14/14.
+//  Created by Jovit Royeca on 8/19/14.
 //  Copyright (c) 2014 Jovito Royeca. All rights reserved.
 //
 
