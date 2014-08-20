@@ -14,13 +14,14 @@
 
 @end
 
-@interface FilterInputViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
+@interface FilterInputViewController : UIViewController<UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property(strong,nonatomic) id<FilterInputViewControllerDelegate> delegate;
 
 @property(strong,nonatomic) NSString  *filterName;
 @property(strong,nonatomic) NSArray  *filterOptions;
 @property(strong,nonatomic) NSArray  *operatorOptions;
+@property(strong,nonatomic) UISearchBar *searchBar;
 @property(strong,nonatomic) UITableView *tblFilter;
 @property(strong,nonatomic) UITableView *tblOperator;
 

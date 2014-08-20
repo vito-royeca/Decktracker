@@ -84,6 +84,11 @@
         }
     }
     
+    // Create colorless CardColor
+    CardColor *color = [CardColor MR_createEntity];
+    color.name = @"Colorless";
+    [currentContext MR_save];
+
     [[Database sharedInstance] closeDb];
     
     NSDate *dateEnd = [NSDate date];

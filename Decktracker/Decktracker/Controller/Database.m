@@ -74,18 +74,11 @@ static Database *_me;
     }
     else
     {
-//        if (narrow)
-//        {
-//            predicate = [NSPredicate predicateWithFormat:@"%K BEGINSWITH[cd] %@", @"name", query];
-//        }
-//        else
-        {
-            NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", @"name", query];
-            NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", @"type", query];
-            NSPredicate *pred3 = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", @"text", query];
-            NSPredicate *pred4 = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", @"flavor", query];
-            predicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[pred1, pred2, pred3, pred4]];
-        }
+        NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", @"name", query];
+        NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", @"type", query];
+        NSPredicate *pred3 = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", @"text", query];
+        NSPredicate *pred4 = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", @"flavor", query];
+        predicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[pred1, pred2, pred3, pred4]];
     }
     
     NSManagedObjectContext *moc = [NSManagedObjectContext MR_defaultContext];
@@ -109,7 +102,7 @@ static Database *_me;
 -(NSFetchedResultsController*) advanceSearch:(NSDictionary*)query withSorter:(NSDictionary*) sorter
 {
     NSPredicate *predicate;
-
+    
     for (NSString *key in [query allKeys])
     {
         NSString *fieldName;
@@ -141,6 +134,7 @@ static Database *_me;
         
         for (NSDictionary *dict in [query objectForKey:key])
         {
+            NSPredicate *pred;
             NSString *condition = [[dict allKeys] firstObject];
             NSString *stringValue;
             id value = [[dict allValues] firstObject];
@@ -148,13 +142,30 @@ static Database *_me;
             if ([value isKindOfClass:[NSManagedObject class]])
             {
                 stringValue = [value performSelector:@selector(name) withObject:nil];
+                
+                if ([key isEqualToString:@"Color"] && [stringValue isEqualToString:@"Colorless"])
+                {
+                    fieldName = @"colors";
+                    stringValue = nil;
+                }
+                else
+                {
+                    fieldName = @"colors.name";
+                }
             }
             else if ([value isKindOfClass:[NSString class]])
             {
                 stringValue = value;
             }
             
-            NSPredicate *pred = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", fieldName, stringValue];
+            if (stringValue)
+            {
+                pred = [NSPredicate predicateWithFormat:@"ANY %K ==[cd] %@", fieldName, stringValue];
+            }
+            else
+            {
+                pred = [NSPredicate predicateWithFormat:@"ANY %K = nil", fieldName];
+            }
             
             if ([condition isEqualToString:@"And"])
             {

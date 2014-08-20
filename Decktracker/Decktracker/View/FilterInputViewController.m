@@ -21,11 +21,13 @@
     int _selectedOperatorIndex;
     id _selectedFilter;
     NSString *_selectedOperator;
+    NSArray *_narrowedFilterOptions;
 }
 
 @synthesize filterName = _filterName;
 @synthesize filterOptions = _filterOptions;
 @synthesize operatorOptions = _operatorOptions;
+@synthesize searchBar = _searchBar;
 @synthesize tblFilter = _tblFilter;
 @synthesize tblOperator = _tblOperator;
 
@@ -54,8 +56,13 @@
     CGFloat dX = 0;
     CGFloat dY = 0;
     CGFloat dWidth = self.view.frame.size.width;
-    CGFloat dHeight = self.view.frame.size.height - dY - self.tabBarController.tabBar.frame.size.height;
+    CGFloat dHeight = self.view.frame.size.height - self.tabBarController.tabBar.frame.size.height;
     
+    self.searchBar = [[UISearchBar alloc] init];
+    self.searchBar.delegate = self;
+    self.searchBar.placeholder = self.filterName;
+    
+    dY = self.searchBar.frame.origin.y + self.searchBar.frame.size.height;
     self.tblFilter = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight*0.70)
                                                   style:UITableViewStylePlain];
     self.tblFilter.dataSource = self;
@@ -67,6 +74,7 @@
     self.tblOperator.dataSource = self;
     self.tblOperator.delegate = self;
     
+    self.navigationItem.titleView = self.searchBar;
     [self.view addSubview:self.tblFilter];
     [self.view addSubview:self.tblOperator];
     
@@ -101,6 +109,31 @@
     [self.navigationController popViewControllerAnimated:NO];
 }
 
+#pragma mark - UISearchBarDelegate
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    NSString *query = self.searchBar.text;
+    NSPredicate *predicate;
+    _selectedFilterIndex = -1;
+
+    if (query.length == 1)
+    {
+        predicate = [NSPredicate predicateWithFormat:@"%K BEGINSWITH[cd] %@", @"name", query];
+        _narrowedFilterOptions = [self.filterOptions filteredArrayUsingPredicate:predicate];
+    }
+    else if (query.length > 1)
+    {
+        predicate = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", @"name", query];
+        _narrowedFilterOptions = [self.filterOptions filteredArrayUsingPredicate:predicate];
+    }
+    else
+    {
+        _narrowedFilterOptions = nil;
+    }
+    
+    [self.tblFilter reloadData];
+}
+
 #pragma mark - UITableView
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -127,7 +160,9 @@
 {
     if (tableView == self.tblFilter)
     {
-        return self.filterOptions.count;
+        NSArray *arrFilter = _narrowedFilterOptions ? _narrowedFilterOptions : self.filterOptions;
+        
+        return arrFilter.count;
     }
     else if (tableView == self.tblOperator)
     {
@@ -157,9 +192,11 @@
         }
         else
         {
-            if ([[self.filterOptions firstObject] isKindOfClass:[Set class]])
+            NSArray *arrFilter = _narrowedFilterOptions ? _narrowedFilterOptions : self.filterOptions;
+            
+            if ([[arrFilter firstObject] isKindOfClass:[Set class]])
             {
-                Set *set = [self.filterOptions objectAtIndex:indexPath.row];
+                Set *set = [arrFilter objectAtIndex:indexPath.row];
                 NSString *path = [NSString stringWithFormat:@"%@/images/set/%@/C/24.png", [[NSBundle mainBundle] bundlePath], set.code];
                 
                 if (![[NSFileManager defaultManager] fileExistsAtPath:path])
@@ -172,29 +209,29 @@
                 }
                 cell.textLabel.text = set.name;
             }
-            else if ([[self.filterOptions firstObject] isKindOfClass:[CardRarity class]])
+            else if ([[arrFilter firstObject] isKindOfClass:[CardRarity class]])
             {
-                CardRarity *rarity = [self.filterOptions objectAtIndex:indexPath.row];
+                CardRarity *rarity = [arrFilter objectAtIndex:indexPath.row];
                 cell.textLabel.text = rarity.name;
             }
-            else if ([[self.filterOptions firstObject] isKindOfClass:[Format class]])
+            else if ([[arrFilter firstObject] isKindOfClass:[Format class]])
             {
-                Format *format = [self.filterOptions objectAtIndex:indexPath.row];
+                Format *format = [arrFilter objectAtIndex:indexPath.row];
                 cell.textLabel.text = format.name;
             }
-            else if ([[self.filterOptions firstObject] isKindOfClass:[CardType class]])
+            else if ([[arrFilter firstObject] isKindOfClass:[CardType class]])
             {
-                CardType *type = [self.filterOptions objectAtIndex:indexPath.row];
+                CardType *type = [arrFilter objectAtIndex:indexPath.row];
                 cell.textLabel.text = type.name;
             }
-            else if ([[self.filterOptions firstObject] isKindOfClass:[Artist class]])
+            else if ([[arrFilter firstObject] isKindOfClass:[Artist class]])
             {
-                Artist *artist = [self.filterOptions objectAtIndex:indexPath.row];
+                Artist *artist = [arrFilter objectAtIndex:indexPath.row];
                 cell.textLabel.text = artist.name;
             }
-            else if ([[self.filterOptions firstObject] isKindOfClass:[CardColor class]])
+            else if ([[arrFilter firstObject] isKindOfClass:[CardColor class]])
             {
-                CardColor *color = [self.filterOptions objectAtIndex:indexPath.row];
+                CardColor *color = [arrFilter objectAtIndex:indexPath.row];
                 NSString *colorInitial;
                 if ([color.name isEqualToString:@"Blue"])
                 {
@@ -239,13 +276,20 @@
 {
     if (tableView == self.tblFilter)
     {
+        NSArray *arrFilter = _narrowedFilterOptions ? _narrowedFilterOptions : self.filterOptions;
+        
         _selectedFilterIndex = (int)indexPath.row;
-        _selectedFilter = [self.filterOptions objectAtIndex:indexPath.row];
+        _selectedFilter = [arrFilter objectAtIndex:indexPath.row];
     }
     else if (tableView == self.tblOperator)
     {
         _selectedOperatorIndex = (int)indexPath.row;
         _selectedOperator = [self.operatorOptions objectAtIndex:indexPath.row];
+    }
+    
+    if ([self.searchBar canResignFirstResponder])
+    {
+        [self.searchBar resignFirstResponder];
     }
     
     [tableView reloadData];

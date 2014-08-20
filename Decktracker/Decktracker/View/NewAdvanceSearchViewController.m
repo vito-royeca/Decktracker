@@ -376,14 +376,12 @@
         }
         default:
         {
-            arrFilterOptions = @[@"High"];
             break;
         }
     }
     
     inputView.delegate = self;
     inputView.filterOptions = arrFilterOptions;
-    inputView.navigationItem.title = [_arrFilters objectAtIndex:indexPath.row];
     inputView.filterName = [_arrFilters objectAtIndex:indexPath.row];
     [self.navigationController pushViewController:inputView animated:YES];
 }
