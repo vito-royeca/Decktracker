@@ -7,15 +7,34 @@
 //
 
 #import "AdvanceSearchViewController.h"
+#import "AdvanceSearchResultsViewController.h"
+#import "Database.h"
+#import "FileManager.h"
 #import "NewAdvanceSearchViewController.h"
 
 @implementation AdvanceSearchViewController
 {
-    
+    NSMutableDictionary *_dictCurrentQuery;
+    NSMutableDictionary *_dictCurrentSort;
 }
 
 @synthesize arrAdvanceSearches = _arrAdvanceSearches;
 @synthesize tblView = _tblView;
+@synthesize fetchedResultsController = _fetchedResultsController;
+
+- (NSFetchedResultsController *)fetchedResultsController
+{
+    if (_fetchedResultsController != nil)
+    {
+        return _fetchedResultsController;
+    }
+    
+    NSFetchedResultsController *nsfrc = [[Database sharedInstance] advanceSearch:_dictCurrentQuery
+                                                                      withSorter:_dictCurrentSort];
+    
+    self.fetchedResultsController = nsfrc;
+    return _fetchedResultsController;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -32,7 +51,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.arrAdvanceSearches = [[NSMutableArray alloc] initWithObjects:@"Angels and Demons", @"Pain Lands", @"Wurms", nil];
+    self.arrAdvanceSearches = [[NSMutableArray alloc] initWithArray:[[FileManager sharedInstance] findAdvanceSearchFiles]];
     
     CGFloat dX = 0;
     CGFloat dY = 0;
@@ -87,14 +106,49 @@
         cell.accessoryType = UITableViewCellAccessoryDetailButton;
     }
     
-    cell.textLabel.text = [self.arrAdvanceSearches objectAtIndex:indexPath.row];
+    NSDictionary *dict = [self.arrAdvanceSearches objectAtIndex:indexPath.row];
+    cell.textLabel.text = [[dict allKeys] firstObject];
     
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSDictionary *dict = [self.arrAdvanceSearches objectAtIndex:indexPath.row];
+    NSArray *arrData = [[NSArray alloc] initWithContentsOfFile:[[dict allValues] firstObject]];
+    _dictCurrentQuery = [arrData firstObject];
+    _dictCurrentSort = [arrData lastObject];
     
+    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:hud];
+    hud.delegate = self;
+    [hud showWhileExecuting:@selector(doSearch) onTarget:self withObject:nil animated:NO];
+}
+
+-(void) doSearch
+{
+    self.fetchedResultsController = nil;
+    
+    NSError *error;
+    if (![[self fetchedResultsController] performFetch:&error])
+    {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
+}
+
+#pragma mark - MBProgressHUDDelegate methods
+- (void)hudWasHidden:(MBProgressHUD *)hud
+{
+	[hud removeFromSuperview];
+    
+    AdvanceSearchResultsViewController *advanceSearchResultsView = [[AdvanceSearchResultsViewController alloc] init];
+    advanceSearchResultsView.fetchedResultsController = self.fetchedResultsController;
+    advanceSearchResultsView.fetchedResultsController.delegate = advanceSearchResultsView;
+    advanceSearchResultsView.navigationItem.title = [NSString stringWithFormat:@"%tu Search Results", [self.fetchedResultsController.fetchedObjects count]];
+    advanceSearchResultsView.queryToSave = _dictCurrentQuery;
+    advanceSearchResultsView.sorterToSave = _dictCurrentSort;
+    advanceSearchResultsView.showSaveButton = NO;
+    [self.navigationController pushViewController:advanceSearchResultsView animated:NO];
 }
 
 @end

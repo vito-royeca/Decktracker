@@ -7,9 +7,11 @@
 //
 
 #import "AdvanceSearchResultsViewController.h"
+#import "AdvanceSearchViewController.h"
 #import "Card.h"
 #import "CardDetailsViewController.h"
 #import "CardRarity.h"
+#import "FileManager.h"
 #import "Set.h"
 
 @interface AdvanceSearchResultsViewController ()
@@ -20,6 +22,9 @@
 
 @synthesize fetchedResultsController = _fetchedResultsController;
 @synthesize tblResults = _tblResults;
+@synthesize queryToSave = _queryToSave;
+@synthesize sorterToSave = _sorterToSave;
+@synthesize showSaveButton = _showSaveButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -47,10 +52,13 @@
     
     [self.view addSubview:self.tblResults];
     
-    UIBarButtonItem *btnSave = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
-                                                                            target:self
-                                                                            action:@selector(btnSaveTapped:)];
-    self.navigationItem.rightBarButtonItem = btnSave;
+    if (self.showSaveButton)
+    {
+        UIBarButtonItem *btnSave = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
+                                                                                 target:self
+                                                                                 action:@selector(btnSaveTapped:)];
+        self.navigationItem.rightBarButtonItem = btnSave;
+    }
 }
 
 -(void) viewDidAppear:(BOOL)animated
@@ -66,9 +74,26 @@
 
 -(void) btnSaveTapped:(id) sender
 {
-//    NewAdvanceSearchViewController *newAdvanceView = [[NewAdvanceSearchViewController alloc] init];
-//    
-//    [self.navigationController pushViewController:newAdvanceView animated:NO];
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Save"
+                                                     message:@"Advance Search Name"
+                                                    delegate:self
+                                           cancelButtonTitle:@"Cancel"
+                                           otherButtonTitles:@"OK", nil];
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [alert show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1)
+    {
+        [[FileManager sharedInstance] saveAdvanceQuery:[[alertView textFieldAtIndex:0] text]
+                                           withFilters:self.queryToSave
+                                            andSorters:self.sorterToSave];
+        AdvanceSearchViewController *advanceView = [[AdvanceSearchViewController alloc] init];
+    
+        [self.navigationController pushViewController:advanceView animated:NO];
+    }
 }
 
 #pragma mark - UITableView

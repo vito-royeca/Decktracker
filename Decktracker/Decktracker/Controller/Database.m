@@ -136,14 +136,11 @@ static Database *_me;
         {
             NSPredicate *pred;
             NSString *condition = [[dict allKeys] firstObject];
-            NSString *stringValue;
-            id value = [[dict allValues] firstObject];
+            NSString *stringValue = [[dict allValues] firstObject];
             
-            if ([value isKindOfClass:[NSManagedObject class]])
+            if ([key isEqualToString:@"Color"])
             {
-                stringValue = [value performSelector:@selector(name) withObject:nil];
-                
-                if ([key isEqualToString:@"Color"] && [stringValue isEqualToString:@"Colorless"])
+                if ([stringValue isEqualToString:@"Colorless"])
                 {
                     fieldName = @"colors";
                     stringValue = nil;
@@ -152,10 +149,6 @@ static Database *_me;
                 {
                     fieldName = @"colors.name";
                 }
-            }
-            else if ([value isKindOfClass:[NSString class]])
-            {
-                stringValue = value;
             }
             
             if (stringValue)

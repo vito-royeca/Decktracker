@@ -77,7 +77,7 @@
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60)
                                                          forBarMetrics:UIBarMetricsDefault];
     
-    UIBarButtonItem *btnAdvance = [[UIBarButtonItem alloc] initWithTitle:@"Advance"
+    UIBarButtonItem *btnAdvance = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"filter-25.png"]
                                                                    style:UIBarButtonItemStylePlain
                                                                   target:self
                                                                   action:@selector(btnAdvanceTapped:)];

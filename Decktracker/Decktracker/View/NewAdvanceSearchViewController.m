@@ -39,7 +39,8 @@
         return _fetchedResultsController;
     }
     
-    NSFetchedResultsController *nsfrc = [[Database sharedInstance] advanceSearch:self.dictCurrentQuery withSorter:self.dictCurrentSort];
+    NSFetchedResultsController *nsfrc = [[Database sharedInstance] advanceSearch:self.dictCurrentQuery
+                                                                      withSorter:self.dictCurrentSort];
     
     self.fetchedResultsController = nsfrc;
     return _fetchedResultsController;
@@ -60,6 +61,8 @@
     // Do any additional setup after loading the view.
     
     self.dictCurrentQuery = [[NSMutableDictionary alloc] init];
+    self.dictCurrentSort = [[NSMutableDictionary alloc] init];
+    
     _arrFilters = @[@"Name", @"Set", @"Rarity", @"Format", @"Type", @"Subtype", @"Color", @"Text", @"Flavor Text",
                     @"Artist"];
     
@@ -413,6 +416,9 @@
     advanceSearchResultsView.fetchedResultsController = self.fetchedResultsController;
     advanceSearchResultsView.fetchedResultsController.delegate = advanceSearchResultsView;
     advanceSearchResultsView.navigationItem.title = [NSString stringWithFormat:@"%tu Search Results", [self.fetchedResultsController.fetchedObjects count]];
+    advanceSearchResultsView.queryToSave = self.dictCurrentQuery;
+    advanceSearchResultsView.sorterToSave = self.dictCurrentSort;
+    advanceSearchResultsView.showSaveButton = YES;
     [self.navigationController pushViewController:advanceSearchResultsView animated:NO];
 }
 

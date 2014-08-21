@@ -8,9 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AdvanceSearchResultsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate>
+@interface AdvanceSearchResultsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate, UIAlertViewDelegate>
 
 @property(strong,nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property(strong,nonatomic) UITableView *tblResults;
+@property(strong,nonatomic) NSDictionary *queryToSave;
+@property(strong,nonatomic) NSDictionary *sorterToSave;
+@property(nonatomic) BOOL showSaveButton;
 
 @end

@@ -19,9 +19,9 @@
 {
     int _selectedFilterIndex;
     int _selectedOperatorIndex;
-    id _selectedFilter;
+    NSString *_selectedFilter;
     NSString *_selectedOperator;
-    NSArray *_narrowedFilterOptions;
+    NSArray  *_narrowedFilterOptions;
 }
 
 @synthesize filterName = _filterName;
@@ -49,7 +49,18 @@
     self.operatorOptions = @[@"And", @"Or", @"Not"];
     _selectedFilterIndex = 0;
     _selectedOperatorIndex = 0;
-    _selectedFilter = [self.filterOptions firstObject];
+    
+    id obj = [self.filterOptions firstObject];
+    NSString *stringValue;
+    if ([obj isKindOfClass:[NSManagedObject class]])
+    {
+        stringValue = [obj performSelector:@selector(name) withObject:nil];
+    }
+    else if ([obj isKindOfClass:[NSString class]])
+    {
+        stringValue = obj;
+    }
+    _selectedFilter = stringValue;
     _selectedOperator = [self.operatorOptions firstObject];
 
     
@@ -277,9 +288,20 @@
     if (tableView == self.tblFilter)
     {
         NSArray *arrFilter = _narrowedFilterOptions ? _narrowedFilterOptions : self.filterOptions;
+        id obj = [arrFilter objectAtIndex:indexPath.row];
+        NSString *stringValue;
+        
+        if ([obj isKindOfClass:[NSManagedObject class]])
+        {
+            stringValue = [obj performSelector:@selector(name) withObject:nil];
+        }
+        else if ([obj isKindOfClass:[NSString class]])
+        {
+            stringValue = obj;
+        }
         
         _selectedFilterIndex = (int)indexPath.row;
-        _selectedFilter = [arrFilter objectAtIndex:indexPath.row];
+        _selectedFilter = stringValue;
     }
     else if (tableView == self.tblOperator)
     {

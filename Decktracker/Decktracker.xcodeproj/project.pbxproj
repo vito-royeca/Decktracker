@@ -43,6 +43,7 @@
 		8C3CBDD919A31618002CD96E /* CardType.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDD819A31618002CD96E /* CardType.m */; };
 		8C3CBDDC19A31618002CD96E /* SetType.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDDB19A31618002CD96E /* SetType.m */; };
 		8C3CBDDF19A31618002CD96E /* CardRarity.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDDE19A31618002CD96E /* CardRarity.m */; };
+		8C5246E119A5137300B10147 /* FileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5246E019A5137300B10147 /* FileManager.m */; };
 		8C5BDD70199B3B7D007AF140 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5BDD6F199B3B7D007AF140 /* MenuViewController.m */; };
 		8C60EB6E19927C1D00C5EEF9 /* UIImage+Scale.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C60EB6D19927C1D00C5EEF9 /* UIImage+Scale.m */; };
 		8CADEF1719923DDE004D7658 /* images in Resources */ = {isa = PBXBuildFile; fileRef = 8CADEF1619923DDE004D7658 /* images */; };
@@ -142,6 +143,8 @@
 		8C3CBDDB19A31618002CD96E /* SetType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SetType.m; sourceTree = "<group>"; };
 		8C3CBDDD19A31618002CD96E /* CardRarity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardRarity.h; sourceTree = "<group>"; };
 		8C3CBDDE19A31618002CD96E /* CardRarity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardRarity.m; sourceTree = "<group>"; };
+		8C5246DF19A5137300B10147 /* FileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileManager.h; sourceTree = "<group>"; };
+		8C5246E019A5137300B10147 /* FileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileManager.m; sourceTree = "<group>"; };
 		8C5BDD6E199B3B7D007AF140 /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
 		8C5BDD6F199B3B7D007AF140 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 		8C60EB6C19927C1D00C5EEF9 /* UIImage+Scale.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Scale.h"; sourceTree = "<group>"; };
@@ -323,6 +326,8 @@
 			children = (
 				8C2E142F199085C700023BAA /* Database.h */,
 				8C2E1430199085C700023BAA /* Database.m */,
+				8C5246DF19A5137300B10147 /* FileManager.h */,
+				8C5246E019A5137300B10147 /* FileManager.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -549,6 +554,7 @@
 				8C3CBDDF19A31618002CD96E /* CardRarity.m in Sources */,
 				8C1DFDD819913D2100174054 /* CardDetailsViewController.m in Sources */,
 				8C2E142E199085A900023BAA /* MainViewController.m in Sources */,
+				8C5246E119A5137300B10147 /* FileManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
