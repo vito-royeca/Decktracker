@@ -10,6 +10,7 @@
 #import "AdvanceSearchResultsViewController.h"
 #import "Database.h"
 #import "FileManager.h"
+#import "Magic.h"
 #import "NewAdvanceSearchViewController.h"
 
 @implementation AdvanceSearchViewController
@@ -81,6 +82,7 @@
 {
     NewAdvanceSearchViewController *newAdvanceView = [[NewAdvanceSearchViewController alloc] init];
     
+    newAdvanceView.mode = AdvanceSearchModeSave;
     [self.navigationController pushViewController:newAdvanceView animated:NO];
 }
 
@@ -103,7 +105,7 @@
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-        cell.accessoryType = UITableViewCellAccessoryDetailButton;
+        cell.accessoryType = UITableViewCellAccessoryNone;
     }
     
     NSDictionary *dict = [self.arrAdvanceSearches objectAtIndex:indexPath.row];
@@ -147,7 +149,7 @@
     advanceSearchResultsView.navigationItem.title = [NSString stringWithFormat:@"%tu Search Results", [self.fetchedResultsController.fetchedObjects count]];
     advanceSearchResultsView.queryToSave = _dictCurrentQuery;
     advanceSearchResultsView.sorterToSave = _dictCurrentSort;
-    advanceSearchResultsView.showSaveButton = NO;
+    advanceSearchResultsView.mode = AdvanceSearchModeEdit;
     [self.navigationController pushViewController:advanceSearchResultsView animated:NO];
 }
 

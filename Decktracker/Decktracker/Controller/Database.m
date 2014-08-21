@@ -106,30 +106,48 @@ static Database *_me;
     for (NSString *key in [query allKeys])
     {
         NSString *fieldName;
+        BOOL bToMany = NO;
         
-        if ([key isEqualToString:@"Set"])
+        if ([key isEqualToString:@"Name"])
+        {
+            fieldName = @"name";
+        }
+        else if ([key isEqualToString:@"Set"])
         {
             fieldName = @"set.name";
+            bToMany = YES;
         }
         else if ([key isEqualToString:@"Rarity"])
         {
             fieldName = @"rarity.name";
+            bToMany = YES;
         }
         else if ([key isEqualToString:@"Type"])
         {
             fieldName = @"types.name";
+            bToMany = YES;
         }
         else if ([key isEqualToString:@"Subtype"])
         {
             fieldName = @"subTypes.name";
+            bToMany = YES;
         }
         else if ([key isEqualToString:@"Color"])
         {
             fieldName = @"colors.name";
         }
+        else if ([key isEqualToString:@"Text"])
+        {
+            fieldName = @"originalText";
+        }
+        else if ([key isEqualToString:@"Flavor Text"])
+        {
+            fieldName = @"flavor";
+        }
         else if ([key isEqualToString:@"Artist"])
         {
             fieldName = @"artist.name";
+            bToMany = YES;
         }
         
         for (NSDictionary *dict in [query objectForKey:key])
@@ -153,11 +171,32 @@ static Database *_me;
             
             if (stringValue)
             {
-                pred = [NSPredicate predicateWithFormat:@"ANY %K ==[cd] %@", fieldName, stringValue];
+                if (bToMany)
+                {
+                    pred = [NSPredicate predicateWithFormat:@"ANY %K ==[cd] %@", fieldName, stringValue];
+                }
+                else
+                {
+                    if (stringValue.length == 1)
+                    {
+                        pred = [NSPredicate predicateWithFormat:@"%K BEGINSWITH[cd] %@", fieldName, stringValue];
+                    }
+                    else
+                    {
+                        pred = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", fieldName, stringValue];
+                    }
+                }
             }
             else
             {
-                pred = [NSPredicate predicateWithFormat:@"ANY %K = nil", fieldName];
+                if (bToMany)
+                {
+                    pred = [NSPredicate predicateWithFormat:@"ANY %K = nil", fieldName];
+                }
+                else
+                {
+                    pred = [NSPredicate predicateWithFormat:@"%K = nil", fieldName];
+                }
             }
             
             if ([condition isEqualToString:@"And"])

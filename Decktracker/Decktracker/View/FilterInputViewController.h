@@ -14,7 +14,7 @@
 
 @end
 
-@interface FilterInputViewController : UIViewController<UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface FilterInputViewController : UIViewController<UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 
 @property(strong,nonatomic) id<FilterInputViewControllerDelegate> delegate;
 

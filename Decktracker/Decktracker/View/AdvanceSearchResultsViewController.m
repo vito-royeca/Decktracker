@@ -12,11 +12,8 @@
 #import "CardDetailsViewController.h"
 #import "CardRarity.h"
 #import "FileManager.h"
+#import "NewAdvanceSearchViewController.h"
 #import "Set.h"
-
-@interface AdvanceSearchResultsViewController ()
-
-@end
 
 @implementation AdvanceSearchResultsViewController
 
@@ -24,7 +21,7 @@
 @synthesize tblResults = _tblResults;
 @synthesize queryToSave = _queryToSave;
 @synthesize sorterToSave = _sorterToSave;
-@synthesize showSaveButton = _showSaveButton;
+@synthesize mode = _mode;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -52,13 +49,23 @@
     
     [self.view addSubview:self.tblResults];
     
-    if (self.showSaveButton)
+    
+    
+    UIBarButtonItem *btnAction;
+    
+    if (self.mode == AdvanceSearchModeEdit)
     {
-        UIBarButtonItem *btnSave = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
-                                                                                 target:self
-                                                                                 action:@selector(btnSaveTapped:)];
-        self.navigationItem.rightBarButtonItem = btnSave;
+        btnAction = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
+                                                                  target:self
+                                                                  action:@selector(btnActionTapped:)];
     }
+    else if (self.mode == AdvanceSearchModeSave)
+    {
+        btnAction = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
+                                                                  target:self
+                                                                  action:@selector(btnActionTapped:)];
+    }
+    self.navigationItem.rightBarButtonItem = btnAction;
 }
 
 -(void) viewDidAppear:(BOOL)animated
@@ -72,15 +79,28 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void) btnSaveTapped:(id) sender
+-(void) btnActionTapped:(id) sender
 {
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Save"
-                                                     message:@"Advance Search Name"
-                                                    delegate:self
-                                           cancelButtonTitle:@"Cancel"
-                                           otherButtonTitles:@"OK", nil];
-    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-    [alert show];
+    if (self.mode == AdvanceSearchModeEdit)
+    {
+        NewAdvanceSearchViewController *newAdvanceView = [[NewAdvanceSearchViewController alloc] init];
+        
+        newAdvanceView.mode = AdvanceSearchModeEdit;
+        newAdvanceView.dictCurrentQuery = [[NSMutableDictionary alloc] initWithDictionary:self.queryToSave];
+        newAdvanceView.dictCurrentSorter = [[NSMutableDictionary alloc] initWithDictionary:self.sorterToSave];
+        [self.navigationController pushViewController:newAdvanceView animated:NO];
+        [newAdvanceView showSegment:2];
+    }
+    else if (self.mode == AdvanceSearchModeSave)
+    {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Save"
+                                                         message:@"Advance Search Name"
+                                                        delegate:self
+                                               cancelButtonTitle:@"Cancel"
+                                               otherButtonTitles:@"OK", nil];
+        alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+        [alert show];
+    }
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex

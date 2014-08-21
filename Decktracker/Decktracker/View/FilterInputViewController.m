@@ -49,31 +49,13 @@
     self.operatorOptions = @[@"And", @"Or", @"Not"];
     _selectedFilterIndex = 0;
     _selectedOperatorIndex = 0;
-    
-    id obj = [self.filterOptions firstObject];
-    NSString *stringValue;
-    if ([obj isKindOfClass:[NSManagedObject class]])
-    {
-        stringValue = [obj performSelector:@selector(name) withObject:nil];
-    }
-    else if ([obj isKindOfClass:[NSString class]])
-    {
-        stringValue = obj;
-    }
-    _selectedFilter = stringValue;
     _selectedOperator = [self.operatorOptions firstObject];
-
     
     CGFloat dX = 0;
-    CGFloat dY = 0;
+    CGFloat dY = 0;//self.searchBar.frame.origin.y + self.searchBar.frame.size.height;
     CGFloat dWidth = self.view.frame.size.width;
     CGFloat dHeight = self.view.frame.size.height - self.tabBarController.tabBar.frame.size.height;
     
-    self.searchBar = [[UISearchBar alloc] init];
-    self.searchBar.delegate = self;
-    self.searchBar.placeholder = self.filterName;
-    
-    dY = self.searchBar.frame.origin.y + self.searchBar.frame.size.height;
     self.tblFilter = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight*0.70)
                                                   style:UITableViewStylePlain];
     self.tblFilter.dataSource = self;
@@ -85,9 +67,36 @@
     self.tblOperator.dataSource = self;
     self.tblOperator.delegate = self;
     
-    self.navigationItem.titleView = self.searchBar;
     [self.view addSubview:self.tblFilter];
     [self.view addSubview:self.tblOperator];
+    
+    if (self.filterOptions)
+    {
+        id obj = [self.filterOptions firstObject];
+        NSString *stringValue;
+        if (obj)
+        {
+            if ([obj isKindOfClass:[NSManagedObject class]])
+            {
+                stringValue = [obj performSelector:@selector(name) withObject:nil];
+            }
+            else if ([obj isKindOfClass:[NSString class]])
+            {
+                stringValue = obj;
+            }
+        }
+        _selectedFilter = stringValue;
+        
+        self.searchBar = [[UISearchBar alloc] init];
+        self.searchBar.delegate = self;
+        self.searchBar.placeholder = self.filterName;
+        self.navigationItem.titleView = self.searchBar;
+    }
+    else
+    {
+        self.navigationItem.title = self.filterName;
+        self.tblFilter.separatorColor = [UIColor clearColor];
+    }
     
     UIBarButtonItem *btnOk = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                            target:self
@@ -123,10 +132,25 @@
 #pragma mark - UISearchBarDelegate
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
+    [self searchFilterOprions];
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    [self searchFilterOprions];
+    
+    if ([self.searchBar canResignFirstResponder])
+    {
+        [self.searchBar resignFirstResponder];
+    }
+}
+
+- (void) searchFilterOprions
+{
     NSString *query = self.searchBar.text;
     NSPredicate *predicate;
     _selectedFilterIndex = -1;
-
+    
     if (query.length == 1)
     {
         predicate = [NSPredicate predicateWithFormat:@"%K BEGINSWITH[cd] %@", @"name", query];
@@ -171,9 +195,16 @@
 {
     if (tableView == self.tblFilter)
     {
-        NSArray *arrFilter = _narrowedFilterOptions ? _narrowedFilterOptions : self.filterOptions;
+        if (self.filterOptions)
+        {
+            NSArray *arrFilter = _narrowedFilterOptions ? _narrowedFilterOptions : self.filterOptions;
         
-        return arrFilter.count;
+            return arrFilter.count;
+        }
+        else
+        {
+            return 1;
+        }
     }
     else if (tableView == self.tblOperator)
     {
@@ -197,11 +228,7 @@
     
     if (tableView == self.tblFilter)
     {
-        if (!self.filterOptions)
-        {
-            // for text input here
-        }
-        else
+        if (self.filterOptions)
         {
             NSArray *arrFilter = _narrowedFilterOptions ? _narrowedFilterOptions : self.filterOptions;
             
@@ -270,9 +297,26 @@
                 
                 cell.textLabel.text = color.name;
             }
+            
+            cell.accessoryType = indexPath.row == _selectedFilterIndex ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
         }
-        
-        cell.accessoryType = indexPath.row == _selectedFilterIndex ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+        else
+        {
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            
+            UITextField *txtField = [[UITextField alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width-20, 30)];
+            txtField.adjustsFontSizeToFitWidth = YES;
+            txtField.borderStyle = UITextBorderStyleRoundedRect;
+            txtField.autocorrectionType = UITextAutocorrectionTypeNo; // no auto correction support
+            txtField.autocapitalizationType = UITextAutocapitalizationTypeNone; // no auto capitalization support
+            txtField.placeholder = [NSString stringWithFormat:@"Type %@ here", self.filterName];
+            txtField.delegate = self;
+            txtField.clearButtonMode = UITextFieldViewModeAlways;
+            [txtField addTarget:self
+                          action:@selector(textFieldDidChange:)
+                forControlEvents:UIControlEventEditingChanged];
+            [cell.contentView addSubview:txtField];
+        }
     }
     else if (tableView == self.tblOperator)
     {
@@ -315,6 +359,25 @@
     }
     
     [tableView reloadData];
+}
+
+#pragma mark - UITextFieldDelegate
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    _selectedFilter = textField.text;
+    
+    if ([textField canBecomeFirstResponder])
+    {
+        [textField resignFirstResponder];
+    }
+    return YES;
+}
+
+-(void) textFieldDidChange:(id) sender
+{
+    UITextField *textField = sender;
+    
+    _selectedFilter = textField.text;
 }
 
 @end

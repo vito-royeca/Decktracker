@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Magic.h"
 
 @interface AdvanceSearchResultsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate, UIAlertViewDelegate>
 
@@ -14,6 +15,6 @@
 @property(strong,nonatomic) UITableView *tblResults;
 @property(strong,nonatomic) NSDictionary *queryToSave;
 @property(strong,nonatomic) NSDictionary *sorterToSave;
-@property(nonatomic) BOOL showSaveButton;
+@property(nonatomic) AdvanceSearchMode mode;
 
 @end

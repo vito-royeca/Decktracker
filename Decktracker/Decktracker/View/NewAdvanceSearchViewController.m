@@ -14,7 +14,6 @@
 #import "CardType.h"
 #import "Database.h"
 #import "Format.h"
-#import "Magic.h"
 #import "Set.h"
 
 @implementation NewAdvanceSearchViewController
@@ -29,8 +28,9 @@
 @synthesize segmentedControl = _segmentedControl;
 @synthesize tblView = _tblView;
 @synthesize dictCurrentQuery = _dictCurrentQuery;
-@synthesize dictCurrentSort = _dictCurrentSort;
+@synthesize dictCurrentSorter = _dictCurrentSorter;
 @synthesize fetchedResultsController = _fetchedResultsController;
+@synthesize mode = _mode;
 
 - (NSFetchedResultsController *)fetchedResultsController
 {
@@ -40,7 +40,7 @@
     }
     
     NSFetchedResultsController *nsfrc = [[Database sharedInstance] advanceSearch:self.dictCurrentQuery
-                                                                      withSorter:self.dictCurrentSort];
+                                                                      withSorter:self.dictCurrentSorter];
     
     self.fetchedResultsController = nsfrc;
     return _fetchedResultsController;
@@ -49,8 +49,11 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
+    if (self)
+    {
         // Custom initialization
+        self.dictCurrentQuery = [[NSMutableDictionary alloc] init];
+        self.dictCurrentSorter = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -60,10 +63,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.dictCurrentQuery = [[NSMutableDictionary alloc] init];
-    self.dictCurrentSort = [[NSMutableDictionary alloc] init];
-    
-    _arrFilters = @[@"Name", @"Set", @"Rarity", @"Format", @"Type", @"Subtype", @"Color", @"Text", @"Flavor Text",
+    _arrFilters = @[@"Name", @"Set", @"Rarity", /*@"Format",*/ @"Type", @"Subtype", @"Color", @"Text", @"Flavor Text",
                     @"Artist"];
     
     _arrSorters = @[@"Name"];
@@ -105,7 +105,14 @@
                                                                                action:@selector(btnCancelTapped:)];
     self.navigationItem.leftBarButtonItem = btnCancel;
 
-    self.navigationItem.title = @"New Advance Search";
+    if (self.mode == AdvanceSearchModeEdit)
+    {
+        self.navigationItem.title = @"Edit Advance Search";
+    }
+    else if (self.mode == AdvanceSearchModeSave)
+    {
+        self.navigationItem.title = @"New Advance Search";
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -167,7 +174,14 @@
             break;
         }
     }
+    
     [self.tblView reloadData];
+}
+
+-(void) showSegment:(int) index
+{
+    self.segmentedControl.selectedSegmentIndex = index;
+    [self.segmentedControl sendActionsForControlEvents:UIControlEventValueChanged];
 }
 
 #pragma mark - UITableView
@@ -354,25 +368,20 @@
         }
         case 3:
         {
-            arrFilterOptions = [Format MR_findAllSortedBy:@"name" ascending:YES];
+            arrFilterOptions = [CardType MR_findAllSortedBy:@"name" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"name IN %@", _cardTypes]];
             break;
         }
         case 4:
         {
-            arrFilterOptions = [CardType MR_findAllSortedBy:@"name" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"name IN %@", _cardTypes]];
+            arrFilterOptions = [CardType MR_findAllSortedBy:@"name" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"NOT (name IN %@)", _cardTypes]];
             break;
         }
         case 5:
         {
-            arrFilterOptions = [CardType MR_findAllSortedBy:@"name" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"NOT (name IN %@)", _cardTypes]];
-            break;
-        }
-        case 6:
-        {
             arrFilterOptions = [CardColor MR_findAllSortedBy:@"name" ascending:YES];;
             break;
         }
-        case 9:
+        case 8:
         {
             arrFilterOptions = [Artist MR_findAllSortedBy:@"name" ascending:YES];
             break;
@@ -401,10 +410,7 @@
     }
     [arrRows addObject:@{[filter objectForKey:@"Condition"] : [filter objectForKey:@"Value"]}];
     
-    self.segmentedControl.selectedSegmentIndex = 2;
-    self.tblView.editing = YES;
-    self.navigationItem.rightBarButtonItem = _btnPlay;
-    [self.tblView reloadData];
+    [self showSegment:2];
 }
 
 #pragma mark - MBProgressHUDDelegate methods
@@ -417,8 +423,8 @@
     advanceSearchResultsView.fetchedResultsController.delegate = advanceSearchResultsView;
     advanceSearchResultsView.navigationItem.title = [NSString stringWithFormat:@"%tu Search Results", [self.fetchedResultsController.fetchedObjects count]];
     advanceSearchResultsView.queryToSave = self.dictCurrentQuery;
-    advanceSearchResultsView.sorterToSave = self.dictCurrentSort;
-    advanceSearchResultsView.showSaveButton = YES;
+    advanceSearchResultsView.sorterToSave = self.dictCurrentSorter;
+    advanceSearchResultsView.mode = AdvanceSearchModeSave;
     [self.navigationController pushViewController:advanceSearchResultsView animated:NO];
 }
 

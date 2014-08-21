@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "FilterInputViewController.h"
+#import "Magic.h"
 #import "MBProgressHUD.h"
 
 @interface NewAdvanceSearchViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, FilterInputViewControllerDelegate, MBProgressHUDDelegate>
@@ -15,7 +16,10 @@
 @property(strong,nonatomic) UISegmentedControl *segmentedControl;
 @property(strong,nonatomic) UITableView *tblView;
 @property(strong,nonatomic) NSMutableDictionary *dictCurrentQuery;
-@property(strong,nonatomic) NSMutableDictionary *dictCurrentSort;
+@property(strong,nonatomic) NSMutableDictionary *dictCurrentSorter;
 @property(strong,nonatomic) NSFetchedResultsController *fetchedResultsController;
+@property(nonatomic) AdvanceSearchMode mode;
+
+-(void) showSegment:(int) index;
 
 @end
