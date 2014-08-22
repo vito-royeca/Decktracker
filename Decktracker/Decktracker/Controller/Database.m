@@ -7,6 +7,8 @@
 //
 
 #import "Database.h"
+#import "Magic.h"
+#import "Version.h"
 
 @implementation Database
 
@@ -47,6 +49,21 @@ static Database *_me;
         if (![[NSFileManager defaultManager] copyItemAtURL:preloadURL toURL:storeURL error:&err])
         {
             NSLog(@"Error: Unable to copy preloaded database.");
+        }
+    }
+    else
+    {
+        [MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:kDatabaseStore];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"dataSet == %@", @"JSON"];
+        Version *jsonVersion = [Version MR_findFirstWithPredicate:predicate
+                                                         sortedBy:@"date"
+                                                        ascending:NO];
+        
+        if (![jsonVersion.version isEqualToString:[JSON_VERSION objectForKey:@"version"]])
+        {
+            [MagicalRecord cleanUp];
+            [[NSFileManager defaultManager] removeItemAtPath:[storeURL path] error:nil];
+            [self setupDb];
         }
     }
 #endif

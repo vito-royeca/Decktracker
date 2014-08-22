@@ -11,6 +11,7 @@
 		8C1B4DC9198CF0C000B4C948 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C1B4DC8198CF0C000B4C948 /* CoreData.framework */; };
 		8C1B4DCB198CF0C000B4C948 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C1B4DCA198CF0C000B4C948 /* Foundation.framework */; };
 		8C1B4DCE198CF0C000B4C948 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1B4DCD198CF0C000B4C948 /* main.m */; };
+		8C1FAC3519A788C6009B2981 /* Version.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1FAC3419A788C6009B2981 /* Version.m */; };
 		8C2150911993C66200B0128C /* database.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8C21507F1993C66200B0128C /* database.xcdatamodeld */; };
 		8C3CBDF919A31642002CD96E /* Artist.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDE219A31642002CD96E /* Artist.m */; };
 		8C3CBDFA19A31642002CD96E /* Block.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDE419A31642002CD96E /* Block.m */; };
@@ -76,6 +77,8 @@
 		8C1B4DCD198CF0C000B4C948 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8C1B4DD0198CF0C000B4C948 /* DataSource-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DataSource-Prefix.pch"; sourceTree = "<group>"; };
 		8C1B4DDC198CF21700B4C948 /* AllSets-x.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "AllSets-x.json"; sourceTree = "<group>"; };
+		8C1FAC3319A788C6009B2981 /* Version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Version.h; path = ../../Decktracker/Decktracker/Model/Version.h; sourceTree = "<group>"; };
+		8C1FAC3419A788C6009B2981 /* Version.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Version.m; path = ../../Decktracker/Decktracker/Model/Version.m; sourceTree = "<group>"; };
 		8C2150801993C66200B0128C /* database.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = database.xcdatamodel; sourceTree = "<group>"; };
 		8C3CBDE119A31642002CD96E /* Artist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Artist.h; path = ../../Decktracker/Decktracker/Model/Artist.h; sourceTree = "<group>"; };
 		8C3CBDE219A31642002CD96E /* Artist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Artist.m; path = ../../Decktracker/Decktracker/Model/Artist.m; sourceTree = "<group>"; };
@@ -219,6 +222,8 @@
 				8C3CBDF619A31642002CD96E /* Set.m */,
 				8C3CBDF719A31642002CD96E /* SetType.h */,
 				8C3CBDF819A31642002CD96E /* SetType.m */,
+				8C1FAC3319A788C6009B2981 /* Version.h */,
+				8C1FAC3419A788C6009B2981 /* Version.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -364,6 +369,7 @@
 			files = (
 				8C80A0CC198D040500BADA6C /* Database.m in Sources */,
 				8C3CBE0219A31642002CD96E /* Format.m in Sources */,
+				8C1FAC3519A788C6009B2981 /* Version.m in Sources */,
 				8C3CBDFC19A31642002CD96E /* CardColor.m in Sources */,
 				8C80A0C2198D01D600BADA6C /* JSONLoader.m in Sources */,
 				8C3CBE0119A31642002CD96E /* CardType.m in Sources */,
