@@ -131,16 +131,26 @@
             
             for (Card *card in set.cards)
             {
-                NSURL *url = [NSURL URLWithString:[[NSString stringWithFormat:@"http://mtgimage.com/set/%@/%@.hq.jpg", set.code, card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+                
                 NSString *filePath = [setPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.hq.jpg", card.imageName]];
+                NSURL *url;
                 
-                NSLog(@"Downloading... %@", url);
-                [JJJUtil downloadResource:url toPath:filePath];
+                if (![[NSFileManager defaultManager] fileExistsAtPath:filePath])
+                {
+                    url = [NSURL URLWithString:[[NSString stringWithFormat:@"http://mtgimage.com/set/%@/%@.hq.jpg", set.code, card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
                 
-                url = [NSURL URLWithString:[[NSString stringWithFormat:@"http://mtgimage.com/set/%@/%@.crop.jpg", set.code, card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+                    NSLog(@"Downloading... %@", url);
+                    [JJJUtil downloadResource:url toPath:filePath];
+                }
+                
                 filePath = [setPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.crop.jpg", card.imageName]];
-                NSLog(@"Downloading... %@", url);
-                [JJJUtil downloadResource:url toPath:filePath];
+                if (![[NSFileManager defaultManager] fileExistsAtPath:filePath])
+                {
+                    url = [NSURL URLWithString:[[NSString stringWithFormat:@"http://mtgimage.com/set/%@/%@.crop.jpg", set.code, card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+                    
+                    NSLog(@"Downloading... %@", url);
+                    [JJJUtil downloadResource:url toPath:filePath];
+                }
             }
             
             //delete if empty
@@ -176,13 +186,13 @@
             NSString *output;
             CGFloat quality = 0;
             
-            if ([file rangeOfString:@".crop.jpg"].location != NSNotFound)
+            /*if ([file rangeOfString:@".crop.jpg"].location != NSNotFound)
             {
                 outputPath = [outputPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/crop"]];
                 output = [outputPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", [file stringByReplacingOccurrencesOfString:@".crop.jpg" withString:@".jpg"]]];
                 quality = 20;
             }
-            else if ([file rangeOfString:@".hq.jpg"].location != NSNotFound)
+            else */if ([file rangeOfString:@".hq.jpg"].location != NSNotFound)
             {
                 outputPath = [outputPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/card"]];
                 output = [outputPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", [file stringByReplacingOccurrencesOfString:@".hq.jpg" withString:@".jpg"]]];
@@ -194,7 +204,7 @@
                 [self createDir:outputPath];
             }
             
-            if (![[NSFileManager defaultManager] fileExistsAtPath:output])
+            if (output && ![[NSFileManager defaultManager] fileExistsAtPath:output])
             {
                 [JJJUtil  runCommand:[NSString stringWithFormat:@"convert \"%@\" -strip -quality %.2f \"%@\"", input, quality, output]];
             }

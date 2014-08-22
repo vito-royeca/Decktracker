@@ -54,6 +54,7 @@ static Database *_me;
     else
     {
         [MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:kDatabaseStore];
+
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"dataSet == %@", @"JSON"];
         Version *jsonVersion = [Version MR_findFirstWithPredicate:predicate
                                                          sortedBy:@"date"
