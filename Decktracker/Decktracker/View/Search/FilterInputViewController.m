@@ -51,25 +51,6 @@
     _selectedOperatorIndex = 0;
     _selectedOperator = [self.operatorOptions firstObject];
     
-    CGFloat dX = 0;
-    CGFloat dY = 0;//self.searchBar.frame.origin.y + self.searchBar.frame.size.height;
-    CGFloat dWidth = self.view.frame.size.width;
-    CGFloat dHeight = self.view.frame.size.height - self.tabBarController.tabBar.frame.size.height;
-    
-    self.tblFilter = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight*0.70)
-                                                  style:UITableViewStylePlain];
-    self.tblFilter.dataSource = self;
-    self.tblFilter.delegate = self;
-    
-    dY = self.tblFilter.frame.origin.y + self.tblFilter.frame.size.height;
-    self.tblOperator = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight*0.30)
-                                                    style:UITableViewStylePlain];
-    self.tblOperator.dataSource = self;
-    self.tblOperator.delegate = self;
-    
-    [self.view addSubview:self.tblFilter];
-    [self.view addSubview:self.tblOperator];
-    
     if (self.filterOptions)
     {
         id obj = [self.filterOptions firstObject];
@@ -87,16 +68,34 @@
         }
         _selectedFilter = stringValue;
         
-        self.searchBar = [[UISearchBar alloc] init];
+        self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width-20, 30)];
         self.searchBar.delegate = self;
-        self.searchBar.placeholder = self.filterName;
-        self.navigationItem.titleView = self.searchBar;
+        self.searchBar.placeholder = @"Filter";
+        self.searchBar.tintColor = [UIColor grayColor];
     }
     else
     {
-        self.navigationItem.title = self.filterName;
         self.tblFilter.separatorColor = [UIColor clearColor];
     }
+
+    CGFloat dX = 0;
+    CGFloat dY = 0;
+    CGFloat dWidth = self.view.frame.size.width;
+    CGFloat dHeight = self.view.frame.size.height - self.tabBarController.tabBar.frame.size.height;
+    self.tblOperator = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight*0.40)
+                                                    style:UITableViewStylePlain];
+    self.tblOperator.dataSource = self;
+    self.tblOperator.delegate = self;
+    
+    dY = self.tblOperator.frame.origin.y + self.tblOperator.frame.size.height;
+    self.tblFilter = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight*0.60)
+                                                  style:UITableViewStylePlain];
+    self.tblFilter.dataSource = self;
+    self.tblFilter.delegate = self;
+    
+    [self.view addSubview:self.tblOperator];
+    [self.view addSubview:self.tblFilter];
+    self.navigationItem.title = self.filterName;
     
     UIBarButtonItem *btnOk = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                            target:self
@@ -130,14 +129,9 @@
 }
 
 #pragma mark - UISearchBarDelegate
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
-{
-    [self searchFilterOprions];
-}
-
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    [self searchFilterOprions];
+    [self searchFilterOptions];
     
     if ([self.searchBar canResignFirstResponder])
     {
@@ -145,7 +139,7 @@
     }
 }
 
-- (void) searchFilterOprions
+- (void) searchFilterOptions
 {
     NSString *query = self.searchBar.text;
     NSPredicate *predicate;
@@ -188,6 +182,30 @@
     else
     {
         return @"";
+    }
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if (tableView == self.tblFilter)
+    {
+        return self.searchBar;
+    }
+    else
+    {
+        return nil;
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (tableView == self.tblFilter)
+    {
+        return 30;
+    }
+    else
+    {
+        return UITableViewAutomaticDimension;
     }
 }
 
@@ -300,6 +318,7 @@
             
             cell.accessoryType = indexPath.row == _selectedFilterIndex ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
         }
+        
         else
         {
             cell.accessoryType = UITableViewCellAccessoryNone;
@@ -312,6 +331,7 @@
             txtField.placeholder = [NSString stringWithFormat:@"Type %@ here", self.filterName];
             txtField.delegate = self;
             txtField.clearButtonMode = UITextFieldViewModeAlways;
+            txtField.tag = 1;
             [txtField addTarget:self
                           action:@selector(textFieldDidChange:)
                 forControlEvents:UIControlEventEditingChanged];

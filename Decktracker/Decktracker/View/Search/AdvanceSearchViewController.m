@@ -12,6 +12,7 @@
 #import "FileManager.h"
 #import "Magic.h"
 #import "NewAdvanceSearchViewController.h"
+#import "SimpleSearchViewController.h"
 
 @implementation AdvanceSearchViewController
 {
@@ -71,6 +72,18 @@
     self.navigationItem.rightBarButtonItem = btnAdd;
     self.navigationItem.title = @"Advance Search";
 }
+
+//- (void)viewWillDisappear:(BOOL)animated
+//{
+//    [super viewWillDisappear:animated];
+//    
+//    if (self.isMovingFromParentViewController)
+//    {
+//        SimpleSearchViewController *simpleView = [[SimpleSearchViewController alloc] init];
+//        
+//        [self.navigationController pushViewController:simpleView animated:NO];
+//    }
+//}
 
 - (void)didReceiveMemoryWarning
 {

@@ -375,17 +375,34 @@
     
     for (int i=0; i<text.length; i++)
     {
-        if ([text characterAtIndex:i] == '{' &&
-            [text characterAtIndex:i+2] == '}')
+        if ([text characterAtIndex:i] == '{')
         {
-            [arrSymbols addObject:[text substringWithRange:NSMakeRange(i, 3)]];
+            if ([text characterAtIndex:i+2] == '}')
+            {
+                [arrSymbols addObject:[text substringWithRange:NSMakeRange(i, 3)]];
+            }
+            else if ([text characterAtIndex:i+4] == '}')
+            {
+                [arrSymbols addObject:[text substringWithRange:NSMakeRange(i, 5)]];
+            }
         }
+        
     }
     
     for (NSString *symbol in arrSymbols)
     {
-        NSString *center = [symbol substringWithRange:NSMakeRange(1, symbol.length-2)];
+        NSString *center;
         BOOL bFound = NO;
+        
+        if (symbol.length == 3)
+        {
+            center = [symbol substringWithRange:NSMakeRange(1, 1)];
+        }
+        else if (symbol.length == 5)
+        {
+            center = [symbol substringWithRange:NSMakeRange(1, 3)];
+            center = [center stringByReplacingOccurrencesOfString:@"/" withString:@""];
+        }
         
         for (NSString *mana in kManaSymbols)
         {
