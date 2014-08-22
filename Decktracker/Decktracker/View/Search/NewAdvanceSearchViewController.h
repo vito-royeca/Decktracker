@@ -18,7 +18,7 @@
 @property(strong,nonatomic) NSMutableDictionary *dictCurrentQuery;
 @property(strong,nonatomic) NSMutableDictionary *dictCurrentSorter;
 @property(strong,nonatomic) NSFetchedResultsController *fetchedResultsController;
-@property(nonatomic) AdvanceSearchMode mode;
+@property(nonatomic) EditMode mode;
 
 -(void) showSegment:(int) index;
 

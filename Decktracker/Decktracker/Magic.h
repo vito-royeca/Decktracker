@@ -38,10 +38,18 @@ typedef NSString* Layout;
 
 #define kImageSizes                    @[@"8", @"16", @"24", @"32", @"48", @"64", @"96"]
 
-typedef NS_ENUM(NSInteger, AdvanceSearchMode)
+#define JSON_VERSION                   @{@"dataSet":@"JSON", \
+                                         @"date":@"20014-08-21", \
+                                         @"version":@"2.9.0"}
+
+#define IMAGES_VERSION                 @{@"dataSet":@"Images", \
+                                         @"date":@"20014-08-21", \
+                                         @"version":@"5.4.0"}
+
+typedef NS_ENUM(NSInteger, EditMode)
 {
-    AdvanceSearchModeSave,
-    AdvanceSearchModeEdit
+    EditModeNew,
+    EditModeEdit
 };
 
 #endif

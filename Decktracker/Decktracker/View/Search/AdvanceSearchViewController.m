@@ -95,7 +95,7 @@
 {
     NewAdvanceSearchViewController *newAdvanceView = [[NewAdvanceSearchViewController alloc] init];
     
-    newAdvanceView.mode = AdvanceSearchModeSave;
+    newAdvanceView.mode = EditModeNew;
     [self.navigationController pushViewController:newAdvanceView animated:NO];
 }
 
@@ -162,7 +162,7 @@
     advanceSearchResultsView.navigationItem.title = [NSString stringWithFormat:@"%tu Search Results", [self.fetchedResultsController.fetchedObjects count]];
     advanceSearchResultsView.queryToSave = _dictCurrentQuery;
     advanceSearchResultsView.sorterToSave = _dictCurrentSort;
-    advanceSearchResultsView.mode = AdvanceSearchModeEdit;
+    advanceSearchResultsView.mode = EditModeEdit;
     [self.navigationController pushViewController:advanceSearchResultsView animated:NO];
 }
 

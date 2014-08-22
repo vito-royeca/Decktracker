@@ -53,13 +53,13 @@
     
     UIBarButtonItem *btnAction;
     
-    if (self.mode == AdvanceSearchModeEdit)
+    if (self.mode == EditModeEdit)
     {
         btnAction = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
                                                                   target:self
                                                                   action:@selector(btnActionTapped:)];
     }
-    else if (self.mode == AdvanceSearchModeSave)
+    else if (self.mode == EditModeNew)
     {
         btnAction = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
                                                                   target:self
@@ -81,17 +81,17 @@
 
 -(void) btnActionTapped:(id) sender
 {
-    if (self.mode == AdvanceSearchModeEdit)
+    if (self.mode == EditModeEdit)
     {
         NewAdvanceSearchViewController *newAdvanceView = [[NewAdvanceSearchViewController alloc] init];
         
-        newAdvanceView.mode = AdvanceSearchModeEdit;
+        newAdvanceView.mode = EditModeEdit;
         newAdvanceView.dictCurrentQuery = [[NSMutableDictionary alloc] initWithDictionary:self.queryToSave];
         newAdvanceView.dictCurrentSorter = [[NSMutableDictionary alloc] initWithDictionary:self.sorterToSave];
         [self.navigationController pushViewController:newAdvanceView animated:NO];
         [newAdvanceView showSegment:2];
     }
-    else if (self.mode == AdvanceSearchModeSave)
+    else if (self.mode == EditModeEdit)
     {
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Save"
                                                          message:@"Advance Search Name"

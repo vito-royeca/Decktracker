@@ -51,6 +51,25 @@
     _selectedOperatorIndex = 0;
     _selectedOperator = [self.operatorOptions firstObject];
     
+    CGFloat dX = 0;
+    CGFloat dY = 0;
+    CGFloat dWidth = self.view.frame.size.width;
+    CGFloat dHeight = self.view.frame.size.height - self.tabBarController.tabBar.frame.size.height;
+    self.tblOperator = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight*0.40)
+                                                    style:UITableViewStylePlain];
+    self.tblOperator.dataSource = self;
+    self.tblOperator.delegate = self;
+    
+    dY = self.tblOperator.frame.origin.y + self.tblOperator.frame.size.height;
+    self.tblFilter = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight*0.60)
+                                                  style:UITableViewStylePlain];
+    self.tblFilter.dataSource = self;
+    self.tblFilter.delegate = self;
+    
+    [self.view addSubview:self.tblOperator];
+    [self.view addSubview:self.tblFilter];
+    self.navigationItem.title = self.filterName;
+    
     if (self.filterOptions)
     {
         id obj = [self.filterOptions firstObject];
@@ -77,25 +96,6 @@
     {
         self.tblFilter.separatorColor = [UIColor clearColor];
     }
-
-    CGFloat dX = 0;
-    CGFloat dY = 0;
-    CGFloat dWidth = self.view.frame.size.width;
-    CGFloat dHeight = self.view.frame.size.height - self.tabBarController.tabBar.frame.size.height;
-    self.tblOperator = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight*0.40)
-                                                    style:UITableViewStylePlain];
-    self.tblOperator.dataSource = self;
-    self.tblOperator.delegate = self;
-    
-    dY = self.tblOperator.frame.origin.y + self.tblOperator.frame.size.height;
-    self.tblFilter = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight*0.60)
-                                                  style:UITableViewStylePlain];
-    self.tblFilter.dataSource = self;
-    self.tblFilter.delegate = self;
-    
-    [self.view addSubview:self.tblOperator];
-    [self.view addSubview:self.tblFilter];
-    self.navigationItem.title = self.filterName;
     
     UIBarButtonItem *btnOk = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                            target:self

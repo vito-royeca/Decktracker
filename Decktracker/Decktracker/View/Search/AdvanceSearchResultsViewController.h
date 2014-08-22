@@ -15,6 +15,6 @@
 @property(strong,nonatomic) UITableView *tblResults;
 @property(strong,nonatomic) NSDictionary *queryToSave;
 @property(strong,nonatomic) NSDictionary *sorterToSave;
-@property(nonatomic) AdvanceSearchMode mode;
+@property(nonatomic) EditMode mode;
 
 @end

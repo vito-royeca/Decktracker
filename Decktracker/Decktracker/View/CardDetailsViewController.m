@@ -244,6 +244,13 @@
         [html appendFormat:@"<tr><td colspan=\"2\">&nbsp;</td></tr>"];
     }
     
+    if (self.card.loyalty)
+    {
+        [html appendFormat:@"<tr><td colspan=\"2\"><strong>Loyalty</strong></td></tr>"];
+        [html appendFormat:@"<tr><td colspan=\"2\">%@</td></tr>", self.card.loyalty];
+        [html appendFormat:@"<tr><td colspan=\"2\">&nbsp;</td></tr>"];
+    }
+    
     [html appendFormat:@"<tr><td colspan=\"2\"><strong>Rarity</strong></td></tr>"];
     [html appendFormat:@"<tr><td><img src=\"%@/%@/%@/24.png\" border=\"0\" /></td><td>%@ - %@</td></tr>", setPath, self.card.set.code, [[self.card.rarity.name substringToIndex:1] uppercaseString], self.card.set.name, self.card.rarity.name];
     [html appendFormat:@"<tr><td colspan=\"2\">&nbsp;</td></tr>"];

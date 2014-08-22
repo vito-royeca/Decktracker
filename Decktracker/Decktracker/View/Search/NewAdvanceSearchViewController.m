@@ -105,11 +105,11 @@
                                                                                action:@selector(btnCancelTapped:)];
     self.navigationItem.leftBarButtonItem = btnCancel;
 
-    if (self.mode == AdvanceSearchModeEdit)
+    if (self.mode == EditModeEdit)
     {
         self.navigationItem.title = @"Edit Advance Search";
     }
-    else if (self.mode == AdvanceSearchModeSave)
+    else if (self.mode == EditModeNew)
     {
         self.navigationItem.title = @"New Advance Search";
     }
@@ -424,7 +424,7 @@
     advanceSearchResultsView.navigationItem.title = [NSString stringWithFormat:@"%tu Search Results", [self.fetchedResultsController.fetchedObjects count]];
     advanceSearchResultsView.queryToSave = self.dictCurrentQuery;
     advanceSearchResultsView.sorterToSave = self.dictCurrentSorter;
-    advanceSearchResultsView.mode = AdvanceSearchModeSave;
+    advanceSearchResultsView.mode = EditModeNew;
     [self.navigationController pushViewController:advanceSearchResultsView animated:NO];
 }
 
