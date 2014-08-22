@@ -34,6 +34,7 @@
 		8C2E142E199085A900023BAA /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2E142D199085A900023BAA /* MainViewController.m */; };
 		8C2E1431199085C700023BAA /* Database.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2E1430199085C700023BAA /* Database.m */; };
 		8C3277FD199A464D00899790 /* style.css in Resources */ = {isa = PBXBuildFile; fileRef = 8C3277FC199A464D00899790 /* style.css */; };
+		8C378E0019A7434B00B9367F /* MHFacebookImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C378DFF19A7434B00B9367F /* MHFacebookImageViewer.m */; };
 		8C3CBDBE19A31615002CD96E /* CardForeignName.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDBD19A31615002CD96E /* CardForeignName.m */; };
 		8C3CBDC119A31615002CD96E /* Card.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDC019A31615002CD96E /* Card.m */; };
 		8C3CBDC419A31615002CD96E /* CardRuling.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDC319A31615002CD96E /* CardRuling.m */; };
@@ -125,6 +126,8 @@
 		8C2E142F199085C700023BAA /* Database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Database.h; sourceTree = "<group>"; };
 		8C2E1430199085C700023BAA /* Database.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Database.m; sourceTree = "<group>"; };
 		8C3277FC199A464D00899790 /* style.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = style.css; sourceTree = "<group>"; };
+		8C378DFE19A7434B00B9367F /* MHFacebookImageViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MHFacebookImageViewer.h; sourceTree = "<group>"; };
+		8C378DFF19A7434B00B9367F /* MHFacebookImageViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MHFacebookImageViewer.m; sourceTree = "<group>"; };
 		8C3CBDBC19A31615002CD96E /* CardForeignName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardForeignName.h; sourceTree = "<group>"; };
 		8C3CBDBD19A31615002CD96E /* CardForeignName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardForeignName.m; sourceTree = "<group>"; };
 		8C3CBDBF19A31615002CD96E /* Card.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Card.h; sourceTree = "<group>"; };
@@ -241,11 +244,12 @@
 		8C2E13F81990741100023BAA /* Decktracker */ = {
 			isa = PBXGroup;
 			children = (
-				8C2E14321990862900023BAA /* Data */,
 				8C2E14011990741100023BAA /* AppDelegate.h */,
 				8C2E14021990741100023BAA /* AppDelegate.m */,
 				8C2E14271990747300023BAA /* Controller */,
+				8C2E14321990862900023BAA /* Data */,
 				8C2E14071990741100023BAA /* Images.xcassets */,
+				8C378DF919A742D800B9367F /* Libs */,
 				8C2E142B199074A900023BAA /* Magic.h */,
 				8C2E14251990744E00023BAA /* Model */,
 				8C2E13F91990741100023BAA /* Supporting Files */,
@@ -351,6 +355,23 @@
 				8C3277FC199A464D00899790 /* style.css */,
 			);
 			path = Data;
+			sourceTree = "<group>";
+		};
+		8C378DF919A742D800B9367F /* Libs */ = {
+			isa = PBXGroup;
+			children = (
+				8C378DFD19A7433500B9367F /* MHFacebookImageViewer */,
+			);
+			path = Libs;
+			sourceTree = "<group>";
+		};
+		8C378DFD19A7433500B9367F /* MHFacebookImageViewer */ = {
+			isa = PBXGroup;
+			children = (
+				8C378DFE19A7434B00B9367F /* MHFacebookImageViewer.h */,
+				8C378DFF19A7434B00B9367F /* MHFacebookImageViewer.m */,
+			);
+			path = MHFacebookImageViewer;
 			sourceTree = "<group>";
 		};
 		8CF0C9BB1991CD0500349F35 /* Products */ = {
@@ -546,6 +567,7 @@
 				8C26A67D19A63FAC00FE00E7 /* SimpleSearchViewController.m in Sources */,
 				8C3CBDDC19A31618002CD96E /* SetType.m in Sources */,
 				8C5BDD70199B3B7D007AF140 /* MenuViewController.m in Sources */,
+				8C378E0019A7434B00B9367F /* MHFacebookImageViewer.m in Sources */,
 				8C26A67A19A63FAC00FE00E7 /* AdvanceSearchViewController.m in Sources */,
 				8C3CBDC419A31615002CD96E /* CardRuling.m in Sources */,
 				8C2E142A1990748C00023BAA /* database.xcdatamodeld in Sources */,

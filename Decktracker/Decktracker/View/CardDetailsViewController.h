@@ -10,12 +10,14 @@
 
 #import "Card.h"
 #import "MBProgressHUD.h"
+#import "MHFacebookImageViewer.h"
 
-@interface CardDetailsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, MBProgressHUDDelegate, UIWebViewDelegate>
+@interface CardDetailsViewController : UIViewController<UIWebViewDelegate, MBProgressHUDDelegate, MHFacebookImageViewerDatasource>
 
 @property(strong, nonatomic) Card *card;
 @property(strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property(strong, nonatomic) UISegmentedControl *segmentedControl;
+@property(strong, nonatomic) UIImageView *cardImage;
 @property(strong, nonatomic) UIWebView *webView;
 
 @end

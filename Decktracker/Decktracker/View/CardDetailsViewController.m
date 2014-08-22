@@ -26,6 +26,7 @@
 @synthesize card = _card;
 @synthesize fetchedResultsController = _fetchedResultsController;
 @synthesize segmentedControl = _segmentedControl;
+@synthesize cardImage = cardImage;
 @synthesize webView = _webView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -43,6 +44,7 @@
     _card = card;
     
     _cardPath = [NSString stringWithFormat:@"%@/images/card/%@/%@.jpg", [[NSBundle mainBundle] bundlePath], self.card.set.code, self.card.imageName];
+    self.navigationItem.title = self.card.name;
 }
 
 - (void)viewDidLoad
@@ -80,25 +82,28 @@
     CGFloat dWidth = self.view.frame.size.width;
     CGFloat dHeight = self.view.frame.size.height - dY - self.tabBarController.tabBar.frame.size.height;
     
+    [self.cardImage removeFromSuperview];
     [self.webView removeFromSuperview];
     
     switch (self.segmentedControl.selectedSegmentIndex)
     {
         case 0:
         {
-            self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
-            self.webView.scalesPageToFit = YES;
-            self.webView.delegate = self;
-            UISwipeGestureRecognizer *rightSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeGesture:)];
-            UISwipeGestureRecognizer *leftSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeGesture:)];
-            rightSwipeGesture.direction = UISwipeGestureRecognizerDirectionRight;
-            leftSwipeGesture.direction = UISwipeGestureRecognizerDirectionLeft;
-            [self.view addGestureRecognizer:rightSwipeGesture];
-            [self.view addGestureRecognizer:leftSwipeGesture];
+            self.cardImage = [[UIImageView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
+            self.cardImage.backgroundColor = [UIColor grayColor];
+            [self.cardImage setUserInteractionEnabled:YES];
+            UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
+            UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
             
-            [_webView.scrollView.panGestureRecognizer requireGestureRecognizerToFail:rightSwipeGesture];
-            [_webView.scrollView.panGestureRecognizer requireGestureRecognizerToFail:leftSwipeGesture];
-            [self.view addSubview:self.webView];
+            // Setting the swipe direction.
+            [swipeLeft setDirection:UISwipeGestureRecognizerDirectionLeft];
+            [swipeRight setDirection:UISwipeGestureRecognizerDirectionRight];
+            
+            // Adding the swipe gesture on image view
+            [self.cardImage addGestureRecognizer:swipeLeft];
+            [self.cardImage addGestureRecognizer:swipeRight];
+            
+            [self.view addSubview:self.cardImage];
             
             if (![[NSFileManager defaultManager] fileExistsAtPath:_cardPath])
             {
@@ -160,36 +165,29 @@
 
 - (void) displayCard
 {
-    CGFloat dY = self.segmentedControl.frame.origin.y + self.segmentedControl.frame.size.height +5;
-    CGFloat dWidth = self.view.frame.size.width;
-    CGFloat dHeight = self.view.frame.size.height - dY - self.tabBarController.tabBar.frame.size.height;
-
-    NSString *path = [[NSBundle mainBundle] bundlePath];
-    NSURL *baseURL = [NSURL fileURLWithPath:path];
-
-    dHeight -= 40;
-    UIImage *cardImage = [[UIImage alloc] initWithContentsOfFile:_cardPath];
-    CGFloat xDim = cardImage.size.height > cardImage.size.width ?
-        ((cardImage.size.width * dHeight) / cardImage.size.height) :
-        ((cardImage.size.height * dWidth) / cardImage.size.width);
-    CGFloat scale = cardImage.size.height > cardImage.size.width ?
-        dHeight/cardImage.size.height :
-        dWidth/cardImage.size.width;
-    self.navigationItem.title = self.card.name;
-    [self.webView loadHTMLString:[self composeCardImageWithWidth:cardImage.size.width andHeight:cardImage.size.height andScale:scale] baseURL:baseURL];
-    
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
     SimpleSearchViewController *parent = [self.navigationController.viewControllers firstObject];
     parent.selectedIndex = [sectionInfo.objects indexOfObject:self.card];
+    
+    UIImage *image = [UIImage imageWithContentsOfFile:_cardPath];
+    
+    [self.cardImage setImage:image];
+    self.cardImage.contentMode = UIViewContentModeScaleAspectFit;
+    [self.cardImage setupImageViewerWithDatasource:self
+                                      initialIndex:parent.selectedIndex
+                                            onOpen:^{ }
+                                           onClose:^{ }];
+    self.cardImage.clipsToBounds = YES;
+    
+    
 }
 
--(void) handleSwipeGesture:(id) sender
+- (void)handleSwipe:(UISwipeGestureRecognizer *)swipe
 {
-    UISwipeGestureRecognizer *swipe = (UISwipeGestureRecognizer*) sender;
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
     
     NSInteger index = [sectionInfo.objects indexOfObject:self.card];
-
+    
     if (swipe.direction == UISwipeGestureRecognizerDirectionRight)
     {
         index--;
@@ -210,86 +208,6 @@
     Card *card = sectionInfo.objects[index];
     [self setCard:card];
     [self displayCard];
-}
-
-#pragma mark - MBProgressHUDDelegate methods
-- (void)hudWasHidden:(MBProgressHUD *)hud
-{
-	[hud removeFromSuperview];
-    [self displayCard];
-}
-
-#pragma - mark UITableViewDataSource
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-	return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    int rows = 0;
-    
-	switch (self.segmentedControl.selectedSegmentIndex)
-    {
-        case 1:
-        {
-            rows = 3;
-            break;
-        }
-        case 2:
-        {
-            break;
-        }
-    }
-    
-    return rows;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *CellIdentifier = @"SearchResultsCell";
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil)
-    {
-        
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-    }
-    
-    [self configureCell:cell atIndexPath:indexPath];
-    
-    return cell;
-}
-
-- (void) configureCell:(UITableViewCell *)cell
-           atIndexPath:(NSIndexPath *)indexPath
-{
-    switch (self.segmentedControl.selectedSegmentIndex)
-    {
-        case 1:
-        {
-            break;
-        }
-        case 2:
-        {
-            break;
-        }
-        default:
-        {
-            break;
-        }
-    }
-}
-
-- (NSString*) composeCardImageWithWidth:(CGFloat) width andHeight:(CGFloat) height andScale:(CGFloat) scale
-{
-    NSMutableString *html = [[NSMutableString alloc] init];
-    
-    [html appendFormat:@"<html><head><meta name=\"viewport\" content=\"initial-scale=%f,maximum-scale=10.0\"/><link rel=\"stylesheet\" type=\"text/css\" href=\"%@/style.css\"></head><body background=\"%@/images/Gray_Patterned_BG.jpg\">", scale, [[NSBundle mainBundle] bundlePath], [[NSBundle mainBundle] bundlePath]];
-    [html appendFormat:@"<img src=\"%@\" border=\"0\" width=\"%f\" height=\"%f\" class=\"img_center\"/>", _cardPath, width, height];
-    [html appendFormat:@"</table></body></html>"];
-    
-    return html;
 }
 
 - (NSString*) composeDetails
@@ -454,6 +372,42 @@
     }
     
     return YES;
+}
+
+#pragma mark - MBProgressHUDDelegate methods
+- (void)hudWasHidden:(MBProgressHUD *)hud
+{
+	[hud removeFromSuperview];
+    [self displayCard];
+}
+
+#pragma mark -  MHFacebookImageViewerDatasource
+- (NSInteger) numberImagesForImageViewer:(MHFacebookImageViewer*) imageViewer
+{
+    return self.fetchedResultsController.fetchedObjects.count;
+}
+
+- (NSURL*) imageURLAtIndex:(NSInteger)index imageViewer:(MHFacebookImageViewer*) imageViewer
+{
+    Card *card = [self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+        NSString *cardPath = [NSString stringWithFormat:@"%@/images/card/%@/%@.jpg", [[NSBundle mainBundle] bundlePath], card.set.code, card.imageName];
+    [self setCard:card];
+    [self displayCard];
+    
+    // pre-download or fetch remotely depending on settings ??
+//    return [NSURL URLWithString:[[NSString stringWithFormat:@"http://mtgimage.com/set/%@/%@.hq.jpg", card.set.code, card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    
+    // just return bundled image for now
+    return [NSURL fileURLWithPath:cardPath];
+}
+
+- (UIImage*) imageDefaultAtIndex:(NSInteger)index imageViewer:(MHFacebookImageViewer*) imageViewer
+{
+    Card *card = [self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+    NSString *cardPath = [NSString stringWithFormat:@"%@/images/card/%@/%@.jpg", [[NSBundle mainBundle] bundlePath], card.set.code, card.imageName];
+    [self setCard:card];
+    [self displayCard];
+    return [UIImage imageWithContentsOfFile:cardPath];
 }
 
 @end
