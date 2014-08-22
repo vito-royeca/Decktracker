@@ -18,7 +18,7 @@ fi
  
 # remove all paths passed as arguments from the history of the repo
 files=$@
-git filter-branch --index-filter "git rm -rf --cached --ignore-unmatch $files"
+git filter-branch --index-filter "git rm -rf --cached --ignore-unmatch $files" --prune-empy -- --all
  
 # remove the temporary history git-filter-branch otherwise leaves behind for a long time
 rm -rf .git/refs/original/
