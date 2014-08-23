@@ -21,8 +21,8 @@ files=$@
 git filter-branch --index-filter "git rm -rf --cached --ignore-unmatch $files" --prune-empty -- --all
  
 # remove the temporary history git-filter-branch otherwise leaves behind for a long time
-rm -rf .git/refs/original/
-git reflog expire --all
-git gc --aggressive --prune
-git push origin master --force
+#rm -rf .git/refs/original/
+#git reflog expire --all
+#git gc --aggressive --prune
+#git push origin master --force
 
