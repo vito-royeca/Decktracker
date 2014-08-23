@@ -86,12 +86,17 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(BOOL)hidesBottomBarWhenPushed
+{
+    return YES;
+}
+
 -(void) switchView
 {
     CGFloat dX = 0;
     CGFloat dY = self.segmentedControl.frame.origin.y + self.segmentedControl.frame.size.height +10;
     CGFloat dWidth = self.view.frame.size.width;
-    CGFloat dHeight = self.view.frame.size.height - dY - self.tabBarController.tabBar.frame.size.height;
+    CGFloat dHeight = self.view.frame.size.height - dY;// - self.tabBarController.tabBar.frame.size.height;
     
     [self.cardImage removeFromSuperview];
     [self.webView removeFromSuperview];
@@ -225,132 +230,141 @@
 {
     NSMutableString *html = [[NSMutableString alloc] init];
     NSString *setPath = [NSString stringWithFormat:@"%@/images/set", [[NSBundle mainBundle] bundlePath]];
-    NSString *manaPath = [NSString stringWithFormat:@"%@/images/mana", [[NSBundle mainBundle] bundlePath]];
     
     [html appendFormat:@"<html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"%@/style.css\"></head><body>", [[NSBundle mainBundle] bundlePath]];
     [html appendFormat:@"<table>"];
     
     if (self.card.manaCost)
     {
-        [html appendFormat:@"<tr><td colspan=\"2\"><strong>Mana Cost</strong></td></tr>"];
-        [html appendFormat:@"<tr><td colspan=\"2\">%@</td></tr>", [self replaceSymbolsInText:self.card.manaCost]];
-        [html appendFormat:@"<tr><td colspan=\"2\">&nbsp;</td></tr>"];
+        [html appendFormat:@"<tr><td><strong>Mana Cost</strong></td></tr>"];
+        [html appendFormat:@"<tr><td>%@</td></tr>", [self replaceSymbolsInText:self.card.manaCost]];
+        [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
     
     if (self.card.cmc)
     {
-        [html appendFormat:@"<tr><td colspan=\"2\"><strong>Converted Mana Cost</strong></td></tr>"];
-        [html appendFormat:@"<tr><td colspan=\"2\">%@</td></tr>", [self replaceSymbolsInText:[NSString stringWithFormat:@"{%@}", self.card.cmc]]];
-        [html appendFormat:@"<tr><td colspan=\"2\">&nbsp;</td></tr>"];
+        [html appendFormat:@"<tr><td><strong>Converted Mana Cost</strong></td></tr>"];
+        [html appendFormat:@"<tr><td>%@</td></tr>", [self replaceSymbolsInText:[NSString stringWithFormat:@"{%@}", self.card.cmc]]];
+        [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
     
-    [html appendFormat:@"<tr><td colspan=\"2\"><strong>Type</strong></td></tr>"];
-    [html appendFormat:@"<tr><td colspan=\"2\">%@</td></tr>", self.card.type];
-    [html appendFormat:@"<tr><td colspan=\"2\">&nbsp;</td></tr>"];
+    [html appendFormat:@"<tr><td><strong>Type</strong></td></tr>"];
+    [html appendFormat:@"<tr><td>%@</td></tr>", self.card.type];
+    [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     
     if (self.card.power || self.card.toughness)
     {
-        [html appendFormat:@"<tr><td colspan=\"2\"><strong>Power/Toughness</strong></td></tr>"];
-        [html appendFormat:@"<tr><td colspan=\"2\">%@/%@</td></tr>", self.card.power, self.card.toughness];
-        [html appendFormat:@"<tr><td colspan=\"2\">&nbsp;</td></tr>"];
+        [html appendFormat:@"<tr><td><strong>Power/Toughness</strong></td></tr>"];
+        [html appendFormat:@"<tr><td>%@/%@</td></tr>", self.card.power, self.card.toughness];
+        [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
     
     if ([self.card.types containsObject:[CardType MR_findFirstByAttribute:@"name" withValue:@"Planeswalker"]])
     {
-        [html appendFormat:@"<tr><td colspan=\"2\"><strong>Loyalty</strong></td></tr>"];
-        [html appendFormat:@"<tr><td colspan=\"2\">%@</td></tr>", self.card.loyalty];
-        [html appendFormat:@"<tr><td colspan=\"2\">&nbsp;</td></tr>"];
+        [html appendFormat:@"<tr><td><strong>Planeswalker Loyalty</strong></td></tr>"];
+        [html appendFormat:@"<tr><td>%@</td></tr>", self.card.loyalty];
+        [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
+    
+    [html appendFormat:@"<tr><td><strong>Rarity</strong></td></tr>"];
+    [html appendFormat:@"<tr><td><table><tr><td><img src=\"%@/%@/%@/24.png\" border=\"0\" /></td><td>%@ - %@</td></tr></table></td></tr>", setPath, self.card.set.code, [[Database sharedInstance] cardRarityIndex:self.card], self.card.set.name, self.card.rarity.name];
+    [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     
     if (self.card.originalText)
     {
-        [html appendFormat:@"<tr><td colspan=\"2\"><strong>Original Text</v></td></tr>"];
-        [html appendFormat:@"<tr><td colspan=\"2\">%@</td></tr>", [self replaceSymbolsInText:self.card.originalText]];
-        [html appendFormat:@"<tr><td colspan=\"2\">&nbsp;</td></tr>"];
+        [html appendFormat:@"<tr><td><strong>Original Text</v></td></tr>"];
+        [html appendFormat:@"<tr><td>%@</td></tr>", [self replaceSymbolsInText:self.card.originalText]];
+        [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
     
     if (self.card.text)
     {
-        [html appendFormat:@"<tr><td colspan=\"2\"><strong>Oracle Text</strong></td></tr>"];
-        [html appendFormat:@"<tr><td colspan=\"2\">%@</td></tr>", [self replaceSymbolsInText:self.card.text]];
-        [html appendFormat:@"<tr><td colspan=\"2\">&nbsp;</td></tr>"];
+        [html appendFormat:@"<tr><td><strong>Oracle Text</strong></td></tr>"];
+        [html appendFormat:@"<tr><td>%@</td></tr>", [self replaceSymbolsInText:self.card.text]];
+        [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
     
     if (self.card.flavor)
     {
-        [html appendFormat:@"<tr><td colspan=\"2\"><strong>Flavor Text</strong></td></tr>"];
-        [html appendFormat:@"<tr><td colspan=\"2\"><i>%@</i></td></tr>", self.card.flavor];
-        [html appendFormat:@"<tr><td colspan=\"2\">&nbsp;</td></tr>"];
+        [html appendFormat:@"<tr><td><strong>Flavor Text</strong></td></tr>"];
+        [html appendFormat:@"<tr><td><i>%@</i></td></tr>", self.card.flavor];
+        [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
     
-    [html appendFormat:@"<tr><td colspan=\"2\"><strong>Artist</strong></td></tr>"];
-    [html appendFormat:@"<tr><td colspan=\"2\">%@</td></tr>", self.card.artist.name];
-    [html appendFormat:@"<tr><td colspan=\"2\">&nbsp;</td></tr>"];
+    [html appendFormat:@"<tr><td><strong>Artist</strong></td></tr>"];
+    [html appendFormat:@"<tr><td>%@</td></tr>", self.card.artist.name];
+    [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     
     if (self.card.number)
     {
-        [html appendFormat:@"<tr><td colspan=\"2\"><strong>Number</strong></td></tr>"];
-        [html appendFormat:@"<tr><td colspan=\"2\">%@/%@</td></tr>", self.card.number, self.card.set.numberOfCards];
-        [html appendFormat:@"<tr><td colspan=\"2\">&nbsp;</td></tr>"];
+        [html appendFormat:@"<tr><td><strong>Number</strong></td></tr>"];
+        [html appendFormat:@"<tr><td>%@/%@</td></tr>", self.card.number, self.card.set.numberOfCards];
+        [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
     
-    [html appendFormat:@"<tr><td colspan=\"2\"><strong>Rarity</strong></td></tr>"];
-    [html appendFormat:@"<tr><td><img src=\"%@/%@/%@/24.png\" border=\"0\" /></td><td>%@ - %@</td></tr>", setPath, self.card.set.code, [[self.card.rarity.name substringToIndex:1] uppercaseString], self.card.set.name, self.card.rarity.name];
-    [html appendFormat:@"<tr><td colspan=\"2\">&nbsp;</td></tr>"];
-    
-    [html appendFormat:@"<tr><td colspan=\"2\"><strong>All Sets</strong></td></tr>"];
+    [html appendFormat:@"<tr><td><strong>All Sets</strong></td></tr>"];
+    [html appendFormat:@"<tr><td><table>"];
     for (Set *set in [[self.card.printings allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"releaseDate" ascending:YES]]])
     {
         Card *card = [[Database sharedInstance] findCard:self.card.name inSet:set.code];
         
         NSString *link = [[NSString stringWithFormat:@"card?name=%@&set=%@", card.name, set.code] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString *image = [NSString stringWithFormat:@"<a href=\"%@\"><img src=\"%@/%@/%@/24.png\" border=\"0\" /></a>", link, setPath, set.code, [[Database sharedInstance] cardRarityIndex:card]];
         
-        [html appendFormat:@"<tr><td><a href=\"%@\"><img src=\"%@/%@/%@/24.png\" border=\"0\" /></a></td><td><a href=\"%@\">%@</a></td></tr>", link, setPath, set.code, [[card.rarity.name substringToIndex:1] uppercaseString], link, set.name];
+        
+        [html appendFormat:@"<tr><td>%@</td><td><a href=\"%@\">%@</a></td></tr>", image, link, set.name];
     }
-    [html appendFormat:@"<tr><td colspan=\"2\">&nbsp;</td></tr>"];
+    [html appendFormat:@"</table></td></tr>"];
+    [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     
     if (self.card.names.count > 0)
     {
-        [html appendFormat:@"<tr><td colspan=\"2\"><strong>Names</strong></td></tr>"];
+        [html appendFormat:@"<tr><td><strong>Names</strong></td></tr>"];
+        [html appendFormat:@"<tr><td><table>"];
         for (Card *card in [[self.card.names allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]])
         {
             NSString *link = [[NSString stringWithFormat:@"card?name=%@&set=%@", card.name, card.set.code] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             
-            [html appendFormat:@"<tr><td><a href=\"%@\"><img src=\"%@/%@/%@/24.png\" border=\"0\" /></a></td><td><a href=\"%@\">%@</a></td></tr>", link, setPath, card.set.code, [[card.rarity.name substringToIndex:1] uppercaseString], link, card.name];
+            [html appendFormat:@"<tr><td><a href=\"%@\"><img src=\"%@/%@/%@/24.png\" border=\"0\" /></a></td><td><a href=\"%@\">%@</a></td></tr>", link, setPath, card.set.code, [[Database sharedInstance] cardRarityIndex:card], link, card.name];
         }
-        [html appendFormat:@"<tr><td colspan=\"2\">&nbsp;</td></tr>"];
+        [html appendFormat:@"</table></td></tr>"];
+        [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
     
     if (self.card.variations.count > 0)
     {
-        [html appendFormat:@"<tr><td colspan=\"2\"><strong>Variations</strong></td></tr>"];
+        [html appendFormat:@"<tr><td><strong>Variations</strong></td></tr>"];
+        [html appendFormat:@"<tr><td><table>"];
         for (Card *card in [[self.card.variations allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]])
         {
             NSString *link = [[NSString stringWithFormat:@"card?name=%@&set=%@", card.name, card.set.code] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             
-            [html appendFormat:@"<tr><td><a href=\"%@\"><img src=\"%@/%@/%@/24.png\" border=\"0\" /></a></td><td><a href=\"%@\">%@</a></td></tr>", link, setPath, card.set.code, [[card.rarity.name substringToIndex:1] uppercaseString], link, card.name];
+            [html appendFormat:@"<tr><td><a href=\"%@\"><img src=\"%@/%@/%@/24.png\" border=\"0\" /></a></td><td><a href=\"%@\">%@</a></td></tr>", link, setPath, card.set.code, [[Database sharedInstance] cardRarityIndex:card], link, card.name];
         }
-        [html appendFormat:@"<tr><td colspan=\"2\">&nbsp;</td></tr>"];
+        [html appendFormat:@"</table></td></tr>"];
+        [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
     
     if (self.card.rulings.count > 0)
     {
-        [html appendFormat:@"<tr><td colspan=\"2\"><strong>Rulings</strong></td></tr>"];
+        [html appendFormat:@"<tr><td><strong>Rulings</strong></td></tr>"];
         for (CardRuling *ruling in [[self.card.rulings allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO]]])
         {
-            [html appendFormat:@"<tr><td colspan=\"2\"><i><b>%@</b></i>: %@</td></tr>", [JJJUtil formatDate:ruling.date withFormat:@"YYYY-MM-dd"], [self replaceSymbolsInText:ruling.text]];
+            [html appendFormat:@"<tr><td><i><b>%@</b></i>: %@</td></tr>", [JJJUtil formatDate:ruling.date withFormat:@"YYYY-MM-dd"], [self replaceSymbolsInText:ruling.text]];
         }
-        [html appendFormat:@"<tr><td colspan=\"2\">&nbsp;</td></tr>"];
+        [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
     
     if (self.card.foreignNames.count > 0)
     {
-        [html appendFormat:@"<tr><td colspan=\"2\"><strong>Languages</strong></td></tr>"];
+        [html appendFormat:@"<tr><td><strong>Languages</strong></td></tr>"];
+        [html appendFormat:@"<tr><td><table>"];
         for (CardForeignName *foreignName in [[self.card.foreignNames allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"language" ascending:YES]]])
         {
-            [html appendFormat:@"<tr><td colspan=\"2\"><i><b>%@</b></i>: %@</td></tr>", foreignName.language, foreignName.name];
+            [html appendFormat:@"<tr><td>%@</td><td>%@</td></tr>", foreignName.language, foreignName.name];
         }
-        [html appendFormat:@"<tr><td colspan=\"2\">&nbsp;</td></tr>"];
+        [html appendFormat:@"</table></td></tr>"];
+        [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
     
     [html appendFormat:@"</table></body></html>"];

@@ -11,6 +11,7 @@
 #import "Card.h"
 #import "CardDetailsViewController.h"
 #import "CardRarity.h"
+#import "Database.h"
 #import "FileManager.h"
 #import "NewAdvanceSearchViewController.h"
 #import "Set.h"
@@ -158,7 +159,7 @@
     cell.textLabel.text = card.name;
     cell.detailTextLabel.text = type;
     
-    NSString *path = [NSString stringWithFormat:@"%@/images/set/%@/%@/24.png", [[NSBundle mainBundle] bundlePath], card.set.code, [[card.rarity.name substringToIndex:1] uppercaseString]];
+    NSString *path = [NSString stringWithFormat:@"%@/images/set/%@/%@/24.png", [[NSBundle mainBundle] bundlePath], card.set.code, [[Database sharedInstance] cardRarityIndex:card]];
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:path])
     {

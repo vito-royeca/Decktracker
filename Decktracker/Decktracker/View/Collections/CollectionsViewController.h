@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CollectionsViewController : UIViewController
+@interface CollectionsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
+
+@property(strong,nonatomic) UITableView *tblResults;
 
 @end

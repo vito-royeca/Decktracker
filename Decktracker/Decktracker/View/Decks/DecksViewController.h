@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DecksViewController : UIViewController
+@interface DecksViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
+
+@property(strong,nonatomic) UITableView *tblResults;
 
 @end

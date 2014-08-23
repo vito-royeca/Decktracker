@@ -10,6 +10,7 @@
 
 #import "JJJ/JJJ.h"
 #import "Card.h"
+#import "CardRarity.h"
 
 #define kFetchBatchSize       100
 #define kDatabaseStore        @"decktracker.sqlite"
@@ -27,5 +28,6 @@
 #endif
 
 -(Card*) findCard:(NSString*) card inSet:(NSString*) setCode;
+-(NSString*) cardRarityIndex:(Card*) card;
 
 @end

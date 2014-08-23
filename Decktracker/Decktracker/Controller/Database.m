@@ -262,4 +262,9 @@ static Database *_me;
     return [Card MR_findFirstWithPredicate:[NSCompoundPredicate andPredicateWithSubpredicates:@[pred1, pred2]]];
 }
 
+-(NSString*) cardRarityIndex:(Card*) card
+{
+    return [card.rarity.name isEqualToString:@"Basic Land"] ? @"C" : [[card.rarity.name substringToIndex:1] uppercaseString];
+}
+
 @end
