@@ -135,14 +135,32 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-        if (editingStyle == UITableViewCellEditingStyleDelete)
-        {
-            NSDictionary *dict = [self.arrAdvanceSearches objectAtIndex:indexPath.row];
-            
-            [[FileManager sharedInstance] deleteAdvanceSearchFile:[[dict allKeys] firstObject]];
-            [self.arrAdvanceSearches removeObject:dict];
-            [tableView reloadData];
-        }
+    if (editingStyle == UITableViewCellEditingStyleDelete)
+    {
+        NSDictionary *dict = [self.arrAdvanceSearches objectAtIndex:indexPath.row];
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Delete Advance Search"
+                                                        message:[NSString stringWithFormat:@"Are you sure you want to delete %@?", [[dict allKeys] firstObject]]
+                                                       delegate:self
+                                              cancelButtonTitle:@"No"
+                                              otherButtonTitles:@"Yes", nil];
+        [alert show];
+        
+    }
+}
+
+#pragma mark - UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1)
+    {
+        NSDictionary *dict = [self.arrAdvanceSearches objectAtIndex:self.tblView.indexPathForSelectedRow.row];
+        
+        [[FileManager sharedInstance] deleteAdvanceSearchFile:[[dict allKeys] firstObject]];
+        [self.arrAdvanceSearches removeObject:dict];
+    }
+
+    [self.tblView reloadData];
 }
 
 #pragma mark - MBProgressHUDDelegate methods
