@@ -197,7 +197,7 @@
             else */if ([file rangeOfString:@".hq.jpg"].location != NSNotFound)
             {
                 output = [cardPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", [file stringByReplacingOccurrencesOfString:@".hq.jpg" withString:@".jpg"]]];
-                quality = image.size.width >= 480 ? 10 : 50;
+                quality = image.size.width >= 480 ? 30 : 50;
             }
             
             if (![[NSFileManager defaultManager] fileExistsAtPath:cardPath])

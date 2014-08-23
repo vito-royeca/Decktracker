@@ -63,7 +63,6 @@
     self.tblView = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight) style:UITableViewStylePlain];
     self.tblView.delegate = self;
     self.tblView.dataSource = self;
-    self.tblView.editing = YES;
     
     [self.view addSubview:self.tblView];
     
@@ -114,6 +113,11 @@
     cell.textLabel.text = [[dict allKeys] firstObject];
     
     return cell;
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

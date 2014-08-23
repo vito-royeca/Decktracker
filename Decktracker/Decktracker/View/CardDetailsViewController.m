@@ -229,7 +229,7 @@
     if (self.card.cmc)
     {
         [html appendFormat:@"<tr><td colspan=\"2\"><strong>Converted Mana Cost</strong></td></tr>"];
-        [html appendFormat:@"<tr><td colspan=\"2\"><img src=\"%@/%@/16.png\" border=\"0\" /></td></tr>", manaPath, [self.card.cmc stringValue]];
+        [html appendFormat:@"<tr><td colspan=\"2\">%@</td></tr>", [self replaceSymbolsInText:[NSString stringWithFormat:@"{%@}", self.card.cmc]]];
         [html appendFormat:@"<tr><td colspan=\"2\">&nbsp;</td></tr>"];
     }
     
@@ -244,7 +244,7 @@
         [html appendFormat:@"<tr><td colspan=\"2\">&nbsp;</td></tr>"];
     }
     
-    if (self.card.loyalty)
+    if ([self.card.types containsObject:[CardType MR_findFirstByAttribute:@"name" withValue:@"Planeswalker"]])
     {
         [html appendFormat:@"<tr><td colspan=\"2\"><strong>Loyalty</strong></td></tr>"];
         [html appendFormat:@"<tr><td colspan=\"2\">%@</td></tr>", self.card.loyalty];
@@ -297,43 +297,53 @@
 -(NSString*) replaceSymbolsInText:(NSString*) text
 {
     NSMutableArray *arrSymbols = [[NSMutableArray alloc] init];
+    int curlyOpen = -1;
+    int curlyClose = -1;
     
     for (int i=0; i<text.length; i++)
     {
         if ([text characterAtIndex:i] == '{')
         {
-            if ([text characterAtIndex:i+2] == '}')
-            {
-                [arrSymbols addObject:[text substringWithRange:NSMakeRange(i, 3)]];
-            }
-            else if ([text characterAtIndex:i+4] == '}')
-            {
-                [arrSymbols addObject:[text substringWithRange:NSMakeRange(i, 5)]];
-            }
+            curlyOpen = i;
         }
-        
+        if ([text characterAtIndex:i] == '}')
+        {
+            curlyClose = i;
+        }
+        if (curlyOpen != -1 && curlyClose != -1)
+        {
+            NSString *symbol = [text substringWithRange:NSMakeRange(curlyOpen, (curlyClose-curlyOpen)+1)];
+            
+            [arrSymbols addObject:symbol];
+            curlyOpen = -1;
+            curlyClose = -1;
+        }
     }
     
     for (NSString *symbol in arrSymbols)
     {
-        NSString *center;
         BOOL bFound = NO;
+        NSString *noCurlies = [[symbol substringWithRange:NSMakeRange(1, symbol.length-2)] stringByReplacingOccurrencesOfString:@"/" withString:@""];
+        NSString *pngFile;
         
-        if (symbol.length == 3)
+        if ([noCurlies isEqualToString:@"100"])
         {
-            center = [symbol substringWithRange:NSMakeRange(1, 1)];
+            pngFile = @"24.png";
         }
-        else if (symbol.length == 5)
+        else if ([noCurlies isEqualToString:@"1000000"])
         {
-            center = [symbol substringWithRange:NSMakeRange(1, 3)];
-            center = [center stringByReplacingOccurrencesOfString:@"/" withString:@""];
+            pngFile = @"48.png";
+        }
+        else
+        {
+            pngFile = @"16.png";
         }
         
         for (NSString *mana in kManaSymbols)
         {
-            if ([mana isEqualToString:center])
+            if ([mana isEqualToString:noCurlies])
             {
-                text = [text stringByReplacingOccurrencesOfString:symbol withString:[NSString stringWithFormat:@"<img src=\"%@/images/mana/%@/16.png\"/>", [[NSBundle mainBundle] bundlePath], center]];
+                text = [text stringByReplacingOccurrencesOfString:symbol withString:[NSString stringWithFormat:@"<img src=\"%@/images/mana/%@/%@\"/>", [[NSBundle mainBundle] bundlePath], noCurlies, pngFile]];
                 bFound = YES;
             }
         }
@@ -342,9 +352,9 @@
         {
             for (NSString *mana in kOtherSymbols)
             {
-                if ([mana isEqualToString:center])
+                if ([mana isEqualToString:noCurlies])
                 {
-                    text = [text stringByReplacingOccurrencesOfString:symbol withString:[NSString stringWithFormat:@"<img src=\"%@/images/other/%@/16.png\"/>", [[NSBundle mainBundle] bundlePath], center]];
+                    text = [text stringByReplacingOccurrencesOfString:symbol withString:[NSString stringWithFormat:@"<img src=\"%@/images/other/%@/%@\"/>", [[NSBundle mainBundle] bundlePath], noCurlies, pngFile]];
                 }
             }
         }

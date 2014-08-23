@@ -98,7 +98,7 @@
     {
         NSIndexPath *indexPath=[NSIndexPath indexPathForRow:self.selectedIndex inSection:0];
         
-        [self.tblResults selectRowAtIndexPath:indexPath animated:NO  scrollPosition:UITableViewScrollPositionNone];
+        [self.tblResults selectRowAtIndexPath:indexPath animated:NO  scrollPosition:UITableViewScrollPositionMiddle];
     }
 }
 
