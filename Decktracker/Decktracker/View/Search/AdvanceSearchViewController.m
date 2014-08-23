@@ -81,10 +81,10 @@
 
 -(void) btnAddTapped:(id) sender
 {
-    NewAdvanceSearchViewController *newAdvanceView = [[NewAdvanceSearchViewController alloc] init];
+    NewAdvanceSearchViewController *view = [[NewAdvanceSearchViewController alloc] init];
     
-    newAdvanceView.mode = EditModeNew;
-    [self.navigationController pushViewController:newAdvanceView animated:NO];
+    view.mode = EditModeNew;
+    [self.navigationController pushViewController:view animated:NO];
 }
 
 #pragma mark - UITableView
@@ -145,7 +145,6 @@
                                               cancelButtonTitle:@"No"
                                               otherButtonTitles:@"Yes", nil];
         [alert show];
-        
     }
 }
 
@@ -168,14 +167,15 @@
 {
 	[hud removeFromSuperview];
     
-    AdvanceSearchResultsViewController *advanceSearchResultsView = [[AdvanceSearchResultsViewController alloc] init];
-    advanceSearchResultsView.fetchedResultsController = self.fetchedResultsController;
-    advanceSearchResultsView.fetchedResultsController.delegate = advanceSearchResultsView;
-    advanceSearchResultsView.navigationItem.title = [NSString stringWithFormat:@"%tu Search Results", [self.fetchedResultsController.fetchedObjects count]];
-    advanceSearchResultsView.queryToSave = _dictCurrentQuery;
-    advanceSearchResultsView.sorterToSave = _dictCurrentSort;
-    advanceSearchResultsView.mode = EditModeEdit;
-    [self.navigationController pushViewController:advanceSearchResultsView animated:NO];
+    AdvanceSearchResultsViewController *view = [[AdvanceSearchResultsViewController alloc] init];
+    
+    view.fetchedResultsController = self.fetchedResultsController;
+    view.fetchedResultsController.delegate = view;
+    view.navigationItem.title = [NSString stringWithFormat:@"%tu Results", [self.fetchedResultsController.fetchedObjects count]];
+    view.queryToSave = _dictCurrentQuery;
+    view.sorterToSave = _dictCurrentSort;
+    view.mode = EditModeEdit;
+    [self.navigationController pushViewController:view animated:NO];
 }
 
 -(void) doSearch

@@ -83,12 +83,12 @@
 {
     if (self.mode == EditModeEdit)
     {
-        NewAdvanceSearchViewController *newAdvanceView = [[NewAdvanceSearchViewController alloc] init];
+        NewAdvanceSearchViewController *view = [[NewAdvanceSearchViewController alloc] init];
         
-        newAdvanceView.mode = EditModeEdit;
-        newAdvanceView.dictCurrentQuery = [[NSMutableDictionary alloc] initWithDictionary:self.queryToSave];
-        newAdvanceView.dictCurrentSorter = [[NSMutableDictionary alloc] initWithDictionary:self.sorterToSave];
-        [self.navigationController pushViewController:newAdvanceView animated:NO];
+        view.mode = EditModeEdit;
+        view.dictCurrentQuery = [[NSMutableDictionary alloc] initWithDictionary:self.queryToSave];
+        view.dictCurrentSorter = [[NSMutableDictionary alloc] initWithDictionary:self.sorterToSave];
+        [self.navigationController pushViewController:view animated:NO];
     }
     else if (self.mode == EditModeNew)
     {
@@ -109,9 +109,9 @@
         [[FileManager sharedInstance] saveAdvanceQuery:[[alertView textFieldAtIndex:0] text]
                                            withFilters:self.queryToSave
                                             andSorters:self.sorterToSave];
-        AdvanceSearchViewController *advanceView = [[AdvanceSearchViewController alloc] init];
+        AdvanceSearchViewController *view = [[AdvanceSearchViewController alloc] init];
     
-        [self.navigationController pushViewController:advanceView animated:NO];
+        [self.navigationController pushViewController:view animated:NO];
     }
 }
 
@@ -172,12 +172,13 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CardDetailsViewController *cardView = [[CardDetailsViewController alloc] init];
+    CardDetailsViewController *view = [[CardDetailsViewController alloc] init];
     Card *card = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    cardView.fetchedResultsController = self.fetchedResultsController;
-    [cardView setCard:card];
     
-    [self.navigationController pushViewController:cardView animated:YES];
+    view.fetchedResultsController = self.fetchedResultsController;
+    [view setCard:card];
+    
+    [self.navigationController pushViewController:view animated:YES];
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate

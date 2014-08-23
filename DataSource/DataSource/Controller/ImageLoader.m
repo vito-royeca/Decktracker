@@ -197,7 +197,7 @@
             else */if ([file rangeOfString:@".hq.jpg"].location != NSNotFound)
             {
                 output = [cardPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", [file stringByReplacingOccurrencesOfString:@".hq.jpg" withString:@".jpg"]]];
-                quality = image.size.width >= 480 ? 30 : 50;
+                quality = image.size.width >= 480 ? 50 : 100;
             }
             
             if (![[NSFileManager defaultManager] fileExistsAtPath:cardPath])
@@ -211,7 +211,15 @@
             
             if (output && ![[NSFileManager defaultManager] fileExistsAtPath:output])
             {
-                [JJJUtil  runCommand:[NSString stringWithFormat:@"convert \"%@\" -strip -quality %.2f \"%@\"", input, quality, output]];
+                if (quality == 100)
+                {
+                    NSLog(@"copy %@ to %@", input, output);
+                    [[NSFileManager defaultManager] copyItemAtPath:input toPath:output error:nil];
+                }
+                else
+                {
+                    [JJJUtil  runCommand:[NSString stringWithFormat:@"convert \"%@\" -strip -quality %.2f \"%@\"", input, quality, output]];
+                }
             }
             
             // reset outputPath

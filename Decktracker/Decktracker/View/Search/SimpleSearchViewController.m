@@ -20,7 +20,6 @@
 
 @implementation SimpleSearchViewController
 
-@synthesize selectedIndex = _selectedIndex;
 @synthesize searchBar  = _searchBar;
 @synthesize tblResults = _tblResults;
 @synthesize fetchedResultsController = _fetchedResultsController;
@@ -45,7 +44,6 @@
     if (self)
     {
         // Custom initialization
-        self.selectedIndex = -1;
     }
     return self;
 }
@@ -56,15 +54,14 @@
     // Do any additional setup after loading the view.
 
     CGFloat dX = 0;
-    CGFloat dY = 0;
+    CGFloat dY = 0;//[UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height;
     CGFloat dWidth = self.view.frame.size.width;
-    CGFloat dHeight = self.navigationController.navigationBar.frame.size.height - self.tabBarController.tabBar.frame.size.height;
+    CGFloat dHeight = self.view.frame.size.height - dY - self.tabBarController.tabBar.frame.size.height;
     self.searchBar = [[UISearchBar alloc] init];
     self.searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.searchBar.placeholder = @"Search";
     self.searchBar.delegate = self;
     
-    dHeight = self.view.frame.size.height - self.tabBarController.tabBar.frame.size.height;
     self.tblResults = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)
                                                    style:UITableViewStylePlain];
     self.tblResults.delegate = self;
@@ -87,18 +84,20 @@
 
 -(void) btnAdvanceTapped:(id) sender
 {
-    AdvanceSearchViewController *advanceView = [[AdvanceSearchViewController alloc] init];
+    AdvanceSearchViewController *view = [[AdvanceSearchViewController alloc] init];
     
-    [self.navigationController pushViewController:advanceView animated:NO];
+    [self.navigationController pushViewController:view animated:NO];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    if (self.selectedIndex != -1)
+    NSIndexPath *indexPath = self.tblResults.indexPathForSelectedRow;
+    
+    if (indexPath)
     {
-        NSIndexPath *indexPath=[NSIndexPath indexPathForRow:self.selectedIndex inSection:0];
-        
-        [self.tblResults selectRowAtIndexPath:indexPath animated:NO  scrollPosition:UITableViewScrollPositionMiddle];
+        [self.tblResults selectRowAtIndexPath:indexPath
+                                     animated:NO
+                               scrollPosition:UITableViewScrollPositionMiddle];
     }
 }
 
@@ -166,12 +165,13 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    CardDetailsViewController *cardView = [[CardDetailsViewController alloc] init];
+    CardDetailsViewController *view = [[CardDetailsViewController alloc] init];
     Card *card = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    cardView.fetchedResultsController = self.fetchedResultsController;
-    [cardView setCard:card];
     
-    [self.navigationController pushViewController:cardView animated:YES];
+    view.fetchedResultsController = self.fetchedResultsController;
+    [view setCard:card];
+    
+    [self.navigationController pushViewController:view animated:YES];
 }
 
 #pragma mark - MBProgressHUDDelegate methods

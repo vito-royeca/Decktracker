@@ -363,8 +363,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    FilterInputViewController *inputView = [[FilterInputViewController alloc] init];
     NSArray *arrFilterOptions;
     
     switch (indexPath.row)
@@ -405,10 +403,11 @@
         }
     }
     
-    inputView.delegate = self;
-    inputView.filterOptions = arrFilterOptions;
-    inputView.filterName = [_arrFilters objectAtIndex:indexPath.row];
-    [self.navigationController pushViewController:inputView animated:YES];
+    FilterInputViewController *view = [[FilterInputViewController alloc] init];
+    view.delegate = self;
+    view.filterOptions = arrFilterOptions;
+    view.filterName = [_arrFilters objectAtIndex:indexPath.row];
+    [self.navigationController pushViewController:view animated:YES];
 }
 
 #pragma mark - FilterInputViewControllerDelegate
@@ -429,14 +428,15 @@
 {
 	[hud removeFromSuperview];
     
-    AdvanceSearchResultsViewController *advanceSearchResultsView = [[AdvanceSearchResultsViewController alloc] init];
-    advanceSearchResultsView.fetchedResultsController = self.fetchedResultsController;
-    advanceSearchResultsView.fetchedResultsController.delegate = advanceSearchResultsView;
-    advanceSearchResultsView.navigationItem.title = [NSString stringWithFormat:@"%tu Search Results", [self.fetchedResultsController.fetchedObjects count]];
-    advanceSearchResultsView.queryToSave = self.dictCurrentQuery;
-    advanceSearchResultsView.sorterToSave = self.dictCurrentSorter;
-    advanceSearchResultsView.mode = EditModeNew;
-    [self.navigationController pushViewController:advanceSearchResultsView animated:NO];
+    AdvanceSearchResultsViewController *view = [[AdvanceSearchResultsViewController alloc] init];
+    
+    view.fetchedResultsController = self.fetchedResultsController;
+    view.fetchedResultsController.delegate = view;
+    view.navigationItem.title = [NSString stringWithFormat:@"%tu Results", [self.fetchedResultsController.fetchedObjects count]];
+    view.queryToSave = self.dictCurrentQuery;
+    view.sorterToSave = self.dictCurrentSorter;
+    view.mode = EditModeNew;
+    [self.navigationController pushViewController:view animated:NO];
 }
 
 @end

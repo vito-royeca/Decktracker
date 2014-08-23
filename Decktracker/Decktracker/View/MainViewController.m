@@ -7,6 +7,8 @@
 //
 
 #import "MainViewController.h"
+#import "CollectionsViewController.h"
+#import "DecksViewController.h"
 #import "SimpleSearchViewController.h"
 
 @interface MainViewController ()
@@ -38,16 +40,14 @@
                                            selectedImage:nil];
     
     UINavigationController *nc2 = [[UINavigationController alloc] init];
-    UIViewController *vc2 = [[UIViewController alloc] initWithNibName:nil bundle:nil];
-    vc2.view.backgroundColor = [UIColor blueColor];
+    UIViewController *vc2 = [[DecksViewController alloc] initWithNibName:nil bundle:nil];
     nc2.viewControllers = [NSArray arrayWithObjects:vc2, nil];
     nc2.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Decks"
                                                    image:[UIImage imageNamed:@"layers-25.png"]
                                            selectedImage:nil];
     
     UINavigationController *nc3 = [[UINavigationController alloc] init];
-    UIViewController *vc3 = [[UIViewController alloc] initWithNibName:nil bundle:nil];
-    vc3.view.backgroundColor = [UIColor greenColor];
+    UIViewController *vc3 = [[CollectionsViewController alloc] initWithNibName:nil bundle:nil];
     nc3.viewControllers = [NSArray arrayWithObjects:vc3, nil];
     nc3.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Collections"
                                                    image:[UIImage imageNamed:@"cards-25.png"]
@@ -56,7 +56,7 @@
     UINavigationController *nc4 = [[UINavigationController alloc] init];
     UIViewController *vc4 = [[UIViewController alloc] initWithNibName:nil bundle:nil];
     vc4.view.backgroundColor = [UIColor greenColor];
-    nc4.viewControllers = [NSArray arrayWithObjects:vc3, nil];
+    nc4.viewControllers = [NSArray arrayWithObjects:vc4, nil];
     nc4.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Settings"
                                                    image:[UIImage imageNamed:@"settings-25.png"]
                                            selectedImage:nil];
