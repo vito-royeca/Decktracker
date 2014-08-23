@@ -79,7 +79,6 @@
     
     self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Filter", @"Sorter", @"Search Criteria"]];
     self.segmentedControl.frame = CGRectMake(dX, dY, dWidth, dHeight);
-    self.segmentedControl.selectedSegmentIndex = 0;
     [self.segmentedControl addTarget:self
                               action:@selector(segmentedControlChangedValue:)
                     forControlEvents:UIControlEventValueChanged];
@@ -113,6 +112,20 @@
     {
         self.navigationItem.title = @"New Advance Search";
     }
+}
+
+-(void) viewDidAppear:(BOOL)animated
+{
+    if (self.dictCurrentQuery.count > 0)
+    {
+        self.segmentedControl.selectedSegmentIndex = 2;
+    }
+    else
+    {
+        self.segmentedControl.selectedSegmentIndex = 0;
+    }
+    
+    [self.segmentedControl sendActionsForControlEvents:UIControlEventValueChanged];
 }
 
 - (void)didReceiveMemoryWarning
@@ -409,8 +422,6 @@
         [self.dictCurrentQuery setObject:arrRows forKey:[filter objectForKey:@"Filter"]];
     }
     [arrRows addObject:@{[filter objectForKey:@"Condition"] : [filter objectForKey:@"Value"]}];
-    
-    [self showSegment:2];
 }
 
 #pragma mark - MBProgressHUDDelegate methods

@@ -172,12 +172,14 @@
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     NSString *inputDir = [documentsDirectory stringByAppendingPathComponent:@"/images-raw/card"];
-    NSString *outputDir = [documentsDirectory stringByAppendingPathComponent:@"/images-low"];
+    NSString *cardDir = [documentsDirectory stringByAppendingPathComponent:@"/images-low/card"];
+    NSString *cropDir = [documentsDirectory stringByAppendingPathComponent:@"/images-low/crop"];
     
     for (NSString *dir in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:inputDir error:nil])
     {
         NSString *inputPath = [inputDir stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", dir]];
-        NSString *outputPath = [outputDir stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", dir]];
+        NSString *cardPath = [cardDir stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", dir]];
+        NSString *cropPath = [cropDir stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", dir]];
         
         for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:inputPath error:nil])
         {
@@ -188,21 +190,24 @@
             
             /*if ([file rangeOfString:@".crop.jpg"].location != NSNotFound)
             {
-                outputPath = [outputPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/crop"]];
+//                outputPath = [outputPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/crop"]];
                 output = [outputPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", [file stringByReplacingOccurrencesOfString:@".crop.jpg" withString:@".jpg"]]];
                 quality = 20;
             }
             else */if ([file rangeOfString:@".hq.jpg"].location != NSNotFound)
             {
-                outputPath = [outputPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/card"]];
-                output = [outputPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", [file stringByReplacingOccurrencesOfString:@".hq.jpg" withString:@".jpg"]]];
+                output = [cardPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", [file stringByReplacingOccurrencesOfString:@".hq.jpg" withString:@".jpg"]]];
                 quality = image.size.width >= 480 ? 10 : 50;
             }
             
-            if (![[NSFileManager defaultManager] fileExistsAtPath:outputPath])
+            if (![[NSFileManager defaultManager] fileExistsAtPath:cardPath])
             {
-                [self createDir:outputPath];
+                [self createDir:cardPath];
             }
+//            if (![[NSFileManager defaultManager] fileExistsAtPath:cropPath])
+//            {
+//                [self createDir:cropPath];
+//            }
             
             if (output && ![[NSFileManager defaultManager] fileExistsAtPath:output])
             {
@@ -210,7 +215,7 @@
             }
             
             // reset outputPath
-            outputPath = [outputDir stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", dir]];
+//            outputPath = [outputDir stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", dir]];
         }
     }
     

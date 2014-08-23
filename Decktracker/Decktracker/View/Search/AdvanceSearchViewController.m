@@ -63,6 +63,7 @@
     self.tblView = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight) style:UITableViewStylePlain];
     self.tblView.delegate = self;
     self.tblView.dataSource = self;
+    self.tblView.editing = YES;
     
     [self.view addSubview:self.tblView];
     
@@ -72,18 +73,6 @@
     self.navigationItem.rightBarButtonItem = btnAdd;
     self.navigationItem.title = @"Advance Search";
 }
-
-//- (void)viewWillDisappear:(BOOL)animated
-//{
-//    [super viewWillDisappear:animated];
-//    
-//    if (self.isMovingFromParentViewController)
-//    {
-//        SimpleSearchViewController *simpleView = [[SimpleSearchViewController alloc] init];
-//        
-//        [self.navigationController pushViewController:simpleView animated:NO];
-//    }
-//}
 
 - (void)didReceiveMemoryWarning
 {
@@ -140,15 +129,16 @@
     [hud showWhileExecuting:@selector(doSearch) onTarget:self withObject:nil animated:NO];
 }
 
--(void) doSearch
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    self.fetchedResultsController = nil;
-    
-    NSError *error;
-    if (![[self fetchedResultsController] performFetch:&error])
-    {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-    }
+        if (editingStyle == UITableViewCellEditingStyleDelete)
+        {
+            NSDictionary *dict = [self.arrAdvanceSearches objectAtIndex:indexPath.row];
+            
+            [[FileManager sharedInstance] deleteAdvanceSearchFile:[[dict allKeys] firstObject]];
+            [self.arrAdvanceSearches removeObject:dict];
+            [tableView reloadData];
+        }
 }
 
 #pragma mark - MBProgressHUDDelegate methods
@@ -164,6 +154,17 @@
     advanceSearchResultsView.sorterToSave = _dictCurrentSort;
     advanceSearchResultsView.mode = EditModeEdit;
     [self.navigationController pushViewController:advanceSearchResultsView animated:NO];
+}
+
+-(void) doSearch
+{
+    self.fetchedResultsController = nil;
+    
+    NSError *error;
+    if (![[self fetchedResultsController] performFetch:&error])
+    {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
 }
 
 @end

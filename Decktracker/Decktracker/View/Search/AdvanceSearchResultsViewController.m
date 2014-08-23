@@ -89,9 +89,8 @@
         newAdvanceView.dictCurrentQuery = [[NSMutableDictionary alloc] initWithDictionary:self.queryToSave];
         newAdvanceView.dictCurrentSorter = [[NSMutableDictionary alloc] initWithDictionary:self.sorterToSave];
         [self.navigationController pushViewController:newAdvanceView animated:NO];
-        [newAdvanceView showSegment:2];
     }
-    else if (self.mode == EditModeEdit)
+    else if (self.mode == EditModeNew)
     {
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Save"
                                                          message:@"Advance Search Name"

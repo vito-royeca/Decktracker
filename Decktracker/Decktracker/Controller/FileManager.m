@@ -75,4 +75,17 @@ static FileManager *_me;
     return arrSearchFiles;
 }
 
+-(void) deleteAdvanceSearchFile:(NSString*) name
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths firstObject];
+    NSString *path = [documentsDirectory stringByAppendingPathComponent:@"/Advance Search"];
+    NSString *file = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.plist", name]];
+    
+    if ([[NSFileManager defaultManager] fileExistsAtPath:file])
+    {
+        [[NSFileManager defaultManager] removeItemAtPath:file error:nil];
+    }
+}
+
 @end

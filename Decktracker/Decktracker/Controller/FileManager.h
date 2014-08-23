@@ -17,5 +17,6 @@
               andSorters:(NSDictionary*) dictSorter;
 
 -(NSArray*) findAdvanceSearchFiles;
+-(void) deleteAdvanceSearchFile:(NSString*) name;
 
 @end

@@ -397,7 +397,6 @@
 - (NSURL*) imageURLAtIndex:(NSInteger)index imageViewer:(MHFacebookImageViewer*) imageViewer
 {
     Card *card = [self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
-        NSString *cardPath = [NSString stringWithFormat:@"%@/images/card/%@/%@.jpg", [[NSBundle mainBundle] bundlePath], card.set.code, card.imageName];
     [self setCard:card];
     [self displayCard];
     
@@ -405,16 +404,15 @@
 //    return [NSURL URLWithString:[[NSString stringWithFormat:@"http://mtgimage.com/set/%@/%@.hq.jpg", card.set.code, card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     
     // just return bundled image for now
-    return [NSURL fileURLWithPath:cardPath];
+    return [NSURL fileURLWithPath:_cardPath];
 }
 
 - (UIImage*) imageDefaultAtIndex:(NSInteger)index imageViewer:(MHFacebookImageViewer*) imageViewer
 {
     Card *card = [self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
-    NSString *cardPath = [NSString stringWithFormat:@"%@/images/card/%@/%@.jpg", [[NSBundle mainBundle] bundlePath], card.set.code, card.imageName];
     [self setCard:card];
     [self displayCard];
-    return [UIImage imageWithContentsOfFile:cardPath];
+    return [UIImage imageWithContentsOfFile:_cardPath];
 }
 
 @end
