@@ -7,7 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Card.h"
+#import "CardType.h"
+#import "Database.h"
+#import "Magic.h"
+#import "Set.h"
 
 @interface SearchResultsTableViewCell : UITableViewCell
 
+@property(strong,nonatomic) IBOutlet UIImageView *imgCrop;
+@property(strong,nonatomic) IBOutlet UILabel *lblCardName;
+@property(strong,nonatomic) IBOutlet UILabel *lblDetail;
+@property(strong,nonatomic) IBOutlet UILabel *lblSet;
+@property(strong,nonatomic) IBOutlet UIView *viewManaCost;
+@property(strong,nonatomic) IBOutlet UIImageView *imgSet;
+
+
+-(void) displayCard:(Card*) card;
 @end
