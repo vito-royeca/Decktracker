@@ -9,6 +9,7 @@
 #import "CardDetailsViewController.h"
 
 #import "JJJ/JJJUtil.h"
+#import "AdvanceSearchResultsViewController.h"
 #import "Artist.h"
 #import "CardForeignName.h"
 #import "CardRarity.h"
@@ -86,17 +87,17 @@
     // Dispose of any resources that can be recreated.
 }
 
--(BOOL)hidesBottomBarWhenPushed
-{
-    return YES;
-}
+//-(BOOL)hidesBottomBarWhenPushed
+//{
+//    return YES;
+//}
 
 -(void) switchView
 {
     CGFloat dX = 0;
     CGFloat dY = self.segmentedControl.frame.origin.y + self.segmentedControl.frame.size.height +10;
     CGFloat dWidth = self.view.frame.size.width;
-    CGFloat dHeight = self.view.frame.size.height - dY;// - self.tabBarController.tabBar.frame.size.height;
+    CGFloat dHeight = self.view.frame.size.height - dY - self.tabBarController.tabBar.frame.size.height;
     
     [self.cardImage removeFromSuperview];
     [self.webView removeFromSuperview];
@@ -182,11 +183,22 @@
 - (void) displayCard
 {
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
-    SimpleSearchViewController *parent = [self.navigationController.viewControllers firstObject];
     NSInteger selectedRow = [sectionInfo.objects indexOfObject:self.card];
-    [parent.tblResults selectRowAtIndexPath:[NSIndexPath indexPathForRow:selectedRow inSection:0]
-                                   animated:NO
-                             scrollPosition:UITableViewScrollPositionMiddle];
+    
+//    if ([[self.navigationController.viewControllers firstObject] isKindOfClass:[SimpleSearchViewController class]])
+//    {
+//        SimpleSearchViewController *parent = [self.navigationController.viewControllers firstObject];
+//        [parent.tblResults selectRowAtIndexPath:[NSIndexPath indexPathForRow:selectedRow inSection:0]
+//                                       animated:NO
+//                                 scrollPosition:UITableViewScrollPositionMiddle];
+//    }
+//    else if ([[self.navigationController.viewControllers firstObject] isKindOfClass:[AdvanceSearchResultsViewController class]])
+//    {
+//        AdvanceSearchResultsViewController *parent = [self.navigationController.viewControllers firstObject];
+//        [parent.tblResults selectRowAtIndexPath:[NSIndexPath indexPathForRow:selectedRow inSection:0]
+//                                       animated:NO
+//                                 scrollPosition:UITableViewScrollPositionMiddle];
+//    }
     
     UIImage *image = [UIImage imageWithContentsOfFile:_cardPath];
     [self.cardImage setImage:image];
@@ -392,6 +404,7 @@
             NSString *symbol = [text substringWithRange:NSMakeRange(curlyOpen, (curlyClose-curlyOpen)+1)];
             
             [arrSymbols addObject:symbol];
+            
             curlyOpen = -1;
             curlyClose = -1;
         }
@@ -401,6 +414,7 @@
     {
         BOOL bFound = NO;
         NSString *noCurlies = [[symbol substringWithRange:NSMakeRange(1, symbol.length-2)] stringByReplacingOccurrencesOfString:@"/" withString:@""];
+        NSString *noCurliesReverse = [JJJUtil reverseString:noCurlies];
         NSString *pngFile;
         
         if ([noCurlies isEqualToString:@"100"])
@@ -423,6 +437,11 @@
                 text = [text stringByReplacingOccurrencesOfString:symbol withString:[NSString stringWithFormat:@"<img src=\"%@/images/mana/%@/%@\"/>", [[NSBundle mainBundle] bundlePath], noCurlies, pngFile]];
                 bFound = YES;
             }
+            else if ([mana isEqualToString:noCurliesReverse])
+            {
+                text = [text stringByReplacingOccurrencesOfString:symbol withString:[NSString stringWithFormat:@"<img src=\"%@/images/mana/%@/%@\"/>", [[NSBundle mainBundle] bundlePath], noCurliesReverse, pngFile]];
+                bFound = YES;
+            }
         }
         
         if (!bFound)
@@ -432,6 +451,10 @@
                 if ([mana isEqualToString:noCurlies])
                 {
                     text = [text stringByReplacingOccurrencesOfString:symbol withString:[NSString stringWithFormat:@"<img src=\"%@/images/other/%@/%@\"/>", [[NSBundle mainBundle] bundlePath], noCurlies, pngFile]];
+                }
+                else if ([mana isEqualToString:noCurlies])
+                {
+                    text = [text stringByReplacingOccurrencesOfString:symbol withString:[NSString stringWithFormat:@"<img src=\"%@/images/other/%@/%@\"/>", [[NSBundle mainBundle] bundlePath], noCurliesReverse, pngFile]];
                 }
             }
         }

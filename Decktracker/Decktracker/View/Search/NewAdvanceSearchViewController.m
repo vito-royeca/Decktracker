@@ -22,7 +22,6 @@
     
     NSArray *_arrFilters;
     NSArray *_arrSorters;
-    NSArray *_cardTypes;
 }
 
 @synthesize segmentedControl = _segmentedControl;
@@ -63,14 +62,10 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    _arrFilters = @[@"Name", @"Set", @"Rarity", /*@"Format",*/ @"Type", @"Subtype", @"Color", @"Text", @"Flavor Text",
+    _arrFilters = @[@"Name", @"Set", @"Rarity", @"Type", @"Subtype", @"Color", @"Keyword", @"Text", @"Flavor Text",
                     @"Artist"];
     
     _arrSorters = @[@"Name"];
-    
-    _cardTypes = @[@"Artifact", @"Basic", @"Conspiracy", @"Creature", @"Enchantment", @"Instant", @"Land",
-                   @"Legendary", @"Ongoing", @"Phenomenon", @"Plane", @"Planeswalker", @"Scheme", @"Snow",
-                   @"Sorcery", @"Tribal", @"Vanguard", @"World"];
     
     CGFloat dX = 10;
     CGFloat dY = [UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height+10;
@@ -364,43 +359,34 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSArray *arrFilterOptions;
-    
-    switch (indexPath.row)
+
+    if ([[_arrFilters objectAtIndex:indexPath.row] isEqualToString:@"Set"])
     {
-        case 1:
-        {
-            arrFilterOptions = [Set MR_findAllSortedBy:@"name" ascending:YES];
-            break;
-        }
-        case 2:
-        {
-            arrFilterOptions = [CardRarity MR_findAll];
-            break;
-        }
-        case 3:
-        {
-            arrFilterOptions = [CardType MR_findAllSortedBy:@"name" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"name IN %@", _cardTypes]];
-            break;
-        }
-        case 4:
-        {
-            arrFilterOptions = [CardType MR_findAllSortedBy:@"name" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"NOT (name IN %@)", _cardTypes]];
-            break;
-        }
-        case 5:
-        {
-            arrFilterOptions = [CardColor MR_findAllSortedBy:@"name" ascending:YES];;
-            break;
-        }
-        case 8:
-        {
-            arrFilterOptions = [Artist MR_findAllSortedBy:@"name" ascending:YES];
-            break;
-        }
-        default:
-        {
-            break;
-        }
+        arrFilterOptions = [Set MR_findAllSortedBy:@"name" ascending:YES];
+    }
+    else if ([[_arrFilters objectAtIndex:indexPath.row] isEqualToString:@"Rarity"])
+    {
+        arrFilterOptions = [CardRarity MR_findAll];
+    }
+    else if ([[_arrFilters objectAtIndex:indexPath.row] isEqualToString:@"Type"])
+    {
+        arrFilterOptions = [CardType MR_findAllSortedBy:@"name" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"name IN %@", CARD_TYPES]];
+    }
+    else if ([[_arrFilters objectAtIndex:indexPath.row] isEqualToString:@"Subtype"])
+    {
+        arrFilterOptions = [CardType MR_findAllSortedBy:@"name" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"NOT (name IN %@)", CARD_TYPES]];
+    }
+    else if ([[_arrFilters objectAtIndex:indexPath.row] isEqualToString:@"Color"])
+    {
+        arrFilterOptions = [CardColor MR_findAllSortedBy:@"name" ascending:YES];;
+    }
+    else if ([[_arrFilters objectAtIndex:indexPath.row] isEqualToString:@"Keyword"])
+    {
+        arrFilterOptions = KEYWORDS;
+    }
+    else if ([[_arrFilters objectAtIndex:indexPath.row] isEqualToString:@"Artist"])
+    {
+        arrFilterOptions = [Artist MR_findAllSortedBy:@"name" ascending:YES];
     }
     
     FilterInputViewController *view = [[FilterInputViewController alloc] init];

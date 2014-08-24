@@ -17,7 +17,7 @@
 
 @implementation FilterInputViewController
 {
-    int _selectedFilterIndex;
+    NSIndexPath *_selectedFilterPath;
     int _selectedOperatorIndex;
     NSString *_selectedFilter;
     NSString *_selectedOperator;
@@ -28,8 +28,8 @@
 @synthesize filterOptions = _filterOptions;
 @synthesize operatorOptions = _operatorOptions;
 @synthesize searchBar = _searchBar;
-@synthesize tblFilter = _tblFilter;
 @synthesize tblOperator = _tblOperator;
+@synthesize tblFilter = _tblFilter;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -47,7 +47,7 @@
     // Do any additional setup after loading the view.
     
     self.operatorOptions = @[@"And", @"Or", @"Not"];
-    _selectedFilterIndex = 0;
+    _selectedFilterPath = [NSIndexPath indexPathForRow:0 inSection:0];
     _selectedOperatorIndex = 0;
     _selectedOperator = [self.operatorOptions firstObject];
     
@@ -59,42 +59,53 @@
                                                     style:UITableViewStylePlain];
     self.tblOperator.dataSource = self;
     self.tblOperator.delegate = self;
-    
-    dY = self.tblOperator.frame.origin.y + self.tblOperator.frame.size.height;
-    self.tblFilter = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight*0.60)
-                                                  style:UITableViewStylePlain];
-    self.tblFilter.dataSource = self;
-    self.tblFilter.delegate = self;
-    
     [self.view addSubview:self.tblOperator];
-    [self.view addSubview:self.tblFilter];
-    self.navigationItem.title = self.filterName;
     
     if (self.filterOptions)
     {
         id obj = [self.filterOptions firstObject];
         NSString *stringValue;
-        if (obj)
+        
+        if ([obj isKindOfClass:[NSManagedObject class]])
         {
-            if ([obj isKindOfClass:[NSManagedObject class]])
-            {
-                stringValue = [obj performSelector:@selector(name) withObject:nil];
-            }
-            else if ([obj isKindOfClass:[NSString class]])
-            {
-                stringValue = obj;
-            }
+            stringValue = [obj performSelector:@selector(name) withObject:nil];
+        }
+        else if ([obj isKindOfClass:[NSString class]])
+        {
+            stringValue = obj;
+        }
+        else if ([obj isKindOfClass:[NSDictionary class]])
+        {
+            NSDictionary *dict = (NSDictionary*) obj;
+            NSArray *arrValues = [dict objectForKey:[[dict allKeys] firstObject]];
+            stringValue = [arrValues firstObject];
         }
         _selectedFilter = stringValue;
         
-        self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width-20, 30)];
+        dY = self.tblOperator.frame.origin.y + self.tblOperator.frame.size.height;
+        self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(dX, dY, dWidth, 30)];
         self.searchBar.delegate = self;
         self.searchBar.placeholder = @"Filter";
         self.searchBar.tintColor = [UIColor grayColor];
+        
+        dY = self.searchBar.frame.origin.y + self.searchBar.frame.size.height;
+        self.tblFilter = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, (dHeight-self.searchBar.frame.size.height)*0.60)
+                                                      style:UITableViewStylePlain];
+        self.tblFilter.dataSource = self;
+        self.tblFilter.delegate = self;
+        
+        [self.view addSubview:self.searchBar];
+        [self.view addSubview:self.tblFilter];
     }
     else
     {
+        dY = self.tblOperator.frame.origin.y + self.tblOperator.frame.size.height;
+        self.tblFilter = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight*0.60)
+                                                      style:UITableViewStylePlain];
+        self.tblFilter.dataSource = self;
+        self.tblFilter.delegate = self;
         self.tblFilter.separatorColor = [UIColor clearColor];
+        [self.view addSubview:self.tblFilter];
     }
     
     UIBarButtonItem *btnOk = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
@@ -105,6 +116,7 @@
                                                                            action:@selector(btnCancelTapped:)];
     self.navigationItem.rightBarButtonItem = btnOk;
     self.navigationItem.leftBarButtonItem = btnCancel;
+    self.navigationItem.title = self.filterName;
 }
 
 - (void)didReceiveMemoryWarning
@@ -139,41 +151,108 @@
     }
 }
 
+- (void)searchBarCancelButtonClicked:(UISearchBar *) searchBar
+{
+    _selectedFilterPath = nil;
+    _narrowedFilterOptions = nil;
+    [self.tblFilter reloadData];
+}
+
 - (void) searchFilterOptions
 {
     NSString *query = self.searchBar.text;
     NSPredicate *predicate;
-    _selectedFilterIndex = -1;
+    NSMutableArray *arrFilter;
     
-    if (query.length == 1)
+    id obj = [self.filterOptions firstObject];
+    if ([obj isKindOfClass:[NSManagedObject class]])
     {
-        predicate = [NSPredicate predicateWithFormat:@"%K BEGINSWITH[cd] %@", @"name", query];
-        _narrowedFilterOptions = [self.filterOptions filteredArrayUsingPredicate:predicate];
+        arrFilter = [[NSMutableArray alloc] initWithArray:self.filterOptions];
+        
+        if (query.length == 1)
+        {
+            predicate = [NSPredicate predicateWithFormat:@"%K BEGINSWITH[cd] %@", @"name", query];
+        }
+        else if (query.length > 1)
+        {
+            predicate = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", @"name", query];
+        }
     }
-    else if (query.length > 1)
+    else if ([obj isKindOfClass:[NSDictionary class]])
     {
-        predicate = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", @"name", query];
-        _narrowedFilterOptions = [self.filterOptions filteredArrayUsingPredicate:predicate];
+        arrFilter = [[NSMutableArray alloc] init];
+        for (NSDictionary *dict in self.filterOptions)
+        {
+            NSArray *keywords = [dict objectForKey:[[dict allKeys] firstObject]];
+            [arrFilter addObjectsFromArray:keywords];
+        }
+        
+        if (query.length == 1)
+        {
+            predicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH[cd] %@", query];
+        }
+        else if (query.length > 1)
+        {
+            predicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@", query];
+        }
+    }
+    
+    if (predicate)
+    {
+        _narrowedFilterOptions = [arrFilter filteredArrayUsingPredicate:predicate];
     }
     else
     {
         _narrowedFilterOptions = nil;
     }
     
+    _selectedFilterPath = [NSIndexPath indexPathForRow:0 inSection:0];
     [self.tblFilter reloadData];
 }
 
 #pragma mark - UITableView
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    int sections = 1;
+    
+    if (tableView == self.tblFilter)
+    {
+        if (self.filterOptions)
+        {
+            NSArray *arrFilter = _narrowedFilterOptions ? _narrowedFilterOptions : self.filterOptions;
+            
+            if ([[arrFilter firstObject] isKindOfClass:[NSDictionary class]])
+            {
+                sections = (int)arrFilter.count;
+            }
+        }
+    }
+    
+    return sections;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section;
 {
     if (tableView == self.tblFilter)
     {
-        return @"Filter";
+        if (self.filterOptions)
+        {
+            NSArray *arrFilter = _narrowedFilterOptions ? _narrowedFilterOptions : self.filterOptions;
+            
+            if ([[arrFilter firstObject] isKindOfClass:[NSDictionary class]])
+            {
+                NSDictionary *dict = [arrFilter objectAtIndex:section];
+                return [[dict allKeys] firstObject];
+            }
+            else
+            {
+                return nil;
+            }
+        }
+        else
+        {
+            return nil;
+        }
     }
     else if (tableView == self.tblOperator)
     {
@@ -181,31 +260,7 @@
     }
     else
     {
-        return @"";
-    }
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    if (tableView == self.tblFilter)
-    {
-        return self.searchBar;
-    }
-    else
-    {
         return nil;
-    }
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    if (tableView == self.tblFilter)
-    {
-        return 30;
-    }
-    else
-    {
-        return UITableViewAutomaticDimension;
     }
 }
 
@@ -217,7 +272,16 @@
         {
             NSArray *arrFilter = _narrowedFilterOptions ? _narrowedFilterOptions : self.filterOptions;
         
-            return arrFilter.count;
+            if ([[arrFilter firstObject] isKindOfClass:[NSDictionary class]])
+            {
+                NSDictionary *dict = [arrFilter objectAtIndex:section];
+                NSArray *arrValues = [dict objectForKey:[[dict allKeys] firstObject]];
+                return arrValues.count;
+            }
+            else
+            {
+                return arrFilter.count;
+            }
         }
         else
         {
@@ -250,7 +314,7 @@
         {
             NSArray *arrFilter = _narrowedFilterOptions ? _narrowedFilterOptions : self.filterOptions;
             
-            if ([[arrFilter firstObject] isKindOfClass:[Set class]])
+            if ([[self.filterOptions firstObject] isKindOfClass:[Set class]])
             {
                 Set *set = [arrFilter objectAtIndex:indexPath.row];
                 NSString *path = [NSString stringWithFormat:@"%@/images/set/%@/C/24.png", [[NSBundle mainBundle] bundlePath], set.code];
@@ -265,27 +329,17 @@
                 }
                 cell.textLabel.text = set.name;
             }
-            else if ([[arrFilter firstObject] isKindOfClass:[CardRarity class]])
+            else if ([[self.filterOptions firstObject] isKindOfClass:[CardRarity class]])
             {
                 CardRarity *rarity = [arrFilter objectAtIndex:indexPath.row];
                 cell.textLabel.text = rarity.name;
             }
-            else if ([[arrFilter firstObject] isKindOfClass:[Format class]])
-            {
-                Format *format = [arrFilter objectAtIndex:indexPath.row];
-                cell.textLabel.text = format.name;
-            }
-            else if ([[arrFilter firstObject] isKindOfClass:[CardType class]])
+            else if ([[self.filterOptions firstObject] isKindOfClass:[CardType class]])
             {
                 CardType *type = [arrFilter objectAtIndex:indexPath.row];
                 cell.textLabel.text = type.name;
             }
-            else if ([[arrFilter firstObject] isKindOfClass:[Artist class]])
-            {
-                Artist *artist = [arrFilter objectAtIndex:indexPath.row];
-                cell.textLabel.text = artist.name;
-            }
-            else if ([[arrFilter firstObject] isKindOfClass:[CardColor class]])
+            else if ([[self.filterOptions firstObject] isKindOfClass:[CardColor class]])
             {
                 CardColor *color = [arrFilter objectAtIndex:indexPath.row];
                 NSString *colorInitial;
@@ -315,8 +369,32 @@
                 
                 cell.textLabel.text = color.name;
             }
-            
-            cell.accessoryType = indexPath.row == _selectedFilterIndex ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            else if ([[self.filterOptions firstObject] isKindOfClass:[NSDictionary class]])
+            {
+                if (_narrowedFilterOptions)
+                {
+                    cell.textLabel.text = [_narrowedFilterOptions objectAtIndex:indexPath.row];
+                }
+                else
+                {
+                    NSDictionary *dict = [arrFilter objectAtIndex:indexPath.section];
+                    NSArray *arrValues = [dict objectForKey:[[dict allKeys] firstObject]];
+                    cell.textLabel.text = [arrValues objectAtIndex:indexPath.row];
+                }
+            }
+            else if ([[self.filterOptions firstObject] isKindOfClass:[Artist class]])
+            {
+                Artist *artist = [arrFilter objectAtIndex:indexPath.row];
+                cell.textLabel.text = artist.name;
+            }
+            if (_selectedFilterPath && [_selectedFilterPath compare:indexPath] == NSOrderedSame)
+            {
+                cell.accessoryType = UITableViewCellAccessoryCheckmark;
+            }
+            else
+            {
+                cell.accessoryType = UITableViewCellAccessoryNone;
+            }
         }
         
         else
@@ -352,19 +430,32 @@
     if (tableView == self.tblFilter)
     {
         NSArray *arrFilter = _narrowedFilterOptions ? _narrowedFilterOptions : self.filterOptions;
-        id obj = [arrFilter objectAtIndex:indexPath.row];
         NSString *stringValue;
-        
-        if ([obj isKindOfClass:[NSManagedObject class]])
+
+        if ([[self.filterOptions firstObject] isKindOfClass:[NSManagedObject class]])
         {
+            id obj = [arrFilter objectAtIndex:indexPath.row];
             stringValue = [obj performSelector:@selector(name) withObject:nil];
         }
-        else if ([obj isKindOfClass:[NSString class]])
+        else if ([[self.filterOptions firstObject] isKindOfClass:[NSString class]])
         {
-            stringValue = obj;
+            stringValue = [arrFilter objectAtIndex:indexPath.row];
+        }
+        else if ([[self.filterOptions firstObject] isKindOfClass:[NSDictionary class]])
+        {
+            if (_narrowedFilterOptions)
+            {
+                stringValue = [_narrowedFilterOptions objectAtIndex:indexPath.row];
+            }
+            else
+            {
+                NSDictionary *dict = [arrFilter objectAtIndex:indexPath.section];
+                NSArray *arrValues = [dict objectForKey:[[dict allKeys] firstObject]];
+                stringValue = [arrValues objectAtIndex:indexPath.row];
+            }
         }
         
-        _selectedFilterIndex = (int)indexPath.row;
+        _selectedFilterPath = indexPath;
         _selectedFilter = stringValue;
     }
     else if (tableView == self.tblOperator)

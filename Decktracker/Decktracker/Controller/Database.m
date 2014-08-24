@@ -156,6 +156,10 @@ static Database *_me;
         {
             fieldName = @"colors.name";
         }
+        else if ([key isEqualToString:@"Keyword"])
+        {
+            fieldName = @"originalText";
+        }
         else if ([key isEqualToString:@"Text"])
         {
             fieldName = @"originalText";

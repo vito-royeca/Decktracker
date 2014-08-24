@@ -22,7 +22,7 @@
 @property(strong,nonatomic) NSArray  *filterOptions;
 @property(strong,nonatomic) NSArray  *operatorOptions;
 @property(strong,nonatomic) UISearchBar *searchBar;
-@property(strong,nonatomic) UITableView *tblFilter;
 @property(strong,nonatomic) UITableView *tblOperator;
+@property(strong,nonatomic) UITableView *tblFilter;
 
 @end
