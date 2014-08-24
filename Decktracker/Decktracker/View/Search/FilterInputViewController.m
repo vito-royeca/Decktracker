@@ -200,6 +200,7 @@
     if (predicate)
     {
         _narrowedFilterOptions = [arrFilter filteredArrayUsingPredicate:predicate];
+        _selectedFilter = [_narrowedFilterOptions firstObject];
     }
     else
     {

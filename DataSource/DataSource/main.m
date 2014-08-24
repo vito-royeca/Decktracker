@@ -21,7 +21,8 @@ int main(int argc, const char * argv[])
 //        [imageLoader downloadOtherSymbols];
 //        [imageLoader downloadSets];
 //        [imageLoader downloadCards];
-        [imageLoader convertCardsToLowResolution];
+//        [imageLoader convertCardsToLowResolution];
+        [imageLoader resizeCrops];
     }
     return 0;
 }

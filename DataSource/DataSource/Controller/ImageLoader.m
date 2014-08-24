@@ -173,13 +173,11 @@
     NSString *documentsDirectory = [paths objectAtIndex:0];
     NSString *inputDir = [documentsDirectory stringByAppendingPathComponent:@"/images-raw/card"];
     NSString *cardDir = [documentsDirectory stringByAppendingPathComponent:@"/images-low/card"];
-    NSString *cropDir = [documentsDirectory stringByAppendingPathComponent:@"/images-low/crop"];
     
     for (NSString *dir in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:inputDir error:nil])
     {
         NSString *inputPath = [inputDir stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", dir]];
         NSString *cardPath = [cardDir stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", dir]];
-        NSString *cropPath = [cropDir stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", dir]];
         
         for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:inputPath error:nil])
         {
@@ -188,13 +186,7 @@
             NSString *output;
             CGFloat quality = 0;
             
-            /*if ([file rangeOfString:@".crop.jpg"].location != NSNotFound)
-            {
-//                outputPath = [outputPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/crop"]];
-                output = [outputPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", [file stringByReplacingOccurrencesOfString:@".crop.jpg" withString:@".jpg"]]];
-                quality = 20;
-            }
-            else */if ([file rangeOfString:@".hq.jpg"].location != NSNotFound)
+            if ([file rangeOfString:@".hq.jpg"].location != NSNotFound)
             {
                 output = [cardPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", [file stringByReplacingOccurrencesOfString:@".hq.jpg" withString:@".jpg"]]];
                 quality = image.size.width >= 480 ? 50 : 100;
@@ -204,10 +196,6 @@
             {
                 [self createDir:cardPath];
             }
-//            if (![[NSFileManager defaultManager] fileExistsAtPath:cropPath])
-//            {
-//                [self createDir:cropPath];
-//            }
             
             if (output && ![[NSFileManager defaultManager] fileExistsAtPath:output])
             {
@@ -221,9 +209,55 @@
                     [JJJUtil  runCommand:[NSString stringWithFormat:@"convert \"%@\" -strip -quality %.2f \"%@\"", input, quality, output]];
                 }
             }
+        }
+    }
+    
+    NSDate *dateEnd = [NSDate date];
+    NSTimeInterval timeDifference = [dateEnd timeIntervalSinceDate:dateStart];
+    NSLog(@"Started: %@", dateStart);
+    NSLog(@"Ended: %@", dateEnd);
+    NSLog(@"Time Elapsed: %@",  [JJJUtil formatInterval:timeDifference]);
+}
+
+-(void) resizeCrops
+{
+    NSDate *dateStart = [NSDate date];
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *inputDir = [documentsDirectory stringByAppendingPathComponent:@"/images-raw/card"];
+    NSString *cropDir = [documentsDirectory stringByAppendingPathComponent:@"/images-low/crop"];
+    
+    for (NSString *dir in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:inputDir error:nil])
+    {
+        NSString *inputPath = [inputDir stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", dir]];
+        NSString *cropPath = [cropDir stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", dir]];
+        
+        for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:inputPath error:nil])
+        {
+            NSString *input = [inputPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", file]];
+            NSString *output;
+            NSString *output2x;
             
-            // reset outputPath
-//            outputPath = [outputDir stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", dir]];
+            if ([file rangeOfString:@".crop.jpg"].location != NSNotFound)
+            {
+                output = [cropPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", [file stringByReplacingOccurrencesOfString:@".crop.jpg" withString:@".jpg"]]];
+                output2x = [cropPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", [file stringByReplacingOccurrencesOfString:@".crop.jpg" withString:@"@2x.jpg"]]];
+            }
+
+            if (![[NSFileManager defaultManager] fileExistsAtPath:cropPath])
+            {
+                [self createDir:cropPath];
+            }
+            
+            if (output && ![[NSFileManager defaultManager] fileExistsAtPath:output])
+            {
+                [JJJUtil  runCommand:[NSString stringWithFormat:@"convert \"%@\" -resize 40x40 \"%@\"", input, output]];
+            }
+            if (output2x && ![[NSFileManager defaultManager] fileExistsAtPath:output2x])
+            {
+                [JJJUtil  runCommand:[NSString stringWithFormat:@"convert \"%@\" -resize 80x80 \"%@\"", input, output2x]];
+            }
         }
     }
     

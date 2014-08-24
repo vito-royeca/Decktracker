@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		3B4C647F452847188AFC81E6 /* libPods-Decktracker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63356387201A4E73BA1685FC /* libPods-Decktracker.a */; };
 		8C019AA01998A10F00FB22D7 /* decktracker.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 8C019A9F1998A10F00FB22D7 /* decktracker.sqlite */; };
+		8C13467819A9B17B00E0B3C3 /* SearchResultsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C13467619A9B17B00E0B3C3 /* SearchResultsTableViewCell.m */; };
+		8C13467919A9B17B00E0B3C3 /* SearchResultsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C13467719A9B17B00E0B3C3 /* SearchResultsTableViewCell.xib */; };
 		8C1DFDD819913D2100174054 /* CardDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1DFDD719913D2100174054 /* CardDetailsViewController.m */; };
 		8C1FAC3119A7818D009B2981 /* Version.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1FAC3019A7818D009B2981 /* Version.m */; };
 		8C26A67919A63FAC00FE00E7 /* AdvanceSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C26A67019A63FAC00FE00E7 /* AdvanceSearchResultsViewController.m */; };
@@ -92,6 +94,9 @@
 		309BCACD310044B894E67292 /* Pods-Decktracker.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Decktracker.xcconfig"; path = "Pods/Pods-Decktracker.xcconfig"; sourceTree = "<group>"; };
 		63356387201A4E73BA1685FC /* libPods-Decktracker.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Decktracker.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C019A9F1998A10F00FB22D7 /* decktracker.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = decktracker.sqlite; sourceTree = "<group>"; };
+		8C13467519A9B17B00E0B3C3 /* SearchResultsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultsTableViewCell.h; sourceTree = "<group>"; };
+		8C13467619A9B17B00E0B3C3 /* SearchResultsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultsTableViewCell.m; sourceTree = "<group>"; };
+		8C13467719A9B17B00E0B3C3 /* SearchResultsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultsTableViewCell.xib; sourceTree = "<group>"; };
 		8C1DFDD619913D2100174054 /* CardDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardDetailsViewController.h; sourceTree = "<group>"; };
 		8C1DFDD719913D2100174054 /* CardDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardDetailsViewController.m; sourceTree = "<group>"; };
 		8C1FAC2F19A7818D009B2981 /* Version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Version.h; sourceTree = "<group>"; };
@@ -210,6 +215,9 @@
 				8C26A67419A63FAC00FE00E7 /* FilterInputViewController.m */,
 				8C26A67519A63FAC00FE00E7 /* NewAdvanceSearchViewController.h */,
 				8C26A67619A63FAC00FE00E7 /* NewAdvanceSearchViewController.m */,
+				8C13467519A9B17B00E0B3C3 /* SearchResultsTableViewCell.h */,
+				8C13467619A9B17B00E0B3C3 /* SearchResultsTableViewCell.m */,
+				8C13467719A9B17B00E0B3C3 /* SearchResultsTableViewCell.xib */,
 				8C26A67719A63FAC00FE00E7 /* SimpleSearchViewController.h */,
 				8C26A67819A63FAC00FE00E7 /* SimpleSearchViewController.m */,
 			);
@@ -526,6 +534,7 @@
 				8C019AA01998A10F00FB22D7 /* decktracker.sqlite in Resources */,
 				8CADEF1719923DDE004D7658 /* images in Resources */,
 				8C3277FD199A464D00899790 /* style.css in Resources */,
+				8C13467919A9B17B00E0B3C3 /* SearchResultsTableViewCell.xib in Resources */,
 				8C2E13FD1990741100023BAA /* InfoPlist.strings in Resources */,
 				8C26A68019A6418900FE00E7 /* Advance Search in Resources */,
 				8C2E14081990741100023BAA /* Images.xcassets in Resources */,
@@ -595,6 +604,7 @@
 			files = (
 				8C26A67919A63FAC00FE00E7 /* AdvanceSearchResultsViewController.m in Sources */,
 				8C3CBDD619A31618002CD96E /* Block.m in Sources */,
+				8C13467819A9B17B00E0B3C3 /* SearchResultsTableViewCell.m in Sources */,
 				8C26A67D19A63FAC00FE00E7 /* SimpleSearchViewController.m in Sources */,
 				8C3CBDDC19A31618002CD96E /* SetType.m in Sources */,
 				8C5BDD70199B3B7D007AF140 /* MenuViewController.m in Sources */,

@@ -15,5 +15,6 @@
 -(void) downloadSets;
 -(void) downloadCards;
 -(void) convertCardsToLowResolution;
+-(void) resizeCrops;
 
 @end

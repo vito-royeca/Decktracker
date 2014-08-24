@@ -11,12 +11,10 @@
 #import "Card.h"
 #import "CardDetailsViewController.h"
 #import "CardRarity.h"
+#import "CardType.h"
 #import "Database.h"
+#import "SearchResultsTableViewCell.h"
 #import "Set.h"
-
-@interface SimpleSearchViewController ()
-
-@end
 
 @implementation SimpleSearchViewController
 
@@ -68,6 +66,8 @@
     self.tblResults.dataSource = self;
     
     self.navigationItem.titleView = self.searchBar;
+    [self.tblResults registerNib:[UINib nibWithNibName:@"SearchResultsTableViewCell" bundle:nil]
+          forCellReuseIdentifier:@"Cell"];
     [self.view addSubview:self.tblResults];
     
     // remove the "< Back" title in back buttons
@@ -108,6 +108,11 @@
 }
 
 #pragma - mark UITableViewDataSource
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 60;
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     NSInteger count = [[self.fetchedResultsController sections] count];
@@ -125,41 +130,17 @@
 {
     static NSString *CellIdentifier = @"Cell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    SearchResultsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell = [[SearchResultsTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                                 reuseIdentifier:CellIdentifier];
     }
     
-    [self configureCell:cell atIndexPath:indexPath];
-    
-    return cell;
-}
-
-- (void) configureCell:(UITableViewCell *)cell
-           atIndexPath:(NSIndexPath *)indexPath
-{
     Card *card = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    NSMutableString *type = [[NSMutableString alloc] initWithFormat:@"%@", card.type];
-    if (card.power || card.toughness)
-    {
-        [type appendFormat:@" (%@/%@)", card.power, card.toughness];
-    }
-    
-    cell.textLabel.text = card.name;
-    cell.detailTextLabel.text = type;
+    [cell displayCard:card];
 
-    NSString *path = [NSString stringWithFormat:@"%@/images/set/%@/%@/24.png", [[NSBundle mainBundle] bundlePath], card.set.code, [[Database sharedInstance] cardRarityIndex:card]];
-    
-    if (![[NSFileManager defaultManager] fileExistsAtPath:path])
-    {
-        cell.imageView.image = [UIImage imageNamed:@"blank-24.png"];
-    }
-    else
-    {
-        cell.imageView.image = [[UIImage alloc] initWithContentsOfFile:path];
-    }
+    return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -241,8 +222,9 @@
         }
         case NSFetchedResultsChangeUpdate:
         {
-            [self configureCell:[tableView cellForRowAtIndexPath:indexPath]
-                    atIndexPath:indexPath];
+            Card *card = [self.fetchedResultsController objectAtIndexPath:indexPath];
+            SearchResultsTableViewCell *cell = (SearchResultsTableViewCell*)[tableView cellForRowAtIndexPath:indexPath];
+            [cell displayCard:card];
             break;
         }
         case NSFetchedResultsChangeMove:
