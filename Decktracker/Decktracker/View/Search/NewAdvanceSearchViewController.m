@@ -76,7 +76,7 @@
     CGFloat dWidth = self.view.frame.size.width - 20;
     CGFloat dHeight = 30;
     
-    self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Filter", @"Sorter", @"Search Criteria"]];
+    self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Filter", @"Search Criteria"]];
     self.segmentedControl.frame = CGRectMake(dX, dY, dWidth, dHeight);
     [self.segmentedControl addTarget:self
                               action:@selector(segmentedControlChangedValue:)
@@ -123,7 +123,7 @@
 {
     if (self.dictCurrentQuery.count > 0)
     {
-        self.segmentedControl.selectedSegmentIndex = 2;
+        self.segmentedControl.selectedSegmentIndex = 1;
     }
     else
     {
@@ -192,7 +192,7 @@
 {
     switch (self.segmentedControl.selectedSegmentIndex)
     {
-        case 2:
+        case 1:
         {
             self.tblView.editing = YES;
             self.navigationItem.rightBarButtonItem = _btnPlay;
@@ -218,7 +218,7 @@
 #pragma mark - UITableView
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.segmentedControl.selectedSegmentIndex == 2)
+    if (self.segmentedControl.selectedSegmentIndex == 1)
     {
         if (editingStyle == UITableViewCellEditingStyleDelete)
         {
@@ -242,7 +242,7 @@
 {
     switch (self.segmentedControl.selectedSegmentIndex)
     {
-        case 2:
+        case 1:
         {
             return YES;
         }
@@ -257,7 +257,7 @@
 {
     switch (self.segmentedControl.selectedSegmentIndex)
     {
-        case 2:
+        case 1:
         {
             return UITableViewCellEditingStyleDelete;
         }
@@ -272,7 +272,7 @@
 {
     switch (self.segmentedControl.selectedSegmentIndex)
     {
-        case 2:
+        case 1:
         {
             return [[self.dictCurrentQuery allKeys] objectAtIndex:section];
         }
@@ -287,7 +287,7 @@
 {
     switch (self.segmentedControl.selectedSegmentIndex)
     {
-        case 2:
+        case 1:
         {
             return [self.dictCurrentQuery allKeys].count;
         }
@@ -306,11 +306,11 @@
         {
             return _arrFilters.count;
         }
+//        case 1:
+//        {
+//            return _arrSorters.count;
+//        }
         case 1:
-        {
-            return _arrSorters.count;
-        }
-        case 2:
         {
             NSString *key = [[self.dictCurrentQuery allKeys] objectAtIndex:section];
             NSMutableArray *rows = [self.dictCurrentQuery objectForKey:key];
@@ -342,13 +342,13 @@
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             break;
         }
+//        case 1:
+//        {
+//            cell.textLabel.text = [_arrSorters objectAtIndex:indexPath.row];
+//            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+//            break;
+//        }
         case 1:
-        {
-            cell.textLabel.text = [_arrSorters objectAtIndex:indexPath.row];
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            break;
-        }
-        case 2:
         {
             NSString *key = [[self.dictCurrentQuery allKeys] objectAtIndex:indexPath.section];
             NSMutableArray *rows = [self.dictCurrentQuery objectForKey:key];

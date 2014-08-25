@@ -116,7 +116,7 @@ static FileManager *_me;
 
 -(NSString*) cropPath:(Card*) card
 {
-    return [NSString stringWithFormat:@"%@/images/crop/%@/%@.jpg", [[NSBundle mainBundle] bundlePath], card.set.code, card.imageName];
+    return [NSString stringWithFormat:@"%@/images/crop/%@/%@@2x.jpg", [[NSBundle mainBundle] bundlePath], card.set.code, card.imageName];
 }
 
 -(void) downloadCardImage:(Card*) card  withCompletion:(void (^)(void))completion
