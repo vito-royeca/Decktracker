@@ -250,10 +250,10 @@
                 [self createDir:cropPath];
             }
             
-            if (output && ![[NSFileManager defaultManager] fileExistsAtPath:output])
-            {
-                [JJJUtil  runCommand:[NSString stringWithFormat:@"convert \"%@\" -resize 40x40 \"%@\"", input, output]];
-            }
+//            if (output && ![[NSFileManager defaultManager] fileExistsAtPath:output])
+//            {
+//                [JJJUtil  runCommand:[NSString stringWithFormat:@"convert \"%@\" -resize 40x40 \"%@\"", input, output]];
+//            }
             if (output2x && ![[NSFileManager defaultManager] fileExistsAtPath:output2x])
             {
                 [JJJUtil  runCommand:[NSString stringWithFormat:@"convert \"%@\" -resize 80x80 \"%@\"", input, output2x]];

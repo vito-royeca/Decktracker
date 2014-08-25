@@ -16,6 +16,7 @@
 #import "CardRuling.h"
 #import "CardType.h"
 #import "Database.h"
+#import "FileManager.h"
 #import "Magic.h"
 #import "SimpleSearchViewController.h"
 #import "Set.h"
@@ -23,7 +24,7 @@
 
 @implementation CardDetailsViewController
 {
-    NSString *_cardPath;
+    MHFacebookImageViewer *_fbImageViewer;
 }
 
 @synthesize card = _card;
@@ -42,13 +43,12 @@
     return self;
 }
 
--(void) setCard:(Card*) card
-{
-    _card = card;
-    
-    _cardPath = [NSString stringWithFormat:@"%@/images/card/%@/%@.jpg", [[NSBundle mainBundle] bundlePath], self.card.set.code, self.card.imageName];
-    self.navigationItem.title = self.card.name;
-}
+//-(void) setCard:(Card*) card
+//{
+//    _card = card;
+//    
+//    self.navigationItem.title = self.card.name;
+//}
 
 - (void)viewDidLoad
 {
@@ -122,13 +122,6 @@
             
             [self.view addSubview:self.cardImage];
             
-            if (![[NSFileManager defaultManager] fileExistsAtPath:_cardPath])
-            {
-                MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
-                [self.view addSubview:hud];
-                hud.delegate = self;
-                [hud showWhileExecuting:@selector(downloadCard) onTarget:self withObject:nil animated:NO];
-            }
             [self displayCard];
             break;
         }
@@ -148,35 +141,6 @@
         {
             break;
         }
-    }
-}
-
-- (void) downloadCard
-{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/card/%@/", self.card.set.code]];
-    _cardPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.jpg", self.card.name]];
-    BOOL bFound = YES;
-    
-    if (![[NSFileManager defaultManager] fileExistsAtPath:path])
-    {
-        [[NSFileManager defaultManager] createDirectoryAtPath:path
-                                  withIntermediateDirectories:YES
-                                                   attributes:nil
-                                                        error:nil];
-        bFound = NO;
-    }
-    if (![[NSFileManager defaultManager] fileExistsAtPath:_cardPath])
-    {
-        bFound = NO;
-    }
-    
-    if (!bFound)
-    {
-        NSURL *url = [NSURL URLWithString:[[NSString stringWithFormat:@"http://mtgimage.com/set/%@/%@.jpg", self.card.set.code, self.card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    
-        [JJJUtil downloadResource:url toPath:_cardPath];
     }
 }
 
@@ -200,14 +164,27 @@
 //                                 scrollPosition:UITableViewScrollPositionMiddle];
 //    }
     
-    UIImage *image = [UIImage imageWithContentsOfFile:_cardPath];
+    void (^completion)(void) = ^void(void)
+    {
+        NSString *path = [[FileManager sharedInstance] cardPath:self.card];
+        UIImage *hiResImage = [UIImage imageWithContentsOfFile:path];
+        
+        [self.cardImage setImage:hiResImage];
+        [[_fbImageViewer tableView] reloadData];
+    };
+    
+    UIImage *image = [UIImage imageWithContentsOfFile:[[FileManager sharedInstance] cardPath:self.card]];
     [self.cardImage setImage:image];
     self.cardImage.contentMode = UIViewContentModeScaleAspectFit;
+    [self.cardImage removeImageViewer];
     [self.cardImage setupImageViewerWithDatasource:self
                                       initialIndex:selectedRow
                                             onOpen:^{ }
                                            onClose:^{ }];
     self.cardImage.clipsToBounds = YES;
+    self.navigationItem.title = self.card.name;
+    
+    [[FileManager sharedInstance] downloadCardImage:self.card withCompletion:completion];
 }
 
 - (void)handleSwipe:(UISwipeGestureRecognizer *)swipe
@@ -501,28 +478,30 @@
 #pragma mark -  MHFacebookImageViewerDatasource
 - (NSInteger) numberImagesForImageViewer:(MHFacebookImageViewer*) imageViewer
 {
+    _fbImageViewer = imageViewer;
     return self.fetchedResultsController.fetchedObjects.count;
 }
 
 - (NSURL*) imageURLAtIndex:(NSInteger)index imageViewer:(MHFacebookImageViewer*) imageViewer
 {
+    _fbImageViewer = imageViewer;
+    
     Card *card = [self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+    
     [self setCard:card];
     [self displayCard];
-    
-    // pre-download or fetch remotely depending on settings ??
-//    return [NSURL URLWithString:[[NSString stringWithFormat:@"http://mtgimage.com/set/%@/%@.hq.jpg", card.set.code, card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    
-    // just return bundled image for now
-    return [NSURL fileURLWithPath:_cardPath];
+    return [NSURL fileURLWithPath:[[FileManager sharedInstance] cardPath:self.card]];
 }
 
 - (UIImage*) imageDefaultAtIndex:(NSInteger)index imageViewer:(MHFacebookImageViewer*) imageViewer
 {
+    _fbImageViewer = imageViewer;
+    
     Card *card = [self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+    
     [self setCard:card];
     [self displayCard];
-    return [UIImage imageWithContentsOfFile:_cardPath];
+    return [UIImage imageWithContentsOfFile:[[FileManager sharedInstance] cardPath:self.card]];
 }
 
 @end

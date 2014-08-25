@@ -49,6 +49,9 @@ typedef void (^MHFacebookImageViewerClosingBlock)(void);
 
 - (void)presentFromRootViewController;
 - (void)presentFromViewController:(UIViewController *)controller;
+
+// my custom method
+-(UITableView*) tableView;
 @end
 
 #pragma mark - UIImageView Category

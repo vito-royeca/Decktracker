@@ -8,6 +8,10 @@
 
 #import "CollectionsViewController.h"
 
+#import "GAI.h"
+#import "GAIDictionaryBuilder.h"
+#import "GAIFields.h"
+
 @implementation CollectionsViewController
 
 @synthesize tblResults = _tblResults;
@@ -44,6 +48,12 @@
                                                                             action:@selector(btnAddTapped:)];
     self.navigationItem.rightBarButtonItem = btnAdd;
     self.navigationItem.title = @"Collections";
+    
+    // send the screen to Google Analytics
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker set:kGAIScreenName
+           value:@"Collections"];
+    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
 }
 
 -(void) btnAddTapped:(id) sender

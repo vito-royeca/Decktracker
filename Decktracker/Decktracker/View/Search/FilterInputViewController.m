@@ -7,6 +7,7 @@
 //
 
 #import "FilterInputViewController.h"
+#import "JJJ/JJJUtil.h"
 #import "Artist.h"
 #import "CardColor.h"
 #import "CardRarity.h"
@@ -14,6 +15,10 @@
 #import "Format.h"
 #import "Magic.h"
 #import "Set.h"
+
+#import "GAI.h"
+#import "GAIDictionaryBuilder.h"
+#import "GAIFields.h"
 
 @implementation FilterInputViewController
 {
@@ -117,6 +122,12 @@
     self.navigationItem.rightBarButtonItem = btnOk;
     self.navigationItem.leftBarButtonItem = btnCancel;
     self.navigationItem.title = self.filterName;
+    
+    // send the screen to Google Analytics
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker set:kGAIScreenName
+           value:[NSString stringWithFormat:@"Filter Input - %@", self.filterName]];
+    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -329,6 +340,7 @@
                     cell.imageView.image = [[UIImage alloc] initWithContentsOfFile:path];
                 }
                 cell.textLabel.text = set.name;
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"Released: %@ (%@ cards)", [JJJUtil formatDate:set.releaseDate withFormat:@"YYYY-MM-dd"], set.numberOfCards];
             }
             else if ([[self.filterOptions firstObject] isKindOfClass:[CardRarity class]])
             {

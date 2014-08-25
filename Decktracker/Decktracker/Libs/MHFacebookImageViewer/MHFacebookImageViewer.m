@@ -440,6 +440,12 @@ static const CGFloat kMinImageScale = 1.0f;
 @synthesize senderView = _senderView;
 @synthesize initialIndex = _initialIndex;
 
+// my custom method
+-(UITableView*) tableView
+{
+    return _tableView;
+}
+
 #pragma mark - TableView datasource
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;

@@ -16,6 +16,10 @@
 #import "SearchResultsTableViewCell.h"
 #import "Set.h"
 
+#import "GAI.h"
+#import "GAIDictionaryBuilder.h"
+#import "GAIFields.h"
+
 @implementation SimpleSearchViewController
 
 @synthesize searchBar  = _searchBar;
@@ -89,17 +93,17 @@
     [self.navigationController pushViewController:view animated:NO];
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    NSIndexPath *indexPath = self.tblResults.indexPathForSelectedRow;
-    
-    if (indexPath)
-    {
-        [self.tblResults selectRowAtIndexPath:indexPath
-                                     animated:NO
-                               scrollPosition:UITableViewScrollPositionMiddle];
-    }
-}
+//- (void)viewDidAppear:(BOOL)animated
+//{
+//    NSIndexPath *indexPath = self.tblResults.indexPathForSelectedRow;
+//    
+//    if (indexPath)
+//    {
+//        [self.tblResults selectRowAtIndexPath:indexPath
+//                                     animated:NO
+//                               scrollPosition:UITableViewScrollPositionMiddle];
+//    }
+//}
 
 - (void)didReceiveMemoryWarning
 {
@@ -110,7 +114,7 @@
 #pragma - mark UITableViewDataSource
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 60;
+    return SEARCH_RESULTS_CELL_HEIGHT;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -173,6 +177,13 @@
     [self.view addSubview:hud];
     hud.delegate = self;
     [hud showWhileExecuting:@selector(doSearch) onTarget:self withObject:nil animated:NO];
+    
+    // send to Google Analytics
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Simple Search"
+                                                          action:self.searchBar.text
+                                                           label:@"Run"
+                                                           value:nil] build]];
 }
 
 - (void) doSearch

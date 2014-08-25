@@ -16,6 +16,10 @@
 #import "Format.h"
 #import "Set.h"
 
+#import "GAI.h"
+#import "GAIDictionaryBuilder.h"
+#import "GAIFields.h"
+
 @implementation NewAdvanceSearchViewController
 {
     UIBarButtonItem *_btnPlay;
@@ -107,6 +111,12 @@
     {
         self.navigationItem.title = @"New Advance Search";
     }
+    
+    // send the screen to Google Analytics
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker set:kGAIScreenName
+           value:self.navigationItem.title];
+    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
 }
 
 -(void) viewDidAppear:(BOOL)animated
@@ -146,11 +156,24 @@
         [self.view addSubview:hud];
         hud.delegate = self;
         [hud showWhileExecuting:@selector(doSearch) onTarget:self withObject:nil animated:NO];
+        
+        // send to Google Analytics
+        id tracker = [[GAI sharedInstance] defaultTracker];
+        [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Advance Search"
+                                                              action:self.mode == EditModeEdit ? @"Edit" : @"New"
+                                                               label:@"Run"
+                                                               value:nil] build]];
     }
 }
 
 -(void) btnCancelTapped:(id) sender
 {
+    // send to Google Analytics
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Advance Search"
+                                                          action:self.mode == EditModeEdit ? @"Edit" : @"New"
+                                                           label:@"Cancel"
+                                                           value:nil] build]];
     [self.navigationController popViewControllerAnimated:NO];
 }
 

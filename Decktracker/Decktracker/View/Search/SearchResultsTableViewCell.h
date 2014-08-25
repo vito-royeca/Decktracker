@@ -13,6 +13,8 @@
 #import "Magic.h"
 #import "Set.h"
 
+#define SEARCH_RESULTS_CELL_HEIGHT            80
+
 @interface SearchResultsTableViewCell : UITableViewCell
 
 @property(strong,nonatomic) IBOutlet UIImageView *imgCrop;

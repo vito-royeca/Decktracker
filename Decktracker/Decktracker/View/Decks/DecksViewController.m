@@ -8,6 +8,10 @@
 
 #import "DecksViewController.h"
 
+#import "GAI.h"
+#import "GAIDictionaryBuilder.h"
+#import "GAIFields.h"
+
 @implementation DecksViewController
 
 @synthesize tblResults = _tblResults;
@@ -44,6 +48,12 @@
                                                                             action:@selector(btnAddTapped:)];
     self.navigationItem.rightBarButtonItem = btnAdd;
     self.navigationItem.title = @"Decks";
+    
+    // send the screen to Google Analytics
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker set:kGAIScreenName
+           value:@"Decks"];
+    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
 }
 
 -(void) btnAddTapped:(id) sender

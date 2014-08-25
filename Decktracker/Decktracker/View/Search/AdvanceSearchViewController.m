@@ -14,6 +14,10 @@
 #import "NewAdvanceSearchViewController.h"
 #import "SimpleSearchViewController.h"
 
+#import "GAI.h"
+#import "GAIDictionaryBuilder.h"
+#import "GAIFields.h"
+
 @implementation AdvanceSearchViewController
 {
     NSMutableDictionary *_dictCurrentQuery;
@@ -71,6 +75,12 @@
                                                                             action:@selector(btnAddTapped:)];
     self.navigationItem.rightBarButtonItem = btnAdd;
     self.navigationItem.title = @"Advance Search";
+    
+    // send the screen to Google Analytics
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker set:kGAIScreenName
+           value:@"Advance Search"];
+    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
 }
 
 - (void)didReceiveMemoryWarning

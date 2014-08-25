@@ -7,6 +7,7 @@
 //
 
 #import "SearchResultsTableViewCell.h"
+#import "FileManager.h"
 
 @implementation SearchResultsTableViewCell
 
@@ -19,6 +20,9 @@
 - (void)awakeFromNib
 {
     // Initialization code
+    self.lblCardName.font = [UIFont fontWithName:@"Goudy Medieval Medieval" size:17];
+    self.imgCrop.layer.cornerRadius = 10.0;
+    self.imgCrop.layer.masksToBounds = YES;
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -55,7 +59,7 @@
     self.lblDetail.text = type;
     self.lblSet.text = card.set.name;
     
-    NSString *path = [NSString stringWithFormat:@"%@/images/crop/%@/%@.jpg", [[NSBundle mainBundle] bundlePath], card.set.code, card.imageName];
+    NSString *path = [[FileManager sharedInstance] cropPath:card];
     if (![[NSFileManager defaultManager] fileExistsAtPath:path])
     {
         self.imgCrop.image = [UIImage imageNamed:@"blank-24.png"];
@@ -65,16 +69,9 @@
         self.imgCrop.image = [[UIImage alloc] initWithContentsOfFile:path];
     }
     
-    path = [NSString stringWithFormat:@"%@/images/set/%@/%@/24.png", [[NSBundle mainBundle] bundlePath], card.set.code, [[Database sharedInstance] cardRarityIndex:card]];
-    if (![[NSFileManager defaultManager] fileExistsAtPath:path])
-    {
-        self.imgSet.image = [UIImage imageNamed:@"blank-24.png"];
-    }
-    else
-    {
-        self.imgSet.image = [[UIImage alloc] initWithContentsOfFile:path];
-    }
-    
+    // download cardImage
+    [[FileManager sharedInstance] downloadCardImage:card withCompletion:nil];
+
     // draw the mana cost
     NSMutableArray *arrImages = [[NSMutableArray alloc] init];
     NSMutableArray *arrSymbols = [[NSMutableArray alloc] init];
@@ -160,7 +157,6 @@
         }
     }
     
-    // readjustments
     for (UIView *view in [self.viewManaCost subviews])
     {
         [view removeFromSuperview];

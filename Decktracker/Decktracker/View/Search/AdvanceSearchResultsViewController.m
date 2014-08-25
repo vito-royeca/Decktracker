@@ -18,6 +18,10 @@
 #import "SearchResultsTableViewCell.h"
 #import "Set.h"
 
+#import "GAI.h"
+#import "GAIDictionaryBuilder.h"
+#import "GAIFields.h"
+
 @implementation AdvanceSearchResultsViewController
 
 @synthesize fetchedResultsController = _fetchedResultsController;
@@ -70,6 +74,12 @@
                                                                   action:@selector(btnActionTapped:)];
     }
     self.navigationItem.rightBarButtonItem = btnAction;
+    
+    // send the screen to Google Analytics
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker set:kGAIScreenName
+           value:@"Advance Search Results"];
+    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
 }
 
 -(void) viewDidAppear:(BOOL)animated
@@ -116,13 +126,20 @@
         AdvanceSearchViewController *view = [[AdvanceSearchViewController alloc] init];
     
         [self.navigationController pushViewController:view animated:NO];
+        
+        // send to Google Analytics
+        id tracker = [[GAI sharedInstance] defaultTracker];
+        [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Advance Search"
+                                                              action:nil
+                                                               label:@"Save"
+                                                               value:nil] build]];
     }
 }
 
 #pragma mark - UITableView
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 60;
+    return SEARCH_RESULTS_CELL_HEIGHT;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

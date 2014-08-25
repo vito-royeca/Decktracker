@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Card.h"
+#import "Set.h"
 
 @interface FileManager : NSObject
 
@@ -18,5 +20,8 @@
 
 -(NSArray*) findAdvanceSearchFiles;
 -(void) deleteAdvanceSearchFile:(NSString*) name;
+-(NSString*) cardPath:(Card*) card;
+-(NSString*) cropPath:(Card*) card;
+-(void) downloadCardImage:(Card*) card  withCompletion:(void (^)(void))completion;
 
 @end
