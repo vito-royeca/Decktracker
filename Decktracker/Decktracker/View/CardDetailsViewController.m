@@ -78,7 +78,12 @@
 
 -(void) btnActionTapped:(id) sender
 {
-    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Under Contruction"
+                                                    message:@"This function is not yet implemented."
+                                                   delegate:nil
+                                          cancelButtonTitle:@"Ok"
+                                          otherButtonTitles:nil];
+    [alert show];
 }
 
 - (void)didReceiveMemoryWarning
@@ -377,10 +382,19 @@
 
     NSString *link = [[NSString stringWithFormat:@"http://store.tcgplayer.com/Products.aspx?GameName=Magic&Name=%@&partner=TCGTEST", self.card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
-    [html appendFormat:@"<tr><td align=\"center\"><strong>Low</strong></td><td align=\"center\"><strong>Median</strong></td><td align=\"center\"><strong>High</strong></td></tr>"];
-    [html appendFormat:@"<tr><td align=\"right\">$0.00</td><td align=\"right\">$0.00</td><td align=\"right\">$0.00</td></tr>"];
+    [html appendFormat:@"<tr>"];
+    [html appendFormat:@"<td align=\"center\" bgcolor=\"red\" width=\"33%%\"><strong><font color=\"white\">Low</font></strong></td>"];
+    [html appendFormat:@"<td align=\"center\" bgcolor=\"blue\" width=\"33%%\"><strong><font color=\"white\">Median</font></strong></td>"];
+    [html appendFormat:@"<td align=\"center\" bgcolor=\"green\" width=\"33%%\"><strong><font color=\"white\">High</font></strong></td>"];
+    [html appendFormat:@"</tr>"];
+    
+    [html appendFormat:@"<tr>"];
+    [html appendFormat:@"<td align=\"right\" width=\"33%%\">$0.00</td>"];
+    [html appendFormat:@"<td align=\"right\" width=\"33%%\">$0.00</td>"];
+    [html appendFormat:@"<td align=\"right\" width=\"33%%\">$0.00</td>"];
+    [html appendFormat:@"</tr>"];
     [html appendFormat:@"<tr><td colspan=\"3\">&nbsp;</td></tr>"];
-    [html appendFormat:@"<tr><td colspan=\"3\"><a href=%@>TCGPlayer</a></td></tr>", link];
+    [html appendFormat:@"<tr><td colspan=\"3\">Pricing details brought to you by: <a href=%@>TCGPlayer</a></td></tr>", link];
 
     [html appendFormat:@"</table></center></body></html>"];
     return html;

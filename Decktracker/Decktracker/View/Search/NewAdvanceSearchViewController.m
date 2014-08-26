@@ -441,7 +441,7 @@
     
     view.fetchedResultsController = self.fetchedResultsController;
     view.fetchedResultsController.delegate = view;
-    view.navigationItem.title = [NSString stringWithFormat:@"%tu Results", [self.fetchedResultsController.fetchedObjects count]];
+//    view.navigationItem.title = [NSString stringWithFormat:@"%tu Results", [self.fetchedResultsController.fetchedObjects count]];
     view.queryToSave = self.dictCurrentQuery;
     view.sorterToSave = self.dictCurrentSorter;
     view.mode = EditModeNew;

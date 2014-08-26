@@ -187,11 +187,13 @@
 {
 	[hud removeFromSuperview];
     
+    NSIndexPath *selectedPath = [self.tblView indexPathForSelectedRow];
+    NSDictionary *dict = [self.arrAdvanceSearches objectAtIndex:selectedPath.row];
     AdvanceSearchResultsViewController *view = [[AdvanceSearchResultsViewController alloc] init];
     
     view.fetchedResultsController = self.fetchedResultsController;
     view.fetchedResultsController.delegate = view;
-    view.navigationItem.title = [NSString stringWithFormat:@"%tu Results", [self.fetchedResultsController.fetchedObjects count]];
+    view.navigationItem.title = [[dict allKeys] firstObject];
     view.queryToSave = _dictCurrentQuery;
     view.sorterToSave = _dictCurrentSort;
     view.mode = EditModeEdit;
