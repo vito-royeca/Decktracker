@@ -95,7 +95,7 @@
 
 -(void) btnActionTapped:(id) sender
 {
-    if (self.mode == EditModeEdit)
+    if (self.mode == EditModeNew)
     {
         NewAdvanceSearchViewController *view = [[NewAdvanceSearchViewController alloc] init];
         
@@ -104,7 +104,7 @@
         view.dictCurrentSorter = [[NSMutableDictionary alloc] initWithDictionary:self.sorterToSave];
         [self.navigationController pushViewController:view animated:NO];
     }
-    else if (self.mode == EditModeNew)
+    else if (self.mode == EditModeEdit)
     {
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Save"
                                                          message:@"Advance Search Name"

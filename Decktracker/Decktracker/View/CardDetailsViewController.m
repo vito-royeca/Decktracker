@@ -139,6 +139,14 @@
         }
         case 2:
         {
+            NSString *path = [[NSBundle mainBundle] bundlePath];
+            NSURL *baseURL = [NSURL fileURLWithPath:path];
+            
+            self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
+            self.webView.delegate = self;
+            [self.view addSubview:self.webView];
+            [self.webView loadHTMLString:[self composePricing] baseURL:baseURL];
+            
             break;
         }
     }
@@ -360,6 +368,24 @@
     return html;
 }
 
+- (NSString*) composePricing
+{
+    NSMutableString *html = [[NSMutableString alloc] init];
+    
+    [html appendFormat:@"<html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"%@/style.css\"></head><body>", [[NSBundle mainBundle] bundlePath]];
+    [html appendFormat:@"<center><table width=\"100%%\">"];
+
+    NSString *link = [[NSString stringWithFormat:@"http://store.tcgplayer.com/Products.aspx?GameName=Magic&Name=%@&partner=TCGTEST", self.card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    [html appendFormat:@"<tr><td align=\"center\"><strong>Low</strong></td><td align=\"center\"><strong>Median</strong></td><td align=\"center\"><strong>High</strong></td></tr>"];
+    [html appendFormat:@"<tr><td align=\"right\">$0.00</td><td align=\"right\">$0.00</td><td align=\"right\">$0.00</td></tr>"];
+    [html appendFormat:@"<tr><td colspan=\"3\">&nbsp;</td></tr>"];
+    [html appendFormat:@"<tr><td colspan=\"3\"><a href=%@>TCGPlayer</a></td></tr>", link];
+
+    [html appendFormat:@"</table></center></body></html>"];
+    return html;
+}
+
 -(NSString*) replaceSymbolsInText:(NSString*) text
 {
     NSMutableArray *arrSymbols = [[NSMutableArray alloc] init];
@@ -465,6 +491,12 @@
         [self switchView];
     }
     
+    else if ([kvPairs objectForKey:@"GameName"] && [kvPairs objectForKey:@"partner"])
+    {
+        [[UIApplication sharedApplication] openURL:[request URL]];
+
+        return NO;
+    }
     return YES;
 }
 

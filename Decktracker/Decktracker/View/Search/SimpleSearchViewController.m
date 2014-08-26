@@ -83,6 +83,12 @@
                                                                   target:self
                                                                   action:@selector(btnAdvanceTapped:)];
     self.navigationItem.leftBarButtonItem = btnAdvance;
+    
+    // send the screen to Google Analytics
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker set:kGAIScreenName
+           value:@"Simple Search"];
+    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
 
 }
 

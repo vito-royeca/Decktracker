@@ -133,7 +133,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSDictionary *dict = [self.arrAdvanceSearches objectAtIndex:indexPath.row];
-    NSArray *arrData = [[NSArray alloc] initWithContentsOfFile:[[dict allValues] firstObject]];
+    NSData *data = [NSData dataWithContentsOfFile:[[dict allValues] firstObject]];
+    NSArray *arrData = [NSJSONSerialization JSONObjectWithData:data
+                                                       options:NSJSONReadingMutableContainers
+                                                         error:nil];
     _dictCurrentQuery = [arrData firstObject];
     _dictCurrentSort = [arrData lastObject];
     
@@ -167,6 +170,13 @@
         
         [[FileManager sharedInstance] deleteAdvanceSearchFile:[[dict allKeys] firstObject]];
         [self.arrAdvanceSearches removeObject:dict];
+        
+        // send to Google Analytics
+        id tracker = [[GAI sharedInstance] defaultTracker];
+        [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Advance Search"
+                                                              action:nil
+                                                               label:@"Delete"
+                                                               value:nil] build]];
     }
 
     [self.tblView reloadData];

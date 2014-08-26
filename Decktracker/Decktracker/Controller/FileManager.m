@@ -8,6 +8,7 @@
 
 #import "FileManager.h"
 #import "JJJ/JJJUtil.h"
+#import "Database.h"
 
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"
@@ -48,7 +49,7 @@ static FileManager *_me;
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths firstObject];
     NSString *path = [documentsDirectory stringByAppendingPathComponent:@"/Advance Search"];
-    NSString *fileName = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.plist", name]];
+    NSString *fileName = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.json", name]];
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:path])
     {
@@ -57,10 +58,24 @@ static FileManager *_me;
                                                    attributes:nil
                                                         error:nil];
     }
-    
+    if ([[NSFileManager defaultManager] fileExistsAtPath:fileName])
+    {
+        [[NSFileManager defaultManager] removeItemAtPath:fileName
+                                                   error:nil];
+    }
     
     NSArray *arrData = @[dictQuery, dictSorter];
-    [arrData writeToFile:fileName atomically:YES];
+//    [arrData writeToFile:fileName atomically:YES];
+    
+    NSOutputStream *outputStream = [NSOutputStream outputStreamToFileAtPath:fileName
+                                                                     append:NO];
+    [outputStream open];
+    
+    [NSJSONSerialization writeJSONObject:arrData
+                                toStream:outputStream
+                                 options:0
+                                   error:nil];
+    [outputStream close];
 }
 
 -(NSArray*) findAdvanceSearchFiles
@@ -72,7 +87,7 @@ static FileManager *_me;
     
     for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil])
     {
-        if ([[[file lastPathComponent] pathExtension] isEqualToString:@"plist"])
+        if ([[[file lastPathComponent] pathExtension] isEqualToString:@"json"])
         {
             NSString *key = [[file lastPathComponent] stringByDeletingPathExtension];
             NSString *value = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", file]];
@@ -89,7 +104,7 @@ static FileManager *_me;
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths firstObject];
     NSString *path = [documentsDirectory stringByAppendingPathComponent:@"/Advance Search"];
-    NSString *file = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.plist", name]];
+    NSString *file = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.json", name]];
     
     if ([[NSFileManager defaultManager] fileExistsAtPath:file])
     {
@@ -117,6 +132,11 @@ static FileManager *_me;
 -(NSString*) cropPath:(Card*) card
 {
     return [NSString stringWithFormat:@"%@/images/crop/%@/%@@2x.jpg", [[NSBundle mainBundle] bundlePath], card.set.code, card.imageName];
+}
+
+-(NSString*) cardSetPath:(Card*) card
+{
+    return [NSString stringWithFormat:@"%@/images/set/%@/%@/24.png", [[NSBundle mainBundle] bundlePath], card.set.code, [[Database sharedInstance] cardRarityIndex:card]];
 }
 
 -(void) downloadCardImage:(Card*) card  withCompletion:(void (^)(void))completion

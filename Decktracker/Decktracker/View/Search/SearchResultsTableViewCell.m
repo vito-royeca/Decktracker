@@ -57,7 +57,7 @@
     
     self.lblCardName.text = card.name;
     self.lblDetail.text = type;
-    self.lblSet.text = card.set.name;
+    self.lblSet.text = [NSString stringWithFormat:@"%@ - %@", card.set.name, card.rarity.name];
     
     NSString *path = [[FileManager sharedInstance] cropPath:card];
     if (![[NSFileManager defaultManager] fileExistsAtPath:path])
@@ -68,6 +68,9 @@
     {
         self.imgCrop.image = [[UIImage alloc] initWithContentsOfFile:path];
     }
+    
+    path = [[FileManager sharedInstance] cardSetPath:card];
+    self.imgSet.image = [[UIImage alloc] initWithContentsOfFile:path];
     
     // download cardImage
     [[FileManager sharedInstance] downloadCardImage:card withCompletion:nil];

@@ -211,7 +211,15 @@
     if (predicate)
     {
         _narrowedFilterOptions = [arrFilter filteredArrayUsingPredicate:predicate];
-        _selectedFilter = [_narrowedFilterOptions firstObject];
+        if ([[_narrowedFilterOptions firstObject] isKindOfClass:[NSManagedObject class]])
+        {
+            _selectedFilter = [[_narrowedFilterOptions firstObject] performSelector:@selector(name) withObject:nil]
+            ;
+        }
+        else if ([[_narrowedFilterOptions firstObject] isKindOfClass:[NSString class]])
+        {
+            _selectedFilter = [_narrowedFilterOptions firstObject];
+        }
     }
     else
     {

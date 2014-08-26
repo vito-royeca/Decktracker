@@ -22,6 +22,7 @@
 -(void) deleteAdvanceSearchFile:(NSString*) name;
 -(NSString*) cardPath:(Card*) card;
 -(NSString*) cropPath:(Card*) card;
+-(NSString*) cardSetPath:(Card*) card;
 -(void) downloadCardImage:(Card*) card  withCompletion:(void (^)(void))completion;
 
 @end
