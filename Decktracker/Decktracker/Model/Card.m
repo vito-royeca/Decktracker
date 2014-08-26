@@ -39,6 +39,7 @@
 @dynamic toughness;
 @dynamic type;
 @dynamic watermark;
+@dynamic source;
 @dynamic artist;
 @dynamic colors;
 @dynamic foreignNames;

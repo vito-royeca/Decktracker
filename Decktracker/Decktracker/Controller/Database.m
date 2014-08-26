@@ -8,7 +8,6 @@
 
 #import "Database.h"
 #import "Magic.h"
-#import "Version.h"
 
 @implementation Database
 
@@ -55,17 +54,18 @@ static Database *_me;
     {
         [MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:kDatabaseStore];
 
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"dataSet == %@", @"JSON"];
-        Version *jsonVersion = [Version MR_findFirstWithPredicate:predicate
-                                                         sortedBy:@"date"
-                                                        ascending:NO];
-        
-        if (![jsonVersion.version isEqualToString:[JSON_VERSION objectForKey:@"version"]])
-        {
-            [MagicalRecord cleanUp];
-            [[NSFileManager defaultManager] removeItemAtPath:[storeURL path] error:nil];
-            [self setupDb];
-        }
+//        fix this!!!
+//        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"dataSet == %@", @"JSON"];
+//        Version *jsonVersion = [Version MR_findFirstWithPredicate:predicate
+//                                                         sortedBy:@"date"
+//                                                        ascending:NO];
+//        
+//        if (![jsonVersion.version isEqualToString:[JSON_VERSION objectForKey:@"version"]])
+//        {
+//            [MagicalRecord cleanUp];
+//            [[NSFileManager defaultManager] removeItemAtPath:[storeURL path] error:nil];
+//            [self setupDb];
+//        }
     }
 #endif
 

@@ -22,7 +22,6 @@
 #import "Magic.h"
 #import "Set.h"
 #import "SetType.h"
-#import "Version.h"
 
 @implementation JSONLoader
 
@@ -90,19 +89,6 @@
     color.name = @"Colorless";
     [currentContext MR_save];
 
-    // Create Versions
-    Version *jsonVersion = [Version MR_createEntity];
-    jsonVersion.dataSet = [JSON_VERSION objectForKey:@"dataSet"];
-    jsonVersion.date = [JJJUtil parseDate:[JSON_VERSION objectForKey:@"date"] withFormat:@"YYYY-MM-dd"];
-    jsonVersion.version = [JSON_VERSION objectForKey:@"version"];
-    [currentContext MR_save];
-    
-    Version *imagesVersion = [Version MR_createEntity];
-    imagesVersion.dataSet = [IMAGES_VERSION objectForKey:@"dataSet"];
-    imagesVersion.date = [JJJUtil parseDate:[IMAGES_VERSION objectForKey:@"date"] withFormat:@"YYYY-MM-dd"];
-    imagesVersion.version = [IMAGES_VERSION objectForKey:@"version"];
-    [currentContext MR_save];
-    
     [[Database sharedInstance] closeDb];
     
     NSDate *dateEnd = [NSDate date];
@@ -232,6 +218,7 @@
         card.multiverseID = [NSNumber numberWithInt:[[dict objectForKey:@"multiverseid"] intValue]];
         card.imageName = [dict objectForKey:@"imageName"];
         card.watermark = [dict objectForKey:@"watermark"];
+        card.source = [dict objectForKey:@"source"];
         card.border = [dict objectForKey:@"border"];
         card.timeshifted = [NSNumber numberWithBool:[[dict objectForKey:@"timeshifted"] boolValue]];
         card.handModifier = [NSNumber numberWithInt:[[dict objectForKey:@"hand"] intValue]];

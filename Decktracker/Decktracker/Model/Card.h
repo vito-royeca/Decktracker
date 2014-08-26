@@ -32,6 +32,7 @@
 @property (nonatomic, retain) NSString * toughness;
 @property (nonatomic, retain) NSString * type;
 @property (nonatomic, retain) NSString * watermark;
+@property (nonatomic, retain) NSString * source;
 @property (nonatomic, retain) Artist *artist;
 @property (nonatomic, retain) NSSet *colors;
 @property (nonatomic, retain) NSSet *foreignNames;
