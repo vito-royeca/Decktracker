@@ -341,7 +341,7 @@
                 
                 if (![[NSFileManager defaultManager] fileExistsAtPath:path])
                 {
-                    cell.imageView.image = [UIImage imageNamed:@"blank-24.png"];
+                    cell.imageView.image = [UIImage imageNamed:@"blank.png"];
                 }
                 else
                 {
@@ -381,7 +381,7 @@
                 
                 if (![[NSFileManager defaultManager] fileExistsAtPath:path])
                 {
-                    cell.imageView.image = [UIImage imageNamed:@"blank-24.png"];
+                    cell.imageView.image = [UIImage imageNamed:@"blank.png"];
                 }
                 else
                 {

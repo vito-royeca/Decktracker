@@ -36,21 +36,21 @@
     UIViewController *vc1 = [[SimpleSearchViewController alloc] initWithNibName:nil bundle:nil];
     nc1.viewControllers = [NSArray arrayWithObjects:vc1, nil];
     nc1.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Search"
-                                                   image:[UIImage imageNamed:@"search-25.png"]
+                                                   image:[UIImage imageNamed:@"search.png"]
                                            selectedImage:nil];
     
     UINavigationController *nc2 = [[UINavigationController alloc] init];
     UIViewController *vc2 = [[DecksViewController alloc] initWithNibName:nil bundle:nil];
     nc2.viewControllers = [NSArray arrayWithObjects:vc2, nil];
     nc2.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Decks"
-                                                   image:[UIImage imageNamed:@"layers-25.png"]
+                                                   image:[UIImage imageNamed:@"layers.png"]
                                            selectedImage:nil];
     
     UINavigationController *nc3 = [[UINavigationController alloc] init];
     UIViewController *vc3 = [[CollectionsViewController alloc] initWithNibName:nil bundle:nil];
     nc3.viewControllers = [NSArray arrayWithObjects:vc3, nil];
     nc3.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Collections"
-                                                   image:[UIImage imageNamed:@"cards-25.png"]
+                                                   image:[UIImage imageNamed:@"cards.png"]
                                            selectedImage:nil];
     
     UINavigationController *nc4 = [[UINavigationController alloc] init];
@@ -58,7 +58,7 @@
     vc4.view.backgroundColor = [UIColor greenColor];
     nc4.viewControllers = [NSArray arrayWithObjects:vc4, nil];
     nc4.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Settings"
-                                                   image:[UIImage imageNamed:@"settings-25.png"]
+                                                   image:[UIImage imageNamed:@"settings.png"]
                                            selectedImage:nil];
     
     self.viewControllers = [NSArray arrayWithObjects:nc1, nc2, nc3, nc4, nil];

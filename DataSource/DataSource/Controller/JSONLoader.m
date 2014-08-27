@@ -41,7 +41,9 @@
         [self parseSet:dict];
         [currentContext MR_save];
     }
+    [self updateTCGSetNames];
     
+
     for (NSString *setName in [json allKeys])
     {
         NSDictionary * dict = [json objectForKey:setName];
@@ -98,9 +100,105 @@
     NSLog(@"Time Elapsed: %@",  [JJJUtil formatInterval:timeDifference]);
 }
 
--(void) insertSymbols
+-(void) updateTCGSetNames
 {
+    NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
+    NSString *filePath = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] resourcePath], @"Data/tcgplayer_sets.plist"];
     
+    for (Set *set in [Set MR_findAll])
+    {
+        NSString *tcgName;
+        
+        for (NSString *setName in [[NSArray alloc] initWithContentsOfFile:filePath])
+        {
+            if ([set.name isEqualToString:@"Tenth Edition"])
+            {
+                tcgName = @"10th Edition";
+            }
+            else if ([set.name isEqualToString:@"Ninth Edition"])
+            {
+                tcgName = @"9th Edition";
+            }
+            else if ([set.name isEqualToString:@"Eighth Edition"])
+            {
+                tcgName = @"8th Edition";
+            }
+            else if ([set.name isEqualToString:@"Seventh Edition"])
+            {
+                tcgName = @"7th Edition";
+            }
+            else if ([set.name isEqualToString:@"Magic 2010"])
+            {
+                tcgName = @"Magic 2010 (M10)";
+            }
+            else if ([set.name isEqualToString:@"Magic 2011"])
+            {
+                tcgName = @"Magic 2011 (M11)";
+            }
+            else if ([set.name isEqualToString:@"Magic 2012"])
+            {
+                tcgName = @"Magic 2012 (M12)";
+            }
+            else if ([set.name isEqualToString:@"Magic 2013"])
+            {
+                tcgName = @"Magic 2013 (M13)";
+            }
+            else if ([set.name isEqualToString:@"Magic 2014 Core Set"])
+            {
+                tcgName = @"Magic 2014 (M14)";
+            }
+            else if ([set.name isEqualToString:@"Magic 2015 Core Set"])
+            {
+                tcgName = @"Magic 2015 (M15)";
+            }
+            else if ([set.name isEqualToString:@"Limited Edition Alpha"])
+            {
+                tcgName = @"Alpha Edition";
+            }
+            else if ([set.name isEqualToString:@"Limited Edition Beta"])
+            {
+                tcgName = @"Beta Edition";
+            }
+            else if ([set.name isEqualToString:@"Planechase 2012 Edition"])
+            {
+                tcgName = @"Planechase 2012";
+            }
+            else if ([set.name isEqualToString:@"Commander 2013 Edition"])
+            {
+                tcgName = @"Commander 2013";
+            }
+            else if ([set.name isEqualToString:@"From the Vault: Annihilation (2014)"])
+            {
+                tcgName = @"From the Vault: Annihilation";
+            }
+            else if ([set.name isEqualToString:@"Modern Event Deck 2014"])
+            {
+                tcgName = @"Modern Event Deck";
+            }
+            else if ([set.name isEqualToString:@"Time Spiral \"Timeshifted\""])
+            {
+                tcgName = @"Timeshifted";
+            }
+            
+            else if ([set.name rangeOfString:@" vs. "].location != NSNotFound)
+            {
+                tcgName = [set.name stringByReplacingOccurrencesOfString:@" vs. " withString:@" vs "];
+            }
+            else
+            {
+                if ([set.name caseInsensitiveCompare:setName] == NSOrderedSame)
+                {
+                    tcgName = setName;
+                }
+            }
+        }
+        
+        if (tcgName)
+        {
+            set.tcgPlayerName = tcgName;
+            [currentContext MR_save];
+        }
+    }
     
 }
 

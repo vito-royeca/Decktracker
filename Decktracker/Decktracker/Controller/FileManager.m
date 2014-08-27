@@ -227,4 +227,11 @@ static FileManager *_me;
     });
 }
 
+-(NSArray*) loadKeywords
+{
+    NSString *path = [NSString stringWithFormat:@"%@/keywords.plist", [[NSBundle mainBundle] bundlePath]];
+    
+    return [[NSArray alloc] initWithContentsOfFile:path];
+}
+
 @end

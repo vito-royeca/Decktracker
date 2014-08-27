@@ -24,9 +24,10 @@
 		8C3CBE0219A31642002CD96E /* Format.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDF419A31642002CD96E /* Format.m */; };
 		8C3CBE0319A31642002CD96E /* Set.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDF619A31642002CD96E /* Set.m */; };
 		8C3CBE0419A31642002CD96E /* SetType.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDF819A31642002CD96E /* SetType.m */; };
+		8C5FF9E319AE2A5D003CE54C /* AllSets-x.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C5FF9E119AE2A0B003CE54C /* AllSets-x.json */; };
+		8C5FF9E419AE2A5D003CE54C /* tcgplayer_sets.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C5FF9E219AE2A0B003CE54C /* tcgplayer_sets.plist */; };
 		8C80A0C2198D01D600BADA6C /* JSONLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C80A0C1198D01D600BADA6C /* JSONLoader.m */; };
 		8C80A0CC198D040500BADA6C /* Database.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C80A0CB198D040500BADA6C /* Database.m */; };
-		8C80A0D2198D0EB600BADA6C /* AllSets-x.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C1B4DDC198CF21700B4C948 /* AllSets-x.json */; };
 		8CF0C9DC1991CDB900349F35 /* libJJJ.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF0C9CD1991CD5500349F35 /* libJJJ.a */; };
 		8CF9CE52199F9A22008127E5 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF9CE51199F9A22008127E5 /* AppKit.framework */; };
 		8CFD32F2198E7B2900F1AFC3 /* ImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CFD32F1198E7B2900F1AFC3 /* ImageLoader.m */; };
@@ -63,7 +64,8 @@
 			dstPath = Data;
 			dstSubfolderSpec = 16;
 			files = (
-				8C80A0D2198D0EB600BADA6C /* AllSets-x.json in CopyFiles */,
+				8C5FF9E319AE2A5D003CE54C /* AllSets-x.json in CopyFiles */,
+				8C5FF9E419AE2A5D003CE54C /* tcgplayer_sets.plist in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -75,7 +77,6 @@
 		8C1B4DCA198CF0C000B4C948 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		8C1B4DCD198CF0C000B4C948 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8C1B4DD0198CF0C000B4C948 /* DataSource-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DataSource-Prefix.pch"; sourceTree = "<group>"; };
-		8C1B4DDC198CF21700B4C948 /* AllSets-x.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "AllSets-x.json"; sourceTree = "<group>"; };
 		8C2150801993C66200B0128C /* database.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = database.xcdatamodel; sourceTree = "<group>"; };
 		8C3CBDE119A31642002CD96E /* Artist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Artist.h; path = ../../Decktracker/Decktracker/Model/Artist.h; sourceTree = "<group>"; };
 		8C3CBDE219A31642002CD96E /* Artist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Artist.m; path = ../../Decktracker/Decktracker/Model/Artist.m; sourceTree = "<group>"; };
@@ -101,6 +102,8 @@
 		8C3CBDF619A31642002CD96E /* Set.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Set.m; path = ../../Decktracker/Decktracker/Model/Set.m; sourceTree = "<group>"; };
 		8C3CBDF719A31642002CD96E /* SetType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SetType.h; path = ../../Decktracker/Decktracker/Model/SetType.h; sourceTree = "<group>"; };
 		8C3CBDF819A31642002CD96E /* SetType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SetType.m; path = ../../Decktracker/Decktracker/Model/SetType.m; sourceTree = "<group>"; };
+		8C5FF9E119AE2A0B003CE54C /* AllSets-x.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "AllSets-x.json"; sourceTree = "<group>"; };
+		8C5FF9E219AE2A0B003CE54C /* tcgplayer_sets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = tcgplayer_sets.plist; sourceTree = "<group>"; };
 		8C80A0C0198D01D600BADA6C /* JSONLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONLoader.h; sourceTree = "<group>"; };
 		8C80A0C1198D01D600BADA6C /* JSONLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONLoader.m; sourceTree = "<group>"; };
 		8C80A0CA198D040500BADA6C /* Database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Database.h; path = ../../../DeckTracker/DeckTracker/Controller/Database.h; sourceTree = "<group>"; };
@@ -165,8 +168,8 @@
 		8C1B4DCC198CF0C000B4C948 /* DataSource */ = {
 			isa = PBXGroup;
 			children = (
+				8C3E414219AE29850058FF67 /* Data */,
 				8C80A0BF198D01AD00BADA6C /* Controller */,
-				8C1B4DDB198CF1FE00B4C948 /* JSON */,
 				8C80A0CD198D052A00BADA6C /* Magic.h */,
 				8C1B4DCD198CF0C000B4C948 /* main.m */,
 				8C21506E1993C5FF00B0128C /* Model */,
@@ -181,14 +184,6 @@
 				8C1B4DD0198CF0C000B4C948 /* DataSource-Prefix.pch */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		8C1B4DDB198CF1FE00B4C948 /* JSON */ = {
-			isa = PBXGroup;
-			children = (
-				8C1B4DDC198CF21700B4C948 /* AllSets-x.json */,
-			);
-			path = JSON;
 			sourceTree = "<group>";
 		};
 		8C21506E1993C5FF00B0128C /* Model */ = {
@@ -221,6 +216,15 @@
 				8C3CBDF819A31642002CD96E /* SetType.m */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		8C3E414219AE29850058FF67 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				8C5FF9E119AE2A0B003CE54C /* AllSets-x.json */,
+				8C5FF9E219AE2A0B003CE54C /* tcgplayer_sets.plist */,
+			);
+			path = Data;
 			sourceTree = "<group>";
 		};
 		8C80A0BF198D01AD00BADA6C /* Controller */ = {

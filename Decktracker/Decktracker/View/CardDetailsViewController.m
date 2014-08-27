@@ -17,10 +17,11 @@
 #import "CardType.h"
 #import "Database.h"
 #import "FileManager.h"
+#import "TFHpple.h"
 #import "Magic.h"
 #import "SimpleSearchViewController.h"
 #import "Set.h"
-#import "UIImage+Scale.h"
+//#import "UIImage+Scale.h"
 
 @implementation CardDetailsViewController
 {
@@ -43,13 +44,6 @@
     return self;
 }
 
-//-(void) setCard:(Card*) card
-//{
-//    _card = card;
-//    
-//    self.navigationItem.title = self.card.name;
-//}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -68,22 +62,72 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.segmentedControl];
-    [self switchView];
     
-    UIBarButtonItem *btnAction = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
-                                                                               target:self
-                                                                               action:@selector(btnActionTapped:)];
-    self.navigationItem.rightBarButtonItem = btnAction;
+    UIBarButtonItem *btnPrevious = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"up4.png"]
+                                                                    style:UIBarButtonItemStylePlain
+                                                                   target:self
+                                                                   action:@selector(btnPreviousTapped:)];
+    UIBarButtonItem *btnNext = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"down4.png"]
+                                                                style:UIBarButtonItemStylePlain
+                                                               target:self
+                                                               action:@selector(btnNextTapped:)];
+    self.navigationItem.rightBarButtonItems = @[btnNext, btnPrevious];
+    
+    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:0];
+    NSInteger index = [sectionInfo.objects indexOfObject:self.card];
+    
+	if (index == 0)
+    {
+        btnPrevious.enabled = NO;
+    }
+    if (index == [sectionInfo numberOfObjects]-1)
+    {
+        btnNext.enabled = NO;
+    }
+    
+    [self switchView];
 }
 
--(void) btnActionTapped:(id) sender
+-(void) btnPreviousTapped:(id) sender
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Under Contruction"
-                                                    message:@"This function is not yet implemented."
-                                                   delegate:nil
-                                          cancelButtonTitle:@"Ok"
-                                          otherButtonTitles:nil];
-    [alert show];
+    UIBarButtonItem *btnPrevious = [self.navigationItem.rightBarButtonItems lastObject];
+    UIBarButtonItem *btnNext = [self.navigationItem.rightBarButtonItems firstObject];
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
+    
+    NSInteger index = [sectionInfo.objects indexOfObject:self.card];
+    
+    index--;
+    btnNext.enabled = YES;
+    if (index < 0)
+    {
+        index = 0;
+        btnPrevious.enabled = NO;
+    }
+    
+    Card *card = sectionInfo.objects[index];
+    [self setCard:card];
+    [self switchView];
+}
+
+-(void) btnNextTapped:(id) sender
+{
+    UIBarButtonItem *btnPrevious = [self.navigationItem.rightBarButtonItems lastObject];
+    UIBarButtonItem *btnNext = [self.navigationItem.rightBarButtonItems firstObject];
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
+    
+    NSInteger index = [sectionInfo.objects indexOfObject:self.card];
+    
+    index++;
+    btnPrevious.enabled = YES;
+    if (index > sectionInfo.objects.count-1)
+    {
+        index = sectionInfo.objects.count-1;
+        btnNext.enabled = NO;
+    }
+    
+    Card *card = sectionInfo.objects[index];
+    [self setCard:card];
+    [self switchView];
 }
 
 - (void)didReceiveMemoryWarning
@@ -92,20 +136,21 @@
     // Dispose of any resources that can be recreated.
 }
 
-//-(BOOL)hidesBottomBarWhenPushed
-//{
-//    return YES;
-//}
+-(BOOL)hidesBottomBarWhenPushed
+{
+    return YES;
+}
 
 -(void) switchView
 {
     CGFloat dX = 0;
     CGFloat dY = self.segmentedControl.frame.origin.y + self.segmentedControl.frame.size.height +10;
     CGFloat dWidth = self.view.frame.size.width;
-    CGFloat dHeight = self.view.frame.size.height - dY - self.tabBarController.tabBar.frame.size.height;
+    CGFloat dHeight = self.view.frame.size.height - dY; //- self.tabBarController.tabBar.frame.size.height;
     
     [self.cardImage removeFromSuperview];
     [self.webView removeFromSuperview];
+    self.navigationItem.title = self.card.name;
     
     switch (self.segmentedControl.selectedSegmentIndex)
     {
@@ -162,21 +207,6 @@
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
     NSInteger selectedRow = [sectionInfo.objects indexOfObject:self.card];
     
-//    if ([[self.navigationController.viewControllers firstObject] isKindOfClass:[SimpleSearchViewController class]])
-//    {
-//        SimpleSearchViewController *parent = [self.navigationController.viewControllers firstObject];
-//        [parent.tblResults selectRowAtIndexPath:[NSIndexPath indexPathForRow:selectedRow inSection:0]
-//                                       animated:NO
-//                                 scrollPosition:UITableViewScrollPositionMiddle];
-//    }
-//    else if ([[self.navigationController.viewControllers firstObject] isKindOfClass:[AdvanceSearchResultsViewController class]])
-//    {
-//        AdvanceSearchResultsViewController *parent = [self.navigationController.viewControllers firstObject];
-//        [parent.tblResults selectRowAtIndexPath:[NSIndexPath indexPathForRow:selectedRow inSection:0]
-//                                       animated:NO
-//                                 scrollPosition:UITableViewScrollPositionMiddle];
-//    }
-    
     void (^completion)(void) = ^void(void)
     {
         NSString *path = [[FileManager sharedInstance] cardPath:self.card];
@@ -196,7 +226,6 @@
                                            onClose:^{ }];
     self.cardImage.clipsToBounds = YES;
     self.navigationItem.title = self.card.name;
-    
     [[FileManager sharedInstance] downloadCardImage:self.card withCompletion:completion];
 }
 
@@ -268,10 +297,6 @@
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
     
-    [html appendFormat:@"<tr><td><strong>Rarity</strong></td></tr>"];
-    [html appendFormat:@"<tr><td><table><tr><td><img src=\"%@/%@/%@/24.png\" border=\"0\" /></td><td>%@ - %@</td></tr></table></td></tr>", setPath, self.card.set.code, [[Database sharedInstance] cardRarityIndex:self.card], self.card.set.name, self.card.rarity.name];
-    [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
-    
     if (self.card.originalText)
     {
         [html appendFormat:@"<tr><td><strong>Original Text</v></td></tr>"];
@@ -304,6 +329,10 @@
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
     
+    [html appendFormat:@"<tr><td><strong>Rarity</strong></td></tr>"];
+    [html appendFormat:@"<tr><td><table><tr><td><img src=\"%@/%@/%@/24.png\" border=\"0\" /></td><td>%@ - %@</td></tr></table></td></tr>", setPath, self.card.set.code, [[Database sharedInstance] cardRarityIndex:self.card], self.card.set.name, self.card.rarity.name];
+    [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
+
     [html appendFormat:@"<tr><td><strong>All Sets</strong></td></tr>"];
     [html appendFormat:@"<tr><td><table>"];
     for (Set *set in [[self.card.printings allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"releaseDate" ascending:YES]]])
@@ -375,26 +404,62 @@
 
 - (NSString*) composePricing
 {
+    NSString *tcgPricing = [[NSString stringWithFormat:@"http://partner.tcgplayer.com/x3/phl.asmx/p?pk=%@&s=%@&p=%@", TCGPLAYER_PARTNER_KEY, self.card.set.tcgPlayerName, self.card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:tcgPricing]];
+    TFHpple *parser = [TFHpple hppleWithHTMLData:data];
+    NSString *low, *med, *high, *foil, *link;
+    
+    NSArray *nodes = [parser searchWithXPathQuery:@"//product"];
+    for (TFHppleElement *element in nodes)
+    {
+        if ([element hasChildren])
+        {
+            for (TFHppleElement *child in element.children)
+            {
+                if ([[child tagName] isEqualToString:@"hiprice"])
+                {
+                    high = [[child firstChild] content];
+                }
+                else if ([[child tagName] isEqualToString:@"avgprice"])
+                {
+                    med = [[child firstChild] content];
+                }
+                else if ([[child tagName] isEqualToString:@"lowprice"])
+                {
+                    low = [[child firstChild] content];
+                }
+                else if ([[child tagName] isEqualToString:@"foilavgprice"])
+                {
+                    foil = [[child firstChild] content];
+                }
+                else if ([[child tagName] isEqualToString:@"link"])
+                {
+                    link = [[child firstChild] content];
+                }
+            }
+        }
+    }
+    
     NSMutableString *html = [[NSMutableString alloc] init];
     
     [html appendFormat:@"<html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"%@/style.css\"></head><body>", [[NSBundle mainBundle] bundlePath]];
     [html appendFormat:@"<center><table width=\"100%%\">"];
 
-    NSString *link = [[NSString stringWithFormat:@"http://store.tcgplayer.com/Products.aspx?GameName=Magic&Name=%@&partner=TCGTEST", self.card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    
     [html appendFormat:@"<tr>"];
-    [html appendFormat:@"<td align=\"center\" bgcolor=\"red\" width=\"33%%\"><strong><font color=\"white\">Low</font></strong></td>"];
-    [html appendFormat:@"<td align=\"center\" bgcolor=\"blue\" width=\"33%%\"><strong><font color=\"white\">Median</font></strong></td>"];
-    [html appendFormat:@"<td align=\"center\" bgcolor=\"green\" width=\"33%%\"><strong><font color=\"white\">High</font></strong></td>"];
+    [html appendFormat:@"<td align=\"center\" bgcolor=\"red\" width=\"25%%\"><strong><font color=\"white\">Low</font></strong></td>"];
+    [html appendFormat:@"<td align=\"center\" bgcolor=\"blue\" width=\"25%%\"><strong><font color=\"white\">Median</font></strong></td>"];
+    [html appendFormat:@"<td align=\"center\" bgcolor=\"green\" width=\"25%%\"><strong><font color=\"white\">High</font></strong></td>"];
+    [html appendFormat:@"<td align=\"center\" bgcolor=\"silver\" width=\"25%%\"><strong><font color=\"white\">Foil</font></strong></td>"];
     [html appendFormat:@"</tr>"];
     
     [html appendFormat:@"<tr>"];
-    [html appendFormat:@"<td align=\"right\" width=\"33%%\">$0.00</td>"];
-    [html appendFormat:@"<td align=\"right\" width=\"33%%\">$0.00</td>"];
-    [html appendFormat:@"<td align=\"right\" width=\"33%%\">$0.00</td>"];
+    [html appendFormat:@"<td align=\"right\" width=\"25%%\">%@</td>", low ? [NSString stringWithFormat:@"$%@", low] : @"N.A."];
+    [html appendFormat:@"<td align=\"right\" width=\"25%%\">%@</td>", med ? [NSString stringWithFormat:@"$%@", med] : @"N.A."];
+    [html appendFormat:@"<td align=\"right\" width=\"25%%\">%@</td>", high ? [NSString stringWithFormat:@"$%@", high] : @"N.A."];
+    [html appendFormat:@"<td align=\"right\" width=\"25%%\">%@</td>", foil ? [NSString stringWithFormat:@"$%@", foil] : @"N.A."];
     [html appendFormat:@"</tr>"];
     [html appendFormat:@"<tr><td colspan=\"3\">&nbsp;</td></tr>"];
-    [html appendFormat:@"<tr><td colspan=\"3\">Pricing details brought to you by: <a href=%@>TCGPlayer</a></td></tr>", link];
+    [html appendFormat:@"<tr><td colspan=\"3\">Buy this card at <a href=%@>TCGPlayer</a></td></tr>", link];
 
     [html appendFormat:@"</table></center></body></html>"];
     return html;

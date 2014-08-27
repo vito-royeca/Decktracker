@@ -39,12 +39,12 @@ typedef NSString* Layout;
 #define kImageSizes                     @[@"8", @"16", @"24", @"32", @"48", @"64", @"96"]
 
 #define JSON_VERSION                    @{@"dataSet":@"JSON", \
-                                          @"date":@"20014-08-26", \
-                                          @"version":@"2.9.2"}
+                                          @"date":@"20014-08-27", \
+                                          @"version":@"2.10.0"}
 
 #define IMAGES_VERSION                  @{@"dataSet":@"Images", \
-                                          @"date":@"20014-08-21", \
-                                          @"version":@"5.4.0"}
+                                          @"date":@"20014-08-27", \
+                                          @"version":@"5.5.0"}
 
 #define CARD_TYPES                      @[@"Artifact", @"Basic", @"Conspiracy", @"Creature", \
                                           @"Enchantment", @"Instant", @"Land", \
@@ -52,151 +52,8 @@ typedef NSString* Layout;
                                           @"Planeswalker", @"Scheme", @"Snow", @"Sorcery", \
                                           @"Tribal", @"Vanguard", @"World"]
 
-#define KEYWORDS                        @[@{@"Evergreen" : \
-                                                @[@"Deathtouch", \
-                                                @"Defender", \
-                                                @"First strike", \
-                                                @"Double strike", \
-                                                @"Enchant", \
-                                                @"Equip", \
-                                                @"Flash", \
-                                                @"Flying", \
-                                                @"Haste", \
-                                                @"Hexproof", \
-                                                @"Indestructible", \
-                                                @"Intimidate", \
-                                                @"Landwalk", \
-                                                @"Lifelink", \
-                                                @"Protection", \
-                                                @"Reach", \
-                                                @"Shroud", \
-                                                @"Trample", \
-                                                @"Vigilance"]}, \
-                                          @{@"Actions" : \
-                                                @[@"Attach", \
-                                                @"Counter", \
-                                                @"Exile", \
-                                                @"Fight", \
-                                                @"Regenerate", \
-                                                @"Sacrifice", \
-                                                @"Tap", \
-                                                @"Untap"]}, \
-                                          @{@"Mechanics" : \
-                                                @[@"Absorb", \
-                                                @"Affinity", \
-                                                @"Amplify", \
-                                                @"Annihilator", \
-                                                @"Aura swap", \
-                                                @"Banding", \
-                                                @"Bands with other", \
-                                                @"Battle cry", \
-                                                @"Bestow", \
-                                                @"Bloodthirst", \
-                                                @"Bushido", \
-                                                @"Buyback", \
-                                                @"Cascade", \
-                                                @"Champion", \
-                                                @"Changeling", \
-                                                @"Cipher", \
-                                                @"Clash", \
-                                                @"Conspire", \
-                                                @"Convoke", \
-                                                @"Cumulative upkeep", \
-                                                @"Cycling", \
-                                                @"Delve", \
-                                                @"Detain", \
-                                                @"Devour", \
-                                                @"Dredge", \
-                                                @"Echo", \
-                                                @"Entwine", \
-                                                @"Epic", \
-                                                @"Evolve", \
-                                                @"Evoke", \
-                                                @"Exalted", \
-                                                @"Extort", \
-                                                @"Fading", \
-                                                @"Fateseal", \
-                                                @"Fear", \
-                                                @"Flanking", \
-                                                @"Flashback", \
-                                                @"Flip", \
-                                                @"Forecast", \
-                                                @"Fortify", \
-                                                @"Frenzy", \
-                                                @"Graft", \
-                                                @"Gravestorm", \
-                                                @"Haunt", \
-                                                @"Hideaway", \
-                                                @"Horsemanship", \
-                                                @"Infect", \
-                                                @"Kicker", \
-                                                @"Level up", \
-                                                @"Living weapon", \
-                                                @"Madness", \
-                                                @"Miracle", \
-                                                @"Modular", \
-                                                @"Morph", \
-                                                @"Multikicker", \
-                                                @"Ninjutsu", \
-                                                @"Offering", \
-                                                @"Overload", \
-                                                @"Persist", \
-                                                @"Phasing", \
-                                                @"Poisonous", \
-                                                @"Populate", \
-                                                @"Proliferate", \
-                                                @"Provoke", \
-                                                @"Prowl", \
-                                                @"Rampage", \
-                                                @"Rebound", \
-                                                @"Recover", \
-                                                @"Reinforce", \
-                                                @"Replicate", \
-                                                @"Retrace", \
-                                                @"Ripple", \
-                                                @"Scavenge", \
-                                                @"Scry", \
-                                                @"Shadow", \
-                                                @"Soulbond", \
-                                                @"Soulshift", \
-                                                @"Splice", \
-                                                @"Split second", \
-                                                @"Storm", \
-                                                @"Sunburst", \
-                                                @"Suspend", \
-                                                @"Totem armor", \
-                                                @"Transfigure", \
-                                                @"Transform", \
-                                                @"Transmute", \
-                                                @"Typecycling", \
-                                                @"Undying", \
-                                                @"Unearth", \
-                                                @"Unleash", \
-                                                @"Vanishing", \
-                                                @"Wither"]}, \
-                                          @{@"Abilities" : \
-                                                @[@"Battalion", \
-                                                @"Bloodrush", \
-                                                @"Channel", \
-                                                @"Chroma", \
-                                                @"Domain", \
-                                                @"Fateful hour", \
-                                                @"Grandeur", \
-                                                @"Hellbent", \
-                                                @"Heroic", \
-                                                @"Imprint", \
-                                                @"Join forces", \
-                                                @"Kinship", \
-                                                @"Landfall", \
-                                                @"Metalcraft", \
-                                                @"Morbid", \
-                                                @"Radiance", \
-                                                @"Sweep", \
-                                                @"Threshold"]}, \
-                                          @{@"Discontinued" : \
-                                                @[@"Bury", \
-                                                @"Landhome", \
-                                                @"Substance"]}]
+
+#define TCGPLAYER_PARTNER_KEY           @"DECKTRACKER"
 
 typedef NS_ENUM(NSInteger, EditMode)
 {

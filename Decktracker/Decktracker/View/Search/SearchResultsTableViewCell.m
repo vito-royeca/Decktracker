@@ -62,7 +62,7 @@
     NSString *path = [[FileManager sharedInstance] cropPath:card];
     if (![[NSFileManager defaultManager] fileExistsAtPath:path])
     {
-        self.imgCrop.image = [UIImage imageNamed:@"blank-24.png"];
+        self.imgCrop.image = [UIImage imageNamed:@"blank.png"];
     }
     else
     {

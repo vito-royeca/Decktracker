@@ -13,6 +13,7 @@
 #import "CardRarity.h"
 #import "CardType.h"
 #import "Database.h"
+#import "FileManager.h"
 #import "Format.h"
 #import "Set.h"
 
@@ -405,7 +406,7 @@
     }
     else if ([[_arrFilters objectAtIndex:indexPath.row] isEqualToString:@"Keyword"])
     {
-        arrFilterOptions = KEYWORDS;
+        arrFilterOptions = [[FileManager sharedInstance] loadKeywords];
     }
     else if ([[_arrFilters objectAtIndex:indexPath.row] isEqualToString:@"Artist"])
     {
