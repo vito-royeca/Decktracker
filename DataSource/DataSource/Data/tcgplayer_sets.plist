@@ -34,14 +34,14 @@
 	<string>Commander</string>
 	<string>Commander 2013</string>
 	<string>Commander 2014</string>
-	<string>Commander's Arsenal</string>
+	<string>Commander&apos;s Arsenal</string>
 	<string>Conflux</string>
 	<string>Conspiracy</string>
 	<string>Dark Ascension</string>
 	<string>Darksteel</string>
 	<string>Deckmasters Garfield vs Finkel</string>
 	<string>Dissension</string>
-	<string>Dragon's Maze</string>
+	<string>Dragon&apos;s Maze</string>
 	<string>Duel Decks</string>
 	<string>Duel Decks: Ajani vs. Nicol Bolas</string>
 	<string>Duel Decks: Divine vs Demonic</string>
@@ -88,7 +88,7 @@
 	<string>Invasion</string>
 	<string>Journey Into Nyx</string>
 	<string>JSS/MSS Promos</string>
-	<string>Judge Promos">Judge Promos</string>
+	<string>Judge Promos</string>
 	<string>Judgment</string>
 	<string>Khans of Tarkir</string>
 	<string>Launch Party Cards</string>
@@ -129,7 +129,7 @@
 	<string>Prerelease Cards</string>
 	<string>Pro Tour Promos</string>
 	<string>Prophecy</string>
-	<string>Ravnica">Ravnica</string>
+	<string>Ravnica&quot;&gt;Ravnica</string>
 	<string>Release Event Cards</string>
 	<string>Return to Ravnica</string>
 	<string>Revised Edition</string>
@@ -153,9 +153,9 @@
 	<string>Unhinged</string>
 	<string>Unique and Miscellaneous Promos</string>
 	<string>Unlimited Edition</string>
-	<string>Urza's Destiny</string>
-	<string>Urza's Legacy</string>
-	<string>Urza's Saga</string>
+	<string>Urza&apos;s Destiny</string>
+	<string>Urza&apos;s Legacy</string>
+	<string>Urza&apos;s Saga</string>
 	<string>Vanguard</string>
 	<string>Visions</string>
 	<string>Weatherlight</string>
