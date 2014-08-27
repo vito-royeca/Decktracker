@@ -221,6 +221,7 @@
         card.source = [dict objectForKey:@"source"];
         card.border = [dict objectForKey:@"border"];
         card.timeshifted = [NSNumber numberWithBool:[[dict objectForKey:@"timeshifted"] boolValue]];
+        card.reserved = [NSNumber numberWithBool:[[dict objectForKey:@"reserved"] boolValue]];
         card.handModifier = [NSNumber numberWithInt:[[dict objectForKey:@"hand"] intValue]];
         card.printings = [self findSets:[dict objectForKey:@"printings"]];
         card.originalText = [dict objectForKey:@"originalText"];

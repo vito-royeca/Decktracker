@@ -36,36 +36,53 @@ static Database *_me;
 -(void) setupDb
 {
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
-    NSArray *paths = [[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
-    NSURL *documentPath = [paths lastObject];
-    NSURL *storeURL = [documentPath URLByAppendingPathComponent:kDatabaseStore];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentPath = [paths firstObject];
+    NSString *storePath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", kDatabaseStore]];
+    NSString *jsonPath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/json.ver"]];
     
-    if (![[NSFileManager defaultManager] fileExistsAtPath:[storeURL path]])
+    if (![[NSFileManager defaultManager] fileExistsAtPath:storePath])
     {
-        NSURL *preloadURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:[kDatabaseStore stringByDeletingPathExtension] ofType:@"sqlite"]];
+        NSString *preloadPath = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] bundlePath], kDatabaseStore];
         NSError* err = nil;
         
-        if (![[NSFileManager defaultManager] copyItemAtURL:preloadURL toURL:storeURL error:&err])
+        if (![[NSFileManager defaultManager] copyItemAtPath:preloadPath toPath:storePath error:&err])
         {
             NSLog(@"Error: Unable to copy preloaded database.");
         }
+        [JSON_VERSION writeToFile:jsonPath atomically:YES];
     }
     else
     {
-        [MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:kDatabaseStore];
-
-//        fix this!!!
-//        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"dataSet == %@", @"JSON"];
-//        Version *jsonVersion = [Version MR_findFirstWithPredicate:predicate
-//                                                         sortedBy:@"date"
-//                                                        ascending:NO];
-//        
-//        if (![jsonVersion.version isEqualToString:[JSON_VERSION objectForKey:@"version"]])
-//        {
-//            [MagicalRecord cleanUp];
-//            [[NSFileManager defaultManager] removeItemAtPath:[storeURL path] error:nil];
-//            [self setupDb];
-//        }
+        BOOL bDelete = NO;
+        
+        if (![[NSFileManager defaultManager] fileExistsAtPath:jsonPath])
+        {
+            bDelete = YES;
+        }
+        else
+        {
+            NSDictionary *jsonVer = [[NSDictionary alloc] initWithContentsOfFile:jsonPath];
+            
+            if (![[jsonVer objectForKey:@"version"] isEqualToString:[JSON_VERSION objectForKey:@"version"]])
+            {
+                bDelete = YES;
+            }
+        }
+        
+        if (bDelete)
+        {
+            for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentPath error:nil])
+            {
+                if ([file hasPrefix:@"decktracker."] || [file isEqualToString:[jsonPath lastPathComponent]])
+                {
+                    [[NSFileManager defaultManager] removeItemAtPath:[documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", file]]
+                                                               error:nil];
+                }
+            }
+            
+            [self setupDb];
+        }
     }
 #endif
 

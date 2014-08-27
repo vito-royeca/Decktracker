@@ -40,6 +40,7 @@
 @dynamic type;
 @dynamic watermark;
 @dynamic source;
+@dynamic reserved;
 @dynamic artist;
 @dynamic colors;
 @dynamic foreignNames;
