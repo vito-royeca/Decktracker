@@ -405,6 +405,11 @@
 - (NSString*) composePricing
 {
     NSString *tcgPricing = [[NSString stringWithFormat:@"http://partner.tcgplayer.com/x3/phl.asmx/p?pk=%@&s=%@&p=%@", TCGPLAYER_PARTNER_KEY, self.card.set.tcgPlayerName, self.card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    if (!self.card.set.tcgPlayerName)
+    {
+        tcgPricing = [[NSString stringWithFormat:@"http://partner.tcgplayer.com/x3/phl.asmx/p?pk=%@&p=%@", TCGPLAYER_PARTNER_KEY, self.card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    }
+    
     NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:tcgPricing]];
     TFHpple *parser = [TFHpple hppleWithHTMLData:data];
     NSString *low, *med, *high, *foil, *link;
@@ -414,6 +419,8 @@
     {
         if ([element hasChildren])
         {
+            BOOL linkIsNext = NO;
+            
             for (TFHppleElement *child in element.children)
             {
                 if ([[child tagName] isEqualToString:@"hiprice"])
@@ -434,17 +441,25 @@
                 }
                 else if ([[child tagName] isEqualToString:@"link"])
                 {
-                    link = [[child firstChild] content];
+                    linkIsNext = YES;
+                }
+                else if ([[child tagName] isEqualToString:@"text"] && linkIsNext)
+                {
+                    link = [child content];
                 }
             }
         }
     }
     
     NSMutableString *html = [[NSMutableString alloc] init];
+    NSString *setPath = [NSString stringWithFormat:@"%@/images/set", [[NSBundle mainBundle] bundlePath]];
     
     [html appendFormat:@"<html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"%@/style.css\"></head><body>", [[NSBundle mainBundle] bundlePath]];
     [html appendFormat:@"<center><table width=\"100%%\">"];
 
+    [html appendFormat:@"<tr><td colspan=\"4\"><table><tr><td><img src=\"%@/%@/%@/24.png\" border=\"0\" /></td><td>%@ - %@</td></tr></table></td></tr>", setPath, self.card.set.code, [[Database sharedInstance] cardRarityIndex:self.card], self.card.set.name, self.card.rarity.name];
+    [html appendFormat:@"<tr><td colspan=\"4\">&nbsp;</td></tr>"];
+    
     [html appendFormat:@"<tr>"];
     [html appendFormat:@"<td align=\"center\" bgcolor=\"red\" width=\"25%%\"><strong><font color=\"white\">Low</font></strong></td>"];
     [html appendFormat:@"<td align=\"center\" bgcolor=\"blue\" width=\"25%%\"><strong><font color=\"white\">Median</font></strong></td>"];
@@ -459,7 +474,10 @@
     [html appendFormat:@"<td align=\"right\" width=\"25%%\">%@</td>", foil ? [NSString stringWithFormat:@"$%@", foil] : @"N.A."];
     [html appendFormat:@"</tr>"];
     [html appendFormat:@"<tr><td colspan=\"3\">&nbsp;</td></tr>"];
-    [html appendFormat:@"<tr><td colspan=\"3\">Buy this card at <a href=%@>TCGPlayer</a></td></tr>", link];
+    if (link)
+    {
+        [html appendFormat:@"<tr><td colspan=\"3\">More details at <a href=%@>TCGPlayer</a>.</td></tr>", link];
+    }
 
     [html appendFormat:@"</table></center></body></html>"];
     return html;
@@ -548,7 +566,8 @@
 #pragma mark - UIWebViewDelegate
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-    NSString * q = [[request URL] query];
+    NSURL *url = [request URL];
+    NSString * q = [url query];
     NSArray * pairs = [q componentsSeparatedByString:@"&"];
     NSMutableDictionary * kvPairs = [NSMutableDictionary dictionary];
     for (NSString * pair in pairs)
@@ -570,7 +589,7 @@
         [self switchView];
     }
     
-    else if ([kvPairs objectForKey:@"GameName"] && [kvPairs objectForKey:@"partner"])
+    else if ([kvPairs objectForKey:@"partner"] && [[url host] isEqualToString:@"store.tcgplayer.com"])
     {
         [[UIApplication sharedApplication] openURL:[request URL]];
 

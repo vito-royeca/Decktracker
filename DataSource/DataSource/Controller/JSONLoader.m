@@ -179,7 +179,10 @@
             {
                 tcgName = @"Timeshifted";
             }
-            
+            else if ([set.name isEqualToString:@"Ravnica: City of Guilds"])
+            {
+                tcgName = @"Ravnica";
+            }
             else if ([set.name rangeOfString:@" vs. "].location != NSNotFound)
             {
                 tcgName = [set.name stringByReplacingOccurrencesOfString:@" vs. " withString:@" vs "];

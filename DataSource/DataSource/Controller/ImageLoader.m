@@ -34,8 +34,11 @@
             NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://mtgimage.com/symbol/mana/%@/%@.png", mana, size]];
             NSString *filePath = [dirPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.png", size]];
             
-            NSLog(@"Downloading... %@", url);
-            [JJJUtil downloadResource:url toPath:filePath];
+            if (![[NSFileManager defaultManager] fileExistsAtPath:filePath])
+            {
+                NSLog(@"Downloading... %@", url);
+                [JJJUtil downloadResource:url toPath:filePath];
+            }
         }
     }
 }
@@ -58,8 +61,11 @@
             NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://mtgimage.com/symbol/other/%@/%@.png", other, size]];
             NSString *filePath = [dirPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.png", size]];
             
-            NSLog(@"Downloading... %@", url);
-            [JJJUtil downloadResource:url toPath:filePath];
+            if (![[NSFileManager defaultManager] fileExistsAtPath:filePath])
+            {
+                NSLog(@"Downloading... %@", url);
+                [JJJUtil downloadResource:url toPath:filePath];
+            }
         }
     }
 }
@@ -90,8 +96,11 @@
                 NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://mtgimage.com/symbol/set/%@/%@/%@.png", set.code, rarity, size]];
                 NSString *filePath = [rarityPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.png", size]];
                 
-                NSLog(@"Downloading... %@", url);
-                [JJJUtil downloadResource:url toPath:filePath];
+                if (![[NSFileManager defaultManager] fileExistsAtPath:filePath])
+                {
+                    NSLog(@"Downloading... %@", url);
+                    [JJJUtil downloadResource:url toPath:filePath];
+                }
             }
             
             //delete if empty
