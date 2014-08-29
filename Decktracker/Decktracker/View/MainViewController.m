@@ -61,7 +61,7 @@
                                                    image:[UIImage imageNamed:@"settings.png"]
                                            selectedImage:nil];
     
-    self.viewControllers = [NSArray arrayWithObjects:nc1, nc2, nc3, nc4, nil];
+    self.viewControllers = @[nc1/*, nc2, nc3, nc4*/];
     self.selectedViewController = nc1;
 }
 

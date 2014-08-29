@@ -11,6 +11,7 @@
 #import "MainViewController.h"
 
 #import "GAI.h"
+#import <Crashlytics/Crashlytics.h>
 
 @implementation AppDelegate
 
@@ -22,8 +23,8 @@
     [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelInfo];
     [[GAI sharedInstance] trackerWithTrackingId:@"UA-53780226-1"];
     
-    //Bugsense
-    [BugSenseController sharedControllerWithBugSenseAPIKey:@"a59a372a"];
+    // Crashlytics
+    [Crashlytics startWithAPIKey:@"114b3dd82452ec2f4024140ec862698d331b8f3f"];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
@@ -42,6 +43,8 @@
 //                                                 initWithCenterViewController:navigationController
 //                                                 leftDrawerViewController:leftDrawer];
 //        viewController = drawerController;
+        
+        // if using tabs
         viewController = [[MainViewController alloc] init];
     }
     

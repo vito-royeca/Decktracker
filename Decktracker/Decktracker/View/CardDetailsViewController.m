@@ -40,7 +40,6 @@
     if (self)
     {
         // Custom initialization
-        NSLog(@"Available fonts: %@", [UIFont familyNames]);
     }
     return self;
 }

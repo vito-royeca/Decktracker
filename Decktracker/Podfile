@@ -5,6 +5,8 @@
 target "Decktracker" do
 
 pod "AFNetworking"
+#pod "BugSense"
+#pod "CrashlyticsFramework"
 pod "GoogleAnalytics-iOS-SDK"
 pod "HMSegmentedControl"
 pod "hpple"
