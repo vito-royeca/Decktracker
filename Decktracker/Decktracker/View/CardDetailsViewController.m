@@ -40,6 +40,7 @@
     if (self)
     {
         // Custom initialization
+        NSLog(@"Available fonts: %@", [UIFont familyNames]);
     }
     return self;
 }
@@ -90,18 +91,13 @@
 
 -(void) btnPreviousTapped:(id) sender
 {
-    UIBarButtonItem *btnPrevious = [self.navigationItem.rightBarButtonItems lastObject];
-    UIBarButtonItem *btnNext = [self.navigationItem.rightBarButtonItems firstObject];
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
-    
     NSInteger index = [sectionInfo.objects indexOfObject:self.card];
     
     index--;
-    btnNext.enabled = YES;
     if (index < 0)
     {
         index = 0;
-        btnPrevious.enabled = NO;
     }
     
     Card *card = sectionInfo.objects[index];
@@ -111,18 +107,13 @@
 
 -(void) btnNextTapped:(id) sender
 {
-    UIBarButtonItem *btnPrevious = [self.navigationItem.rightBarButtonItems lastObject];
-    UIBarButtonItem *btnNext = [self.navigationItem.rightBarButtonItems firstObject];
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
-    
     NSInteger index = [sectionInfo.objects indexOfObject:self.card];
     
     index++;
-    btnPrevious.enabled = YES;
     if (index > sectionInfo.objects.count-1)
     {
         index = sectionInfo.objects.count-1;
-        btnNext.enabled = NO;
     }
     
     Card *card = sectionInfo.objects[index];
@@ -150,7 +141,10 @@
     
     [self.cardImage removeFromSuperview];
     [self.webView removeFromSuperview];
-    self.navigationItem.title = self.card.name;
+    
+    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:0];
+    NSInteger index = [sectionInfo.objects indexOfObject:self.card];
+    self.navigationItem.title = [NSString stringWithFormat:@"%tu of %tu", index+1, sectionInfo.objects.count];
     
     switch (self.segmentedControl.selectedSegmentIndex)
     {
@@ -178,25 +172,28 @@
             
         case 1:
         {
-            NSString *path = [[NSBundle mainBundle] bundlePath];
-            NSURL *baseURL = [NSURL fileURLWithPath:path];
-            
             self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
             self.webView.delegate = self;
             [self.view addSubview:self.webView];
-            [self.webView loadHTMLString:[self composeDetails] baseURL:baseURL];
+            
+            MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.webView];
+            [self.view addSubview:hud];
+            hud.delegate = self;
+            [hud showWhileExecuting:@selector(displayDetails) onTarget:self withObject:nil animated:NO];
             break;
         }
         case 2:
         {
-            NSString *path = [[NSBundle mainBundle] bundlePath];
-            NSURL *baseURL = [NSURL fileURLWithPath:path];
+            
             
             self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
             self.webView.delegate = self;
             [self.view addSubview:self.webView];
-            [self.webView loadHTMLString:[self composePricing] baseURL:baseURL];
             
+            MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.webView];
+            [self.view addSubview:hud];
+            hud.delegate = self;
+            [hud showWhileExecuting:@selector(displayPricing) onTarget:self withObject:nil animated:NO];
             break;
         }
     }
@@ -225,14 +222,51 @@
                                             onOpen:^{ }
                                            onClose:^{ }];
     self.cardImage.clipsToBounds = YES;
-    self.navigationItem.title = self.card.name;
+    self.navigationItem.title = [NSString stringWithFormat:@"%tu of %tu", selectedRow+1, sectionInfo.objects.count];
     [[FileManager sharedInstance] downloadCardImage:self.card withCompletion:completion];
+    [self updateNavigationButtons];
+}
+
+- (void) displayDetails
+{
+    NSString *path = [[NSBundle mainBundle] bundlePath];
+    NSURL *baseURL = [NSURL fileURLWithPath:path];
+    
+    [self.webView loadHTMLString:[self composeDetails] baseURL:baseURL];
+    [self updateNavigationButtons];
+}
+
+- (void) displayPricing
+{
+    NSString *path = [[NSBundle mainBundle] bundlePath];
+    NSURL *baseURL = [NSURL fileURLWithPath:path];
+    
+    [self.webView loadHTMLString:[self composePricing] baseURL:baseURL];
+    [self updateNavigationButtons];
+}
+
+- (void) updateNavigationButtons
+{
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
+    NSInteger index = [sectionInfo.objects indexOfObject:self.card];
+    UIBarButtonItem *btnPrevious = [self.navigationItem.rightBarButtonItems lastObject];
+    UIBarButtonItem *btnNext = [self.navigationItem.rightBarButtonItems firstObject];
+    
+    btnPrevious.enabled = YES;
+    btnNext.enabled = YES;
+    if (index == sectionInfo.objects.count-1)
+    {
+        btnNext.enabled = NO;
+    }
+    if (index == 0)
+    {
+        btnPrevious.enabled = NO;
+    }
 }
 
 - (void)handleSwipe:(UISwipeGestureRecognizer *)swipe
 {
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
-    
     NSInteger index = [sectionInfo.objects indexOfObject:self.card];
     
     if (swipe.direction == UISwipeGestureRecognizerDirectionRight)
@@ -261,13 +295,13 @@
 {
     NSMutableString *html = [[NSMutableString alloc] init];
     NSString *setPath = [NSString stringWithFormat:@"%@/images/set", [[NSBundle mainBundle] bundlePath]];
-    
     [html appendFormat:@"<html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"%@/style.css\"></head><body>", [[NSBundle mainBundle] bundlePath]];
     [html appendFormat:@"<table>"];
     
+    [html appendFormat:@"<tr><td><div class=\"cardTitle\">%@</div></td></tr>", self.card.name];
+    
     if (self.card.manaCost)
     {
-        [html appendFormat:@"<tr><td><strong>Mana Cost</strong></td></tr>"];
         [html appendFormat:@"<tr><td>%@</td></tr>", [self replaceSymbolsInText:self.card.manaCost]];
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
@@ -457,6 +491,8 @@
     [html appendFormat:@"<html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"%@/style.css\"></head><body>", [[NSBundle mainBundle] bundlePath]];
     [html appendFormat:@"<center><table width=\"100%%\">"];
 
+    [html appendFormat:@"<tr><td colspan=\"4\"><div class=\"cardTitle\">%@</div></td></tr>", self.card.name];
+    
     [html appendFormat:@"<tr><td colspan=\"4\"><table><tr><td><img src=\"%@/%@/%@/24.png\" border=\"0\" /></td><td>%@ - %@</td></tr></table></td></tr>", setPath, self.card.set.code, [[Database sharedInstance] cardRarityIndex:self.card], self.card.set.name, self.card.rarity.name];
     [html appendFormat:@"<tr><td colspan=\"4\">&nbsp;</td></tr>"];
     
@@ -602,7 +638,6 @@
 - (void)hudWasHidden:(MBProgressHUD *)hud
 {
 	[hud removeFromSuperview];
-    [self displayCard];
 }
 
 #pragma mark -  MHFacebookImageViewerDatasource

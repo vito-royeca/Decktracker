@@ -22,6 +22,9 @@
     [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelInfo];
     [[GAI sharedInstance] trackerWithTrackingId:@"UA-53780226-1"];
     
+    //Bugsense
+    [BugSenseController sharedControllerWithBugSenseAPIKey:@"a59a372a"];
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     

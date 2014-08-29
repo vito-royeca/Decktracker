@@ -55,6 +55,7 @@
         [type appendFormat:@" (Loyalty: %@)", card.loyalty];
     }
     
+    self.lblCardName.font = [UIFont fontWithName:@"Magic:the Gathering" size:20];
     self.lblCardName.text = card.name;
     self.lblDetail.text = type;
     self.lblSet.text = [NSString stringWithFormat:@"%@ - %@", card.set.name, card.rarity.name];
@@ -165,7 +166,7 @@
         [view removeFromSuperview];
     }
     
-    CGFloat dX = self.viewManaCost.frame.size.width - (arrImages.count*16);
+    CGFloat dX = 0;//self.viewManaCost.frame.size.width - (arrImages.count*16);
     CGFloat dY = 0;
     CGFloat dWidth = 16;
     CGFloat dHeight = 16;

@@ -39,12 +39,12 @@ typedef NSString* Layout;
 #define kImageSizes                     @[@"8", @"16", @"24", @"32", @"48", @"64", @"96"]
 
 #define JSON_VERSION                    @{@"dataSet":@"JSON", \
-                                          @"date":@"20014-08-27", \
-                                          @"version":@"2.10.0"}
+                                          @"date":@"20014-08-28", \
+                                          @"version":@"2.10.1"}
 
 #define IMAGES_VERSION                  @{@"dataSet":@"Images", \
-                                          @"date":@"20014-08-27", \
-                                          @"version":@"5.5.0"}
+                                          @"date":@"20014-08-28", \
+                                          @"version":@"5.5.1"}
 
 #define CARD_TYPES                      @[@"Artifact", @"Basic", @"Conspiracy", @"Creature", \
                                           @"Enchantment", @"Instant", @"Land", \

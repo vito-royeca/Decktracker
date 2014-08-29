@@ -49,6 +49,7 @@
 		8C3CBDD919A31618002CD96E /* CardType.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDD819A31618002CD96E /* CardType.m */; };
 		8C3CBDDC19A31618002CD96E /* SetType.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDDB19A31618002CD96E /* SetType.m */; };
 		8C3CBDDF19A31618002CD96E /* CardRarity.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDDE19A31618002CD96E /* CardRarity.m */; };
+		8C49655D19B0692A001C7935 /* MAGIC.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 8C49655C19B06929001C7935 /* MAGIC.TTF */; };
 		8C5246E119A5137300B10147 /* FileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5246E019A5137300B10147 /* FileManager.m */; };
 		8C5BDD70199B3B7D007AF140 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5BDD6F199B3B7D007AF140 /* MenuViewController.m */; };
 		8C5FF9E819AE2EE3003CE54C /* keywords.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C5FF9E719AE2EE3003CE54C /* keywords.plist */; };
@@ -160,6 +161,7 @@
 		8C3CBDDB19A31618002CD96E /* SetType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SetType.m; sourceTree = "<group>"; };
 		8C3CBDDD19A31618002CD96E /* CardRarity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardRarity.h; sourceTree = "<group>"; };
 		8C3CBDDE19A31618002CD96E /* CardRarity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardRarity.m; sourceTree = "<group>"; };
+		8C49655C19B06929001C7935 /* MAGIC.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = MAGIC.TTF; sourceTree = "<group>"; };
 		8C5246DF19A5137300B10147 /* FileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileManager.h; sourceTree = "<group>"; };
 		8C5246E019A5137300B10147 /* FileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileManager.m; sourceTree = "<group>"; };
 		8C5BDD6E199B3B7D007AF140 /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
@@ -367,6 +369,7 @@
 		8C2E14321990862900023BAA /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				8C49655C19B06929001C7935 /* MAGIC.TTF */,
 				8C26A67F19A6418800FE00E7 /* Advance Search */,
 				8C019A9F1998A10F00FB22D7 /* decktracker.sqlite */,
 				8CADEF1619923DDE004D7658 /* images */,
@@ -534,6 +537,7 @@
 				8CADEF1719923DDE004D7658 /* images in Resources */,
 				8C3277FD199A464D00899790 /* style.css in Resources */,
 				8C13467919A9B17B00E0B3C3 /* SearchResultsTableViewCell.xib in Resources */,
+				8C49655D19B0692A001C7935 /* MAGIC.TTF in Resources */,
 				8C2E13FD1990741100023BAA /* InfoPlist.strings in Resources */,
 				8C26A68019A6418900FE00E7 /* Advance Search in Resources */,
 				8C2E14081990741100023BAA /* Images.xcassets in Resources */,

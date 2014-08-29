@@ -18,3 +18,17 @@ html, body
     right: 0;
     bottom: 0;
 }
+
+@font-face
+{
+    font-family: Magic;
+    src: url(MAGIC.TTF);
+}
+
+.cardTitle
+{
+    font-family : Magic;
+    font-size: 30px;
+    font-weight: bold;
+    /*color: silver;*/
+}
