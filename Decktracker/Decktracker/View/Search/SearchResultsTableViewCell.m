@@ -108,35 +108,35 @@
         BOOL bFound = NO;
         NSString *noCurlies = [[symbol substringWithRange:NSMakeRange(1, symbol.length-2)] stringByReplacingOccurrencesOfString:@"/" withString:@""];
         NSString *noCurliesReverse = [JJJUtil reverseString:noCurlies];
-        NSString *pngFile;
+        NSString *pngSize;
         
         if ([noCurlies isEqualToString:@"100"])
         {
-            pngFile = @"24.png";
+            pngSize = @"24";
         }
         else if ([noCurlies isEqualToString:@"1000000"])
         {
-            pngFile = @"48.png";
+            pngSize = @"48";
         }
         else
         {
-            pngFile = @"16.png";
+            pngSize = @"16";
         }
         
         for (NSString *mana in kManaSymbols)
         {
             if ([mana isEqualToString:noCurlies])
             {
-                UIImage *image = [[UIImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/images/mana/%@/%@", [[NSBundle mainBundle] bundlePath], noCurlies, pngFile]];
+                UIImage *image = [[UIImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/images/mana/%@/%@.png", [[NSBundle mainBundle] bundlePath], noCurlies, pngSize]];
 
-                [arrImages addObject:image];
+                [arrImages addObject:@{pngSize:image}];
                 bFound = YES;
             }
             else if ([mana isEqualToString:noCurliesReverse])
             {
-                UIImage *image = [[UIImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/images/mana/%@/%@", [[NSBundle mainBundle] bundlePath], noCurliesReverse, pngFile]];
+                UIImage *image = [[UIImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/images/mana/%@/%@.png", [[NSBundle mainBundle] bundlePath], noCurliesReverse, pngSize]];
                 
-                [arrImages addObject:image];
+                [arrImages addObject:@{pngSize:image}];
                 bFound = YES;
             }
         }
@@ -147,15 +147,15 @@
             {
                 if ([mana isEqualToString:noCurlies])
                 {
-                    UIImage *image = [[UIImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/images/other/%@/%@", [[NSBundle mainBundle] bundlePath], noCurlies, pngFile]];
+                    UIImage *image = [[UIImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/images/other/%@/%@.png", [[NSBundle mainBundle] bundlePath], noCurlies, pngSize]];
                     
-                    [arrImages addObject:image];
+                    [arrImages addObject:@{pngSize:image}];
                 }
                 else if ([mana isEqualToString:noCurlies])
                 {
-                    UIImage *image = [[UIImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/images/other/%@/%@", [[NSBundle mainBundle] bundlePath], noCurliesReverse, pngFile]];
+                    UIImage *image = [[UIImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/images/other/%@/%@.png", [[NSBundle mainBundle] bundlePath], noCurliesReverse, pngSize]];
                     
-                    [arrImages addObject:image];
+                    [arrImages addObject:@{pngSize:image}];
                 }
             }
         }
@@ -168,12 +168,21 @@
     
     CGFloat dX = 0;//self.viewManaCost.frame.size.width - (arrImages.count*16);
     CGFloat dY = 0;
-    CGFloat dWidth = 16;
+    CGFloat dWidth = 0;
     CGFloat dHeight = 16;
-    for (UIImage *image in arrImages)
+    for (NSDictionary *dict in arrImages)
     {
+        NSString *width = [[dict allKeys] firstObject];
+        dWidth = [width floatValue];
+        
+         // Gleemax
+        if (dWidth == 48)
+        {
+            dHeight = 9;
+        }
+        
         UIImageView *imgMana = [[UIImageView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
-        imgMana.image = image;
+        imgMana.image = [dict objectForKey:width];
         
         [self.viewManaCost addSubview:imgMana];
         dX += dWidth;

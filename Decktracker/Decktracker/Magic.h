@@ -39,8 +39,8 @@ typedef NSString* Layout;
 #define kImageSizes                     @[@"8", @"16", @"24", @"32", @"48", @"64", @"96"]
 
 #define JSON_VERSION                    @{@"dataSet":@"JSON", \
-                                          @"date":@"20014-08-28", \
-                                          @"version":@"2.10.1"}
+                                          @"date":@"20014-08-29", \
+                                          @"version":@"2.10.2"}
 
 #define IMAGES_VERSION                  @{@"dataSet":@"Images", \
                                           @"date":@"20014-08-28", \

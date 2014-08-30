@@ -88,6 +88,34 @@
     [self switchView];
 }
 
+- (void)handleSwipe:(UISwipeGestureRecognizer *)swipe
+{
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
+    NSInteger index = [sectionInfo.objects indexOfObject:self.card];
+    
+    if (swipe.direction == UISwipeGestureRecognizerDirectionRight)
+    {
+        index--;
+        if (index < 0)
+        {
+            index = 0;
+        }
+    }
+    else if (swipe.direction == UISwipeGestureRecognizerDirectionLeft)
+    {
+        index++;
+        if (index > sectionInfo.objects.count-1)
+        {
+            index = sectionInfo.objects.count-1;
+        }
+    }
+    
+    Card *card = sectionInfo.objects[index];
+    [self setCard:card];
+//    [self displayCard];
+    [self switchView];
+}
+
 -(void) btnPreviousTapped:(id) sender
 {
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
@@ -144,6 +172,16 @@
     id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:0];
     NSInteger index = [sectionInfo.objects indexOfObject:self.card];
     self.navigationItem.title = [NSString stringWithFormat:@"%tu of %tu", index+1, sectionInfo.objects.count];
+    
+    // download next four card images
+    for (int i = 0; i < 5; i++)
+    {
+        if (index+i <= sectionInfo.objects.count-1)
+        {
+            Card *card = [sectionInfo.objects objectAtIndex:index+i];
+            [[FileManager sharedInstance] downloadCardImage:card withCompletion:nil];
+        }
+    }
     
     switch (self.segmentedControl.selectedSegmentIndex)
     {
@@ -261,33 +299,6 @@
     {
         btnPrevious.enabled = NO;
     }
-}
-
-- (void)handleSwipe:(UISwipeGestureRecognizer *)swipe
-{
-    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
-    NSInteger index = [sectionInfo.objects indexOfObject:self.card];
-    
-    if (swipe.direction == UISwipeGestureRecognizerDirectionRight)
-    {
-        index--;
-        if (index < 0)
-        {
-            index = 0;
-        }
-    }
-    else if (swipe.direction == UISwipeGestureRecognizerDirectionLeft)
-    {
-        index++;
-        if (index > sectionInfo.objects.count-1)
-        {
-            index = sectionInfo.objects.count-1;
-        }
-    }
-    
-    Card *card = sectionInfo.objects[index];
-    [self setCard:card];
-    [self displayCard];
 }
 
 - (NSString*) composeDetails
@@ -539,7 +550,6 @@
             NSString *symbol = [text substringWithRange:NSMakeRange(curlyOpen, (curlyClose-curlyOpen)+1)];
             
             [arrSymbols addObject:symbol];
-            
             curlyOpen = -1;
             curlyClose = -1;
         }
@@ -576,6 +586,10 @@
             {
                 text = [text stringByReplacingOccurrencesOfString:symbol withString:[NSString stringWithFormat:@"<img src=\"%@/images/mana/%@/%@\"/>", [[NSBundle mainBundle] bundlePath], noCurliesReverse, pngFile]];
                 bFound = YES;
+            }
+            else if ([mana isEqualToString:@"Infinity"])
+            {
+                text = [text stringByReplacingOccurrencesOfString:@"{∞}" withString:[NSString stringWithFormat:@"<img src=\"%@/images/mana/Infinity/%@\"/>", [[NSBundle mainBundle] bundlePath], pngFile]];
             }
         }
         
@@ -653,7 +667,7 @@
     Card *card = [self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
     
     [self setCard:card];
-    [self displayCard];
+    [self switchView];
     return [NSURL fileURLWithPath:[[FileManager sharedInstance] cardPath:self.card]];
 }
 
@@ -664,7 +678,7 @@
     Card *card = [self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
     
     [self setCard:card];
-    [self displayCard];
+    [self switchView];
     return [UIImage imageWithContentsOfFile:[[FileManager sharedInstance] cardPath:self.card]];
 }
 

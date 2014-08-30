@@ -203,7 +203,7 @@ static FileManager *_me;
         
         if (![[NSFileManager defaultManager] fileExistsAtPath:cardPath])
         {
-            NSLog(@"Downloading %@", [url path]);
+            NSLog(@"Downloading %@", url);
             NSDate *startDate = [NSDate date];
             [JJJUtil downloadResource:url toPath:cardPath];
             
