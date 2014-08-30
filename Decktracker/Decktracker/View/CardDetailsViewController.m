@@ -73,16 +73,19 @@
                                                                action:@selector(btnNextTapped:)];
     self.navigationItem.rightBarButtonItems = @[btnNext, btnPrevious];
     
-    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:0];
-    NSInteger index = [sectionInfo.objects indexOfObject:self.card];
-    
-	if (index == 0)
+    if (self.fetchedResultsController)
     {
-        btnPrevious.enabled = NO;
-    }
-    if (index == [sectionInfo numberOfObjects]-1)
-    {
-        btnNext.enabled = NO;
+        id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:0];
+        NSInteger index = [sectionInfo.objects indexOfObject:self.card];
+        
+        if (index == 0)
+        {
+            btnPrevious.enabled = NO;
+        }
+        if (index == [sectionInfo numberOfObjects]-1)
+        {
+            btnNext.enabled = NO;
+        }
     }
     
     [self switchView];
@@ -90,30 +93,32 @@
 
 - (void)handleSwipe:(UISwipeGestureRecognizer *)swipe
 {
-    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
-    NSInteger index = [sectionInfo.objects indexOfObject:self.card];
-    
-    if (swipe.direction == UISwipeGestureRecognizerDirectionRight)
+    if (self.fetchedResultsController)
     {
-        index--;
-        if (index < 0)
+        id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
+        NSInteger index = [sectionInfo.objects indexOfObject:self.card];
+        
+        if (swipe.direction == UISwipeGestureRecognizerDirectionRight)
         {
-            index = 0;
+            index--;
+            if (index < 0)
+            {
+                index = 0;
+            }
         }
-    }
-    else if (swipe.direction == UISwipeGestureRecognizerDirectionLeft)
-    {
-        index++;
-        if (index > sectionInfo.objects.count-1)
+        else if (swipe.direction == UISwipeGestureRecognizerDirectionLeft)
         {
-            index = sectionInfo.objects.count-1;
+            index++;
+            if (index > sectionInfo.objects.count-1)
+            {
+                index = sectionInfo.objects.count-1;
+            }
         }
+        
+        Card *card = sectionInfo.objects[index];
+        [self setCard:card];
+        [self switchView];
     }
-    
-    Card *card = sectionInfo.objects[index];
-    [self setCard:card];
-//    [self displayCard];
-    [self switchView];
 }
 
 -(void) btnPreviousTapped:(id) sender
@@ -169,18 +174,25 @@
     [self.cardImage removeFromSuperview];
     [self.webView removeFromSuperview];
     
-    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:0];
-    NSInteger index = [sectionInfo.objects indexOfObject:self.card];
-    self.navigationItem.title = [NSString stringWithFormat:@"%tu of %tu", index+1, sectionInfo.objects.count];
-    
-    // download next four card images
-    for (int i = 0; i < 5; i++)
+    if (self.fetchedResultsController)
     {
-        if (index+i <= sectionInfo.objects.count-1)
+        id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:0];
+        NSInteger index = [sectionInfo.objects indexOfObject:self.card];
+        self.navigationItem.title = [NSString stringWithFormat:@"%tu of %tu", index+1, sectionInfo.objects.count];
+        
+        // download next four card images
+        for (int i = 0; i < 5; i++)
         {
-            Card *card = [sectionInfo.objects objectAtIndex:index+i];
-            [[FileManager sharedInstance] downloadCardImage:card withCompletion:nil];
+            if (index+i <= sectionInfo.objects.count-1)
+            {
+                Card *card = [sectionInfo.objects objectAtIndex:index+i];
+                [[FileManager sharedInstance] downloadCardImage:card withCompletion:nil];
+            }
         }
+    }
+    else
+    {
+        self.navigationItem.title = @"1 of 1";
     }
     
     switch (self.segmentedControl.selectedSegmentIndex)
@@ -238,8 +250,12 @@
 
 - (void) displayCard
 {
-    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
-    NSInteger selectedRow = [sectionInfo.objects indexOfObject:self.card];
+    NSInteger selectedRow = 0;
+    if (self.fetchedResultsController)
+    {
+        id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
+        selectedRow = [sectionInfo.objects indexOfObject:self.card];
+    }
     
     void (^completion)(void) = ^void(void)
     {
@@ -259,7 +275,7 @@
                                             onOpen:^{ }
                                            onClose:^{ }];
     self.cardImage.clipsToBounds = YES;
-    self.navigationItem.title = [NSString stringWithFormat:@"%tu of %tu", selectedRow+1, sectionInfo.objects.count];
+    
     [[FileManager sharedInstance] downloadCardImage:self.card withCompletion:completion];
     [self updateNavigationButtons];
 }
@@ -284,20 +300,29 @@
 
 - (void) updateNavigationButtons
 {
-    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
-    NSInteger index = [sectionInfo.objects indexOfObject:self.card];
     UIBarButtonItem *btnPrevious = [self.navigationItem.rightBarButtonItems lastObject];
     UIBarButtonItem *btnNext = [self.navigationItem.rightBarButtonItems firstObject];
     
-    btnPrevious.enabled = YES;
-    btnNext.enabled = YES;
-    if (index == sectionInfo.objects.count-1)
+    if (self.fetchedResultsController)
     {
-        btnNext.enabled = NO;
+        id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
+        NSInteger index = [sectionInfo.objects indexOfObject:self.card];
+        
+        btnPrevious.enabled = YES;
+        btnNext.enabled = YES;
+        if (index == sectionInfo.objects.count-1)
+        {
+            btnNext.enabled = NO;
+        }
+        if (index == 0)
+        {
+            btnPrevious.enabled = NO;
+        }
     }
-    if (index == 0)
+    else
     {
         btnPrevious.enabled = NO;
+        btnNext.enabled = NO;
     }
 }
 
@@ -630,6 +655,8 @@
     if ([kvPairs objectForKey:@"name"] && [kvPairs objectForKey:@"set"])
     {
     
+        self.fetchedResultsController = nil;
+        
         Card *card = [[Database sharedInstance] findCard:[kvPairs objectForKey:@"name"]
                                                    inSet:[kvPairs objectForKey:@"set"]];
     
@@ -657,17 +684,27 @@
 - (NSInteger) numberImagesForImageViewer:(MHFacebookImageViewer*) imageViewer
 {
     _fbImageViewer = imageViewer;
-    return self.fetchedResultsController.fetchedObjects.count;
+    if (self.fetchedResultsController)
+    {
+        return self.fetchedResultsController.fetchedObjects.count;
+    }
+    else
+    {
+        return 1;
+    }
 }
 
 - (NSURL*) imageURLAtIndex:(NSInteger)index imageViewer:(MHFacebookImageViewer*) imageViewer
 {
     _fbImageViewer = imageViewer;
     
-    Card *card = [self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+    if (self.fetchedResultsController)
+    {
+        Card *card = [self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
     
-    [self setCard:card];
-    [self switchView];
+        [self setCard:card];
+        [self switchView];
+    }
     return [NSURL fileURLWithPath:[[FileManager sharedInstance] cardPath:self.card]];
 }
 
@@ -675,10 +712,13 @@
 {
     _fbImageViewer = imageViewer;
     
-    Card *card = [self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+    if (self.fetchedResultsController)
+    {
+        Card *card = [self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
     
-    [self setCard:card];
-    [self switchView];
+        [self setCard:card];
+        [self switchView];
+    }
     return [UIImage imageWithContentsOfFile:[[FileManager sharedInstance] cardPath:self.card]];
 }
 
