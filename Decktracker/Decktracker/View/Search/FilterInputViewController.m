@@ -82,7 +82,7 @@
         else if ([obj isKindOfClass:[NSDictionary class]])
         {
             NSDictionary *dict = (NSDictionary*) obj;
-            NSArray *arrValues = [dict objectForKey:[[dict allKeys] firstObject]];
+            NSArray *arrValues = dict[[[dict allKeys] firstObject]];
             stringValue = [arrValues firstObject];
         }
         _selectedFilter = stringValue;
@@ -194,7 +194,7 @@
         arrFilter = [[NSMutableArray alloc] init];
         for (NSDictionary *dict in self.filterOptions)
         {
-            NSArray *keywords = [dict objectForKey:[[dict allKeys] firstObject]];
+            NSArray *keywords = dict[[[dict allKeys] firstObject]];
             [arrFilter addObjectsFromArray:keywords];
         }
         
@@ -261,7 +261,7 @@
             
             if ([[arrFilter firstObject] isKindOfClass:[NSDictionary class]])
             {
-                NSDictionary *dict = [arrFilter objectAtIndex:section];
+                NSDictionary *dict = arrFilter[section];
                 return [[dict allKeys] firstObject];
             }
             else
@@ -294,8 +294,8 @@
         
             if ([[arrFilter firstObject] isKindOfClass:[NSDictionary class]])
             {
-                NSDictionary *dict = [arrFilter objectAtIndex:section];
-                NSArray *arrValues = [dict objectForKey:[[dict allKeys] firstObject]];
+                NSDictionary *dict = arrFilter[section];
+                NSArray *arrValues = dict[[[dict allKeys] firstObject]];
                 return arrValues.count;
             }
             else
@@ -336,7 +336,7 @@
             
             if ([[self.filterOptions firstObject] isKindOfClass:[Set class]])
             {
-                Set *set = [arrFilter objectAtIndex:indexPath.row];
+                Set *set = arrFilter[indexPath.row];
                 NSString *path = [NSString stringWithFormat:@"%@/images/set/%@/C/24.png", [[NSBundle mainBundle] bundlePath], set.code];
                 
                 if (![[NSFileManager defaultManager] fileExistsAtPath:path])
@@ -352,17 +352,17 @@
             }
             else if ([[self.filterOptions firstObject] isKindOfClass:[CardRarity class]])
             {
-                CardRarity *rarity = [arrFilter objectAtIndex:indexPath.row];
+                CardRarity *rarity = arrFilter[indexPath.row];
                 cell.textLabel.text = rarity.name;
             }
             else if ([[self.filterOptions firstObject] isKindOfClass:[CardType class]])
             {
-                CardType *type = [arrFilter objectAtIndex:indexPath.row];
+                CardType *type = arrFilter[indexPath.row];
                 cell.textLabel.text = type.name;
             }
             else if ([[self.filterOptions firstObject] isKindOfClass:[CardColor class]])
             {
-                CardColor *color = [arrFilter objectAtIndex:indexPath.row];
+                CardColor *color = arrFilter[indexPath.row];
                 NSString *colorInitial;
                 if ([color.name isEqualToString:@"Blue"])
                 {
@@ -394,18 +394,18 @@
             {
                 if (_narrowedFilterOptions)
                 {
-                    cell.textLabel.text = [_narrowedFilterOptions objectAtIndex:indexPath.row];
+                    cell.textLabel.text = _narrowedFilterOptions[indexPath.row];
                 }
                 else
                 {
-                    NSDictionary *dict = [arrFilter objectAtIndex:indexPath.section];
-                    NSArray *arrValues = [dict objectForKey:[[dict allKeys] firstObject]];
-                    cell.textLabel.text = [arrValues objectAtIndex:indexPath.row];
+                    NSDictionary *dict = arrFilter[indexPath.section];
+                    NSArray *arrValues = dict[[[dict allKeys] firstObject]];
+                    cell.textLabel.text = arrValues[indexPath.row];
                 }
             }
             else if ([[self.filterOptions firstObject] isKindOfClass:[Artist class]])
             {
-                Artist *artist = [arrFilter objectAtIndex:indexPath.row];
+                Artist *artist = arrFilter[indexPath.row];
                 cell.textLabel.text = artist.name;
             }
             if (_selectedFilterPath && [_selectedFilterPath compare:indexPath] == NSOrderedSame)
@@ -439,7 +439,7 @@
     }
     else if (tableView == self.tblOperator)
     {
-        cell.textLabel.text = [self.operatorOptions objectAtIndex:indexPath.row];
+        cell.textLabel.text = self.operatorOptions[indexPath.row];
         cell.accessoryType = indexPath.row == _selectedOperatorIndex ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
     }
     
@@ -455,24 +455,24 @@
 
         if ([[self.filterOptions firstObject] isKindOfClass:[NSManagedObject class]])
         {
-            id obj = [arrFilter objectAtIndex:indexPath.row];
+            id obj = arrFilter[indexPath.row];
             stringValue = [obj performSelector:@selector(name) withObject:nil];
         }
         else if ([[self.filterOptions firstObject] isKindOfClass:[NSString class]])
         {
-            stringValue = [arrFilter objectAtIndex:indexPath.row];
+            stringValue = arrFilter[indexPath.row];
         }
         else if ([[self.filterOptions firstObject] isKindOfClass:[NSDictionary class]])
         {
             if (_narrowedFilterOptions)
             {
-                stringValue = [_narrowedFilterOptions objectAtIndex:indexPath.row];
+                stringValue = _narrowedFilterOptions[indexPath.row];
             }
             else
             {
-                NSDictionary *dict = [arrFilter objectAtIndex:indexPath.section];
-                NSArray *arrValues = [dict objectForKey:[[dict allKeys] firstObject]];
-                stringValue = [arrValues objectAtIndex:indexPath.row];
+                NSDictionary *dict = arrFilter[indexPath.section];
+                NSArray *arrValues = dict[[[dict allKeys] firstObject]];
+                stringValue = arrValues[indexPath.row];
             }
         }
         
@@ -482,7 +482,7 @@
     else if (tableView == self.tblOperator)
     {
         _selectedOperatorIndex = (int)indexPath.row;
-        _selectedOperator = [self.operatorOptions objectAtIndex:indexPath.row];
+        _selectedOperator = self.operatorOptions[indexPath.row];
     }
     
     if ([self.searchBar canResignFirstResponder])

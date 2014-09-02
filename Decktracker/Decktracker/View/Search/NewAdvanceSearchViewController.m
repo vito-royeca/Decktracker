@@ -223,8 +223,8 @@
     {
         if (editingStyle == UITableViewCellEditingStyleDelete)
         {
-            NSString *key = [[self.dictCurrentQuery allKeys] objectAtIndex:indexPath.section];
-            NSMutableArray *rows = [self.dictCurrentQuery objectForKey:key];
+            NSString *key = [self.dictCurrentQuery allKeys][indexPath.section];
+            NSMutableArray *rows = self.dictCurrentQuery[key];
             [rows removeObjectAtIndex:indexPath.row];
             [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
             
@@ -275,7 +275,7 @@
     {
         case 1:
         {
-            return [[self.dictCurrentQuery allKeys] objectAtIndex:section];
+            return [self.dictCurrentQuery allKeys][section];
         }
         default:
         {
@@ -313,8 +313,8 @@
 //        }
         case 1:
         {
-            NSString *key = [[self.dictCurrentQuery allKeys] objectAtIndex:section];
-            NSMutableArray *rows = [self.dictCurrentQuery objectForKey:key];
+            NSString *key = [self.dictCurrentQuery allKeys][section];
+            NSMutableArray *rows = self.dictCurrentQuery[key];
             
             return rows.count;
         }
@@ -339,21 +339,21 @@
     {
         case 0:
         {
-            cell.textLabel.text = [_arrFilters objectAtIndex:indexPath.row];
+            cell.textLabel.text = _arrFilters[indexPath.row];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             break;
         }
 //        case 1:
 //        {
-//            cell.textLabel.text = [_arrSorters objectAtIndex:indexPath.row];
+//            cell.textLabel.text = _arrSorters[indexPath.row];
 //            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 //            break;
 //        }
         case 1:
         {
-            NSString *key = [[self.dictCurrentQuery allKeys] objectAtIndex:indexPath.section];
-            NSMutableArray *rows = [self.dictCurrentQuery objectForKey:key];
-            NSDictionary *dict = [rows objectAtIndex:indexPath.row];
+            NSString *key = [self.dictCurrentQuery allKeys][indexPath.section];
+            NSMutableArray *rows = self.dictCurrentQuery[key];
+            NSDictionary *dict = rows[indexPath.row];
             NSString *stringValue;
             id value = [[dict allValues] firstObject];
             
@@ -384,31 +384,31 @@
 {
     NSArray *arrFilterOptions;
 
-    if ([[_arrFilters objectAtIndex:indexPath.row] isEqualToString:@"Set"])
+    if ([_arrFilters[indexPath.row] isEqualToString:@"Set"])
     {
         arrFilterOptions = [Set MR_findAllSortedBy:@"name" ascending:YES];
     }
-    else if ([[_arrFilters objectAtIndex:indexPath.row] isEqualToString:@"Rarity"])
+    else if ([_arrFilters[indexPath.row] isEqualToString:@"Rarity"])
     {
         arrFilterOptions = [CardRarity MR_findAll];
     }
-    else if ([[_arrFilters objectAtIndex:indexPath.row] isEqualToString:@"Type"])
+    else if ([_arrFilters[indexPath.row] isEqualToString:@"Type"])
     {
         arrFilterOptions = [CardType MR_findAllSortedBy:@"name" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"name IN %@", CARD_TYPES]];
     }
-    else if ([[_arrFilters objectAtIndex:indexPath.row] isEqualToString:@"Subtype"])
+    else if ([_arrFilters[indexPath.row] isEqualToString:@"Subtype"])
     {
         arrFilterOptions = [CardType MR_findAllSortedBy:@"name" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"NOT (name IN %@)", CARD_TYPES]];
     }
-    else if ([[_arrFilters objectAtIndex:indexPath.row] isEqualToString:@"Color"])
+    else if ([_arrFilters[indexPath.row] isEqualToString:@"Color"])
     {
         arrFilterOptions = [CardColor MR_findAllSortedBy:@"name" ascending:YES];;
     }
-    else if ([[_arrFilters objectAtIndex:indexPath.row] isEqualToString:@"Keyword"])
+    else if ([_arrFilters[indexPath.row] isEqualToString:@"Keyword"])
     {
         arrFilterOptions = [[FileManager sharedInstance] loadKeywords];
     }
-    else if ([[_arrFilters objectAtIndex:indexPath.row] isEqualToString:@"Artist"])
+    else if ([_arrFilters[indexPath.row] isEqualToString:@"Artist"])
     {
         arrFilterOptions = [Artist MR_findAllSortedBy:@"name" ascending:YES];
     }
@@ -416,21 +416,21 @@
     FilterInputViewController *view = [[FilterInputViewController alloc] init];
     view.delegate = self;
     view.filterOptions = arrFilterOptions;
-    view.filterName = [_arrFilters objectAtIndex:indexPath.row];
+    view.filterName = _arrFilters[indexPath.row];
     [self.navigationController pushViewController:view animated:YES];
 }
 
 #pragma mark - FilterInputViewControllerDelegate
 -(void) addFilter:(NSDictionary*) filter
 {
-    NSMutableArray *arrRows = [self.dictCurrentQuery objectForKey:[filter objectForKey:@"Filter"]];
+    NSMutableArray *arrRows = self.dictCurrentQuery[filter[@"Filter"]];
     
     if (!arrRows)
     {
         arrRows = [[NSMutableArray alloc] init];
-        [self.dictCurrentQuery setObject:arrRows forKey:[filter objectForKey:@"Filter"]];
+        [self.dictCurrentQuery setObject:arrRows forKey:filter[@"Filter"]];
     }
-    [arrRows addObject:@{[filter objectForKey:@"Condition"] : [filter objectForKey:@"Value"]}];
+    [arrRows addObject:@{filter[@"Condition"] : filter[@"Value"]}];
 }
 
 #pragma mark - MBProgressHUDDelegate methods

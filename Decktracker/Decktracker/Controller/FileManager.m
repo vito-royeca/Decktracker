@@ -161,7 +161,7 @@ static FileManager *_me;
     }
     for (NSDictionary *dict in _downloadQueue)
     {
-        if ([dict objectForKey:@"card"] == card)
+        if (dict[@"card"] == card)
         {
             bFound = YES;
             break;
@@ -192,14 +192,14 @@ static FileManager *_me;
     }
     
     _currentQueue = [_downloadQueue firstObject];
-    void (^completion)(void) = [_currentQueue objectForKey:@"completion"];
+    void (^completion)(void) = _currentQueue[@"completion"];
 
     [_downloadQueue removeObject:_currentQueue];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
         
-        NSURL *url = [_currentQueue objectForKey:@"url"];
-        NSString *cardPath = [_currentQueue objectForKey:@"cardPath"];
+        NSURL *url = _currentQueue[@"url"];
+        NSString *cardPath = _currentQueue[@"cardPath"];
         
         if (![[NSFileManager defaultManager] fileExistsAtPath:cardPath])
         {

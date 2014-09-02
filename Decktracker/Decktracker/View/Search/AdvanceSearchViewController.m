@@ -119,7 +119,7 @@
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
     
-    NSDictionary *dict = [self.arrAdvanceSearches objectAtIndex:indexPath.row];
+    NSDictionary *dict = self.arrAdvanceSearches[indexPath.row];
     cell.textLabel.text = [[dict allKeys] firstObject];
     
     return cell;
@@ -132,7 +132,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary *dict = [self.arrAdvanceSearches objectAtIndex:indexPath.row];
+    NSDictionary *dict = self.arrAdvanceSearches[indexPath.row];
     NSData *data = [NSData dataWithContentsOfFile:[[dict allValues] firstObject]];
     NSArray *arrData = [NSJSONSerialization JSONObjectWithData:data
                                                        options:NSJSONReadingMutableContainers
@@ -150,7 +150,7 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        NSDictionary *dict = [self.arrAdvanceSearches objectAtIndex:indexPath.row];
+        NSDictionary *dict = self.arrAdvanceSearches[indexPath.row];
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Delete Advance Search"
                                                         message:[NSString stringWithFormat:@"Are you sure you want to delete %@?", [[dict allKeys] firstObject]]
@@ -166,7 +166,7 @@
 {
     if (buttonIndex == 1)
     {
-        NSDictionary *dict = [self.arrAdvanceSearches objectAtIndex:self.tblView.indexPathForSelectedRow.row];
+        NSDictionary *dict = self.arrAdvanceSearches[self.tblView.indexPathForSelectedRow.row];
         
         [[FileManager sharedInstance] deleteAdvanceSearchFile:[[dict allKeys] firstObject]];
         [self.arrAdvanceSearches removeObject:dict];
@@ -188,7 +188,7 @@
 	[hud removeFromSuperview];
     
     NSIndexPath *selectedPath = [self.tblView indexPathForSelectedRow];
-    NSDictionary *dict = [self.arrAdvanceSearches objectAtIndex:selectedPath.row];
+    NSDictionary *dict = self.arrAdvanceSearches[selectedPath.row];
     AdvanceSearchResultsViewController *view = [[AdvanceSearchResultsViewController alloc] init];
     
     view.fetchedResultsController = self.fetchedResultsController;

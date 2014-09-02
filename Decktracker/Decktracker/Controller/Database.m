@@ -64,7 +64,7 @@ static Database *_me;
         {
             NSDictionary *jsonVer = [[NSDictionary alloc] initWithContentsOfFile:jsonPath];
             
-            if (![[jsonVer objectForKey:@"version"] isEqualToString:[JSON_VERSION objectForKey:@"version"]])
+            if (![jsonVer[@"version"] isEqualToString:JSON_VERSION[@"version"]])
             {
                 bDelete = YES;
             }
@@ -191,7 +191,7 @@ static Database *_me;
             bToMany = YES;
         }
         
-        for (NSDictionary *dict in [query objectForKey:key])
+        for (NSDictionary *dict in query[key])
         {
             NSPredicate *pred;
             NSString *condition = [[dict allKeys] firstObject];

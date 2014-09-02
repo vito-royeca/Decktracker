@@ -182,7 +182,7 @@
         }
         
         UIImageView *imgMana = [[UIImageView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
-        imgMana.image = [dict objectForKey:width];
+        imgMana.image = dict[width];
         
         [self.viewManaCost addSubview:imgMana];
         dX += dWidth;

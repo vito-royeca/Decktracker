@@ -71,7 +71,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
 
-    cell.textLabel.text = [_menuItems objectAtIndex:indexPath.row];
+    cell.textLabel.text = _menuItems[indexPath.row];
     
     return cell;
 }

@@ -75,7 +75,7 @@
     
     if (self.fetchedResultsController)
     {
-        id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:0];
+        id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
         NSInteger index = [sectionInfo.objects indexOfObject:self.card];
         
         if (index == 0)
@@ -176,7 +176,7 @@
     
     if (self.fetchedResultsController)
     {
-        id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:0];
+        id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
         NSInteger index = [sectionInfo.objects indexOfObject:self.card];
         self.navigationItem.title = [NSString stringWithFormat:@"%tu of %tu", index+1, sectionInfo.objects.count];
         
@@ -185,7 +185,7 @@
         {
             if (index+i <= sectionInfo.objects.count-1)
             {
-                Card *card = [sectionInfo.objects objectAtIndex:index+i];
+                Card *card = sectionInfo.objects[index+i];
                 [[FileManager sharedInstance] downloadCardImage:card withCompletion:nil];
             }
         }
@@ -647,25 +647,25 @@
     for (NSString * pair in pairs)
     {
         NSArray * bits = [pair componentsSeparatedByString:@"="];
-        NSString * key = [[bits objectAtIndex:0] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        NSString * value = [[bits objectAtIndex:1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString * key = [bits[0] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString * value = [bits[1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         [kvPairs setObject:value forKey:key];
     }
     
-    if ([kvPairs objectForKey:@"name"] && [kvPairs objectForKey:@"set"])
+    if (kvPairs[@"name"] && kvPairs[@"set"])
     {
     
         self.fetchedResultsController = nil;
         
-        Card *card = [[Database sharedInstance] findCard:[kvPairs objectForKey:@"name"]
-                                                   inSet:[kvPairs objectForKey:@"set"]];
+        Card *card = [[Database sharedInstance] findCard:kvPairs[@"name"]
+                                                   inSet:kvPairs[@"set"]];
     
         [self setCard:card];
         self.segmentedControl.selectedSegmentIndex = 0;
         [self switchView];
     }
     
-    else if ([kvPairs objectForKey:@"partner"] && [[url host] isEqualToString:@"store.tcgplayer.com"])
+    else if (kvPairs[@"partner"] && [[url host] isEqualToString:@"store.tcgplayer.com"])
     {
         [[UIApplication sharedApplication] openURL:[request URL]];
 
