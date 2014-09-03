@@ -1,5 +1,5 @@
 //
-//  AddToViewController.h
+//  CardInDecksViewController.h
 //  Decktracker
 //
 //  Created by Jovit Royeca on 9/3/14.
@@ -7,12 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Card.h"
+#import "QuantityTableViewCell.h"
 
-@interface AddToDeckViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
+@interface CardInDecksViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, QualityTableViewCellDelegate>
 
-@property(strong,nonatomic) NSArray *arrSelection;
 @property(strong,nonatomic) UITableView *tblAddTo;
 @property(strong,nonatomic) UIBarButtonItem *btnNew;
 @property(strong,nonatomic) UIToolbar *bottomToolbar;
+
+@property(strong,nonatomic) NSMutableArray *arrDecks;
+@property(strong,nonatomic) Card *card;
 
 @end

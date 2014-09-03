@@ -21,7 +21,11 @@
 #import "Magic.h"
 #import "SimpleSearchViewController.h"
 #import "Set.h"
-//#import "UIImage+Scale.h"
+#import "CardInDecksViewController.h"
+
+#import "GAI.h"
+#import "GAIDictionaryBuilder.h"
+#import "GAIFields.h"
 
 @implementation CardDetailsViewController
 {
@@ -33,6 +37,12 @@
 @synthesize segmentedControl = _segmentedControl;
 @synthesize cardImage = cardImage;
 @synthesize webView = _webView;
+@synthesize bottomToolbar = _bottomToolbar;
+@synthesize btnPrevious = _btnPrevious;
+@synthesize btnNext = _btnNext;
+@synthesize btnAction = _btnAction;
+@synthesize btnAddToDeck = _btnAddToDeck;
+@synthesize btnAddToCollection = _btnAddToCollection;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -60,18 +70,43 @@
                     forControlEvents:UIControlEventValueChanged];
     self.segmentedControl.selectedSegmentIndex = 0;
     
+    dX = 0;
+    dY = self.view.frame.size.height - dHeight;
+    dWidth = self.view.frame.size.width;
+    self.bottomToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
+
+    
+    self.btnAction = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+                                                                  target:self
+                                                                  action:@selector(btnActionTapped:)];
+    self.btnAddToDeck = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"layers.png"]
+                                                         style:UIBarButtonItemStylePlain
+                                                        target:self
+                                                        action:@selector(btnAddToDeckTapped:)];
+    self.btnAddToCollection = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"cards.png"]
+                                                               style:UIBarButtonItemStylePlain
+                                                              target:self
+                                                              action:@selector(btnAddToCollectionTapped:)];
+    
+    self.bottomToolbar.items = @[self.btnAction,
+                                 [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                                target:nil
+                                                                                action:nil],
+                                 self.btnAddToDeck];
+
     self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.segmentedControl];
-    
-    UIBarButtonItem *btnPrevious = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"up4.png"]
-                                                                    style:UIBarButtonItemStylePlain
-                                                                   target:self
-                                                                   action:@selector(btnPreviousTapped:)];
-    UIBarButtonItem *btnNext = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"down4.png"]
-                                                                style:UIBarButtonItemStylePlain
-                                                               target:self
-                                                               action:@selector(btnNextTapped:)];
-    self.navigationItem.rightBarButtonItems = @[btnNext, btnPrevious];
+    [self.view addSubview:self.bottomToolbar];
+
+    self.btnPrevious = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"up4.png"]
+                                                        style:UIBarButtonItemStylePlain
+                                                       target:self
+                                                       action:@selector(btnPreviousTapped:)];
+    self.btnNext = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"down4.png"]
+                                                    style:UIBarButtonItemStylePlain
+                                                   target:self
+                                                   action:@selector(btnNextTapped:)];
+    self.navigationItem.rightBarButtonItems = @[self.btnNext, self.btnPrevious];
     
     if (self.fetchedResultsController)
     {
@@ -80,11 +115,11 @@
         
         if (index == 0)
         {
-            btnPrevious.enabled = NO;
+            self.btnPrevious.enabled = NO;
         }
         if (index == [sectionInfo numberOfObjects]-1)
         {
-            btnNext.enabled = NO;
+            self.btnNext.enabled = NO;
         }
     }
     
@@ -119,6 +154,30 @@
         [self setCard:card];
         [self switchView];
     }
+}
+
+-(void) btnActionTapped:(id) sender
+{
+        NSMutableArray *sharingItems = [NSMutableArray new];
+        
+        [sharingItems addObject:[NSString stringWithFormat:@"%@ - via #Decktracker", self.card.name]];
+        [sharingItems addObject:[UIImage imageWithContentsOfFile:[[FileManager sharedInstance] cardPath:self.card]]];
+    
+        UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:sharingItems applicationActivities:nil];
+        [self presentViewController:activityController animated:YES completion:nil];
+}
+
+-(void) btnAddToDeckTapped:(id) sender
+{
+    CardInDecksViewController *view = [[CardInDecksViewController alloc] init];
+    
+    view.card = self.card;
+    [self.navigationController pushViewController:view animated:YES];
+}
+
+-(void) btnAddToCollectionTapped:(id) sender
+{
+    
 }
 
 -(void) btnPreviousTapped:(id) sender
@@ -169,7 +228,7 @@
     CGFloat dX = 0;
     CGFloat dY = self.segmentedControl.frame.origin.y + self.segmentedControl.frame.size.height +10;
     CGFloat dWidth = self.view.frame.size.width;
-    CGFloat dHeight = self.view.frame.size.height - dY; //- self.tabBarController.tabBar.frame.size.height;
+    CGFloat dHeight = self.view.frame.size.height - dY - self.bottomToolbar.frame.size.height;
     
     [self.cardImage removeFromSuperview];
     [self.webView removeFromSuperview];
@@ -278,6 +337,13 @@
     
     [[FileManager sharedInstance] downloadCardImage:self.card withCompletion:completion];
     [self updateNavigationButtons];
+    
+    // send to Google Analytics
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Card Details - Card"
+                                                          action:nil
+                                                           label:nil
+                                                           value:nil] build]];
 }
 
 - (void) displayDetails
@@ -287,6 +353,13 @@
     
     [self.webView loadHTMLString:[self composeDetails] baseURL:baseURL];
     [self updateNavigationButtons];
+    
+    // send to Google Analytics
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Card Details - Details"
+                                                          action:nil
+                                                           label:nil
+                                                           value:nil] build]];
 }
 
 - (void) displayPricing
@@ -296,33 +369,37 @@
     
     [self.webView loadHTMLString:[self composePricing] baseURL:baseURL];
     [self updateNavigationButtons];
+    
+    // send to Google Analytics
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Card Details - Pricing"
+                                                          action:nil
+                                                           label:nil
+                                                           value:nil] build]];
 }
 
 - (void) updateNavigationButtons
 {
-    UIBarButtonItem *btnPrevious = [self.navigationItem.rightBarButtonItems lastObject];
-    UIBarButtonItem *btnNext = [self.navigationItem.rightBarButtonItems firstObject];
-    
     if (self.fetchedResultsController)
     {
         id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
         NSInteger index = [sectionInfo.objects indexOfObject:self.card];
         
-        btnPrevious.enabled = YES;
-        btnNext.enabled = YES;
+        self.btnPrevious.enabled = YES;
+        self.btnNext.enabled = YES;
         if (index == sectionInfo.objects.count-1)
         {
-            btnNext.enabled = NO;
+            self.btnNext.enabled = NO;
         }
         if (index == 0)
         {
-            btnPrevious.enabled = NO;
+            self.btnPrevious.enabled = NO;
         }
     }
     else
     {
-        btnPrevious.enabled = NO;
-        btnNext.enabled = NO;
+        self.btnPrevious.enabled = NO;
+        self.btnNext.enabled = NO;
     }
 }
 

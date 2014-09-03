@@ -18,7 +18,12 @@
 @property(strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property(strong, nonatomic) UISegmentedControl *segmentedControl;
 @property(strong, nonatomic) UIImageView *cardImage;
-//@property(strong, nonatomic) UIWebView *webView;
-@property(strong, nonatomic) UITableView *tableView;
+@property(strong, nonatomic) UIWebView *webView;
+@property(strong, nonatomic) UIToolbar *bottomToolbar;
+@property(strong, nonatomic) UIBarButtonItem *btnPrevious;
+@property(strong, nonatomic) UIBarButtonItem *btnNext;
+@property(strong, nonatomic) UIBarButtonItem *btnAction;
+@property(strong, nonatomic) UIBarButtonItem *btnAddToDeck;
+@property(strong, nonatomic) UIBarButtonItem *btnAddToCollection;
 
 @end
