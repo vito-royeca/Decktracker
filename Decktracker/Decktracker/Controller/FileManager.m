@@ -112,6 +112,77 @@ static FileManager *_me;
     }
 }
 
+-(void) saveDeck:(NSDictionary*) data
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths firstObject];
+    NSString *path = [documentsDirectory stringByAppendingPathComponent:@"/Decks"];
+    NSString *fileName = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.json", data[@"name"]]];
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:path])
+    {
+        [[NSFileManager defaultManager] createDirectoryAtPath:path
+                                  withIntermediateDirectories:YES
+                                                   attributes:nil
+                                                        error:nil];
+    }
+    if ([[NSFileManager defaultManager] fileExistsAtPath:fileName])
+    {
+        [[NSFileManager defaultManager] removeItemAtPath:fileName
+                                                   error:nil];
+    }
+    
+    NSOutputStream *outputStream = [NSOutputStream outputStreamToFileAtPath:fileName
+                                                                     append:NO];
+    [outputStream open];
+    
+    [NSJSONSerialization writeJSONObject:data
+                                toStream:outputStream
+                                 options:0
+                                   error:nil];
+    [outputStream close];
+}
+
+-(NSArray*) findDeckFiles
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths firstObject];
+    NSString *path = [documentsDirectory stringByAppendingPathComponent:@"/Decks"];
+    NSMutableArray *arrSearchFiles = [[NSMutableArray alloc] init];
+    
+    for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil])
+    {
+        if ([[[file lastPathComponent] pathExtension] isEqualToString:@"json"])
+        {
+            NSString *key = [[file lastPathComponent] stringByDeletingPathExtension];
+            NSString *value = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", file]];
+            
+            [arrSearchFiles addObject:@{key : value}];
+        }
+    }
+    
+    return arrSearchFiles;
+}
+
+-(NSDictionary*) loadDeck:(NSString*) fileName
+{
+    NSData *data = [NSData dataWithContentsOfFile:fileName];
+    return [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+}
+
+-(void) deleteDeckFile:(NSString*) name
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths firstObject];
+    NSString *path = [documentsDirectory stringByAppendingPathComponent:@"/Decks"];
+    NSString *file = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.json", name]];
+    
+    if ([[NSFileManager defaultManager] fileExistsAtPath:file])
+    {
+        [[NSFileManager defaultManager] removeItemAtPath:file error:nil];
+    }
+}
+
 -(NSString*) cardPath:(Card*) card
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);

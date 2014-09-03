@@ -20,6 +20,12 @@
 
 -(NSArray*) findAdvanceSearchFiles;
 -(void) deleteAdvanceSearchFile:(NSString*) name;
+
+-(NSArray*) findDeckFiles;
+-(void) deleteDeckFile:(NSString*) name;
+-(void) saveDeck:(NSDictionary*) data;
+-(NSDictionary*) loadDeck:(NSString*) fileName;
+
 -(NSString*) cardPath:(Card*) card;
 -(NSString*) cropPath:(Card*) card;
 -(NSString*) cardSetPath:(Card*) card;

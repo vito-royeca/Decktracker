@@ -103,6 +103,7 @@
                                                cancelButtonTitle:@"Cancel"
                                                otherButtonTitles:@"OK", nil];
         alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+        [alert textFieldAtIndex:0].text = self.navigationItem.title;
         [alert show];
     }
     else if (self.mode == EditModeEdit)
@@ -116,6 +117,7 @@
     }
 }
 
+#pragma mark - UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 1)

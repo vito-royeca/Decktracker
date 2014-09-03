@@ -20,7 +20,6 @@
 - (void)awakeFromNib
 {
     // Initialization code
-    self.lblCardName.font = [UIFont fontWithName:@"Goudy Medieval Medieval" size:17];
     self.imgCrop.layer.cornerRadius = 10.0;
     self.imgCrop.layer.masksToBounds = YES;
 }
