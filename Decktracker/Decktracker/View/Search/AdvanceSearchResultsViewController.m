@@ -71,7 +71,6 @@
         btnAction = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
                                                                   target:self
                                                                   action:@selector(btnActionTapped:)];
-        self.navigationItem.title = @"New Advance Search";
     }
     self.navigationItem.rightBarButtonItem = btnAction;
     
@@ -111,6 +110,7 @@
         NewAdvanceSearchViewController *view = [[NewAdvanceSearchViewController alloc] init];
         
         view.mode = EditModeEdit;
+        view.navigationItem.title = self.navigationItem.title;
         view.dictCurrentQuery = [[NSMutableDictionary alloc] initWithDictionary:self.queryToSave];
         view.dictCurrentSorter = [[NSMutableDictionary alloc] initWithDictionary:self.sorterToSave];
         [self.navigationController pushViewController:view animated:NO];
@@ -122,9 +122,9 @@
 {
     if (buttonIndex == 1)
     {
-        [[FileManager sharedInstance] saveAdvanceQuery:[[alertView textFieldAtIndex:0] text]
-                                           withFilters:self.queryToSave
-                                            andSorters:self.sorterToSave];
+        NSString *path = [NSString stringWithFormat:@"/Advance Search/%@.json", [[alertView textFieldAtIndex:0] text]];
+        [[FileManager sharedInstance] saveData:@[self.queryToSave, self.sorterToSave]
+                                        atPath:path];
         
         AdvanceSearchViewController *view = [[AdvanceSearchViewController alloc] init];
         [self.navigationController pushViewController:view animated:NO];

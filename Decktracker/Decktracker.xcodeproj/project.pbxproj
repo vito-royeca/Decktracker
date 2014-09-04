@@ -13,7 +13,7 @@
 		8C13467919A9B17B00E0B3C3 /* SearchResultsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C13467719A9B17B00E0B3C3 /* SearchResultsTableViewCell.xib */; };
 		8C2106A019B6EF85001DE039 /* QuantityTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C21069E19B6EF85001DE039 /* QuantityTableViewCell.m */; };
 		8C2106A119B6EF85001DE039 /* QuantityTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C21069F19B6EF85001DE039 /* QuantityTableViewCell.xib */; };
-		8C2106AA19B710DA001DE039 /* CardInDecksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2106A919B710DA001DE039 /* CardInDecksViewController.m */; };
+		8C2106AA19B710DA001DE039 /* AddToDeckViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2106A919B710DA001DE039 /* AddToDeckViewController.m */; };
 		8C26A67919A63FAC00FE00E7 /* AdvanceSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C26A67019A63FAC00FE00E7 /* AdvanceSearchResultsViewController.m */; };
 		8C26A67A19A63FAC00FE00E7 /* AdvanceSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C26A67219A63FAC00FE00E7 /* AdvanceSearchViewController.m */; };
 		8C26A67B19A63FAC00FE00E7 /* FilterInputViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C26A67419A63FAC00FE00E7 /* FilterInputViewController.m */; };
@@ -54,6 +54,8 @@
 		8C49655D19B0692A001C7935 /* MAGIC.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 8C49655C19B06929001C7935 /* MAGIC.TTF */; };
 		8C49656719B0A01F001C7935 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C49656619B0A01E001C7935 /* Crashlytics.framework */; };
 		8C5246E119A5137300B10147 /* FileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5246E019A5137300B10147 /* FileManager.m */; };
+		8C524A6519B81E9E005E697B /* DeckDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C524A6419B81E9E005E697B /* DeckDetailsViewController.m */; };
+		8C524A7019B82C01005E697B /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C524A6F19B82C01005E697B /* SettingsViewController.m */; };
 		8C56F56119B5B5BB0084B2B8 /* CardDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C56F56019B5B5BB0084B2B8 /* CardDetailsViewController.m */; };
 		8C5BDD70199B3B7D007AF140 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5BDD6F199B3B7D007AF140 /* MenuViewController.m */; };
 		8C5FF9E819AE2EE3003CE54C /* keywords.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C5FF9E719AE2EE3003CE54C /* keywords.plist */; };
@@ -105,8 +107,8 @@
 		8C21069D19B6EF85001DE039 /* QuantityTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuantityTableViewCell.h; sourceTree = "<group>"; };
 		8C21069E19B6EF85001DE039 /* QuantityTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuantityTableViewCell.m; sourceTree = "<group>"; };
 		8C21069F19B6EF85001DE039 /* QuantityTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QuantityTableViewCell.xib; sourceTree = "<group>"; };
-		8C2106A819B710DA001DE039 /* CardInDecksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardInDecksViewController.h; sourceTree = "<group>"; };
-		8C2106A919B710DA001DE039 /* CardInDecksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardInDecksViewController.m; sourceTree = "<group>"; };
+		8C2106A819B710DA001DE039 /* AddToDeckViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddToDeckViewController.h; sourceTree = "<group>"; };
+		8C2106A919B710DA001DE039 /* AddToDeckViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddToDeckViewController.m; sourceTree = "<group>"; };
 		8C26A66F19A63FAC00FE00E7 /* AdvanceSearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvanceSearchResultsViewController.h; sourceTree = "<group>"; };
 		8C26A67019A63FAC00FE00E7 /* AdvanceSearchResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvanceSearchResultsViewController.m; sourceTree = "<group>"; };
 		8C26A67119A63FAC00FE00E7 /* AdvanceSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvanceSearchViewController.h; sourceTree = "<group>"; };
@@ -172,6 +174,10 @@
 		8C49656619B0A01E001C7935 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		8C5246DF19A5137300B10147 /* FileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileManager.h; sourceTree = "<group>"; };
 		8C5246E019A5137300B10147 /* FileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileManager.m; sourceTree = "<group>"; };
+		8C524A6319B81E9E005E697B /* DeckDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeckDetailsViewController.h; sourceTree = "<group>"; };
+		8C524A6419B81E9E005E697B /* DeckDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeckDetailsViewController.m; sourceTree = "<group>"; };
+		8C524A6E19B82C01005E697B /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		8C524A6F19B82C01005E697B /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		8C56F55F19B5B5BB0084B2B8 /* CardDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardDetailsViewController.h; sourceTree = "<group>"; };
 		8C56F56019B5B5BB0084B2B8 /* CardDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardDetailsViewController.m; sourceTree = "<group>"; };
 		8C5BDD6E199B3B7D007AF140 /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
@@ -363,6 +369,7 @@
 				8C21069E19B6EF85001DE039 /* QuantityTableViewCell.m */,
 				8C21069F19B6EF85001DE039 /* QuantityTableViewCell.xib */,
 				8C26A66B19A63EA500FE00E7 /* Search */,
+				8C524A6D19B82BD8005E697B /* Settings */,
 				8C60EB6C19927C1D00C5EEF9 /* UIImage+Scale.h */,
 				8C60EB6D19927C1D00C5EEF9 /* UIImage+Scale.m */,
 			);
@@ -410,6 +417,15 @@
 			path = MHFacebookImageViewer;
 			sourceTree = "<group>";
 		};
+		8C524A6D19B82BD8005E697B /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				8C524A6E19B82C01005E697B /* SettingsViewController.h */,
+				8C524A6F19B82C01005E697B /* SettingsViewController.m */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		8C56F55B19B5B5770084B2B8 /* Card */ = {
 			isa = PBXGroup;
 			children = (
@@ -432,8 +448,10 @@
 		8CF79A5C19A88B4500BE4246 /* Decks */ = {
 			isa = PBXGroup;
 			children = (
-				8C2106A819B710DA001DE039 /* CardInDecksViewController.h */,
-				8C2106A919B710DA001DE039 /* CardInDecksViewController.m */,
+				8C2106A819B710DA001DE039 /* AddToDeckViewController.h */,
+				8C2106A919B710DA001DE039 /* AddToDeckViewController.m */,
+				8C524A6319B81E9E005E697B /* DeckDetailsViewController.h */,
+				8C524A6419B81E9E005E697B /* DeckDetailsViewController.m */,
 				8CF79A6319A8BFA300BE4246 /* DecksViewController.h */,
 				8CF79A6419A8BFA300BE4246 /* DecksViewController.m */,
 			);
@@ -640,6 +658,7 @@
 				8C378E0019A7434B00B9367F /* MHFacebookImageViewer.m in Sources */,
 				8CF79A6B19A8BFB400BE4246 /* CollectionsViewController.m in Sources */,
 				8C26A67A19A63FAC00FE00E7 /* AdvanceSearchViewController.m in Sources */,
+				8C524A7019B82C01005E697B /* SettingsViewController.m in Sources */,
 				8C3CBDC419A31615002CD96E /* CardRuling.m in Sources */,
 				8C2E142A1990748C00023BAA /* database.xcdatamodeld in Sources */,
 				8C3CBDCA19A31617002CD96E /* CardLegality.m in Sources */,
@@ -650,10 +669,11 @@
 				8C26A67C19A63FAC00FE00E7 /* NewAdvanceSearchViewController.m in Sources */,
 				8CF79A6519A8BFA300BE4246 /* DecksViewController.m in Sources */,
 				8C56F56119B5B5BB0084B2B8 /* CardDetailsViewController.m in Sources */,
+				8C524A6519B81E9E005E697B /* DeckDetailsViewController.m in Sources */,
 				8C3CBDCD19A31618002CD96E /* Format.m in Sources */,
 				8C60EB6E19927C1D00C5EEF9 /* UIImage+Scale.m in Sources */,
 				8C2E1431199085C700023BAA /* Database.m in Sources */,
-				8C2106AA19B710DA001DE039 /* CardInDecksViewController.m in Sources */,
+				8C2106AA19B710DA001DE039 /* AddToDeckViewController.m in Sources */,
 				8C2E14031990741100023BAA /* AppDelegate.m in Sources */,
 				8C3CBDD019A31618002CD96E /* Artist.m in Sources */,
 				8C3CBDD919A31618002CD96E /* CardType.m in Sources */,

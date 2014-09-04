@@ -14,6 +14,8 @@
 #import "GAIDictionaryBuilder.h"
 #import "GAIFields.h"
 
+#import <Dropbox/Dropbox.h>
+
 @implementation FileManager
 {
     NSMutableArray *_downloadQueue;
@@ -40,147 +42,6 @@ static FileManager *_me;
     }
     
     return self;
-}
-
--(void) saveAdvanceQuery:(NSString*) name
-             withFilters:(NSDictionary*) dictQuery
-              andSorters:(NSDictionary*) dictSorter
-{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths firstObject];
-    NSString *path = [documentsDirectory stringByAppendingPathComponent:@"/Advance Search"];
-    NSString *fileName = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.json", name]];
-    
-    if (![[NSFileManager defaultManager] fileExistsAtPath:path])
-    {
-        [[NSFileManager defaultManager] createDirectoryAtPath:path
-                                  withIntermediateDirectories:YES
-                                                   attributes:nil
-                                                        error:nil];
-    }
-    if ([[NSFileManager defaultManager] fileExistsAtPath:fileName])
-    {
-        [[NSFileManager defaultManager] removeItemAtPath:fileName
-                                                   error:nil];
-    }
-    
-    NSArray *arrData = @[dictQuery, dictSorter];
-//    [arrData writeToFile:fileName atomically:YES];
-    
-    NSOutputStream *outputStream = [NSOutputStream outputStreamToFileAtPath:fileName
-                                                                     append:NO];
-    [outputStream open];
-    
-    [NSJSONSerialization writeJSONObject:arrData
-                                toStream:outputStream
-                                 options:0
-                                   error:nil];
-    [outputStream close];
-}
-
--(NSArray*) findAdvanceSearchFiles
-{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths firstObject];
-    NSString *path = [documentsDirectory stringByAppendingPathComponent:@"/Advance Search"];
-    NSMutableArray *arrSearchFiles = [[NSMutableArray alloc] init];
-    
-    for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil])
-    {
-        if ([[[file lastPathComponent] pathExtension] isEqualToString:@"json"])
-        {
-            NSString *key = [[file lastPathComponent] stringByDeletingPathExtension];
-            NSString *value = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", file]];
-            
-            [arrSearchFiles addObject:@{key : value}];
-        }
-    }
-    
-    return arrSearchFiles;
-}
-
--(void) deleteAdvanceSearchFile:(NSString*) name
-{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths firstObject];
-    NSString *path = [documentsDirectory stringByAppendingPathComponent:@"/Advance Search"];
-    NSString *file = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.json", name]];
-    
-    if ([[NSFileManager defaultManager] fileExistsAtPath:file])
-    {
-        [[NSFileManager defaultManager] removeItemAtPath:file error:nil];
-    }
-}
-
--(void) saveDeck:(NSDictionary*) data
-{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths firstObject];
-    NSString *path = [documentsDirectory stringByAppendingPathComponent:@"/Decks"];
-    NSString *fileName = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.json", data[@"name"]]];
-    
-    if (![[NSFileManager defaultManager] fileExistsAtPath:path])
-    {
-        [[NSFileManager defaultManager] createDirectoryAtPath:path
-                                  withIntermediateDirectories:YES
-                                                   attributes:nil
-                                                        error:nil];
-    }
-    if ([[NSFileManager defaultManager] fileExistsAtPath:fileName])
-    {
-        [[NSFileManager defaultManager] removeItemAtPath:fileName
-                                                   error:nil];
-    }
-    
-    NSOutputStream *outputStream = [NSOutputStream outputStreamToFileAtPath:fileName
-                                                                     append:NO];
-    [outputStream open];
-    
-    [NSJSONSerialization writeJSONObject:data
-                                toStream:outputStream
-                                 options:0
-                                   error:nil];
-    [outputStream close];
-}
-
--(NSArray*) findDeckFiles
-{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths firstObject];
-    NSString *path = [documentsDirectory stringByAppendingPathComponent:@"/Decks"];
-    NSMutableArray *arrSearchFiles = [[NSMutableArray alloc] init];
-    
-    for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil])
-    {
-        if ([[[file lastPathComponent] pathExtension] isEqualToString:@"json"])
-        {
-            NSString *key = [[file lastPathComponent] stringByDeletingPathExtension];
-            NSString *value = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", file]];
-            
-            [arrSearchFiles addObject:@{key : value}];
-        }
-    }
-    
-    return arrSearchFiles;
-}
-
--(NSDictionary*) loadDeck:(NSString*) fileName
-{
-    NSData *data = [NSData dataWithContentsOfFile:fileName];
-    return [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-}
-
--(void) deleteDeckFile:(NSString*) name
-{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths firstObject];
-    NSString *path = [documentsDirectory stringByAppendingPathComponent:@"/Decks"];
-    NSString *file = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.json", name]];
-    
-    if ([[NSFileManager defaultManager] fileExistsAtPath:file])
-    {
-        [[NSFileManager defaultManager] removeItemAtPath:file error:nil];
-    }
 }
 
 -(NSString*) cardPath:(Card*) card
@@ -251,11 +112,11 @@ static FileManager *_me;
         }
         
         [_downloadQueue insertObject:dict atIndex:0];
-        [self processQueue];
+        [self processDownloadQueue];
     }
 }
 
--(void) processQueue
+-(void) processDownloadQueue
 {
     if (_downloadQueue.count == 0 || _currentQueue)
     {
@@ -294,7 +155,7 @@ static FileManager *_me;
         }
         
         _currentQueue = nil;
-        [self processQueue];
+        [self processDownloadQueue];
     });
 }
 
@@ -303,6 +164,183 @@ static FileManager *_me;
     NSString *path = [NSString stringWithFormat:@"%@/keywords.plist", [[NSBundle mainBundle] bundlePath]];
     
     return [[NSArray alloc] initWithContentsOfFile:path];
+}
+
+#pragma mark - Files
+
+-(DBAccount*) dropboxAccount
+{
+    return [[DBAccountManager sharedManager] linkedAccount];
+}
+
+-(void) initFilesystem
+{
+    NSArray *folders = @[@"Advance Search", @"Decks", @"Collections"];
+    
+    DBAccount *account = [self dropboxAccount];
+    if (account)
+    {
+        DBFilesystem *filesystem = [[DBFilesystem alloc] initWithAccount:account];
+        [DBFilesystem setSharedFilesystem:filesystem];
+    }
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths firstObject];
+    
+    for (NSString *folder in folders)
+    {
+        if (account)
+        {
+            DBPath *path = [[DBPath root] childPath:folder];
+            [[DBFilesystem sharedFilesystem] createFolder:path error:nil];
+        }
+        else
+        {
+            NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", folder]];
+            
+            if (![[NSFileManager defaultManager] fileExistsAtPath:path])
+            {
+                [[NSFileManager defaultManager] createDirectoryAtPath:path
+                                          withIntermediateDirectories:YES
+                                                           attributes:nil
+                                                                error:nil];
+            }
+        }
+        
+        // copy existing files to Dropbox
+        if (account)
+        {
+            NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", folder]];
+            
+            for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil])
+            {
+                DBPath *dbPath = [[DBPath root] childPath:[NSString stringWithFormat:@"/%@/%@", [path lastPathComponent], file]];
+                DBFile *dbFile = [[DBFilesystem sharedFilesystem] createFile:dbPath error:nil];
+                NSString *fullPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", file]];
+                
+                [dbFile writeContentsOfFile:fullPath
+                                shouldSteal:NO
+                                      error:nil];
+            }
+        }
+    }
+}
+
+-(NSArray*) findFilesAtPath:(NSString*) path
+{
+    NSMutableArray *arrSearchFiles = [[NSMutableArray alloc] init];
+    
+    if ([self dropboxAccount])
+    {
+        for (DBFileInfo *info in [[DBFilesystem sharedFilesystem] listFolder:[[DBPath root] childPath:path] error:nil])
+        {
+            NSString *key = [[info path] name];
+            
+            if ([[key pathExtension] isEqualToString:@"json"])
+            {
+                [arrSearchFiles addObject:[key stringByDeletingPathExtension]];
+            }
+        }
+    }
+    else
+    {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths firstObject];
+        NSString *fullPath = [documentsDirectory stringByAppendingPathComponent:path];
+        
+        
+        for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:fullPath error:nil])
+        {
+            if ([[[file lastPathComponent] pathExtension] isEqualToString:@"json"])
+            {
+                NSString *key = [[file lastPathComponent] stringByDeletingPathExtension];
+                
+                [arrSearchFiles addObject:key];
+            }
+        }
+    }
+    
+    return arrSearchFiles;
+}
+
+-(void) deleteFileAtPath:(NSString*) path
+{
+    if ([self dropboxAccount])
+    {
+        DBPath *dbPath = [[DBPath root] childPath:path];
+        [[DBFilesystem sharedFilesystem] deletePath:dbPath error:nil];
+    }
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths firstObject];
+    NSString *file = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", path]];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:file])
+    {
+        [[NSFileManager defaultManager] removeItemAtPath:file error:nil];
+    }
+}
+
+-(id) loadFileAtPath:(NSString*) path
+{
+    NSData *data;
+    
+    if ([self dropboxAccount])
+    {
+        DBPath *dbPath = [[DBPath root] childPath:path];
+        DBFile *dbFile = [[DBFilesystem sharedFilesystem] openFile:dbPath error:nil];
+        if (dbFile)
+        {
+            data = [dbFile readData:nil];
+            [dbFile close];
+        }
+    }
+    else
+    {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths firstObject];
+        NSString *file = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", path]];
+        data = [NSData dataWithContentsOfFile:file];
+    }
+
+    return data ? [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil] : nil;
+}
+
+-(void) saveData:(id) data atPath:(NSString*) path
+{
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths firstObject];
+    NSString *fileName = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", path]];
+    
+    if ([[NSFileManager defaultManager] fileExistsAtPath:fileName])
+    {
+        [[NSFileManager defaultManager] removeItemAtPath:fileName
+                                                   error:nil];
+    }
+    
+    NSOutputStream *outputStream = [NSOutputStream outputStreamToFileAtPath:fileName
+                                                                     append:NO];
+    [outputStream open];
+    
+    [NSJSONSerialization writeJSONObject:data
+                                toStream:outputStream
+                                 options:0
+                                   error:nil];
+    [outputStream close];
+    
+    if ([self dropboxAccount])
+    {
+        DBPath *dbPath = [[DBPath root] childPath:path];
+        DBFile *dbFile = [[DBFilesystem sharedFilesystem] openFile:dbPath error:nil];
+        if (!dbFile)
+        {
+            dbFile = [[DBFilesystem sharedFilesystem] createFile:dbPath error:nil];
+        }
+        if (dbFile)
+        {
+            [dbFile writeContentsOfFile:fileName shouldSteal:NO error:nil];
+        }
+    }
 }
 
 @end

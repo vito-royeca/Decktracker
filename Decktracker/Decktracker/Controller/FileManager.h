@@ -14,22 +14,16 @@
 
 +(id) sharedInstance;
 
--(void) saveAdvanceQuery:(NSString*) name
-             withFilters:(NSDictionary*) dictQuery
-              andSorters:(NSDictionary*) dictSorter;
-
--(NSArray*) findAdvanceSearchFiles;
--(void) deleteAdvanceSearchFile:(NSString*) name;
-
--(NSArray*) findDeckFiles;
--(void) deleteDeckFile:(NSString*) name;
--(void) saveDeck:(NSDictionary*) data;
--(NSDictionary*) loadDeck:(NSString*) fileName;
-
 -(NSString*) cardPath:(Card*) card;
 -(NSString*) cropPath:(Card*) card;
 -(NSString*) cardSetPath:(Card*) card;
 -(void) downloadCardImage:(Card*) card  withCompletion:(void (^)(void))completion;
 -(NSArray*) loadKeywords;
+
+-(void) initFilesystem;
+-(NSArray*) findFilesAtPath:(NSString*) path;
+-(void) deleteFileAtPath:(NSString*) path;
+-(id) loadFileAtPath:(NSString*) path;
+-(void) saveData:(id) data atPath:(NSString*) path;
 
 @end

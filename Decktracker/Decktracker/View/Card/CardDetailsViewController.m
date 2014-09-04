@@ -21,7 +21,7 @@
 #import "Magic.h"
 #import "SimpleSearchViewController.h"
 #import "Set.h"
-#import "CardInDecksViewController.h"
+#import "AddToDeckViewController.h"
 
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"
@@ -70,6 +70,7 @@
                     forControlEvents:UIControlEventValueChanged];
     self.segmentedControl.selectedSegmentIndex = 0;
     
+    dHeight = 44;
     dX = 0;
     dY = self.view.frame.size.height - dHeight;
     dWidth = self.view.frame.size.width;
@@ -169,7 +170,7 @@
 
 -(void) btnAddToDeckTapped:(id) sender
 {
-    CardInDecksViewController *view = [[CardInDecksViewController alloc] init];
+    AddToDeckViewController *view = [[AddToDeckViewController alloc] init];
     
     view.card = self.card;
     [self.navigationController pushViewController:view animated:YES];

@@ -8,10 +8,12 @@
 
 #import "AppDelegate.h"
 #import "Database.h"
+#import "FileManager.h"
 #import "MainViewController.h"
 
 #import "GAI.h"
 #import <Crashlytics/Crashlytics.h>
+#import <Dropbox/Dropbox.h>
 
 @implementation AppDelegate
 
@@ -26,25 +28,31 @@
     // Crashlytics
     [Crashlytics startWithAPIKey:@"114b3dd82452ec2f4024140ec862698d331b8f3f"];
     
+    // Dropbox
+    DBAccountManager *accountManager = [[DBAccountManager alloc] initWithAppKey:@"v57bkxsnzi3gxt3" secret:@"qbyj5znuytk3ljj"];
+    [DBAccountManager setSharedManager:accountManager];
+    [[FileManager sharedInstance] initFilesystem];
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     
+    // MagicalRecord
     [[Database sharedInstance ] setupDb];
+    
+    // custom colors
+    [[UINavigationBar appearance] setBarTintColor:UIColorFromRGB(0x691F01)];
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{
+        NSForegroundColorAttributeName : [UIColor whiteColor]}];
+    
+    [[UITabBar appearance] setBarTintColor:UIColorFromRGB(0x691F01)];
+    [[UITabBar appearance] setTintColor:[UIColor whiteColor]];
+    [[UISearchBar appearance] setTintColor:UIColorFromRGB(0x691F01)];
     
     UIViewController *viewController;
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone ||
         [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
     {
-//        UIViewController *leftDrawer = [[MenuViewController alloc] init];
-//        UIViewController *center = [[SimpleSearchViewController alloc] init];
-//        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:center];
-//        
-//        MMDrawerController *drawerController = [[MMDrawerController alloc]
-//                                                 initWithCenterViewController:navigationController
-//                                                 leftDrawerViewController:leftDrawer];
-//        viewController = drawerController;
-        
-        // if using tabs
         viewController = [[MainViewController alloc] init];
     }
     
@@ -79,6 +87,21 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     [[Database sharedInstance] closeDb];
+}
+
+// Dropbox handler after authenticating
+- (BOOL)application:(UIApplication *)app
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)source
+         annotation:(id)annotation
+{
+    DBAccount *account = [[DBAccountManager sharedManager] handleOpenURL:url];
+    if (account)
+    {
+        NSLog(@"App linked successfully to Dropbox!");
+        return YES;
+    }
+    return NO;
 }
 
 @end

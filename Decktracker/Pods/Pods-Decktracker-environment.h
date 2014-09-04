@@ -48,17 +48,17 @@
 #define COCOAPODS_VERSION_MINOR_AFNetworking_UIKit 3
 #define COCOAPODS_VERSION_PATCH_AFNetworking_UIKit 1
 
+// Dropbox-Sync-API-SDK
+#define COCOAPODS_POD_AVAILABLE_Dropbox_Sync_API_SDK
+#define COCOAPODS_VERSION_MAJOR_Dropbox_Sync_API_SDK 3
+#define COCOAPODS_VERSION_MINOR_Dropbox_Sync_API_SDK 0
+#define COCOAPODS_VERSION_PATCH_Dropbox_Sync_API_SDK 2
+
 // GoogleAnalytics-iOS-SDK
 #define COCOAPODS_POD_AVAILABLE_GoogleAnalytics_iOS_SDK
 #define COCOAPODS_VERSION_MAJOR_GoogleAnalytics_iOS_SDK 3
 #define COCOAPODS_VERSION_MINOR_GoogleAnalytics_iOS_SDK 0
 #define COCOAPODS_VERSION_PATCH_GoogleAnalytics_iOS_SDK 9
-
-// HMSegmentedControl
-#define COCOAPODS_POD_AVAILABLE_HMSegmentedControl
-#define COCOAPODS_VERSION_MAJOR_HMSegmentedControl 1
-#define COCOAPODS_VERSION_MINOR_HMSegmentedControl 4
-#define COCOAPODS_VERSION_PATCH_HMSegmentedControl 0
 
 // MBProgressHUD
 #define COCOAPODS_POD_AVAILABLE_MBProgressHUD

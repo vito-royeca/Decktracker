@@ -10,6 +10,7 @@
 #import "CollectionsViewController.h"
 #import "DecksViewController.h"
 #import "SimpleSearchViewController.h"
+#import "SettingsViewController.h"
 
 @interface MainViewController ()
 
@@ -54,14 +55,13 @@
                                            selectedImage:nil];
     
     UINavigationController *nc4 = [[UINavigationController alloc] init];
-    UIViewController *vc4 = [[UIViewController alloc] initWithNibName:nil bundle:nil];
-    vc4.view.backgroundColor = [UIColor greenColor];
+    UIViewController *vc4 = [[SettingsViewController alloc] initWithNibName:nil bundle:nil];
     nc4.viewControllers = [NSArray arrayWithObjects:vc4, nil];
     nc4.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Settings"
                                                    image:[UIImage imageNamed:@"settings.png"]
                                            selectedImage:nil];
     
-    self.viewControllers = @[nc1/*, nc2, nc3, nc4*/];
+    self.viewControllers = @[nc1, nc2, /*nc3,*/ nc4];
     self.selectedViewController = nc1;
 }
 

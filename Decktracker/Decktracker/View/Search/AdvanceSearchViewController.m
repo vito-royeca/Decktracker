@@ -22,6 +22,7 @@
 {
     NSMutableDictionary *_dictCurrentQuery;
     NSMutableDictionary *_dictCurrentSort;
+    NSInteger _selectedRow;
 }
 
 @synthesize arrAdvanceSearches = _arrAdvanceSearches;
@@ -57,8 +58,10 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.arrAdvanceSearches = [[NSMutableArray alloc] initWithArray:[[FileManager sharedInstance] findAdvanceSearchFiles]];
-    
+    NSArray *arrFiles = [[FileManager sharedInstance] findFilesAtPath:@"/Advance Search"];
+    self.arrAdvanceSearches = [[NSMutableArray alloc] initWithArray:arrFiles];
+    _selectedRow = 0;
+
     CGFloat dX = 0;
     CGFloat dY = 0;
     CGFloat dWidth = self.view.frame.size.width;
@@ -94,6 +97,7 @@
     NewAdvanceSearchViewController *view = [[NewAdvanceSearchViewController alloc] init];
     
     view.mode = EditModeNew;
+    view.navigationItem.title = @"New Advance Search";
     [self.navigationController pushViewController:view animated:NO];
 }
 
@@ -119,8 +123,7 @@
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
     
-    NSDictionary *dict = self.arrAdvanceSearches[indexPath.row];
-    cell.textLabel.text = [[dict allKeys] firstObject];
+    cell.textLabel.text = self.arrAdvanceSearches[indexPath.row];
     
     return cell;
 }
@@ -132,11 +135,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary *dict = self.arrAdvanceSearches[indexPath.row];
-    NSData *data = [NSData dataWithContentsOfFile:[[dict allValues] firstObject]];
-    NSArray *arrData = [NSJSONSerialization JSONObjectWithData:data
-                                                       options:NSJSONReadingMutableContainers
-                                                         error:nil];
+    _selectedRow = indexPath.row;
+    NSString *name = self.arrAdvanceSearches[_selectedRow];
+    NSArray *arrData = [[FileManager sharedInstance] loadFileAtPath:[NSString stringWithFormat:@"/Advance Search/%@.json", name]];
+
     _dictCurrentQuery = [arrData firstObject];
     _dictCurrentSort = [arrData lastObject];
     
@@ -148,12 +150,12 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    _selectedRow = indexPath.row;
+    
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        NSDictionary *dict = self.arrAdvanceSearches[indexPath.row];
-        
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Delete Advance Search"
-                                                        message:[NSString stringWithFormat:@"Are you sure you want to delete %@?", [[dict allKeys] firstObject]]
+                                                        message:[NSString stringWithFormat:@"Are you sure you want to delete %@?", self.arrAdvanceSearches[_selectedRow]]
                                                        delegate:self
                                               cancelButtonTitle:@"No"
                                               otherButtonTitles:@"Yes", nil];
@@ -166,10 +168,10 @@
 {
     if (buttonIndex == 1)
     {
-        NSDictionary *dict = self.arrAdvanceSearches[self.tblView.indexPathForSelectedRow.row];
-        
-        [[FileManager sharedInstance] deleteAdvanceSearchFile:[[dict allKeys] firstObject]];
-        [self.arrAdvanceSearches removeObject:dict];
+        NSString *name = self.arrAdvanceSearches[_selectedRow];
+        NSString *path = [NSString stringWithFormat:@"/Advance Search/%@.json", name];
+        [[FileManager sharedInstance] deleteFileAtPath:path];
+        [self.arrAdvanceSearches removeObject:name];
         
         // send to Google Analytics
         id tracker = [[GAI sharedInstance] defaultTracker];
@@ -188,12 +190,11 @@
 	[hud removeFromSuperview];
     
     NSIndexPath *selectedPath = [self.tblView indexPathForSelectedRow];
-    NSDictionary *dict = self.arrAdvanceSearches[selectedPath.row];
     AdvanceSearchResultsViewController *view = [[AdvanceSearchResultsViewController alloc] init];
     
     view.fetchedResultsController = self.fetchedResultsController;
     view.fetchedResultsController.delegate = view;
-    view.navigationItem.title = [[dict allKeys] firstObject];
+    view.navigationItem.title = self.arrAdvanceSearches[selectedPath.row];
     view.queryToSave = _dictCurrentQuery;
     view.sorterToSave = _dictCurrentSort;
     view.mode = EditModeEdit;

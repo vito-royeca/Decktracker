@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DecksViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
+@interface DecksViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
 
-@property(strong,nonatomic) UITableView *tblResults;
+@property(strong,nonatomic) UITableView *tblDecks;
+
+@property(strong,nonatomic) NSMutableArray *arrDecks;
 
 @end

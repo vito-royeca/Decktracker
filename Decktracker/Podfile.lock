@@ -20,8 +20,8 @@ PODS:
   - AFNetworking/UIKit (2.3.1):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
+  - Dropbox-Sync-API-SDK (3.0.2)
   - GoogleAnalytics-iOS-SDK (3.0.9)
-  - HMSegmentedControl (1.4.0)
   - hpple (0.2.0)
   - MagicalRecord (2.2):
     - MagicalRecord/Core
@@ -42,8 +42,8 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking
+  - Dropbox-Sync-API-SDK
   - GoogleAnalytics-iOS-SDK
-  - HMSegmentedControl
   - hpple
   - MagicalRecord
   - MBProgressHUD
@@ -51,8 +51,8 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   AFNetworking: 6d7b76aa5d04c8c37daad3eef4b7e3f2a7620da3
+  Dropbox-Sync-API-SDK: e672f9c163d3feb5929c97890b6945a6c5fae5f1
   GoogleAnalytics-iOS-SDK: d9e198b1f955259a72886769be7377cdfcdb2250
-  HMSegmentedControl: c0517a8d4b80c978b8386f863f1c44729cfd7d6f
   hpple: f4eb7c21a8db83ec264e5d614ec7509e10e5adec
   MagicalRecord: 2b471584fc9e3137f3d0a56967917baa4979e224
   MBProgressHUD: c356980b0cd097f19acec959b49dca5eb8ec31be

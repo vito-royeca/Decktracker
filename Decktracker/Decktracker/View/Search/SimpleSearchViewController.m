@@ -99,18 +99,6 @@
     [self.navigationController pushViewController:view animated:NO];
 }
 
-//- (void)viewDidAppear:(BOOL)animated
-//{
-//    NSIndexPath *indexPath = self.tblResults.indexPathForSelectedRow;
-//    
-//    if (indexPath)
-//    {
-//        [self.tblResults selectRowAtIndexPath:indexPath
-//                                     animated:NO
-//                               scrollPosition:UITableViewScrollPositionMiddle];
-//    }
-//}
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
