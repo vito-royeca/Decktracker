@@ -11,11 +11,11 @@
 
 @implementation SearchResultsTableViewCell
 
-@synthesize imgCrop;
-@synthesize lblCardName;
-@synthesize lblDetail;
-@synthesize viewManaCost;
-@synthesize imgSet;
+@synthesize imgCrop = _imgCrop;
+@synthesize lblCardName = _lblCardName;
+@synthesize lblDetail = _lblDetail;
+@synthesize viewManaCost = _viewManaCost;
+@synthesize imgSet = _imgSet;
 
 - (void)awakeFromNib
 {
@@ -59,7 +59,14 @@
     self.lblDetail.text = type;
     self.lblSet.text = [NSString stringWithFormat:@"%@ - %@", card.set.name, card.rarity.name];
     
+    // crop image
     NSString *path = [[FileManager sharedInstance] cropPath:card];
+    void (^completion)(void) = ^void(void)
+    {
+        UIImage *hiResImage = [UIImage imageWithContentsOfFile:path];
+        
+        self.imgCrop.image = hiResImage;
+    };
     if (![[NSFileManager defaultManager] fileExistsAtPath:path])
     {
         self.imgCrop.image = [UIImage imageNamed:@"blank.png"];
@@ -68,11 +75,13 @@
     {
         self.imgCrop.image = [[UIImage alloc] initWithContentsOfFile:path];
     }
+    [[FileManager sharedInstance] downloadCropImage:card withCompletion:completion];
     
+    // set image
     path = [[FileManager sharedInstance] cardSetPath:card];
     self.imgSet.image = [[UIImage alloc] initWithContentsOfFile:path];
     
-    // download cardImage
+    // card image
     [[FileManager sharedInstance] downloadCardImage:card withCompletion:nil];
 
     // draw the mana cost
@@ -107,35 +116,46 @@
         BOOL bFound = NO;
         NSString *noCurlies = [[symbol substringWithRange:NSMakeRange(1, symbol.length-2)] stringByReplacingOccurrencesOfString:@"/" withString:@""];
         NSString *noCurliesReverse = [JJJUtil reverseString:noCurlies];
-        NSString *pngSize;
+        CGFloat width, height;
+        int pngSize;
         
         if ([noCurlies isEqualToString:@"100"])
         {
-            pngSize = @"24";
+            width = 16;
+            height = 16;
+            pngSize = 24;
         }
         else if ([noCurlies isEqualToString:@"1000000"])
         {
-            pngSize = @"48";
+            width = 48;
+            height = 9;
+            pngSize = 48;
         }
         else
         {
-            pngSize = @"16";
+            width = 16;
+            height = 16;
+            pngSize = 24;
         }
         
         for (NSString *mana in kManaSymbols)
         {
             if ([mana isEqualToString:noCurlies])
             {
-                UIImage *image = [[UIImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/images/mana/%@/%@.png", [[NSBundle mainBundle] bundlePath], noCurlies, pngSize]];
+                UIImage *image = [[UIImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/images/mana/%@/%d.png", [[NSBundle mainBundle] bundlePath], noCurlies, pngSize]];
 
-                [arrImages addObject:@{pngSize:image}];
+                [arrImages addObject:@{@"width"  : [NSNumber numberWithFloat:width],
+                                       @"height" : [NSNumber numberWithFloat:height],
+                                       @"image"  : image}];
                 bFound = YES;
             }
             else if ([mana isEqualToString:noCurliesReverse])
             {
-                UIImage *image = [[UIImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/images/mana/%@/%@.png", [[NSBundle mainBundle] bundlePath], noCurliesReverse, pngSize]];
+                UIImage *image = [[UIImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/images/mana/%@/%D.png", [[NSBundle mainBundle] bundlePath], noCurliesReverse, pngSize]];
                 
-                [arrImages addObject:@{pngSize:image}];
+                [arrImages addObject:@{@"width"  : [NSNumber numberWithFloat:width],
+                                       @"height" : [NSNumber numberWithFloat:height],
+                                       @"image"  : image}];
                 bFound = YES;
             }
         }
@@ -146,15 +166,19 @@
             {
                 if ([mana isEqualToString:noCurlies])
                 {
-                    UIImage *image = [[UIImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/images/other/%@/%@.png", [[NSBundle mainBundle] bundlePath], noCurlies, pngSize]];
+                    UIImage *image = [[UIImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/images/other/%@/%d.png", [[NSBundle mainBundle] bundlePath], noCurlies, pngSize]];
                     
-                    [arrImages addObject:@{pngSize:image}];
+                    [arrImages addObject:@{@"width"  : [NSNumber numberWithFloat:width],
+                                           @"height" : [NSNumber numberWithFloat:height],
+                                           @"image"  : image}];
                 }
                 else if ([mana isEqualToString:noCurlies])
                 {
-                    UIImage *image = [[UIImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/images/other/%@/%@.png", [[NSBundle mainBundle] bundlePath], noCurliesReverse, pngSize]];
+                    UIImage *image = [[UIImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/images/other/%@/%d.png", [[NSBundle mainBundle] bundlePath], noCurliesReverse, pngSize]];
                     
-                    [arrImages addObject:@{pngSize:image}];
+                    [arrImages addObject:@{@"width"  : [NSNumber numberWithFloat:width],
+                                           @"height" : [NSNumber numberWithFloat:height],
+                                           @"image"  : image}];
                 }
             }
         }
@@ -167,21 +191,15 @@
     
     CGFloat dX = 0;//self.viewManaCost.frame.size.width - (arrImages.count*16);
     CGFloat dY = 0;
-    CGFloat dWidth = 0;
-    CGFloat dHeight = 16;
     for (NSDictionary *dict in arrImages)
     {
-        NSString *width = [[dict allKeys] firstObject];
-        dWidth = [width floatValue];
-        
-         // Gleemax
-        if (dWidth == 48)
-        {
-            dHeight = 9;
-        }
+        CGFloat dWidth = [dict[@"width"] floatValue];
+        CGFloat dHeight = [dict[@"height"] floatValue];
+        UIImage *image = dict [@"image"];
         
         UIImageView *imgMana = [[UIImageView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
-        imgMana.image = dict[width];
+        imgMana.contentMode = UIViewContentModeScaleAspectFit;
+        imgMana.image = image;
         
         [self.viewManaCost addSubview:imgMana];
         dX += dWidth;

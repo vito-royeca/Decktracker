@@ -322,7 +322,7 @@
         NSString *path = [[FileManager sharedInstance] cardPath:self.card];
         UIImage *hiResImage = [UIImage imageWithContentsOfFile:path];
         
-        [self.cardImage setImage:hiResImage];
+        self.cardImage.image = hiResImage;
         [[_fbImageViewer tableView] reloadData];
     };
     

@@ -18,6 +18,7 @@
 -(NSString*) cropPath:(Card*) card;
 -(NSString*) cardSetPath:(Card*) card;
 -(void) downloadCardImage:(Card*) card  withCompletion:(void (^)(void))completion;
+-(void) downloadCropImage:(Card*) card  withCompletion:(void (^)(void))completion;
 -(NSArray*) loadKeywords;
 
 -(void) initFilesystem;

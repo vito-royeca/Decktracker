@@ -63,7 +63,10 @@ static FileManager *_me;
 
 -(NSString*) cropPath:(Card*) card
 {
-    return [NSString stringWithFormat:@"%@/images/crop/%@/%@@2x.jpg", [[NSBundle mainBundle] bundlePath], card.set.code, card.imageName];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths firstObject];
+    NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/card/%@/", card.set.code]];
+    return [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.crop.jpg", card.name]];
 }
 
 -(NSString*) cardSetPath:(Card*) card
@@ -105,7 +108,52 @@ static FileManager *_me;
         NSURL *url = [NSURL URLWithString:[[NSString stringWithFormat:@"http://mtgimage.com/set/%@/%@.jpg", card.set.code, card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithObjects:@[card, cardPath, url]
-                                                                         forKeys:@[@"card", @"cardPath", @"url"]];
+                                                                         forKeys:@[@"card", @"path", @"url"]];
+        if (completion)
+        {
+            [dict setObject:completion forKey:@"completion"];
+        }
+        
+        [_downloadQueue insertObject:dict atIndex:0];
+        [self processDownloadQueue];
+    }
+}
+
+-(void) downloadCropImage:(Card*) card  withCompletion:(void (^)(void))completion
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths firstObject];
+    NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/card/%@/", card.set.code]];
+    NSString *cropPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.crop.jpg", card.name]];
+    BOOL bFound = YES;
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:path])
+    {
+        [[NSFileManager defaultManager] createDirectoryAtPath:path
+                                  withIntermediateDirectories:YES
+                                                   attributes:nil
+                                                        error:nil];
+        bFound = NO;
+    }
+    if (![[NSFileManager defaultManager] fileExistsAtPath:cropPath])
+    {
+        bFound = NO;
+    }
+    for (NSDictionary *dict in _downloadQueue)
+    {
+        if (dict[@"crop"] == card)
+        {
+            bFound = YES;
+            break;
+        }
+    }
+    
+    if (!bFound)
+    {
+        NSURL *url = [NSURL URLWithString:[[NSString stringWithFormat:@"http://mtgimage.com/set/%@/%@.crop.jpg", card.set.code, card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithObjects:@[card, cropPath, url]
+                                                                         forKeys:@[@"crop", @"path", @"url"]];
         if (completion)
         {
             [dict setObject:completion forKey:@"completion"];
@@ -131,20 +179,20 @@ static FileManager *_me;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
         
         NSURL *url = _currentQueue[@"url"];
-        NSString *cardPath = _currentQueue[@"cardPath"];
+        NSString *path = _currentQueue[@"path"];
         
-        if (![[NSFileManager defaultManager] fileExistsAtPath:cardPath])
+        if (![[NSFileManager defaultManager] fileExistsAtPath:path])
         {
             NSLog(@"Downloading %@", url);
-            NSDate *startDate = [NSDate date];
-            [JJJUtil downloadResource:url toPath:cardPath];
+//            NSDate *startDate = [NSDate date];
+            [JJJUtil downloadResource:url toPath:path];
             
-            NSTimeInterval interval = [[NSDate date] timeIntervalSinceDate:startDate];
-            id tracker = [[GAI sharedInstance] defaultTracker];
-            [tracker send:[[GAIDictionaryBuilder createTimingWithCategory:@"Card Download"
-                                                                 interval:@((int)(interval * 1000))
-                                                                     name:nil
-                                                                    label:nil] build]];
+//            NSTimeInterval interval = [[NSDate date] timeIntervalSinceDate:startDate];
+//            id tracker = [[GAI sharedInstance] defaultTracker];
+//            [tracker send:[[GAIDictionaryBuilder createTimingWithCategory:@"Card Download"
+//                                                                 interval:@((int)(interval * 1000))
+//                                                                     name:nil
+//                                                                    label:nil] build]];
         }
         
         if (completion)

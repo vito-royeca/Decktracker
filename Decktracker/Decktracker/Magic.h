@@ -36,15 +36,15 @@ typedef NSString* Layout;
                                          @"planeswalker", @"sorcery", @"power", @"toughness", \
                                          @"chaosdice", @"planeswalk", @"forwardslash"]
 
-#define kImageSizes                     @[@"8", @"16", @"24", @"32", @"48", @"64", @"96"]
+#define kImageSizes                     @[@"16", @"24", @"32", @"48", @"64", @"96"]
 
 #define JSON_VERSION                    @{@"dataSet":@"JSON", \
-                                          @"date":@"20014-08-29", \
-                                          @"version":@"2.10.2"}
+                                          @"date":@"20014-09-04", \
+                                          @"version":@"2.10.3"}
 
 #define IMAGES_VERSION                  @{@"dataSet":@"Images", \
-                                          @"date":@"20014-08-28", \
-                                          @"version":@"5.5.1"}
+                                          @"date":@"20014-09-04", \
+                                          @"version":@"5.5.2"}
 
 #define CARD_TYPES                      @[@"Artifact", @"Basic", @"Conspiracy", @"Creature", \
                                           @"Enchantment", @"Instant", @"Land", \

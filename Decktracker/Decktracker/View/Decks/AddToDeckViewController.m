@@ -8,6 +8,7 @@
 
 #import "AddToDeckViewController.h"
 #import "FileManager.h"
+#import "SearchResultsTableViewCell.h"
 
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"
@@ -52,10 +53,12 @@
                                                  style:UITableViewStylePlain];
     self.tblAddTo.dataSource = self;
     self.tblAddTo.delegate = self;
-    [self.tblAddTo registerNib:[UINib nibWithNibName:@"QuantityTableViewCell" bundle:nil]
+    [self.tblAddTo registerNib:[UINib nibWithNibName:@"SearchResultsTableViewCell" bundle:nil]
         forCellReuseIdentifier:@"Cell1"];
     [self.tblAddTo registerNib:[UINib nibWithNibName:@"QuantityTableViewCell" bundle:nil]
         forCellReuseIdentifier:@"Cell2"];
+    [self.tblAddTo registerNib:[UINib nibWithNibName:@"QuantityTableViewCell" bundle:nil]
+        forCellReuseIdentifier:@"Cell3"];
     
     dHeight = 44;
     dY = self.view.frame.size.height - dHeight;
@@ -68,7 +71,7 @@
     
     [self.view addSubview:self.tblAddTo];
     [self.view addSubview:self.bottomToolbar];
-    self.navigationItem.title = self.card.name;
+    self.navigationItem.title = @"Add To Deck";
     
     // send the screen to Google Analytics
     id tracker = [[GAI sharedInstance] defaultTracker];
@@ -221,12 +224,12 @@
 #pragma mark - UITableView
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 3;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == 0 || section == 1)
+    if (section == 0 || section == 1 || section == 2)
     {
         return 1;
     }
@@ -238,7 +241,11 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    if (indexPath.section == 0 || indexPath.section == 1)
+    if (indexPath.section == 0)
+    {
+        return SEARCH_RESULTS_CELL_HEIGHT;
+    }
+    else if (indexPath.section == 1 || indexPath.section == 2)
     {
         return 60;
     }
@@ -252,9 +259,13 @@
 {
     if (section == 0)
     {
-        return @"Mainboard";
+        return nil;
     }
     else if (section == 1)
+    {
+        return @"Mainboard";
+    }
+    else if (section == 2)
     {
         return @"Sideboard";
     }
@@ -270,17 +281,15 @@
     
     if (indexPath.section == 0)
     {
-        cell = (QuantityTableViewCell*)[tableView dequeueReusableCellWithIdentifier:@"Cell1"];
+        cell = (SearchResultsTableViewCell*)[tableView dequeueReusableCellWithIdentifier:@"Cell1"];
         
         if (!cell)
         {
-            cell = [[QuantityTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-                                                     reuseIdentifier:@"Cell1"];
+            cell = [[SearchResultsTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                                reuseIdentifier:@"Cell1"];
         }
-
-        [self configureQuantityCell:(QuantityTableViewCell*)cell
-                            withTag:0
-                       withDeckArea:@"mainBoard"];
+        
+        [((SearchResultsTableViewCell*)cell) displayCard:self.card];
     }
     else if (indexPath.section == 1)
     {
@@ -289,7 +298,21 @@
         if (!cell)
         {
             cell = [[QuantityTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-                                                reuseIdentifier:@"Cell2"];
+                                                     reuseIdentifier:@"Cell2"];
+        }
+
+        [self configureQuantityCell:(QuantityTableViewCell*)cell
+                            withTag:0
+                       withDeckArea:@"mainBoard"];
+    }
+    else if (indexPath.section == 2)
+    {
+        cell = (QuantityTableViewCell*)[tableView dequeueReusableCellWithIdentifier:@"Cell3"];
+        
+        if (!cell)
+        {
+            cell = [[QuantityTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                                reuseIdentifier:@"Cell3"];
         }
 
         [self configureQuantityCell:(QuantityTableViewCell*)cell
@@ -298,12 +321,12 @@
     }
     else
     {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"Cell3"];
+        cell = [tableView dequeueReusableCellWithIdentifier:@"Cell4"];
         
         if (!cell)
         {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-                                          reuseIdentifier:@"Cell3"];
+                                          reuseIdentifier:@"Cell4"];
             cell.accessoryType = UITableViewCellAccessoryNone;
         }
 
@@ -319,7 +342,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 2)
+    if (indexPath.section == 3)
     {
         _selectedDeckIndex = (int)indexPath.row;
         [self loadCurrentDeck];
