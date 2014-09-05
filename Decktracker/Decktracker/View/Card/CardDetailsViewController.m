@@ -663,36 +663,42 @@
         BOOL bFound = NO;
         NSString *noCurlies = [[symbol substringWithRange:NSMakeRange(1, symbol.length-2)] stringByReplacingOccurrencesOfString:@"/" withString:@""];
         NSString *noCurliesReverse = [JJJUtil reverseString:noCurlies];
-        NSString *pngFile;
+        int pngSize = 0, width=0, height=0;
         
         if ([noCurlies isEqualToString:@"100"])
         {
-            pngFile = @"24.png";
+            width = 16;
+            height = 16;
+            pngSize = 24;
         }
         else if ([noCurlies isEqualToString:@"1000000"])
         {
-            pngFile = @"48.png";
+            width = 48;
+            height = 9;
+            pngSize = 48;
         }
         else
         {
-            pngFile = @"16.png";
+            width = 16;
+            height = 16;
+            pngSize = 24;
         }
         
         for (NSString *mana in kManaSymbols)
         {
             if ([mana isEqualToString:noCurlies])
             {
-                text = [text stringByReplacingOccurrencesOfString:symbol withString:[NSString stringWithFormat:@"<img src=\"%@/images/mana/%@/%@\"/>", [[NSBundle mainBundle] bundlePath], noCurlies, pngFile]];
+                text = [text stringByReplacingOccurrencesOfString:symbol withString:[NSString stringWithFormat:@"<img src=\"%@/images/mana/%@/%d.png\" width=\"%d\"/ height=\"%d\" />", [[NSBundle mainBundle] bundlePath], noCurlies, pngSize, width, height]];
                 bFound = YES;
             }
             else if ([mana isEqualToString:noCurliesReverse])
             {
-                text = [text stringByReplacingOccurrencesOfString:symbol withString:[NSString stringWithFormat:@"<img src=\"%@/images/mana/%@/%@\"/>", [[NSBundle mainBundle] bundlePath], noCurliesReverse, pngFile]];
+                text = [text stringByReplacingOccurrencesOfString:symbol withString:[NSString stringWithFormat:@"<img src=\"%@/images/mana/%@/%d.png\" width=\"%d\"/ height=\"%d\" />", [[NSBundle mainBundle] bundlePath], noCurliesReverse, pngSize, width, height]];
                 bFound = YES;
             }
             else if ([mana isEqualToString:@"Infinity"])
             {
-                text = [text stringByReplacingOccurrencesOfString:@"{∞}" withString:[NSString stringWithFormat:@"<img src=\"%@/images/mana/Infinity/%@\"/>", [[NSBundle mainBundle] bundlePath], pngFile]];
+                text = [text stringByReplacingOccurrencesOfString:@"{∞}" withString:[NSString stringWithFormat:@"<img src=\"%@/images/mana/Infinity/%d.png\" width=\"%d\"/ height=\"%d\" />", [[NSBundle mainBundle] bundlePath], pngSize, width, height]];
             }
         }
         
@@ -702,11 +708,11 @@
             {
                 if ([mana isEqualToString:noCurlies])
                 {
-                    text = [text stringByReplacingOccurrencesOfString:symbol withString:[NSString stringWithFormat:@"<img src=\"%@/images/other/%@/%@\"/>", [[NSBundle mainBundle] bundlePath], noCurlies, pngFile]];
+                    text = [text stringByReplacingOccurrencesOfString:symbol withString:[NSString stringWithFormat:@"<img src=\"%@/images/other/%@/%d.png\" width=\"%d\"/ height=\"%d\" />", [[NSBundle mainBundle] bundlePath], noCurlies, pngSize, width, height]];
                 }
                 else if ([mana isEqualToString:noCurlies])
                 {
-                    text = [text stringByReplacingOccurrencesOfString:symbol withString:[NSString stringWithFormat:@"<img src=\"%@/images/other/%@/%@\"/>", [[NSBundle mainBundle] bundlePath], noCurliesReverse, pngFile]];
+                    text = [text stringByReplacingOccurrencesOfString:symbol withString:[NSString stringWithFormat:@"<img src=\"%@/images/other/%@/%d.png\" width=\"%d\"/ height=\"%d\" />", [[NSBundle mainBundle] bundlePath], noCurliesReverse, pngSize, width, height]];
                 }
             }
         }

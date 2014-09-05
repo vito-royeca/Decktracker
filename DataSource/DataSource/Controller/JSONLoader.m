@@ -310,7 +310,7 @@
         card.type = dict[@"type"];
         card.rarity = [self findCardRarity:dict[@"rarity"]];
         card.text = dict[@"text"];
-        card.flavor = dict@"flavor"];
+        card.flavor = dict[@"flavor"];
         card.artist = [self findArtist:dict[@"artist"]];
         card.number = dict[@"number"];
         card.power = dict[@"power"];
