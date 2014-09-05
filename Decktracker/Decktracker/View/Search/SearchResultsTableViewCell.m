@@ -12,6 +12,9 @@
 #import "JSBadgeView.h"
 
 @implementation SearchResultsTableViewCell
+{
+    Card *_card;
+}
 
 @synthesize imgCrop = _imgCrop;
 @synthesize lblCardName = _lblCardName;
@@ -46,6 +49,16 @@
 
 -(void) displayCard:(Card*) card
 {
+    _card = card;
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:kCropDownloadCompleted
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(loadCropImage:)
+                                                 name:kCropDownloadCompleted
+                                               object:nil];
+    
     NSMutableString *type = [[NSMutableString alloc] initWithFormat:@"%@", card.type];
     
     if (card.power || card.toughness)
@@ -62,14 +75,7 @@
     self.lblDetail.text = type;
     self.lblSet.text = [NSString stringWithFormat:@"%@ - %@", card.set.name, card.rarity.name];
     
-    // crop image
     NSString *path = [[FileManager sharedInstance] cropPath:card];
-    void (^completion)(void) = ^void(void)
-    {
-        UIImage *hiResImage = [UIImage imageWithContentsOfFile:path];
-        
-        self.imgCrop.image = hiResImage;
-    };
     if (![[NSFileManager defaultManager] fileExistsAtPath:path])
     {
         self.imgCrop.image = [UIImage imageNamed:@"blank.png"];
@@ -78,14 +84,14 @@
     {
         self.imgCrop.image = [[UIImage alloc] initWithContentsOfFile:path];
     }
-    [[FileManager sharedInstance] downloadCropImage:card withCompletion:completion];
+    [[FileManager sharedInstance] downloadCropImage:card];
     
     // set image
     path = [[FileManager sharedInstance] cardSetPath:card];
     self.imgSet.image = [[UIImage alloc] initWithContentsOfFile:path];
     
     // card image
-    [[FileManager sharedInstance] downloadCardImage:card withCompletion:nil];
+    [[FileManager sharedInstance] downloadCardImage:card];
 
     // draw the mana cost
     NSMutableArray *arrImages = [[NSMutableArray alloc] init];
@@ -214,6 +220,18 @@
     JSBadgeView *badgeView = [[JSBadgeView alloc] initWithParentView:self.viewBadge
                                                            alignment:JSBadgeViewAlignmentCenter];
     badgeView.badgeText = [NSString stringWithFormat:@"%d", badgeValue];
+}
+
+-(void) loadCropImage:(id) sender
+{
+    Card *card = [sender userInfo][@"card"];
+    
+    if (_card == card)
+    {
+        UIImage *hiResImage = [UIImage imageWithContentsOfFile:[[FileManager sharedInstance] cropPath:card]];
+        
+        self.imgCrop.image = hiResImage;
+    }
 }
 
 @end

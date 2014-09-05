@@ -74,7 +74,7 @@ static FileManager *_me;
     return [NSString stringWithFormat:@"%@/images/set/%@/%@/48.png", [[NSBundle mainBundle] bundlePath], card.set.code, [[Database sharedInstance] cardRarityIndex:card]];
 }
 
--(void) downloadCardImage:(Card*) card  withCompletion:(void (^)(void))completion
+-(void) downloadCardImage:(Card*) card
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths firstObject];
@@ -109,17 +109,13 @@ static FileManager *_me;
 
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithObjects:@[card, cardPath, url]
                                                                          forKeys:@[@"card", @"path", @"url"]];
-        if (completion)
-        {
-            [dict setObject:completion forKey:@"completion"];
-        }
-        
-        [_downloadQueue insertObject:dict atIndex:0];
+//        [_downloadQueue insertObject:dict atIndex:0];
+        [_downloadQueue addObject:dict];
         [self processDownloadQueue];
     }
 }
 
--(void) downloadCropImage:(Card*) card  withCompletion:(void (^)(void))completion
+-(void) downloadCropImage:(Card*) card
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths firstObject];
@@ -154,12 +150,8 @@ static FileManager *_me;
         
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithObjects:@[card, cropPath, url]
                                                                          forKeys:@[@"crop", @"path", @"url"]];
-        if (completion)
-        {
-            [dict setObject:completion forKey:@"completion"];
-        }
-        
-        [_downloadQueue insertObject:dict atIndex:0];
+//        [_downloadQueue insertObject:dict atIndex:0];
+        [_downloadQueue addObject:dict];
         [self processDownloadQueue];
     }
 }
@@ -172,8 +164,6 @@ static FileManager *_me;
     }
     
     _currentQueue = [_downloadQueue firstObject];
-    void (^completion)(void) = _currentQueue[@"completion"];
-
     [_downloadQueue removeObject:_currentQueue];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
@@ -195,15 +185,26 @@ static FileManager *_me;
 //                                                                    label:nil] build]];
         }
         
-        if (completion)
-        {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completion();
-            });
-        }
-        
-        _currentQueue = nil;
-        [self processDownloadQueue];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            Card *card = _currentQueue[@"card"];
+            if (card)
+            {
+                [[NSNotificationCenter defaultCenter] postNotificationName:kCardDownloadCompleted
+                                                                    object:nil
+                                                                  userInfo:@{@"card":card}];
+            }
+            
+            card = _currentQueue[@"crop"];
+            if (card)
+            {
+                [[NSNotificationCenter defaultCenter] postNotificationName:kCropDownloadCompleted
+                                                                    object:nil
+                                                                  userInfo:@{@"card":card}];
+            }
+            
+            _currentQueue = nil;
+            [self processDownloadQueue];
+        });
     });
 }
 

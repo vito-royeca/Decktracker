@@ -42,7 +42,7 @@
     
     NSArray *arrFiles = [[FileManager sharedInstance] findFilesAtPath:@"/Decks"];
     self.arrDecks = [[NSMutableArray alloc] initWithArray:arrFiles];
-    _selectedDeckIndex = 0;
+    _selectedDeckIndex = -1;
     [self loadCurrentDeck];
     
     CGFloat dX = 0;
@@ -146,7 +146,7 @@
 
 -(void) loadCurrentDeck
 {
-    if (self.arrDecks.count > 0)
+    if (self.arrDecks.count > 0 && _selectedDeckIndex >= 0)
     {
         NSString *path = [NSString stringWithFormat:@"/Decks/%@.json", self.arrDecks[_selectedDeckIndex]];
         
@@ -271,7 +271,7 @@
     }
     else
     {
-        return @"Decks";
+        return @"Select Deck";
     }
 }
 
@@ -354,7 +354,18 @@
 #pragma mark - 
 -(void) stepperChanged:(QuantityTableViewCell*) cell withValue:(int) value
 {
-    if (_currentDeck)
+    if (!_currentDeck || _selectedDeckIndex < 0)
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"You may need to create one Deck or select a Deck from the list."
+                                                       delegate:nil
+                                              cancelButtonTitle:@"Ok"
+                                              otherButtonTitles:nil];
+        [alert show];
+        
+        
+    }
+    else
     {
         switch (cell.tag)
         {
@@ -370,15 +381,6 @@
                 break;
             }
         }
-    }
-    else
-    {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"You have no Decks. You may need to create at least one Deck."
-                                                       delegate:nil
-                                              cancelButtonTitle:@"Ok"
-                                              otherButtonTitles:nil];
-        [alert show];
     }
 }
 

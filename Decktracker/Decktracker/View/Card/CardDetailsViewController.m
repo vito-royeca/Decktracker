@@ -30,6 +30,7 @@
 @implementation CardDetailsViewController
 {
     MHFacebookImageViewer *_fbImageViewer;
+//    void (^_completion)(Card*);
 }
 
 @synthesize card = _card;
@@ -125,6 +126,14 @@
     }
     
     [self switchView];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:kCardDownloadCompleted
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(loadCardImage:)
+                                                 name:kCardDownloadCompleted
+                                               object:nil];
 }
 
 - (void)handleSwipe:(UISwipeGestureRecognizer *)swipe
@@ -246,7 +255,7 @@
             if (index+i <= sectionInfo.objects.count-1)
             {
                 Card *card = sectionInfo.objects[index+i];
-                [[FileManager sharedInstance] downloadCardImage:card withCompletion:nil];
+                [[FileManager sharedInstance] downloadCardImage:card];
             }
         }
     }
@@ -308,6 +317,20 @@
     }
 }
 
+-(void) loadCardImage:(id) sender
+{
+    Card *card = [sender userInfo][@"card"];
+    
+    if (self.card == card)
+    {
+        NSString *path = [[FileManager sharedInstance] cardPath:card];
+        UIImage *hiResImage = [UIImage imageWithContentsOfFile:path];
+        
+        self.cardImage.image = hiResImage;
+        [[_fbImageViewer tableView] reloadData];
+    }
+}
+
 - (void) displayCard
 {
     NSInteger selectedRow = 0;
@@ -316,15 +339,6 @@
         id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
         selectedRow = [sectionInfo.objects indexOfObject:self.card];
     }
-    
-    void (^completion)(void) = ^void(void)
-    {
-        NSString *path = [[FileManager sharedInstance] cardPath:self.card];
-        UIImage *hiResImage = [UIImage imageWithContentsOfFile:path];
-        
-        self.cardImage.image = hiResImage;
-        [[_fbImageViewer tableView] reloadData];
-    };
     
     UIImage *image = [UIImage imageWithContentsOfFile:[[FileManager sharedInstance] cardPath:self.card]];
     [self.cardImage setImage:image];
@@ -336,7 +350,7 @@
                                            onClose:^{ }];
     self.cardImage.clipsToBounds = YES;
     
-    [[FileManager sharedInstance] downloadCardImage:self.card withCompletion:completion];
+    [[FileManager sharedInstance] downloadCardImage:self.card];
     [self updateNavigationButtons];
     
     // send to Google Analytics

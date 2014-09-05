@@ -10,6 +10,9 @@
 #import "Card.h"
 #import "Set.h"
 
+#define kCardDownloadCompleted           @"kCardDownloadCompleted"
+#define kCropDownloadCompleted           @"kCropDownloadCompleted"
+
 @interface FileManager : NSObject
 
 +(id) sharedInstance;
@@ -17,8 +20,8 @@
 -(NSString*) cardPath:(Card*) card;
 -(NSString*) cropPath:(Card*) card;
 -(NSString*) cardSetPath:(Card*) card;
--(void) downloadCardImage:(Card*) card  withCompletion:(void (^)(void))completion;
--(void) downloadCropImage:(Card*) card  withCompletion:(void (^)(void))completion;
+-(void) downloadCardImage:(Card*) card;
+-(void) downloadCropImage:(Card*) card;
 -(NSArray*) loadKeywords;
 
 -(void) initFilesystem;
