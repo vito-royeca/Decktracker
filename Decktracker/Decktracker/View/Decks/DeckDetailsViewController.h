@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DeckDetailsViewController : UIViewController<UITableViewDataSource, UITabBarDelegate>
+@interface DeckDetailsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
 
 @property(strong,nonatomic) NSDictionary *dictDeck;
-@property(strong,nonatomic) UISegmentedControl *segmentedControl;
-@property(strong,nonatomic) UITableView *tblData;
+@property(strong,nonatomic) UITableView *tblCards;
+@property(strong, nonatomic) UIToolbar *bottomToolbar;
 
 @end

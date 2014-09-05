@@ -9,6 +9,8 @@
 #import "SearchResultsTableViewCell.h"
 #import "FileManager.h"
 
+#import "JSBadgeView.h"
+
 @implementation SearchResultsTableViewCell
 
 @synthesize imgCrop = _imgCrop;
@@ -16,6 +18,7 @@
 @synthesize lblDetail = _lblDetail;
 @synthesize viewManaCost = _viewManaCost;
 @synthesize imgSet = _imgSet;
+@synthesize viewBadge = _viewBadge;
 
 - (void)awakeFromNib
 {
@@ -204,6 +207,13 @@
         [self.viewManaCost addSubview:imgMana];
         dX += dWidth;
     }
+}
+
+-(void) addBadge:(int) badgeValue
+{
+    JSBadgeView *badgeView = [[JSBadgeView alloc] initWithParentView:self.viewBadge
+                                                           alignment:JSBadgeViewAlignmentCenter];
+    badgeView.badgeText = [NSString stringWithFormat:@"%d", badgeValue];
 }
 
 @end

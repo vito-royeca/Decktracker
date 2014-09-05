@@ -23,6 +23,7 @@ PODS:
   - Dropbox-Sync-API-SDK (3.0.2)
   - GoogleAnalytics-iOS-SDK (3.0.9)
   - hpple (0.2.0)
+  - JSBadgeView (1.3.2)
   - MagicalRecord (2.2):
     - MagicalRecord/Core
   - MagicalRecord/Core (2.2)
@@ -45,6 +46,7 @@ DEPENDENCIES:
   - Dropbox-Sync-API-SDK
   - GoogleAnalytics-iOS-SDK
   - hpple
+  - JSBadgeView
   - MagicalRecord
   - MBProgressHUD
   - MMDrawerController
@@ -54,6 +56,7 @@ SPEC CHECKSUMS:
   Dropbox-Sync-API-SDK: e672f9c163d3feb5929c97890b6945a6c5fae5f1
   GoogleAnalytics-iOS-SDK: d9e198b1f955259a72886769be7377cdfcdb2250
   hpple: f4eb7c21a8db83ec264e5d614ec7509e10e5adec
+  JSBadgeView: 75bec79d76e0eb01d57c9ce75b7c5ea8d6707955
   MagicalRecord: 2b471584fc9e3137f3d0a56967917baa4979e224
   MBProgressHUD: c356980b0cd097f19acec959b49dca5eb8ec31be
   MMDrawerController: 4bae84535ca7a5f4cb55a66a001e6035c3571677

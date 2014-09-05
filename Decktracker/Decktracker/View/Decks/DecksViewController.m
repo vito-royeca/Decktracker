@@ -7,6 +7,7 @@
 //
 
 #import "DecksViewController.h"
+#import "DeckDetailsViewController.h"
 #import "FileManager.h"
 
 #import "GAI.h"
@@ -170,7 +171,9 @@
  
     if (self.arrDecks.count > 0)
     {
-        cell.textLabel.text = self.arrDecks[indexPath.row];
+        NSDictionary *deck = [[FileManager sharedInstance] loadFileAtPath:[NSString stringWithFormat:@"/Decks/%@.json", self.arrDecks[indexPath.row]]];
+        
+        cell.textLabel.text = deck[@"name"];
     }
     return cell;
 }
@@ -183,6 +186,13 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     _selectedRow = indexPath.row;
+    
+    DeckDetailsViewController *view = [[DeckDetailsViewController alloc] init];
+    
+    NSDictionary *deck = [[FileManager sharedInstance] loadFileAtPath:[NSString stringWithFormat:@"/Decks/%@.json", self.arrDecks[_selectedRow]]];
+    
+    view.dictDeck = deck;
+    [self.navigationController pushViewController:view animated:YES];
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath

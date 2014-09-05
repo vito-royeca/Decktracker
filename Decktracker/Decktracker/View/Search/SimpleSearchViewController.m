@@ -68,10 +68,10 @@
                                                    style:UITableViewStylePlain];
     self.tblResults.delegate = self;
     self.tblResults.dataSource = self;
-    
-    self.navigationItem.titleView = self.searchBar;
     [self.tblResults registerNib:[UINib nibWithNibName:@"SearchResultsTableViewCell" bundle:nil]
           forCellReuseIdentifier:@"Cell"];
+    
+    self.navigationItem.titleView = self.searchBar;
     [self.view addSubview:self.tblResults];
     
     // remove the "< Back" title in back buttons

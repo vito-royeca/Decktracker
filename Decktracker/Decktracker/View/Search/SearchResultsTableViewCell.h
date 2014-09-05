@@ -23,7 +23,10 @@
 @property(strong,nonatomic) IBOutlet UILabel *lblSet;
 @property(strong,nonatomic) IBOutlet UIView *viewManaCost;
 @property(strong,nonatomic) IBOutlet UIImageView *imgSet;
+@property(strong,nonatomic) IBOutlet UIView *viewBadge;
 
 
 -(void) displayCard:(Card*) card;
+-(void) addBadge:(int) badgeValue;
+
 @end
