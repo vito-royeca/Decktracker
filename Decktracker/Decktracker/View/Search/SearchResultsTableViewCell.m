@@ -121,21 +121,21 @@
         
         if ([noCurlies isEqualToString:@"100"])
         {
-            width = 16;
-            height = 16;
-            pngSize = 24;
+            width = 24;
+            height = 13;
+            pngSize = 48;
         }
         else if ([noCurlies isEqualToString:@"1000000"])
         {
-            width = 48;
-            height = 9;
-            pngSize = 48;
+            width = 64;
+            height = 13;
+            pngSize = 96;
         }
         else
         {
             width = 16;
             height = 16;
-            pngSize = 24;
+            pngSize = 32;
         }
         
         for (NSString *mana in kManaSymbols)

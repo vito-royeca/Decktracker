@@ -477,7 +477,7 @@
     }
     
     [html appendFormat:@"<tr><td><strong>Rarity</strong></td></tr>"];
-    [html appendFormat:@"<tr><td><table><tr><td><img src=\"%@/%@/%@/24.png\" border=\"0\" /></td><td>%@ - %@</td></tr></table></td></tr>", setPath, self.card.set.code, [[Database sharedInstance] cardRarityIndex:self.card], self.card.set.name, self.card.rarity.name];
+    [html appendFormat:@"<tr><td><table><tr><td><img src=\"%@/%@/%@/48.png\" width=\"24\" height=\"20\" border=\"0\" /></td><td>%@ - %@</td></tr></table></td></tr>", setPath, self.card.set.code, [[Database sharedInstance] cardRarityIndex:self.card], self.card.set.name, self.card.rarity.name];
     [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
 
     [html appendFormat:@"<tr><td><strong>All Sets</strong></td></tr>"];
@@ -487,7 +487,7 @@
         Card *card = [[Database sharedInstance] findCard:self.card.name inSet:set.code];
         
         NSString *link = [[NSString stringWithFormat:@"card?name=%@&set=%@", card.name, set.code] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        NSString *image = [NSString stringWithFormat:@"<a href=\"%@\"><img src=\"%@/%@/%@/24.png\" border=\"0\" /></a>", link, setPath, set.code, [[Database sharedInstance] cardRarityIndex:card]];
+        NSString *image = [NSString stringWithFormat:@"<a href=\"%@\"><img src=\"%@/%@/%@/48.png\" width=\"24\" height=\"20\" border=\"0\" /></a>", link, setPath, set.code, [[Database sharedInstance] cardRarityIndex:card]];
         
         
         [html appendFormat:@"<tr><td>%@</td><td><a href=\"%@\">%@</a></td></tr>", image, link, set.name];
@@ -503,7 +503,7 @@
         {
             NSString *link = [[NSString stringWithFormat:@"card?name=%@&set=%@", card.name, card.set.code] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             
-            [html appendFormat:@"<tr><td><a href=\"%@\"><img src=\"%@/%@/%@/24.png\" border=\"0\" /></a></td><td><a href=\"%@\">%@</a></td></tr>", link, setPath, card.set.code, [[Database sharedInstance] cardRarityIndex:card], link, card.name];
+            [html appendFormat:@"<tr><td><a href=\"%@\"><img src=\"%@/%@/%@/48.png\" width=\"24\" height=\"20\" border=\"0\" /></a></td><td><a href=\"%@\">%@</a></td></tr>", link, setPath, card.set.code, [[Database sharedInstance] cardRarityIndex:card], link, card.name];
         }
         [html appendFormat:@"</table></td></tr>"];
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
@@ -517,7 +517,7 @@
         {
             NSString *link = [[NSString stringWithFormat:@"card?name=%@&set=%@", card.name, card.set.code] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             
-            [html appendFormat:@"<tr><td><a href=\"%@\"><img src=\"%@/%@/%@/24.png\" border=\"0\" /></a></td><td><a href=\"%@\">%@</a></td></tr>", link, setPath, card.set.code, [[Database sharedInstance] cardRarityIndex:card], link, card.name];
+            [html appendFormat:@"<tr><td><a href=\"%@\"><img src=\"%@/%@/%@/48.png\" width=\"24\" height=\"20\" border=\"0\" /></a></td><td><a href=\"%@\">%@</a></td></tr>", link, setPath, card.set.code, [[Database sharedInstance] cardRarityIndex:card], link, card.name];
         }
         [html appendFormat:@"</table></td></tr>"];
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
@@ -606,7 +606,7 @@
 
     [html appendFormat:@"<tr><td colspan=\"4\"><div class=\"cardTitle\">%@</div></td></tr>", self.card.name];
     
-    [html appendFormat:@"<tr><td colspan=\"4\"><table><tr><td><img src=\"%@/%@/%@/24.png\" border=\"0\" /></td><td>%@ - %@</td></tr></table></td></tr>", setPath, self.card.set.code, [[Database sharedInstance] cardRarityIndex:self.card], self.card.set.name, self.card.rarity.name];
+    [html appendFormat:@"<tr><td colspan=\"4\"><table><tr><td><img src=\"%@/%@/%@/48.png\" width=\"24\" height=\"20\" border=\"0\" /></td><td>%@ - %@</td></tr></table></td></tr>", setPath, self.card.set.code, [[Database sharedInstance] cardRarityIndex:self.card], self.card.set.name, self.card.rarity.name];
     [html appendFormat:@"<tr><td colspan=\"4\">&nbsp;</td></tr>"];
     
     [html appendFormat:@"<tr>"];
@@ -667,21 +667,21 @@
         
         if ([noCurlies isEqualToString:@"100"])
         {
-            width = 16;
-            height = 16;
-            pngSize = 24;
+            width = 24;
+            height = 13;
+            pngSize = 48;
         }
         else if ([noCurlies isEqualToString:@"1000000"])
         {
-            width = 48;
-            height = 9;
-            pngSize = 48;
+            width = 64;
+            height = 13;
+            pngSize = 96;
         }
         else
         {
             width = 16;
             height = 16;
-            pngSize = 24;
+            pngSize = 32;
         }
         
         for (NSString *mana in kManaSymbols)

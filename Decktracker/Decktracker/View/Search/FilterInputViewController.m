@@ -337,7 +337,7 @@
             if ([[self.filterOptions firstObject] isKindOfClass:[Set class]])
             {
                 Set *set = arrFilter[indexPath.row];
-                NSString *path = [NSString stringWithFormat:@"%@/images/set/%@/C/24.png", [[NSBundle mainBundle] bundlePath], set.code];
+                NSString *path = [NSString stringWithFormat:@"%@/images/set/%@/C/48.png", [[NSBundle mainBundle] bundlePath], set.code];
                 
                 if (![[NSFileManager defaultManager] fileExistsAtPath:path])
                 {
@@ -346,7 +346,16 @@
                 else
                 {
                     cell.imageView.image = [[UIImage alloc] initWithContentsOfFile:path];
+                    
+                    // resize the image
+                    CGSize itemSize = CGSizeMake(24, 20);
+                    UIGraphicsBeginImageContextWithOptions(itemSize, NO, UIScreen.mainScreen.scale);
+                    CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
+                    [cell.imageView.image drawInRect:imageRect];
+                    cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
+                    UIGraphicsEndImageContext();
                 }
+                
                 cell.textLabel.text = set.name;
                 cell.detailTextLabel.text = [NSString stringWithFormat:@"Released: %@ (%@ cards)", [JJJUtil formatDate:set.releaseDate withFormat:@"YYYY-MM-dd"], set.numberOfCards];
             }
@@ -377,7 +386,7 @@
                     colorInitial = [color.name substringToIndex:1];
                 }
                 
-                NSString *path = [NSString stringWithFormat:@"%@/images/mana/%@/24.png", [[NSBundle mainBundle] bundlePath], colorInitial];
+                NSString *path = [NSString stringWithFormat:@"%@/images/mana/%@/32.png", [[NSBundle mainBundle] bundlePath], colorInitial];
                 
                 if (![[NSFileManager defaultManager] fileExistsAtPath:path])
                 {
@@ -386,6 +395,14 @@
                 else
                 {
                     cell.imageView.image = [[UIImage alloc] initWithContentsOfFile:path];
+                    
+                    // resize the image
+                    CGSize itemSize = CGSizeMake(16, 16);
+                    UIGraphicsBeginImageContextWithOptions(itemSize, NO, UIScreen.mainScreen.scale);
+                    CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
+                    [cell.imageView.image drawInRect:imageRect];
+                    cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
+                    UIGraphicsEndImageContext();
                 }
                 
                 cell.textLabel.text = color.name;

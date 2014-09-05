@@ -71,7 +71,7 @@ static FileManager *_me;
 
 -(NSString*) cardSetPath:(Card*) card
 {
-    return [NSString stringWithFormat:@"%@/images/set/%@/%@/24.png", [[NSBundle mainBundle] bundlePath], card.set.code, [[Database sharedInstance] cardRarityIndex:card]];
+    return [NSString stringWithFormat:@"%@/images/set/%@/%@/48.png", [[NSBundle mainBundle] bundlePath], card.set.code, [[Database sharedInstance] cardRarityIndex:card]];
 }
 
 -(void) downloadCardImage:(Card*) card  withCompletion:(void (^)(void))completion
