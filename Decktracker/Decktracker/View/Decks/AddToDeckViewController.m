@@ -192,6 +192,7 @@
 {
     cell.delegate = self;
     cell.tag = tag;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     if (![self.card.type hasPrefix:@"Basic Land"])
     {
@@ -253,6 +254,17 @@
 }
 
 #pragma mark - UITableView
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
+    
+    if(cell.selectionStyle == UITableViewCellSelectionStyleNone)
+    {
+        return nil;
+    }
+    return indexPath;
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 4;

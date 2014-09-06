@@ -570,10 +570,10 @@
     [html appendFormat:@"</tr>"];
     
     [html appendFormat:@"<tr>"];
-    [html appendFormat:@"<td align=\"right\" width=\"25%%\">%@</td>", low ? [NSString stringWithFormat:@"$%@", low] : @"N.A."];
-    [html appendFormat:@"<td align=\"right\" width=\"25%%\">%@</td>", med ? [NSString stringWithFormat:@"$%@", med] : @"N.A."];
-    [html appendFormat:@"<td align=\"right\" width=\"25%%\">%@</td>", high ? [NSString stringWithFormat:@"$%@", high] : @"N.A."];
-    [html appendFormat:@"<td align=\"right\" width=\"25%%\">%@</td>", foil ? [NSString stringWithFormat:@"$%@", foil] : @"N.A."];
+    [html appendFormat:@"<td align=\"right\" width=\"25%%\">%@</td>", low && ![low isEqualToString:@"0"] ? [NSString stringWithFormat:@"$%@", low] : @"N/A"];
+    [html appendFormat:@"<td align=\"right\" width=\"25%%\">%@</td>", med && ![med isEqualToString:@"0"]? [NSString stringWithFormat:@"$%@", med] : @"N/A"];
+    [html appendFormat:@"<td align=\"right\" width=\"25%%\">%@</td>", high && ![high isEqualToString:@"0"]? [NSString stringWithFormat:@"$%@", high] : @"N/A"];
+    [html appendFormat:@"<td align=\"right\" width=\"25%%\">%@</td>", foil && ![foil isEqualToString:@"0"]? [NSString stringWithFormat:@"$%@", foil] : @"N/A"];
     [html appendFormat:@"</tr>"];
     [html appendFormat:@"<tr><td colspan=\"3\">&nbsp;</td></tr>"];
     if (link)
@@ -760,6 +760,17 @@
 }
 
 #pragma mark - UITableView
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
+    
+    if(cell.selectionStyle == UITableViewCellSelectionStyleNone)
+    {
+        return nil;
+    }
+    return indexPath;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if (section == 1)
@@ -872,6 +883,7 @@
         {
             case 0:
             {
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
                 self.cardImage = [[UIImageView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];

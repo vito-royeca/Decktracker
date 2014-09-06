@@ -257,14 +257,16 @@ static Database *_me;
     
     NSManagedObjectContext *moc = [NSManagedObjectContext MR_defaultContext];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name"
+    NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:@"name"
                                                                    ascending:YES];
+    NSSortDescriptor *sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:@"set.releaseDate"
+                                                                    ascending:YES];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Card"
                                               inManagedObjectContext:moc];
     
     [fetchRequest setPredicate:predicate];
     [fetchRequest setEntity:entity];
-    [fetchRequest setSortDescriptors:@[sortDescriptor]];
+    [fetchRequest setSortDescriptors:@[sortDescriptor1, sortDescriptor2]];
     [fetchRequest setFetchBatchSize:kFetchBatchSize];
     
     return [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
