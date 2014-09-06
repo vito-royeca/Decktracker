@@ -9,6 +9,7 @@
 #import "CardDetailsViewController.h"
 
 #import "JJJ/JJJUtil.h"
+#import "AddToDeckViewController.h"
 #import "AdvanceSearchResultsViewController.h"
 #import "Artist.h"
 #import "CardForeignName.h"
@@ -19,9 +20,9 @@
 #import "FileManager.h"
 #import "TFHpple.h"
 #import "Magic.h"
+#import "SearchResultsTableViewCell.h"
 #import "SimpleSearchViewController.h"
 #import "Set.h"
-#import "AddToDeckViewController.h"
 
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"
@@ -30,13 +31,14 @@
 @implementation CardDetailsViewController
 {
     MHFacebookImageViewer *_fbImageViewer;
-//    void (^_completion)(Card*);
+    UIView *_viewSegmented;
 }
 
 @synthesize card = _card;
 @synthesize fetchedResultsController = _fetchedResultsController;
 @synthesize segmentedControl = _segmentedControl;
 @synthesize cardImage = cardImage;
+@synthesize tblDetails = _tblDetails;
 @synthesize webView = _webView;
 @synthesize bottomToolbar = _bottomToolbar;
 @synthesize btnPrevious = _btnPrevious;
@@ -46,6 +48,33 @@
 @synthesize btnAddToCollection = _btnAddToCollection;
 @synthesize addToDeckButtonVisible = _addToDeckButtonVisible;
 @synthesize addToCollectionButtonVisible = _addToCollectionButtonVisible;
+
+-(void) setCard:(Card *)card
+{
+    _card = card;
+    
+    if (self.fetchedResultsController)
+    {
+        id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
+        NSInteger index = [sectionInfo.objects indexOfObject:self.card];
+        self.navigationItem.title = [NSString stringWithFormat:@"%tu of %tu", index+1, sectionInfo.objects.count];
+
+        // download next four card images
+        for (int i = 0; i < 5; i++)
+        {
+            if (index+i <= sectionInfo.objects.count-1)
+            {
+                Card *card = sectionInfo.objects[index+i];
+                [[FileManager sharedInstance] downloadCardImage:card];
+            }
+        }
+    }
+    else
+    {
+        self.navigationItem.title = @"1 of 1";
+    }
+
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -64,21 +93,29 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    CGFloat dX = 10;
-    CGFloat dY = [UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height+10;
-    CGFloat dWidth = self.view.frame.size.width-20;
-    CGFloat dHeight = 30;
+    CGFloat dX = 0;
+    CGFloat dY = 0;
+    CGFloat dWidth = self.view.frame.size.width;
+    CGFloat dHeight = self.view.frame.size.height-44;
+    
+    self.tblDetails = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)
+                                                   style:UITableViewStylePlain];
+    self.tblDetails.delegate = self;
+    self.tblDetails.dataSource = self;
+    [self.tblDetails registerNib:[UINib nibWithNibName:@"SearchResultsTableViewCell" bundle:nil]
+          forCellReuseIdentifier:@"Cell1"];
+    
     self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Card", @"Details", @"Pricing",]];
-    self.segmentedControl.frame = CGRectMake(dX, dY, dWidth, dHeight);
+    self.segmentedControl.frame = CGRectMake(dX+10, dY+7, dWidth-20, 30);
     [self.segmentedControl addTarget:self
                               action:@selector(switchView)
                     forControlEvents:UIControlEventValueChanged];
-    self.segmentedControl.selectedSegmentIndex = 0;
-    
     dHeight = 44;
-    dX = 0;
+    self.segmentedControl.selectedSegmentIndex = 0;
+    _viewSegmented = [[UIView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
+    [_viewSegmented addSubview:self.segmentedControl];
+    
     dY = self.view.frame.size.height - dHeight;
-    dWidth = self.view.frame.size.width;
     self.bottomToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
 
     
@@ -112,8 +149,7 @@
     
     self.bottomToolbar.items = arrButtons;
 
-    self.view.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:self.segmentedControl];
+    [self.view addSubview:self.tblDetails];
     [self.view addSubview:self.bottomToolbar];
 
     self.btnPrevious = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"up4.png"]
@@ -141,7 +177,6 @@
         }
     }
     
-    [self switchView];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:kCardDownloadCompleted
@@ -178,7 +213,7 @@
         
         Card *card = sectionInfo.objects[index];
         [self setCard:card];
-        [self switchView];
+        [self.tblDetails reloadData];
     }
 }
 
@@ -222,7 +257,7 @@
     
     Card *card = sectionInfo.objects[index];
     [self setCard:card];
-    [self switchView];
+    [self.tblDetails reloadData];
 }
 
 -(void) btnNextTapped:(id) sender
@@ -238,7 +273,7 @@
     
     Card *card = sectionInfo.objects[index];
     [self setCard:card];
-    [self switchView];
+    [self.tblDetails reloadData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -254,86 +289,7 @@
 
 -(void) switchView
 {
-    CGFloat dX = 0;
-    CGFloat dY = self.segmentedControl.frame.origin.y + self.segmentedControl.frame.size.height +10;
-    CGFloat dWidth = self.view.frame.size.width;
-    CGFloat dHeight = self.view.frame.size.height - dY - self.bottomToolbar.frame.size.height;
-    
-    [self.cardImage removeFromSuperview];
-    [self.webView removeFromSuperview];
-    
-    if (self.fetchedResultsController)
-    {
-        id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
-        NSInteger index = [sectionInfo.objects indexOfObject:self.card];
-        self.navigationItem.title = [NSString stringWithFormat:@"%tu of %tu", index+1, sectionInfo.objects.count];
-        
-        // download next four card images
-        for (int i = 0; i < 5; i++)
-        {
-            if (index+i <= sectionInfo.objects.count-1)
-            {
-                Card *card = sectionInfo.objects[index+i];
-                [[FileManager sharedInstance] downloadCardImage:card];
-            }
-        }
-    }
-    else
-    {
-        self.navigationItem.title = @"1 of 1";
-    }
-    
-    switch (self.segmentedControl.selectedSegmentIndex)
-    {
-        case 0:
-        {
-            self.cardImage = [[UIImageView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
-            self.cardImage.backgroundColor = [UIColor grayColor];
-            [self.cardImage setUserInteractionEnabled:YES];
-            UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
-            UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
-            
-            // Setting the swipe direction.
-            [swipeLeft setDirection:UISwipeGestureRecognizerDirectionLeft];
-            [swipeRight setDirection:UISwipeGestureRecognizerDirectionRight];
-            
-            // Adding the swipe gesture on image view
-            [self.cardImage addGestureRecognizer:swipeLeft];
-            [self.cardImage addGestureRecognizer:swipeRight];
-            
-            [self.view addSubview:self.cardImage];
-            
-            [self displayCard];
-            break;
-        }
-            
-        case 1:
-        {
-            self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
-            self.webView.delegate = self;
-            [self.view addSubview:self.webView];
-            
-            MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.webView];
-            [self.view addSubview:hud];
-            hud.delegate = self;
-            [hud showWhileExecuting:@selector(displayDetails) onTarget:self withObject:nil animated:NO];
-            break;
-        }
-        case 2:
-        {
-            
-            
-            self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
-            self.webView.delegate = self;
-            [self.view addSubview:self.webView];
-            
-            MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.webView];
-            [self.view addSubview:hud];
-            hud.delegate = self;
-            [hud showWhileExecuting:@selector(displayPricing) onTarget:self withObject:nil animated:NO];
-            break;
-        }
-    }
+    [self.tblDetails reloadData];
 }
 
 -(void) loadCardImage:(id) sender
@@ -444,36 +400,10 @@
     [html appendFormat:@"<html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"%@/style.css\"></head><body>", [[NSBundle mainBundle] bundlePath]];
     [html appendFormat:@"<table>"];
     
-    [html appendFormat:@"<tr><td><div class=\"cardTitle\">%@</div></td></tr>", self.card.name];
-    
-    if (self.card.manaCost)
-    {
-        [html appendFormat:@"<tr><td>%@</td></tr>", [self replaceSymbolsInText:self.card.manaCost]];
-        [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
-    }
-    
     if (self.card.cmc)
     {
         [html appendFormat:@"<tr><td><strong>Converted Mana Cost</strong></td></tr>"];
         [html appendFormat:@"<tr><td>%@</td></tr>", [self replaceSymbolsInText:[NSString stringWithFormat:@"{%@}", self.card.cmc]]];
-        [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
-    }
-    
-    [html appendFormat:@"<tr><td><strong>Type</strong></td></tr>"];
-    [html appendFormat:@"<tr><td>%@</td></tr>", self.card.type];
-    [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
-    
-    if (self.card.power || self.card.toughness)
-    {
-        [html appendFormat:@"<tr><td><strong>Power/Toughness</strong></td></tr>"];
-        [html appendFormat:@"<tr><td>%@/%@</td></tr>", self.card.power, self.card.toughness];
-        [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
-    }
-    
-    if ([self.card.types containsObject:[CardType MR_findFirstByAttribute:@"name" withValue:@"Planeswalker"]])
-    {
-        [html appendFormat:@"<tr><td><strong>Planeswalker Loyalty</strong></td></tr>"];
-        [html appendFormat:@"<tr><td>%@</td></tr>", self.card.loyalty];
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
     
@@ -509,10 +439,6 @@
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
     
-    [html appendFormat:@"<tr><td><strong>Rarity</strong></td></tr>"];
-    [html appendFormat:@"<tr><td><table><tr><td><img src=\"%@/%@/%@/48.png\" width=\"24\" height=\"20\" border=\"0\" /></td><td>%@ - %@</td></tr></table></td></tr>", setPath, self.card.set.code, [[Database sharedInstance] cardRarityIndex:self.card], self.card.set.name, self.card.rarity.name];
-    [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
-
     [html appendFormat:@"<tr><td><strong>All Sets</strong></td></tr>"];
     [html appendFormat:@"<tr><td><table>"];
     for (Set *set in [[self.card.printings allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"releaseDate" ascending:YES]]])
@@ -632,16 +558,10 @@
     }
     
     NSMutableString *html = [[NSMutableString alloc] init];
-    NSString *setPath = [NSString stringWithFormat:@"%@/images/set", [[NSBundle mainBundle] bundlePath]];
     
     [html appendFormat:@"<html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"%@/style.css\"></head><body>", [[NSBundle mainBundle] bundlePath]];
     [html appendFormat:@"<center><table width=\"100%%\">"];
 
-    [html appendFormat:@"<tr><td colspan=\"4\"><div class=\"cardTitle\">%@</div></td></tr>", self.card.name];
-    
-    [html appendFormat:@"<tr><td colspan=\"4\"><table><tr><td><img src=\"%@/%@/%@/48.png\" width=\"24\" height=\"20\" border=\"0\" /></td><td>%@ - %@</td></tr></table></td></tr>", setPath, self.card.set.code, [[Database sharedInstance] cardRarityIndex:self.card], self.card.set.name, self.card.rarity.name];
-    [html appendFormat:@"<tr><td colspan=\"4\">&nbsp;</td></tr>"];
-    
     [html appendFormat:@"<tr>"];
     [html appendFormat:@"<td align=\"center\" bgcolor=\"red\" width=\"25%%\"><strong><font color=\"white\">Low</font></strong></td>"];
     [html appendFormat:@"<td align=\"center\" bgcolor=\"blue\" width=\"25%%\"><strong><font color=\"white\">Median</font></strong></td>"];
@@ -820,7 +740,7 @@
         Card *card = [self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
     
         [self setCard:card];
-        [self switchView];
+        [self.tblDetails reloadData];
     }
     return [NSURL fileURLWithPath:[[FileManager sharedInstance] cardPath:self.card]];
 }
@@ -834,9 +754,169 @@
         Card *card = [self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
     
         [self setCard:card];
-        [self switchView];
+        [self.tblDetails reloadData];
     }
     return [UIImage imageWithContentsOfFile:[[FileManager sharedInstance] cardPath:self.card]];
+}
+
+#pragma mark - UITableView
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section == 1)
+    {
+        return 44;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if (section == 1)
+    {
+        return _viewSegmented;
+    }
+    else
+    {
+        return nil;
+    }
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 2;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    int rows = 1;
+    
+    if (section != 0)
+    {
+        switch (self.segmentedControl.selectedSegmentIndex)
+        {
+            case 1:
+            {
+                return 1;
+            }
+            case 2:
+            {
+                return 1;
+            }
+        }
+    }
+    
+    return rows;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
+{
+    CGFloat height = 44;
+    
+    if (indexPath.section == 0)
+    {
+        height = SEARCH_RESULTS_CELL_HEIGHT;
+    }
+    else if (indexPath.section == 1)
+    {
+//        switch (self.segmentedControl.selectedSegmentIndex)
+//        {
+//            case 0:
+//            {
+                height = self.view.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height - self.navigationController.navigationBar.frame.size.height - SEARCH_RESULTS_CELL_HEIGHT - _viewSegmented.frame.size.height - self.bottomToolbar.frame.size.height;
+//                break;
+//            }
+//        }
+    }
+    
+    return height;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell;
+    [self.webView removeFromSuperview];
+    [self.cardImage removeFromSuperview];
+    
+    CGFloat dX = 0;
+    CGFloat dY = 0;
+    CGFloat dWidth = self.view.frame.size.width;
+    CGFloat dHeight = self.view.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height - self.navigationController.navigationBar.frame.size.height - SEARCH_RESULTS_CELL_HEIGHT - _viewSegmented.frame.size.height - self.bottomToolbar.frame.size.height;
+    
+    if (indexPath.section == 0)
+    {
+        cell = (SearchResultsTableViewCell*)[tableView dequeueReusableCellWithIdentifier:@"Cell1"];
+        
+        if (!cell)
+        {
+            cell = [[SearchResultsTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                                     reuseIdentifier:@"Cell1"];
+        }
+        
+        [((SearchResultsTableViewCell*)cell) displayCard:self.card];
+        tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    }
+
+    else
+    {
+        cell = [tableView dequeueReusableCellWithIdentifier:@"Cell2"];
+        if (cell == nil)
+        {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Cell2"];
+            cell.accessoryType = UITableViewCellAccessoryNone;
+        }
+        
+        switch (self.segmentedControl.selectedSegmentIndex)
+        {
+            case 0:
+            {
+                tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+
+                self.cardImage = [[UIImageView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
+                self.cardImage.backgroundColor = [UIColor grayColor];
+                [self.cardImage setUserInteractionEnabled:YES];
+                UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
+                UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
+                [swipeLeft setDirection:UISwipeGestureRecognizerDirectionLeft];
+                [swipeRight setDirection:UISwipeGestureRecognizerDirectionRight];
+                [self.cardImage addGestureRecognizer:swipeLeft];
+                [self.cardImage addGestureRecognizer:swipeRight];
+                [cell.contentView addSubview:self.cardImage];
+                [self displayCard];
+                break;
+            }
+            case 1:
+            {
+                tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+                self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
+                self.webView.delegate = self;
+                [cell.contentView addSubview:self.webView];
+                
+                MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.webView];
+                [self.tblDetails addSubview:hud];
+                hud.delegate = self;
+                [hud showWhileExecuting:@selector(displayDetails) onTarget:self withObject:nil animated:NO];
+                break;
+            }
+            case 2:
+            {
+                tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+                self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
+                self.webView.delegate = self;
+                [cell.contentView addSubview:self.webView];
+
+                MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.webView];
+                [self.tblDetails addSubview:hud];
+                hud.delegate = self;
+                [hud showWhileExecuting:@selector(displayPricing) onTarget:self withObject:nil animated:NO];
+                break;
+            }
+        }
+    }
+    
+    return cell;
 }
 
 @end
