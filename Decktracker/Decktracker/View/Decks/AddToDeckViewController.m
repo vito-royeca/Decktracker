@@ -7,6 +7,7 @@
 //
 
 #import "AddToDeckViewController.h"
+#import "CardDetailsViewController.h"
 #import "FileManager.h"
 #import "SearchResultsTableViewCell.h"
 
@@ -16,14 +17,18 @@
 
 @implementation AddToDeckViewController
 {
-    int _selectedDeckIndex;
     NSMutableDictionary *_currentDeck;
 }
 
-@synthesize arrDecks = _arrDecks;
 @synthesize tblAddTo = _tblAddTo;
 @synthesize btnNew = _btnNew;
+@synthesize btnShowCard  =_btnShowCard;
 @synthesize bottomToolbar = _bottomToolbar;
+@synthesize arrDecks = _arrDecks;
+@synthesize card = _card;
+@synthesize selectedDeckIndex = _selectedDeckIndex;
+@synthesize newButtonVisible = _newButtonVisible;
+@synthesize showCardButtonVisible = _showCardButtonVisible;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -31,6 +36,8 @@
     if (self)
     {
         // Custom initialization
+        self.newButtonVisible = NO;
+        self.showCardButtonVisible = NO;
     }
     return self;
 }
@@ -39,10 +46,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    NSArray *arrFiles = [[FileManager sharedInstance] findFilesAtPath:@"/Decks"];
-    self.arrDecks = [[NSMutableArray alloc] initWithArray:arrFiles];
-    _selectedDeckIndex = -1;
     [self loadCurrentDeck];
     
     CGFloat dX = 0;
@@ -67,7 +70,23 @@
                                                    style:UIBarButtonItemStylePlain
                                                   target:self
                                                   action:@selector(btnNewTapped:)];
-    self.bottomToolbar.items = @[self.btnNew];
+    self.btnShowCard = [[UIBarButtonItem alloc] initWithTitle:@"Show Card"
+                                                        style:UIBarButtonItemStylePlain
+                                                       target:self
+                                                       action:@selector(btnShowCardTapped:)];
+    NSMutableArray *arrButtons = [[NSMutableArray alloc] init];
+    [arrButtons addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                       target:nil
+                                                                        action:nil]];
+    if (self.newButtonVisible)
+    {
+        [arrButtons insertObject:self.btnNew atIndex:0];
+    }
+    if (self.showCardButtonVisible)
+    {
+        [arrButtons addObject:self.btnShowCard];
+    }
+    self.bottomToolbar.items = arrButtons;
     
     [self.view addSubview:self.tblAddTo];
     [self.view addSubview:self.bottomToolbar];
@@ -95,6 +114,18 @@
                                            otherButtonTitles:@"OK", nil];
     alert.alertViewStyle = UIAlertViewStylePlainTextInput;
     [alert show];
+}
+
+-(void) btnShowCardTapped:(id) sender
+{
+    CardDetailsViewController *view = [[CardDetailsViewController alloc] init];
+    Card *card = self.card;
+    
+    view.fetchedResultsController = nil;
+    view.addToDeckButtonVisible = NO;
+    [view setCard:card];
+    
+    [self.navigationController pushViewController:view animated:YES];
 }
 
 -(void) addCardToDeck:(NSString*) board withValue:(int) newValue
@@ -146,9 +177,9 @@
 
 -(void) loadCurrentDeck
 {
-    if (self.arrDecks.count > 0 && _selectedDeckIndex >= 0)
+    if (self.arrDecks.count > 0 && self.selectedDeckIndex >= 0)
     {
-        NSString *path = [NSString stringWithFormat:@"/Decks/%@.json", self.arrDecks[_selectedDeckIndex]];
+        NSString *path = [NSString stringWithFormat:@"/Decks/%@.json", self.arrDecks[self.selectedDeckIndex]];
         
         _currentDeck = [[NSMutableDictionary alloc] initWithDictionary:[[FileManager sharedInstance] loadFileAtPath:path]];
     }
@@ -209,7 +240,7 @@
         NSArray *arrFiles = [[FileManager sharedInstance] findFilesAtPath:@"/Decks"];
         self.arrDecks = [[NSMutableArray alloc] initWithArray:arrFiles];
         
-        _selectedDeckIndex = 0;
+        self.selectedDeckIndex = 0;
         [self loadCurrentDeck];
         
         // send to Google Analytics
@@ -334,7 +365,7 @@
         {
             cell.textLabel.text = self.arrDecks[indexPath.row];
         }
-        cell.accessoryType = indexPath.row == _selectedDeckIndex ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+        cell.accessoryType = indexPath.row == self.selectedDeckIndex ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
     }
     
     return cell;
@@ -344,7 +375,7 @@
 {
     if (indexPath.section == 3)
     {
-        _selectedDeckIndex = (int)indexPath.row;
+        self.selectedDeckIndex = (int)indexPath.row;
         [self loadCurrentDeck];
     }
     
@@ -354,7 +385,7 @@
 #pragma mark - 
 -(void) stepperChanged:(QuantityTableViewCell*) cell withValue:(int) value
 {
-    if (!_currentDeck || _selectedDeckIndex < 0)
+    if (!_currentDeck || self.selectedDeckIndex < 0)
     {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"You may need to create one Deck or select a Deck from the list."

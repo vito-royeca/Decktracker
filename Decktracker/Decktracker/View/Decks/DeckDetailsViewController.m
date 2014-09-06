@@ -8,8 +8,10 @@
 
 #import "DeckDetailsViewController.h"
 #import "JJJ/JJJ.h"
+#import "AddToDeckViewController.h"
 #import "Database.h"
 #import "FileManager.h"
+#import "LimitedSearchViewController.h"
 #import "SearchResultsTableViewCell.h"
 
 @implementation DeckDetailsViewController
@@ -41,8 +43,8 @@
     // Do any additional setup after loading the view.
     
     _arrSections = @[@"Lands", @"Creatures", @"Other Spells", @"Sideboard"];
-    [self loadDeck];
-    
+//    [self loadDeck];
+
     CGFloat dX = 0;
     CGFloat dY = 0;
     CGFloat dWidth = self.view.frame.size.width;
@@ -53,7 +55,7 @@
     self.tblCards.delegate = self;
     self.tblCards.dataSource = self;
     [self.tblCards registerNib:[UINib nibWithNibName:@"SearchResultsTableViewCell" bundle:nil]
-          forCellReuseIdentifier:@"Cell"];
+          forCellReuseIdentifier:@"Cell1"];
     
     dHeight = 44;
     dY = self.view.frame.size.height - dHeight;
@@ -62,6 +64,12 @@
     
     [self.view addSubview:self.tblCards];
     [self.view addSubview:self.bottomToolbar];
+}
+
+-(void) viewDidAppear:(BOOL)animated
+{
+    [self loadDeck];
+    [self.tblCards reloadData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -122,6 +130,43 @@
     self.navigationItem.title = [NSString stringWithFormat:@"%@ / %d Cards", deck[@"name"], totalCards];
 }
 
+-(UITableViewCell*) createSearchResultsTableCell:(NSDictionary*) dict
+{
+    SearchResultsTableViewCell *cell = [self.tblCards dequeueReusableCellWithIdentifier:@"Cell1"];
+    if (cell == nil)
+    {
+        cell = [[SearchResultsTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                                 reuseIdentifier:@"Cell1"];
+    }
+    
+    [cell displayCard:dict[@"card"]];
+    [cell addBadge:[dict[@"qty"] intValue]];
+    return cell;
+}
+
+-(UITableViewCell*) createAddTableCell:(NSString*) text
+{
+    UITableViewCell *cell = [self.tblCards dequeueReusableCellWithIdentifier:@"Cell2"];
+    
+    if (!cell)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                      reuseIdentifier:@"Cell2"];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
+    
+    cell.textLabel.text = text;
+    return cell;
+}
+
+-(void) showLimitedSearch:(NSString*) title
+{
+    LimitedSearchViewController *view = [[LimitedSearchViewController alloc] init];
+    
+    [self.navigationController pushViewController:view animated:YES];
+//    view.searchBar.placeholder = title;
+}
+
 -(BOOL)hidesBottomBarWhenPushed
 {
     return YES;
@@ -130,7 +175,49 @@
 #pragma mark - UITableView
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return SEARCH_RESULTS_CELL_HEIGHT;
+    NSInteger rows = [self tableView:tableView numberOfRowsInSection:indexPath.section];
+    CGFloat height = 44;
+    
+    if (rows > 1)
+    {
+        switch (indexPath.section)
+        {
+            case 0:
+            {
+                if (indexPath.row < _arrLands.count)
+                {
+                    height = SEARCH_RESULTS_CELL_HEIGHT;
+                }
+                break;
+            }
+            case 1:
+            {
+                if (indexPath.row < _arrCreatures.count)
+                {
+                    height = SEARCH_RESULTS_CELL_HEIGHT;
+                }
+                break;
+            }
+            case 2:
+            {
+                if (indexPath.row < _arrOtherSpells.count)
+                {
+                    height = SEARCH_RESULTS_CELL_HEIGHT;
+                }
+                break;
+            }
+            case 3:
+            {
+                if (indexPath.row < _arrSideboard.count)
+                {
+                    height = SEARCH_RESULTS_CELL_HEIGHT;
+                }
+                break;
+            }
+        }
+    }
+    
+    return height;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -187,20 +274,20 @@
     {
         case 0:
         {
-            return _arrLands.count;
+            return _arrLands.count + 1;
             
         }
         case 1:
         {
-            return _arrCreatures.count;
+            return _arrCreatures.count + 1;
         }
         case 2:
         {
-            return _arrOtherSpells.count;
+            return _arrOtherSpells.count + 1;
         }
         case 3:
         {
-            return _arrSideboard.count;
+            return _arrSideboard.count + 1;
         }
         default:
         {
@@ -211,59 +298,151 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+    NSInteger rows = [self tableView:tableView numberOfRowsInSection:indexPath.section];
+    UITableViewCell *cell;
     
-    SearchResultsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil)
+    if (rows > 1)
     {
-        cell = [[SearchResultsTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-                                                 reuseIdentifier:CellIdentifier];
+        switch (indexPath.section)
+        {
+            case 0:
+            {
+                if (indexPath.row < _arrLands.count)
+                {
+                    NSDictionary *dict = _arrLands[indexPath.row];
+                    cell = [self createSearchResultsTableCell:dict];
+                }
+                else
+                {
+                    cell = [self createAddTableCell:[NSString stringWithFormat:@"Add %@", _arrSections[indexPath.section]]];
+                }
+                break;
+            }
+            case 1:
+            {
+                if (indexPath.row < _arrCreatures.count)
+                {
+                    NSDictionary *dict = _arrCreatures[indexPath.row];
+                    cell = [self createSearchResultsTableCell:dict];
+                }
+                else
+                {
+                    cell = [self createAddTableCell:[NSString stringWithFormat:@"Add %@", _arrSections[indexPath.section]]];
+                }
+                break;
+            }
+            case 2:
+            {
+                if (indexPath.row < _arrOtherSpells.count)
+                {
+                    NSDictionary *dict = _arrOtherSpells[indexPath.row];
+                    cell = [self createSearchResultsTableCell:dict];
+                }
+                else
+                {
+                    cell = [self createAddTableCell:[NSString stringWithFormat:@"Add %@", _arrSections[indexPath.section]]];
+                }
+                break;
+            }
+            case 3:
+            {
+                if (indexPath.row < _arrSideboard.count)
+                {
+                    NSDictionary *dict = _arrSideboard[indexPath.row];
+                    cell = [self createSearchResultsTableCell:dict];
+                }
+                else
+                {
+                    cell = [self createAddTableCell:[NSString stringWithFormat:@"Add %@", _arrSections[indexPath.section]]];
+                }
+                break;
+            }
+        }
     }
-    
-    Card *card;
-    int badgeValue = 0;
-    switch (indexPath.section)
+    else
     {
-        case 0:
-        {
-            NSDictionary *dict = _arrLands[indexPath.row];
-            
-            card = dict[@"card"];
-            badgeValue = [dict[@"qty"] intValue];
-            break;
-        }
-        case 1:
-        {
-            NSDictionary *dict = _arrCreatures[indexPath.row];
-            
-            card = dict[@"card"];
-            badgeValue = [dict[@"qty"] intValue];
-            
-            
-            break;
-        }
-        case 2:
-        {
-            NSDictionary *dict = _arrOtherSpells[indexPath.row];
-            
-            card = dict[@"card"];
-            badgeValue = [dict[@"qty"] intValue];
-            break;
-        }
-        case 3:
-        {
-            NSDictionary *dict = _arrSideboard[indexPath.row];
-            
-            card = dict[@"card"];
-            badgeValue = [dict[@"qty"] intValue];
-            break;
-        }
+        cell = [self createAddTableCell:[NSString stringWithFormat:@"Add %@", _arrSections[indexPath.section]]];
     }
-    
-    [cell displayCard:card];
-    [cell addBadge:badgeValue];
     
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSInteger rows = [self tableView:tableView numberOfRowsInSection:indexPath.section];
+    
+    if (rows > 1)
+    {
+        Card *card;
+        
+        switch (indexPath.section)
+        {
+            case 0:
+            {
+                if (indexPath.row < _arrLands.count)
+                {
+                    card = _arrLands[indexPath.row][@"card"];
+                }
+                else
+                {
+                    [self showLimitedSearch:[NSString stringWithFormat:@"Search %@", _arrSections[indexPath.section]]];
+                }
+                break;
+            }
+            case 1:
+            {
+                if (indexPath.row < _arrCreatures.count)
+                {
+                    card = _arrCreatures[indexPath.row][@"card"];
+                }
+                else
+                {
+                    [self showLimitedSearch:[NSString stringWithFormat:@"Search %@", _arrSections[indexPath.section]]];
+                }
+                break;
+            }
+            case 2:
+            {
+                if (indexPath.row < _arrOtherSpells.count)
+                {
+                    card = _arrOtherSpells[indexPath.row][@"card"];
+                }
+                else
+                {
+                    [self showLimitedSearch:[NSString stringWithFormat:@"Search %@", _arrSections[indexPath.section]]];
+                }
+                break;
+            }
+            case 3:
+            {
+                if (indexPath.row < _arrSideboard.count)
+                {
+                    card = _arrSideboard[indexPath.row][@"card"];
+                }
+                else
+                {
+                    [self showLimitedSearch:[NSString stringWithFormat:@"Search %@", _arrSections[indexPath.section]]];
+                }
+                break;
+            }
+        }
+        
+        if (card)
+        {
+            AddToDeckViewController *view = [[AddToDeckViewController alloc] init];
+        
+            view.arrDecks = [[NSMutableArray alloc] initWithArray:@[self.dictDeck[@"name"]]];
+            view.selectedDeckIndex = 0;
+            view.card = card;
+            view.showCardButtonVisible = YES;
+            [self.navigationController pushViewController:view animated:YES];
+        }
+    }
+    
+    else
+    {
+        [self showLimitedSearch:[NSString stringWithFormat:@"Search %@", _arrSections[indexPath.section]]];
+    }
 }
 
 @end

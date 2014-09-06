@@ -76,6 +76,11 @@ static FileManager *_me;
 
 -(void) downloadCardImage:(Card*) card
 {
+    if (!card)
+    {
+        return;
+    }
+
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths firstObject];
     NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/card/%@/", card.set.code]];
@@ -117,6 +122,11 @@ static FileManager *_me;
 
 -(void) downloadCropImage:(Card*) card
 {
+    if (!card)
+    {
+        return;
+    }
+    
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths firstObject];
     NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/card/%@/", card.set.code]];

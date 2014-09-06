@@ -44,10 +44,13 @@
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
     [[UINavigationBar appearance] setTitleTextAttributes:@{
         NSForegroundColorAttributeName : [UIColor whiteColor]}];
-    
     [[UITabBar appearance] setBarTintColor:UIColorFromRGB(0x691F01)];
     [[UITabBar appearance] setTintColor:[UIColor whiteColor]];
     [[UISearchBar appearance] setTintColor:UIColorFromRGB(0x691F01)];
+    
+    // remove the "< Back" title in back buttons
+    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60)
+                                                         forBarMetrics:UIBarMetricsDefault];
     
     UIViewController *viewController;
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone ||

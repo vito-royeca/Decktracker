@@ -44,6 +44,8 @@
 @synthesize btnAction = _btnAction;
 @synthesize btnAddToDeck = _btnAddToDeck;
 @synthesize btnAddToCollection = _btnAddToCollection;
+@synthesize addToDeckButtonVisible = _addToDeckButtonVisible;
+@synthesize addToCollectionButtonVisible = _addToCollectionButtonVisible;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -51,6 +53,8 @@
     if (self)
     {
         // Custom initialization
+        self.addToDeckButtonVisible = NO;
+        self.addToCollectionButtonVisible = NO;
     }
     return self;
 }
@@ -89,12 +93,24 @@
                                                                style:UIBarButtonItemStylePlain
                                                               target:self
                                                               action:@selector(btnAddToCollectionTapped:)];
+    NSMutableArray *arrButtons = [[NSMutableArray alloc] init];
+    [arrButtons addObject:self.btnAction];
+    if (self.addToDeckButtonVisible)
+    {
+        [arrButtons addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                            target:nil
+                                                                            action:nil]];
+        [arrButtons addObject:self.btnAddToDeck];
+    }
+    if (self.addToCollectionButtonVisible)
+    {
+        [arrButtons addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                            target:nil
+                                                                            action:nil]];
+        [arrButtons addObject:self.btnAddToCollection];
+    }
     
-    self.bottomToolbar.items = @[self.btnAction,
-                                 [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-                                                                                target:nil
-                                                                                action:nil],
-                                 self.btnAddToDeck];
+    self.bottomToolbar.items = arrButtons;
 
     self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.segmentedControl];
@@ -180,8 +196,11 @@
 -(void) btnAddToDeckTapped:(id) sender
 {
     AddToDeckViewController *view = [[AddToDeckViewController alloc] init];
+    NSArray *arrFiles = [[FileManager sharedInstance] findFilesAtPath:@"/Decks"];
     
+    view.arrDecks = [[NSMutableArray alloc] initWithArray:arrFiles];
     view.card = self.card;
+    view.newButtonVisible = YES;
     [self.navigationController pushViewController:view animated:YES];
 }
 

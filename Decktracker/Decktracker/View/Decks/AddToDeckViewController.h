@@ -14,9 +14,13 @@
 
 @property(strong,nonatomic) UITableView *tblAddTo;
 @property(strong,nonatomic) UIBarButtonItem *btnNew;
+@property(strong,nonatomic) UIBarButtonItem *btnShowCard;
 @property(strong,nonatomic) UIToolbar *bottomToolbar;
 
 @property(strong,nonatomic) NSMutableArray *arrDecks;
 @property(strong,nonatomic) Card *card;
+@property(nonatomic) int selectedDeckIndex;
+@property(nonatomic) BOOL newButtonVisible;
+@property(nonatomic) BOOL showCardButtonVisible;
 
 @end

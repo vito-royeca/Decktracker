@@ -22,26 +22,6 @@
 @synthesize tblDecks = _tblDecks;
 @synthesize arrDecks = _arrDecks;
 
-- (void)setTitle:(NSString *)title
-{
-    [super setTitle:title];
-    UILabel *titleView = (UILabel *)self.navigationItem.titleView;
-    
-    if (!titleView)
-    {
-        titleView = [[UILabel alloc] initWithFrame:CGRectZero];
-        titleView.backgroundColor = [UIColor clearColor];
-        titleView.font = [UIFont boldSystemFontOfSize:20.0];
-        titleView.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
-        
-        titleView.textColor = [UIColor whiteColor];
-        
-        self.navigationItem.titleView = titleView;
-    }
-    titleView.text = title;
-    [titleView sizeToFit];
-}
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -59,9 +39,6 @@
     
     _selectedRow = 0;
 
-    NSArray *arrFiles = [[FileManager sharedInstance] findFilesAtPath:@"/Decks"];
-    self.arrDecks = [[NSMutableArray alloc] initWithArray:arrFiles];
-    
     CGFloat dX = 0;
     CGFloat dY = 0;//[UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height;
     CGFloat dWidth = self.view.frame.size.width;
@@ -85,6 +62,13 @@
     [tracker set:kGAIScreenName
            value:@"Decks"];
     [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+}
+
+-(void) viewDidAppear:(BOOL)animated
+{
+    NSArray *arrFiles = [[FileManager sharedInstance] findFilesAtPath:@"/Decks"];
+    self.arrDecks = [[NSMutableArray alloc] initWithArray:arrFiles];
+    [self.tblDecks reloadData];
 }
 
 -(void) btnAddTapped:(id) sender
@@ -116,8 +100,6 @@
                                    @"mainBoard" : @[],
                                    @"sideBoard" : @[]};
             [[FileManager sharedInstance] saveData:dict atPath:[NSString stringWithFormat:@"/Decks/%@.json", dict[@"name"]]];
-            NSArray *arrFiles = [[FileManager sharedInstance] findFilesAtPath:@"/Decks"];
-            self.arrDecks = [[NSMutableArray alloc] initWithArray:arrFiles];
             
             // send to Google Analytics
             id tracker = [[GAI sharedInstance] defaultTracker];
@@ -125,6 +107,12 @@
                                                                   action:nil
                                                                    label:@"New Deck"
                                                                    value:nil] build]];
+            
+            DeckDetailsViewController *view = [[DeckDetailsViewController alloc] init];
+            NSDictionary *deck = [[FileManager sharedInstance] loadFileAtPath:[NSString stringWithFormat:@"/Decks/%@.json", dict[@"name"]]];
+            view.dictDeck = deck;
+            [self.navigationController pushViewController:view animated:YES];
+            
         }
         
         else if (alertView.tag == 1)
@@ -140,10 +128,8 @@
                                                                   action:nil
                                                                    label:@"Delete"
                                                                    value:nil] build]];
-
+            [self.tblDecks reloadData];
         }
-        
-        [self.tblDecks reloadData];
     }
 }
 

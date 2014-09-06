@@ -74,10 +74,6 @@
     self.navigationItem.titleView = self.searchBar;
     [self.view addSubview:self.tblResults];
     
-    // remove the "< Back" title in back buttons
-    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60)
-                                                         forBarMetrics:UIBarMetricsDefault];
-    
     UIBarButtonItem *btnAdvance = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"filter.png"]
                                                                    style:UIBarButtonItemStylePlain
                                                                   target:self
@@ -157,11 +153,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     CardDetailsViewController *view = [[CardDetailsViewController alloc] init];
     Card *card = [self.fetchedResultsController objectAtIndexPath:indexPath];
     
     view.fetchedResultsController = self.fetchedResultsController;
+    view.addToDeckButtonVisible = YES;
     [view setCard:card];
     
     [self.navigationController pushViewController:view animated:YES];

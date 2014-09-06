@@ -27,4 +27,7 @@
 @property(strong, nonatomic) UIBarButtonItem *btnAddToDeck;
 @property(strong, nonatomic) UIBarButtonItem *btnAddToCollection;
 
+@property(nonatomic) BOOL addToDeckButtonVisible;
+@property(nonatomic) BOOL addToCollectionButtonVisible;
+
 @end
