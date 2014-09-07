@@ -68,6 +68,14 @@
 
 -(void) viewDidAppear:(BOOL)animated
 {
+    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:hud];
+    hud.delegate = self;
+    [hud showWhileExecuting:@selector(updateDeck) onTarget:self withObject:nil animated:NO];
+}
+
+-(void) updateDeck
+{
     [self loadDeck];
     [self.tblCards reloadData];
 }
@@ -171,6 +179,12 @@
 -(BOOL)hidesBottomBarWhenPushed
 {
     return YES;
+}
+
+#pragma mark - MBProgressHUDDelegate methods
+- (void)hudWasHidden:(MBProgressHUD *)hud
+{
+	[hud removeFromSuperview];
 }
 
 #pragma mark - UITableView
@@ -450,22 +464,19 @@
         {
             case 0:
             {
-                
+                predicate = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", @"type", @"land"];
                 break;
             }
             case 1:
             {
-                
+                predicate = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", @"type", @"creature"];
                 break;
             }
             case 2:
             {
-                
-                break;
-            }
-            case 3:
-            {
-                
+                NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"NOT(%K CONTAINS[cd] %@)", @"type", @"land"];
+                NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"NOT(%K CONTAINS[cd] %@)", @"type", @"creature"];
+                predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[pred1, pred2]];
                 break;
             }
         }

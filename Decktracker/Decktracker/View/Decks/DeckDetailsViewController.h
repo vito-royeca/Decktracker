@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MBProgressHUD.h"
 
-@interface DeckDetailsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
+@interface DeckDetailsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, MBProgressHUDDelegate>
 
 @property(strong,nonatomic) NSDictionary *dictDeck;
 @property(strong,nonatomic) UITableView *tblCards;

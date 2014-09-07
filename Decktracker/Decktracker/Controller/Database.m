@@ -145,12 +145,26 @@ static Database *_me;
         if (query.length == 1)
         {
             NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"%K BEGINSWITH[cd] %@", @"name", query];
-            predicate2 = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, pred1]];
+            if (predicate)
+            {
+                predicate2 = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, pred1]];
+            }
+            else
+            {
+                predicate2 = pred1;
+            }
         }
         else
         {
             NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", @"name", query];
-            predicate2 = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, pred1]];
+            if (predicate)
+            {
+                predicate2 = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, pred1]];
+            }
+            else
+            {
+                predicate2 = pred1;
+            }
         }
     }
     NSManagedObjectContext *moc = [NSManagedObjectContext MR_defaultContext];
