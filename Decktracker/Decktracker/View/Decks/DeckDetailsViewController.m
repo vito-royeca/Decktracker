@@ -159,12 +159,13 @@
     return cell;
 }
 
--(void) showLimitedSearch:(NSString*) title
+-(void) showLimitedSearch:(NSPredicate*) predicate
 {
     LimitedSearchViewController *view = [[LimitedSearchViewController alloc] init];
     
+    view.predicate = predicate;
+    view.dictDeck = self.dictDeck;
     [self.navigationController pushViewController:view animated:YES];
-//    view.searchBar.placeholder = title;
 }
 
 -(BOOL)hidesBottomBarWhenPushed
@@ -370,6 +371,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger rows = [self tableView:tableView numberOfRowsInSection:indexPath.section];
+    NSPredicate *predicate;
     
     if (rows > 1)
     {
@@ -385,7 +387,7 @@
                 }
                 else
                 {
-                    [self showLimitedSearch:[NSString stringWithFormat:@"Search %@", _arrSections[indexPath.section]]];
+                    predicate = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", @"type", @"land"];
                 }
                 break;
             }
@@ -397,7 +399,7 @@
                 }
                 else
                 {
-                    [self showLimitedSearch:[NSString stringWithFormat:@"Search %@", _arrSections[indexPath.section]]];
+                    predicate = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", @"type", @"creature"];
                 }
                 break;
             }
@@ -409,7 +411,9 @@
                 }
                 else
                 {
-                    [self showLimitedSearch:[NSString stringWithFormat:@"Search %@", _arrSections[indexPath.section]]];
+                    NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"NOT(%K CONTAINS[cd] %@)", @"type", @"land"];
+                    NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"NOT(%K CONTAINS[cd] %@)", @"type", @"creature"];
+                    predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[pred1, pred2]];
                 }
                 break;
             }
@@ -418,10 +422,6 @@
                 if (indexPath.row < _arrSideboard.count)
                 {
                     card = _arrSideboard[indexPath.row][@"card"];
-                }
-                else
-                {
-                    [self showLimitedSearch:[NSString stringWithFormat:@"Search %@", _arrSections[indexPath.section]]];
                 }
                 break;
             }
@@ -437,11 +437,40 @@
             view.showCardButtonVisible = YES;
             [self.navigationController pushViewController:view animated:YES];
         }
+        
+        else
+        {
+            [self showLimitedSearch:predicate];
+        }
     }
     
     else
     {
-        [self showLimitedSearch:[NSString stringWithFormat:@"Search %@", _arrSections[indexPath.section]]];
+        switch (indexPath.section)
+        {
+            case 0:
+            {
+                
+                break;
+            }
+            case 1:
+            {
+                
+                break;
+            }
+            case 2:
+            {
+                
+                break;
+            }
+            case 3:
+            {
+                
+                break;
+            }
+        }
+        
+        [self showLimitedSearch:predicate];
     }
 }
 

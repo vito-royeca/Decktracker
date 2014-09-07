@@ -7,14 +7,35 @@
 //
 
 #import "LimitedSearchViewController.h"
+#import "AddToDeckViewController.h"
 #import "Card.h"
 #import "SearchResultsTableViewCell.h"
 
+#import "GAI.h"
+#import "GAIDictionaryBuilder.h"
+#import "GAIFields.h"
+
 @implementation LimitedSearchViewController
 
+@synthesize dictDeck = _dictDeck;
 @synthesize searchBar = _searchBar;
 @synthesize tblResults = _tblResults;
 @synthesize predicate = _predicate;
+@synthesize fetchedResultsController = _fetchedResultsController;
+
+- (NSFetchedResultsController *)fetchedResultsController
+{
+    if (_fetchedResultsController != nil)
+    {
+        return _fetchedResultsController;
+    }
+    
+    NSFetchedResultsController *nsfrc = [[Database sharedInstance] search:self.searchBar.text withPredicate:self.predicate];
+    
+    self.fetchedResultsController = nsfrc;
+    _fetchedResultsController.delegate = self;
+    return _fetchedResultsController;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -55,11 +76,52 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(void) viewDidAppear:(BOOL)animated
+{
+    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:hud];
+    hud.delegate = self;
+    [hud showWhileExecuting:@selector(doSearch) onTarget:self withObject:nil animated:NO];
+}
+
 #pragma mark - UISearchBarDelegate
 - (void)searchBarSearchButtonClicked:(UISearchBar *)bar
 {
-
+    if ([self.searchBar canResignFirstResponder])
+    {
+        [self.searchBar resignFirstResponder];
+    }
     
+    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:hud];
+    hud.delegate = self;
+    [hud showWhileExecuting:@selector(doSearch) onTarget:self withObject:nil animated:NO];
+    
+    // send to Google Analytics
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Simple Search"
+                                                          action:self.searchBar.text
+                                                           label:@"Run"
+                                                           value:nil] build]];
+}
+
+- (void) doSearch
+{
+    self.fetchedResultsController = nil;
+    
+    NSError *error;
+    if (![[self fetchedResultsController] performFetch:&error])
+    {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
+    
+    [self.tblResults reloadData];
+}
+
+#pragma mark - MBProgressHUDDelegate methods
+- (void)hudWasHidden:(MBProgressHUD *)hud
+{
+	[hud removeFromSuperview];
 }
 
 #pragma mark - UITableView
@@ -68,9 +130,31 @@
     return SEARCH_RESULTS_CELL_HEIGHT;
 }
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    NSInteger count = [[self.fetchedResultsController sections] count];
+	return count;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
+    
+	if (self.fetchedResultsController)
+    {
+        return [NSString stringWithFormat:@"%tu Results", [sectionInfo numberOfObjects]];
+    }
+    else
+    {
+        return nil;
+    }
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	return 1;
+	id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
+    
+	return [sectionInfo numberOfObjects];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -84,10 +168,108 @@
                                                  reuseIdentifier:CellIdentifier];
     }
     
-//    Card *card = [self.fetchedResultsController objectAtIndexPath:indexPath];
-//    [cell displayCard:card];
+    Card *card = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    [cell displayCard:card];
     
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    AddToDeckViewController *view = [[AddToDeckViewController alloc] init];
+    
+    view.arrDecks = [[NSMutableArray alloc] initWithArray:@[self.dictDeck[@"name"]]];
+    view.selectedDeckIndex = 0;
+    view.card = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    view.showCardButtonVisible = YES;
+    [self.navigationController pushViewController:view animated:YES];
+}
+
+#pragma mark - NSFetchedResultsControllerDelegate
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
+{
+    // The fetch controller is about to start sending change notifications, so prepare the table view for updates.
+    [self.tblResults beginUpdates];
+    NSLog(@"%d %s %s", __LINE__, __PRETTY_FUNCTION__, __FUNCTION__);
+}
+
+- (void)controller:(NSFetchedResultsController *)controller
+   didChangeObject:(id)anObject
+       atIndexPath:(NSIndexPath *)indexPath
+     forChangeType:(NSFetchedResultsChangeType)type
+      newIndexPath:(NSIndexPath *)newIndexPath
+{
+    NSLog(@"%d %s %s", __LINE__, __PRETTY_FUNCTION__, __FUNCTION__);
+    
+    UITableView *tableView = self.tblResults;
+    
+    switch(type)
+    {
+        case NSFetchedResultsChangeInsert:
+        {
+            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]
+                             withRowAnimation:UITableViewRowAnimationFade];
+            break;
+        }
+        case NSFetchedResultsChangeDelete:
+        {
+            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+                             withRowAnimation:UITableViewRowAnimationFade];
+            break;
+        }
+        case NSFetchedResultsChangeUpdate:
+        {
+            Card *card = [self.fetchedResultsController objectAtIndexPath:indexPath];
+            SearchResultsTableViewCell *cell = (SearchResultsTableViewCell*)[tableView cellForRowAtIndexPath:indexPath];
+            [cell displayCard:card];
+            break;
+        }
+        case NSFetchedResultsChangeMove:
+        {
+            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+                             withRowAnimation:UITableViewRowAnimationFade];
+            
+            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]
+                             withRowAnimation:UITableViewRowAnimationFade];
+            break;
+        }
+    }
+}
+
+- (void)controller:(NSFetchedResultsController *)controller
+  didChangeSection:(id )sectionInfo
+           atIndex:(NSUInteger)sectionIndex
+     forChangeType:(NSFetchedResultsChangeType)type
+{
+    NSLog(@"%d %s %s", __LINE__, __PRETTY_FUNCTION__, __FUNCTION__);
+    
+    UITableView *tableView = self.tblResults;
+    
+    switch(type)
+    {
+        case NSFetchedResultsChangeInsert:
+        {
+            [tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]
+                     withRowAnimation:UITableViewRowAnimationFade];
+            break;
+        }
+        case NSFetchedResultsChangeDelete:
+        {
+            [tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex]
+                     withRowAnimation:UITableViewRowAnimationFade];
+            break;
+        }
+    }
+}
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+{
+    NSLog(@"%d %s %s", __LINE__, __PRETTY_FUNCTION__, __FUNCTION__);
+    
+    UITableView *tableView = self.tblResults;
+    
+    // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
+    [tableView endUpdates];
 }
 
 @end

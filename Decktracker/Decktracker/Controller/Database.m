@@ -136,6 +136,43 @@ static Database *_me;
                                                           cacheName:nil];
 }
 
+-(NSFetchedResultsController*) search:(NSString*) query withPredicate:(NSPredicate*)predicate
+{
+    NSPredicate *predicate2;
+    
+    if (query.length > 0)
+    {
+        if (query.length == 1)
+        {
+            NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"%K BEGINSWITH[cd] %@", @"name", query];
+            predicate2 = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, pred1]];
+        }
+        else
+        {
+            NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", @"name", query];
+            predicate2 = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, pred1]];
+        }
+    }
+    NSManagedObjectContext *moc = [NSManagedObjectContext MR_defaultContext];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:@"name"
+                                                                    ascending:YES];
+    NSSortDescriptor *sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:@"set.releaseDate"
+                                                                    ascending:YES];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Card"
+                                              inManagedObjectContext:moc];
+    
+    [fetchRequest setPredicate:predicate2 ? predicate2 : predicate];
+    [fetchRequest setEntity:entity];
+    [fetchRequest setSortDescriptors:@[sortDescriptor1, sortDescriptor2]];
+    [fetchRequest setFetchBatchSize:kFetchBatchSize];
+    
+    return [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                               managedObjectContext:moc
+                                                 sectionNameKeyPath:nil
+                                                          cacheName:nil];
+}
+
 -(NSFetchedResultsController*) advanceSearch:(NSDictionary*)query withSorter:(NSDictionary*) sorter
 {
     NSPredicate *predicate;

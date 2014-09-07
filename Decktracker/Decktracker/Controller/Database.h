@@ -24,6 +24,7 @@
 
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
 -(NSFetchedResultsController*) search:(NSString*)query;
+-(NSFetchedResultsController*) search:(NSString*)query withPredicate:(NSPredicate*)predicate;
 -(NSFetchedResultsController*) advanceSearch:(NSDictionary*)query withSorter:(NSDictionary*) sorter;
 #endif
 
