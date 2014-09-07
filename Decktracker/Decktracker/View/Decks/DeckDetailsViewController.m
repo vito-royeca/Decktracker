@@ -43,7 +43,6 @@
     // Do any additional setup after loading the view.
     
     _arrSections = @[@"Lands", @"Creatures", @"Other Spells", @"Sideboard"];
-//    [self loadDeck];
 
     CGFloat dX = 0;
     CGFloat dY = 0;
@@ -67,14 +66,6 @@
 }
 
 -(void) viewDidAppear:(BOOL)animated
-{
-    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:hud];
-    hud.delegate = self;
-    [hud showWhileExecuting:@selector(updateDeck) onTarget:self withObject:nil animated:NO];
-}
-
--(void) updateDeck
 {
     [self loadDeck];
     [self.tblCards reloadData];
@@ -179,12 +170,6 @@
 -(BOOL)hidesBottomBarWhenPushed
 {
     return YES;
-}
-
-#pragma mark - MBProgressHUDDelegate methods
-- (void)hudWasHidden:(MBProgressHUD *)hud
-{
-	[hud removeFromSuperview];
 }
 
 #pragma mark - UITableView
