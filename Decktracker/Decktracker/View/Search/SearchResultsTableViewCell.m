@@ -85,14 +85,12 @@
         self.imgCrop.image = [[UIImage alloc] initWithContentsOfFile:path];
     }
     [[FileManager sharedInstance] downloadCropImage:card];
+    [[FileManager sharedInstance] downloadCardImage:card];
     
     // set image
     path = [[FileManager sharedInstance] cardSetPath:card];
     self.imgSet.image = [[UIImage alloc] initWithContentsOfFile:path];
     
-    // card image
-    [[FileManager sharedInstance] downloadCardImage:card];
-
     // draw the mana cost
     NSMutableArray *arrImages = [[NSMutableArray alloc] init];
     NSMutableArray *arrSymbols = [[NSMutableArray alloc] init];

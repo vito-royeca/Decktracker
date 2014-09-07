@@ -21,6 +21,8 @@
 }
 
 @synthesize tblAddTo = _tblAddTo;
+@synthesize btnCancel = _cancel;
+@synthesize btnDone = _btnDone;
 @synthesize btnNew = _btnNew;
 @synthesize btnShowCard  =_btnShowCard;
 @synthesize bottomToolbar = _bottomToolbar;
@@ -92,6 +94,17 @@
     [self.view addSubview:self.bottomToolbar];
     self.navigationItem.title = @"Add To Deck";
     
+    self.btnCancel = [[UIBarButtonItem alloc] initWithTitle:@"Cancel"
+                                                      style:UIBarButtonItemStylePlain
+                                                     target:self
+                                                     action:@selector(btnCancelTapped:)];
+    self.btnDone = [[UIBarButtonItem alloc] initWithTitle:@"Done"
+                                                    style:UIBarButtonItemStylePlain
+                                                   target:self
+                                                   action:@selector(btnDoneTapped:)];
+    self.navigationItem.leftBarButtonItem = self.btnCancel;
+    self.navigationItem.rightBarButtonItem = self.btnDone;
+    
     // send the screen to Google Analytics
     id tracker = [[GAI sharedInstance] defaultTracker];
     [tracker set:kGAIScreenName
@@ -103,6 +116,17 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void) btnCancelTapped:(id) sender
+{
+    [self.navigationController popViewControllerAnimated:NO];
+}
+
+-(void) btnDoneTapped:(id) sender
+{
+    [[FileManager sharedInstance] saveData:_currentDeck atPath:[NSString stringWithFormat:@"/Decks/%@.json", _currentDeck[@"name"]]];
+    [self.navigationController popViewControllerAnimated:NO];
 }
 
 -(void) btnNewTapped:(id) sender
@@ -128,7 +152,7 @@
     [self.navigationController pushViewController:view animated:YES];
 }
 
--(void) addCardToDeck:(NSString*) board withValue:(int) newValue
+-(void) updateDeck:(NSString*) board withValue:(int) newValue
 {
     NSMutableArray *arrBoard = _currentDeck[board];
     NSDictionary *newCard = @{@"card" : self.card.name,
@@ -171,8 +195,8 @@
     }
     
     [_currentDeck setObject:arrBoard forKey:board];
-    [[FileManager sharedInstance] saveData:_currentDeck atPath:[NSString stringWithFormat:@"/Decks/%@.json", _currentDeck[@"name"]]];
-    [self loadCurrentDeck];
+//    [[FileManager sharedInstance] saveData:_currentDeck atPath:[NSString stringWithFormat:@"/Decks/%@.json", _currentDeck[@"name"]]];
+//    [self loadCurrentDeck];
 }
 
 -(void) loadCurrentDeck
@@ -414,13 +438,16 @@
         {
             case 0:
             {
-                [self addCardToDeck:@"mainBoard" withValue:value];
-                
+                [self updateDeck:@"mainBoard" withValue:value];
+                cell.stepper.value = value;
+                cell.txtQuantity.text = [NSString stringWithFormat:@"%d", value];
                 break;
             }
             case 1:
             {
-                [self addCardToDeck:@"sideBoard" withValue:value];
+                [self updateDeck:@"sideBoard" withValue:value];
+                cell.stepper.value = value;
+                cell.txtQuantity.text = [NSString stringWithFormat:@"%d", value];
                 break;
             }
         }

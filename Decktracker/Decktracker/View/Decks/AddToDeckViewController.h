@@ -13,6 +13,8 @@
 @interface AddToDeckViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, QualityTableViewCellDelegate>
 
 @property(strong,nonatomic) UITableView *tblAddTo;
+@property(strong, nonatomic) UIBarButtonItem *btnCancel;
+@property(strong, nonatomic) UIBarButtonItem *btnDone;
 @property(strong,nonatomic) UIBarButtonItem *btnNew;
 @property(strong,nonatomic) UIBarButtonItem *btnShowCard;
 @property(strong,nonatomic) UIToolbar *bottomToolbar;

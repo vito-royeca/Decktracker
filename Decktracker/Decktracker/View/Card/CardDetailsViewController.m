@@ -66,6 +66,7 @@
             {
                 Card *card = sectionInfo.objects[index+i];
                 [[FileManager sharedInstance] downloadCardImage:card];
+                [[FileManager sharedInstance] downloadCropImage:card];
             }
         }
     }
@@ -110,8 +111,9 @@
     [self.segmentedControl addTarget:self
                               action:@selector(switchView)
                     forControlEvents:UIControlEventValueChanged];
-    dHeight = 44;
     self.segmentedControl.selectedSegmentIndex = 0;
+    
+    dHeight = 44;
     _viewSegmented = [[UIView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
     [_viewSegmented addSubview:self.segmentedControl];
     
