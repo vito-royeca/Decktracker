@@ -8,10 +8,8 @@ pod "AFNetworking"
 pod "Dropbox-Sync-API-SDK"
 pod "GoogleAnalytics-iOS-SDK"
 pod "hpple"
-pod "JSBadgeView"
 pod "MagicalRecord"
 pod "MBProgressHUD"
-pod "MMDrawerController"
 
 end
 

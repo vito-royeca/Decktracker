@@ -9,8 +9,6 @@
 #import "SearchResultsTableViewCell.h"
 #import "FileManager.h"
 
-#import "JSBadgeView.h"
-
 @implementation SearchResultsTableViewCell
 {
     Card *_card;
@@ -21,7 +19,7 @@
 @synthesize lblDetail = _lblDetail;
 @synthesize viewManaCost = _viewManaCost;
 @synthesize imgSet = _imgSet;
-@synthesize viewBadge = _viewBadge;
+@synthesize lblBadge = _lblBadge;
 
 - (void)awakeFromNib
 {
@@ -196,7 +194,7 @@
         [view removeFromSuperview];
     }
     
-    CGFloat dX = 0;//self.viewManaCost.frame.size.width - (arrImages.count*16);
+    CGFloat dX = 0; //self.viewManaCost.frame.size.width - (arrImages.count*16);
     CGFloat dY = 0;
     for (NSDictionary *dict in arrImages)
     {
@@ -215,9 +213,9 @@
 
 -(void) addBadge:(int) badgeValue
 {
-    JSBadgeView *badgeView = [[JSBadgeView alloc] initWithParentView:self.viewBadge
-                                                           alignment:JSBadgeViewAlignmentCenter];
-    badgeView.badgeText = [NSString stringWithFormat:@"%d", badgeValue];
+    self.lblBadge.text = [NSString stringWithFormat:@"%dx", badgeValue];
+    self.lblBadge.layer.backgroundColor = [UIColor redColor].CGColor;
+    self.lblBadge.layer.cornerRadius = self.lblBadge.bounds.size.height / 4;
 }
 
 -(void) loadCropImage:(id) sender

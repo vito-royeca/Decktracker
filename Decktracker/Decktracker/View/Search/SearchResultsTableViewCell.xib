@@ -46,20 +46,22 @@
                         <rect key="frame" x="94" y="56" width="24" height="20"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="23w-Qa-QIN">
-                        <rect key="frame" x="70" y="4" width="20" height="20"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fWc-q9-ftc">
+                        <rect key="frame" x="65" y="3" width="25" height="15"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    </view>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
             </tableViewCellContentView>
             <connections>
                 <outlet property="imgCrop" destination="BoA-Ti-3LZ" id="e7w-wx-xKg"/>
                 <outlet property="imgSet" destination="m6f-dT-yVE" id="I3B-ig-8VY"/>
+                <outlet property="lblBadge" destination="fWc-q9-ftc" id="ZR6-YM-PS0"/>
                 <outlet property="lblCardName" destination="dCz-Qv-jLg" id="as0-ve-5bA"/>
                 <outlet property="lblDetail" destination="IWc-2v-rw9" id="2f1-6E-lbz"/>
                 <outlet property="lblSet" destination="vhs-ld-z9N" id="RS0-UX-mDX"/>
-                <outlet property="viewBadge" destination="23w-Qa-QIN" id="wtB-hy-biK"/>
                 <outlet property="viewManaCost" destination="sSL-VI-NSV" id="r0B-0k-scu"/>
             </connections>
         </tableViewCell>
