@@ -90,6 +90,7 @@
     
     dHeight = 44;
     _viewSegmented = [[UIView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
+    _viewSegmented.backgroundColor = [UIColor whiteColor];
     [_viewSegmented addSubview:self.segmentedControl];
     
     [self.view addSubview:self.tblView];
@@ -338,7 +339,7 @@
         }
         default:
         {
-            return 2;
+            return 1;
         }
     }
 }
@@ -349,14 +350,14 @@
     {
         case 0:
         {
-            if (section == 0)
-            {
-                return 0;
-            }
-            else
-            {
+//            if (section == 0)
+//            {
+//                return 0;
+//            }
+//            else
+//            {
                 return _arrFilters.count;
-            }
+//            }
         }
         case 1:
         {
@@ -391,7 +392,7 @@
     {
         case 0:
         {
-            if (indexPath.section > 0)
+//            if (indexPath.section > 0)
             {
                 cell.textLabel.text = _arrFilters[indexPath.row];
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

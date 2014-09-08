@@ -115,6 +115,7 @@
     
     dHeight = 44;
     _viewSegmented = [[UIView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
+    _viewSegmented.backgroundColor = [UIColor whiteColor];
     [_viewSegmented addSubview:self.segmentedControl];
     
     dY = self.view.frame.size.height - dHeight;
