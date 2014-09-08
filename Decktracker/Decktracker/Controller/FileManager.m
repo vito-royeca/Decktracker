@@ -266,11 +266,11 @@ static FileManager *_me;
             }
         }
         
-        // copy existing files to Dropbox
         if (account)
         {
             NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", folder]];
             
+            // copy existing files to Dropbox
             for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil])
             {
                 DBPath *dbPath = [[DBPath root] childPath:[NSString stringWithFormat:@"/%@/%@", [path lastPathComponent], file]];

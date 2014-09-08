@@ -24,7 +24,8 @@
 @implementation NewAdvanceSearchViewController
 {
     UIBarButtonItem *_btnPlay;
-    
+    UIView *_viewSegmented;
+    UIView *_viewFiller;;
     NSArray *_arrFilters;
     NSArray *_arrSorters;
 }
@@ -72,27 +73,29 @@
     
     _arrSorters = @[@"Name"];
     
-    CGFloat dX = 10;
-    CGFloat dY = [UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height+10;
-    CGFloat dWidth = self.view.frame.size.width - 20;
-    CGFloat dHeight = 30;
+    CGFloat dX = 0;
+    CGFloat dY = 0;
+    CGFloat dWidth = self.view.frame.size.width;
+    CGFloat dHeight = self.view.frame.size.height-self.tabBarController.tabBar.frame.size.height;
+    
+    self.tblView = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)
+                                                style:UITableViewStylePlain];
+    self.tblView.delegate = self;
+    self.tblView.dataSource = self;
     
     self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Filter", @"Search Criteria"]];
-    self.segmentedControl.frame = CGRectMake(dX, dY, dWidth, dHeight);
+    self.segmentedControl.frame = CGRectMake(dX+10, dY+7, dWidth-20, 30);
     [self.segmentedControl addTarget:self
                               action:@selector(segmentedControlChangedValue:)
                     forControlEvents:UIControlEventValueChanged];
     
+    dHeight = 44;
+    _viewSegmented = [[UIView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
+    [_viewSegmented addSubview:self.segmentedControl];
     
-    dX = 0;
-    dY = self.segmentedControl.frame.origin.y + self.segmentedControl.frame.size.height +5;
-    dWidth += 20;
-    dHeight = self.view.frame.size.height - dY - self.tabBarController.tabBar.frame.size.height;
-    self.tblView = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight) style:UITableViewStylePlain];
-    self.tblView.delegate = self;
-    self.tblView.dataSource = self;
-    
-    [self.view addSubview:self.segmentedControl];
+    dHeight = 1;
+    _viewFiller = [[UILabel alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
+
     [self.view addSubview:self.tblView];
     self.view.backgroundColor = [UIColor whiteColor];
     
@@ -189,16 +192,16 @@
 {
     switch (self.segmentedControl.selectedSegmentIndex)
     {
+        case 0:
+        {
+            self.tblView.editing = NO;
+            self.navigationItem.rightBarButtonItem = nil;
+            break;
+        }
         case 1:
         {
             self.tblView.editing = YES;
             self.navigationItem.rightBarButtonItem = _btnPlay;
-            break;
-        }
-        default:
-        {
-            self.tblView.editing = NO;
-            self.navigationItem.rightBarButtonItem = nil;
             break;
         }
     }
@@ -217,9 +220,9 @@
 {
     if (self.segmentedControl.selectedSegmentIndex == 1)
     {
-        if (editingStyle == UITableViewCellEditingStyleDelete)
+        if (editingStyle == UITableViewCellEditingStyleDelete && indexPath.section > 0)
         {
-            NSString *key = [self.dictCurrentQuery allKeys][indexPath.section];
+            NSString *key = [self.dictCurrentQuery allKeys][indexPath.section-1];
             NSMutableArray *rows = self.dictCurrentQuery[key];
             [rows removeObjectAtIndex:indexPath.row];
             [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
@@ -228,8 +231,6 @@
             {
                 [self.dictCurrentQuery removeObjectForKey:key];
             }
-            
-//            [tableView reloadData];
         }
     }
 }
@@ -265,19 +266,82 @@
     }
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    switch (self.segmentedControl.selectedSegmentIndex)
+    {
+        case 0:
+        {
+            if (section == 0)
+            {
+                return _viewSegmented.frame.size.height;
+            }
+            else
+            {
+                return _viewFiller.frame.size.height;
+            }
+        }
+        case 1:
+        {
+            if (section == 0)
+            {
+                return _viewSegmented.frame.size.height;
+            }
+            else
+            {
+                return UITableViewAutomaticDimension;
+            }
+        }
+    }
+    
+    return UITableViewAutomaticDimension;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    switch (self.segmentedControl.selectedSegmentIndex)
+    {
+        case 0:
+        {
+            if (section == 0)
+            {
+                return _viewSegmented;
+            }
+            else
+            {
+                return _viewFiller;
+            }
+        }
+        case 1:
+        {
+            if (section == 0)
+            {
+                return _viewSegmented;
+            }
+            else
+            {
+                return nil;
+            }
+        }
+    }
+
+    return nil;
+}
+
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section;
 {
     switch (self.segmentedControl.selectedSegmentIndex)
     {
         case 1:
         {
-            return [self.dictCurrentQuery allKeys][section];
-        }
-        default:
-        {
-            return nil;
+            if (section > 0)
+            {
+                return [self.dictCurrentQuery allKeys][section-1];
+            }
         }
     }
+    
+    return nil;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -286,11 +350,11 @@
     {
         case 1:
         {
-            return [self.dictCurrentQuery allKeys].count;
+            return [self.dictCurrentQuery allKeys].count +1;
         }
         default:
         {
-            return 1;
+            return 2;
         }
     }
 }
@@ -301,24 +365,32 @@
     {
         case 0:
         {
-            return _arrFilters.count;
+            if (section == 0)
+            {
+                return 0;
+            }
+            else
+            {
+                return _arrFilters.count;
+            }
         }
-//        case 1:
-//        {
-//            return _arrSorters.count;
-//        }
         case 1:
         {
-            NSString *key = [self.dictCurrentQuery allKeys][section];
-            NSMutableArray *rows = self.dictCurrentQuery[key];
+            if (section == 0)
+            {
+                return 0;
+            }
+            else
+            {
+                NSString *key = [self.dictCurrentQuery allKeys][section-1];
+                NSMutableArray *rows = self.dictCurrentQuery[key];
             
-            return rows.count;
-        }
-        default:
-        {
-            return 1;
+                return rows.count;
+            }
         }
     }
+    
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -335,40 +407,35 @@
     {
         case 0:
         {
-            cell.textLabel.text = _arrFilters[indexPath.row];
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            if (indexPath.section > 0)
+            {
+                cell.textLabel.text = _arrFilters[indexPath.row];
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            }
             break;
         }
-//        case 1:
-//        {
-//            cell.textLabel.text = _arrSorters[indexPath.row];
-//            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-//            break;
-//        }
         case 1:
         {
-            NSString *key = [self.dictCurrentQuery allKeys][indexPath.section];
-            NSMutableArray *rows = self.dictCurrentQuery[key];
-            NSDictionary *dict = rows[indexPath.row];
-            NSString *stringValue;
-            id value = [[dict allValues] firstObject];
-            
-            if ([value isKindOfClass:[NSManagedObject class]])
+            if (indexPath.section > 0)
             {
-                stringValue = [value performSelector:@selector(name) withObject:nil];
+                NSString *key = [self.dictCurrentQuery allKeys][indexPath.section-1];
+                NSMutableArray *rows = self.dictCurrentQuery[key];
+                NSDictionary *dict = rows[indexPath.row];
+                NSString *stringValue;
+                id value = [[dict allValues] firstObject];
+                
+                if ([value isKindOfClass:[NSManagedObject class]])
+                {
+                    stringValue = [value performSelector:@selector(name) withObject:nil];
+                }
+                else if ([value isKindOfClass:[NSString class]])
+                {
+                    stringValue = value;
+                }
+                
+                cell.textLabel.text = [NSString stringWithFormat:@"%@ %@ = '%@'", [[dict allKeys] firstObject], key, stringValue];
+                cell.accessoryType = UITableViewCellAccessoryNone;
             }
-            else if ([value isKindOfClass:[NSString class]])
-            {
-                stringValue = value;
-            }
-            
-            cell.textLabel.text = [NSString stringWithFormat:@"%@ %@ = '%@'", [[dict allKeys] firstObject], key, stringValue];
-            cell.accessoryType = UITableViewCellAccessoryNone;
-
-            break;
-        }
-        default:
-        {
             break;
         }
     }
