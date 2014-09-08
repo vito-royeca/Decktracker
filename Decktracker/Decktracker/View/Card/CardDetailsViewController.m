@@ -835,14 +835,7 @@
     }
     else if (indexPath.section == 1)
     {
-//        switch (self.segmentedControl.selectedSegmentIndex)
-//        {
-//            case 0:
-//            {
-                height = self.view.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height - self.navigationController.navigationBar.frame.size.height - SEARCH_RESULTS_CELL_HEIGHT - _viewSegmented.frame.size.height - self.bottomToolbar.frame.size.height;
-//                break;
-//            }
-//        }
+        height = self.view.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height - self.navigationController.navigationBar.frame.size.height - SEARCH_RESULTS_CELL_HEIGHT - _viewSegmented.frame.size.height - self.bottomToolbar.frame.size.height;
     }
     
     return height;

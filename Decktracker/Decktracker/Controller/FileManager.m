@@ -49,7 +49,16 @@ static FileManager *_me;
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths firstObject];
     NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/card/%@/", card.set.code]];
-    NSString *cardPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.jpg", card.name]];
+    NSString *cardPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.jpg", card.multiverseID && [card.multiverseID intValue] > 0 ? card.multiverseID : card.name]];
+    
+    // let's delete old card image downloaded with cardName
+    NSString *oldPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.jpg", card.name]];
+    if (card.multiverseID && [card.multiverseID intValue] > 0 &&
+        [[NSFileManager defaultManager] fileExistsAtPath:oldPath])
+    {
+        [[NSFileManager defaultManager] removeItemAtPath:oldPath error:nil];
+    }
+    
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:cardPath])
     {
@@ -66,7 +75,16 @@ static FileManager *_me;
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths firstObject];
     NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/card/%@/", card.set.code]];
-    return [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.crop.jpg", card.name]];
+    
+    // let's delete old crop image downloaded with cardName
+    NSString *oldPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.crop.jpg", card.name]];
+    if (card.multiverseID && [card.multiverseID intValue] > 0 &&
+        [[NSFileManager defaultManager] fileExistsAtPath:oldPath])
+    {
+        [[NSFileManager defaultManager] removeItemAtPath:oldPath error:nil];
+    }
+    
+    return [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.crop.jpg", card.multiverseID && [card.multiverseID intValue] > 0 ? card.multiverseID : card.name]];
 }
 
 -(NSString*) cardSetPath:(Card*) card
@@ -84,7 +102,7 @@ static FileManager *_me;
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths firstObject];
     NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/card/%@/", card.set.code]];
-    NSString *cardPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.jpg", card.name]];
+    NSString *cardPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.jpg", card.multiverseID && [card.multiverseID intValue] > 0 ? card.multiverseID : card.name]];
     BOOL bFound = YES;
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:path])
@@ -110,7 +128,16 @@ static FileManager *_me;
     
     if (!bFound)
     {
-        NSURL *url = [NSURL URLWithString:[[NSString stringWithFormat:@"http://mtgimage.com/set/%@/%@.jpg", card.set.code, card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        NSURL *url;
+        
+        if (card.multiverseID && [card.multiverseID intValue] > 0)
+        {
+            url = [NSURL URLWithString:[[NSString stringWithFormat:@"http://mtgimage.com/multiverseid/%@.jpg", card.multiverseID] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        }
+        else
+        {
+            url = [NSURL URLWithString:[[NSString stringWithFormat:@"http://mtgimage.com/set/%@/%@.jpg", card.set.code, card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        }
 
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithObjects:@[card, cardPath, url]
                                                                          forKeys:@[@"card", @"path", @"url"]];
@@ -130,7 +157,7 @@ static FileManager *_me;
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths firstObject];
     NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/card/%@/", card.set.code]];
-    NSString *cropPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.crop.jpg", card.name]];
+    NSString *cropPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.crop.jpg", card.multiverseID && [card.multiverseID intValue] > 0 ? card.multiverseID : card.name]];
     BOOL bFound = YES;
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:path])
@@ -156,7 +183,16 @@ static FileManager *_me;
     
     if (!bFound)
     {
-        NSURL *url = [NSURL URLWithString:[[NSString stringWithFormat:@"http://mtgimage.com/set/%@/%@.crop.jpg", card.set.code, card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        NSURL *url;
+        
+        if (card.multiverseID && [card.multiverseID intValue] > 0)
+        {
+            url = [NSURL URLWithString:[[NSString stringWithFormat:@"http://mtgimage.com/multiverseid/%@.crop.jpg", card.multiverseID] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        }
+        else
+        {
+            url = [NSURL URLWithString:[[NSString stringWithFormat:@"http://mtgimage.com/set/%@/%@.crop.jpg", card.set.code, card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        }
         
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithObjects:@[card, cropPath, url]
                                                                          forKeys:@[@"crop", @"path", @"url"]];
