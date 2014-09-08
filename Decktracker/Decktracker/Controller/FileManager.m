@@ -53,7 +53,7 @@ static FileManager *_me;
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:cardPath])
     {
-        return [NSString stringWithFormat:@"%@/images/card_back.jpg", [[NSBundle mainBundle] bundlePath]];
+        return [NSString stringWithFormat:@"%@/images/cardback.hq.jpg", [[NSBundle mainBundle] bundlePath]];
     }
     else
     {

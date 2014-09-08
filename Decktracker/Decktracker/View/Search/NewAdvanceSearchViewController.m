@@ -25,7 +25,6 @@
 {
     UIBarButtonItem *_btnPlay;
     UIView *_viewSegmented;
-    UIView *_viewFiller;;
     NSArray *_arrFilters;
     NSArray *_arrSorters;
 }
@@ -93,9 +92,6 @@
     _viewSegmented = [[UIView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
     [_viewSegmented addSubview:self.segmentedControl];
     
-    dHeight = 1;
-    _viewFiller = [[UILabel alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
-
     [self.view addSubview:self.tblView];
     self.view.backgroundColor = [UIColor whiteColor];
     
@@ -276,20 +272,12 @@
             {
                 return _viewSegmented.frame.size.height;
             }
-            else
-            {
-                return _viewFiller.frame.size.height;
-            }
         }
         case 1:
         {
             if (section == 0)
             {
                 return _viewSegmented.frame.size.height;
-            }
-            else
-            {
-                return UITableViewAutomaticDimension;
             }
         }
     }
@@ -306,10 +294,6 @@
             if (section == 0)
             {
                 return _viewSegmented;
-            }
-            else
-            {
-                return _viewFiller;
             }
         }
         case 1:
