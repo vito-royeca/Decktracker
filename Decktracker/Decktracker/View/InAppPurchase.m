@@ -6,13 +6,13 @@
 //  Copyright (c) 2014 Jovito Royeca. All rights reserved.
 //
 
-#import "InAppPurchaseDialog.h"
+#import "InAppPurchase.h"
 
-@implementation InAppPurchaseDialog
+@implementation InAppPurchase
 
 @synthesize product = _product;
 
--(void) showPurchaseDialog
+-(void) initPurchase
 {
     if ([SKPaymentQueue canMakePayments])
     {
@@ -24,12 +24,6 @@
     }
     else
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"Please enable In App Purchase in Settings."
-                                                       delegate:nil
-                                              cancelButtonTitle:@"Ok"
-                                              otherButtonTitles:nil];
-        [alert show];
         [self.delegate purchaseFailed:@"Please enable In App Purchase in Settings."];
     }
 }
@@ -43,25 +37,20 @@
     if (products.count != 0)
     {
         self.product = [products firstObject];
-        NSString *message = [NSString stringWithFormat:@"%@ requires In-App purchase. Product description: %@. Buy now?", self.product.localizedTitle, self.product.localizedDescription];
-        
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"In-App Purchase"
-                                                         message:message
-                                                        delegate:self
-                                               cancelButtonTitle:@"Cancel"
-                                               otherButtonTitles:@"Buy", nil];
-        alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-        [alert show];
+//        NSString *message = [NSString stringWithFormat:@"%@ requires In-App purchase. Product description: %@. Buy now?", self.product.localizedTitle, self.product.localizedDescription];
+//        
+//        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"In-App Purchase"
+//                                                         message:message
+//                                                        delegate:self
+//                                               cancelButtonTitle:@"Cancel"
+//                                               otherButtonTitles:@"Buy", nil];
+//        alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+//        [alert show];
+        SKPayment *payment = [SKPayment paymentWithProduct:self.product];
+        [[SKPaymentQueue defaultQueue] addPayment:payment];
     }
     else
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"Product is not found."
-                                                       delegate:nil
-                                              cancelButtonTitle:@"Ok"
-                                              otherButtonTitles:nil];
-        alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-        [alert show];
         [self.delegate purchaseFailed:@"Product is not found."];
     }
     
@@ -73,18 +62,7 @@
     }
 }
 
-#pragma mark - UIAlertViewDelegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 1)
-    {
-        SKPayment *payment = [SKPayment paymentWithProduct:self.product];
-        [[SKPaymentQueue defaultQueue] addPayment:payment];
-    }
-}
-
 #pragma mark SKPaymentTransactionObserver
-
 -(void)paymentQueue:(SKPaymentQueue *)queue updatedTransactions:(NSArray *)transactions
 {
     for (SKPaymentTransaction *transaction in transactions)
@@ -93,14 +71,14 @@
         {
             case SKPaymentTransactionStatePurchased:
             {
-                [self.delegate purchaseSucceded:@"Transaction Ok"];
+                [self.delegate purchaseSucceded:@"In-App Purchase Ok"];
                 [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
                 break;
             }
                 
             case SKPaymentTransactionStateFailed:
             {
-                [self.delegate purchaseSucceded:@"Transaction Failed"];
+                [self.delegate purchaseSucceded:@"In-App Purchase Failed"];
                 [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
                 break;
             }

@@ -9,19 +9,19 @@
 @import Foundation;
 @import StoreKit;
 
-@protocol InAppPurchaseDialogDelegate <NSObject>
+@protocol InAppPurchaseDelegate <NSObject>
 
 -(void) purchaseSucceded:(NSString*) message;
 -(void) purchaseFailed:(NSString*) message;
 
 @end
 
-@interface InAppPurchaseDialog : NSObject<SKPaymentTransactionObserver, SKProductsRequestDelegate, UIAlertViewDelegate>
+@interface InAppPurchase : NSObject<SKPaymentTransactionObserver, SKProductsRequestDelegate, UIAlertViewDelegate>
 
-@property(strong,nonatomic) id<InAppPurchaseDialogDelegate> delegate;
+@property(strong,nonatomic) id<InAppPurchaseDelegate> delegate;
 @property(strong,nonatomic) NSString *productID;
 @property(strong,nonatomic) SKProduct *product;
 
--(void) showPurchaseDialog;
+-(void) initPurchase;
 
 @end
