@@ -36,7 +36,7 @@ typedef NSString* Layout;
                                          @"planeswalker", @"sorcery", @"power", @"toughness", \
                                          @"chaosdice", @"planeswalk", @"forwardslash"]
 
-#define kImageSizes                     @[@"16", @"24", @"32", @"48", @"64", @"96"]
+#define kImageSizes                     @[@"32", @"48", @"64", @"96"]
 
 #define JSON_VERSION                    @{@"dataSet":@"JSON", \
                                           @"date":@"20014-09-05", \

@@ -6,7 +6,8 @@
 //  Copyright (c) 2014 Jovito Royeca. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
+
 #import "Card.h"
 #import "Set.h"
 

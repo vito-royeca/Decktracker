@@ -12,10 +12,6 @@
 #import "SimpleSearchViewController.h"
 #import "SettingsViewController.h"
 
-@interface MainViewController ()
-
-@end
-
 @implementation MainViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil

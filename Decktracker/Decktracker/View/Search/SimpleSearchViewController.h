@@ -6,7 +6,8 @@
 //  Copyright (c) 2014 Jovito Royeca. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
+
 #import "MBProgressHUD.h"
 
 @interface SimpleSearchViewController : UIViewController<UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate, MBProgressHUDDelegate>

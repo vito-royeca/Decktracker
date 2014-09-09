@@ -6,7 +6,8 @@
 //  Copyright (c) 2014 Jovito Royeca. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
+
 #import "FilterInputViewController.h"
 #import "Magic.h"
 #import "MBProgressHUD.h"

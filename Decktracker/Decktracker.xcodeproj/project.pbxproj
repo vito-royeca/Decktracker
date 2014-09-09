@@ -59,7 +59,6 @@
 		8C524A7019B82C01005E697B /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C524A6F19B82C01005E697B /* SettingsViewController.m */; };
 		8C56F56119B5B5BB0084B2B8 /* CardDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C56F56019B5B5BB0084B2B8 /* CardDetailsViewController.m */; };
 		8C5FF9E819AE2EE3003CE54C /* keywords.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C5FF9E719AE2EE3003CE54C /* keywords.plist */; };
-		8C60EB6E19927C1D00C5EEF9 /* UIImage+Scale.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C60EB6D19927C1D00C5EEF9 /* UIImage+Scale.m */; };
 		8CADEF1719923DDE004D7658 /* images in Resources */ = {isa = PBXBuildFile; fileRef = 8CADEF1619923DDE004D7658 /* images */; };
 		8CF0C9D71991CD8300349F35 /* libJJJ.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF0C9C11991CD0500349F35 /* libJJJ.a */; };
 		8CF79A6519A8BFA300BE4246 /* DecksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF79A6419A8BFA300BE4246 /* DecksViewController.m */; };
@@ -183,8 +182,6 @@
 		8C56F55F19B5B5BB0084B2B8 /* CardDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardDetailsViewController.h; sourceTree = "<group>"; };
 		8C56F56019B5B5BB0084B2B8 /* CardDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardDetailsViewController.m; sourceTree = "<group>"; };
 		8C5FF9E719AE2EE3003CE54C /* keywords.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = keywords.plist; sourceTree = "<group>"; };
-		8C60EB6C19927C1D00C5EEF9 /* UIImage+Scale.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Scale.h"; sourceTree = "<group>"; };
-		8C60EB6D19927C1D00C5EEF9 /* UIImage+Scale.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Scale.m"; sourceTree = "<group>"; };
 		8CADEF1619923DDE004D7658 /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
 		8CF0C9BA1991CD0500349F35 /* JJJ.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JJJ.xcodeproj; path = ../jjj/JJJ/JJJ.xcodeproj; sourceTree = "<group>"; };
 		8CF79A6319A8BFA300BE4246 /* DecksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DecksViewController.h; sourceTree = "<group>"; };
@@ -370,8 +367,6 @@
 				8C21069F19B6EF85001DE039 /* QuantityTableViewCell.xib */,
 				8C26A66B19A63EA500FE00E7 /* Search */,
 				8C524A6D19B82BD8005E697B /* Settings */,
-				8C60EB6C19927C1D00C5EEF9 /* UIImage+Scale.h */,
-				8C60EB6D19927C1D00C5EEF9 /* UIImage+Scale.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -671,7 +666,6 @@
 				8C2CFCF519BB1F8B00F5348B /* LimitedSearchViewController.m in Sources */,
 				8C524A6519B81E9E005E697B /* DeckDetailsViewController.m in Sources */,
 				8C3CBDCD19A31618002CD96E /* Format.m in Sources */,
-				8C60EB6E19927C1D00C5EEF9 /* UIImage+Scale.m in Sources */,
 				8C2E1431199085C700023BAA /* Database.m in Sources */,
 				8C2106AA19B710DA001DE039 /* AddToDeckViewController.m in Sources */,
 				8C2E14031990741100023BAA /* AppDelegate.m in Sources */,
