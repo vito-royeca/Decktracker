@@ -54,6 +54,7 @@ typedef NSString* Layout;
 
 
 #define TCGPLAYER_PARTNER_KEY           @"DECKTRACKER"
+#define COLLECTIONS_PRODUCT_ID          @"Collections ID"
 
 typedef NS_ENUM(NSInteger, EditMode)
 {

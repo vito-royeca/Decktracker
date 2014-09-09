@@ -8,8 +8,8 @@
 
 @import UIKit;
 
-#import "MBProgressHUD.h"
+#import "InAppPurchase.h"
 
-@interface MainViewController : UITabBarController<MBProgressHUDDelegate>
+@interface MainViewController : UITabBarController<UITabBarControllerDelegate, InAppPurchaseDelegate>
 
 @end

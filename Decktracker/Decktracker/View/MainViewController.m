@@ -9,6 +9,7 @@
 #import "MainViewController.h"
 #import "CollectionsViewController.h"
 #import "DecksViewController.h"
+#import "Magic.h"
 #import "SimpleSearchViewController.h"
 #import "SettingsViewController.h"
 
@@ -67,27 +68,35 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - MBProgressHUDDelegate methods
-- (void)hudWasHidden:(MBProgressHUD *)hud
-{
-	[hud removeFromSuperview];
-}
-
 #pragma mark - UITabBarControllerDelegate
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
 {
-    
+//    if ([item.title isEqualToString:@"Collections"])
+//    {
+//        InAppPurchase *iap = [[InAppPurchase alloc] init];
+//        
+//        iap.delegate = self;
+//        iap.productID = COLLECTIONS_PRODUCT_ID;
+//        [iap initPurchase];
+//    }
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+#pragma mark - InAppPurchase
+-(void) purchaseSucceded:(NSString*) message
 {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    self.selectedViewController = self.viewControllers[3];
 }
-*/
+
+-(void) purchaseFailed:(NSString*) message
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"In-App Purchase Error"
+                                                    message:message
+                                                   delegate:nil
+                                          cancelButtonTitle:@"Ok"
+                                          otherButtonTitles:nil];
+    [alert show];
+    
+    self.selectedViewController = [self.viewControllers firstObject];
+}
 
 @end
