@@ -9,7 +9,7 @@
 #import "CardDetailsViewController.h"
 
 #import "JJJ/JJJUtil.h"
-#import "AddToDeckViewController.h"
+#import "AddCardViewController.h"
 #import "AdvanceSearchResultsViewController.h"
 #import "Artist.h"
 #import "CardForeignName.h"
@@ -44,10 +44,8 @@
 @synthesize btnPrevious = _btnPrevious;
 @synthesize btnNext = _btnNext;
 @synthesize btnAction = _btnAction;
-@synthesize btnAddToDeck = _btnAddToDeck;
-@synthesize btnAddToCollection = _btnAddToCollection;
-@synthesize addToDeckButtonVisible = _addToDeckButtonVisible;
-@synthesize addToCollectionButtonVisible = _addToCollectionButtonVisible;
+@synthesize btnAdd = _btnAdd;
+@synthesize addButtonVisible = _addButtonVisible;
 
 -(void) setCard:(Card *)card
 {
@@ -83,8 +81,7 @@
     if (self)
     {
         // Custom initialization
-        self.addToDeckButtonVisible = NO;
-        self.addToCollectionButtonVisible = NO;
+        self.addButtonVisible = NO;
     }
     return self;
 }
@@ -108,10 +105,10 @@
     
     self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Card", @"Details", @"Pricing",]];
     self.segmentedControl.frame = CGRectMake(dX+10, dY+7, dWidth-20, 30);
+    self.segmentedControl.selectedSegmentIndex = 0;
     [self.segmentedControl addTarget:self
                               action:@selector(switchView)
                     forControlEvents:UIControlEventValueChanged];
-    self.segmentedControl.selectedSegmentIndex = 0;
     
     dHeight = 44;
     _viewSegmented = [[UIView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
@@ -125,29 +122,17 @@
     self.btnAction = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
                                                                   target:self
                                                                   action:@selector(btnActionTapped:)];
-    self.btnAddToDeck = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"layers.png"]
-                                                         style:UIBarButtonItemStylePlain
-                                                        target:self
-                                                        action:@selector(btnAddToDeckTapped:)];
-    self.btnAddToCollection = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"cards.png"]
-                                                               style:UIBarButtonItemStylePlain
-                                                              target:self
-                                                              action:@selector(btnAddToCollectionTapped:)];
+    self.btnAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                target:self
+                                                                action:@selector(btnAddTapped:)];
     NSMutableArray *arrButtons = [[NSMutableArray alloc] init];
     [arrButtons addObject:self.btnAction];
-    if (self.addToDeckButtonVisible)
+    if (self.addButtonVisible)
     {
         [arrButtons addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
                                                                             target:nil
                                                                             action:nil]];
-        [arrButtons addObject:self.btnAddToDeck];
-    }
-    if (self.addToCollectionButtonVisible)
-    {
-        [arrButtons addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-                                                                            target:nil
-                                                                            action:nil]];
-        [arrButtons addObject:self.btnAddToCollection];
+        [arrButtons addObject:self.btnAdd];
     }
     
     self.bottomToolbar.items = arrButtons;
@@ -231,20 +216,16 @@
         [self presentViewController:activityController animated:YES completion:nil];
 }
 
--(void) btnAddToDeckTapped:(id) sender
+-(void) btnAddTapped:(id) sender
 {
-    AddToDeckViewController *view = [[AddToDeckViewController alloc] init];
-    NSArray *arrFiles = [[FileManager sharedInstance] findFilesAtPath:@"/Decks"];
+    AddCardViewController *view = [[AddCardViewController alloc] init];
     
-    view.arrDecks = [[NSMutableArray alloc] initWithArray:arrFiles];
+    view.arrDecks = [[NSMutableArray alloc] initWithArray:[[FileManager sharedInstance] findFilesAtPath:@"/Decks"]];
+    view.arrCollections = [[NSMutableArray alloc] initWithArray:[[FileManager sharedInstance] findFilesAtPath:@"/Collections"]];
     view.card = self.card;
-    view.newButtonVisible = YES;
+    view.showCardButtonVisible = NO;
+    view.segmentedControlIndex = 0;
     [self.navigationController pushViewController:view animated:YES];
-}
-
--(void) btnAddToCollectionTapped:(id) sender
-{
-    
 }
 
 -(void) btnPreviousTapped:(id) sender

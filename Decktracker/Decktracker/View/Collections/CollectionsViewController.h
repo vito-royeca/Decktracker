@@ -8,8 +8,10 @@
 
 @import UIKit;
 
-@interface CollectionsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
+@interface CollectionsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
 
-@property(strong,nonatomic) UITableView *tblResults;
+@property(strong,nonatomic) UITableView *tblCollections;
+
+@property(strong,nonatomic) NSMutableArray *arrCollections;
 
 @end

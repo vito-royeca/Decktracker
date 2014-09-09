@@ -194,7 +194,7 @@
     Card *card = [self.fetchedResultsController objectAtIndexPath:indexPath];
     
     view.fetchedResultsController = self.fetchedResultsController;
-    view.addToDeckButtonVisible = YES;
+    view.addButtonVisible = YES;
     [view setCard:card];
     
     [self.navigationController pushViewController:view animated:YES];

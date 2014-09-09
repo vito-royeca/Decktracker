@@ -284,33 +284,26 @@ static FileManager *_me;
     
     for (NSString *folder in folders)
     {
-        if (account)
-        {
-            DBPath *path = [[DBPath root] childPath:folder];
-            [[DBFilesystem sharedFilesystem] createFolder:path error:nil];
-        }
-        else
-        {
-            NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", folder]];
+        NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", folder]];
             
-            if (![[NSFileManager defaultManager] fileExistsAtPath:path])
-            {
-                [[NSFileManager defaultManager] createDirectoryAtPath:path
-                                          withIntermediateDirectories:YES
-                                                           attributes:nil
-                                                                error:nil];
-            }
+        if (![[NSFileManager defaultManager] fileExistsAtPath:path])
+        {
+            [[NSFileManager defaultManager] createDirectoryAtPath:path
+                                      withIntermediateDirectories:YES
+                                                       attributes:nil
+                                                            error:nil];
         }
         
         if (account)
         {
-            NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", folder]];
+            DBPath *dbPath = [[DBPath root] childPath:folder];
+            [[DBFilesystem sharedFilesystem] createFolder:dbPath error:nil];
             
             // copy existing files to Dropbox
             for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil])
             {
-                DBPath *dbPath = [[DBPath root] childPath:[NSString stringWithFormat:@"/%@/%@", [path lastPathComponent], file]];
-                DBFile *dbFile = [[DBFilesystem sharedFilesystem] createFile:dbPath error:nil];
+                DBPath *dbFilePath = [[DBPath root] childPath:[NSString stringWithFormat:@"/%@/%@", folder, file]];
+                DBFile *dbFile = [[DBFilesystem sharedFilesystem] createFile:dbFilePath error:nil];
                 NSString *fullPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", file]];
                 
                 [dbFile writeContentsOfFile:fullPath

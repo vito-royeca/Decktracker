@@ -7,8 +7,9 @@
 //
 
 #import "LimitedSearchViewController.h"
-#import "AddToDeckViewController.h"
+#import "AddCardViewController.h"
 #import "Card.h"
+#import "FileManager.h"
 #import "SearchResultsTableViewCell.h"
 
 #import "GAI.h"
@@ -176,12 +177,13 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    AddToDeckViewController *view = [[AddToDeckViewController alloc] init];
+    AddCardViewController *view = [[AddCardViewController alloc] init];
     
     view.arrDecks = [[NSMutableArray alloc] initWithArray:@[self.dictDeck[@"name"]]];
-    view.selectedDeckIndex = 0;
+    view.arrCollections = [[NSMutableArray alloc] initWithArray:[[FileManager sharedInstance] findFilesAtPath:@"/Collections"]];
     view.card = [self.fetchedResultsController objectAtIndexPath:indexPath];
     view.showCardButtonVisible = YES;
+    view.segmentedControlIndex = 0;
     [self.navigationController pushViewController:view animated:YES];
 }
 

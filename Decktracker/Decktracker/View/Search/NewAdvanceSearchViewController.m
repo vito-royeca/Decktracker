@@ -94,7 +94,6 @@
     [_viewSegmented addSubview:self.segmentedControl];
     
     [self.view addSubview:self.tblView];
-    self.view.backgroundColor = [UIColor whiteColor];
     
     _btnPlay = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay
                                                              target:self

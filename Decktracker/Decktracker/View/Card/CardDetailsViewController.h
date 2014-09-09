@@ -25,10 +25,8 @@
 @property(strong, nonatomic) UIBarButtonItem *btnPrevious;
 @property(strong, nonatomic) UIBarButtonItem *btnNext;
 @property(strong, nonatomic) UIBarButtonItem *btnAction;
-@property(strong, nonatomic) UIBarButtonItem *btnAddToDeck;
-@property(strong, nonatomic) UIBarButtonItem *btnAddToCollection;
+@property(strong, nonatomic) UIBarButtonItem *btnAdd;
 
-@property(nonatomic) BOOL addToDeckButtonVisible;
-@property(nonatomic) BOOL addToCollectionButtonVisible;
+@property(nonatomic) BOOL addButtonVisible;
 
 @end

@@ -40,7 +40,7 @@
     _selectedRow = 0;
 
     CGFloat dX = 0;
-    CGFloat dY = 0;//[UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height;
+    CGFloat dY = 0;
     CGFloat dWidth = self.view.frame.size.width;
     CGFloat dHeight = self.view.frame.size.height - dY - self.tabBarController.tabBar.frame.size.height;
     
@@ -187,7 +187,7 @@
     
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Delete Advance Search"
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Delete Deck"
                                                         message:[NSString stringWithFormat:@"Are you sure you want to delete %@?", self.arrDecks[indexPath.row]]
                                                        delegate:self
                                               cancelButtonTitle:@"No"

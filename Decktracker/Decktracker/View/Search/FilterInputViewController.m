@@ -92,6 +92,13 @@
         self.searchBar.delegate = self;
         self.searchBar.placeholder = @"Filter";
         self.searchBar.tintColor = [UIColor grayColor];
+        // Add a Done button in the keyboard
+        UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                   target:self.searchBar
+                                                                                   action:@selector(resignFirstResponder)];
+        UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, dWidth, 44)];
+        toolbar.items = [NSArray arrayWithObject:barButton];
+        self.searchBar.inputAccessoryView = toolbar;
         
         dY = self.searchBar.frame.origin.y + self.searchBar.frame.size.height;
         self.tblFilter = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, (dHeight-self.searchBar.frame.size.height)*0.60)
@@ -451,6 +458,13 @@
             [txtField addTarget:self
                           action:@selector(textFieldDidChange:)
                 forControlEvents:UIControlEventEditingChanged];
+            // Add a Done button in the keyboard
+            UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                       target:txtField
+                                                                                       action:@selector(resignFirstResponder)];
+            UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+            toolbar.items = [NSArray arrayWithObject:barButton];
+            txtField.inputAccessoryView = toolbar;
             [cell.contentView addSubview:txtField];
         }
     }

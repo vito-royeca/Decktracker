@@ -8,7 +8,7 @@
 
 #import "DeckDetailsViewController.h"
 #import "JJJ/JJJ.h"
-#import "AddToDeckViewController.h"
+#import "AddCardViewController.h"
 #import "Database.h"
 #import "FileManager.h"
 #import "LimitedSearchViewController.h"
@@ -81,7 +81,9 @@
 {
     NSDictionary *deck = [[FileManager sharedInstance] loadFileAtPath:[NSString stringWithFormat:@"/Decks/%@.json", _dictDeck[@"name"]]];
     
-    NSSortDescriptor *sorter = [[NSSortDescriptor alloc] initWithKey:@"card.name"  ascending:YES];
+    NSSortDescriptor *sorter1 = [[NSSortDescriptor alloc] initWithKey:@"card.name"  ascending:YES];
+    NSSortDescriptor *sorter2 = [[NSSortDescriptor alloc] initWithKey:@"card.set.releaseDate"  ascending:YES];
+    NSArray *sorters = @[sorter1, sorter2];
     
     _arrLands = [[NSMutableArray alloc] init];
     _arrCreatures = [[NSMutableArray alloc] init];
@@ -121,10 +123,10 @@
                                    @"qty" : dict[@"qty"]}];
     }
     
-    _arrLands = [[NSMutableArray alloc] initWithArray:[_arrLands sortedArrayUsingDescriptors:@[sorter]]];
-    _arrCreatures = [[NSMutableArray alloc] initWithArray:[_arrCreatures sortedArrayUsingDescriptors:@[sorter]]];
-    _arrOtherSpells = [[NSMutableArray alloc] initWithArray:[_arrOtherSpells sortedArrayUsingDescriptors:@[sorter]]];
-    _arrSideboard = [[NSMutableArray alloc] initWithArray:[_arrSideboard sortedArrayUsingDescriptors:@[sorter]]];
+    _arrLands = [[NSMutableArray alloc] initWithArray:[_arrLands sortedArrayUsingDescriptors:sorters]];
+    _arrCreatures = [[NSMutableArray alloc] initWithArray:[_arrCreatures sortedArrayUsingDescriptors:sorters]];
+    _arrOtherSpells = [[NSMutableArray alloc] initWithArray:[_arrOtherSpells sortedArrayUsingDescriptors:sorters]];
+    _arrSideboard = [[NSMutableArray alloc] initWithArray:[_arrSideboard sortedArrayUsingDescriptors:sorters]];
     
     self.navigationItem.title = [NSString stringWithFormat:@"%@ / %d Cards", deck[@"name"], totalCards];
 }
@@ -176,7 +178,6 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger rows = [self tableView:tableView numberOfRowsInSection:indexPath.section];
-    CGFloat height = 44;
     
     if (rows > 1)
     {
@@ -186,38 +187,34 @@
             {
                 if (indexPath.row < _arrLands.count)
                 {
-                    height = SEARCH_RESULTS_CELL_HEIGHT;
+                    return SEARCH_RESULTS_CELL_HEIGHT;
                 }
-                break;
             }
             case 1:
             {
                 if (indexPath.row < _arrCreatures.count)
                 {
-                    height = SEARCH_RESULTS_CELL_HEIGHT;
+                    return SEARCH_RESULTS_CELL_HEIGHT;
                 }
-                break;
             }
             case 2:
             {
                 if (indexPath.row < _arrOtherSpells.count)
                 {
-                    height = SEARCH_RESULTS_CELL_HEIGHT;
+                    return SEARCH_RESULTS_CELL_HEIGHT;
                 }
-                break;
             }
             case 3:
             {
                 if (indexPath.row < _arrSideboard.count)
                 {
-                    height = SEARCH_RESULTS_CELL_HEIGHT;
+                    return SEARCH_RESULTS_CELL_HEIGHT;
                 }
-                break;
             }
         }
     }
     
-    return height;
+    return UITableViewAutomaticDimension;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -275,7 +272,6 @@
         case 0:
         {
             return _arrLands.count + 1;
-            
         }
         case 1:
         {
@@ -428,12 +424,13 @@
         
         if (card)
         {
-            AddToDeckViewController *view = [[AddToDeckViewController alloc] init];
+            AddCardViewController *view = [[AddCardViewController alloc] init];
         
             view.arrDecks = [[NSMutableArray alloc] initWithArray:@[self.dictDeck[@"name"]]];
-            view.selectedDeckIndex = 0;
+            view.arrCollections = [[NSMutableArray alloc] initWithArray:[[FileManager sharedInstance] findFilesAtPath:@"/Collections"]];
             view.card = card;
             view.showCardButtonVisible = YES;
+            view.segmentedControlIndex = 0;
             [self.navigationController pushViewController:view animated:YES];
         }
         

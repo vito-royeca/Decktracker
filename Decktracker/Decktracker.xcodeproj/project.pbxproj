@@ -13,7 +13,6 @@
 		8C13467919A9B17B00E0B3C3 /* SearchResultsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C13467719A9B17B00E0B3C3 /* SearchResultsTableViewCell.xib */; };
 		8C2106A019B6EF85001DE039 /* QuantityTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C21069E19B6EF85001DE039 /* QuantityTableViewCell.m */; };
 		8C2106A119B6EF85001DE039 /* QuantityTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C21069F19B6EF85001DE039 /* QuantityTableViewCell.xib */; };
-		8C2106AA19B710DA001DE039 /* AddToDeckViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2106A919B710DA001DE039 /* AddToDeckViewController.m */; };
 		8C26A67919A63FAC00FE00E7 /* AdvanceSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C26A67019A63FAC00FE00E7 /* AdvanceSearchResultsViewController.m */; };
 		8C26A67A19A63FAC00FE00E7 /* AdvanceSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C26A67219A63FAC00FE00E7 /* AdvanceSearchViewController.m */; };
 		8C26A67B19A63FAC00FE00E7 /* FilterInputViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C26A67419A63FAC00FE00E7 /* FilterInputViewController.m */; };
@@ -58,6 +57,8 @@
 		8C524A6519B81E9E005E697B /* DeckDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C524A6419B81E9E005E697B /* DeckDetailsViewController.m */; };
 		8C524A7019B82C01005E697B /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C524A6F19B82C01005E697B /* SettingsViewController.m */; };
 		8C56F56119B5B5BB0084B2B8 /* CardDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C56F56019B5B5BB0084B2B8 /* CardDetailsViewController.m */; };
+		8C5B446A19BEF3C00071604C /* CollectionDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5B446919BEF3C00071604C /* CollectionDetailsViewController.m */; };
+		8C5B446D19BEFFF60071604C /* AddCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5B446C19BEFFF60071604C /* AddCardViewController.m */; };
 		8C5FF9E819AE2EE3003CE54C /* keywords.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C5FF9E719AE2EE3003CE54C /* keywords.plist */; };
 		8CADEF1719923DDE004D7658 /* images in Resources */ = {isa = PBXBuildFile; fileRef = 8CADEF1619923DDE004D7658 /* images */; };
 		8CF0C9D71991CD8300349F35 /* libJJJ.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF0C9C11991CD0500349F35 /* libJJJ.a */; };
@@ -106,8 +107,6 @@
 		8C21069D19B6EF85001DE039 /* QuantityTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuantityTableViewCell.h; sourceTree = "<group>"; };
 		8C21069E19B6EF85001DE039 /* QuantityTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuantityTableViewCell.m; sourceTree = "<group>"; };
 		8C21069F19B6EF85001DE039 /* QuantityTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QuantityTableViewCell.xib; sourceTree = "<group>"; };
-		8C2106A819B710DA001DE039 /* AddToDeckViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddToDeckViewController.h; sourceTree = "<group>"; };
-		8C2106A919B710DA001DE039 /* AddToDeckViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddToDeckViewController.m; sourceTree = "<group>"; };
 		8C26A66F19A63FAC00FE00E7 /* AdvanceSearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvanceSearchResultsViewController.h; sourceTree = "<group>"; };
 		8C26A67019A63FAC00FE00E7 /* AdvanceSearchResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvanceSearchResultsViewController.m; sourceTree = "<group>"; };
 		8C26A67119A63FAC00FE00E7 /* AdvanceSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvanceSearchViewController.h; sourceTree = "<group>"; };
@@ -181,6 +180,10 @@
 		8C524A6F19B82C01005E697B /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		8C56F55F19B5B5BB0084B2B8 /* CardDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardDetailsViewController.h; sourceTree = "<group>"; };
 		8C56F56019B5B5BB0084B2B8 /* CardDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardDetailsViewController.m; sourceTree = "<group>"; };
+		8C5B446819BEF3C00071604C /* CollectionDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionDetailsViewController.h; sourceTree = "<group>"; };
+		8C5B446919BEF3C00071604C /* CollectionDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionDetailsViewController.m; sourceTree = "<group>"; };
+		8C5B446B19BEFFF60071604C /* AddCardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddCardViewController.h; sourceTree = "<group>"; };
+		8C5B446C19BEFFF60071604C /* AddCardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddCardViewController.m; sourceTree = "<group>"; };
 		8C5FF9E719AE2EE3003CE54C /* keywords.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = keywords.plist; sourceTree = "<group>"; };
 		8CADEF1619923DDE004D7658 /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
 		8CF0C9BA1991CD0500349F35 /* JJJ.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JJJ.xcodeproj; path = ../jjj/JJJ/JJJ.xcodeproj; sourceTree = "<group>"; };
@@ -424,6 +427,8 @@
 		8C56F55B19B5B5770084B2B8 /* Card */ = {
 			isa = PBXGroup;
 			children = (
+				8C5B446B19BEFFF60071604C /* AddCardViewController.h */,
+				8C5B446C19BEFFF60071604C /* AddCardViewController.m */,
 				8C56F55F19B5B5BB0084B2B8 /* CardDetailsViewController.h */,
 				8C56F56019B5B5BB0084B2B8 /* CardDetailsViewController.m */,
 			);
@@ -443,8 +448,6 @@
 		8CF79A5C19A88B4500BE4246 /* Decks */ = {
 			isa = PBXGroup;
 			children = (
-				8C2106A819B710DA001DE039 /* AddToDeckViewController.h */,
-				8C2106A919B710DA001DE039 /* AddToDeckViewController.m */,
 				8C524A6319B81E9E005E697B /* DeckDetailsViewController.h */,
 				8C524A6419B81E9E005E697B /* DeckDetailsViewController.m */,
 				8CF79A6319A8BFA300BE4246 /* DecksViewController.h */,
@@ -456,6 +459,8 @@
 		8CF79A6019A88B5300BE4246 /* Collections */ = {
 			isa = PBXGroup;
 			children = (
+				8C5B446819BEF3C00071604C /* CollectionDetailsViewController.h */,
+				8C5B446919BEF3C00071604C /* CollectionDetailsViewController.m */,
 				8CF79A6919A8BFB400BE4246 /* CollectionsViewController.h */,
 				8CF79A6A19A8BFB400BE4246 /* CollectionsViewController.m */,
 			);
@@ -648,6 +653,7 @@
 				8C3CBDD619A31618002CD96E /* Block.m in Sources */,
 				8C13467819A9B17B00E0B3C3 /* SearchResultsTableViewCell.m in Sources */,
 				8C26A67D19A63FAC00FE00E7 /* SimpleSearchViewController.m in Sources */,
+				8C5B446A19BEF3C00071604C /* CollectionDetailsViewController.m in Sources */,
 				8C3CBDDC19A31618002CD96E /* SetType.m in Sources */,
 				8C378E0019A7434B00B9367F /* MHFacebookImageViewer.m in Sources */,
 				8CF79A6B19A8BFB400BE4246 /* CollectionsViewController.m in Sources */,
@@ -663,11 +669,11 @@
 				8C26A67C19A63FAC00FE00E7 /* NewAdvanceSearchViewController.m in Sources */,
 				8CF79A6519A8BFA300BE4246 /* DecksViewController.m in Sources */,
 				8C56F56119B5B5BB0084B2B8 /* CardDetailsViewController.m in Sources */,
+				8C5B446D19BEFFF60071604C /* AddCardViewController.m in Sources */,
 				8C2CFCF519BB1F8B00F5348B /* LimitedSearchViewController.m in Sources */,
 				8C524A6519B81E9E005E697B /* DeckDetailsViewController.m in Sources */,
 				8C3CBDCD19A31618002CD96E /* Format.m in Sources */,
 				8C2E1431199085C700023BAA /* Database.m in Sources */,
-				8C2106AA19B710DA001DE039 /* AddToDeckViewController.m in Sources */,
 				8C2E14031990741100023BAA /* AppDelegate.m in Sources */,
 				8C3CBDD019A31618002CD96E /* Artist.m in Sources */,
 				8C3CBDD919A31618002CD96E /* CardType.m in Sources */,
