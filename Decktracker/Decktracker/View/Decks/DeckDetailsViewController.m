@@ -189,12 +189,20 @@
                 {
                     return SEARCH_RESULTS_CELL_HEIGHT;
                 }
+                else
+                {
+                    return UITableViewAutomaticDimension;
+                }
             }
             case 1:
             {
                 if (indexPath.row < _arrCreatures.count)
                 {
                     return SEARCH_RESULTS_CELL_HEIGHT;
+                }
+                else
+                {
+                    return UITableViewAutomaticDimension;
                 }
             }
             case 2:
@@ -203,12 +211,20 @@
                 {
                     return SEARCH_RESULTS_CELL_HEIGHT;
                 }
+                else
+                {
+                    return UITableViewAutomaticDimension;
+                }
             }
             case 3:
             {
                 if (indexPath.row < _arrSideboard.count)
                 {
                     return SEARCH_RESULTS_CELL_HEIGHT;
+                }
+                else
+                {
+                    return UITableViewAutomaticDimension;
                 }
             }
         }

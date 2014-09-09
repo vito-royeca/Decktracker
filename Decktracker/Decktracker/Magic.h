@@ -46,7 +46,7 @@ typedef NSString* Layout;
                                           @"date":@"20014-09-04", \
                                           @"version":@"5.5.2"}
 
-#define CARD_TYPES                      @[@"Artifact", @"Basic", @"Conspiracy", @"Creature", \
+#define CARD_TYPES                      @[@"Artifact", @"Conspiracy", @"Creature", \
                                           @"Enchantment", @"Instant", @"Land", \
                                           @"Legendary", @"Ongoing", @"Phenomenon", @"Plane", \
                                           @"Planeswalker", @"Scheme", @"Snow", @"Sorcery", \
