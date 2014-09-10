@@ -8,8 +8,8 @@
 
 @import UIKit;
 
-#import "InAppPurchase.h"
+@interface MainViewController : UITabBarController<UITabBarControllerDelegate>
 
-@interface MainViewController : UITabBarController<UITabBarControllerDelegate, InAppPurchaseDelegate>
+-(void) addNavigationController:(UINavigationController*) navController atIndex:(int) index;
 
 @end

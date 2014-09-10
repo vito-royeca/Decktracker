@@ -16,12 +16,11 @@
 
 @end
 
-@interface InAppPurchase : NSObject<SKPaymentTransactionObserver, SKProductsRequestDelegate, UIAlertViewDelegate>
+@interface InAppPurchase : NSObject<SKPaymentTransactionObserver, SKProductsRequestDelegate>
 
 @property(strong,nonatomic) id<InAppPurchaseDelegate> delegate;
-@property(strong,nonatomic) NSString *productID;
-@property(strong,nonatomic) SKProduct *product;
 
--(void) initPurchase;
+-(BOOL) isProductPurchased:(NSString*) productID;
+-(void) purchaseProduct:(NSString*) productID;
 
 @end

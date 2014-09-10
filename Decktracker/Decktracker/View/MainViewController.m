@@ -9,6 +9,7 @@
 #import "MainViewController.h"
 #import "CollectionsViewController.h"
 #import "DecksViewController.h"
+#import "InAppPurchase.h"
 #import "Magic.h"
 #import "SimpleSearchViewController.h"
 #import "SettingsViewController.h"
@@ -44,21 +45,28 @@
                                                    image:[UIImage imageNamed:@"layers.png"]
                                            selectedImage:nil];
     
-    UINavigationController *nc3 = [[UINavigationController alloc] init];
-    UIViewController *vc3 = [[CollectionsViewController alloc] initWithNibName:nil bundle:nil];
-    nc3.viewControllers = [NSArray arrayWithObjects:vc3, nil];
-    nc3.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Collections"
-                                                   image:[UIImage imageNamed:@"cards.png"]
-                                           selectedImage:nil];
+//    UINavigationController *nc4 = [[UINavigationController alloc] init];
+//    UIViewController *vc4 = [[SettingsViewController alloc] initWithNibName:nil bundle:nil];
+//    nc4.viewControllers = [NSArray arrayWithObjects:vc4, nil];
+//    nc4.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Settings"
+//                                                   image:[UIImage imageNamed:@"settings.png"]
+//                                           selectedImage:nil];
     
-    UINavigationController *nc4 = [[UINavigationController alloc] init];
-    UIViewController *vc4 = [[SettingsViewController alloc] initWithNibName:nil bundle:nil];
-    nc4.viewControllers = [NSArray arrayWithObjects:vc4, nil];
-    nc4.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Settings"
-                                                   image:[UIImage imageNamed:@"settings.png"]
-                                           selectedImage:nil];
+    NSMutableArray *arrViewControllers = [[NSMutableArray alloc] initWithArray:@[nc1, nc2]];
+    InAppPurchase *iap = [[InAppPurchase alloc] init];
     
-    self.viewControllers = @[nc1, nc2, nc3, nc4];
+    if ([iap isProductPurchased:COLLECTIONS_IAP_PRODUCT_ID])
+    {
+        UINavigationController *nc3 = [[UINavigationController alloc] init];
+        UIViewController *vc3 = [[CollectionsViewController alloc] initWithNibName:nil bundle:nil];
+        nc3.viewControllers = [NSArray arrayWithObjects:vc3, nil];
+        nc3.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Collections"
+                                                       image:[UIImage imageNamed:@"cards.png"]
+                                               selectedImage:nil];
+        [arrViewControllers insertObject:nc3 atIndex:2];
+    }
+    
+    self.viewControllers = arrViewControllers;
     self.selectedViewController = nc1;
 }
 
@@ -68,35 +76,12 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - UITabBarControllerDelegate
-- (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
+-(void) addNavigationController:(UINavigationController*) navController atIndex:(int) index
 {
-//    if ([item.title isEqualToString:@"Collections"])
-//    {
-//        InAppPurchase *iap = [[InAppPurchase alloc] init];
-//        
-//        iap.delegate = self;
-//        iap.productID = COLLECTIONS_PRODUCT_ID;
-//        [iap initPurchase];
-//    }
-}
-
-#pragma mark - InAppPurchase
--(void) purchaseSucceded:(NSString*) message
-{
-    self.selectedViewController = self.viewControllers[3];
-}
-
--(void) purchaseFailed:(NSString*) message
-{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"In-App Purchase Error"
-                                                    message:message
-                                                   delegate:nil
-                                          cancelButtonTitle:@"Ok"
-                                          otherButtonTitles:nil];
-    [alert show];
+    NSMutableArray *arrViewControllers = [[NSMutableArray alloc] initWithArray:self.viewControllers];
     
-    self.selectedViewController = [self.viewControllers firstObject];
+    [arrViewControllers insertObject:navController atIndex:index];
+    [self setViewControllers:arrViewControllers animated:NO];
 }
 
 @end

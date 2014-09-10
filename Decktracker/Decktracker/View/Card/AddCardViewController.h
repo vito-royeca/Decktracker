@@ -6,11 +6,14 @@
 //  Copyright (c) 2014 Jovito Royeca. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
+
 #import "Card.h"
+#import "InAppPurchase.h"
+#import "MBProgressHUD.h"
 #import "QuantityTableViewCell.h"
 
-@interface AddCardViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, QuantityTableViewCellDelegate>
+@interface AddCardViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, QuantityTableViewCellDelegate, InAppPurchaseDelegate, MBProgressHUDDelegate>
 
 @property(strong,nonatomic) UISegmentedControl *segmentedControl;
 @property(strong,nonatomic) UITableView *tblAddTo;

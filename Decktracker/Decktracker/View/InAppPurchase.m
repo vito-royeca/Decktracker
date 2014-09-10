@@ -8,15 +8,34 @@
 
 #import "InAppPurchase.h"
 
+
 @implementation InAppPurchase
-
-@synthesize product = _product;
-
--(void) initPurchase
 {
+    NSString *_productID;
+}
+
+-(id) init
+{
+    if (self = [super init])
+    {
+        [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
+    }
+    
+    return self;
+}
+
+-(BOOL) isProductPurchased:(NSString*) productID
+{
+    return [[[NSUserDefaults standardUserDefaults] valueForKey:productID] boolValue];
+}
+
+-(void) purchaseProduct:(NSString*) productID
+{
+    _productID = productID;
+    
     if ([SKPaymentQueue canMakePayments])
     {
-        NSSet *set = [NSSet setWithObject:self.productID];
+        NSSet *set = [NSSet setWithObject:productID];
         SKProductsRequest *request = [[SKProductsRequest alloc] initWithProductIdentifiers:set];
         request.delegate = self;
         
@@ -36,30 +55,19 @@
     
     if (products.count != 0)
     {
-        self.product = [products firstObject];
-//        NSString *message = [NSString stringWithFormat:@"%@ requires In-App purchase. Product description: %@. Buy now?", self.product.localizedTitle, self.product.localizedDescription];
-//        
-//        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"In-App Purchase"
-//                                                         message:message
-//                                                        delegate:self
-//                                               cancelButtonTitle:@"Cancel"
-//                                               otherButtonTitles:@"Buy", nil];
-//        alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-//        [alert show];
-        SKPayment *payment = [SKPayment paymentWithProduct:self.product];
+        SKProduct *product= [products firstObject];
+        SKPayment *payment = [SKPayment paymentWithProduct:product];
         [[SKPaymentQueue defaultQueue] addPayment:payment];
     }
     else
     {
         [self.delegate purchaseFailed:@"Product is not found."];
     }
-    
-    products = response.invalidProductIdentifiers;
-    
-    for (SKProduct *product in products)
-    {
-        NSLog(@"Product not found: %@", product);
-    }
+}
+
+- (void)request:(SKRequest *)request didFailWithError:(NSError *)error
+{
+    [self.delegate purchaseFailed:@"Product is not found."];
 }
 
 #pragma mark SKPaymentTransactionObserver
@@ -69,22 +77,33 @@
     {
         switch (transaction.transactionState)
         {
+            case SKPaymentTransactionStateRestored:
+            {
+                [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:YES] forKey:_productID];
+                [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
+                break;
+            }
             case SKPaymentTransactionStatePurchased:
             {
+                [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:YES] forKey:_productID];
                 [self.delegate purchaseSucceded:@"In-App Purchase Ok"];
                 [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
                 break;
             }
-                
             case SKPaymentTransactionStateFailed:
             {
-                [self.delegate purchaseSucceded:@"In-App Purchase Failed"];
+                NSString *message = @"In-App Purchase Failed";
+                if (transaction.error.code == SKErrorPaymentCancelled)
+                {
+                    message = @"In-App Purchase Cancelled";
+                }
+                [self.delegate purchaseSucceded:message];
                 [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
                 break;
             }
-                
             default:
             {
+                [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
                 break;
             }
         }

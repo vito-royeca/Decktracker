@@ -8,7 +8,9 @@
 
 #import "AddCardViewController.h"
 #import "CardDetailsViewController.h"
+#import "CollectionsViewController.h"
 #import "FileManager.h"
+#import "MainViewController.h"
 #import "SearchResultsTableViewCell.h"
 
 #import "GAI.h"
@@ -150,15 +152,38 @@
     {
         case 0:
         {
+            self.segmentedControlIndex = (int)self.segmentedControl.selectedSegmentIndex;
             [self loadCurrentDeck];
             break;
         }
         case 1:
         {
-            [self loadCurrentCollection];
+            InAppPurchase *iap = [[InAppPurchase alloc] init];
+
+            if (![iap isProductPurchased:COLLECTIONS_IAP_PRODUCT_ID])
+            {
+//                MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
+//                [self.view addSubview:hud];
+//                hud.delegate = self;
+//                [hud showWhileExecuting:@selector(initPurchase) onTarget:self withObject:nil animated:NO];
+                self.segmentedControl.selectedSegmentIndex = 0;
+                self.segmentedControlIndex = (int)self.segmentedControl.selectedSegmentIndex;
+            }
+            else
+            {
+                self.segmentedControlIndex = (int)self.segmentedControl.selectedSegmentIndex;
+                [self loadCurrentCollection];
+            }
             break;
         }
     }
+}
+
+-(void) initPurchase
+{
+    InAppPurchase *iap = [[InAppPurchase alloc] init];
+    iap.delegate = self;
+    [iap purchaseProduct:COLLECTIONS_IAP_PRODUCT_ID];
 }
 
 -(void) btnCancelTapped:(id) sender
@@ -737,6 +762,42 @@
             break;
         }
     }
+}
+
+#pragma mark - InAppPurchaseDelegate
+-(void) purchaseSucceded:(NSString*) message
+{
+    self.segmentedControlIndex = (int)self.segmentedControl.selectedSegmentIndex;
+    [self loadCurrentCollection];
+    
+    UINavigationController *nc3 = [[UINavigationController alloc] init];
+    UIViewController *vc3 = [[CollectionsViewController alloc] initWithNibName:nil bundle:nil];
+    nc3.viewControllers = [NSArray arrayWithObjects:vc3, nil];
+    nc3.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Collections"
+                                                   image:[UIImage imageNamed:@"cards.png"]
+                                           selectedImage:nil];
+    
+    MainViewController *view = (MainViewController*)self.tabBarController;
+    [view addNavigationController:nc3 atIndex:2];
+}
+
+-(void) purchaseFailed:(NSString*) message
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                    message:message
+                                                   delegate:nil
+                                          cancelButtonTitle:@"Ok"
+                                          otherButtonTitles:nil];
+    [alert show];
+    
+    self.segmentedControl.selectedSegmentIndex = 0;
+    self.segmentedControlIndex = (int)self.segmentedControl.selectedSegmentIndex;
+}
+
+#pragma mark - MBProgressHUDDelegate methods
+- (void)hudWasHidden:(MBProgressHUD *)hud
+{
+	[hud removeFromSuperview];
 }
 
 @end
