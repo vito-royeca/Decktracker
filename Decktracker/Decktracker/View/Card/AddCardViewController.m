@@ -162,12 +162,12 @@
 
             if (![iap isProductPurchased:COLLECTIONS_IAP_PRODUCT_ID])
             {
-//                MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
-//                [self.view addSubview:hud];
-//                hud.delegate = self;
-//                [hud showWhileExecuting:@selector(initPurchase) onTarget:self withObject:nil animated:NO];
-                self.segmentedControl.selectedSegmentIndex = 0;
-                self.segmentedControlIndex = (int)self.segmentedControl.selectedSegmentIndex;
+                MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
+                [self.view addSubview:hud];
+                hud.delegate = self;
+                [hud showWhileExecuting:@selector(initPurchase) onTarget:self withObject:nil animated:NO];
+//                self.segmentedControl.selectedSegmentIndex = 0;
+//                self.segmentedControlIndex = (int)self.segmentedControl.selectedSegmentIndex;
             }
             else
             {
