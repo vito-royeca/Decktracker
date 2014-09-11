@@ -30,10 +30,10 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    CGFloat dX = 10;
-    CGFloat dY = 100;
-    CGFloat dWidth = self.view.frame.size.width - 20;
-    CGFloat dHeight = 30;
+//    CGFloat dX = 10;
+//    CGFloat dY = 100;
+//    CGFloat dWidth = self.view.frame.size.width - 20;
+//    CGFloat dHeight = 30;
     
     UIBarButtonItem *btnDropBox = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"dropbox.png"] style:UIBarButtonItemStylePlain target:self action:@selector(dropBoxTapped:)];
     self.navigationItem.rightBarButtonItem = btnDropBox;

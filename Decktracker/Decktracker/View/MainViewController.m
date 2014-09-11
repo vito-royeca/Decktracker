@@ -9,12 +9,14 @@
 #import "MainViewController.h"
 #import "CollectionsViewController.h"
 #import "DecksViewController.h"
-#import "InAppPurchase.h"
 #import "Magic.h"
 #import "SimpleSearchViewController.h"
 #import "SettingsViewController.h"
 
 @implementation MainViewController
+{
+    InAppPurchase *_inAppPurchase;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -52,10 +54,41 @@
 //                                                   image:[UIImage imageNamed:@"settings.png"]
 //                                           selectedImage:nil];
     
-    NSMutableArray *arrViewControllers = [[NSMutableArray alloc] initWithArray:@[nc1, nc2]];
-    InAppPurchase *iap = [[InAppPurchase alloc] init];
+    self.viewControllers = @[nc1, nc2];
+    self.selectedViewController = nc1;
     
-    if ([iap isProductPurchased:COLLECTIONS_IAP_PRODUCT_ID])
+    _inAppPurchase = [[InAppPurchase alloc] init];
+    _inAppPurchase.delegate = self;
+    if (![_inAppPurchase isProductPurchased:COLLECTIONS_IAP_PRODUCT_ID])
+    {
+        [_inAppPurchase restorePurchase:COLLECTIONS_IAP_PRODUCT_ID];
+    }
+    else
+    {
+        [self addCollectionsProduct];
+    }
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+-(void) addCollectionsProduct
+{
+    BOOL bAlreaddyAdded = NO;
+    
+    for (UINavigationController *view in self.viewControllers)
+    {
+        if ([view.tabBarItem.title isEqualToString:@"Collections"])
+        {
+            bAlreaddyAdded = YES;
+            break;
+        }
+    }
+    
+    if (!bAlreaddyAdded)
     {
         UINavigationController *nc3 = [[UINavigationController alloc] init];
         UIViewController *vc3 = [[CollectionsViewController alloc] initWithNibName:nil bundle:nil];
@@ -63,17 +96,9 @@
         nc3.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Collections"
                                                        image:[UIImage imageNamed:@"cards.png"]
                                                selectedImage:nil];
-        [arrViewControllers insertObject:nc3 atIndex:2];
+        
+        [self addNavigationController:nc3 atIndex:2];
     }
-    
-    self.viewControllers = arrViewControllers;
-    self.selectedViewController = nc1;
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 -(void) addNavigationController:(UINavigationController*) navController atIndex:(int) index
@@ -84,4 +109,18 @@
     [self setViewControllers:arrViewControllers animated:NO];
 }
 
+#pragma mark - InAppPurchaseDelegate
+-(void) purchaseRestored:(NSString*) message
+{
+    [self addCollectionsProduct];
+}
+
+-(void) purchaseSucceded:(NSString*) message
+{
+    NSLog(@"%@", message);
+}
+-(void) purchaseFailed:(NSString*) message
+{
+    NSLog(@"%@", message);
+}
 @end

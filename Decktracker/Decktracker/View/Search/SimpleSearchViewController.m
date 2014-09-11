@@ -284,6 +284,10 @@
                      withRowAnimation:UITableViewRowAnimationFade];
             break;
         }
+        default:
+        {
+            break;
+        }
     }
 }
 

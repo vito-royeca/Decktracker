@@ -10,13 +10,12 @@
 
 
 @implementation InAppPurchase
-{
-    NSString *_productID;
-}
+
+@synthesize productID = _productID;
 
 -(id) init
 {
-    if (self = [super init])
+    if ((self = [super init]))
     {
         [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
     }
@@ -31,11 +30,11 @@
 
 -(void) purchaseProduct:(NSString*) productID
 {
-    _productID = productID;
+    self.productID = productID;
     
     if ([SKPaymentQueue canMakePayments])
     {
-        NSSet *set = [NSSet setWithObject:productID];
+        NSSet *set = [NSSet setWithObject:self.productID];
         SKProductsRequest *request = [[SKProductsRequest alloc] initWithProductIdentifiers:set];
         request.delegate = self;
         
@@ -43,14 +42,19 @@
     }
     else
     {
-        [self.delegate purchaseFailed:@"Please enable In App Purchase in Settings."];
+        [self.delegate purchaseFailed:@"Please enable In-App Purchase in Settings."];
     }
+}
+
+-(void) restorePurchase:(NSString*) productID
+{
+    self.productID = productID;
+    [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
 }
 
 #pragma mark SKProductsRequestDelegate
 -(void)productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response
 {
-    
     NSArray *products = response.products;
     
     if (products.count != 0)
@@ -79,31 +83,37 @@
         {
             case SKPaymentTransactionStateRestored:
             {
-                [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:YES] forKey:_productID];
+                if ([transaction.originalTransaction.payment.productIdentifier isEqualToString:self.productID])
+                {
+                    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:YES] forKey:self.productID];
+                    [self.delegate purchaseRestored:@"In-App Purchase restored."];
+                }
                 [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
                 break;
             }
             case SKPaymentTransactionStatePurchased:
             {
-                [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:YES] forKey:_productID];
-                [self.delegate purchaseSucceded:@"In-App Purchase Ok"];
+                if ([transaction.originalTransaction.payment.productIdentifier isEqualToString:self.productID])
+                {
+                    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:YES] forKey:self.productID];
+                    [self.delegate purchaseSucceded:@"In-App Purchase succeded."];
+                }
                 [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
                 break;
             }
             case SKPaymentTransactionStateFailed:
             {
-                NSString *message = @"In-App Purchase Failed";
+                NSString *message = @"In-App Purchase failed.";
                 if (transaction.error.code == SKErrorPaymentCancelled)
                 {
                     message = @"In-App Purchase Cancelled";
                 }
-                [self.delegate purchaseSucceded:message];
+                [self.delegate purchaseFailed:message];
                 [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
                 break;
             }
             default:
             {
-                [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
                 break;
             }
         }
