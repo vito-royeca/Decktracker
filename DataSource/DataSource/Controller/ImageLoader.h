@@ -12,7 +12,8 @@
 
 -(void) downloadSymbols;
 -(void) downloadOtherSymbols;
--(void) downloadSets;
+-(void) downloadAllSets;
+-(void) downloadSets:(NSArray*) arrSetCodes;
 -(void) downloadCards;
 -(void) convertCardsToLowResolution;
 -(void) resizeCrops;

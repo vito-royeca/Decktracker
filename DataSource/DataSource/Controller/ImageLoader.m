@@ -70,7 +70,7 @@
     }
 }
 
--(void) downloadSets
+-(void) downloadAllSets
 {
     [[Database sharedInstance] setupDb];
     
@@ -113,6 +113,47 @@
     }
     
     [[Database sharedInstance] closeDb];
+}
+
+-(void) downloadSets:(NSArray*) arrSetCodes
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *path = [documentsDirectory stringByAppendingPathComponent:@"/images-raw/set"];
+    NSArray *rarities = @[@"C", @"U", @"R", @"M", @"S"];
+    
+    [self createDir:path];
+    
+    for (NSString *setCode in arrSetCodes)
+    {
+        NSString *setPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", setCode]];
+        [self createDir:setPath];
+        
+        for (NSString *rarity in rarities)
+        {
+            NSString *rarityPath = [setPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", rarity]];
+            [self createDir:rarityPath];
+            
+            for (NSString *size in kImageSizes)
+            {
+                NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://mtgimage.com/symbol/set/%@/%@/%@.png", setCode, rarity, size]];
+                NSString *filePath = [rarityPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.png", size]];
+                
+                if (![[NSFileManager defaultManager] fileExistsAtPath:filePath])
+                {
+                    NSLog(@"Downloading... %@", url);
+                    [JJJUtil downloadResource:url toPath:filePath];
+                }
+            }
+            
+            //delete if empty
+            NSArray *listOfFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:rarityPath error:nil];
+            if (listOfFiles.count == 0)
+            {
+                [[NSFileManager defaultManager] removeItemAtPath:rarityPath error:nil];
+            }
+        }
+    }
 }
 
 -(void) downloadCards
