@@ -87,7 +87,15 @@
     
     // set image
     path = [[FileManager sharedInstance] cardSetPath:card];
-    self.imgSet.image = [[UIImage alloc] initWithContentsOfFile:path];
+    UIImage *setImage = [[UIImage alloc] initWithContentsOfFile:path];
+    self.imgSet.image = setImage;
+    // resize the image
+    CGSize itemSize = CGSizeMake(setImage.size.width/2, setImage.size.height/2);
+    UIGraphicsBeginImageContextWithOptions(itemSize, NO, UIScreen.mainScreen.scale);
+    CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
+    [setImage drawInRect:imageRect];
+    self.imgSet.image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
     
     // draw the mana cost
     NSMutableArray *arrImages = [[NSMutableArray alloc] init];

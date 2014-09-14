@@ -423,6 +423,13 @@
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
     
+    if (self.card.source)
+    {
+        [html appendFormat:@"<tr><td><strong>Source</strong></td></tr>"];
+        [html appendFormat:@"<tr><td>%@</td></tr>", self.card.source];
+        [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
+    }
+
     [html appendFormat:@"<tr><td><strong>All Sets</strong></td></tr>"];
     [html appendFormat:@"<tr><td><table>"];
     for (Set *set in [[self.card.printings allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"releaseDate" ascending:YES]]])
@@ -431,7 +438,8 @@
         
         NSString *link = [[NSString stringWithFormat:@"card?name=%@&set=%@", card.name, card.set.code] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         
-        [html appendFormat:@"<tr><td><a href=\"%@\">%@</a></td><td><a href=\"%@\">%@</a></td></tr>", link, [self composeSetImage:card], link, card.name];
+        [html appendFormat:@"<tr><td><a href=\"%@\">%@</a></td><td><a href=\"%@\">%@</a></td></tr>", link, [self composeSetImage:card], link, set.name];
+        [html appendFormat:@"<tr><td>&nbsp;</td><td>Release Date: %@</td></tr>", [JJJUtil formatDate:set.releaseDate withFormat:@"YYYY-MM-dd"]];
     }
     [html appendFormat:@"</table></td></tr>"];
     [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];

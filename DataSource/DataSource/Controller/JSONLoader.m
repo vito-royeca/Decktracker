@@ -51,38 +51,35 @@
         NSSet *cards = [self parseCards:dict[@"cards"] forSet:set];
         set.numberOfCards = [NSNumber numberWithInt:(int)cards.count];
         [currentContext MR_save];
-    }
-    
-    for (NSString *setName in [json allKeys])
-    {
-        NSDictionary * dict = json[setName];
-        Set *set = [self parseSet:dict];
-
+        
         for (NSDictionary *dictCard in dict[@"cards"])
         {
-            Card *card = [[Database sharedInstance] findCard:dictCard[@"name"] inSet:set.code];
+            Card *card;
+            
+            if (dictCard[@"multiverseID"])
+            {
+                card = [Card MR_findFirstByAttribute:@"multiverseID" withValue:dictCard[@"multiverseID"]];
+            }
+            else
+            {
+                card = [[Database sharedInstance] findCard:dictCard[@"name"] inSet:set.code];
+            }
             
             if (card)
             {
                 card.rulings = [self createRulings:dictCard[@"rulings"]];
                 card.foreignNames = [self createForeignNames:dictCard[@"foreignNames"]];
-//                card.legalities = [self createLegalities:dictCard@"legalities"]];
+                card.legalities = [self createLegalities:dictCard[@"legalities"]];
+                
+                NSArray *names = dictCard[@"names"];
+                NSArray *variations = dictCard[@"variations"];
+                
+                if (names.count > 0 || variations.count > 0)
+                {
+                    [self setNames:names andVariations:variations forCard:card];
+                }
                 [currentContext MR_save];
             }
-        }
-    }
-    
-    for (NSString *setName in [json allKeys])
-    {
-        NSDictionary * dict = json[setName];
-        
-        for (NSDictionary *dictNames in dict[@"cards"])
-        {
-            NSString *cardName = dictNames[@"name"];
-            NSArray *names = dictNames[@"names"];
-            NSArray *variations = dictNames[@"variations"];
-            
-            [self setNames:names andVariations:variations forCard:cardName];
         }
     }
     
@@ -90,7 +87,7 @@
     CardColor *color = [CardColor MR_createEntity];
     color.name = @"Colorless";
     [currentContext MR_save];
-
+    
     [[Database sharedInstance] closeDb];
     
     NSDate *dateEnd = [NSDate date];
@@ -514,7 +511,6 @@
         legality.format = [self findFormat:key];
         [set addObject:legality];
     }
-    
     return set;
 }
 
@@ -536,41 +532,33 @@
     return format;
 }
 
--(void) setNames:(NSArray*)names andVariations:(NSArray*)variations forCard:(NSString*)name
+-(void) setNames:(NSArray*)names andVariations:(NSArray*)variations forCard:(Card*)card
 {
-    Card *card = [Card MR_findFirstByAttribute:@"name"
-                                       withValue:name];
+    NSMutableSet *setNames = [[NSMutableSet alloc] init];
+    NSMutableSet *setVariations = [[NSMutableSet alloc] init];
     
-    if (card)
+    for (NSString *x in names)
     {
-        NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
-        NSMutableSet *setNames = [[NSMutableSet alloc] init];
-        NSMutableSet *setVariations = [[NSMutableSet alloc] init];
-        
-        for (NSString *x in names)
+        Card *xCard = [Card MR_findFirstByAttribute:@"name"
+                                          withValue:x];
+        if (xCard)
         {
-            Card *xCard = [Card MR_findFirstByAttribute:@"name"
-                                              withValue:x];
-            if (xCard)
-            {
-                [setNames addObject:xCard];
-            }
+            [setNames addObject:xCard];
         }
-        
-        for (NSString *x in variations)
-        {
-            Card *xCard = [Card MR_findFirstByAttribute:@"multiverseID"
-                                              withValue:x];
-            if (xCard)
-            {
-                [setVariations addObject:xCard];
-            }
-        }
-        
-        card.names = setNames;
-        card.variations = setVariations;
-        [currentContext MR_save];
     }
+    
+    for (NSString *x in variations)
+    {
+        Card *xCard = [Card MR_findFirstByAttribute:@"multiverseID"
+                                          withValue:x];
+        if (xCard)
+        {
+            [setVariations addObject:xCard];
+        }
+    }
+    
+    card.names = setNames;
+    card.variations = setVariations;
 }
 
 #pragma mark - Utility methods

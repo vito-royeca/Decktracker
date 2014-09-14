@@ -251,6 +251,7 @@
 {
     NSMutableArray *arrBoard = _currentDeck[board];
     NSDictionary *newCard = @{@"card" : self.card.name,
+                              @"multiverseID" : self.card.multiverseID,
                               @"set"  : self.card.set.code,
                               @"qty"  : [NSNumber numberWithInt:newValue]};
     
@@ -260,8 +261,9 @@
         
         for (NSDictionary *dict in arrBoard)
         {
-            if ([dict[@"card"] isEqualToString:self.card.name] &&
-                [dict[@"set"] isEqualToString:self.card.set.code])
+            if ([dict[@"multiverseID"] intValue] == [self.card.multiverseID intValue] ||
+                ([dict[@"card"] isEqualToString:self.card.name] &&
+                [dict[@"set"] isEqualToString:self.card.set.code]))
             {
                 dictMain = dict;
                 break;
@@ -276,6 +278,7 @@
             {
                 NSMutableDictionary *newDict = [[NSMutableDictionary alloc] initWithDictionary:dictMain];
                 [newDict setValue:[NSNumber numberWithInt:newValue] forKey:@"qty"];
+                [newDict setValue:self.card.multiverseID forKey:@"multiverseID"];
                 [arrBoard addObject:newDict];
             }
         }
@@ -297,6 +300,7 @@
 {
     NSMutableArray *arrType = _currentCollection[type];
     NSDictionary *newCard = @{@"card" : self.card.name,
+                              @"multiverseID" : self.card.multiverseID,
                               @"set"  : self.card.set.code,
                               @"qty"  : [NSNumber numberWithInt:newValue]};
     
@@ -306,8 +310,9 @@
         
         for (NSDictionary *dict in arrType)
         {
-            if ([dict[@"card"] isEqualToString:self.card.name] &&
-                [dict[@"set"] isEqualToString:self.card.set.code])
+            if ([dict[@"multiverseID"] intValue] == [self.card.multiverseID intValue] ||
+                ([dict[@"card"] isEqualToString:self.card.name] &&
+                 [dict[@"set"] isEqualToString:self.card.set.code]))
             {
                 dictMain = dict;
                 break;
@@ -320,10 +325,9 @@
             
             if (newValue > 0)
             {
-                
-                
                 NSMutableDictionary *newDict = [[NSMutableDictionary alloc] initWithDictionary:dictMain];
                 [newDict setValue:[NSNumber numberWithInt:newValue] forKey:@"qty"];
+                [newDict setValue:self.card.multiverseID forKey:@"multiverseID"];
                 [arrType addObject:newDict];
             }
         }
@@ -775,9 +779,14 @@
     [view addCollectionsProduct];
 }
 
+-(void) purchaseRestored:(NSString*) message
+{
+    [self purchaseSucceded:message];
+}
+
 -(void) purchaseFailed:(NSString*) message
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message"
                                                     message:message
                                                    delegate:nil
                                           cancelButtonTitle:@"Ok"

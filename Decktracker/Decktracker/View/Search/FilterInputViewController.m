@@ -90,7 +90,7 @@
         dY = self.tblOperator.frame.origin.y + self.tblOperator.frame.size.height;
         self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(dX, dY, dWidth, 30)];
         self.searchBar.delegate = self;
-        self.searchBar.placeholder = @"Filter";
+        self.searchBar.placeholder = self.filterName;
         self.searchBar.tintColor = [UIColor grayColor];
         // Add a Done button in the keyboard
         UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
@@ -352,10 +352,11 @@
                 }
                 else
                 {
-                    cell.imageView.image = [[UIImage alloc] initWithContentsOfFile:path];
+                    UIImage *imgSet = [[UIImage alloc] initWithContentsOfFile:path];
+                    cell.imageView.image = imgSet;
                     
                     // resize the image
-                    CGSize itemSize = CGSizeMake(24, 20);
+                    CGSize itemSize = CGSizeMake(imgSet.size.width/2, imgSet.size.height/2);
                     UIGraphicsBeginImageContextWithOptions(itemSize, NO, UIScreen.mainScreen.scale);
                     CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
                     [cell.imageView.image drawInRect:imageRect];
