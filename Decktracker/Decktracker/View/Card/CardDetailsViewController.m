@@ -380,7 +380,7 @@
 - (NSString*) composeDetails
 {
     NSMutableString *html = [[NSMutableString alloc] init];
-    NSString *setPath = [NSString stringWithFormat:@"%@/images/set", [[NSBundle mainBundle] bundlePath]];
+    
     [html appendFormat:@"<html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"%@/style.css\"></head><body>", [[NSBundle mainBundle] bundlePath]];
     [html appendFormat:@"<table>"];
     
@@ -429,11 +429,9 @@
     {
         Card *card = [[Database sharedInstance] findCard:self.card.name inSet:set.code];
         
-        NSString *link = [[NSString stringWithFormat:@"card?name=%@&set=%@", card.name, set.code] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        NSString *image = [NSString stringWithFormat:@"<a href=\"%@\"><img src=\"%@/%@/%@/48.png\" width=\"24\" height=\"20\" border=\"0\" /></a>", link, setPath, set.code, [[Database sharedInstance] cardRarityIndex:card]];
+        NSString *link = [[NSString stringWithFormat:@"card?name=%@&set=%@", card.name, card.set.code] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         
-        
-        [html appendFormat:@"<tr><td>%@</td><td><a href=\"%@\">%@</a></td></tr>", image, link, set.name];
+        [html appendFormat:@"<tr><td><a href=\"%@\">%@</a></td><td><a href=\"%@\">%@</a></td></tr>", link, [self composeSetImage:card], link, card.name];
     }
     [html appendFormat:@"</table></td></tr>"];
     [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
@@ -446,7 +444,7 @@
         {
             NSString *link = [[NSString stringWithFormat:@"card?name=%@&set=%@", card.name, card.set.code] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             
-            [html appendFormat:@"<tr><td><a href=\"%@\"><img src=\"%@/%@/%@/48.png\" width=\"24\" height=\"20\" border=\"0\" /></a></td><td><a href=\"%@\">%@</a></td></tr>", link, setPath, card.set.code, [[Database sharedInstance] cardRarityIndex:card], link, card.name];
+            [html appendFormat:@"<tr><td><a href=\"%@\">%@</a></td><td><a href=\"%@\">%@</a></td></tr>", link, [self composeSetImage:card], link, card.name];
         }
         [html appendFormat:@"</table></td></tr>"];
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
@@ -460,7 +458,7 @@
         {
             NSString *link = [[NSString stringWithFormat:@"card?name=%@&set=%@", card.name, card.set.code] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             
-            [html appendFormat:@"<tr><td><a href=\"%@\"><img src=\"%@/%@/%@/48.png\" width=\"24\" height=\"20\" border=\"0\" /></a></td><td><a href=\"%@\">%@</a></td></tr>", link, setPath, card.set.code, [[Database sharedInstance] cardRarityIndex:card], link, card.name];
+            [html appendFormat:@"<tr><td><a href=\"%@\">%@</a></td><td><a href=\"%@\">%@</a></td></tr>", link, [self composeSetImage:card], link, card.name];
         }
         [html appendFormat:@"</table></td></tr>"];
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
@@ -490,6 +488,14 @@
     
     [html appendFormat:@"</table></body></html>"];
     return html;
+}
+
+- (NSString*) composeSetImage:(Card*) card
+{
+    NSString *setPath = [[FileManager sharedInstance] cardSetPath:card];
+    UIImage *image = [[UIImage alloc] initWithContentsOfFile:setPath];
+    
+    return [NSString stringWithFormat:@"<img src=\"%@\" width=\"%f\" height=\"%f\" border=\"0\" />", setPath, image.size.width/2, image.size.height/2];
 }
 
 - (NSString*) composePricing

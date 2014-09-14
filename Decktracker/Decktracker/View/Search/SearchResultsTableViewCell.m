@@ -188,26 +188,44 @@
             }
         }
     }
-    
+
+    // remove first
     for (UIView *view in [self.viewManaCost subviews])
     {
         [view removeFromSuperview];
     }
+    [self.lblCardName removeFromSuperview];
+    [self.viewManaCost removeFromSuperview];
     
-    CGFloat dX = 0; //self.viewManaCost.frame.size.width - (arrImages.count*16);
+    // recalculate frame
+    CGFloat newWidth = 0;
+    for (NSDictionary *dict in arrImages)
+    {
+        CGFloat dWidth = [dict[@"width"] floatValue];
+        newWidth += dWidth;
+    }
+    
+    self.lblCardName.frame = CGRectMake(self.lblCardName.frame.origin.x, self.lblCardName.frame.origin.y, self.lblCardName.frame.size.width+(self.viewManaCost.frame.size.width-newWidth), self.lblCardName.frame.size.height);
+    
+    self.viewManaCost.frame = CGRectMake(self.lblCardName.frame.origin.x+self.lblCardName.frame.size.width, self.viewManaCost.frame.origin.y, newWidth, self.viewManaCost.frame.size.height);
+    
+    // then re-add
     CGFloat dY = 0;
+    CGFloat dX = 0;
+    [self addSubview:self.lblCardName];
+    [self addSubview:self.viewManaCost];
     for (NSDictionary *dict in arrImages)
     {
         CGFloat dWidth = [dict[@"width"] floatValue];
         CGFloat dHeight = [dict[@"height"] floatValue];
+        dX = self.viewManaCost.frame.size.width - ((arrImages.count-[arrImages indexOfObject:dict]) * dWidth);
         UIImage *image = dict [@"image"];
-        
+
         UIImageView *imgMana = [[UIImageView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
         imgMana.contentMode = UIViewContentModeScaleAspectFit;
         imgMana.image = image;
         
         [self.viewManaCost addSubview:imgMana];
-        dX += dWidth;
     }
 }
 
