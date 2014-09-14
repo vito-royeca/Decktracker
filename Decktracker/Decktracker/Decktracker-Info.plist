@@ -32,7 +32,11 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>555</string>
+	<string>559</string>
+	<key>Images Version</key>
+	<string>5.5.4</string>
+	<key>JSON Version</key>
+	<string>2.10.5</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIAppFonts</key>

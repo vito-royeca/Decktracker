@@ -36,10 +36,12 @@ static Database *_me;
 -(void) setupDb
 {
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
+    NSString *jsonVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"JSON Version"];
+    NSString *imagesVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"Images Version"];
+    
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentPath = [paths firstObject];
     NSString *storePath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", kDatabaseStore]];
-    NSString *jsonPath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/json.ver"]];
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:storePath])
     {
@@ -50,21 +52,23 @@ static Database *_me;
         {
             NSLog(@"Error: Unable to copy preloaded database.");
         }
-        [JSON_VERSION writeToFile:jsonPath atomically:YES];
+        [[NSUserDefaults standardUserDefaults] setValue:jsonVersion forKey:@"JSON Version"];
+        [[NSUserDefaults standardUserDefaults] setValue:imagesVersion forKey:@"Images Version"];
     }
     else
     {
         BOOL bDelete = NO;
+        NSString *currentJSONVersion = [[NSUserDefaults standardUserDefaults] valueForKey:@"JSON Version"];
+        NSString *currentImagesVersion = [[NSUserDefaults standardUserDefaults] valueForKey:@"Images Version"];
         
-        if (![[NSFileManager defaultManager] fileExistsAtPath:jsonPath])
+        if (!currentJSONVersion || !imagesVersion)
         {
             bDelete = YES;
         }
         else
         {
-            NSDictionary *jsonVer = [[NSDictionary alloc] initWithContentsOfFile:jsonPath];
-            
-            if (![jsonVer[@"version"] isEqualToString:JSON_VERSION[@"version"]])
+            if (![jsonVersion isEqualToString:currentJSONVersion] ||
+                ![imagesVersion isEqualToString:currentImagesVersion])
             {
                 bDelete = YES;
             }
@@ -74,13 +78,15 @@ static Database *_me;
         {
             for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentPath error:nil])
             {
-                if ([file hasPrefix:@"decktracker."] || [file isEqualToString:[jsonPath lastPathComponent]])
+                if ([file hasPrefix:@"decktracker."])
                 {
                     [[NSFileManager defaultManager] removeItemAtPath:[documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", file]]
                                                                error:nil];
                 }
             }
             
+            [[NSUserDefaults standardUserDefaults] setValue:jsonVersion forKey:@"JSON Version"];
+            [[NSUserDefaults standardUserDefaults] setValue:imagesVersion forKey:@"Images Version"];
             [self setupDb];
         }
     }
