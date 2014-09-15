@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.2.1</string>
+	<string>1.2.2</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -32,11 +32,11 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>590</string>
+	<string>59A</string>
 	<key>Images Version</key>
-	<string>5.5.4</string>
+	<string>5.5.4b</string>
 	<key>JSON Version</key>
-	<string>2.10.5</string>
+	<string>2.10.5b</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIAppFonts</key>

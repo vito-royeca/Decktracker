@@ -69,7 +69,7 @@
             {
                 card.rulings = [self createRulings:dictCard[@"rulings"]];
                 card.foreignNames = [self createForeignNames:dictCard[@"foreignNames"]];
-                card.legalities = [self createLegalities:dictCard[@"legalities"]];
+//                card.legalities = [self createLegalities:dictCard[@"legalities"]];
                 
                 NSArray *names = dictCard[@"names"];
                 NSArray *variations = dictCard[@"variations"];

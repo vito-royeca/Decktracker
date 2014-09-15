@@ -13,11 +13,13 @@
 #import "AdvanceSearchResultsViewController.h"
 #import "Artist.h"
 #import "CardForeignName.h"
+#import "CardLegality.h"
 #import "CardRarity.h"
 #import "CardRuling.h"
 #import "CardType.h"
 #import "Database.h"
 #import "FileManager.h"
+#import "Format.h"
 #import "TFHpple.h"
 #import "Magic.h"
 #import "SearchResultsTableViewCell.h"
@@ -482,6 +484,17 @@
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
     
+    if (self.card.legalities.count > 0)
+    {
+        [html appendFormat:@"<tr><td><strong>Legalities</strong></td></tr>"];
+        for (CardLegality *legality in [[self.card.legalities allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"format.name" ascending:YES],
+              [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]])
+        {
+            [html appendFormat:@"<tr><td>%@: %@</td></tr>", legality.format.name, legality.name];
+        }
+        [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
+    }
+
     if (self.card.foreignNames.count > 0)
     {
         [html appendFormat:@"<tr><td><strong>Languages</strong></td></tr>"];

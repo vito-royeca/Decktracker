@@ -108,7 +108,7 @@
     self.navigationItem.title = [NSString stringWithFormat:@"%@ / %d Cards", deck[@"name"], totalCards];
 }
 
--(UITableViewCell*) createSearchResultsTableCell:(NSDictionary*) dict
+-(UITableViewCell*) createSearchResultsTableCell:(NSDictionary*) dict withBadge:(int) badge
 {
     SearchResultsTableViewCell *cell = [self.tblCards dequeueReusableCellWithIdentifier:@"Cell1"];
     if (cell == nil)
@@ -118,7 +118,7 @@
     }
     
     [cell displayCard:dict[@"card"]];
-    [cell addBadge:[dict[@"qty"] intValue]];
+    [cell addBadge:badge];
     return cell;
 }
 
@@ -187,19 +187,21 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell;
-    
+
     switch (indexPath.section)
     {
         case 0:
         {
-            NSDictionary *dict = _arrRegulars[indexPath.row];
-            cell = [self createSearchResultsTableCell:dict];
+            NSDictionary *dictRegulars = _arrRegulars[indexPath.row];
+            int badge = [dictRegulars[@"qty"] intValue];
+            cell = [self createSearchResultsTableCell:dictRegulars withBadge:badge];
             break;
         }
         case 1:
         {
-            NSDictionary *dict = _arrFoils[indexPath.row];
-            cell = [self createSearchResultsTableCell:dict];
+            NSDictionary *dictFoils = _arrFoils[indexPath.row];
+            int badge = [dictFoils[@"qty"] intValue];
+            cell = [self createSearchResultsTableCell:dictFoils withBadge:badge];
             break;
         }
     }
