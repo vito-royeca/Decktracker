@@ -15,4 +15,9 @@
 @dynamic name;
 @dynamic legalities;
 
+-(NSString*) description
+{
+    return self.name;
+}
+
 @end

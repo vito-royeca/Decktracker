@@ -7,9 +7,11 @@
 //
 
 @import UIKit;
-#import "Deck.h"
 
-@interface DeckDetailsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
+#import "Deck.h"
+#import "FieldEditorViewController.h"
+
+@interface DeckDetailsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, FieldEditorViewControllerDelegate>
 
 @property(strong,nonatomic) Deck *deck;
 @property(strong,nonatomic) UISegmentedControl *segmentedControl;

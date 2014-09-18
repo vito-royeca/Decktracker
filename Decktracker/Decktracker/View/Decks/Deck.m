@@ -15,15 +15,15 @@
     NSMutableDictionary *_dict;
 }
 
-@synthesize name;
-@synthesize format;
-@synthesize notes;
-@synthesize originalDesigner;
-@synthesize year;
-@synthesize arrLands;
-@synthesize arrCreatures;
-@synthesize arrOtherSpells;
-@synthesize arrSideboard;
+@synthesize name = _name;
+@synthesize format = _format;
+@synthesize notes = _notes;
+@synthesize originalDesigner = _originalDesigner;
+@synthesize year = _year;
+@synthesize arrLands = _arrLands;
+@synthesize arrCreatures = _arrCreatures;
+@synthesize arrOtherSpells = _arrOtherSpells;
+@synthesize arrSideboard = _arrSideboard;
 
 -(id) initWithDictionary:(NSDictionary*) dict
 {
@@ -264,6 +264,35 @@
             qty = [dict[@"qty"] intValue];
             break;
         }
+    }
+    
+    return qty;
+}
+
+-(int) cardsInBoard:(DeckBoard) deckboard;
+{
+    NSMutableArray *arrBoard;
+    int qty = 0;
+    
+    switch (deckboard)
+    {
+        case MainBoard:
+        {
+            arrBoard = [[NSMutableArray alloc] initWithArray:self.arrLands];
+            [arrBoard addObjectsFromArray:self.arrCreatures];
+            [arrBoard addObjectsFromArray:self.arrOtherSpells];
+            break;
+        }
+        case SideBoard:
+        {
+            arrBoard = self.arrSideboard;
+            break;
+        }
+    }
+    
+    for (NSDictionary *dict in arrBoard)
+    {
+        qty += [dict[@"qty"] intValue];
     }
     
     return qty;

@@ -860,6 +860,7 @@
     CGFloat dWidth = self.view.frame.size.width;
     CGFloat dHeight = self.view.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height - self.navigationController.navigationBar.frame.size.height - SEARCH_RESULTS_CELL_HEIGHT - _viewSegmented.frame.size.height - self.bottomToolbar.frame.size.height;
     
+    cell.userInteractionEnabled = YES;
     if (indexPath.section == 0)
     {
         cell = (SearchResultsTableViewCell*)[tableView dequeueReusableCellWithIdentifier:@"Cell1"];
@@ -872,6 +873,7 @@
         
         [((SearchResultsTableViewCell*)cell) displayCard:self.card];
         tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        cell.userInteractionEnabled = NO;
     }
 
     else

@@ -32,5 +32,6 @@ typedef NS_ENUM(NSInteger, DeckBoard)
 -(void) save:(NSString*) filePath;
 -(void) updateDeck:(DeckBoard) board withCard:(Card*) card withValue:(int) newValue;
 -(int) cards:(Card*) card inBoard:(DeckBoard) deckboard;
+-(int) cardsInBoard:(DeckBoard) deckboard;
 
 @end

@@ -438,6 +438,7 @@
 {
     UITableViewCell *cell;
     
+    cell.userInteractionEnabled = YES;
     if (indexPath.section == 0)
     {
         cell = (SearchResultsTableViewCell*)[tableView dequeueReusableCellWithIdentifier:@"Cell1"];
@@ -450,6 +451,7 @@
         
         [((SearchResultsTableViewCell*)cell) displayCard:self.card];
         tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        cell.userInteractionEnabled = NO;
     }
     else if (indexPath.section == 2)
     {

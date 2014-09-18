@@ -94,22 +94,6 @@
 
 -(void) segmentedControlChangedValue:(id) sender
 {
-//    switch (self.segmentedControl.selectedSegmentIndex)
-//    {
-//        case 0:
-//        {
-//            self.tblView.editing = NO;
-//            self.navigationItem.rightBarButtonItem = nil;
-//            break;
-//        }
-//        case 1:
-//        {
-//            self.tblView.editing = YES;
-//            self.navigationItem.rightBarButtonItem = _btnPlay;
-//            break;
-//        }
-//    }
-    
     [self.tblCards reloadData];
 }
 
@@ -196,7 +180,14 @@
 {
     if (self.segmentedControl.selectedSegmentIndex == 0)
     {
-        return UITableViewAutomaticDimension;
+        if (indexPath.row == 3) // Notes
+        {
+            return SEARCH_RESULTS_CELL_HEIGHT;
+        }
+        else
+        {
+            return UITableViewAutomaticDimension;
+        }
     }
     
     NSInteger rows = [self tableView:tableView numberOfRowsInSection:indexPath.section];
@@ -339,7 +330,7 @@
         {
             case 1:
             {
-                return 5;
+                return 6;
             }
             default:
             {
@@ -387,36 +378,50 @@
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Cell0"];
             }
             
+            cell.userInteractionEnabled = YES;
             switch (indexPath.row)
             {
                 case 0:
                 {
                     cell.textLabel.text = self.deck.name;
                     cell.detailTextLabel.text = @"Name";
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     break;
                 }
                 case 1:
                 {
-                    cell.textLabel.text = self.deck.format;
-                    cell.detailTextLabel.text = @"Format";
+                    cell.textLabel.text = [NSString stringWithFormat:@"Mainboard: %d / Sideboard: %d", [self.deck cardsInBoard:MainBoard], [self.deck cardsInBoard:SideBoard]];
+                    cell.detailTextLabel.text = @"Number of Cards";
+                    cell.accessoryType = UITableViewCellAccessoryNone;
+                    cell.userInteractionEnabled = NO;
                     break;
                 }
                 case 2:
                 {
-                    cell.textLabel.text = self.deck.notes;
-                    cell.detailTextLabel.text = @"Notes";
+                    cell.textLabel.text = self.deck.format.length > 0 ? self.deck.format : @" ";
+                    cell.detailTextLabel.text = @"Format";
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     break;
                 }
                 case 3:
                 {
-                    cell.textLabel.text = self.deck.originalDesigner;
-                    cell.detailTextLabel.text = @"Original Designer";
+                    cell.textLabel.text = self.deck.notes.length > 0 ? self.deck.notes : @" ";
+                    cell.detailTextLabel.text = @"Notes";
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     break;
                 }
                 case 4:
                 {
-                    cell.textLabel.text = [NSString stringWithFormat:@"%@", self.deck.year];
+                    cell.textLabel.text = self.deck.originalDesigner.length > 0 ? self.deck.originalDesigner : @" ";
+                    cell.detailTextLabel.text = @"Original Designer";
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    break;
+                }
+                case 5:
+                {
+                    cell.textLabel.text = self.deck.year ? [NSString stringWithFormat:@"%@", self.deck.year] : @" ";
                     cell.detailTextLabel.text = @"Year";
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     break;
                 }
             }
@@ -500,113 +505,195 @@
 {
     if (self.segmentedControl.selectedSegmentIndex == 0)
     {
-        return;
-    }
-    
-    NSInteger rows = [self tableView:tableView numberOfRowsInSection:indexPath.section];
-    NSPredicate *predicate;
-    
-    if (rows > 1)
-    {
-        Card *card;
-        
-        switch (indexPath.section)
+        if (indexPath.row == 1) // number of cards
         {
-            case 1:
+            return;
+        }
+        
+        FieldEditorViewController *view = [[FieldEditorViewController alloc] init];
+        UITableViewCell *cell = [self tableView:self.tblCards cellForRowAtIndexPath:indexPath];
+        
+        view.delegate = self;
+        view.fieldName = cell.detailTextLabel.text;
+        view.oldValue = cell.textLabel.text;
+        
+        switch (indexPath.row)
+        {
+            case 0:
             {
-                if (indexPath.row < self.deck.arrLands.count)
-                {
-                    card = self.deck.arrLands[indexPath.row][@"card"];
-                }
-                else
-                {
-                    predicate = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", @"type", @"land"];
-                }
+                view.fieldEditorType = FieldEditorTypeText;
                 break;
             }
             case 2:
             {
-                if (indexPath.row < self.deck.arrCreatures.count)
-                {
-                    card = self.deck.arrCreatures[indexPath.row][@"card"];
-                }
-                else
-                {
-                    predicate = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", @"type", @"creature"];
-                }
+                view.fieldEditorType = FieldEditorTypeSelection;
+                view.fieldOptions = [Format MR_findAllSortedBy:@"name" ascending:YES];
                 break;
             }
             case 3:
             {
-                if (indexPath.row < self.deck.arrOtherSpells.count)
-                {
-                    card = self.deck.arrOtherSpells[indexPath.row][@"card"];
-                }
-                else
-                {
-                    NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"NOT(%K CONTAINS[cd] %@)", @"type", @"land"];
-                    NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"NOT(%K CONTAINS[cd] %@)", @"type", @"creature"];
-                    predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[pred1, pred2]];
-                }
+                view.fieldEditorType = FieldEditorTypeTextArea;
                 break;
             }
             case 4:
             {
-                if (indexPath.row < self.deck.arrSideboard.count)
-                {
-                    card = self.deck.arrSideboard[indexPath.row][@"card"];
-                }
+                view.fieldEditorType = FieldEditorTypeText;
+                break;
+            }
+            case 5:
+            {
+                view.fieldEditorType = FieldEditorTypeNumber;
                 break;
             }
         }
+        [self.navigationController pushViewController:view animated:YES];
+    }
+    else if (self.segmentedControl.selectedSegmentIndex == 1)
+    {
+        NSInteger rows = [self tableView:tableView numberOfRowsInSection:indexPath.section];
+        NSPredicate *predicate;
         
-        if (card)
+        if (rows > 1)
         {
-            AddCardViewController *view = [[AddCardViewController alloc] init];
-        
-            view.arrDecks = [[NSMutableArray alloc] initWithArray:@[self.deck.name]];
-            view.arrCollections = [[NSMutableArray alloc] initWithArray:[[FileManager sharedInstance] findFilesAtPath:@"/Collections"]];
-            view.card = card;
-            view.showCardButtonVisible = YES;
-            view.segmentedControlIndex = 0;
-            [self.navigationController pushViewController:view animated:YES];
+            Card *card;
+            
+            switch (indexPath.section)
+            {
+                case 1:
+                {
+                    if (indexPath.row < self.deck.arrLands.count)
+                    {
+                        card = self.deck.arrLands[indexPath.row][@"card"];
+                    }
+                    else
+                    {
+                        predicate = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", @"type", @"land"];
+                    }
+                    break;
+                }
+                case 2:
+                {
+                    if (indexPath.row < self.deck.arrCreatures.count)
+                    {
+                        card = self.deck.arrCreatures[indexPath.row][@"card"];
+                    }
+                    else
+                    {
+                        predicate = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", @"type", @"creature"];
+                    }
+                    break;
+                }
+                case 3:
+                {
+                    if (indexPath.row < self.deck.arrOtherSpells.count)
+                    {
+                        card = self.deck.arrOtherSpells[indexPath.row][@"card"];
+                    }
+                    else
+                    {
+                        NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"NOT(%K CONTAINS[cd] %@)", @"type", @"land"];
+                        NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"NOT(%K CONTAINS[cd] %@)", @"type", @"creature"];
+                        predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[pred1, pred2]];
+                    }
+                    break;
+                }
+                case 4:
+                {
+                    if (indexPath.row < self.deck.arrSideboard.count)
+                    {
+                        card = self.deck.arrSideboard[indexPath.row][@"card"];
+                    }
+                    break;
+                }
+            }
+            
+            if (card)
+            {
+                AddCardViewController *view = [[AddCardViewController alloc] init];
+                
+                view.arrDecks = [[NSMutableArray alloc] initWithArray:@[self.deck.name]];
+                view.arrCollections = [[NSMutableArray alloc] initWithArray:[[FileManager sharedInstance] findFilesAtPath:@"/Collections"]];
+                view.card = card;
+                view.showCardButtonVisible = YES;
+                view.segmentedControlIndex = 0;
+                [self.navigationController pushViewController:view animated:YES];
+            }
+            
+            else
+            {
+                [self showLimitedSearch:predicate];
+            }
         }
         
         else
         {
+            switch (indexPath.section)
+            {
+                case 0:
+                {
+                    return;
+                }
+                case 1:
+                {
+                    predicate = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", @"type", @"land"];
+                    break;
+                }
+                case 2:
+                {
+                    predicate = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", @"type", @"creature"];
+                    break;
+                }
+                case 3:
+                {
+                    NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"NOT(%K CONTAINS[cd] %@)", @"type", @"land"];
+                    NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"NOT(%K CONTAINS[cd] %@)", @"type", @"creature"];
+                    predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[pred1, pred2]];
+                    break;
+                }
+            }
+            
             [self showLimitedSearch:predicate];
         }
     }
+}
+
+#pragma mark - FieldEditorViewControllerDelegate
+-(void) editorSaved:(id) newValue
+{
+    NSString *path = [NSString stringWithFormat:@"/Decks/%@.json", self.deck.name];
+    [[FileManager sharedInstance] deleteFileAtPath:path];
     
-    else
+    switch ([self.tblCards indexPathForSelectedRow].row)
     {
-        switch (indexPath.section)
+        case 0:
         {
-            case 0:
-            {
-                return;
-            }
-            case 1:
-            {
-                predicate = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", @"type", @"land"];
-                break;
-            }
-            case 2:
-            {
-                predicate = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", @"type", @"creature"];
-                break;
-            }
-            case 3:
-            {
-                NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"NOT(%K CONTAINS[cd] %@)", @"type", @"land"];
-                NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"NOT(%K CONTAINS[cd] %@)", @"type", @"creature"];
-                predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[pred1, pred2]];
-                break;
-            }
+            self.deck.name = newValue;
+            break;
         }
-        
-        [self showLimitedSearch:predicate];
+        case 2:
+        {
+            self.deck.format = newValue;
+            break;
+        }
+        case 3:
+        {
+            self.deck.notes = newValue;
+            break;
+        }
+        case 4:
+        {
+            self.deck.originalDesigner = newValue;
+            break;
+        }
+        case 5:
+        {
+            self.deck.year = [NSNumber numberWithInt:[newValue intValue]];
+            break;
+        }
     }
+    
+    path = [NSString stringWithFormat:@"/Decks/%@.json", self.deck.name];
+    [self.deck save:path];
 }
 
 @end

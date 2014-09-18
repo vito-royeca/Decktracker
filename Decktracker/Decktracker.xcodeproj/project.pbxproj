@@ -61,6 +61,7 @@
 		8C5B446A19BEF3C00071604C /* CollectionDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5B446919BEF3C00071604C /* CollectionDetailsViewController.m */; };
 		8C5B446D19BEFFF60071604C /* AddCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5B446C19BEFFF60071604C /* AddCardViewController.m */; };
 		8C5FF9E819AE2EE3003CE54C /* keywords.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C5FF9E719AE2EE3003CE54C /* keywords.plist */; };
+		8C7CEC0019CA8A0B0093327C /* FieldEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C7CEBFF19CA8A0B0093327C /* FieldEditorViewController.m */; };
 		8C90A17F19C97ADF00F7278C /* Deck.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C90A17E19C97ADF00F7278C /* Deck.m */; };
 		8CADEF1719923DDE004D7658 /* images in Resources */ = {isa = PBXBuildFile; fileRef = 8CADEF1619923DDE004D7658 /* images */; };
 		8CE7F2BE19C0A2D0004FBEA5 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CE7F2BD19C0A2D0004FBEA5 /* StoreKit.framework */; };
@@ -191,6 +192,8 @@
 		8C5B446B19BEFFF60071604C /* AddCardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddCardViewController.h; sourceTree = "<group>"; };
 		8C5B446C19BEFFF60071604C /* AddCardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddCardViewController.m; sourceTree = "<group>"; };
 		8C5FF9E719AE2EE3003CE54C /* keywords.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = keywords.plist; sourceTree = "<group>"; };
+		8C7CEBFE19CA8A0B0093327C /* FieldEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FieldEditorViewController.h; sourceTree = "<group>"; };
+		8C7CEBFF19CA8A0B0093327C /* FieldEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FieldEditorViewController.m; sourceTree = "<group>"; };
 		8C90A17D19C97ADF00F7278C /* Deck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Deck.h; sourceTree = "<group>"; };
 		8C90A17E19C97ADF00F7278C /* Deck.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Deck.m; sourceTree = "<group>"; };
 		8CA317C719C56B73001F94F5 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
@@ -380,6 +383,8 @@
 				8C56F55B19B5B5770084B2B8 /* Card */,
 				8CF79A6019A88B5300BE4246 /* Collections */,
 				8CF79A5C19A88B4500BE4246 /* Decks */,
+				8C7CEBFE19CA8A0B0093327C /* FieldEditorViewController.h */,
+				8C7CEBFF19CA8A0B0093327C /* FieldEditorViewController.m */,
 				8C26A0BF19BF5F45005D64A7 /* InAppPurchase.h */,
 				8C26A0C019BF5F45005D64A7 /* InAppPurchase.m */,
 				8C2E142C199085A900023BAA /* MainViewController.h */,
@@ -685,6 +690,7 @@
 			files = (
 				8C26A67919A63FAC00FE00E7 /* AdvanceSearchResultsViewController.m in Sources */,
 				8C3CBDD619A31618002CD96E /* Block.m in Sources */,
+				8C7CEC0019CA8A0B0093327C /* FieldEditorViewController.m in Sources */,
 				8C13467819A9B17B00E0B3C3 /* SearchResultsTableViewCell.m in Sources */,
 				8C26A67D19A63FAC00FE00E7 /* SimpleSearchViewController.m in Sources */,
 				8C5B446A19BEF3C00071604C /* CollectionDetailsViewController.m in Sources */,
