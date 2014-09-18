@@ -18,7 +18,7 @@
 
 @implementation LimitedSearchViewController
 
-@synthesize dictDeck = _dictDeck;
+@synthesize deck = _deck;
 @synthesize searchBar = _searchBar;
 @synthesize tblResults = _tblResults;
 @synthesize predicate = _predicate;
@@ -179,7 +179,7 @@
 {
     AddCardViewController *view = [[AddCardViewController alloc] init];
     
-    view.arrDecks = [[NSMutableArray alloc] initWithArray:@[self.dictDeck[@"name"]]];
+    view.arrDecks = [[NSMutableArray alloc] initWithArray:@[self.deck.name]];
     view.arrCollections = [[NSMutableArray alloc] initWithArray:[[FileManager sharedInstance] findFilesAtPath:@"/Collections"]];
     view.card = [self.fetchedResultsController objectAtIndexPath:indexPath];
     view.showCardButtonVisible = YES;

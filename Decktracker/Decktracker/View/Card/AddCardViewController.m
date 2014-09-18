@@ -8,7 +8,9 @@
 
 #import "AddCardViewController.h"
 #import "CardDetailsViewController.h"
+#import "Collection.h"
 #import "CollectionsViewController.h"
+#import "Deck.h"
 #import "FileManager.h"
 #import "MainViewController.h"
 #import "SearchResultsTableViewCell.h"
@@ -20,8 +22,8 @@
 @implementation AddCardViewController
 {
     UIView *_viewSegmented;
-    NSMutableDictionary *_currentDeck;
-    NSMutableDictionary *_currentCollection;
+    Deck *_currentDeck;
+    Collection *_currentCollection;
     InAppPurchase *_inAppPurchase;
 }
 
@@ -196,11 +198,11 @@
 {
     if (_currentDeck)
     {
-        [[FileManager sharedInstance] saveData:_currentDeck atPath:[NSString stringWithFormat:@"/Decks/%@.json", _currentDeck[@"name"]]];
+        [_currentDeck save:[NSString stringWithFormat:@"/Decks/%@.json", _currentDeck.name]];
     }
     if (_currentCollection)
     {
-        [[FileManager sharedInstance] saveData:_currentCollection atPath:[NSString stringWithFormat:@"/Collections/%@.json", _currentCollection[@"name"]]];
+        [_currentCollection save:[NSString stringWithFormat:@"/Collections/%@.json", _currentCollection.name]];
     }
     [self.navigationController popViewControllerAnimated:NO];
 }
@@ -222,8 +224,9 @@
     if (self.arrDecks.count > 0)
     {
         NSString *path = [NSString stringWithFormat:@"/Decks/%@.json", self.arrDecks[self.selectedDeckIndex]];
-        
-        _currentDeck = [[NSMutableDictionary alloc] initWithDictionary:[[FileManager sharedInstance] loadFileAtPath:path]];
+        NSDictionary *dict = [[NSMutableDictionary alloc] initWithDictionary:[[FileManager sharedInstance] loadFileAtPath:path]];
+                              
+        _currentDeck = [[Deck alloc] initWithDictionary:dict];
     }
     else
     {
@@ -237,112 +240,15 @@
     if (self.arrCollections.count > 0)
     {
         NSString *path = [NSString stringWithFormat:@"/Collections/%@.json", self.arrCollections[self.selectedCollectionIndex]];
+        NSDictionary *dict = [[NSMutableDictionary alloc] initWithDictionary:[[FileManager sharedInstance] loadFileAtPath:path]];
         
-        _currentCollection = [[NSMutableDictionary alloc] initWithDictionary:[[FileManager sharedInstance] loadFileAtPath:path]];
+        _currentCollection = [[Collection alloc] initWithDictionary:dict];
     }
     else
     {
         _currentCollection = nil;
     }
     [self.tblAddTo reloadData];
-}
-
--(void) updateDeck:(NSString*) board withValue:(int) newValue
-{
-    NSMutableArray *arrBoard = _currentDeck[board];
-    NSDictionary *newCard = @{@"card" : self.card.name,
-                              @"multiverseID" : self.card.multiverseID,
-                              @"set"  : self.card.set.code,
-                              @"qty"  : [NSNumber numberWithInt:newValue]};
-    
-    if (arrBoard)
-    {
-        NSDictionary *dictMain;
-        
-        for (NSDictionary *dict in arrBoard)
-        {
-            if ([dict[@"multiverseID"] intValue] == [self.card.multiverseID intValue] ||
-                ([dict[@"card"] isEqualToString:self.card.name] &&
-                [dict[@"set"] isEqualToString:self.card.set.code]))
-            {
-                dictMain = dict;
-                break;
-            }
-        }
-        
-        if (dictMain)
-        {
-            [arrBoard removeObject:dictMain];
-
-            if (newValue > 0)
-            {
-                NSMutableDictionary *newDict = [[NSMutableDictionary alloc] initWithDictionary:dictMain];
-                [newDict setValue:[NSNumber numberWithInt:newValue] forKey:@"qty"];
-                [newDict setValue:self.card.multiverseID forKey:@"multiverseID"];
-                [arrBoard addObject:newDict];
-            }
-        }
-        else
-        {
-            [arrBoard addObject:newCard];
-        }
-    }
-    else
-    {
-        arrBoard = [[NSMutableArray alloc] init];
-        [arrBoard addObject:newCard];
-    }
-    
-    [_currentDeck setObject:arrBoard forKey:board];
-}
-
--(void) updateCollection:(NSString*) type withValue:(int) newValue
-{
-    NSMutableArray *arrType = _currentCollection[type];
-    NSDictionary *newCard = @{@"card" : self.card.name,
-                              @"multiverseID" : self.card.multiverseID,
-                              @"set"  : self.card.set.code,
-                              @"qty"  : [NSNumber numberWithInt:newValue]};
-    
-    if (arrType)
-    {
-        NSDictionary *dictMain;
-        
-        for (NSDictionary *dict in arrType)
-        {
-            if ([dict[@"multiverseID"] intValue] == [self.card.multiverseID intValue] ||
-                ([dict[@"card"] isEqualToString:self.card.name] &&
-                 [dict[@"set"] isEqualToString:self.card.set.code]))
-            {
-                dictMain = dict;
-                break;
-            }
-        }
-        
-        if (dictMain)
-        {
-            [arrType removeObject:dictMain];
-            
-            if (newValue > 0)
-            {
-                NSMutableDictionary *newDict = [[NSMutableDictionary alloc] initWithDictionary:dictMain];
-                [newDict setValue:[NSNumber numberWithInt:newValue] forKey:@"qty"];
-                [newDict setValue:self.card.multiverseID forKey:@"multiverseID"];
-                [arrType addObject:newDict];
-            }
-        }
-        else
-        {
-            [arrType addObject:newCard];
-        }
-    }
-    else
-    {
-        arrType = [[NSMutableArray alloc] init];
-        [arrType addObject:newCard];
-    }
-    
-    [_currentCollection setObject:arrType forKey:type];
 }
 
 -(void) configureQuantityCell:(QuantityTableViewCell*) cell
@@ -368,27 +274,11 @@
 
             if (_currentDeck)
             {
-                NSMutableArray *arrBoard = _currentDeck[key];
-                NSDictionary *dictBoard;
-                for (NSDictionary *dict in arrBoard)
-                {
-                    if ([dict[@"card"] isEqualToString:self.card.name] &&
-                        [dict[@"set"] isEqualToString:self.card.set.code])
-                    {
-                        dictBoard = dict;
-                        break;
-                    }
-                }
-                if (dictBoard)
-                {
-                    cell.txtQuantity.text = [dictBoard[@"qty"] stringValue];
-                    cell.stepper.value = [dictBoard[@"qty"] doubleValue];
-                }
-                else
-                {
-                    cell.txtQuantity.text = @"0";
-                    cell.stepper.value = 0;
-                }
+                DeckBoard deckboard = [key isEqualToString:@"mainBoard"] ? MainBoard : SideBoard;
+                
+                int qty = [_currentDeck cards:self.card inBoard:deckboard];
+                cell.txtQuantity.text = [NSString stringWithFormat:@"%d", qty];
+                cell.stepper.value = qty;
             }
             else
             {
@@ -404,27 +294,11 @@
             
             if (_currentCollection)
             {
-                NSMutableArray *arrType = _currentCollection[key];
-                NSDictionary *dictType;
-                for (NSDictionary *dict in arrType)
-                {
-                    if ([dict[@"card"] isEqualToString:self.card.name] &&
-                        [dict[@"set"] isEqualToString:self.card.set.code])
-                    {
-                        dictType = dict;
-                        break;
-                    }
-                }
-                if (dictType)
-                {
-                    cell.txtQuantity.text = [dictType[@"qty"] stringValue];
-                    cell.stepper.value = [dictType[@"qty"] doubleValue];
-                }
-                else
-                {
-                    cell.txtQuantity.text = @"0";
-                    cell.stepper.value = 0;
-                }
+                CollectionType type = [key isEqualToString:@"regular"] ? CollectionTypeRegular : CollectionTypeFoiled;
+                
+                int qty = [_currentCollection cards:self.card inType:type];
+                cell.txtQuantity.text = [NSString stringWithFormat:@"%d", qty];
+                cell.stepper.value = qty;
             }
             else
             {
@@ -717,14 +591,18 @@
                 {
                     case 0:
                     {
-                        [self updateDeck:@"mainBoard" withValue:value];
+                        [_currentDeck updateDeck:MainBoard
+                                        withCard:self.card
+                                       withValue:value];
                         cell.stepper.value = value;
                         cell.txtQuantity.text = [NSString stringWithFormat:@"%d", value];
                         break;
                     }
                     case 1:
                     {
-                        [self updateDeck:@"sideBoard" withValue:value];
+                        [_currentDeck updateDeck:SideBoard
+                                        withCard:self.card
+                                       withValue:value];
                         cell.stepper.value = value;
                         cell.txtQuantity.text = [NSString stringWithFormat:@"%d", value];
                         break;
@@ -750,14 +628,18 @@
                 {
                     case 0:
                     {
-                        [self updateCollection:@"regular" withValue:value];
+                        [_currentCollection updateCollection:CollectionTypeRegular
+                                                    withCard:self.card
+                                                   withValue:value];
                         cell.stepper.value = value;
                         cell.txtQuantity.text = [NSString stringWithFormat:@"%d", value];
                         break;
                     }
                     case 1:
                     {
-                        [self updateCollection:@"foiled" withValue:value];
+                        [_currentCollection updateCollection:CollectionTypeFoiled
+                                                    withCard:self.card
+                                                   withValue:value];
                         cell.stepper.value = value;
                         cell.txtQuantity.text = [NSString stringWithFormat:@"%d", value];
                         break;

@@ -61,9 +61,11 @@
 		8C5B446A19BEF3C00071604C /* CollectionDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5B446919BEF3C00071604C /* CollectionDetailsViewController.m */; };
 		8C5B446D19BEFFF60071604C /* AddCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5B446C19BEFFF60071604C /* AddCardViewController.m */; };
 		8C5FF9E819AE2EE3003CE54C /* keywords.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C5FF9E719AE2EE3003CE54C /* keywords.plist */; };
+		8C90A17F19C97ADF00F7278C /* Deck.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C90A17E19C97ADF00F7278C /* Deck.m */; };
 		8CADEF1719923DDE004D7658 /* images in Resources */ = {isa = PBXBuildFile; fileRef = 8CADEF1619923DDE004D7658 /* images */; };
 		8CE7F2BE19C0A2D0004FBEA5 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CE7F2BD19C0A2D0004FBEA5 /* StoreKit.framework */; };
 		8CF0C9D71991CD8300349F35 /* libJJJ.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF0C9C11991CD0500349F35 /* libJJJ.a */; };
+		8CF418D719C9C6790082E3BC /* Collection.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF418D619C9C6790082E3BC /* Collection.m */; };
 		8CF79A6519A8BFA300BE4246 /* DecksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF79A6419A8BFA300BE4246 /* DecksViewController.m */; };
 		8CF79A6B19A8BFB400BE4246 /* CollectionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF79A6A19A8BFB400BE4246 /* CollectionsViewController.m */; };
 /* End PBXBuildFile section */
@@ -189,11 +191,15 @@
 		8C5B446B19BEFFF60071604C /* AddCardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddCardViewController.h; sourceTree = "<group>"; };
 		8C5B446C19BEFFF60071604C /* AddCardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddCardViewController.m; sourceTree = "<group>"; };
 		8C5FF9E719AE2EE3003CE54C /* keywords.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = keywords.plist; sourceTree = "<group>"; };
+		8C90A17D19C97ADF00F7278C /* Deck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Deck.h; sourceTree = "<group>"; };
+		8C90A17E19C97ADF00F7278C /* Deck.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Deck.m; sourceTree = "<group>"; };
 		8CA317C719C56B73001F94F5 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		8CADEF1619923DDE004D7658 /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
 		8CE7F2BD19C0A2D0004FBEA5 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		8CE7F2C219C0A2F7004FBEA5 /* Decktracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Decktracker.entitlements; sourceTree = "<group>"; };
 		8CF0C9BA1991CD0500349F35 /* JJJ.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JJJ.xcodeproj; path = ../jjj/JJJ/JJJ.xcodeproj; sourceTree = "<group>"; };
+		8CF418D519C9C6790082E3BC /* Collection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Collection.h; sourceTree = "<group>"; };
+		8CF418D619C9C6790082E3BC /* Collection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Collection.m; sourceTree = "<group>"; };
 		8CF79A6319A8BFA300BE4246 /* DecksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DecksViewController.h; sourceTree = "<group>"; };
 		8CF79A6419A8BFA300BE4246 /* DecksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DecksViewController.m; sourceTree = "<group>"; };
 		8CF79A6919A8BFB400BE4246 /* CollectionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionsViewController.h; sourceTree = "<group>"; };
@@ -461,6 +467,8 @@
 		8CF79A5C19A88B4500BE4246 /* Decks */ = {
 			isa = PBXGroup;
 			children = (
+				8C90A17D19C97ADF00F7278C /* Deck.h */,
+				8C90A17E19C97ADF00F7278C /* Deck.m */,
 				8C524A6319B81E9E005E697B /* DeckDetailsViewController.h */,
 				8C524A6419B81E9E005E697B /* DeckDetailsViewController.m */,
 				8CF79A6319A8BFA300BE4246 /* DecksViewController.h */,
@@ -472,6 +480,8 @@
 		8CF79A6019A88B5300BE4246 /* Collections */ = {
 			isa = PBXGroup;
 			children = (
+				8CF418D519C9C6790082E3BC /* Collection.h */,
+				8CF418D619C9C6790082E3BC /* Collection.m */,
 				8C5B446819BEF3C00071604C /* CollectionDetailsViewController.h */,
 				8C5B446919BEF3C00071604C /* CollectionDetailsViewController.m */,
 				8CF79A6919A8BFB400BE4246 /* CollectionsViewController.h */,
@@ -689,6 +699,7 @@
 				8C2106A019B6EF85001DE039 /* QuantityTableViewCell.m in Sources */,
 				8C3CBDC719A31617002CD96E /* CardColor.m in Sources */,
 				8C3CBDC119A31615002CD96E /* Card.m in Sources */,
+				8C90A17F19C97ADF00F7278C /* Deck.m in Sources */,
 				8C3CBDD319A31618002CD96E /* Set.m in Sources */,
 				8C26A67C19A63FAC00FE00E7 /* NewAdvanceSearchViewController.m in Sources */,
 				8C26A0C119BF5F45005D64A7 /* InAppPurchase.m in Sources */,
@@ -703,6 +714,7 @@
 				8C3CBDD019A31618002CD96E /* Artist.m in Sources */,
 				8C3CBDD919A31618002CD96E /* CardType.m in Sources */,
 				8C3CBDBE19A31615002CD96E /* CardForeignName.m in Sources */,
+				8CF418D719C9C6790082E3BC /* Collection.m in Sources */,
 				8C2E13FF1990741100023BAA /* main.m in Sources */,
 				8C26A67B19A63FAC00FE00E7 /* FilterInputViewController.m in Sources */,
 				8C3CBDDF19A31618002CD96E /* CardRarity.m in Sources */,

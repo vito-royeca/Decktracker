@@ -490,7 +490,7 @@
         for (CardLegality *legality in [[self.card.legalities allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"format.name" ascending:YES],
               [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]])
         {
-            [html appendFormat:@"<tr><td>%@: %@</td></tr>", legality.format.name, legality.name];
+            [html appendFormat:@"<tr><td>%@</td><td>%@</td></tr>", legality.format.name, legality.name];
         }
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }

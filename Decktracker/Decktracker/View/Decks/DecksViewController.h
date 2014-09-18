@@ -11,7 +11,6 @@
 @interface DecksViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
 
 @property(strong,nonatomic) UITableView *tblDecks;
-
 @property(strong,nonatomic) NSMutableArray *arrDecks;
 
 @end

@@ -8,11 +8,12 @@
 
 @import UIKit;
 
+#import "Deck.h"
 #import "MBProgressHUD.h"
 
 @interface LimitedSearchViewController : UIViewController<UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate, MBProgressHUDDelegate>
 
-@property(strong,nonatomic) NSDictionary *dictDeck;
+@property(strong,nonatomic) Deck *deck;
 @property(strong,nonatomic) UISearchBar *searchBar;
 @property(strong,nonatomic) UITableView *tblResults;
 @property(strong,nonatomic) NSPredicate *predicate;

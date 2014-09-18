@@ -8,6 +8,7 @@
 
 #import "DecksViewController.h"
 #import "DeckDetailsViewController.h"
+#import "Deck.h"
 #import "FileManager.h"
 
 #import "GAI.h"
@@ -97,6 +98,7 @@
         if (alertView.tag == 0)
         {
             NSDictionary *dict = @{@"name" : [[alertView textFieldAtIndex:0] text],
+                                   @"format" : @"",
                                    @"mainBoard" : @[],
                                    @"sideBoard" : @[]};
             [[FileManager sharedInstance] saveData:dict atPath:[NSString stringWithFormat:@"/Decks/%@.json", dict[@"name"]]];
@@ -109,10 +111,9 @@
                                                                    value:nil] build]];
             
             DeckDetailsViewController *view = [[DeckDetailsViewController alloc] init];
-            NSDictionary *deck = [[FileManager sharedInstance] loadFileAtPath:[NSString stringWithFormat:@"/Decks/%@.json", dict[@"name"]]];
-            view.dictDeck = deck;
+            Deck *deck = [[Deck alloc] initWithDictionary:dict];
+            view.deck = deck;
             [self.navigationController pushViewController:view animated:YES];
-            
         }
         
         else if (alertView.tag == 1)
@@ -159,7 +160,14 @@
     {
         NSDictionary *deck = [[FileManager sharedInstance] loadFileAtPath:[NSString stringWithFormat:@"/Decks/%@.json", self.arrDecks[indexPath.row]]];
         
+        NSString *format = @"";
+        
+        if (deck[@"format"] && [deck[@"format"] isKindOfClass:[NSString class]])
+        {
+            format = deck[@"format"];
+        }
         cell.textLabel.text = deck[@"name"];
+        cell.detailTextLabel.text = format;
     }
     return cell;
 }
@@ -175,9 +183,9 @@
     
     DeckDetailsViewController *view = [[DeckDetailsViewController alloc] init];
     
-    NSDictionary *deck = [[FileManager sharedInstance] loadFileAtPath:[NSString stringWithFormat:@"/Decks/%@.json", self.arrDecks[_selectedRow]]];
-    
-    view.dictDeck = deck;
+    NSDictionary *dict = [[FileManager sharedInstance] loadFileAtPath:[NSString stringWithFormat:@"/Decks/%@.json", self.arrDecks[_selectedRow]]];
+    Deck *deck = [[Deck alloc] initWithDictionary:dict];
+    view.deck = deck;
     [self.navigationController pushViewController:view animated:YES];
 }
 
