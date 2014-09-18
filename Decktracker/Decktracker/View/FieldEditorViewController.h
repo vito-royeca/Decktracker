@@ -8,6 +8,30 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FieldEditorViewController : UIViewController
+typedef NS_ENUM(NSInteger, FieldEditorType)
+{
+    FieldEditorTypeText,
+    FieldEditorTypeTextArea,
+    FieldEditorTypeStepper,
+    FieldEditorTypeNumber,
+    FieldEditorTypeDate,
+    FieldEditorTypeSelection
+};
+
+@protocol FieldEditorViewControllerDelegate <NSObject>
+
+-(void) editorSaved:(id) newValue;
+
+@end
+
+@interface FieldEditorViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UITextViewDelegate>
+
+@property(strong,nonatomic) id<FieldEditorViewControllerDelegate> delegate;
+@property(strong,nonatomic) UITableView *tblEditor;
+
+@property(nonatomic) FieldEditorType fieldEditorType;
+@property(strong,nonatomic) NSString *fieldName;
+@property(strong,nonatomic) id oldValue;
+@property(strong,nonatomic) NSArray *fieldOptions;
 
 @end

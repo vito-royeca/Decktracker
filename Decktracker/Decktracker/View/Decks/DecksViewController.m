@@ -98,7 +98,7 @@
         if (alertView.tag == 0)
         {
             NSDictionary *dict = @{@"name" : [[alertView textFieldAtIndex:0] text],
-                                   @"format" : @"",
+                                   @"format" : @"Standard",
                                    @"mainBoard" : @[],
                                    @"sideBoard" : @[]};
             [[FileManager sharedInstance] saveData:dict atPath:[NSString stringWithFormat:@"/Decks/%@.json", dict[@"name"]]];
