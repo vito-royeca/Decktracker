@@ -69,7 +69,6 @@
             {
                 card.rulings = [self createRulings:dictCard[@"rulings"]];
                 card.foreignNames = [self createForeignNames:dictCard[@"foreignNames"]];
-                card.legalities = [self createLegalities:dictCard[@"legalities"]];
 
                 NSArray *names = dictCard[@"names"];
                 NSArray *variations = dictCard[@"variations"];
@@ -82,39 +81,39 @@
             }
         }
     }
+
+//    for (NSString *setName in [json allKeys])
+//    {
+//        NSDictionary * dict = json[setName];
+//        Set *set = [self parseSet:dict];
+//        
+//        for (NSDictionary *dictCard in dict[@"cards"])
+//        {
+//            NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
+//            
+//            Card *card;
+//            
+//            if (dictCard[@"multiverseID"])
+//            {
+//                card = [Card MR_findFirstByAttribute:@"multiverseID" withValue:dictCard[@"multiverseID"]];
+//            }
+//            if (!card)
+//            {
+//                card = [[Database sharedInstance] findCard:dictCard[@"name"] inSet:set.code];
+//            }
+//            
+//            if (!card.legalities || card.legalities.count == 0)
+//            {
+//                card.legalities = [self createLegalities:dictCard[@"legalities"]];
+//                [currentContext MR_save];
+//            }
+//        }
+//    }
     
     // Create colorless CardColor
     CardColor *color = [CardColor MR_createEntity];
     color.name = @"Colorless";
     [currentContext MR_save];
-
-    for (NSString *setName in [json allKeys])
-    {
-        NSDictionary * dict = json[setName];
-        Set *set = [self parseSet:dict];
-        
-        for (NSDictionary *dictCard in dict[@"cards"])
-        {
-            NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
-            
-            Card *card;
-            
-            if (dictCard[@"multiverseID"])
-            {
-                card = [Card MR_findFirstByAttribute:@"multiverseID" withValue:dictCard[@"multiverseID"]];
-            }
-            if (!card)
-            {
-                card = [[Database sharedInstance] findCard:dictCard[@"name"] inSet:set.code];
-            }
-            
-            if (!card.legalities || card.legalities.count == 0)
-            {
-                card.legalities = [self createLegalities:dictCard[@"legalities"]];
-                [currentContext MR_save];
-            }
-        }
-    }
     
     [[Database sharedInstance] closeDb];
     
