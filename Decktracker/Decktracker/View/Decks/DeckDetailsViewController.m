@@ -527,7 +527,12 @@
             case 2:
             {
                 view.fieldEditorType = FieldEditorTypeSelection;
-                view.fieldOptions = [Format MR_findAllSortedBy:@"name" ascending:YES];
+                NSMutableArray *arrFormats = [[NSMutableArray alloc] init];
+                for (Format * format in [Format MR_findAllSortedBy:@"name" ascending:YES])
+                {
+                    [arrFormats addObject:format.name];
+                }
+                view.fieldOptions = arrFormats;
                 break;
             }
             case 3:

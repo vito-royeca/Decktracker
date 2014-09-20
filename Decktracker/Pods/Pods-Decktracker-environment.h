@@ -48,6 +48,12 @@
 #define COCOAPODS_VERSION_MINOR_AFNetworking_UIKit 4
 #define COCOAPODS_VERSION_PATCH_AFNetworking_UIKit 1
 
+// CorePlot
+#define COCOAPODS_POD_AVAILABLE_CorePlot
+#define COCOAPODS_VERSION_MAJOR_CorePlot 1
+#define COCOAPODS_VERSION_MINOR_CorePlot 5
+#define COCOAPODS_VERSION_PATCH_CorePlot 1
+
 // Dropbox-Sync-API-SDK
 #define COCOAPODS_POD_AVAILABLE_Dropbox_Sync_API_SDK
 #define COCOAPODS_VERSION_MAJOR_Dropbox_Sync_API_SDK 3
@@ -59,6 +65,12 @@
 #define COCOAPODS_VERSION_MAJOR_GoogleAnalytics_iOS_SDK 3
 #define COCOAPODS_VERSION_MINOR_GoogleAnalytics_iOS_SDK 0
 #define COCOAPODS_VERSION_PATCH_GoogleAnalytics_iOS_SDK 9
+
+// InAppSettingsKit
+#define COCOAPODS_POD_AVAILABLE_InAppSettingsKit
+#define COCOAPODS_VERSION_MAJOR_InAppSettingsKit 2
+#define COCOAPODS_VERSION_MINOR_InAppSettingsKit 1
+#define COCOAPODS_VERSION_PATCH_InAppSettingsKit 0
 
 // MBProgressHUD
 #define COCOAPODS_POD_AVAILABLE_MBProgressHUD
@@ -77,6 +89,18 @@
 #define COCOAPODS_VERSION_MAJOR_MagicalRecord_Core 2
 #define COCOAPODS_VERSION_MINOR_MagicalRecord_Core 2
 #define COCOAPODS_VERSION_PATCH_MagicalRecord_Core 0
+
+// box-ios-sdk-v2
+#define COCOAPODS_POD_AVAILABLE_box_ios_sdk_v2
+#define COCOAPODS_VERSION_MAJOR_box_ios_sdk_v2 1
+#define COCOAPODS_VERSION_MINOR_box_ios_sdk_v2 2
+#define COCOAPODS_VERSION_PATCH_box_ios_sdk_v2 2
+
+// box-ios-sdk-v2/no-arc
+#define COCOAPODS_POD_AVAILABLE_box_ios_sdk_v2_no_arc
+#define COCOAPODS_VERSION_MAJOR_box_ios_sdk_v2_no_arc 1
+#define COCOAPODS_VERSION_MINOR_box_ios_sdk_v2_no_arc 2
+#define COCOAPODS_VERSION_PATCH_box_ios_sdk_v2_no_arc 2
 
 // hpple
 #define COCOAPODS_POD_AVAILABLE_hpple

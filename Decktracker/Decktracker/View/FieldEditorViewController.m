@@ -211,8 +211,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     _selectedIndex = indexPath.row;
-    id selected = self.fieldOptions[_selectedIndex];
-    self.oldValue = [selected description];
+    self.oldValue = self.fieldOptions[_selectedIndex];
     
     [self.tblEditor reloadData];
 }

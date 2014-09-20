@@ -5,9 +5,12 @@
 target "Decktracker" do
 
 pod "AFNetworking"
+pod "box-ios-sdk-v2"
+pod "CorePlot"
 pod "Dropbox-Sync-API-SDK"
 pod "GoogleAnalytics-iOS-SDK"
 pod "hpple"
+pod "InAppSettingsKit"
 pod "MagicalRecord"
 pod "MBProgressHUD"
 
