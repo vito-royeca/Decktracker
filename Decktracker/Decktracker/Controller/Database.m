@@ -7,7 +7,9 @@
 //
 
 #import "Database.h"
+#import "TFHpple.h"
 #import "Magic.h"
+#import "Set.h"
 
 @implementation Database
 
@@ -38,6 +40,7 @@ static Database *_me;
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
     NSString *jsonVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"JSON Version"];
     NSString *imagesVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"Images Version"];
+    NSArray *arrCardUpdates = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"Card Updates"];
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentPath = [paths firstObject];
@@ -61,16 +64,22 @@ static Database *_me;
         NSString *currentJSONVersion = [[NSUserDefaults standardUserDefaults] valueForKey:@"JSON Version"];
         NSString *currentImagesVersion = [[NSUserDefaults standardUserDefaults] valueForKey:@"Images Version"];
         
-        if (!currentJSONVersion || !imagesVersion)
+        if (!currentJSONVersion || ![jsonVersion isEqualToString:currentJSONVersion])
         {
             bDelete = YES;
         }
-        else
+        
+        if ((!currentImagesVersion || ![imagesVersion isEqualToString:currentImagesVersion]) &&
+            arrCardUpdates)
         {
-            if (![jsonVersion isEqualToString:currentJSONVersion] ||
-                ![imagesVersion isEqualToString:currentImagesVersion])
+            for (NSString *set in arrCardUpdates)
             {
-                bDelete = YES;
+                NSString *path = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/card/%@/", set]];
+                
+                for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil])
+                {
+                    [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@", path, file] error:nil];
+                }
             }
         }
         
@@ -345,6 +354,91 @@ static Database *_me;
 -(NSString*) cardRarityIndex:(Card*) card
 {
     return [card.rarity.name isEqualToString:@"Basic Land"] ? @"C" : [[card.rarity.name substringToIndex:1] uppercaseString];
+}
+
+-(void) fetchTcgPlayerPriceForCard:(Card*) card
+{
+    BOOL bWillFetch = NO;
+    
+    if (!card.tcgPlayerFetchDate)
+    {
+        bWillFetch = YES;
+    }
+    else
+    {
+        NSDate *today = [NSDate date];
+        
+        NSCalendar *gregorian = [[NSCalendar alloc]initWithCalendarIdentifier:NSGregorianCalendar];
+        NSDateComponents *components = [gregorian components:NSHourCalendarUnit
+                                                    fromDate:card.tcgPlayerFetchDate
+                                                      toDate:today
+                                                     options:0];
+        
+        if ([components hour] >= TCGPLAYER_FETCH_STORAGE)
+        {
+            bWillFetch = YES;
+        }
+    }
+    
+    if (bWillFetch)
+    {
+        NSString *tcgPricing = [[NSString stringWithFormat:@"http://partner.tcgplayer.com/x3/phl.asmx/p?pk=%@&s=%@&p=%@", TCGPLAYER_PARTNER_KEY, card.set.tcgPlayerName, card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        if (!card.set.tcgPlayerName)
+        {
+            tcgPricing = [[NSString stringWithFormat:@"http://partner.tcgplayer.com/x3/phl.asmx/p?pk=%@&p=%@", TCGPLAYER_PARTNER_KEY, card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        }
+        
+        NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:tcgPricing]];
+        TFHpple *parser = [TFHpple hppleWithHTMLData:data];
+        NSString *low, *mid, *high, *foil, *link;
+        
+        NSArray *nodes = [parser searchWithXPathQuery:@"//product"];
+        for (TFHppleElement *element in nodes)
+        {
+            if ([element hasChildren])
+            {
+                BOOL linkIsNext = NO;
+                
+                for (TFHppleElement *child in element.children)
+                {
+                    if ([[child tagName] isEqualToString:@"hiprice"])
+                    {
+                        high = [[child firstChild] content];
+                    }
+                    else if ([[child tagName] isEqualToString:@"avgprice"])
+                    {
+                        mid = [[child firstChild] content];
+                    }
+                    else if ([[child tagName] isEqualToString:@"lowprice"])
+                    {
+                        low = [[child firstChild] content];
+                    }
+                    else if ([[child tagName] isEqualToString:@"foilavgprice"])
+                    {
+                        foil = [[child firstChild] content];
+                    }
+                    else if ([[child tagName] isEqualToString:@"link"])
+                    {
+                        linkIsNext = YES;
+                    }
+                    else if ([[child tagName] isEqualToString:@"text"] && linkIsNext)
+                    {
+                        link = [child content];
+                    }
+                }
+            }
+        }
+        
+        NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
+        
+        card.tcgPlayerHighPrice = high ? [NSNumber numberWithDouble:[high doubleValue]] : nil;
+        card.tcgPlayerMidPrice  = mid  ? [NSNumber numberWithDouble:[mid doubleValue]]  : nil;
+        card.tcgPlayerLowPrice  = low  ? [NSNumber numberWithDouble:[low doubleValue]]  : nil;
+        card.tcgPlayerFoilPrice = foil ? [NSNumber numberWithDouble:[foil doubleValue]] : nil;
+        card.tcgPlayerLink = [JJJUtil trim:link];
+        card.tcgPlayerFetchDate = [NSDate date];
+        [currentContext MR_save];
+    }
 }
 
 @end

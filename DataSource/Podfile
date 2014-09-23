@@ -4,6 +4,7 @@
 
 target "DataSource" do
 
+pod "hpple"
 pod "MagicalRecord"
 
 end

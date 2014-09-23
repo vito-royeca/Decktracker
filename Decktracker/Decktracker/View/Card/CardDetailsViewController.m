@@ -20,7 +20,6 @@
 #import "Database.h"
 #import "FileManager.h"
 #import "Format.h"
-#import "TFHpple.h"
 #import "Magic.h"
 #import "SearchResultsTableViewCell.h"
 #import "SimpleSearchViewController.h"
@@ -521,53 +520,7 @@
 
 - (NSString*) composePricing
 {
-    NSString *tcgPricing = [[NSString stringWithFormat:@"http://partner.tcgplayer.com/x3/phl.asmx/p?pk=%@&s=%@&p=%@", TCGPLAYER_PARTNER_KEY, self.card.set.tcgPlayerName, self.card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    if (!self.card.set.tcgPlayerName)
-    {
-        tcgPricing = [[NSString stringWithFormat:@"http://partner.tcgplayer.com/x3/phl.asmx/p?pk=%@&p=%@", TCGPLAYER_PARTNER_KEY, self.card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    }
-    
-    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:tcgPricing]];
-    TFHpple *parser = [TFHpple hppleWithHTMLData:data];
-    NSString *low, *med, *high, *foil, *link;
-    
-    NSArray *nodes = [parser searchWithXPathQuery:@"//product"];
-    for (TFHppleElement *element in nodes)
-    {
-        if ([element hasChildren])
-        {
-            BOOL linkIsNext = NO;
-            
-            for (TFHppleElement *child in element.children)
-            {
-                if ([[child tagName] isEqualToString:@"hiprice"])
-                {
-                    high = [[child firstChild] content];
-                }
-                else if ([[child tagName] isEqualToString:@"avgprice"])
-                {
-                    med = [[child firstChild] content];
-                }
-                else if ([[child tagName] isEqualToString:@"lowprice"])
-                {
-                    low = [[child firstChild] content];
-                }
-                else if ([[child tagName] isEqualToString:@"foilavgprice"])
-                {
-                    foil = [[child firstChild] content];
-                }
-                else if ([[child tagName] isEqualToString:@"link"])
-                {
-                    linkIsNext = YES;
-                }
-                else if ([[child tagName] isEqualToString:@"text"] && linkIsNext)
-                {
-                    link = [child content];
-                }
-            }
-        }
-    }
-    
+    [[Database sharedInstance] fetchTcgPlayerPriceForCard:self.card];
     NSMutableString *html = [[NSMutableString alloc] init];
     
     [html appendFormat:@"<html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"%@/style.css\"></head><body>", [[NSBundle mainBundle] bundlePath]];
@@ -581,15 +534,15 @@
     [html appendFormat:@"</tr>"];
     
     [html appendFormat:@"<tr>"];
-    [html appendFormat:@"<td align=\"right\" width=\"25%%\">%@</td>", low && ![low isEqualToString:@"0"] ? [NSString stringWithFormat:@"$%@", low] : @"N/A"];
-    [html appendFormat:@"<td align=\"right\" width=\"25%%\">%@</td>", med && ![med isEqualToString:@"0"]? [NSString stringWithFormat:@"$%@", med] : @"N/A"];
-    [html appendFormat:@"<td align=\"right\" width=\"25%%\">%@</td>", high && ![high isEqualToString:@"0"]? [NSString stringWithFormat:@"$%@", high] : @"N/A"];
-    [html appendFormat:@"<td align=\"right\" width=\"25%%\">%@</td>", foil && ![foil isEqualToString:@"0"]? [NSString stringWithFormat:@"$%@", foil] : @"N/A"];
+    [html appendFormat:@"<td align=\"right\" width=\"25%%\">$%@</td>", self.card.tcgPlayerLowPrice ? [NSString stringWithFormat:@"$%@", self.card.tcgPlayerLowPrice] : @"N/A"];
+    [html appendFormat:@"<td align=\"right\" width=\"25%%\">$%@</td>", self.card.tcgPlayerMidPrice ? [NSString stringWithFormat:@"$%@", self.card.tcgPlayerMidPrice] : @"N/A"];
+    [html appendFormat:@"<td align=\"right\" width=\"25%%\">$%@</td>", self.card.tcgPlayerHighPrice ? [NSString stringWithFormat:@"$%@", self.card.tcgPlayerHighPrice] : @"N/A"];
+    [html appendFormat:@"<td align=\"right\" width=\"25%%\">$%@</td>", self.card.tcgPlayerFoilPrice ? [NSString stringWithFormat:@"$%@", self.card.tcgPlayerFoilPrice] : @"N/A"];
     [html appendFormat:@"</tr>"];
     [html appendFormat:@"<tr><td colspan=\"3\">&nbsp;</td></tr>"];
-    if (link)
+    if (self.card.tcgPlayerLink)
     {
-        [html appendFormat:@"<tr><td colspan=\"3\">More details at <a href=%@>TCGPlayer</a>.</td></tr>", link];
+        [html appendFormat:@"<tr><td colspan=\"3\">More details at <a href=%@>TCGPlayer</a>.</td></tr>", self.card.tcgPlayerLink];
     }
 
     [html appendFormat:@"</table></center></body></html>"];

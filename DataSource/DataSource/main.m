@@ -13,11 +13,11 @@ int main(int argc, const char * argv[])
 {
     @autoreleasepool
     {
-//        JSONLoader *jsonLoader = [[JSONLoader alloc] init];
-//        [jsonLoader parseJSON];
+        JSONLoader *jsonLoader = [[JSONLoader alloc] init];
+        [jsonLoader parseJSON];
 
-        ImageLoader *imageLoader = [[ImageLoader alloc] init];
-        [imageLoader downloadSets:@[@"KTK"]];
+//        ImageLoader *imageLoader = [[ImageLoader alloc] init];
+//        [imageLoader downloadSets:@[@"KTK"]];
 //        [imageLoader downloadSymbols];
 //        [imageLoader downloadOtherSymbols];
 //        [imageLoader downloadAllSets];

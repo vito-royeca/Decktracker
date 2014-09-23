@@ -46,6 +46,7 @@ typedef NSString* Layout;
 
 
 #define TCGPLAYER_PARTNER_KEY           @"DECKTRACKER"
+#define TCGPLAYER_FETCH_STORAGE         24*3 // 3 days
 #define COLLECTIONS_IAP_PRODUCT_ID      @"Collections_ID"
 
 typedef NS_ENUM(NSInteger, EditMode)

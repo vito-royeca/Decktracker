@@ -54,5 +54,11 @@
 @dynamic superTypes;
 @dynamic types;
 @dynamic variations;
+@dynamic tcgPlayerFetchDate;
+@dynamic tcgPlayerLink;
+@dynamic tcgPlayerHighPrice;
+@dynamic tcgPlayerMidPrice;
+@dynamic tcgPlayerLowPrice;
+@dynamic tcgPlayerFoilPrice;
 
 @end

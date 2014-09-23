@@ -1,12 +1,15 @@
 PODS:
+  - hpple (0.2.0)
   - MagicalRecord (2.2):
     - MagicalRecord/Core
   - MagicalRecord/Core (2.2)
 
 DEPENDENCIES:
+  - hpple
   - MagicalRecord
 
 SPEC CHECKSUMS:
+  hpple: f4eb7c21a8db83ec264e5d614ec7509e10e5adec
   MagicalRecord: 2b471584fc9e3137f3d0a56967917baa4979e224
 
 COCOAPODS: 0.33.1

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5063" systemVersion="13E28" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6244" systemVersion="13F34" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Artist" representedClassName="Artist" syncable="YES">
         <attribute name="name" attributeType="String" syncable="YES"/>
         <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="artist" inverseEntity="Card" syncable="YES"/>
@@ -25,6 +25,12 @@
         <attribute name="power" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="reserved" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="source" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tcgPlayerFetchDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="tcgPlayerFoilPrice" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="tcgPlayerHighPrice" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="tcgPlayerLink" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tcgPlayerLowPrice" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="tcgPlayerMidPrice" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timeshifted" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="toughness" optional="YES" attributeType="String" syncable="YES"/>
@@ -99,7 +105,7 @@
     <elements>
         <element name="Artist" positionX="-18" positionY="90" width="128" height="73"/>
         <element name="Block" positionX="-36" positionY="9" width="128" height="75"/>
-        <element name="Card" positionX="-63" positionY="-18" width="128" height="555"/>
+        <element name="Card" positionX="-63" positionY="-18" width="128" height="643"/>
         <element name="CardColor" positionX="-18" positionY="135" width="128" height="73"/>
         <element name="CardForeignName" positionX="-9" positionY="171" width="128" height="88"/>
         <element name="CardLegality" positionX="0" positionY="162" width="128" height="88"/>

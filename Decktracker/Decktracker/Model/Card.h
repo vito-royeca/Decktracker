@@ -47,6 +47,12 @@
 @property (nonatomic, retain) NSSet *superTypes;
 @property (nonatomic, retain) NSSet *types;
 @property (nonatomic, retain) NSSet *variations;
+@property (nonatomic, retain) NSDate * tcgPlayerFetchDate;
+@property (nonatomic, retain) NSString * tcgPlayerLink;
+@property (nonatomic, retain) NSNumber * tcgPlayerHighPrice;
+@property (nonatomic, retain) NSNumber * tcgPlayerMidPrice;
+@property (nonatomic, retain) NSNumber * tcgPlayerLowPrice;
+@property (nonatomic, retain) NSNumber * tcgPlayerFoilPrice;
 @end
 
 @interface Card (CoreDataGeneratedAccessors)
