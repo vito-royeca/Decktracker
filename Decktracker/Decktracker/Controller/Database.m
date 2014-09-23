@@ -430,14 +430,16 @@ static Database *_me;
         }
         
         NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
+        Card *c = [self findCard:card.name inSet:card.set.code];
         
-        card.tcgPlayerHighPrice = high ? [NSNumber numberWithDouble:[high doubleValue]] : nil;
-        card.tcgPlayerMidPrice  = mid  ? [NSNumber numberWithDouble:[mid doubleValue]]  : nil;
-        card.tcgPlayerLowPrice  = low  ? [NSNumber numberWithDouble:[low doubleValue]]  : nil;
-        card.tcgPlayerFoilPrice = foil ? [NSNumber numberWithDouble:[foil doubleValue]] : nil;
-        card.tcgPlayerLink = [JJJUtil trim:link];
-        card.tcgPlayerFetchDate = [NSDate date];
+        c.tcgPlayerHighPrice = high ? [NSNumber numberWithDouble:[high doubleValue]] : nil;
+        c.tcgPlayerMidPrice  = mid  ? [NSNumber numberWithDouble:[mid doubleValue]]  : nil;
+        c.tcgPlayerLowPrice  = low  ? [NSNumber numberWithDouble:[low doubleValue]]  : nil;
+        c.tcgPlayerFoilPrice = foil ? [NSNumber numberWithDouble:[foil doubleValue]] : nil;
+        c.tcgPlayerLink = [JJJUtil trim:link];
+        c.tcgPlayerFetchDate = [NSDate date];
         [currentContext MR_save];
+        card = c;
     }
 }
 

@@ -68,7 +68,7 @@
         [type appendFormat:@" (Loyalty: %@)", card.loyalty];
     }
     
-    self.lblCardName.font = [UIFont fontWithName:@"Magic:the Gathering" size:20];
+    self.lblCardName.font = [UIFont fontWithName:@"Magic:the Gathering" size:22];
     self.lblCardName.text = [NSString stringWithFormat:@" %@", card.name];
     self.lblDetail.text = type;
     self.lblSet.text = [NSString stringWithFormat:@"%@ - %@", card.set.name, card.rarity.name];

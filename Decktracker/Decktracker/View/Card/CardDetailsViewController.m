@@ -486,21 +486,23 @@
     if (self.card.legalities.count > 0)
     {
         [html appendFormat:@"<tr><td><strong>Legalities</strong></td></tr>"];
+        [html appendFormat:@"<tr><td><table width=\"100%%\">"];
         for (CardLegality *legality in [[self.card.legalities allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"format.name" ascending:YES],
               [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]])
         {
-            [html appendFormat:@"<tr><td>%@</td><td>%@</td></tr>", legality.format.name, legality.name];
+            [html appendFormat:@"<tr><td width=\"50%%\">%@</td><td>%@</td></tr>", legality.format.name, legality.name];
         }
+        [html appendFormat:@"</table></td></tr>"];
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
 
     if (self.card.foreignNames.count > 0)
     {
         [html appendFormat:@"<tr><td><strong>Languages</strong></td></tr>"];
-        [html appendFormat:@"<tr><td><table>"];
+        [html appendFormat:@"<tr><td><table width=\"100%%\">"];
         for (CardForeignName *foreignName in [[self.card.foreignNames allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"language" ascending:YES]]])
         {
-            [html appendFormat:@"<tr><td>%@</td><td>%@</td></tr>", foreignName.language, foreignName.name];
+            [html appendFormat:@"<tr><td width=\"50%%\">%@</td><td>%@</td></tr>", foreignName.language, foreignName.name];
         }
         [html appendFormat:@"</table></td></tr>"];
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
@@ -520,6 +522,11 @@
 
 - (NSString*) composePricing
 {
+    NSNumberFormatter * formatter =  [[NSNumberFormatter alloc] init];
+    [formatter setUsesSignificantDigits:YES];
+    [formatter setMaximumFractionDigits:2];
+    [formatter setRoundingMode:NSNumberFormatterRoundCeiling];
+    
     [[Database sharedInstance] fetchTcgPlayerPriceForCard:self.card];
     NSMutableString *html = [[NSMutableString alloc] init];
     
@@ -527,17 +534,26 @@
     [html appendFormat:@"<center><table width=\"100%%\">"];
 
     [html appendFormat:@"<tr>"];
-    [html appendFormat:@"<td align=\"center\" bgcolor=\"red\" width=\"25%%\"><strong><font color=\"white\">Low</font></strong></td>"];
-    [html appendFormat:@"<td align=\"center\" bgcolor=\"blue\" width=\"25%%\"><strong><font color=\"white\">Median</font></strong></td>"];
-    [html appendFormat:@"<td align=\"center\" bgcolor=\"green\" width=\"25%%\"><strong><font color=\"white\">High</font></strong></td>"];
-    [html appendFormat:@"<td align=\"center\" bgcolor=\"silver\" width=\"25%%\"><strong><font color=\"white\">Foil</font></strong></td>"];
+    [html appendFormat:@"<td align=\"center\" bgcolor=\"red\" width=\"25%%\"><font color=\"white\">Low</font></td>"];
+    [html appendFormat:@"<td align=\"center\" bgcolor=\"blue\" width=\"25%%\"><font color=\"white\">Median</font></td>"];
+    [html appendFormat:@"<td align=\"center\" bgcolor=\"green\" width=\"25%%\"><font color=\"white\">High</font></td>"];
+    [html appendFormat:@"<td align=\"center\" bgcolor=\"silver\" width=\"25%%\"><font color=\"white\">Foil</font></td>"];
     [html appendFormat:@"</tr>"];
     
+    NSString *price;
     [html appendFormat:@"<tr>"];
-    [html appendFormat:@"<td align=\"right\" width=\"25%%\">$%@</td>", self.card.tcgPlayerLowPrice ? [NSString stringWithFormat:@"$%@", self.card.tcgPlayerLowPrice] : @"N/A"];
-    [html appendFormat:@"<td align=\"right\" width=\"25%%\">$%@</td>", self.card.tcgPlayerMidPrice ? [NSString stringWithFormat:@"$%@", self.card.tcgPlayerMidPrice] : @"N/A"];
-    [html appendFormat:@"<td align=\"right\" width=\"25%%\">$%@</td>", self.card.tcgPlayerHighPrice ? [NSString stringWithFormat:@"$%@", self.card.tcgPlayerHighPrice] : @"N/A"];
-    [html appendFormat:@"<td align=\"right\" width=\"25%%\">$%@</td>", self.card.tcgPlayerFoilPrice ? [NSString stringWithFormat:@"$%@", self.card.tcgPlayerFoilPrice] : @"N/A"];
+    price = [self.card.tcgPlayerLowPrice doubleValue] != 0 ? [NSString stringWithFormat:@"$%@", [formatter stringFromNumber:self.card.tcgPlayerLowPrice]] : @"N/A";
+    [html appendFormat:@"<td align=\"right\" width=\"25%%\">%@</td>", price];
+    
+    price = [self.card.tcgPlayerMidPrice doubleValue] != 0 ? [NSString stringWithFormat:@"$%@", [formatter stringFromNumber:self.card.tcgPlayerMidPrice]] : @"N/A";
+    [html appendFormat:@"<td align=\"right\" width=\"25%%\">%@</td>", price];
+    
+    price = [self.card.tcgPlayerHighPrice doubleValue] != 0 ? [NSString stringWithFormat:@"$%@", [formatter stringFromNumber:self.card.tcgPlayerHighPrice]] : @"N/A";
+    [html appendFormat:@"<td align=\"right\" width=\"25%%\">%@</td>", price];
+    
+    price = [self.card.tcgPlayerFoilPrice doubleValue] != 0 ? [NSString stringWithFormat:@"$%@", [formatter stringFromNumber:self.card.tcgPlayerFoilPrice]] : @"N/A";
+    [html appendFormat:@"<td align=\"right\" width=\"25%%\">%@</td>", price];
+    
     [html appendFormat:@"</tr>"];
     [html appendFormat:@"<tr><td colspan=\"3\">&nbsp;</td></tr>"];
     if (self.card.tcgPlayerLink)
