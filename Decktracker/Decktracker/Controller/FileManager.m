@@ -270,7 +270,8 @@ static FileManager *_me;
 
 -(void) initFilesystem
 {
-    NSArray *folders = @[@"Advance Search", @"Decks", @"Collections"];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths firstObject];
     
     DBAccount *account = [self dropboxAccount];
     if (account)
@@ -279,10 +280,7 @@ static FileManager *_me;
         [DBFilesystem setSharedFilesystem:filesystem];
     }
     
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths firstObject];
-    
-    for (NSString *folder in folders)
+    for (NSString *folder in kFolders)
     {
         NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", folder]];
             
@@ -296,20 +294,81 @@ static FileManager *_me;
         
         if (account)
         {
-            DBPath *dbPath = [[DBPath root] childPath:folder];
-            [[DBFilesystem sharedFilesystem] createFolder:dbPath error:nil];
-            
-            // copy existing files to Dropbox
-            for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil])
-            {
-                DBPath *dbFilePath = [[DBPath root] childPath:[NSString stringWithFormat:@"/%@/%@", folder, file]];
-                DBFile *dbFile = [[DBFilesystem sharedFilesystem] createFile:dbFilePath error:nil];
-                NSString *fullPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", file]];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
                 
-                [dbFile writeContentsOfFile:fullPath
-                                shouldSteal:NO
-                                      error:nil];
-            }
+                DBPath *dbPath = [[DBPath root] childPath:folder];
+                [[DBFilesystem sharedFilesystem] createFolder:dbPath error:nil];
+                
+                // copy existing files to Dropbox
+                for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil])
+                {
+                    DBPath *dbFilePath = [[DBPath root] childPath:[NSString stringWithFormat:@"/%@/%@", folder, file]];
+                    DBFile *dbFile = [[DBFilesystem sharedFilesystem] createFile:dbFilePath error:nil];
+                    NSString *fullPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", file]];
+                    
+                    [dbFile writeContentsOfFile:fullPath
+                                    shouldSteal:NO
+                                          error:nil];
+                }
+                
+                // copy Dropbox files to local storage
+                for (DBFileInfo *fileInfo in [[DBFilesystem sharedFilesystem] listFolder:dbPath error:nil])
+                {
+                    DBFile *dbFile = [[DBFilesystem sharedFilesystem] openFile:[fileInfo path] error:nil];
+                    if (dbFile)
+                    {
+                        NSData *data = [dbFile readData:nil];
+                        [data writeToFile:[NSString stringWithFormat:@"%@/%@", path, [[fileInfo path] name]] atomically:YES];
+                        [dbFile close];
+                    }
+                }
+                
+            });
+        }
+    }
+}
+
+-(void) copyCloudFilesToLocalStorage
+{
+    if ([self dropboxAccount])
+    {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths firstObject];
+        
+        for (NSString *folder in kFolders)
+        {
+            NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", folder]];
+            
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
+                
+                DBPath *dbPath = [[DBPath root] childPath:folder];
+                [[DBFilesystem sharedFilesystem] createFolder:dbPath error:nil];
+                
+                // copy existing files to Dropbox
+                for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil])
+                {
+                    DBPath *dbFilePath = [[DBPath root] childPath:[NSString stringWithFormat:@"/%@/%@", folder, file]];
+                    DBFile *dbFile = [[DBFilesystem sharedFilesystem] createFile:dbFilePath error:nil];
+                    NSString *fullPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", file]];
+                    
+                    [dbFile writeContentsOfFile:fullPath
+                                    shouldSteal:NO
+                                          error:nil];
+                }
+                
+                // copy Dropbox files to local storage
+                for (DBFileInfo *fileInfo in [[DBFilesystem sharedFilesystem] listFolder:dbPath error:nil])
+                {
+                    DBFile *dbFile = [[DBFilesystem sharedFilesystem] openFile:[fileInfo path] error:nil];
+                    if (dbFile)
+                    {
+                        NSData *data = [dbFile readData:nil];
+                        [data writeToFile:[NSString stringWithFormat:@"%@/%@", path, [[fileInfo path] name]] atomically:YES];
+                        [dbFile close];
+                    }
+                }
+                
+            });
         }
     }
 }
@@ -418,16 +477,20 @@ static FileManager *_me;
     
     if ([self dropboxAccount])
     {
-        DBPath *dbPath = [[DBPath root] childPath:path];
-        DBFile *dbFile = [[DBFilesystem sharedFilesystem] openFile:dbPath error:nil];
-        if (!dbFile)
-        {
-            dbFile = [[DBFilesystem sharedFilesystem] createFile:dbPath error:nil];
-        }
-        if (dbFile)
-        {
-            [dbFile writeContentsOfFile:fileName shouldSteal:NO error:nil];
-        }
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
+            
+            DBPath *dbPath = [[DBPath root] childPath:path];
+            DBFile *dbFile = [[DBFilesystem sharedFilesystem] openFile:dbPath error:nil];
+            if (!dbFile)
+            {
+                dbFile = [[DBFilesystem sharedFilesystem] createFile:dbPath error:nil];
+            }
+            if (dbFile)
+            {
+                [dbFile writeContentsOfFile:fileName shouldSteal:NO error:nil];
+            }
+            
+        });
     }
 }
 

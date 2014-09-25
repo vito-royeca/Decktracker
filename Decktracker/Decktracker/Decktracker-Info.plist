@@ -28,11 +28,12 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>db-v57bkxsnzi3gxt3</string>
+				<string>boxsdk-v3vx3t10k6genv8ao7r5f3rqunz23atm</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>63B</string>
+	<string>655</string>
 	<key>Card Updates</key>
 	<array>
 		<string>KTK</string>

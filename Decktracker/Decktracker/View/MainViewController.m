@@ -9,9 +9,14 @@
 #import "MainViewController.h"
 #import "CollectionsViewController.h"
 #import "DecksViewController.h"
+#import "FileManager.h"
+#import "IASKAppSettingsViewController.h"
 #import "Magic.h"
 #import "SimpleSearchViewController.h"
 #import "SettingsViewController.h"
+
+#import "BoxSDK.h"
+#import <Dropbox/Dropbox.h>
 
 @implementation MainViewController
 {
@@ -47,14 +52,14 @@
                                                    image:[UIImage imageNamed:@"layers.png"]
                                            selectedImage:nil];
     
-//    UINavigationController *nc4 = [[UINavigationController alloc] init];
-//    UIViewController *vc4 = [[SettingsViewController alloc] initWithNibName:nil bundle:nil];
-//    nc4.viewControllers = [NSArray arrayWithObjects:vc4, nil];
-//    nc4.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Settings"
-//                                                   image:[UIImage imageNamed:@"settings.png"]
-//                                           selectedImage:nil];
+    UINavigationController *nc4 = [[UINavigationController alloc] init];
+    UIViewController *vc4 = [[IASKAppSettingsViewController alloc] initWithNibName:nil bundle:nil];
+    nc4.viewControllers = [NSArray arrayWithObjects:vc4, nil];
+    nc4.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Settings"
+                                                   image:[UIImage imageNamed:@"settings.png"]
+                                           selectedImage:nil];
     
-    self.viewControllers = @[nc1, nc2];
+    self.viewControllers = @[nc1, nc2, nc4];
     self.selectedViewController = nc1;
     
     _inAppPurchase = [[InAppPurchase alloc] init];
@@ -67,6 +72,14 @@
     {
         [self addCollectionsProduct];
     }
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:kIASKAppSettingChanged
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(settingsChanged:)
+                                                 name:kIASKAppSettingChanged
+                                               object:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -107,6 +120,55 @@
     
     [arrViewControllers insertObject:navController atIndex:index];
     [self setViewControllers:arrViewControllers animated:NO];
+}
+
+#pragma mark - IASKSettingsDelegate
+-(void) settingsChanged:(id) sender
+{
+    NSDictionary *dict = [sender userInfo];
+    
+    for (NSString *key in dict)
+    {
+        id value = [dict valueForKey:key];
+        
+        if ([key isEqualToString:@"box_preference"])
+        {
+            if ([value boolValue])
+            {
+                UIViewController *authorizationController = [[BoxAuthorizationViewController alloc] initWithAuthorizationURL:[[BoxSDK sharedSDK].OAuth2Session authorizeURL] redirectURI:@"boxsdk-v3vx3t10k6genv8ao7r5f3rqunz23atm"];
+                [self presentViewController:authorizationController animated:NO completion:nil];
+            }
+            else
+            {
+                
+            }
+        }
+        
+        else if ([key isEqualToString:@"dropbox_preference"])
+        {
+            if ([value boolValue])
+            {
+                if (![[DBAccountManager sharedManager] linkedAccount])
+                {
+                    [[DBAccountManager sharedManager] linkFromController:self];
+                    if ([[DBAccountManager sharedManager] linkedAccount])
+                    {
+                        [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:YES] forKey:key];
+                        [[FileManager sharedInstance] initFilesystem];
+                    }
+                    else
+                    {
+                        [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:NO] forKey:key];
+                    }
+                }
+                
+            }
+            else
+            {
+                [[[DBAccountManager sharedManager] linkedAccount] unlink];
+            }
+        }
+    }
 }
 
 #pragma mark - InAppPurchaseDelegate

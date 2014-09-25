@@ -12,6 +12,7 @@
 #import "MainViewController.h"
 
 #import "GAI.h"
+#import "BoxSDK.h"
 #import <Crashlytics/Crashlytics.h>
 #import <Dropbox/Dropbox.h>
 
@@ -32,6 +33,10 @@
     DBAccountManager *accountManager = [[DBAccountManager alloc] initWithAppKey:@"v57bkxsnzi3gxt3" secret:@"qbyj5znuytk3ljj"];
     [DBAccountManager setSharedManager:accountManager];
     [[FileManager sharedInstance] initFilesystem];
+    
+    // Box
+    [BoxSDK sharedSDK].OAuth2Session.clientID = @"v3vx3t10k6genv8ao7r5f3rqunz23atm ";
+    [BoxSDK sharedSDK].OAuth2Session.clientSecret = @"foPhGtidtVObEBEbNd2FZIbxk9nKSu99";
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.

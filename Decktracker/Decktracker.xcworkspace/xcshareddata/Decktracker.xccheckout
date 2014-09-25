@@ -10,33 +10,33 @@
 	<string>Decktracker</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>AA2E989F-BD5E-4C95-9AB5-49BAD93B8717</key>
+		<key>660D3E71C9E58E5C4A23770105F172433B1EFB46</key>
 		<string>https://bitbucket.org/jovito/jjj.git</string>
-		<key>BEBDC501-7949-42E8-AC45-99D314124B57</key>
+		<key>9E1CF28A30E48A07DF802E7FC1063A8BE5202279</key>
 		<string>https://bitbucket.org/jovito/decktracker.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>Decktracker/Decktracker.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>AA2E989F-BD5E-4C95-9AB5-49BAD93B8717</key>
+		<key>660D3E71C9E58E5C4A23770105F172433B1EFB46</key>
 		<string>../../jjj</string>
-		<key>BEBDC501-7949-42E8-AC45-99D314124B57</key>
+		<key>9E1CF28A30E48A07DF802E7FC1063A8BE5202279</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://bitbucket.org/jovito/decktracker.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>BEBDC501-7949-42E8-AC45-99D314124B57</string>
+	<string>9E1CF28A30E48A07DF802E7FC1063A8BE5202279</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>BEBDC501-7949-42E8-AC45-99D314124B57</string>
+			<string>9E1CF28A30E48A07DF802E7FC1063A8BE5202279</string>
 			<key>IDESourceControlWCCName</key>
 			<string>Decktracker</string>
 		</dict>
@@ -44,7 +44,7 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>AA2E989F-BD5E-4C95-9AB5-49BAD93B8717</string>
+			<string>660D3E71C9E58E5C4A23770105F172433B1EFB46</string>
 			<key>IDESourceControlWCCName</key>
 			<string>jjj</string>
 		</dict>

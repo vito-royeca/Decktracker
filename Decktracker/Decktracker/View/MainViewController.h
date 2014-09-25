@@ -7,6 +7,8 @@
 //
 
 @import UIKit;
+
+#import "IASKSettingsReader.h"
 #import "InAppPurchase.h"
 
 @interface MainViewController : UITabBarController<UITabBarControllerDelegate, InAppPurchaseDelegate>

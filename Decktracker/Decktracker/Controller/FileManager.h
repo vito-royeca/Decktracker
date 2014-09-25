@@ -13,6 +13,7 @@
 
 #define kCardDownloadCompleted           @"kCardDownloadCompleted"
 #define kCropDownloadCompleted           @"kCropDownloadCompleted"
+#define kFolders                         @[@"Advance Search", @"Decks", @"Collections"]
 
 @interface FileManager : NSObject
 
