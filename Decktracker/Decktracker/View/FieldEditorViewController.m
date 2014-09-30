@@ -174,6 +174,18 @@
     }
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.fieldEditorType == FieldEditorTypeTextArea)
+    {
+        return self.tblEditor.frame.size.height/2;
+    }
+    else
+    {
+        return UITableViewAutomaticDimension;
+    }
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell0"];

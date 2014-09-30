@@ -8,10 +8,7 @@
 
 @import UIKit;
 
-#import "IASKSettingsReader.h"
-#import "InAppPurchase.h"
-
-@interface MainViewController : UITabBarController<UITabBarControllerDelegate, InAppPurchaseDelegate>
+@interface MainViewController : UITabBarController<UITabBarControllerDelegate>
 
 -(void) addCollectionsProduct;
 -(void) addNavigationController:(UINavigationController*) navController atIndex:(int) index;

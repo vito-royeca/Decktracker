@@ -17,7 +17,8 @@
 
 @implementation DeckDetailsViewController
 {
-    NSArray *_arrSections;
+    NSArray *_arrDetailsSections;
+    NSArray *_arrCardSections;
     UIView *_viewSegmented;
 }
 
@@ -41,7 +42,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    _arrSections = @[@"", @"Lands", @"Creatures", @"Other Spells", @"Sideboard"];
+    _arrDetailsSections = @[@"", @"Name", @"Number of Cards", @"Format", @"Notes", @"Original Designer", @"Year"];
+    _arrCardSections = @[@"", @"Lands", @"Creatures", @"Other Spells", @"Sideboard"];
 
     CGFloat dX = 0;
     CGFloat dY = 0;
@@ -49,7 +51,7 @@
     CGFloat dHeight = self.view.frame.size.height - 44;
     
     self.tblCards = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)
-                                                 style:UITableViewStylePlain];
+                                                 style:UITableViewStyleGrouped];
     self.tblCards.delegate = self;
     self.tblCards.dataSource = self;
     [self.tblCards registerNib:[UINib nibWithNibName:@"SearchResultsTableViewCell" bundle:nil]
@@ -180,7 +182,11 @@
 {
     if (self.segmentedControl.selectedSegmentIndex == 0)
     {
-        if (indexPath.row == 3) // Notes
+        if (indexPath.section == 0)
+        {
+            return 0;
+        }
+        else if (indexPath.section == 4) // Notes
         {
             return SEARCH_RESULTS_CELL_HEIGHT;
         }
@@ -254,7 +260,7 @@
 {
     if (self.segmentedControl.selectedSegmentIndex == 0)
     {
-        return nil;
+        return section == 0 ? nil : _arrDetailsSections[section];
     }
     
     int count = 0;
@@ -299,44 +305,33 @@
         }
     }
     
-    return [NSString stringWithFormat:@"%@: %tu", _arrSections[section], count];
+    return [NSString stringWithFormat:@"%@: %tu", _arrCardSections[section], count];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    int sections = 0;
     switch (self.segmentedControl.selectedSegmentIndex)
     {
         case 0:
         {
-            sections = 2;
-            break;
+            return _arrDetailsSections.count;
         }
         case 1:
         {
-            sections = 5;
-            break;
+            return _arrCardSections.count;
+        }
+        default:
+        {
+            return 1;
         }
     }
-    
-    return sections;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (self.segmentedControl.selectedSegmentIndex == 0)
     {
-        switch (section)
-        {
-            case 1:
-            {
-                return 6;
-            }
-            default:
-            {
-                return 0;
-            }
-        }
+        return 1;
     }
     
 	switch (section)
@@ -370,60 +365,53 @@
     
     if (self.segmentedControl.selectedSegmentIndex == 0)
     {
-        if (indexPath.section == 1)
+        cell = [tableView dequeueReusableCellWithIdentifier:@"Cell0"];
+        if (cell == nil)
         {
-            cell = [tableView dequeueReusableCellWithIdentifier:@"Cell0"];
-            if (cell == nil)
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Cell0"];
+        }
+        
+        cell.textLabel.text = nil;
+        cell.userInteractionEnabled = YES;
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        
+        switch (indexPath.section)
+        {
+            case 1:
             {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Cell0"];
+                cell.textLabel.text = self.deck.name;
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                break;
             }
-            
-            cell.userInteractionEnabled = YES;
-            switch (indexPath.row)
+            case 2:
             {
-                case 0:
-                {
-                    cell.textLabel.text = self.deck.name;
-                    cell.detailTextLabel.text = @"Name";
-                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                    break;
-                }
-                case 1:
-                {
-                    cell.textLabel.text = [NSString stringWithFormat:@"Mainboard: %d / Sideboard: %d", [self.deck cardsInBoard:MainBoard], [self.deck cardsInBoard:SideBoard]];
-                    cell.detailTextLabel.text = @"Number of Cards";
-                    cell.accessoryType = UITableViewCellAccessoryNone;
-                    cell.userInteractionEnabled = NO;
-                    break;
-                }
-                case 2:
-                {
-                    cell.textLabel.text = self.deck.format.length > 0 ? self.deck.format : @" ";
-                    cell.detailTextLabel.text = @"Format";
-                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                    break;
-                }
-                case 3:
-                {
-                    cell.textLabel.text = self.deck.notes.length > 0 ? self.deck.notes : @" ";
-                    cell.detailTextLabel.text = @"Notes";
-                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                    break;
-                }
-                case 4:
-                {
-                    cell.textLabel.text = self.deck.originalDesigner.length > 0 ? self.deck.originalDesigner : @" ";
-                    cell.detailTextLabel.text = @"Original Designer";
-                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                    break;
-                }
-                case 5:
-                {
-                    cell.textLabel.text = self.deck.year ? [NSString stringWithFormat:@"%@", self.deck.year] : @" ";
-                    cell.detailTextLabel.text = @"Year";
-                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                    break;
-                }
+                cell.textLabel.text = [NSString stringWithFormat:@"Mainboard: %d / Sideboard: %d", [self.deck cardsInBoard:MainBoard], [self.deck cardsInBoard:SideBoard]];
+                cell.userInteractionEnabled = NO;
+                break;
+            }
+            case 3:
+            {
+                cell.textLabel.text = self.deck.format;
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                break;
+            }
+            case 4:
+            {
+                cell.textLabel.text = self.deck.notes;
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                break;
+            }
+            case 5:
+            {
+                cell.textLabel.text = self.deck.originalDesigner;
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                break;
+            }
+            case 6:
+            {
+                cell.textLabel.text = self.deck.year ? [NSString stringWithFormat:@"%@", self.deck.year] : @"";
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                break;
             }
         }
         
@@ -444,7 +432,7 @@
                 }
                 else
                 {
-                    cell = [self createAddTableCell:[NSString stringWithFormat:@"Add %@", _arrSections[indexPath.section]]];
+                    cell = [self createAddTableCell:[NSString stringWithFormat:@"Add %@", _arrCardSections[indexPath.section]]];
                 }
                 break;
             }
@@ -457,7 +445,7 @@
                 }
                 else
                 {
-                    cell = [self createAddTableCell:[NSString stringWithFormat:@"Add %@", _arrSections[indexPath.section]]];
+                    cell = [self createAddTableCell:[NSString stringWithFormat:@"Add %@", _arrCardSections[indexPath.section]]];
                 }
                 break;
             }
@@ -470,7 +458,7 @@
                 }
                 else
                 {
-                    cell = [self createAddTableCell:[NSString stringWithFormat:@"Add %@", _arrSections[indexPath.section]]];
+                    cell = [self createAddTableCell:[NSString stringWithFormat:@"Add %@", _arrCardSections[indexPath.section]]];
                 }
                 break;
             }
@@ -483,7 +471,7 @@
                 }
                 else
                 {
-                    cell = [self createAddTableCell:[NSString stringWithFormat:@"Add %@", _arrSections[indexPath.section]]];
+                    cell = [self createAddTableCell:[NSString stringWithFormat:@"Add %@", _arrCardSections[indexPath.section]]];
                 }
                 break;
             }
@@ -493,7 +481,7 @@
     {
         if (indexPath.section != 0)
         {
-            cell = [self createAddTableCell:[NSString stringWithFormat:@"Add %@", _arrSections[indexPath.section]]]
+            cell = [self createAddTableCell:[NSString stringWithFormat:@"Add %@", _arrCardSections[indexPath.section]]]
             ;
         }
     }
@@ -505,26 +493,21 @@
 {
     if (self.segmentedControl.selectedSegmentIndex == 0)
     {
-        if (indexPath.row == 1) // number of cards
-        {
-            return;
-        }
-        
         FieldEditorViewController *view = [[FieldEditorViewController alloc] init];
         UITableViewCell *cell = [self tableView:self.tblCards cellForRowAtIndexPath:indexPath];
         
         view.delegate = self;
-        view.fieldName = cell.detailTextLabel.text;
+        view.fieldName = _arrDetailsSections[indexPath.section];
         view.oldValue = cell.textLabel.text;
         
-        switch (indexPath.row)
+        switch (indexPath.section)
         {
-            case 0:
+            case 1:
             {
                 view.fieldEditorType = FieldEditorTypeText;
                 break;
             }
-            case 2:
+            case 3:
             {
                 view.fieldEditorType = FieldEditorTypeSelection;
                 NSMutableArray *arrFormats = [[NSMutableArray alloc] init];
@@ -535,17 +518,17 @@
                 view.fieldOptions = arrFormats;
                 break;
             }
-            case 3:
+            case 4:
             {
                 view.fieldEditorType = FieldEditorTypeTextArea;
                 break;
             }
-            case 4:
+            case 5:
             {
                 view.fieldEditorType = FieldEditorTypeText;
                 break;
             }
-            case 5:
+            case 6:
             {
                 view.fieldEditorType = FieldEditorTypeNumber;
                 break;
@@ -668,29 +651,29 @@
     NSString *path = [NSString stringWithFormat:@"/Decks/%@.json", self.deck.name];
     [[FileManager sharedInstance] deleteFileAtPath:path];
     
-    switch ([self.tblCards indexPathForSelectedRow].row)
+    switch ([self.tblCards indexPathForSelectedRow].section)
     {
-        case 0:
+        case 1:
         {
             self.deck.name = newValue;
             break;
         }
-        case 2:
+        case 3:
         {
             self.deck.format = newValue;
             break;
         }
-        case 3:
+        case 4:
         {
             self.deck.notes = newValue;
             break;
         }
-        case 4:
+        case 5:
         {
             self.deck.originalDesigner = newValue;
             break;
         }
-        case 5:
+        case 6:
         {
             self.deck.year = [NSNumber numberWithInt:[newValue intValue]];
             break;
@@ -699,6 +682,7 @@
     
     path = [NSString stringWithFormat:@"/Decks/%@.json", self.deck.name];
     [self.deck save:path];
+    [self.tblCards reloadData];
 }
 
 @end

@@ -8,6 +8,14 @@
 
 @import UIKit;
 
-@interface SettingsViewController : UIViewController
+#import "IASKAppSettingsViewController.h"
+#import "InAppPurchase.h"
+#import "Magic.h"
+
+#import "IASKSettingsReader.h"
+
+@interface SettingsViewController : UIViewController<InAppPurchaseDelegate, IASKSettingsDelegate>
+
+@property(strong,nonatomic) IASKAppSettingsViewController *appSettingsViewController;
 
 @end

@@ -13,7 +13,6 @@
 		8C13467919A9B17B00E0B3C3 /* SearchResultsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C13467719A9B17B00E0B3C3 /* SearchResultsTableViewCell.xib */; };
 		8C2106A019B6EF85001DE039 /* QuantityTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C21069E19B6EF85001DE039 /* QuantityTableViewCell.m */; };
 		8C2106A119B6EF85001DE039 /* QuantityTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C21069F19B6EF85001DE039 /* QuantityTableViewCell.xib */; };
-		8C26A0C119BF5F45005D64A7 /* InAppPurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C26A0C019BF5F45005D64A7 /* InAppPurchase.m */; };
 		8C26A67919A63FAC00FE00E7 /* AdvanceSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C26A67019A63FAC00FE00E7 /* AdvanceSearchResultsViewController.m */; };
 		8C26A67A19A63FAC00FE00E7 /* AdvanceSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C26A67219A63FAC00FE00E7 /* AdvanceSearchViewController.m */; };
 		8C26A67B19A63FAC00FE00E7 /* FilterInputViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C26A67419A63FAC00FE00E7 /* FilterInputViewController.m */; };
@@ -39,6 +38,7 @@
 		8C2E142E199085A900023BAA /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2E142D199085A900023BAA /* MainViewController.m */; };
 		8C2E1431199085C700023BAA /* Database.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2E1430199085C700023BAA /* Database.m */; };
 		8C3277FD199A464D00899790 /* style.css in Resources */ = {isa = PBXBuildFile; fileRef = 8C3277FC199A464D00899790 /* style.css */; };
+		8C33E9BE19D73AAB000892D9 /* InAppPurchaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C33E9BD19D73AAB000892D9 /* InAppPurchaseViewController.m */; };
 		8C378E0019A7434B00B9367F /* MHFacebookImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C378DFF19A7434B00B9367F /* MHFacebookImageViewer.m */; };
 		8C3CBDBE19A31615002CD96E /* CardForeignName.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDBD19A31615002CD96E /* CardForeignName.m */; };
 		8C3CBDC119A31615002CD96E /* Card.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDC019A31615002CD96E /* Card.m */; };
@@ -65,6 +65,7 @@
 		8C7CEC0019CA8A0B0093327C /* FieldEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C7CEBFF19CA8A0B0093327C /* FieldEditorViewController.m */; };
 		8C90A17F19C97ADF00F7278C /* Deck.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C90A17E19C97ADF00F7278C /* Deck.m */; };
 		8CADEF1719923DDE004D7658 /* images in Resources */ = {isa = PBXBuildFile; fileRef = 8CADEF1619923DDE004D7658 /* images */; };
+		8CD2E1EC19DACE1A00503ACC /* InAppPurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD2E1EB19DACE1A00503ACC /* InAppPurchase.m */; };
 		8CE7F2BE19C0A2D0004FBEA5 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CE7F2BD19C0A2D0004FBEA5 /* StoreKit.framework */; };
 		8CF0C9D71991CD8300349F35 /* libJJJ.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF0C9C11991CD0500349F35 /* libJJJ.a */; };
 		8CF418D719C9C6790082E3BC /* Collection.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF418D619C9C6790082E3BC /* Collection.m */; };
@@ -113,8 +114,6 @@
 		8C21069D19B6EF85001DE039 /* QuantityTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuantityTableViewCell.h; sourceTree = "<group>"; };
 		8C21069E19B6EF85001DE039 /* QuantityTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuantityTableViewCell.m; sourceTree = "<group>"; };
 		8C21069F19B6EF85001DE039 /* QuantityTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QuantityTableViewCell.xib; sourceTree = "<group>"; };
-		8C26A0BF19BF5F45005D64A7 /* InAppPurchase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InAppPurchase.h; sourceTree = "<group>"; };
-		8C26A0C019BF5F45005D64A7 /* InAppPurchase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InAppPurchase.m; sourceTree = "<group>"; };
 		8C26A66F19A63FAC00FE00E7 /* AdvanceSearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvanceSearchResultsViewController.h; sourceTree = "<group>"; };
 		8C26A67019A63FAC00FE00E7 /* AdvanceSearchResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvanceSearchResultsViewController.m; sourceTree = "<group>"; };
 		8C26A67119A63FAC00FE00E7 /* AdvanceSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvanceSearchViewController.h; sourceTree = "<group>"; };
@@ -152,6 +151,8 @@
 		8C2E142F199085C700023BAA /* Database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Database.h; sourceTree = "<group>"; };
 		8C2E1430199085C700023BAA /* Database.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Database.m; sourceTree = "<group>"; };
 		8C3277FC199A464D00899790 /* style.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = style.css; sourceTree = "<group>"; };
+		8C33E9BC19D73AAB000892D9 /* InAppPurchaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InAppPurchaseViewController.h; sourceTree = "<group>"; };
+		8C33E9BD19D73AAB000892D9 /* InAppPurchaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InAppPurchaseViewController.m; sourceTree = "<group>"; };
 		8C378DFE19A7434B00B9367F /* MHFacebookImageViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MHFacebookImageViewer.h; sourceTree = "<group>"; };
 		8C378DFF19A7434B00B9367F /* MHFacebookImageViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MHFacebookImageViewer.m; sourceTree = "<group>"; };
 		8C3CBDBC19A31615002CD96E /* CardForeignName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardForeignName.h; sourceTree = "<group>"; };
@@ -201,6 +202,8 @@
 		8C90A17E19C97ADF00F7278C /* Deck.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Deck.m; sourceTree = "<group>"; };
 		8CA317C719C56B73001F94F5 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		8CADEF1619923DDE004D7658 /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
+		8CD2E1EA19DACE1A00503ACC /* InAppPurchase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InAppPurchase.h; sourceTree = "<group>"; };
+		8CD2E1EB19DACE1A00503ACC /* InAppPurchase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InAppPurchase.m; sourceTree = "<group>"; };
 		8CE7F2BD19C0A2D0004FBEA5 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		8CE7F2C219C0A2F7004FBEA5 /* Decktracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Decktracker.entitlements; sourceTree = "<group>"; };
 		8CF0C9BA1991CD0500349F35 /* JJJ.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JJJ.xcodeproj; path = ../jjj/JJJ/JJJ.xcodeproj; sourceTree = "<group>"; };
@@ -390,8 +393,6 @@
 				8CF79A5C19A88B4500BE4246 /* Decks */,
 				8C7CEBFE19CA8A0B0093327C /* FieldEditorViewController.h */,
 				8C7CEBFF19CA8A0B0093327C /* FieldEditorViewController.m */,
-				8C26A0BF19BF5F45005D64A7 /* InAppPurchase.h */,
-				8C26A0C019BF5F45005D64A7 /* InAppPurchase.m */,
 				8C2E142C199085A900023BAA /* MainViewController.h */,
 				8C2E142D199085A900023BAA /* MainViewController.m */,
 				8C21069D19B6EF85001DE039 /* QuantityTableViewCell.h */,
@@ -447,6 +448,10 @@
 		8C524A6D19B82BD8005E697B /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				8CD2E1EA19DACE1A00503ACC /* InAppPurchase.h */,
+				8CD2E1EB19DACE1A00503ACC /* InAppPurchase.m */,
+				8C33E9BC19D73AAB000892D9 /* InAppPurchaseViewController.h */,
+				8C33E9BD19D73AAB000892D9 /* InAppPurchaseViewController.m */,
 				8C524A6E19B82C01005E697B /* SettingsViewController.h */,
 				8C524A6F19B82C01005E697B /* SettingsViewController.m */,
 			);
@@ -670,7 +675,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "bN=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbN=$((0x$bN))\nbN=$(($bN + 1))\nbN=$(printf \"%X\" $bN)\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $bN\" \"$INFOPLIST_FILE\"\n./Crashlytics.framework/run 114b3dd82452ec2f4024140ec862698d331b8f3f e633393678a7e8c4f2e8be609515f7ad0ff6dd85c474c001fea74fde0273c2e4";
+			shellScript = "bN=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbN=$((0x$bN))\nbN=$(($bN + 1))\nbN=$(printf \"%X\" $bN)\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $bN\" \"$INFOPLIST_FILE\"\naN=$(/usr/libexec/PlistBuddy -c \"Print CFBundleShortVersionString\" \"$INFOPLIST_FILE\")\n/usr/libexec/PlistBuddy \"$SRCROOT/Settings.bundle/Root~iphone.plist\" -c \"Set PreferenceSpecifiers:12:DefaultValue $aN\"\n./Crashlytics.framework/run 114b3dd82452ec2f4024140ec862698d331b8f3f e633393678a7e8c4f2e8be609515f7ad0ff6dd85c474c001fea74fde0273c2e4";
 		};
 		AF72BD75F43140CE8720FA0F /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -709,14 +714,15 @@
 				8C2E142A1990748C00023BAA /* database.xcdatamodeld in Sources */,
 				8C3CBDCA19A31617002CD96E /* CardLegality.m in Sources */,
 				8C2106A019B6EF85001DE039 /* QuantityTableViewCell.m in Sources */,
+				8CD2E1EC19DACE1A00503ACC /* InAppPurchase.m in Sources */,
 				8C3CBDC719A31617002CD96E /* CardColor.m in Sources */,
 				8C3CBDC119A31615002CD96E /* Card.m in Sources */,
 				8C90A17F19C97ADF00F7278C /* Deck.m in Sources */,
 				8C3CBDD319A31618002CD96E /* Set.m in Sources */,
 				8C26A67C19A63FAC00FE00E7 /* NewAdvanceSearchViewController.m in Sources */,
-				8C26A0C119BF5F45005D64A7 /* InAppPurchase.m in Sources */,
 				8CF79A6519A8BFA300BE4246 /* DecksViewController.m in Sources */,
 				8C56F56119B5B5BB0084B2B8 /* CardDetailsViewController.m in Sources */,
+				8C33E9BE19D73AAB000892D9 /* InAppPurchaseViewController.m in Sources */,
 				8C5B446D19BEFFF60071604C /* AddCardViewController.m in Sources */,
 				8C2CFCF519BB1F8B00F5348B /* LimitedSearchViewController.m in Sources */,
 				8C524A6519B81E9E005E697B /* DeckDetailsViewController.m in Sources */,

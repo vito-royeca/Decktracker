@@ -12,6 +12,8 @@
 #import "CollectionsViewController.h"
 #import "Deck.h"
 #import "FileManager.h"
+#import "InAppPurchase.h"
+#import "InAppPurchaseViewController.h"
 #import "MainViewController.h"
 #import "SearchResultsTableViewCell.h"
 
@@ -24,7 +26,6 @@
     UIView *_viewSegmented;
     Deck *_currentDeck;
     Collection *_currentCollection;
-    InAppPurchase *_inAppPurchase;
 }
 
 @synthesize segmentedControl = _segmentedControl;
@@ -161,18 +162,15 @@
         }
         case 1:
         {
-            if (!_inAppPurchase)
+            if (![InAppPurchase isProductPurchased:COLLECTIONS_IAP_PRODUCT_ID])
             {
-                _inAppPurchase = [[InAppPurchase alloc] init];
-                _inAppPurchase.delegate = self;
-            }
-
-            if (![_inAppPurchase isProductPurchased:COLLECTIONS_IAP_PRODUCT_ID])
-            {
-                MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
-                [self.view addSubview:hud];
-                hud.delegate = self;
-                [hud showWhileExecuting:@selector(initPurchase) onTarget:self withObject:nil animated:NO];
+                self.segmentedControl.selectedSegmentIndex = 0;
+                self.segmentedControlIndex = (int)self.segmentedControl.selectedSegmentIndex;
+                
+                InAppPurchaseViewController *view = [[InAppPurchaseViewController alloc] init];
+                
+                view.productID = COLLECTIONS_IAP_PRODUCT_ID;
+                [self.navigationController pushViewController:view animated:NO];
             }
             else
             {
@@ -182,11 +180,6 @@
             break;
         }
     }
-}
-
--(void) initPurchase
-{
-    [_inAppPurchase purchaseProduct:COLLECTIONS_IAP_PRODUCT_ID];
 }
 
 -(void) btnCancelTapped:(id) sender
@@ -651,40 +644,6 @@
             break;
         }
     }
-}
-
-#pragma mark - InAppPurchaseDelegate
--(void) purchaseSucceded:(NSString*) message
-{
-    self.segmentedControlIndex = (int)self.segmentedControl.selectedSegmentIndex;
-    [self loadCurrentCollection];
-    
-    MainViewController *view = (MainViewController*)self.tabBarController;
-    [view addCollectionsProduct];
-}
-
--(void) purchaseRestored:(NSString*) message
-{
-    [self purchaseSucceded:message];
-}
-
--(void) purchaseFailed:(NSString*) message
-{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message"
-                                                    message:message
-                                                   delegate:nil
-                                          cancelButtonTitle:@"Ok"
-                                          otherButtonTitles:nil];
-    [alert show];
-    
-    self.segmentedControl.selectedSegmentIndex = 0;
-    self.segmentedControlIndex = (int)self.segmentedControl.selectedSegmentIndex;
-}
-
-#pragma mark - MBProgressHUDDelegate methods
-- (void)hudWasHidden:(MBProgressHUD *)hud
-{
-	[hud removeFromSuperview];
 }
 
 @end

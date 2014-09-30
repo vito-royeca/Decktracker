@@ -9,11 +9,10 @@
 @import UIKit;
 
 #import "Card.h"
-#import "InAppPurchase.h"
 #import "MBProgressHUD.h"
 #import "QuantityTableViewCell.h"
 
-@interface AddCardViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, QuantityTableViewCellDelegate, InAppPurchaseDelegate, MBProgressHUDDelegate>
+@interface AddCardViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, QuantityTableViewCellDelegate, MBProgressHUDDelegate>
 
 @property(strong,nonatomic) UISegmentedControl *segmentedControl;
 @property(strong,nonatomic) UITableView *tblAddTo;

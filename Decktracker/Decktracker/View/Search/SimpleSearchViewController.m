@@ -167,7 +167,7 @@
     view.addButtonVisible = YES;
     [view setCard:card];
     
-    [self.navigationController pushViewController:view animated:YES];
+    [self.navigationController pushViewController:view animated:NO];
 }
 
 #pragma mark - MBProgressHUDDelegate methods
