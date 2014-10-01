@@ -181,17 +181,8 @@
 
 -(void) productPurchaseSucceeded:(InAppPurchase*) inAppPurchase withMessage:(NSString*) message
 {
-    if ([inAppPurchase.productID isEqualToString:COLLECTIONS_IAP_PRODUCT_ID])
-    {
-        MainViewController *view = (MainViewController*)self.tabBarController;
-        [view addCollectionsProduct];
-    }
+    [self.delegate productPurchaseSucceeded:inAppPurchase.productID];
     
-    else if ([inAppPurchase.productID isEqualToString:CLOUD_STORAGE_IAP_PRODUCT_ID])
-    {
-        [[FileManager sharedInstance] syncFiles];
-    }
-        
     [self.navigationController popViewControllerAnimated:NO];
     
     id tracker = [[GAI sharedInstance] defaultTracker];

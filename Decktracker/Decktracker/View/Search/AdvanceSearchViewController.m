@@ -62,7 +62,7 @@
     for (NSString *file in [[FileManager sharedInstance] listFilesAtPath:@"/Advance Search"
                                                        fromFileSystem:FileSystemLocal])
     {
-        [self.arrAdvanceSearches addObject:[file stringByDeletingLastPathComponent]];
+        [self.arrAdvanceSearches addObject:[file stringByDeletingPathExtension]];
     }
     
     _selectedRow = 0;

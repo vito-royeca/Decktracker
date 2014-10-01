@@ -10,11 +10,12 @@
 
 #import "IASKAppSettingsViewController.h"
 #import "InAppPurchase.h"
+#import "InAppPurchaseViewController.h"
 #import "Magic.h"
 
 #import "IASKSettingsReader.h"
 
-@interface SettingsViewController : UIViewController<InAppPurchaseDelegate, IASKSettingsDelegate>
+@interface SettingsViewController : UIViewController<InAppPurchaseDelegate, IASKSettingsDelegate, InAppPurchaseViewControllerDelegate>
 
 @property(strong,nonatomic) IASKAppSettingsViewController *appSettingsViewController;
 

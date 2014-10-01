@@ -605,7 +605,7 @@
                 for (NSString *file in [[FileManager sharedInstance] listFilesAtPath:@"/Collections"
                                                                       fromFileSystem:FileSystemLocal])
                 {
-                    [view.arrCollections addObject:[file stringByDeletingLastPathComponent]];
+                    [view.arrCollections addObject:[file stringByDeletingPathExtension]];
                 }
                 
                 view.card = card;

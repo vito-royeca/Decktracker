@@ -69,7 +69,7 @@
     for (NSString *file in [[FileManager sharedInstance] listFilesAtPath:@"/Collections"
                                                        fromFileSystem:FileSystemLocal])
     {
-        [self.arrCollections addObject:[file stringByDeletingLastPathComponent]];
+        [self.arrCollections addObject:[file stringByDeletingPathExtension]];
     }
     
     [self.tblCollections reloadData];

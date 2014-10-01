@@ -71,7 +71,7 @@
     for (NSString *file in [[FileManager sharedInstance] listFilesAtPath:@"/Decks"
                                                           fromFileSystem:FileSystemLocal])
     {
-        [self.arrDecks addObject:[file stringByDeletingLastPathComponent]];
+        [self.arrDecks addObject:[file stringByDeletingPathExtension]];
     }
     
     [self.tblDecks reloadData];

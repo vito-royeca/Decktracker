@@ -274,7 +274,8 @@ static FileManager *_me;
         }
         case FileSystemBox:
         {
-            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
+            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID] ||
+                ![[[NSUserDefaults standardUserDefaults] valueForKey:@"box_preference"] boolValue])
             {
                 return NO;
             }
@@ -282,7 +283,8 @@ static FileManager *_me;
         }
         case FileSystemDropbox:
         {
-            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
+            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID] ||
+                ![[[NSUserDefaults standardUserDefaults] valueForKey:@"dropbox_preference"] boolValue])
             {
                 return NO;
             }
@@ -290,7 +292,8 @@ static FileManager *_me;
         }
         case FileSystemGoogleDrive:
         {
-            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
+            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID] ||
+                ![[[NSUserDefaults standardUserDefaults] valueForKey:@"google_drive_preference"] boolValue])
             {
                 return NO;
             }
@@ -298,7 +301,8 @@ static FileManager *_me;
         }
         case FileSystemICloud:
         {
-            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
+            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID] ||
+                ![[[NSUserDefaults standardUserDefaults] valueForKey:@"icloud_preference"] boolValue])
             {
                 return NO;
             }
@@ -306,7 +310,8 @@ static FileManager *_me;
         }
         case FileSystemOneDrive:
         {
-            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
+            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID] ||
+                ![[[NSUserDefaults standardUserDefaults] valueForKey:@"onedrive_preference"] boolValue])
             {
                 return NO;
             }
@@ -369,27 +374,38 @@ static FileManager *_me;
     {
         case FileSystemBox:
         {
+            NSString *key = @"box_preference";
+            [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:NO] forKey:key];
+            
             break;
         }
         case FileSystemDropbox:
         {
             NSString *key = @"dropbox_preference";
-            
             [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:NO] forKey:key];
-            [[[DBAccountManager sharedManager] linkedAccount] unlink];
             
+            [[[DBAccountManager sharedManager] linkedAccount] unlink];
             break;
         }
         case FileSystemGoogleDrive:
         {
+            NSString *key = @"google_drive_preference";
+            [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:NO] forKey:key];
+            
             break;
         }
         case FileSystemICloud:
         {
+            NSString *key = @"icloud_preference";
+            [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:NO] forKey:key];
+            
             break;
         }
         case FileSystemOneDrive:
         {
+            NSString *key = @"onedrive_preference";
+            [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:NO] forKey:key];
+            
             break;
         }
         default:
@@ -403,17 +419,18 @@ static FileManager *_me;
            toFileSystem:(FileSystem) fileSystem
                  atPath:(NSString*) filePath
 {
-    if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
+    if (![self isFileSystemEnabled:fileSystem])
     {
         return;
     }
-
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
         
         switch (fileSystem)
         {
             case FileSystemBox:
             {
+                
                 break;
             }
             case FileSystemDropbox:
@@ -422,7 +439,9 @@ static FileManager *_me;
                 DBFile *dbFile = [[DBFilesystem sharedFilesystem] openFile:dbPath error:nil];
                 if (!dbFile)
                 {
-                    dbFile = [[DBFilesystem sharedFilesystem] createFile:dbPath error:nil];
+                    DBError *error;
+                    dbFile = [[DBFilesystem sharedFilesystem] createFile:dbPath error:&error];
+                    NSLog(@"%@", [error userInfo]);
                 }
                 if (dbFile)
                 {
@@ -432,14 +451,17 @@ static FileManager *_me;
             }
             case FileSystemGoogleDrive:
             {
+                
                 break;
             }
             case FileSystemICloud:
             {
+                
                 break;
             }
             case FileSystemOneDrive:
             {
+                
                 break;
             }
             default:
@@ -454,21 +476,18 @@ static FileManager *_me;
       fromFileSystem:(FileSystem) fileSystem
       toLocalPath:(NSString*) localPath
 {
-    if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
+    if (![self isFileSystemEnabled:fileSystem])
     {
         return;
     }
-
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
         
         switch (fileSystem)
         {
-            case FileSystemLocal:
-            {
-                break; // do nothing
-            }
             case FileSystemBox:
             {
+                
                 break;
             }
             case FileSystemDropbox:
@@ -486,13 +505,20 @@ static FileManager *_me;
             }
             case FileSystemGoogleDrive:
             {
+                
                 break;
             }
             case FileSystemICloud:
             {
+                
                 break;
             }
             case FileSystemOneDrive:
+            {
+                
+                break;
+            }
+            default:
             {
                 break;
             }
@@ -503,6 +529,11 @@ static FileManager *_me;
 -(NSArray*) listFilesAtPath:(NSString*) path fromFileSystem:(FileSystem) fileSystem
 {
     NSMutableArray *arrFiles = [[NSMutableArray alloc] init];
+
+    if (![self isFileSystemEnabled:fileSystem])
+    {
+        return arrFiles;
+    }
     
     switch (fileSystem)
     {
@@ -527,20 +558,11 @@ static FileManager *_me;
         }
         case FileSystemBox:
         {
-            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
-            {
-                return arrFiles;
-            }
             
             break;
         }
         case FileSystemDropbox:
         {
-            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
-            {
-                return arrFiles;
-            }
-
             for (DBFileInfo *info in [[DBFilesystem sharedFilesystem] listFolder:[[DBPath root] childPath:path] error:nil])
             {
                 NSString *key = [[info path] name];
@@ -554,28 +576,16 @@ static FileManager *_me;
         }
         case FileSystemGoogleDrive:
         {
-            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
-            {
-                return arrFiles;
-            }
             
             break;
         }
         case FileSystemICloud:
         {
-            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
-            {
-                return arrFiles;
-            }
             
             break;
         }
         case FileSystemOneDrive:
         {
-            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
-            {
-                return arrFiles;
-            }
             
             break;
         }
@@ -586,6 +596,11 @@ static FileManager *_me;
 
 -(void) initFilesystem:(FileSystem) fileSystem
 {
+    if (![self isFileSystemEnabled:fileSystem])
+    {
+        return;
+    }
+    
     switch (fileSystem)
     {
         case FileSystemLocal:
@@ -610,20 +625,11 @@ static FileManager *_me;
         }
         case FileSystemBox:
         {
-            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
-            {
-                return;
-            }
             
             break;
         }
         case FileSystemDropbox:
         {
-            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
-            {
-                return;
-            }
-            
             DBAccount *account = [[DBAccountManager sharedManager] linkedAccount];
             if (account)
             {
@@ -635,28 +641,16 @@ static FileManager *_me;
         }
         case FileSystemGoogleDrive:
         {
-            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
-            {
-                return;
-            }
             
             break;
         }
         case FileSystemICloud:
         {
-            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
-            {
-                return;
-            }
             
             break;
         }
         case FileSystemOneDrive:
         {
-            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
-            {
-                return;
-            }
             
             break;
         }
@@ -668,11 +662,6 @@ static FileManager *_me;
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths firstObject];
     
-//    for (FileSystem i=FileSystemLocal; i<=FileSystemOneDrive; i++)
-//    {
-//        [[FileManager sharedInstance] initFilesystem:i];
-//    }
-    
     for (NSString *folder in kFolders)
     {
         NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", folder]];
@@ -681,29 +670,23 @@ static FileManager *_me;
         {
             for (FileSystem i=FileSystemBox; i<=FileSystemOneDrive; i++)
             {
-                if ([self isFileSystemEnabled:i])
-                {
-                    NSString *fullPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", file]];
+                NSString *fullPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", file]];
                     
-                    [self uploadLocalFile:fullPath toFileSystem:i atPath:[NSString stringWithFormat:@"/%@", file]];
-                }
+                [self uploadLocalFile:fullPath toFileSystem:i atPath:[NSString stringWithFormat:@"/%@", file]];
             }
         }
         
         for (FileSystem i=FileSystemBox; i<=FileSystemOneDrive; i++)
         {
-            if ([self isFileSystemEnabled:i])
+            for (NSString *file in [self listFilesAtPath:[NSString stringWithFormat:@"/%@", folder] fromFileSystem:i])
             {
-                for (NSString *file in [self listFilesAtPath:[NSString stringWithFormat:@"/%@", folder] fromFileSystem:i])
+                NSString *localPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", file]];
+                
+//                if (![[NSFileManager defaultManager] fileExistsAtPath:localPath])
                 {
-                    NSString *localPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", file]];
-                    
-                    if (![[NSFileManager defaultManager] fileExistsAtPath:localPath])
-                    {
-                        [self downloadFile:[NSString stringWithFormat:@"/%@/%@", folder, file]
-                            fromFileSystem:i
-                               toLocalPath:localPath];
-                    }
+                    [self downloadFile:[NSString stringWithFormat:@"/%@/%@", folder, file]
+                        fromFileSystem:i
+                           toLocalPath:localPath];
                 }
             }
         }
@@ -712,7 +695,7 @@ static FileManager *_me;
 
 -(void) deleteFileAtPath:(NSString*) path
 {
-    for (FileSystem i=FileSystemBox; i<=FileSystemOneDrive; i++)
+    for (FileSystem i=FileSystemLocal; i<=FileSystemOneDrive; i++)
     {
         if ([self isFileSystemEnabled:i])
         {
@@ -731,47 +714,26 @@ static FileManager *_me;
                 }
                 case FileSystemBox:
                 {
-                    if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
-                    {
-                        return;
-                    }
+
                     break;
                 }
                 case FileSystemDropbox:
                 {
-                    if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
-                    {
-                        return;
-                    }
-                    
                     DBPath *dbPath = [[DBPath root] childPath:path];
                     [[DBFilesystem sharedFilesystem] deletePath:dbPath error:nil];
                     break;
                 }
                 case FileSystemGoogleDrive:
                 {
-                    if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
-                    {
-                        return;
-                    }
                     
                     break;
                 }
                 case FileSystemICloud:
                 {
-                    if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
-                    {
-                        return;
-                    }
-
                     break;
                 }
                 case FileSystemOneDrive:
                 {
-                    if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
-                    {
-                        return;
-                    }
 
                     break;
                 }

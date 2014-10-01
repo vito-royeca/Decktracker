@@ -35,15 +35,15 @@
     self.tblEditor.delegate = self;
     self.tblEditor.dataSource = self;
     
-    UIBarButtonItem *btnOk = [[UIBarButtonItem alloc] initWithTitle:@"Ok"
+    UIBarButtonItem *btnDone = [[UIBarButtonItem alloc] initWithTitle:@"Done"
                                                                 style:UIBarButtonItemStylePlain
                                                                target:self
-                                                               action:@selector(btnOkTapped:)];
+                                                               action:@selector(btnDoneTapped:)];
     UIBarButtonItem *btnCancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                                target:self
                                                                                action:@selector(btnCancelTapped:)];
     self.navigationItem.leftBarButtonItem = btnCancel;
-    self.navigationItem.rightBarButtonItem = btnOk;
+    self.navigationItem.rightBarButtonItem = btnDone;
     
     [self.view addSubview:self.tblEditor];
     self.navigationItem.title = @"Editor";
@@ -60,7 +60,7 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void) btnOkTapped:(id) sender
+-(void) btnDoneTapped:(id) sender
 {
     [self.delegate editorSaved:self.oldValue];
     [self.navigationController popViewControllerAnimated:NO];

@@ -8,7 +8,6 @@
 
 #import "SettingsViewController.h"
 #import "FileManager.h"
-#import "InAppPurchaseViewController.h"
 #import "MainViewController.h"
 
 #import "GAI.h"
@@ -108,6 +107,7 @@
             InAppPurchaseViewController *view = [[InAppPurchaseViewController alloc] init];
             
             view.productID = COLLECTIONS_IAP_PRODUCT_ID;
+            view.delegate = self;
             [self.navigationController pushViewController:view animated:NO];
         }
     }
@@ -119,6 +119,7 @@
             InAppPurchaseViewController *view = [[InAppPurchaseViewController alloc] init];
             
             view.productID = CLOUD_STORAGE_IAP_PRODUCT_ID;
+            view.delegate = self;
             [self.navigationController pushViewController:view animated:NO];
         }
     }
@@ -187,19 +188,33 @@
                 
                 if ([value boolValue])
                 {
+                    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:YES] forKey:key];
                     [[FileManager sharedInstance] connectToFileSystem:fileSystem
                                                    withViewController:viewController];
-                    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:YES] forKey:key];
-                    
                 }
                 else
                 {
-                    [[FileManager sharedInstance] disconnectFromFileSystem:fileSystem];
                     [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:NO] forKey:key];
+                    [[FileManager sharedInstance] disconnectFromFileSystem:fileSystem];
                 }
             }
         }
     }
+}
+
+#pragma mark - InAppPurchaseViewControllerDelegate
+-(void) productPurchaseSucceeded:(NSString*) productID
+{
+        if ([productID isEqualToString:COLLECTIONS_IAP_PRODUCT_ID])
+        {
+            MainViewController *view = (MainViewController*)self.tabBarController;
+            [view addCollectionsProduct];
+        }
+    
+        else if ([productID isEqualToString:CLOUD_STORAGE_IAP_PRODUCT_ID])
+        {
+            [[FileManager sharedInstance] syncFiles];
+        }
 }
 
 #pragma mark - InAppPurchaseDelegate

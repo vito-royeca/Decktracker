@@ -13,7 +13,6 @@
 #import "Deck.h"
 #import "FileManager.h"
 #import "InAppPurchase.h"
-#import "InAppPurchaseViewController.h"
 #import "MainViewController.h"
 #import "SearchResultsTableViewCell.h"
 
@@ -170,6 +169,7 @@
                 InAppPurchaseViewController *view = [[InAppPurchaseViewController alloc] init];
                 
                 view.productID = COLLECTIONS_IAP_PRODUCT_ID;
+                view.delegate = self;
                 [self.navigationController pushViewController:view animated:NO];
             }
             else
@@ -644,6 +644,16 @@
             break;
         }
     }
+}
+
+#pragma mark - InAppPurchaseViewControllerDelegate
+-(void) productPurchaseSucceeded:(NSString*) productID
+{
+    MainViewController *view = (MainViewController*)self.tabBarController;
+    [view addCollectionsProduct];
+    
+    self.segmentedControlIndex = 1;
+    [self loadCurrentCollection];
 }
 
 @end

@@ -44,6 +44,10 @@
     [[Database sharedInstance ] setupDb];
     
     // FileSystem
+    for (NSInteger i=FileSystemLocal; i<=FileSystemOneDrive; i++)
+    {
+        [[FileManager sharedInstance] initFilesystem:i];
+    }
     [[FileManager sharedInstance] syncFiles];
     
     // custom colors
@@ -111,6 +115,7 @@
     {
         NSLog(@"App linked successfully to Dropbox!");
         [[FileManager sharedInstance] initFilesystem:FileSystemDropbox];
+        [[FileManager sharedInstance] syncFiles];
         return YES;
     }
     return NO;

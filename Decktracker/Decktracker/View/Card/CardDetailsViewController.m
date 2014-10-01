@@ -225,14 +225,14 @@
     for (NSString *file in [[FileManager sharedInstance] listFilesAtPath:@"/Decks"
                                                           fromFileSystem:FileSystemLocal])
     {
-        [view.arrDecks addObject:[file stringByDeletingLastPathComponent]];
+        [view.arrDecks addObject:[file stringByDeletingPathExtension]];
     }
     
     view.arrCollections = [[NSMutableArray alloc] init];
     for (NSString *file in [[FileManager sharedInstance] listFilesAtPath:@"/Collections"
                                                           fromFileSystem:FileSystemLocal])
     {
-        [view.arrCollections addObject:[file stringByDeletingLastPathComponent]];
+        [view.arrCollections addObject:[file stringByDeletingPathExtension]];
     }
     
     view.card = self.card;

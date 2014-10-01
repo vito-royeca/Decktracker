@@ -234,7 +234,7 @@
         for (NSString *file in [[FileManager sharedInstance] listFilesAtPath:@"/Decks"
                                                               fromFileSystem:FileSystemLocal])
         {
-            [view.arrDecks addObject:[file stringByDeletingLastPathComponent]];
+            [view.arrDecks addObject:[file stringByDeletingPathExtension]];
         }
 
         view.arrCollections = [[NSMutableArray alloc] initWithArray:@[self.dictCollection[@"name"]]];
