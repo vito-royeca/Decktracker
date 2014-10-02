@@ -20,6 +20,7 @@
 @property(strong,nonatomic) id<InAppPurchaseViewControllerDelegate> delegate;
 
 @property(strong,nonatomic) NSString *productID;
+@property(strong,nonatomic) NSDictionary *productDetails;
 @property(strong,nonatomic) UIBarButtonItem *btnCancel;
 @property(strong,nonatomic) UIBarButtonItem *btnBuy;
 @property(strong,nonatomic) UITableView *tblProducDetails;

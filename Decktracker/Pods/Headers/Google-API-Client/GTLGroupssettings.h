@@ -1,0 +1,1 @@
+../../Google-API-Client/Source/Services/Groupssettings/Generated/GTLGroupssettings.h

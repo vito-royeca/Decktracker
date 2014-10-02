@@ -16,12 +16,18 @@
 #import "GAIDictionaryBuilder.h"
 #import "GAIFields.h"
 
+#import "BoxSDK.h"
 #import <Dropbox/Dropbox.h>
+
+#import <MobileCoreServices/MobileCoreServices.h>
+#import "GTMOAuth2ViewControllerTouch.h"
+#import "GTLDrive.h"
 
 @implementation FileManager
 {
     NSMutableArray *_downloadQueue;
     NSDictionary *_currentQueue;
+    GTLServiceDrive *_gtlServiceDrive;
 }
 
 static FileManager *_me;
@@ -264,6 +270,57 @@ static FileManager *_me;
 }
 
 #pragma mark - Files
+-(void) setupFilesystem:(FileSystem) fileSystem
+{
+    if (![self isFileSystemEnabled:fileSystem])
+    {
+        return;
+    }
+    
+    switch (fileSystem)
+    {
+        case FileSystemBox:
+        {
+            [BoxSDK sharedSDK].OAuth2Session.clientID = kBoxID;
+            [BoxSDK sharedSDK].OAuth2Session.clientSecret = kBoxSecret;
+            
+            break;
+        }
+        case FileSystemDropbox:
+        {
+            DBAccountManager *accountManager = [[DBAccountManager alloc] initWithAppKey:kDropboxID
+                                                                                 secret:kDropBoxSecret];
+            [DBAccountManager setSharedManager:accountManager];
+            break;
+        }
+        case FileSystemGoogleDrive:
+        {
+            _gtlServiceDrive = [[GTLServiceDrive alloc] init];
+            _gtlServiceDrive.shouldFetchNextPages = YES;
+            _gtlServiceDrive.retryEnabled = YES;
+            
+            _gtlServiceDrive.authorizer = [GTMOAuth2ViewControllerTouch authForGoogleFromKeychainForName:kGoogleDriveKeychain
+                                                                                                clientID:kGoogleDriveID
+                                                                                            clientSecret:kGoogleDriveSecret];
+            break;
+        }
+        case FileSystemICloud:
+        {
+            
+            break;
+        }
+        case FileSystemOneDrive:
+        {
+            
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
+}
+
 -(BOOL) isFileSystemEnabled:(FileSystem) fileSystem
 {
     switch (fileSystem)
@@ -274,53 +331,65 @@ static FileManager *_me;
         }
         case FileSystemBox:
         {
-            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID] ||
-                ![[[NSUserDefaults standardUserDefaults] valueForKey:@"box_preference"] boolValue])
-            {
-                return NO;
-            }
+            return [InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID] &&
+                [[[NSUserDefaults standardUserDefaults] valueForKey:@"box_preference"] boolValue];
+        }
+        case FileSystemDropbox:
+        {
+            return [InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID] &&
+                [[[NSUserDefaults standardUserDefaults] valueForKey:@"dropbox_preference"] boolValue];
+        }
+        case FileSystemGoogleDrive:
+        {
+            return [InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID] &&
+                [[[NSUserDefaults standardUserDefaults] valueForKey:@"google_drive_preference"] boolValue];
+        }
+        case FileSystemICloud:
+        {
+            return [InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID] &&
+                [[[NSUserDefaults standardUserDefaults] valueForKey:@"icloud_preference"] boolValue];
+        }
+        case FileSystemOneDrive:
+        {
+            return [InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID] &&
+                [[[NSUserDefaults standardUserDefaults] valueForKey:@"onedrive_preference"] boolValue];
+        }
+    }
+}
+
+-(BOOL) isFileSystemAvailable:(FileSystem) fileSystem
+{
+    switch (fileSystem)
+    {
+        case FileSystemLocal:
+        {
+            return YES;
+        }
+        case FileSystemBox:
+        {
             return NO;
         }
         case FileSystemDropbox:
         {
-            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID] ||
-                ![[[NSUserDefaults standardUserDefaults] valueForKey:@"dropbox_preference"] boolValue])
-            {
-                return NO;
-            }
             return [[DBAccountManager sharedManager] linkedAccount] != nil;
         }
         case FileSystemGoogleDrive:
         {
-            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID] ||
-                ![[[NSUserDefaults standardUserDefaults] valueForKey:@"google_drive_preference"] boolValue])
-            {
-                return NO;
-            }
-            return NO;
+            return _gtlServiceDrive.authorizer != nil;
         }
         case FileSystemICloud:
         {
-            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID] ||
-                ![[[NSUserDefaults standardUserDefaults] valueForKey:@"icloud_preference"] boolValue])
-            {
-                return NO;
-            }
             return NO;
         }
         case FileSystemOneDrive:
         {
-            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID] ||
-                ![[[NSUserDefaults standardUserDefaults] valueForKey:@"onedrive_preference"] boolValue])
-            {
-                return NO;
-            }
             return NO;
         }
     }
 }
 
--(void) connectToFileSystem:(FileSystem) fileSystem withViewController:(UIViewController*) viewController
+-(void) connectToFileSystem:(FileSystem) fileSystem
+         withViewController:(UIViewController*) viewController
 {
     if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
     {
@@ -331,8 +400,9 @@ static FileManager *_me;
     {
         case FileSystemBox:
         {
-//            UIViewController *authorizationController = [[BoxAuthorizationViewController alloc] initWithAuthorizationURL:[[BoxSDK sharedSDK].OAuth2Session authorizeURL] redirectURI:@"boxsdk-v3vx3t10k6genv8ao7r5f3rqunz23atm"];
-//            [self presentViewController:authorizationController animated:NO completion:nil];
+            UIViewController *authController = [[BoxAuthorizationViewController alloc] initWithAuthorizationURL:[[BoxSDK sharedSDK].OAuth2Session authorizeURL] redirectURI:nil];
+            [viewController.navigationController pushViewController:authController animated:NO];
+            break;
         }
         case FileSystemDropbox:
         {
@@ -346,6 +416,27 @@ static FileManager *_me;
         }
         case FileSystemGoogleDrive:
         {
+            if ([((GTMOAuth2Authentication*) _gtlServiceDrive.authorizer) canAuthorize])
+            {
+                [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:YES]
+                                                         forKey:@"google_drive_preference"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                [[FileManager sharedInstance] initFilesystem:FileSystemGoogleDrive];
+                [[FileManager sharedInstance] syncFiles];
+            }
+            else
+            {
+                GTMOAuth2ViewControllerTouch *authController;
+                
+                authController = [[GTMOAuth2ViewControllerTouch alloc] initWithScope:kGTLAuthScopeDrive
+                                                                            clientID:kGoogleDriveID
+                                                                        clientSecret:kGoogleDriveSecret
+                                                                    keychainItemName:kGoogleDriveKeychain
+                                                                            delegate:self
+                                                                    finishedSelector:@selector(viewController:finishedWithAuth:error:)];
+                
+                [viewController.navigationController pushViewController:authController animated:NO];
+            }
             break;
         }
         case FileSystemICloud:
@@ -362,6 +453,30 @@ static FileManager *_me;
         }
     }
 }
+
+- (void)viewController:(GTMOAuth2ViewControllerTouch *)viewController
+      finishedWithAuth:(GTMOAuth2Authentication *)authResult
+                 error:(NSError *)error
+{
+    if (error != nil)
+    {
+        [GTMOAuth2ViewControllerTouch removeAuthFromKeychainForName:kGoogleDriveKeychain];
+        _gtlServiceDrive.authorizer = nil;
+        
+        [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:NO] forKey:@"google_drive_preference"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    else
+    {
+        _gtlServiceDrive.authorizer = authResult;
+        
+        [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:YES] forKey:@"google_drive_preference"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        [[FileManager sharedInstance] initFilesystem:FileSystemGoogleDrive];
+        [[FileManager sharedInstance] syncFiles];
+    }
+}
+
 
 -(void) disconnectFromFileSystem:(FileSystem) fileSystem
 {
@@ -392,6 +507,8 @@ static FileManager *_me;
             NSString *key = @"google_drive_preference";
             [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:NO] forKey:key];
             
+            _gtlServiceDrive.authorizer = nil;
+            
             break;
         }
         case FileSystemICloud:
@@ -413,13 +530,16 @@ static FileManager *_me;
             break;
         }
     }
+    
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 -(void) uploadLocalFile:(NSString*) localPath
            toFileSystem:(FileSystem) fileSystem
                  atPath:(NSString*) filePath
 {
-    if (![self isFileSystemEnabled:fileSystem])
+    if (![self isFileSystemEnabled:fileSystem] ||
+        ![self isFileSystemAvailable:fileSystem])
     {
         return;
     }
@@ -439,9 +559,7 @@ static FileManager *_me;
                 DBFile *dbFile = [[DBFilesystem sharedFilesystem] openFile:dbPath error:nil];
                 if (!dbFile)
                 {
-                    DBError *error;
-                    dbFile = [[DBFilesystem sharedFilesystem] createFile:dbPath error:&error];
-                    NSLog(@"%@", [error userInfo]);
+                    dbFile = [[DBFilesystem sharedFilesystem] createFile:dbPath error:nil];
                 }
                 if (dbFile)
                 {
@@ -476,7 +594,8 @@ static FileManager *_me;
       fromFileSystem:(FileSystem) fileSystem
       toLocalPath:(NSString*) localPath
 {
-    if (![self isFileSystemEnabled:fileSystem])
+    if (![self isFileSystemEnabled:fileSystem] ||
+        ![self isFileSystemAvailable:fileSystem])
     {
         return;
     }
@@ -530,7 +649,8 @@ static FileManager *_me;
 {
     NSMutableArray *arrFiles = [[NSMutableArray alloc] init];
 
-    if (![self isFileSystemEnabled:fileSystem])
+    if (![self isFileSystemEnabled:fileSystem] ||
+        ![self isFileSystemAvailable:fileSystem])
     {
         return arrFiles;
     }
@@ -596,7 +716,8 @@ static FileManager *_me;
 
 -(void) initFilesystem:(FileSystem) fileSystem
 {
-    if (![self isFileSystemEnabled:fileSystem])
+    if (![self isFileSystemEnabled:fileSystem] ||
+        ![self isFileSystemAvailable:fileSystem])
     {
         return;
     }
@@ -628,6 +749,7 @@ static FileManager *_me;
             
             break;
         }
+
         case FileSystemDropbox:
         {
             DBAccount *account = [[DBAccountManager sharedManager] linkedAccount];
@@ -637,12 +759,80 @@ static FileManager *_me;
                 [DBFilesystem setSharedFilesystem:filesystem];
             }
 
+            for (NSString *folder in kFolders)
+            {
+                DBPath *dbPath = [[DBPath root] childPath:[NSString stringWithFormat:@"/%@", folder]];
+                [[DBFilesystem sharedFilesystem] createFolder:dbPath error:nil];
+            }
             break;
         }
+
         case FileSystemGoogleDrive:
         {
+            NSString *parentID;
             
-            break;
+            GTLQueryDrive *query = [GTLQueryDrive queryForFilesList];
+            query.q = @"mimeType = 'application/pdf'"; //@"'root' in parents and trashed=false";
+            [_gtlServiceDrive executeQuery:query completionHandler:^(GTLServiceTicket *ticket,
+                                                          GTLDriveFileList *files,
+                                                          NSError *error)
+            {
+                if (!error)
+                {
+                    NSArray *arrFiles = [[NSArray alloc] initWithArray:files.items];
+                    
+                    for (GTLDriveFile *file in arrFiles)
+                    {
+                        NSLog(@"%@ = %@", file.identifier, file.title);
+                        
+                    }
+                }
+            }];
+            
+            // create parent folder first
+//            GTLDriveFile *gFolder = [GTLDriveFile object];
+//            gFolder.title = kGoogleDriveKeychain;
+//            gFolder.mimeType = @"application/vnd.google-apps.folder";
+//            
+//            GTLQueryDrive *query = [GTLQueryDrive queryForFilesInsertWithObject:gFolder uploadParameters:nil];
+//            [_gtlServiceDrive executeQuery:query
+//                         completionHandler:^(GTLServiceTicket *ticket,
+//                                             GTLDriveFile *updatedFile,
+//                                             NSError *error)
+//            {
+//                if (error)
+//                {
+//                    NSLog(@"An error occurred: %@", error);
+//                }
+//                else
+//                {
+//                    GTLDriveParentReference *parent = [GTLDriveParentReference object];
+//                    parent.identifier = updatedFile.identifier;
+//                    
+//                    for (NSString *folder in kFolders)
+//                    {
+//                        GTLDriveFile *gFolder2 = [GTLDriveFile object];
+//                        gFolder2.title = folder;
+//                        gFolder2.mimeType = @"application/vnd.google-apps.folder";
+//                        gFolder2.parents = @[parent];
+//                        
+//                        GTLQueryDrive *query2 = [GTLQueryDrive queryForFilesInsertWithObject:gFolder2 uploadParameters:nil];
+//                        [_gtlServiceDrive executeQuery:query2
+//                                     completionHandler:^(GTLServiceTicket *ticket,
+//                                                         GTLDriveFile *updatedFile,
+//                                                         NSError *error)
+//                         {
+//                             if (error)
+//                             {
+//                                 NSLog(@"An error occurred: %@", error);
+//                             }
+//                         }];
+//                    }
+//                }
+//             }];
+            
+
+             break;
         }
         case FileSystemICloud:
         {
@@ -697,7 +887,7 @@ static FileManager *_me;
 {
     for (FileSystem i=FileSystemLocal; i<=FileSystemOneDrive; i++)
     {
-        if ([self isFileSystemEnabled:i])
+        if ([self isFileSystemEnabled:i] && [self isFileSystemAvailable:i])
         {
             switch (i)
             {
@@ -793,7 +983,7 @@ static FileManager *_me;
     
     for (FileSystem i=FileSystemBox; i<=FileSystemOneDrive; i++)
     {
-        if ([self isFileSystemEnabled:i])
+        if ([self isFileSystemEnabled:i] && [self isFileSystemAvailable:i])
         {
             [self uploadLocalFile:fileName toFileSystem:i atPath:path];
         }

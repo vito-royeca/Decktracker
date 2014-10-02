@@ -107,6 +107,8 @@
             InAppPurchaseViewController *view = [[InAppPurchaseViewController alloc] init];
             
             view.productID = COLLECTIONS_IAP_PRODUCT_ID;
+            view.productDetails = @{@"name" : @"Collections",
+                                    @"description": @"Lets you manage your card collections."};
             view.delegate = self;
             [self.navigationController pushViewController:view animated:NO];
         }
@@ -119,6 +121,8 @@
             InAppPurchaseViewController *view = [[InAppPurchaseViewController alloc] init];
             
             view.productID = CLOUD_STORAGE_IAP_PRODUCT_ID;
+            view.productDetails = @{@"name" : @"Cloud Storage",
+                                    @"description": @"Lets you store your Decks and Collections in the cloud via Box, Dropbox, Google Drive, iCloud, and OneDrive."};
             view.delegate = self;
             [self.navigationController pushViewController:view animated:NO];
         }
@@ -153,6 +157,7 @@
                 [alert show];
                 
                 [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:NO] forKey:key];
+                [[NSUserDefaults standardUserDefaults] synchronize];
                 [self.appSettingsViewController.tableView reloadData];
                 
                 continue;
@@ -189,12 +194,14 @@
                 if ([value boolValue])
                 {
                     [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:YES] forKey:key];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                    [[FileManager sharedInstance] setupFilesystem:fileSystem];
+                    
                     [[FileManager sharedInstance] connectToFileSystem:fileSystem
                                                    withViewController:viewController];
                 }
                 else
                 {
-                    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:NO] forKey:key];
                     [[FileManager sharedInstance] disconnectFromFileSystem:fileSystem];
                 }
             }
@@ -205,16 +212,11 @@
 #pragma mark - InAppPurchaseViewControllerDelegate
 -(void) productPurchaseSucceeded:(NSString*) productID
 {
-        if ([productID isEqualToString:COLLECTIONS_IAP_PRODUCT_ID])
-        {
-            MainViewController *view = (MainViewController*)self.tabBarController;
-            [view addCollectionsProduct];
-        }
-    
-        else if ([productID isEqualToString:CLOUD_STORAGE_IAP_PRODUCT_ID])
-        {
-            [[FileManager sharedInstance] syncFiles];
-        }
+    if ([productID isEqualToString:COLLECTIONS_IAP_PRODUCT_ID])
+    {
+        MainViewController *view = (MainViewController*)self.tabBarController;
+        [view addCollectionsProduct];
+    }
 }
 
 #pragma mark - InAppPurchaseDelegate
@@ -233,9 +235,6 @@
     // Collections
     MainViewController *view = (MainViewController*)self.tabBarController;
     [view addCollectionsProduct];
-    
-    // Cloud Storage
-    [[FileManager sharedInstance] syncFiles];
     
     self.appSettingsViewController.hiddenKeys = [self hiddenKeys];
     [self.appSettingsViewController.tableView reloadData];

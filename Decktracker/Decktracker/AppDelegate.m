@@ -11,15 +11,18 @@
 #import "FileManager.h"
 #import "MainViewController.h"
 
-#import "GAI.h"
 #import "BoxSDK.h"
 #import <Crashlytics/Crashlytics.h>
 #import <Dropbox/Dropbox.h>
+#import "GAI.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    // Override point for customization after application launch.
+
     // Google Analytics
     [GAI sharedInstance].trackUncaughtExceptions = YES;
     [GAI sharedInstance].dispatchInterval = 20;
@@ -28,24 +31,14 @@
     
     // Crashlytics
     [Crashlytics startWithAPIKey:@"114b3dd82452ec2f4024140ec862698d331b8f3f"];
-    
-    // Dropbox
-    DBAccountManager *accountManager = [[DBAccountManager alloc] initWithAppKey:@"v57bkxsnzi3gxt3" secret:@"qbyj5znuytk3ljj"];
-    [DBAccountManager setSharedManager:accountManager];
-    
-    // Box
-    [BoxSDK sharedSDK].OAuth2Session.clientID = @"v3vx3t10k6genv8ao7r5f3rqunz23atm ";
-    [BoxSDK sharedSDK].OAuth2Session.clientSecret = @"foPhGtidtVObEBEbNd2FZIbxk9nKSu99";
-    
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
-    
+
     // MagicalRecord
     [[Database sharedInstance ] setupDb];
     
     // FileSystem
     for (NSInteger i=FileSystemLocal; i<=FileSystemOneDrive; i++)
     {
+        [[FileManager sharedInstance] setupFilesystem:i];
         [[FileManager sharedInstance] initFilesystem:i];
     }
     [[FileManager sharedInstance] syncFiles];
@@ -110,14 +103,30 @@
   sourceApplication:(NSString *)source
          annotation:(id)annotation
 {
-    DBAccount *account = [[DBAccountManager sharedManager] handleOpenURL:url];
-    if (account)
+    if ([[url scheme] hasPrefix:@"boxsdk-"])
     {
-        NSLog(@"App linked successfully to Dropbox!");
-        [[FileManager sharedInstance] initFilesystem:FileSystemDropbox];
+        [[BoxSDK sharedSDK].OAuth2Session performAuthorizationCodeGrantWithReceivedURL:url];
+        
+        [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:YES] forKey:@"box_preference"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        [[FileManager sharedInstance] initFilesystem:FileSystemBox];
         [[FileManager sharedInstance] syncFiles];
         return YES;
     }
+    else if ([[url scheme] hasPrefix:@"db-"])
+    {
+        DBAccount *account = [[DBAccountManager sharedManager] handleOpenURL:url];
+        
+        if (account)
+        {
+            [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:YES] forKey:@"dropbox_preference"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            [[FileManager sharedInstance] initFilesystem:FileSystemDropbox];
+            [[FileManager sharedInstance] syncFiles];
+            return YES;
+        }
+    }
+    
     return NO;
 }
 

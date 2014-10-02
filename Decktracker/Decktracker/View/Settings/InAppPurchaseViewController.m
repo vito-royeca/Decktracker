@@ -22,6 +22,7 @@
 }
 
 @synthesize productID;
+@synthesize productDetails;
 @synthesize btnCancel;
 @synthesize btnBuy;
 @synthesize tblProducDetails;
@@ -137,7 +138,8 @@
     {
         case 0:
         {
-            cell.textLabel.text = _inAppPurchase.product.localizedTitle;
+            cell.textLabel.text = _inAppPurchase.product.localizedTitle ? _inAppPurchase.product.localizedTitle :
+                self.productDetails[@"name"];
             break;
         }
         case 1:
@@ -153,7 +155,10 @@
         }
         case 2:
         {
-            cell.textLabel.text = _inAppPurchase.product.localizedDescription;
+            UITextView *tvDescription = [[UITextView alloc] initWithFrame:CGRectMake(0,0,self.view.frame.size.width, 132)];
+            tvDescription.text = _inAppPurchase.product.localizedDescription ? _inAppPurchase.product.localizedDescription : self.productDetails[@"description"];
+            [cell.contentView addSubview:tvDescription];
+            
             tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
             break;
         }

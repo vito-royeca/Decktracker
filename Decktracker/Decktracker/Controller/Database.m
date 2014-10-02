@@ -57,6 +57,7 @@ static Database *_me;
         }
         [[NSUserDefaults standardUserDefaults] setValue:jsonVersion forKey:@"JSON Version"];
         [[NSUserDefaults standardUserDefaults] setValue:imagesVersion forKey:@"Images Version"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }
     else
     {
@@ -96,6 +97,7 @@ static Database *_me;
             
             [[NSUserDefaults standardUserDefaults] setValue:jsonVersion forKey:@"JSON Version"];
             [[NSUserDefaults standardUserDefaults] setValue:imagesVersion forKey:@"Images Version"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
             [self setupDb];
         }
     }

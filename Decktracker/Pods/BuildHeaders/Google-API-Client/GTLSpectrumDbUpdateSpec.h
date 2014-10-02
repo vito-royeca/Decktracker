@@ -1,0 +1,1 @@
+../../Google-API-Client/Source/Services/Spectrum/Generated/GTLSpectrumDbUpdateSpec.h

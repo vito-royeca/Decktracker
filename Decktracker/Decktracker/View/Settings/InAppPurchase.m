@@ -97,6 +97,7 @@
             {
                 [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:YES]
                                                          forKey:transaction.originalTransaction.payment.productIdentifier];
+                [[NSUserDefaults standardUserDefaults] synchronize];
                 [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
                 break;
             }
@@ -106,6 +107,7 @@
                 {
                     [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:YES]
                                                              forKey:self.productID];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
                     [self.delegate productPurchaseSucceeded:self withMessage:@"In-App Purchase succeeded."];
                 }
                 [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
