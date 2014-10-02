@@ -57,16 +57,7 @@ static FileManager *_me;
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths firstObject];
     NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/card/%@/", card.set.code]];
-    NSString *cardPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.jpg", card.multiverseID && [card.multiverseID intValue] > 0 ? card.multiverseID : card.name]];
-    
-    // let's delete old card image downloaded with cardName
-    NSString *oldPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.jpg", card.name]];
-    if (card.multiverseID && [card.multiverseID intValue] > 0 &&
-        [[NSFileManager defaultManager] fileExistsAtPath:oldPath])
-    {
-        [[NSFileManager defaultManager] removeItemAtPath:oldPath error:nil];
-    }
-    
+    NSString *cardPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.jpg", card.imageName]];
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:cardPath])
     {
@@ -82,17 +73,10 @@ static FileManager *_me;
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths firstObject];
-    NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/card/%@/", card.set.code]];
+    NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/crop/%@/", card.set.code]];
+    NSString *cropPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.crop.jpg", card.imageName]];
     
-    // let's delete old crop image downloaded with cardName
-    NSString *oldPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.crop.jpg", card.name]];
-    if (card.multiverseID && [card.multiverseID intValue] > 0 &&
-        [[NSFileManager defaultManager] fileExistsAtPath:oldPath])
-    {
-        [[NSFileManager defaultManager] removeItemAtPath:oldPath error:nil];
-    }
-    
-    return [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.crop.jpg", card.multiverseID && [card.multiverseID intValue] > 0 ? card.multiverseID : card.name]];
+    return cropPath;
 }
 
 -(NSString*) cardSetPath:(Card*) card
@@ -110,7 +94,7 @@ static FileManager *_me;
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths firstObject];
     NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/card/%@/", card.set.code]];
-    NSString *cardPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.jpg", card.multiverseID && [card.multiverseID intValue] > 0 ? card.multiverseID : card.name]];
+    NSString *cardPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.jpg", card.imageName]];
     BOOL bFound = YES;
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:path])
@@ -164,8 +148,8 @@ static FileManager *_me;
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths firstObject];
-    NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/card/%@/", card.set.code]];
-    NSString *cropPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.crop.jpg", card.multiverseID && [card.multiverseID intValue] > 0 ? card.multiverseID : card.name]];
+    NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/crop/%@/", card.set.code]];
+    NSString *cropPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.crop.jpg", card.imageName]];
     BOOL bFound = YES;
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:path])
@@ -228,15 +212,7 @@ static FileManager *_me;
         if (![[NSFileManager defaultManager] fileExistsAtPath:path])
         {
             NSLog(@"Downloading %@", url);
-//            NSDate *startDate = [NSDate date];
             [JJJUtil downloadResource:url toPath:path];
-            
-//            NSTimeInterval interval = [[NSDate date] timeIntervalSinceDate:startDate];
-//            id tracker = [[GAI sharedInstance] defaultTracker];
-//            [tracker send:[[GAIDictionaryBuilder createTimingWithCategory:@"Card Download"
-//                                                                 interval:@((int)(interval * 1000))
-//                                                                     name:nil
-//                                                                    label:nil] build]];
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
