@@ -32,7 +32,6 @@
     // Dropbox
     DBAccountManager *accountManager = [[DBAccountManager alloc] initWithAppKey:@"v57bkxsnzi3gxt3" secret:@"qbyj5znuytk3ljj"];
     [DBAccountManager setSharedManager:accountManager];
-    [[FileManager sharedInstance] initFilesystem];
     
     // Box
     [BoxSDK sharedSDK].OAuth2Session.clientID = @"v3vx3t10k6genv8ao7r5f3rqunz23atm ";
@@ -43,6 +42,9 @@
     
     // MagicalRecord
     [[Database sharedInstance ] setupDb];
+    
+    // FileSystem
+    [[FileManager sharedInstance] syncFiles];
     
     // custom colors
     [[UINavigationBar appearance] setBarTintColor:UIColorFromRGB(0x691F01)];
@@ -108,6 +110,7 @@
     if (account)
     {
         NSLog(@"App linked successfully to Dropbox!");
+        [[FileManager sharedInstance] initFilesystem:FileSystemDropbox];
         return YES;
     }
     return NO;

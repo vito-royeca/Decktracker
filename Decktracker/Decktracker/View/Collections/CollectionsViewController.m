@@ -65,8 +65,13 @@
 
 -(void) viewDidAppear:(BOOL)animated
 {
-    NSArray *arrFiles = [[FileManager sharedInstance] findFilesAtPath:@"/Collections"];
-    self.arrCollections = [[NSMutableArray alloc] initWithArray:arrFiles];
+    self.arrCollections = [[NSMutableArray alloc] init];
+    for (NSString *file in [[FileManager sharedInstance] listFilesAtPath:@"/Collections"
+                                                       fromFileSystem:FileSystemLocal])
+    {
+        [self.arrCollections addObject:[file stringByDeletingLastPathComponent]];
+    }
+    
     [self.tblCollections reloadData];
 }
 

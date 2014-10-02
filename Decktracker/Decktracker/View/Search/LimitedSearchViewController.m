@@ -180,7 +180,13 @@
     AddCardViewController *view = [[AddCardViewController alloc] init];
     
     view.arrDecks = [[NSMutableArray alloc] initWithArray:@[self.deck.name]];
-    view.arrCollections = [[NSMutableArray alloc] initWithArray:[[FileManager sharedInstance] findFilesAtPath:@"/Collections"]];
+    view.arrCollections = [[NSMutableArray alloc] init];
+    for (NSString *file in [[FileManager sharedInstance] listFilesAtPath:@"/Collections"
+                                                          fromFileSystem:FileSystemLocal])
+    {
+        [view.arrCollections addObject:[file stringByDeletingLastPathComponent]];
+    }
+    
     view.card = [self.fetchedResultsController objectAtIndexPath:indexPath];
     view.showCardButtonVisible = YES;
     view.segmentedControlIndex = 0;

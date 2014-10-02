@@ -15,6 +15,16 @@
 #define kCropDownloadCompleted           @"kCropDownloadCompleted"
 #define kFolders                         @[@"Advance Search", @"Decks", @"Collections"]
 
+typedef NS_ENUM(NSInteger, FileSystem)
+{
+    FileSystemLocal,
+    FileSystemBox,
+    FileSystemDropbox,
+    FileSystemGoogleDrive,
+    FileSystemICloud,
+    FileSystemOneDrive
+};
+
 @interface FileManager : NSObject
 
 +(id) sharedInstance;
@@ -26,8 +36,12 @@
 -(void) downloadCropImage:(Card*) card;
 -(NSArray*) loadKeywords;
 
--(void) initFilesystem;
--(NSArray*) findFilesAtPath:(NSString*) path;
+-(void) connectToFileSystem:(FileSystem) fileSystem withViewController:(UIViewController*) viewController;
+-(void) disconnectFromFileSystem:(FileSystem) fileSystem;
+
+-(void) initFilesystem:(FileSystem) fileSystem;
+-(void) syncFiles;
+-(NSArray*) listFilesAtPath:(NSString*) path fromFileSystem:(FileSystem) fileSystem;
 -(void) deleteFileAtPath:(NSString*) path;
 -(id) loadFileAtPath:(NSString*) path;
 -(void) saveData:(id) data atPath:(NSString*) path;

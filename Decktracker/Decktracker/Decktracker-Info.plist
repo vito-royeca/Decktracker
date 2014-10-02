@@ -33,18 +33,13 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>6EF</string>
+	<string>6FC</string>
 	<key>Card Updates</key>
-	<array>
-		<string>KTK</string>
-		<string>V14</string>
-		<string>M15</string>
-		<string>CNS</string>
-	</array>
+	<array/>
 	<key>Images Version</key>
-	<string>5.6.1</string>
+	<string>5.6.3</string>
 	<key>JSON Version</key>
-	<string>2.11.2</string>
+	<string>2.11.4</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIAppFonts</key>

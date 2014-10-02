@@ -57,9 +57,14 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+
+    self.arrAdvanceSearches = [[NSMutableArray alloc] init];
+    for (NSString *file in [[FileManager sharedInstance] listFilesAtPath:@"/Advance Search"
+                                                       fromFileSystem:FileSystemLocal])
+    {
+        [self.arrAdvanceSearches addObject:[file stringByDeletingLastPathComponent]];
+    }
     
-    NSArray *arrFiles = [[FileManager sharedInstance] findFilesAtPath:@"/Advance Search"];
-    self.arrAdvanceSearches = [[NSMutableArray alloc] initWithArray:arrFiles];
     _selectedRow = 0;
 
     CGFloat dX = 0;

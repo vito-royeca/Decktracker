@@ -9,6 +9,8 @@
 #import "FileManager.h"
 #import "JJJ/JJJUtil.h"
 #import "Database.h"
+#import "InAppPurchase.h"
+#import "Magic.h"
 
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"
@@ -262,192 +264,544 @@ static FileManager *_me;
 }
 
 #pragma mark - Files
-
--(DBAccount*) dropboxAccount
+-(BOOL) isFileSystemEnabled:(FileSystem) fileSystem
 {
-    return [[DBAccountManager sharedManager] linkedAccount];
+    switch (fileSystem)
+    {
+        case FileSystemLocal:
+        {
+            return YES;
+        }
+        case FileSystemBox:
+        {
+            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
+            {
+                return NO;
+            }
+            return NO;
+        }
+        case FileSystemDropbox:
+        {
+            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
+            {
+                return NO;
+            }
+            return [[DBAccountManager sharedManager] linkedAccount] != nil;
+        }
+        case FileSystemGoogleDrive:
+        {
+            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
+            {
+                return NO;
+            }
+            return NO;
+        }
+        case FileSystemICloud:
+        {
+            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
+            {
+                return NO;
+            }
+            return NO;
+        }
+        case FileSystemOneDrive:
+        {
+            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
+            {
+                return NO;
+            }
+            return NO;
+        }
+    }
 }
 
--(void) initFilesystem
+-(void) connectToFileSystem:(FileSystem) fileSystem withViewController:(UIViewController*) viewController
+{
+    if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
+    {
+        return;
+    }
+    
+    switch (fileSystem)
+    {
+        case FileSystemBox:
+        {
+//            UIViewController *authorizationController = [[BoxAuthorizationViewController alloc] initWithAuthorizationURL:[[BoxSDK sharedSDK].OAuth2Session authorizeURL] redirectURI:@"boxsdk-v3vx3t10k6genv8ao7r5f3rqunz23atm"];
+//            [self presentViewController:authorizationController animated:NO completion:nil];
+        }
+        case FileSystemDropbox:
+        {
+            DBAccount *account = [[DBAccountManager sharedManager] linkedAccount];
+            
+            if (!account)
+            {
+                [[DBAccountManager sharedManager] linkFromController:viewController];
+            }
+            break;
+        }
+        case FileSystemGoogleDrive:
+        {
+            break;
+        }
+        case FileSystemICloud:
+        {
+            break;
+        }
+        case FileSystemOneDrive:
+        {
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
+}
+
+-(void) disconnectFromFileSystem:(FileSystem) fileSystem
+{
+    if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
+    {
+        return;
+    }
+
+    switch (fileSystem)
+    {
+        case FileSystemBox:
+        {
+            break;
+        }
+        case FileSystemDropbox:
+        {
+            NSString *key = @"dropbox_preference";
+            
+            [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:NO] forKey:key];
+            [[[DBAccountManager sharedManager] linkedAccount] unlink];
+            
+            break;
+        }
+        case FileSystemGoogleDrive:
+        {
+            break;
+        }
+        case FileSystemICloud:
+        {
+            break;
+        }
+        case FileSystemOneDrive:
+        {
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
+}
+
+-(void) uploadLocalFile:(NSString*) localPath
+           toFileSystem:(FileSystem) fileSystem
+                 atPath:(NSString*) filePath
+{
+    if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
+    {
+        return;
+    }
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
+        
+        switch (fileSystem)
+        {
+            case FileSystemBox:
+            {
+                break;
+            }
+            case FileSystemDropbox:
+            {
+                DBPath *dbPath = [[DBPath root] childPath:filePath];
+                DBFile *dbFile = [[DBFilesystem sharedFilesystem] openFile:dbPath error:nil];
+                if (!dbFile)
+                {
+                    dbFile = [[DBFilesystem sharedFilesystem] createFile:dbPath error:nil];
+                }
+                if (dbFile)
+                {
+                    [dbFile writeContentsOfFile:localPath shouldSteal:NO error:nil];
+                }
+                break;
+            }
+            case FileSystemGoogleDrive:
+            {
+                break;
+            }
+            case FileSystemICloud:
+            {
+                break;
+            }
+            case FileSystemOneDrive:
+            {
+                break;
+            }
+            default:
+            {
+                break;
+            }
+        }
+    });
+}
+
+-(void) downloadFile:(NSString*) filePath
+      fromFileSystem:(FileSystem) fileSystem
+      toLocalPath:(NSString*) localPath
+{
+    if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
+    {
+        return;
+    }
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
+        
+        switch (fileSystem)
+        {
+            case FileSystemLocal:
+            {
+                break; // do nothing
+            }
+            case FileSystemBox:
+            {
+                break;
+            }
+            case FileSystemDropbox:
+            {
+                DBPath *dbPath = [[DBPath root] childPath:filePath];
+                DBFile *dbFile = [[DBFilesystem sharedFilesystem] openFile:dbPath error:nil];
+                if (dbFile)
+                {
+                    NSData *data = [dbFile readData:nil];
+                    [data writeToFile:localPath atomically:YES];
+                    [dbFile close];
+                }
+
+                break;
+            }
+            case FileSystemGoogleDrive:
+            {
+                break;
+            }
+            case FileSystemICloud:
+            {
+                break;
+            }
+            case FileSystemOneDrive:
+            {
+                break;
+            }
+        }
+    });
+}
+
+-(NSArray*) listFilesAtPath:(NSString*) path fromFileSystem:(FileSystem) fileSystem
+{
+    NSMutableArray *arrFiles = [[NSMutableArray alloc] init];
+    
+    switch (fileSystem)
+    {
+        case FileSystemLocal:
+        {
+            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+            NSString *documentsDirectory = [paths firstObject];
+            NSString *fullPath = [documentsDirectory stringByAppendingPathComponent:path];
+
+            
+            for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:fullPath error:nil])
+            {
+                BOOL bDir = NO;
+                
+                [[NSFileManager defaultManager] fileExistsAtPath:[fullPath stringByAppendingPathComponent:file]
+                                                     isDirectory:&bDir];
+                if (!bDir)
+                {
+                    [arrFiles addObject:file];
+                }
+            }
+        }
+        case FileSystemBox:
+        {
+            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
+            {
+                return arrFiles;
+            }
+            
+            break;
+        }
+        case FileSystemDropbox:
+        {
+            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
+            {
+                return arrFiles;
+            }
+
+            for (DBFileInfo *info in [[DBFilesystem sharedFilesystem] listFolder:[[DBPath root] childPath:path] error:nil])
+            {
+                NSString *key = [[info path] name];
+                
+                if (![info isFolder])
+                {
+                    [arrFiles addObject:key];
+                }
+            }
+            break;
+        }
+        case FileSystemGoogleDrive:
+        {
+            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
+            {
+                return arrFiles;
+            }
+            
+            break;
+        }
+        case FileSystemICloud:
+        {
+            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
+            {
+                return arrFiles;
+            }
+            
+            break;
+        }
+        case FileSystemOneDrive:
+        {
+            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
+            {
+                return arrFiles;
+            }
+            
+            break;
+        }
+    }
+    
+    return arrFiles;
+}
+
+-(void) initFilesystem:(FileSystem) fileSystem
+{
+    switch (fileSystem)
+    {
+        case FileSystemLocal:
+        {
+            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+            NSString *documentsDirectory = [paths firstObject];
+            
+            for (NSString *folder in kFolders)
+            {
+                NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", folder]];
+                
+                // create folder if not yet existing
+                if (![[NSFileManager defaultManager] fileExistsAtPath:path])
+                {
+                    [[NSFileManager defaultManager] createDirectoryAtPath:path
+                                              withIntermediateDirectories:YES
+                                                               attributes:nil
+                                                                    error:nil];
+                }
+            }
+            break;
+        }
+        case FileSystemBox:
+        {
+            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
+            {
+                return;
+            }
+            
+            break;
+        }
+        case FileSystemDropbox:
+        {
+            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
+            {
+                return;
+            }
+            
+            DBAccount *account = [[DBAccountManager sharedManager] linkedAccount];
+            if (account)
+            {
+                DBFilesystem *filesystem = [[DBFilesystem alloc] initWithAccount:account];
+                [DBFilesystem setSharedFilesystem:filesystem];
+            }
+
+            break;
+        }
+        case FileSystemGoogleDrive:
+        {
+            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
+            {
+                return;
+            }
+            
+            break;
+        }
+        case FileSystemICloud:
+        {
+            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
+            {
+                return;
+            }
+            
+            break;
+        }
+        case FileSystemOneDrive:
+        {
+            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
+            {
+                return;
+            }
+            
+            break;
+        }
+    }
+}
+
+-(void) syncFiles
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths firstObject];
     
-    DBAccount *account = [self dropboxAccount];
-    if (account)
-    {
-        DBFilesystem *filesystem = [[DBFilesystem alloc] initWithAccount:account];
-        [DBFilesystem setSharedFilesystem:filesystem];
-    }
+//    for (FileSystem i=FileSystemLocal; i<=FileSystemOneDrive; i++)
+//    {
+//        [[FileManager sharedInstance] initFilesystem:i];
+//    }
     
     for (NSString *folder in kFolders)
     {
         NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", folder]];
-            
-        if (![[NSFileManager defaultManager] fileExistsAtPath:path])
-        {
-            [[NSFileManager defaultManager] createDirectoryAtPath:path
-                                      withIntermediateDirectories:YES
-                                                       attributes:nil
-                                                            error:nil];
-        }
         
-        if (account)
+        for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil])
         {
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
-                
-                DBPath *dbPath = [[DBPath root] childPath:folder];
-                [[DBFilesystem sharedFilesystem] createFolder:dbPath error:nil];
-                
-                // copy existing files to Dropbox
-                for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil])
-                {
-                    DBPath *dbFilePath = [[DBPath root] childPath:[NSString stringWithFormat:@"/%@/%@", folder, file]];
-                    DBFile *dbFile = [[DBFilesystem sharedFilesystem] createFile:dbFilePath error:nil];
-                    NSString *fullPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", file]];
-                    
-                    [dbFile writeContentsOfFile:fullPath
-                                    shouldSteal:NO
-                                          error:nil];
-                }
-                
-                // copy Dropbox files to local storage
-                for (DBFileInfo *fileInfo in [[DBFilesystem sharedFilesystem] listFolder:dbPath error:nil])
-                {
-                    DBFile *dbFile = [[DBFilesystem sharedFilesystem] openFile:[fileInfo path] error:nil];
-                    if (dbFile)
-                    {
-                        NSData *data = [dbFile readData:nil];
-                        [data writeToFile:[NSString stringWithFormat:@"%@/%@", path, [[fileInfo path] name]] atomically:YES];
-                        [dbFile close];
-                    }
-                }
-                
-            });
-        }
-    }
-}
-
--(void) copyCloudFilesToLocalStorage
-{
-    if ([self dropboxAccount])
-    {
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectory = [paths firstObject];
-        
-        for (NSString *folder in kFolders)
-        {
-            NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", folder]];
-            
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
-                
-                DBPath *dbPath = [[DBPath root] childPath:folder];
-                [[DBFilesystem sharedFilesystem] createFolder:dbPath error:nil];
-                
-                // copy existing files to Dropbox
-                for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil])
-                {
-                    DBPath *dbFilePath = [[DBPath root] childPath:[NSString stringWithFormat:@"/%@/%@", folder, file]];
-                    DBFile *dbFile = [[DBFilesystem sharedFilesystem] createFile:dbFilePath error:nil];
-                    NSString *fullPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", file]];
-                    
-                    [dbFile writeContentsOfFile:fullPath
-                                    shouldSteal:NO
-                                          error:nil];
-                }
-                
-                // copy Dropbox files to local storage
-                for (DBFileInfo *fileInfo in [[DBFilesystem sharedFilesystem] listFolder:dbPath error:nil])
-                {
-                    DBFile *dbFile = [[DBFilesystem sharedFilesystem] openFile:[fileInfo path] error:nil];
-                    if (dbFile)
-                    {
-                        NSData *data = [dbFile readData:nil];
-                        [data writeToFile:[NSString stringWithFormat:@"%@/%@", path, [[fileInfo path] name]] atomically:YES];
-                        [dbFile close];
-                    }
-                }
-                
-            });
-        }
-    }
-}
-
--(NSArray*) findFilesAtPath:(NSString*) path
-{
-    NSMutableArray *arrSearchFiles = [[NSMutableArray alloc] init];
-    
-    if ([self dropboxAccount])
-    {
-        for (DBFileInfo *info in [[DBFilesystem sharedFilesystem] listFolder:[[DBPath root] childPath:path] error:nil])
-        {
-            NSString *key = [[info path] name];
-            
-            if ([[key pathExtension] isEqualToString:@"json"])
+            for (FileSystem i=FileSystemBox; i<=FileSystemOneDrive; i++)
             {
-                [arrSearchFiles addObject:[key stringByDeletingPathExtension]];
+                if ([self isFileSystemEnabled:i])
+                {
+                    NSString *fullPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", file]];
+                    
+                    [self uploadLocalFile:fullPath toFileSystem:i atPath:[NSString stringWithFormat:@"/%@", file]];
+                }
+            }
+        }
+        
+        for (FileSystem i=FileSystemBox; i<=FileSystemOneDrive; i++)
+        {
+            if ([self isFileSystemEnabled:i])
+            {
+                for (NSString *file in [self listFilesAtPath:[NSString stringWithFormat:@"/%@", folder] fromFileSystem:i])
+                {
+                    NSString *localPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", file]];
+                    
+                    if (![[NSFileManager defaultManager] fileExistsAtPath:localPath])
+                    {
+                        [self downloadFile:[NSString stringWithFormat:@"/%@/%@", folder, file]
+                            fromFileSystem:i
+                               toLocalPath:localPath];
+                    }
+                }
             }
         }
     }
-    else
-    {
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectory = [paths firstObject];
-        NSString *fullPath = [documentsDirectory stringByAppendingPathComponent:path];
-        
-        
-        for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:fullPath error:nil])
-        {
-            if ([[[file lastPathComponent] pathExtension] isEqualToString:@"json"])
-            {
-                NSString *key = [[file lastPathComponent] stringByDeletingPathExtension];
-                
-                [arrSearchFiles addObject:key];
-            }
-        }
-    }
-    
-    return arrSearchFiles;
 }
 
 -(void) deleteFileAtPath:(NSString*) path
 {
-    if ([self dropboxAccount])
+    for (FileSystem i=FileSystemBox; i<=FileSystemOneDrive; i++)
     {
-        DBPath *dbPath = [[DBPath root] childPath:path];
-        [[DBFilesystem sharedFilesystem] deletePath:dbPath error:nil];
-    }
-    
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths firstObject];
-    NSString *file = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", path]];
-    if ([[NSFileManager defaultManager] fileExistsAtPath:file])
-    {
-        [[NSFileManager defaultManager] removeItemAtPath:file error:nil];
+        if ([self isFileSystemEnabled:i])
+        {
+            switch (i)
+            {
+                case FileSystemLocal:
+                {
+                    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+                    NSString *documentsDirectory = [paths firstObject];
+                    NSString *file = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", path]];
+                    if ([[NSFileManager defaultManager] fileExistsAtPath:file])
+                    {
+                        [[NSFileManager defaultManager] removeItemAtPath:file error:nil];
+                    }
+                    break;
+                }
+                case FileSystemBox:
+                {
+                    if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
+                    {
+                        return;
+                    }
+                    break;
+                }
+                case FileSystemDropbox:
+                {
+                    if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
+                    {
+                        return;
+                    }
+                    
+                    DBPath *dbPath = [[DBPath root] childPath:path];
+                    [[DBFilesystem sharedFilesystem] deletePath:dbPath error:nil];
+                    break;
+                }
+                case FileSystemGoogleDrive:
+                {
+                    if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
+                    {
+                        return;
+                    }
+                    
+                    break;
+                }
+                case FileSystemICloud:
+                {
+                    if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
+                    {
+                        return;
+                    }
+
+                    break;
+                }
+                case FileSystemOneDrive:
+                {
+                    if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
+                    {
+                        return;
+                    }
+
+                    break;
+                }
+            }
+        }
     }
 }
 
 -(id) loadFileAtPath:(NSString*) path
 {
     NSData *data;
-    
-    if ([self dropboxAccount])
-    {
-        DBPath *dbPath = [[DBPath root] childPath:path];
-        DBFile *dbFile = [[DBFilesystem sharedFilesystem] openFile:dbPath error:nil];
-        if (dbFile)
-        {
-            data = [dbFile readData:nil];
-            [dbFile close];
-        }
-    }
-    else
-    {
+//    DBAccount *account = [[DBAccountManager sharedManager] linkedAccount];
+//    
+//    if (account)
+//    {
+//        DBPath *dbPath = [[DBPath root] childPath:path];
+//        DBFile *dbFile = [[DBFilesystem sharedFilesystem] openFile:dbPath error:nil];
+//        if (dbFile)
+//        {
+//            data = [dbFile readData:nil];
+//            [dbFile close];
+//        }
+//    }
+//    else
+//    {
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentsDirectory = [paths firstObject];
         NSString *file = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", path]];
         data = [NSData dataWithContentsOfFile:file];
-    }
+//    }
 
     return data ? [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil] : nil;
 }
@@ -475,22 +829,12 @@ static FileManager *_me;
                                    error:nil];
     [outputStream close];
     
-    if ([self dropboxAccount])
+    for (FileSystem i=FileSystemBox; i<=FileSystemOneDrive; i++)
     {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
-            
-            DBPath *dbPath = [[DBPath root] childPath:path];
-            DBFile *dbFile = [[DBFilesystem sharedFilesystem] openFile:dbPath error:nil];
-            if (!dbFile)
-            {
-                dbFile = [[DBFilesystem sharedFilesystem] createFile:dbPath error:nil];
-            }
-            if (dbFile)
-            {
-                [dbFile writeContentsOfFile:fileName shouldSteal:NO error:nil];
-            }
-            
-        });
+        if ([self isFileSystemEnabled:i])
+        {
+            [self uploadLocalFile:fileName toFileSystem:i atPath:path];
+        }
     }
 }
 

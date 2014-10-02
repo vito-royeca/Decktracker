@@ -7,6 +7,7 @@
 //
 
 #import "InAppPurchaseViewController.h"
+#import "FileManager.h"
 #import "Magic.h"
 #import "MainViewController.h"
 
@@ -141,7 +142,13 @@
         }
         case 1:
         {
-            cell.textLabel.text = [_inAppPurchase.product.price stringValue];
+            if (_inAppPurchase.product.priceLocale &&
+                _inAppPurchase.product.price)
+            {
+                NSString *currencyCode = [_inAppPurchase.product.priceLocale objectForKey:NSLocaleCurrencyCode];
+            
+                cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", currencyCode, [_inAppPurchase.product.price stringValue]];
+            }
             break;
         }
         case 2:
@@ -180,6 +187,11 @@
         [view addCollectionsProduct];
     }
     
+    else if ([inAppPurchase.productID isEqualToString:CLOUD_STORAGE_IAP_PRODUCT_ID])
+    {
+        [[FileManager sharedInstance] syncFiles];
+    }
+        
     [self.navigationController popViewControllerAnimated:NO];
     
     id tracker = [[GAI sharedInstance] defaultTracker];

@@ -67,8 +67,13 @@
 
 -(void) viewDidAppear:(BOOL)animated
 {
-    NSArray *arrFiles = [[FileManager sharedInstance] findFilesAtPath:@"/Decks"];
-    self.arrDecks = [[NSMutableArray alloc] initWithArray:arrFiles];
+    self.arrDecks = [[NSMutableArray alloc] init];
+    for (NSString *file in [[FileManager sharedInstance] listFilesAtPath:@"/Decks"
+                                                          fromFileSystem:FileSystemLocal])
+    {
+        [self.arrDecks addObject:[file stringByDeletingLastPathComponent]];
+    }
+    
     [self.tblDecks reloadData];
 }
 

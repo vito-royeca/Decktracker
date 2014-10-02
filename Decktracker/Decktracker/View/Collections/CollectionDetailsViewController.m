@@ -230,7 +230,13 @@
     {
         AddCardViewController *view = [[AddCardViewController alloc] init];
         
-        view.arrDecks = [[NSMutableArray alloc] initWithArray:[[FileManager sharedInstance] findFilesAtPath:@"/Decks"]];
+        view.arrDecks = [[NSMutableArray alloc] init];
+        for (NSString *file in [[FileManager sharedInstance] listFilesAtPath:@"/Decks"
+                                                              fromFileSystem:FileSystemLocal])
+        {
+            [view.arrDecks addObject:[file stringByDeletingLastPathComponent]];
+        }
+
         view.arrCollections = [[NSMutableArray alloc] initWithArray:@[self.dictCollection[@"name"]]];
         view.card = card;
         view.showCardButtonVisible = YES;

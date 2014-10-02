@@ -11,8 +11,6 @@
 #import "InAppPurchaseViewController.h"
 #import "MainViewController.h"
 
-#import "BoxSDK.h"
-#import <Dropbox/Dropbox.h>
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"
 #import "GAIFields.h"
@@ -44,7 +42,6 @@
     self.appSettingsViewController = [[IASKAppSettingsViewController alloc] init];
     self.appSettingsViewController.delegate = self;
     self.appSettingsViewController.view.frame = CGRectMake(dX, dY, dWidth, dHeight);
-//    self.appSettingsViewController.hiddenKeys = [self hiddenKeys];
     
     [self.view addSubview:self.appSettingsViewController.view];
     self.navigationItem.title = @"Settings";
@@ -156,64 +153,51 @@
                 
                 [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:NO] forKey:key];
                 [self.appSettingsViewController.tableView reloadData];
-            }
-            
-            continue;
-        }
-        
-        id value = [dict valueForKey:key];
-        
-        if ([key isEqualToString:@"box_preference"])
-        {
-            if ([value boolValue])
-            {
-                UIViewController *authorizationController = [[BoxAuthorizationViewController alloc] initWithAuthorizationURL:[[BoxSDK sharedSDK].OAuth2Session authorizeURL] redirectURI:@"boxsdk-v3vx3t10k6genv8ao7r5f3rqunz23atm"];
-                [self presentViewController:authorizationController animated:NO completion:nil];
+                
+                continue;
             }
             else
             {
+                id value = [dict valueForKey:key];
+                FileSystem fileSystem = -1;
+                UIViewController *viewController = self;
                 
-            }
-        }
-        
-        else if ([key isEqualToString:@"dropbox_preference"])
-        {
-            if ([value boolValue])
-            {
-                if (![[DBAccountManager sharedManager] linkedAccount])
+                if ([key isEqualToString:@"box_preference"])
                 {
-                    [[DBAccountManager sharedManager] linkFromController:self];
-                    if ([[DBAccountManager sharedManager] linkedAccount])
-                    {
-                        [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:YES] forKey:key];
-                        [[FileManager sharedInstance] initFilesystem];
-                    }
-                    else
-                    {
-                        [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:NO] forKey:key];
-                    }
+                    fileSystem = FileSystemBox;
+                }
+                else if ([key isEqualToString:@"dropbox_preference"])
+                {
+                    fileSystem = FileSystemDropbox;
+                }
+                else if ([key isEqualToString:@"google_drive_preference"])
+                {
+                    fileSystem = FileSystemGoogleDrive;
                 }
                 
+                else if ([key isEqualToString:@"icloud_preference"])
+                {
+                    fileSystem = FileSystemICloud;
+                }
+                
+                else if ([key isEqualToString:@"onedrive_preference"])
+                {
+                    fileSystem = FileSystemOneDrive;
+                }
+                
+                if ([value boolValue])
+                {
+                    [[FileManager sharedInstance] connectToFileSystem:fileSystem
+                                                   withViewController:viewController];
+                    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:YES] forKey:key];
+                    
+                }
+                else
+                {
+                    [[FileManager sharedInstance] disconnectFromFileSystem:fileSystem];
+                    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:NO] forKey:key];
+                }
             }
-            else
-            {
-                [[[DBAccountManager sharedManager] linkedAccount] unlink];
-            }
-        }
-        
-        else if ([key isEqualToString:@"google_drive_preference"])
-        {
-            
-        }
-        
-        else if ([key isEqualToString:@"icloud_preference"])
-        {
-            
-        }
-        
-        else if ([key isEqualToString:@"onedrive_preference"])
-        {
-            
         }
     }
 }
@@ -231,8 +215,12 @@
 
 -(void) purchaseRestoreSucceeded:(InAppPurchase*) inAppPurchase withMessage:(NSString*) message
 {
+    // Collections
     MainViewController *view = (MainViewController*)self.tabBarController;
     [view addCollectionsProduct];
+    
+    // Cloud Storage
+    [[FileManager sharedInstance] syncFiles];
     
     self.appSettingsViewController.hiddenKeys = [self hiddenKeys];
     [self.appSettingsViewController.tableView reloadData];
