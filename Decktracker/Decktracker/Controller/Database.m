@@ -441,7 +441,7 @@ static Database *_me;
         c.tcgPlayerLink = [JJJUtil trim:link];
         c.tcgPlayerFetchDate = [NSDate date];
         [currentContext MR_save];
-        card = c;
+//        card = c;
     }
 }
 

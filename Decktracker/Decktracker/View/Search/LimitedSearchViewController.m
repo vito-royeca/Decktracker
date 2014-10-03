@@ -79,6 +79,8 @@
 
 -(void) viewDidAppear:(BOOL)animated
 {
+    [super viewDidAppear:animated];
+    
     MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:hud];
     hud.delegate = self;

@@ -7,6 +7,7 @@
 //
 
 #import "SettingsViewController.h"
+#import "CustomViewCell.h"
 #import "FileManager.h"
 #import "MainViewController.h"
 
@@ -41,6 +42,8 @@
     self.appSettingsViewController = [[IASKAppSettingsViewController alloc] init];
     self.appSettingsViewController.delegate = self;
     self.appSettingsViewController.view.frame = CGRectMake(dX, dY, dWidth, dHeight);
+    self.appSettingsViewController.showCreditsFooter = NO;
+    self.appSettingsViewController.showDoneButton = NO;
     
     [self.view addSubview:self.appSettingsViewController.view];
     self.navigationItem.title = @"Settings";
@@ -65,6 +68,8 @@
 
 -(void) viewDidAppear:(BOOL)animated
 {
+    [super viewDidAppear:animated];
+    
     self.appSettingsViewController.hiddenKeys = [self hiddenKeys];
     [self.appSettingsViewController.tableView reloadData];
 }
@@ -94,7 +99,7 @@
 #pragma mark - IASKSettingsDelegate
 - (void)settingsViewControllerDidEnd:(IASKAppSettingsViewController*)sender
 {
-    
+    [sender.tableView reloadData];
 }
 
 - (void)settingsViewController:(IASKAppSettingsViewController*)sender
@@ -131,6 +136,24 @@
     else if ([specifier.key isEqualToString:@"restore_purchases"])
     {
         [_inAppPurchase restorePurchases];
+    }
+    
+    else if ([specifier.key isEqualToString:@"acknowledgements"])
+    {
+        CGFloat dX = 0;
+        CGFloat dY = [UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height;
+        CGFloat dWidth = self.view.frame.size.width;
+        CGFloat dHeight = self.view.frame.size.height - dY - self.tabBarController.tabBar.frame.size.height;
+        
+        IASKAppSettingsViewController *view = [[IASKAppSettingsViewController alloc] init];
+        view.view.frame = CGRectMake(dX, dY, dWidth, dHeight);
+        view.showDoneButton = NO;
+        view.showCreditsFooter = NO;
+        view.file = @"Acknowledgements";
+        view.delegate = self;
+        view.navigationItem.title = @"Acknowledgements";
+        [self.navigationController pushViewController:view animated:NO];
+        
     }
 }
 
@@ -207,6 +230,31 @@
             }
         }
     }
+}
+
+- (CGFloat)tableView:(UITableView*)tableView heightForSpecifier:(IASKSpecifier*)specifier
+{
+//    if ([specifier.key isEqualToString:@"customCell"])
+//    {
+//        return 44*3;
+//    }
+//    return 0;
+    return 44*6;
+}
+
+- (UITableViewCell*)tableView:(UITableView*)tableView cellForSpecifier:(IASKSpecifier*)specifier
+{
+    CustomViewCell *cell = (CustomViewCell*)[tableView dequeueReusableCellWithIdentifier:specifier.key];
+    
+    if (!cell)
+    {
+        cell = (CustomViewCell*)[[[NSBundle mainBundle] loadNibNamed:@"CustomViewCell"
+                                                               owner:self
+                                                             options:nil] objectAtIndex:0];
+    }
+    cell.textView.text = specifier.title;
+    [cell setNeedsLayout];
+    return cell;
 }
 
 #pragma mark - InAppPurchaseViewControllerDelegate

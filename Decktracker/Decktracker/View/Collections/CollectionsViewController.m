@@ -65,6 +65,8 @@
 
 -(void) viewDidAppear:(BOOL)animated
 {
+    [super viewDidAppear:animated];
+
     self.arrCollections = [[NSMutableArray alloc] init];
     for (NSString *file in [[FileManager sharedInstance] listFilesAtPath:@"/Collections"
                                                        fromFileSystem:FileSystemLocal])

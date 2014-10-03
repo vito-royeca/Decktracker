@@ -67,6 +67,8 @@
 
 -(void) viewDidAppear:(BOOL)animated
 {
+    [super viewDidAppear:animated];
+    
     self.arrDecks = [[NSMutableArray alloc] init];
     for (NSString *file in [[FileManager sharedInstance] listFilesAtPath:@"/Decks"
                                                           fromFileSystem:FileSystemLocal])

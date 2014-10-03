@@ -745,7 +745,7 @@ static FileManager *_me;
 
         case FileSystemGoogleDrive:
         {
-            NSString *parentID;
+//            NSString *parentID;
             
             GTLQueryDrive *query = [GTLQueryDrive queryForFilesList];
             query.q = @"mimeType = 'application/pdf'"; //@"'root' in parents and trashed=false";

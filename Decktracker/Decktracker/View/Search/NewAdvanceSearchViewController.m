@@ -117,6 +117,8 @@
 
 -(void) viewDidAppear:(BOOL)animated
 {
+    [super viewDidAppear:animated];
+    
     if (self.dictCurrentQuery.count > 0)
     {
         self.segmentedControl.selectedSegmentIndex = 1;

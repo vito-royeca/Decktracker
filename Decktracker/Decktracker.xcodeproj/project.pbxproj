@@ -40,6 +40,8 @@
 		8C3277FD199A464D00899790 /* style.css in Resources */ = {isa = PBXBuildFile; fileRef = 8C3277FC199A464D00899790 /* style.css */; };
 		8C33E9BE19D73AAB000892D9 /* InAppPurchaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C33E9BD19D73AAB000892D9 /* InAppPurchaseViewController.m */; };
 		8C378E0019A7434B00B9367F /* MHFacebookImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C378DFF19A7434B00B9367F /* MHFacebookImageViewer.m */; };
+		8C3C7D6719DE41CB0030B6E9 /* MTG-JSON.license in Resources */ = {isa = PBXBuildFile; fileRef = 8C3C7D6519DE41CB0030B6E9 /* MTG-JSON.license */; };
+		8C3C7D6E19DE41EE0030B6E9 /* MTG-Image.license in Resources */ = {isa = PBXBuildFile; fileRef = 8C3C7D6C19DE41EE0030B6E9 /* MTG-Image.license */; };
 		8C3CBDBE19A31615002CD96E /* CardForeignName.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDBD19A31615002CD96E /* CardForeignName.m */; };
 		8C3CBDC119A31615002CD96E /* Card.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDC019A31615002CD96E /* Card.m */; };
 		8C3CBDC419A31615002CD96E /* CardRuling.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDC319A31615002CD96E /* CardRuling.m */; };
@@ -63,6 +65,18 @@
 		8C5FF9E819AE2EE3003CE54C /* keywords.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C5FF9E719AE2EE3003CE54C /* keywords.plist */; };
 		8C66751119D30B8E00A90C03 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8C66751019D30B8E00A90C03 /* Settings.bundle */; };
 		8C7CEC0019CA8A0B0093327C /* FieldEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C7CEBFF19CA8A0B0093327C /* FieldEditorViewController.m */; };
+		8C89BD4319DD33870070E4F5 /* script.pl in Resources */ = {isa = PBXBuildFile; fileRef = 8C89BD4219DD33870070E4F5 /* script.pl */; };
+		8C89BD4419DD33870070E4F5 /* script.pl in Resources */ = {isa = PBXBuildFile; fileRef = 8C89BD4219DD33870070E4F5 /* script.pl */; };
+		8C89BD4719DD39F60070E4F5 /* AFNetworking.license in Resources */ = {isa = PBXBuildFile; fileRef = 8C89BD4619DD39F60070E4F5 /* AFNetworking.license */; };
+		8C89BD4919DD3CE60070E4F5 /* Box.license in Resources */ = {isa = PBXBuildFile; fileRef = 8C89BD4819DD3CE60070E4F5 /* Box.license */; };
+		8C89BD4B19DD3D110070E4F5 /* CorePlot.license in Resources */ = {isa = PBXBuildFile; fileRef = 8C89BD4A19DD3D110070E4F5 /* CorePlot.license */; };
+		8C89BD4D19DD4F800070E4F5 /* Dropbox.license in Resources */ = {isa = PBXBuildFile; fileRef = 8C89BD4C19DD4F800070E4F5 /* Dropbox.license */; };
+		8C89BD5119DD4FD70070E4F5 /* hpple.license in Resources */ = {isa = PBXBuildFile; fileRef = 8C89BD5019DD4FD70070E4F5 /* hpple.license */; };
+		8C89BD5319DD4FFE0070E4F5 /* InAppSettingsKit.license in Resources */ = {isa = PBXBuildFile; fileRef = 8C89BD5219DD4FFE0070E4F5 /* InAppSettingsKit.license */; };
+		8C89BD5519DD50160070E4F5 /* MagicalRecord.license in Resources */ = {isa = PBXBuildFile; fileRef = 8C89BD5419DD50160070E4F5 /* MagicalRecord.license */; };
+		8C89BD5719DD50340070E4F5 /* MBProgressHUD.license in Resources */ = {isa = PBXBuildFile; fileRef = 8C89BD5619DD50340070E4F5 /* MBProgressHUD.license */; };
+		8C89BD5B19DD624B0070E4F5 /* CustomViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C89BD5919DD624B0070E4F5 /* CustomViewCell.m */; };
+		8C89BD5C19DD624B0070E4F5 /* CustomViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C89BD5A19DD624B0070E4F5 /* CustomViewCell.xib */; };
 		8C90A17F19C97ADF00F7278C /* Deck.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C90A17E19C97ADF00F7278C /* Deck.m */; };
 		8CADEF1719923DDE004D7658 /* images in Resources */ = {isa = PBXBuildFile; fileRef = 8CADEF1619923DDE004D7658 /* images */; };
 		8CD2E1EC19DACE1A00503ACC /* InAppPurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD2E1EB19DACE1A00503ACC /* InAppPurchase.m */; };
@@ -155,6 +169,8 @@
 		8C33E9BD19D73AAB000892D9 /* InAppPurchaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InAppPurchaseViewController.m; sourceTree = "<group>"; };
 		8C378DFE19A7434B00B9367F /* MHFacebookImageViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MHFacebookImageViewer.h; sourceTree = "<group>"; };
 		8C378DFF19A7434B00B9367F /* MHFacebookImageViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MHFacebookImageViewer.m; sourceTree = "<group>"; };
+		8C3C7D6519DE41CB0030B6E9 /* MTG-JSON.license */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "MTG-JSON.license"; sourceTree = "<group>"; };
+		8C3C7D6C19DE41EE0030B6E9 /* MTG-Image.license */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "MTG-Image.license"; sourceTree = "<group>"; };
 		8C3CBDBC19A31615002CD96E /* CardForeignName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardForeignName.h; sourceTree = "<group>"; };
 		8C3CBDBD19A31615002CD96E /* CardForeignName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardForeignName.m; sourceTree = "<group>"; };
 		8C3CBDBF19A31615002CD96E /* Card.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Card.h; sourceTree = "<group>"; };
@@ -198,6 +214,18 @@
 		8C66751019D30B8E00A90C03 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		8C7CEBFE19CA8A0B0093327C /* FieldEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FieldEditorViewController.h; sourceTree = "<group>"; };
 		8C7CEBFF19CA8A0B0093327C /* FieldEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FieldEditorViewController.m; sourceTree = "<group>"; };
+		8C89BD4219DD33870070E4F5 /* script.pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = script.pl; sourceTree = "<group>"; };
+		8C89BD4619DD39F60070E4F5 /* AFNetworking.license */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AFNetworking.license; sourceTree = "<group>"; };
+		8C89BD4819DD3CE60070E4F5 /* Box.license */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Box.license; sourceTree = "<group>"; };
+		8C89BD4A19DD3D110070E4F5 /* CorePlot.license */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CorePlot.license; sourceTree = "<group>"; };
+		8C89BD4C19DD4F800070E4F5 /* Dropbox.license */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Dropbox.license; sourceTree = "<group>"; };
+		8C89BD5019DD4FD70070E4F5 /* hpple.license */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = hpple.license; sourceTree = "<group>"; };
+		8C89BD5219DD4FFE0070E4F5 /* InAppSettingsKit.license */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = InAppSettingsKit.license; sourceTree = "<group>"; };
+		8C89BD5419DD50160070E4F5 /* MagicalRecord.license */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MagicalRecord.license; sourceTree = "<group>"; };
+		8C89BD5619DD50340070E4F5 /* MBProgressHUD.license */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MBProgressHUD.license; sourceTree = "<group>"; };
+		8C89BD5819DD624B0070E4F5 /* CustomViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomViewCell.h; sourceTree = "<group>"; };
+		8C89BD5919DD624B0070E4F5 /* CustomViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomViewCell.m; sourceTree = "<group>"; };
+		8C89BD5A19DD624B0070E4F5 /* CustomViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomViewCell.xib; sourceTree = "<group>"; };
 		8C90A17D19C97ADF00F7278C /* Deck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Deck.h; sourceTree = "<group>"; };
 		8C90A17E19C97ADF00F7278C /* Deck.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Deck.m; sourceTree = "<group>"; };
 		8CA317C719C56B73001F94F5 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
@@ -270,13 +298,14 @@
 		8C2E13E41990741100023BAA = {
 			isa = PBXGroup;
 			children = (
-				8CF0C9BA1991CD0500349F35 /* JJJ.xcodeproj */,
 				8C2E13F81990741100023BAA /* Decktracker */,
 				8C2E14151990741200023BAA /* DecktrackerTests */,
 				8C2E13EF1990741100023BAA /* Frameworks */,
+				8CF0C9BA1991CD0500349F35 /* JJJ.xcodeproj */,
+				8C89BD3E19DD33250070E4F5 /* Licenses */,
+				309BCACD310044B894E67292 /* Pods-Decktracker.xcconfig */,
 				8C2E13EE1990741100023BAA /* Products */,
 				8C66751019D30B8E00A90C03 /* Settings.bundle */,
-				309BCACD310044B894E67292 /* Pods-Decktracker.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -448,6 +477,9 @@
 		8C524A6D19B82BD8005E697B /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				8C89BD5819DD624B0070E4F5 /* CustomViewCell.h */,
+				8C89BD5919DD624B0070E4F5 /* CustomViewCell.m */,
+				8C89BD5A19DD624B0070E4F5 /* CustomViewCell.xib */,
 				8CD2E1EA19DACE1A00503ACC /* InAppPurchase.h */,
 				8CD2E1EB19DACE1A00503ACC /* InAppPurchase.m */,
 				8C33E9BC19D73AAB000892D9 /* InAppPurchaseViewController.h */,
@@ -467,6 +499,24 @@
 				8C56F56019B5B5BB0084B2B8 /* CardDetailsViewController.m */,
 			);
 			path = Card;
+			sourceTree = "<group>";
+		};
+		8C89BD3E19DD33250070E4F5 /* Licenses */ = {
+			isa = PBXGroup;
+			children = (
+				8C89BD4619DD39F60070E4F5 /* AFNetworking.license */,
+				8C89BD4819DD3CE60070E4F5 /* Box.license */,
+				8C89BD4A19DD3D110070E4F5 /* CorePlot.license */,
+				8C89BD4C19DD4F800070E4F5 /* Dropbox.license */,
+				8C89BD5019DD4FD70070E4F5 /* hpple.license */,
+				8C89BD5219DD4FFE0070E4F5 /* InAppSettingsKit.license */,
+				8C89BD5419DD50160070E4F5 /* MagicalRecord.license */,
+				8C89BD5619DD50340070E4F5 /* MBProgressHUD.license */,
+				8C3C7D6C19DE41EE0030B6E9 /* MTG-Image.license */,
+				8C3C7D6519DE41CB0030B6E9 /* MTG-JSON.license */,
+				8C89BD4219DD33870070E4F5 /* script.pl */,
+			);
+			path = Licenses;
 			sourceTree = "<group>";
 		};
 		8CF0C9BB1991CD0500349F35 /* Products */ = {
@@ -513,6 +563,7 @@
 			buildConfigurationList = 8C2E141F1990741200023BAA /* Build configuration list for PBXNativeTarget "Decktracker" */;
 			buildPhases = (
 				AF72BD75F43140CE8720FA0F /* Check Pods Manifest.lock */,
+				8C89BD4519DD38AD0070E4F5 /* ShellScript */,
 				8C2E13E91990741100023BAA /* Sources */,
 				8C2E13EA1990741100023BAA /* Frameworks */,
 				8C2E13EB1990741100023BAA /* Resources */,
@@ -624,17 +675,29 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C89BD5119DD4FD70070E4F5 /* hpple.license in Resources */,
 				8C2106A119B6EF85001DE039 /* QuantityTableViewCell.xib in Resources */,
 				8C5FF9E819AE2EE3003CE54C /* keywords.plist in Resources */,
 				8C019AA01998A10F00FB22D7 /* decktracker.sqlite in Resources */,
 				8CADEF1719923DDE004D7658 /* images in Resources */,
 				8C3277FD199A464D00899790 /* style.css in Resources */,
+				8C89BD5319DD4FFE0070E4F5 /* InAppSettingsKit.license in Resources */,
+				8C3C7D6E19DE41EE0030B6E9 /* MTG-Image.license in Resources */,
+				8C3C7D6719DE41CB0030B6E9 /* MTG-JSON.license in Resources */,
 				8C13467919A9B17B00E0B3C3 /* SearchResultsTableViewCell.xib in Resources */,
 				8C49655D19B0692A001C7935 /* MAGIC.TTF in Resources */,
+				8C89BD4319DD33870070E4F5 /* script.pl in Resources */,
 				8C2E13FD1990741100023BAA /* InfoPlist.strings in Resources */,
+				8C89BD5519DD50160070E4F5 /* MagicalRecord.license in Resources */,
 				8C26A68019A6418900FE00E7 /* Advance Search in Resources */,
+				8C89BD4919DD3CE60070E4F5 /* Box.license in Resources */,
+				8C89BD5719DD50340070E4F5 /* MBProgressHUD.license in Resources */,
+				8C89BD4B19DD3D110070E4F5 /* CorePlot.license in Resources */,
+				8C89BD4D19DD4F800070E4F5 /* Dropbox.license in Resources */,
 				8C66751119D30B8E00A90C03 /* Settings.bundle in Resources */,
 				8C2E14081990741100023BAA /* Images.xcassets in Resources */,
+				8C89BD5C19DD624B0070E4F5 /* CustomViewCell.xib in Resources */,
+				8C89BD4719DD39F60070E4F5 /* AFNetworking.license in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -643,6 +706,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8C2E141A1990741200023BAA /* InfoPlist.strings in Resources */,
+				8C89BD4419DD33870070E4F5 /* script.pl in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -675,7 +739,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "bN=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbN=$((0x$bN))\nbN=$(($bN + 1))\nbN=$(printf \"%X\" $bN)\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $bN\" \"$INFOPLIST_FILE\"\naN=$(/usr/libexec/PlistBuddy -c \"Print CFBundleShortVersionString\" \"$INFOPLIST_FILE\")\n/usr/libexec/PlistBuddy \"$SRCROOT/Settings.bundle/Root~iphone.plist\" -c \"Set PreferenceSpecifiers:12:DefaultValue $aN\"\n./Crashlytics.framework/run 114b3dd82452ec2f4024140ec862698d331b8f3f e633393678a7e8c4f2e8be609515f7ad0ff6dd85c474c001fea74fde0273c2e4";
+			shellScript = "bN=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbN=$((0x$bN))\nbN=$(($bN + 1))\nbN=$(printf \"%X\" $bN)\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $bN\" \"$INFOPLIST_FILE\"\naN=$(/usr/libexec/PlistBuddy -c \"Print CFBundleShortVersionString\" \"$INFOPLIST_FILE\")\n/usr/libexec/PlistBuddy \"$SRCROOT/Settings.bundle/Root~iphone.inApp.plist\" -c \"Set PreferenceSpecifiers:5:DefaultValue $aN\"\n./Crashlytics.framework/run 114b3dd82452ec2f4024140ec862698d331b8f3f e633393678a7e8c4f2e8be609515f7ad0ff6dd85c474c001fea74fde0273c2e4";
+		};
+		8C89BD4519DD38AD0070E4F5 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd $SRCROOT/Licenses\n./script.pl";
 		};
 		AF72BD75F43140CE8720FA0F /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -724,6 +801,7 @@
 				8C56F56119B5B5BB0084B2B8 /* CardDetailsViewController.m in Sources */,
 				8C33E9BE19D73AAB000892D9 /* InAppPurchaseViewController.m in Sources */,
 				8C5B446D19BEFFF60071604C /* AddCardViewController.m in Sources */,
+				8C89BD5B19DD624B0070E4F5 /* CustomViewCell.m in Sources */,
 				8C2CFCF519BB1F8B00F5348B /* LimitedSearchViewController.m in Sources */,
 				8C524A6519B81E9E005E697B /* DeckDetailsViewController.m in Sources */,
 				8C3CBDCD19A31618002CD96E /* Format.m in Sources */,

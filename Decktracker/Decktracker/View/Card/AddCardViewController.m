@@ -170,6 +170,8 @@
                 
                 view.productID = COLLECTIONS_IAP_PRODUCT_ID;
                 view.delegate = self;
+                view.productDetails = @{@"name" : @"Collections",
+                                        @"description": @"Lets you manage your card collections."};
                 [self.navigationController pushViewController:view animated:NO];
             }
             else
