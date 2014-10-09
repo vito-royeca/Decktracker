@@ -1,7 +1,7 @@
 body, td
 {
     font-family: Helvetica;
-    font-size: 14px;
+    font-size: 12pt;
 }
 
 html, body
@@ -21,14 +21,26 @@ html, body
 
 @font-face
 {
-    font-family: Magic;
-    src: url(MAGIC.TTF);
+    font-family: MPlantin;
+    src: url(MPlantin.ttf);
 }
 
-.cardTitle
+.detailHeader
 {
-    font-family : Magic;
-    font-size: 30px;
+    font-family: Helvetica;
+    font-size: 12pt;
     font-weight: bold;
-    /*color: silver;*/
+}
+
+.originalText
+{
+    font-family : MPlantin;
+    font-size: 12pt;
+}
+
+.flavorText
+{
+    font-family : "Times New Roman";
+    font-style: italic;
+    font-size: 12pt;
 }

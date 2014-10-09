@@ -108,7 +108,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma - mark UITableViewDataSource
+#pragma - mark UITableView
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return SEARCH_RESULTS_CELL_HEIGHT;

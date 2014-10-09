@@ -8,10 +8,15 @@
 
 #import "SearchResultsTableViewCell.h"
 #import "FileManager.h"
+#import "Set.h"
 
 @implementation SearchResultsTableViewCell
 {
     Card *_card;
+    CardType *_planeswalkerType;
+    Set *_8thEditionSet;
+    UIFont *_pre8thEditionFont;
+    UIFont *_8thEditionFont;
 }
 
 @synthesize imgCrop = _imgCrop;
@@ -26,6 +31,11 @@
     // Initialization code
     self.imgCrop.layer.cornerRadius = 10.0;
     self.imgCrop.layer.masksToBounds = YES;
+
+    _8thEditionSet = [Set MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"name == %@", @"Eighth Edition"]];
+    _planeswalkerType = [CardType MR_findFirstByAttribute:@"name" withValue:@"Planeswalker"];
+    _pre8thEditionFont = [UIFont fontWithName:@"Magic:the Gathering" size:20];
+    _8thEditionFont = [UIFont fontWithName:@"Matrix-Bold" size:20];
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -63,12 +73,20 @@
     {
         [type appendFormat:@" (%@/%@)", card.power, card.toughness];
     }
-    else if ([card.types containsObject:[CardType MR_findFirstByAttribute:@"name" withValue:@"Planeswalker"]])
+    else if ([card.types containsObject:_planeswalkerType])
     {
         [type appendFormat:@" (Loyalty: %@)", card.loyalty];
     }
     
-    self.lblCardName.font = [UIFont fontWithName:@"Magic:the Gathering" size:22];
+//    if ([card.set.releaseDate compare:_8thEditionSet.releaseDate] == NSOrderedAscending)
+//    {
+        self.lblCardName.font = _pre8thEditionFont;
+//    }
+//    else
+//    {
+//        self.lblCardName.font = _8thEditionFont;
+//    }
+    
     self.lblCardName.text = [NSString stringWithFormat:@" %@", card.name];
     self.lblDetail.text = type;
     self.lblSet.text = [NSString stringWithFormat:@"%@ - %@", card.set.name, card.rarity.name];

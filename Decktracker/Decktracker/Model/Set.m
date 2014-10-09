@@ -27,5 +27,6 @@
 @dynamic cards;
 @dynamic printings;
 @dynamic type;
+@dynamic imagesDownloaded;
 
 @end

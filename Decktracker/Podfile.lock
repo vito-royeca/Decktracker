@@ -25,6 +25,7 @@ PODS:
   - box-ios-sdk-v2/no-arc (1.2.2)
   - CorePlot (1.5.1)
   - Dropbox-Sync-API-SDK (3.0.2)
+  - FFCircularProgressView (0.5)
   - Google-API-Client (0.1.1):
     - Google-API-Client/AdSense
     - Google-API-Client/Analytics
@@ -188,6 +189,7 @@ DEPENDENCIES:
   - box-ios-sdk-v2
   - CorePlot
   - Dropbox-Sync-API-SDK
+  - FFCircularProgressView
   - Google-API-Client
   - GoogleAnalytics-iOS-SDK
   - hpple
@@ -200,6 +202,7 @@ SPEC CHECKSUMS:
   box-ios-sdk-v2: 5ce116481c2990693bd58405e70bd8b28ace44a4
   CorePlot: b15cb1a9a687b9576545104248d6e22033e678bb
   Dropbox-Sync-API-SDK: 8110afff9598478e7fdc2d161e54024dab09a0d2
+  FFCircularProgressView: 723b7a84c412b5d9d2a5531bc716b99965ad7192
   Google-API-Client: 69cd2a04c649abe9f3fa6695bc4bb8965373f204
   GoogleAnalytics-iOS-SDK: d9e198b1f955259a72886769be7377cdfcdb2250
   gtm-oauth2: 64f2d404a50676ab63b5437a02a7567da8f8b7fa

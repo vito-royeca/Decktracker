@@ -34,59 +34,76 @@
     NSData *data = [NSData dataWithContentsOfFile:filePath];
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
 
-//    NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
-//    for (NSString *setName in [json allKeys])
-//    {
-//        NSDictionary * dict = json[setName];
-//        [self parseSet:dict];
-//        [currentContext MR_save];
-//    }
-//    [self updateTCGSetNames];
-//    
-//
-//    for (NSString *setName in [json allKeys])
-//    {
-//        NSDictionary * dict = json[setName];
-//        Set *set = [self parseSet:dict];
-//        NSSet *cards = [self parseCards:dict[@"cards"] forSet:set];
-//        set.numberOfCards = [NSNumber numberWithInt:(int)cards.count];
-//        [currentContext MR_save];
-//        
-//        for (NSDictionary *dictCard in dict[@"cards"])
-//        {
-//            Card *card;
-//            
-//            if (dictCard[@"multiverseID"])
-//            {
-//                card = [Card MR_findFirstByAttribute:@"multiverseID" withValue:dictCard[@"multiverseID"]];
-//            }
-//            if (!card)
-//            {
-//                card = [[Database sharedInstance] findCard:dictCard[@"name"] inSet:set.code];
-//            }
-//            
-//            if (card)
-//            {
-//                card.rulings = [self createRulings:dictCard[@"rulings"]];
-//                card.foreignNames = [self createForeignNames:dictCard[@"foreignNames"]];
-//
-//                NSArray *names = dictCard[@"names"];
-//                NSArray *variations = dictCard[@"variations"];
-//                
-//                if (names.count > 0 || variations.count > 0)
-//                {
-//                    [self setNames:names andVariations:variations forCard:card];
-//                }
-//                [currentContext MR_save];
-//            }
-//        }
-//    }
-//    
-//    // Create colorless CardColor
-//    CardColor *color = [CardColor MR_createEntity];
-//    color.name = @"Colorless";
-//    [currentContext MR_save];
+//    [self parseCards1stPass:json];
+    [self parseCards2ndPass:json];
+    [[Database sharedInstance] closeDb];
+    
+    NSDate *dateEnd = [NSDate date];
+    NSTimeInterval timeDifference = [dateEnd timeIntervalSinceDate:dateStart];
+    NSLog(@"Started: %@", dateStart);
+    NSLog(@"Ended: %@", dateEnd);
+    NSLog(@"Time Elapsed: %@",  [JJJUtil formatInterval:timeDifference]);
+}
 
+-(void) parseCards1stPass:(NSDictionary*) json
+{
+    NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
+
+    for (NSString *setName in [json allKeys])
+    {
+        NSDictionary * dict = json[setName];
+        [self parseSet:dict];
+        [currentContext MR_save];
+    }
+    [self updateTCGSetNames];
+    
+    
+    for (NSString *setName in [json allKeys])
+    {
+        NSDictionary * dict = json[setName];
+        Set *set = [self parseSet:dict];
+        NSSet *cards = [self parseCards:dict[@"cards"] forSet:set];
+        set.numberOfCards = [NSNumber numberWithInt:(int)cards.count];
+        [currentContext MR_save];
+        
+        for (NSDictionary *dictCard in dict[@"cards"])
+        {
+            Card *card;
+            
+            if (dictCard[@"multiverseID"])
+            {
+                card = [Card MR_findFirstByAttribute:@"multiverseID" withValue:dictCard[@"multiverseID"]];
+            }
+            if (!card)
+            {
+                card = [[Database sharedInstance] findCard:dictCard[@"name"] inSet:set.code];
+            }
+            
+            if (card)
+            {
+                card.rulings = [self createRulings:dictCard[@"rulings"]];
+                card.foreignNames = [self createForeignNames:dictCard[@"foreignNames"]];
+                
+                NSArray *names = dictCard[@"names"];
+                NSArray *variations = dictCard[@"variations"];
+                
+                if (names.count > 0 || variations.count > 0)
+                {
+                    [self setNames:names andVariations:variations forCard:card];
+                }
+                [currentContext MR_save];
+            }
+        }
+    }
+    
+    // Create colorless CardColor
+    CardColor *color = [CardColor MR_createEntity];
+    color.name = @"Colorless";
+    [currentContext MR_save];
+}
+
+-(void) parseCards2ndPass:(NSDictionary*) json
+{
     for (NSString *setName in [json allKeys])
     {
         NSDictionary * dict = json[setName];
@@ -114,119 +131,32 @@
             }
         }
     }
-    
-    [[Database sharedInstance] closeDb];
-    
-    NSDate *dateEnd = [NSDate date];
-    NSTimeInterval timeDifference = [dateEnd timeIntervalSinceDate:dateStart];
-    NSLog(@"Started: %@", dateStart);
-    NSLog(@"Ended: %@", dateEnd);
-    NSLog(@"Time Elapsed: %@",  [JJJUtil formatInterval:timeDifference]);
 }
 
 -(void) updateTCGSetNames
 {
     NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
     NSString *filePath = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] resourcePath], @"Data/tcgplayer_sets.plist"];
+    NSArray *array = [[NSArray alloc] initWithContentsOfFile:filePath];
+    NSDictionary *tcgNames = array[0];
     
     for (Set *set in [Set MR_findAll])
     {
         NSString *tcgName;
         
-        for (NSString *setName in [[NSArray alloc] initWithContentsOfFile:filePath])
+        if ([set.name rangeOfString:@" vs. "].location != NSNotFound)
         {
-            if ([set.name isEqualToString:@"Tenth Edition"])
-            {
-                tcgName = @"10th Edition";
-            }
-            else if ([set.name isEqualToString:@"Ninth Edition"])
-            {
-                tcgName = @"9th Edition";
-            }
-            else if ([set.name isEqualToString:@"Eighth Edition"])
-            {
-                tcgName = @"8th Edition";
-            }
-            else if ([set.name isEqualToString:@"Seventh Edition"])
-            {
-                tcgName = @"7th Edition";
-            }
-            else if ([set.name isEqualToString:@"Magic 2010"])
-            {
-                tcgName = @"Magic 2010 (M10)";
-            }
-            else if ([set.name isEqualToString:@"Magic 2011"])
-            {
-                tcgName = @"Magic 2011 (M11)";
-            }
-            else if ([set.name isEqualToString:@"Magic 2012"])
-            {
-                tcgName = @"Magic 2012 (M12)";
-            }
-            else if ([set.name isEqualToString:@"Magic 2013"])
-            {
-                tcgName = @"Magic 2013 (M13)";
-            }
-            else if ([set.name isEqualToString:@"Magic 2014 Core Set"])
-            {
-                tcgName = @"Magic 2014 (M14)";
-            }
-            else if ([set.name isEqualToString:@"Magic 2015 Core Set"])
-            {
-                tcgName = @"Magic 2015 (M15)";
-            }
-            else if ([set.name isEqualToString:@"Limited Edition Alpha"])
-            {
-                tcgName = @"Alpha Edition";
-            }
-            else if ([set.name isEqualToString:@"Limited Edition Beta"])
-            {
-                tcgName = @"Beta Edition";
-            }
-            else if ([set.name isEqualToString:@"Planechase 2012 Edition"])
-            {
-                tcgName = @"Planechase 2012";
-            }
-            else if ([set.name isEqualToString:@"Commander 2013 Edition"])
-            {
-                tcgName = @"Commander 2013";
-            }
-            else if ([set.name isEqualToString:@"From the Vault: Annihilation (2014)"])
-            {
-                tcgName = @"From the Vault: Annihilation";
-            }
-            else if ([set.name isEqualToString:@"Modern Event Deck 2014"])
-            {
-                tcgName = @"Modern Event Deck";
-            }
-            else if ([set.name isEqualToString:@"Time Spiral \"Timeshifted\""])
-            {
-                tcgName = @"Timeshifted";
-            }
-            else if ([set.name isEqualToString:@"Ravnica: City of Guilds"])
-            {
-                tcgName = @"Ravnica";
-            }
-            else if ([set.name rangeOfString:@" vs. "].location != NSNotFound)
-            {
-                tcgName = [set.name stringByReplacingOccurrencesOfString:@" vs. " withString:@" vs "];
-            }
-            else
-            {
-                if ([set.name caseInsensitiveCompare:setName] == NSOrderedSame)
-                {
-                    tcgName = setName;
-                }
-            }
+            tcgName = [set.name stringByReplacingOccurrencesOfString:@" vs. " withString:@" vs "];
+        }
+        else
+        {
+            tcgName = [tcgNames objectForKey:set.name];
         }
         
-        if (tcgName)
-        {
-            set.tcgPlayerName = tcgName;
-            [currentContext MR_save];
-        }
+        set.tcgPlayerName = tcgName ? tcgName : set.name;
+        
+        [currentContext MR_save];
     }
-    
 }
 
 #pragma mark - Sets parsing
@@ -350,6 +280,7 @@
         card.handModifier = [NSNumber numberWithInt:[dict[@"hand"] intValue]];
         card.printings = [self findSets:dict[@"printings"]];
         card.originalText = dict[@"originalText"];
+        card.originalType = dict[@"originalType"];
         card.lifeModifier = [NSNumber numberWithInt:[dict[@"life"] intValue]];
         card.types = [self findTypes:dict[@"types"]];
         card.superTypes = [self findTypes:dict[@"supertypes"]];

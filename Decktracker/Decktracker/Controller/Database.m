@@ -40,7 +40,6 @@ static Database *_me;
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
     NSString *jsonVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"JSON Version"];
     NSString *imagesVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"Images Version"];
-    NSArray *arrCardUpdates = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"Card Updates"];
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentPath = [paths firstObject];
@@ -70,16 +69,21 @@ static Database *_me;
             bDelete = YES;
         }
         
-        if ((!currentImagesVersion || ![imagesVersion isEqualToString:currentImagesVersion]) &&
-            arrCardUpdates)
+        if ((!currentImagesVersion || ![imagesVersion isEqualToString:currentImagesVersion]))
         {
-            for (NSString *set in arrCardUpdates)
+            NSDictionary *arrCardUpdates = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"Card Updates"];
+            
+            for (NSString *ver in [arrCardUpdates allKeys])
             {
-                NSString *path = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/card/%@/", set]];
-                
-                for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil])
+                for (NSString *set in arrCardUpdates[ver])
                 {
-                    [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@", path, file] error:nil];
+                    NSString *path = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/card/%@/", set]];
+                    
+                    for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil])
+                    {
+                        [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@", path, file] error:nil];
+                    }
+
                 }
             }
         }

@@ -36,6 +36,22 @@
 		</dict>
 		<dict>
 			<key>Title</key>
+			<string>Downloads</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>IASKTextAlignment</key>
+			<string>IASKUITextAlignmentLeft</string>
+			<key>Key</key>
+			<string>download_set_images</string>
+			<key>Title</key>
+			<string>Set Images</string>
+			<key>Type</key>
+			<string>IASKButtonSpecifier</string>
+		</dict>
+		<dict>
+			<key>Title</key>
 			<string>Application Information</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
@@ -52,7 +68,7 @@
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
-			<string>1.3.0</string>
+			<string>1.3.1</string>
 			<key>Key</key>
 			<string>version</string>
 			<key>Title</key>
@@ -62,9 +78,9 @@
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
-			<string>1.3.0</string>
+			<string>Jovito Royeca</string>
 			<key>Key</key>
-			<string>version</string>
+			<string>developer</string>
 			<key>Title</key>
 			<string>Developer</string>
 			<key>Type</key>

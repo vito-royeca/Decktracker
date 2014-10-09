@@ -26,6 +26,7 @@
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * number;
 @property (nonatomic, retain) NSString * originalText;
+@property (nonatomic, retain) NSString * originalType;
 @property (nonatomic, retain) NSString * power;
 @property (nonatomic, retain) NSString * text;
 @property (nonatomic, retain) NSNumber * timeshifted;

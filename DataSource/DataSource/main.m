@@ -20,10 +20,6 @@ int main(int argc, const char * argv[])
 //        [imageLoader downloadSets:@[@"KTK"]];
 //        [imageLoader downloadSymbols];
 //        [imageLoader downloadOtherSymbols];
-//        [imageLoader downloadAllSets];
-//        [imageLoader downloadCards];
-//        [imageLoader convertCardsToLowResolution];
-//        [imageLoader resizeCrops];
     }
     return 0;
 }

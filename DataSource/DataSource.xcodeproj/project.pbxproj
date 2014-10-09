@@ -11,19 +11,19 @@
 		8C1B4DC9198CF0C000B4C948 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C1B4DC8198CF0C000B4C948 /* CoreData.framework */; };
 		8C1B4DCB198CF0C000B4C948 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C1B4DCA198CF0C000B4C948 /* Foundation.framework */; };
 		8C1B4DCE198CF0C000B4C948 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1B4DCD198CF0C000B4C948 /* main.m */; };
-		8C2150911993C66200B0128C /* database.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8C21507F1993C66200B0128C /* database.xcdatamodeld */; };
-		8C3CBDF919A31642002CD96E /* Artist.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDE219A31642002CD96E /* Artist.m */; };
-		8C3CBDFA19A31642002CD96E /* Block.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDE419A31642002CD96E /* Block.m */; };
-		8C3CBDFB19A31642002CD96E /* Card.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDE619A31642002CD96E /* Card.m */; };
-		8C3CBDFC19A31642002CD96E /* CardColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDE819A31642002CD96E /* CardColor.m */; };
-		8C3CBDFD19A31642002CD96E /* CardForeignName.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDEA19A31642002CD96E /* CardForeignName.m */; };
-		8C3CBDFE19A31642002CD96E /* CardLegality.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDEC19A31642002CD96E /* CardLegality.m */; };
-		8C3CBDFF19A31642002CD96E /* CardRarity.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDEE19A31642002CD96E /* CardRarity.m */; };
-		8C3CBE0019A31642002CD96E /* CardRuling.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDF019A31642002CD96E /* CardRuling.m */; };
-		8C3CBE0119A31642002CD96E /* CardType.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDF219A31642002CD96E /* CardType.m */; };
-		8C3CBE0219A31642002CD96E /* Format.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDF419A31642002CD96E /* Format.m */; };
-		8C3CBE0319A31642002CD96E /* Set.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDF619A31642002CD96E /* Set.m */; };
-		8C3CBE0419A31642002CD96E /* SetType.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDF819A31642002CD96E /* SetType.m */; };
+		8C3E94A419E4246400C7EF21 /* Artist.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3E948A19E4246400C7EF21 /* Artist.m */; };
+		8C3E94A519E4246400C7EF21 /* Block.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3E948C19E4246400C7EF21 /* Block.m */; };
+		8C3E94A619E4246400C7EF21 /* Card.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3E948E19E4246400C7EF21 /* Card.m */; };
+		8C3E94A719E4246400C7EF21 /* CardColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3E949019E4246400C7EF21 /* CardColor.m */; };
+		8C3E94A819E4246400C7EF21 /* CardForeignName.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3E949219E4246400C7EF21 /* CardForeignName.m */; };
+		8C3E94A919E4246400C7EF21 /* CardLegality.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3E949419E4246400C7EF21 /* CardLegality.m */; };
+		8C3E94AA19E4246400C7EF21 /* CardRarity.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3E949619E4246400C7EF21 /* CardRarity.m */; };
+		8C3E94AB19E4246400C7EF21 /* CardRuling.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3E949819E4246400C7EF21 /* CardRuling.m */; };
+		8C3E94AC19E4246400C7EF21 /* CardType.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3E949A19E4246400C7EF21 /* CardType.m */; };
+		8C3E94AD19E4246400C7EF21 /* database.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8C3E949B19E4246400C7EF21 /* database.xcdatamodeld */; };
+		8C3E94AE19E4246400C7EF21 /* Format.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3E949F19E4246400C7EF21 /* Format.m */; };
+		8C3E94AF19E4246400C7EF21 /* Set.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3E94A119E4246400C7EF21 /* Set.m */; };
+		8C3E94B019E4246400C7EF21 /* SetType.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3E94A319E4246400C7EF21 /* SetType.m */; };
 		8C5FF9E319AE2A5D003CE54C /* AllSets-x.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C5FF9E119AE2A0B003CE54C /* AllSets-x.json */; };
 		8C5FF9E419AE2A5D003CE54C /* tcgplayer_sets.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C5FF9E219AE2A0B003CE54C /* tcgplayer_sets.plist */; };
 		8C80A0C2198D01D600BADA6C /* JSONLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C80A0C1198D01D600BADA6C /* JSONLoader.m */; };
@@ -77,31 +77,32 @@
 		8C1B4DCA198CF0C000B4C948 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		8C1B4DCD198CF0C000B4C948 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8C1B4DD0198CF0C000B4C948 /* DataSource-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DataSource-Prefix.pch"; sourceTree = "<group>"; };
-		8C2150801993C66200B0128C /* database.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = database.xcdatamodel; sourceTree = "<group>"; };
-		8C3CBDE119A31642002CD96E /* Artist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Artist.h; path = ../../Decktracker/Decktracker/Model/Artist.h; sourceTree = "<group>"; };
-		8C3CBDE219A31642002CD96E /* Artist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Artist.m; path = ../../Decktracker/Decktracker/Model/Artist.m; sourceTree = "<group>"; };
-		8C3CBDE319A31642002CD96E /* Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Block.h; path = ../../Decktracker/Decktracker/Model/Block.h; sourceTree = "<group>"; };
-		8C3CBDE419A31642002CD96E /* Block.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Block.m; path = ../../Decktracker/Decktracker/Model/Block.m; sourceTree = "<group>"; };
-		8C3CBDE519A31642002CD96E /* Card.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Card.h; path = ../../Decktracker/Decktracker/Model/Card.h; sourceTree = "<group>"; };
-		8C3CBDE619A31642002CD96E /* Card.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Card.m; path = ../../Decktracker/Decktracker/Model/Card.m; sourceTree = "<group>"; };
-		8C3CBDE719A31642002CD96E /* CardColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CardColor.h; path = ../../Decktracker/Decktracker/Model/CardColor.h; sourceTree = "<group>"; };
-		8C3CBDE819A31642002CD96E /* CardColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CardColor.m; path = ../../Decktracker/Decktracker/Model/CardColor.m; sourceTree = "<group>"; };
-		8C3CBDE919A31642002CD96E /* CardForeignName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CardForeignName.h; path = ../../Decktracker/Decktracker/Model/CardForeignName.h; sourceTree = "<group>"; };
-		8C3CBDEA19A31642002CD96E /* CardForeignName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CardForeignName.m; path = ../../Decktracker/Decktracker/Model/CardForeignName.m; sourceTree = "<group>"; };
-		8C3CBDEB19A31642002CD96E /* CardLegality.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CardLegality.h; path = ../../Decktracker/Decktracker/Model/CardLegality.h; sourceTree = "<group>"; };
-		8C3CBDEC19A31642002CD96E /* CardLegality.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CardLegality.m; path = ../../Decktracker/Decktracker/Model/CardLegality.m; sourceTree = "<group>"; };
-		8C3CBDED19A31642002CD96E /* CardRarity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CardRarity.h; path = ../../Decktracker/Decktracker/Model/CardRarity.h; sourceTree = "<group>"; };
-		8C3CBDEE19A31642002CD96E /* CardRarity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CardRarity.m; path = ../../Decktracker/Decktracker/Model/CardRarity.m; sourceTree = "<group>"; };
-		8C3CBDEF19A31642002CD96E /* CardRuling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CardRuling.h; path = ../../Decktracker/Decktracker/Model/CardRuling.h; sourceTree = "<group>"; };
-		8C3CBDF019A31642002CD96E /* CardRuling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CardRuling.m; path = ../../Decktracker/Decktracker/Model/CardRuling.m; sourceTree = "<group>"; };
-		8C3CBDF119A31642002CD96E /* CardType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CardType.h; path = ../../Decktracker/Decktracker/Model/CardType.h; sourceTree = "<group>"; };
-		8C3CBDF219A31642002CD96E /* CardType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CardType.m; path = ../../Decktracker/Decktracker/Model/CardType.m; sourceTree = "<group>"; };
-		8C3CBDF319A31642002CD96E /* Format.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Format.h; path = ../../Decktracker/Decktracker/Model/Format.h; sourceTree = "<group>"; };
-		8C3CBDF419A31642002CD96E /* Format.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Format.m; path = ../../Decktracker/Decktracker/Model/Format.m; sourceTree = "<group>"; };
-		8C3CBDF519A31642002CD96E /* Set.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Set.h; path = ../../Decktracker/Decktracker/Model/Set.h; sourceTree = "<group>"; };
-		8C3CBDF619A31642002CD96E /* Set.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Set.m; path = ../../Decktracker/Decktracker/Model/Set.m; sourceTree = "<group>"; };
-		8C3CBDF719A31642002CD96E /* SetType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SetType.h; path = ../../Decktracker/Decktracker/Model/SetType.h; sourceTree = "<group>"; };
-		8C3CBDF819A31642002CD96E /* SetType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SetType.m; path = ../../Decktracker/Decktracker/Model/SetType.m; sourceTree = "<group>"; };
+		8C3E948919E4246400C7EF21 /* Artist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Artist.h; path = ../../Decktracker/Decktracker/Model/Artist.h; sourceTree = "<group>"; };
+		8C3E948A19E4246400C7EF21 /* Artist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Artist.m; path = ../../Decktracker/Decktracker/Model/Artist.m; sourceTree = "<group>"; };
+		8C3E948B19E4246400C7EF21 /* Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Block.h; path = ../../Decktracker/Decktracker/Model/Block.h; sourceTree = "<group>"; };
+		8C3E948C19E4246400C7EF21 /* Block.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Block.m; path = ../../Decktracker/Decktracker/Model/Block.m; sourceTree = "<group>"; };
+		8C3E948D19E4246400C7EF21 /* Card.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Card.h; path = ../../Decktracker/Decktracker/Model/Card.h; sourceTree = "<group>"; };
+		8C3E948E19E4246400C7EF21 /* Card.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Card.m; path = ../../Decktracker/Decktracker/Model/Card.m; sourceTree = "<group>"; };
+		8C3E948F19E4246400C7EF21 /* CardColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CardColor.h; path = ../../Decktracker/Decktracker/Model/CardColor.h; sourceTree = "<group>"; };
+		8C3E949019E4246400C7EF21 /* CardColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CardColor.m; path = ../../Decktracker/Decktracker/Model/CardColor.m; sourceTree = "<group>"; };
+		8C3E949119E4246400C7EF21 /* CardForeignName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CardForeignName.h; path = ../../Decktracker/Decktracker/Model/CardForeignName.h; sourceTree = "<group>"; };
+		8C3E949219E4246400C7EF21 /* CardForeignName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CardForeignName.m; path = ../../Decktracker/Decktracker/Model/CardForeignName.m; sourceTree = "<group>"; };
+		8C3E949319E4246400C7EF21 /* CardLegality.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CardLegality.h; path = ../../Decktracker/Decktracker/Model/CardLegality.h; sourceTree = "<group>"; };
+		8C3E949419E4246400C7EF21 /* CardLegality.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CardLegality.m; path = ../../Decktracker/Decktracker/Model/CardLegality.m; sourceTree = "<group>"; };
+		8C3E949519E4246400C7EF21 /* CardRarity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CardRarity.h; path = ../../Decktracker/Decktracker/Model/CardRarity.h; sourceTree = "<group>"; };
+		8C3E949619E4246400C7EF21 /* CardRarity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CardRarity.m; path = ../../Decktracker/Decktracker/Model/CardRarity.m; sourceTree = "<group>"; };
+		8C3E949719E4246400C7EF21 /* CardRuling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CardRuling.h; path = ../../Decktracker/Decktracker/Model/CardRuling.h; sourceTree = "<group>"; };
+		8C3E949819E4246400C7EF21 /* CardRuling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CardRuling.m; path = ../../Decktracker/Decktracker/Model/CardRuling.m; sourceTree = "<group>"; };
+		8C3E949919E4246400C7EF21 /* CardType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CardType.h; path = ../../Decktracker/Decktracker/Model/CardType.h; sourceTree = "<group>"; };
+		8C3E949A19E4246400C7EF21 /* CardType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CardType.m; path = ../../Decktracker/Decktracker/Model/CardType.m; sourceTree = "<group>"; };
+		8C3E949C19E4246400C7EF21 /* database.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = database.xcdatamodel; sourceTree = "<group>"; };
+		8C3E949D19E4246400C7EF21 /* Oct-5-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Oct-5-2014.xcdatamodel"; sourceTree = "<group>"; };
+		8C3E949E19E4246400C7EF21 /* Format.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Format.h; path = ../../Decktracker/Decktracker/Model/Format.h; sourceTree = "<group>"; };
+		8C3E949F19E4246400C7EF21 /* Format.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Format.m; path = ../../Decktracker/Decktracker/Model/Format.m; sourceTree = "<group>"; };
+		8C3E94A019E4246400C7EF21 /* Set.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Set.h; path = ../../Decktracker/Decktracker/Model/Set.h; sourceTree = "<group>"; };
+		8C3E94A119E4246400C7EF21 /* Set.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Set.m; path = ../../Decktracker/Decktracker/Model/Set.m; sourceTree = "<group>"; };
+		8C3E94A219E4246400C7EF21 /* SetType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SetType.h; path = ../../Decktracker/Decktracker/Model/SetType.h; sourceTree = "<group>"; };
+		8C3E94A319E4246400C7EF21 /* SetType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SetType.m; path = ../../Decktracker/Decktracker/Model/SetType.m; sourceTree = "<group>"; };
 		8C5FF9E119AE2A0B003CE54C /* AllSets-x.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "AllSets-x.json"; sourceTree = "<group>"; };
 		8C5FF9E219AE2A0B003CE54C /* tcgplayer_sets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = tcgplayer_sets.plist; sourceTree = "<group>"; };
 		8C80A0C0198D01D600BADA6C /* JSONLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONLoader.h; sourceTree = "<group>"; };
@@ -189,31 +190,31 @@
 		8C21506E1993C5FF00B0128C /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				8C3CBDE119A31642002CD96E /* Artist.h */,
-				8C3CBDE219A31642002CD96E /* Artist.m */,
-				8C3CBDE319A31642002CD96E /* Block.h */,
-				8C3CBDE419A31642002CD96E /* Block.m */,
-				8C3CBDE519A31642002CD96E /* Card.h */,
-				8C3CBDE619A31642002CD96E /* Card.m */,
-				8C3CBDE719A31642002CD96E /* CardColor.h */,
-				8C3CBDE819A31642002CD96E /* CardColor.m */,
-				8C3CBDE919A31642002CD96E /* CardForeignName.h */,
-				8C3CBDEA19A31642002CD96E /* CardForeignName.m */,
-				8C3CBDEB19A31642002CD96E /* CardLegality.h */,
-				8C3CBDEC19A31642002CD96E /* CardLegality.m */,
-				8C3CBDED19A31642002CD96E /* CardRarity.h */,
-				8C3CBDEE19A31642002CD96E /* CardRarity.m */,
-				8C3CBDEF19A31642002CD96E /* CardRuling.h */,
-				8C3CBDF019A31642002CD96E /* CardRuling.m */,
-				8C3CBDF119A31642002CD96E /* CardType.h */,
-				8C3CBDF219A31642002CD96E /* CardType.m */,
-				8C21507F1993C66200B0128C /* database.xcdatamodeld */,
-				8C3CBDF319A31642002CD96E /* Format.h */,
-				8C3CBDF419A31642002CD96E /* Format.m */,
-				8C3CBDF519A31642002CD96E /* Set.h */,
-				8C3CBDF619A31642002CD96E /* Set.m */,
-				8C3CBDF719A31642002CD96E /* SetType.h */,
-				8C3CBDF819A31642002CD96E /* SetType.m */,
+				8C3E948919E4246400C7EF21 /* Artist.h */,
+				8C3E948A19E4246400C7EF21 /* Artist.m */,
+				8C3E948B19E4246400C7EF21 /* Block.h */,
+				8C3E948C19E4246400C7EF21 /* Block.m */,
+				8C3E948D19E4246400C7EF21 /* Card.h */,
+				8C3E948E19E4246400C7EF21 /* Card.m */,
+				8C3E948F19E4246400C7EF21 /* CardColor.h */,
+				8C3E949019E4246400C7EF21 /* CardColor.m */,
+				8C3E949119E4246400C7EF21 /* CardForeignName.h */,
+				8C3E949219E4246400C7EF21 /* CardForeignName.m */,
+				8C3E949319E4246400C7EF21 /* CardLegality.h */,
+				8C3E949419E4246400C7EF21 /* CardLegality.m */,
+				8C3E949519E4246400C7EF21 /* CardRarity.h */,
+				8C3E949619E4246400C7EF21 /* CardRarity.m */,
+				8C3E949719E4246400C7EF21 /* CardRuling.h */,
+				8C3E949819E4246400C7EF21 /* CardRuling.m */,
+				8C3E949919E4246400C7EF21 /* CardType.h */,
+				8C3E949A19E4246400C7EF21 /* CardType.m */,
+				8C3E949B19E4246400C7EF21 /* database.xcdatamodeld */,
+				8C3E949E19E4246400C7EF21 /* Format.h */,
+				8C3E949F19E4246400C7EF21 /* Format.m */,
+				8C3E94A019E4246400C7EF21 /* Set.h */,
+				8C3E94A119E4246400C7EF21 /* Set.m */,
+				8C3E94A219E4246400C7EF21 /* SetType.h */,
+				8C3E94A319E4246400C7EF21 /* SetType.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -366,23 +367,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C3E94A919E4246400C7EF21 /* CardLegality.m in Sources */,
+				8C3E94AE19E4246400C7EF21 /* Format.m in Sources */,
+				8C3E94A819E4246400C7EF21 /* CardForeignName.m in Sources */,
+				8C3E94AB19E4246400C7EF21 /* CardRuling.m in Sources */,
 				8C80A0CC198D040500BADA6C /* Database.m in Sources */,
-				8C3CBE0219A31642002CD96E /* Format.m in Sources */,
-				8C3CBDFC19A31642002CD96E /* CardColor.m in Sources */,
 				8C80A0C2198D01D600BADA6C /* JSONLoader.m in Sources */,
-				8C3CBE0119A31642002CD96E /* CardType.m in Sources */,
-				8C3CBDFD19A31642002CD96E /* CardForeignName.m in Sources */,
-				8C2150911993C66200B0128C /* database.xcdatamodeld in Sources */,
-				8C3CBDFB19A31642002CD96E /* Card.m in Sources */,
 				8CFD32F2198E7B2900F1AFC3 /* ImageLoader.m in Sources */,
-				8C3CBDFE19A31642002CD96E /* CardLegality.m in Sources */,
-				8C3CBDFF19A31642002CD96E /* CardRarity.m in Sources */,
-				8C3CBDFA19A31642002CD96E /* Block.m in Sources */,
-				8C3CBE0319A31642002CD96E /* Set.m in Sources */,
-				8C3CBDF919A31642002CD96E /* Artist.m in Sources */,
-				8C3CBE0019A31642002CD96E /* CardRuling.m in Sources */,
-				8C3CBE0419A31642002CD96E /* SetType.m in Sources */,
+				8C3E94AD19E4246400C7EF21 /* database.xcdatamodeld in Sources */,
+				8C3E94A519E4246400C7EF21 /* Block.m in Sources */,
 				8C1B4DCE198CF0C000B4C948 /* main.m in Sources */,
+				8C3E94A619E4246400C7EF21 /* Card.m in Sources */,
+				8C3E94AA19E4246400C7EF21 /* CardRarity.m in Sources */,
+				8C3E94AF19E4246400C7EF21 /* Set.m in Sources */,
+				8C3E94A419E4246400C7EF21 /* Artist.m in Sources */,
+				8C3E94AC19E4246400C7EF21 /* CardType.m in Sources */,
+				8C3E94B019E4246400C7EF21 /* SetType.m in Sources */,
+				8C3E94A719E4246400C7EF21 /* CardColor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -503,12 +504,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		8C21507F1993C66200B0128C /* database.xcdatamodeld */ = {
+		8C3E949B19E4246400C7EF21 /* database.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				8C2150801993C66200B0128C /* database.xcdatamodel */,
+				8C3E949C19E4246400C7EF21 /* database.xcdatamodel */,
+				8C3E949D19E4246400C7EF21 /* Oct-5-2014.xcdatamodel */,
 			);
-			currentVersion = 8C2150801993C66200B0128C /* database.xcdatamodel */;
+			currentVersion = 8C3E949C19E4246400C7EF21 /* database.xcdatamodel */;
 			name = database.xcdatamodeld;
 			path = ../../Decktracker/Decktracker/Model/database.xcdatamodeld;
 			sourceTree = "<group>";

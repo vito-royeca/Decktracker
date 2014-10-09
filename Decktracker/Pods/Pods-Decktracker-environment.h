@@ -60,6 +60,12 @@
 #define COCOAPODS_VERSION_MINOR_Dropbox_Sync_API_SDK 0
 #define COCOAPODS_VERSION_PATCH_Dropbox_Sync_API_SDK 2
 
+// FFCircularProgressView
+#define COCOAPODS_POD_AVAILABLE_FFCircularProgressView
+#define COCOAPODS_VERSION_MAJOR_FFCircularProgressView 0
+#define COCOAPODS_VERSION_MINOR_FFCircularProgressView 5
+#define COCOAPODS_VERSION_PATCH_FFCircularProgressView 0
+
 // GTMHTTPFetcher
 #define COCOAPODS_POD_AVAILABLE_GTMHTTPFetcher
 #define COCOAPODS_VERSION_MAJOR_GTMHTTPFetcher 0

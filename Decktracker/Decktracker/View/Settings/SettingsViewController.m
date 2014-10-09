@@ -7,7 +7,8 @@
 //
 
 #import "SettingsViewController.h"
-#import "CustomViewCell.h"
+#import "AcknowledgementTableViewCell.h"
+#import "DownloadSetImagesViewController.h"
 #import "FileManager.h"
 #import "MainViewController.h"
 
@@ -138,6 +139,13 @@
         [_inAppPurchase restorePurchases];
     }
     
+    else if ([specifier.key isEqualToString:@"download_set_images"])
+    {
+        DownloadSetImagesViewController *view = [[DownloadSetImagesViewController alloc] init];
+        
+        [self.navigationController pushViewController:view animated:NO];
+    }
+    
     else if ([specifier.key isEqualToString:@"acknowledgements"])
     {
         CGFloat dX = 0;
@@ -244,13 +252,13 @@
 
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForSpecifier:(IASKSpecifier*)specifier
 {
-    CustomViewCell *cell = (CustomViewCell*)[tableView dequeueReusableCellWithIdentifier:specifier.key];
+    AcknowledgementTableViewCell *cell = (AcknowledgementTableViewCell*)[tableView dequeueReusableCellWithIdentifier:specifier.key];
     
     if (!cell)
     {
-        cell = (CustomViewCell*)[[[NSBundle mainBundle] loadNibNamed:@"CustomViewCell"
-                                                               owner:self
-                                                             options:nil] objectAtIndex:0];
+        cell = (AcknowledgementTableViewCell*)[[[NSBundle mainBundle] loadNibNamed:@"AcknowledgementTableViewCell"
+                                                                             owner:self
+                                                                           options:nil] firstObject];
     }
     cell.textView.text = specifier.title;
     [cell setNeedsLayout];

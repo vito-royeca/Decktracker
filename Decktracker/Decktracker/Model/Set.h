@@ -22,6 +22,7 @@
 @property (nonatomic, retain) NSNumber * onlineOnly;
 @property (nonatomic, retain) NSDate * releaseDate;
 @property (nonatomic, retain) NSString * tcgPlayerName;
+@property (nonatomic, retain) NSNumber * imagesDownloaded;
 @property (nonatomic, retain) Block *block;
 @property (nonatomic, retain) NSSet *cards;
 @property (nonatomic, retain) NSSet *printings;

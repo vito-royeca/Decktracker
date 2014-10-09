@@ -33,6 +33,7 @@
 @dynamic name;
 @dynamic number;
 @dynamic originalText;
+@dynamic originalType;
 @dynamic power;
 @dynamic text;
 @dynamic timeshifted;
