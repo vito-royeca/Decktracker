@@ -8,6 +8,8 @@
 
 @import UIKit;
 
+#import "JJJ/JJJ.h"
+
 @protocol FilterInputViewControllerDelegate <NSObject>
 
 -(void) addFilter:(NSDictionary*) filter;

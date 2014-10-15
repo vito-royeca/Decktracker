@@ -14,6 +14,8 @@
 #import "Magic.h"
 #import "Set.h"
 
+#import "JJJ/JJJ.h"
+
 #define SEARCH_RESULTS_CELL_HEIGHT            80
 
 @interface SearchResultsTableViewCell : UITableViewCell

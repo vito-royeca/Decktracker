@@ -15,10 +15,13 @@
 #import "LimitedSearchViewController.h"
 #import "SearchResultsTableViewCell.h"
 
+#import "Decktracker-Swift.h"
+
 @implementation DeckDetailsViewController
 {
-    NSArray *_arrDetailsSections;
+    NSArray *_arrDetailSections;
     NSArray *_arrCardSections;
+    NSArray *_arrFunctionSections;
     UIView *_viewSegmented;
 }
 
@@ -42,8 +45,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    _arrDetailsSections = @[@"", @"Name", @"Number of Cards", @"Format", @"Notes", @"Original Designer", @"Year"];
+    _arrDetailSections = @[@"", @"Name", @"Number of Cards", @"Format", @"Notes", @"Original Designer", @"Year"];
     _arrCardSections = @[@"", @"Lands", @"Creatures", @"Other Spells", @"Sideboard"];
+    _arrFunctionSections = @[@{@"": @[@""]},
+                             @{@"Statistics" : @[@"Mana Curve", @"Card Types", @"Colors", @"Mana Source"]},
+                             @{@"" :@[@"Starting Hand"]}];
 
     CGFloat dX = 0;
     CGFloat dY = 0;
@@ -57,7 +63,7 @@
     [self.tblCards registerNib:[UINib nibWithNibName:@"SearchResultsTableViewCell" bundle:nil]
           forCellReuseIdentifier:@"Cell1"];
     
-    self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Details", @"Cards"]];
+    self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Details", @"Cards", @"Functions"]];
     self.segmentedControl.frame = CGRectMake(dX+10, dY+7, dWidth-20, 30);
     self.segmentedControl.selectedSegmentIndex = 0;
     [self.segmentedControl addTarget:self
@@ -150,13 +156,8 @@
     switch (self.segmentedControl.selectedSegmentIndex)
     {
         case 0:
-        {
-            if (section == 0)
-            {
-                return _viewSegmented.frame.size.height;
-            }
-        }
         case 1:
+        case 2:
         {
             if (section == 0)
             {
@@ -198,60 +199,75 @@
         }
     }
     
-    NSInteger rows = [self tableView:tableView numberOfRowsInSection:indexPath.section];
-    
-    if (rows > 1)
+    else if (self.segmentedControl.selectedSegmentIndex == 1)
     {
-        switch (indexPath.section)
+        NSInteger rows = [self tableView:tableView numberOfRowsInSection:indexPath.section];
+        
+        if (rows > 1)
         {
-            case 0:
+            switch (indexPath.section)
             {
-                return UITableViewAutomaticDimension;
-            }
-            case 1:
-            {
-                if (indexPath.row < self.deck.arrLands.count)
-                {
-                    return SEARCH_RESULTS_CELL_HEIGHT;
-                }
-                else
+                case 0:
                 {
                     return UITableViewAutomaticDimension;
                 }
+                case 1:
+                {
+                    if (indexPath.row < self.deck.arrLands.count)
+                    {
+                        return SEARCH_RESULTS_CELL_HEIGHT;
+                    }
+                    else
+                    {
+                        return UITableViewAutomaticDimension;
+                    }
+                }
+                case 2:
+                {
+                    if (indexPath.row < self.deck.arrCreatures.count)
+                    {
+                        return SEARCH_RESULTS_CELL_HEIGHT;
+                    }
+                    else
+                    {
+                        return UITableViewAutomaticDimension;
+                    }
+                }
+                case 3:
+                {
+                    if (indexPath.row < self.deck.arrOtherSpells.count)
+                    {
+                        return SEARCH_RESULTS_CELL_HEIGHT;
+                    }
+                    else
+                    {
+                        return UITableViewAutomaticDimension;
+                    }
+                }
+                case 4:
+                {
+                    if (indexPath.row < self.deck.arrSideboard.count)
+                    {
+                        return SEARCH_RESULTS_CELL_HEIGHT;
+                    }
+                    else
+                    {
+                        return UITableViewAutomaticDimension;
+                    }
+                }
             }
-            case 2:
-            {
-                if (indexPath.row < self.deck.arrCreatures.count)
-                {
-                    return SEARCH_RESULTS_CELL_HEIGHT;
-                }
-                else
-                {
-                    return UITableViewAutomaticDimension;
-                }
-            }
-            case 3:
-            {
-                if (indexPath.row < self.deck.arrOtherSpells.count)
-                {
-                    return SEARCH_RESULTS_CELL_HEIGHT;
-                }
-                else
-                {
-                    return UITableViewAutomaticDimension;
-                }
-            }
-            case 4:
-            {
-                if (indexPath.row < self.deck.arrSideboard.count)
-                {
-                    return SEARCH_RESULTS_CELL_HEIGHT;
-                }
-                else
-                {
-                    return UITableViewAutomaticDimension;
-                }
-            }
+        }
+    }
+    
+    else if (self.segmentedControl.selectedSegmentIndex == 2)
+    {
+        if (indexPath.section == 0)
+        {
+            return 0;
+        }
+        else
+        {
+            return UITableViewAutomaticDimension;
         }
     }
     
@@ -262,52 +278,65 @@
 {
     if (self.segmentedControl.selectedSegmentIndex == 0)
     {
-        return section == 0 ? nil : _arrDetailsSections[section];
+        return section == 0 ? nil : _arrDetailSections[section];
     }
     
-    int count = 0;
-    
-    switch (section)
+    else if (self.segmentedControl.selectedSegmentIndex == 1)
     {
-        case 1:
+        int count = 0;
+        
+        switch (section)
         {
-            for (NSDictionary *dict in self.deck.arrLands)
+            case 1:
             {
-                count += [dict[@"qty"] intValue];
+                for (NSDictionary *dict in self.deck.arrLands)
+                {
+                    count += [dict[@"qty"] intValue];
+                }
+                break;
             }
-            break;
-        }
-        case 2:
-        {
-            for (NSDictionary *dict in self.deck.arrCreatures)
+            case 2:
             {
-                count += [dict[@"qty"] intValue];
+                for (NSDictionary *dict in self.deck.arrCreatures)
+                {
+                    count += [dict[@"qty"] intValue];
+                }
+                break;
             }
-            break;
-        }
-        case 3:
-        {
-            for (NSDictionary *dict in self.deck.arrOtherSpells)
+            case 3:
             {
-                count += [dict[@"qty"] intValue];
+                for (NSDictionary *dict in self.deck.arrOtherSpells)
+                {
+                    count += [dict[@"qty"] intValue];
+                }
+                break;
             }
-            break;
-        }
-        case 4:
-        {
-            for (NSDictionary *dict in self.deck.arrSideboard)
+            case 4:
             {
-                count += [dict[@"qty"] intValue];
+                for (NSDictionary *dict in self.deck.arrSideboard)
+                {
+                    count += [dict[@"qty"] intValue];
+                }
+                break;
             }
-            break;
+            default:
+            {
+                return nil;
+            }
         }
-        default:
-        {
-            return nil;
-        }
+        
+        return [NSString stringWithFormat:@"%@: %tu", _arrCardSections[section], count];
     }
     
-    return [NSString stringWithFormat:@"%@: %tu", _arrCardSections[section], count];
+    else if (self.segmentedControl.selectedSegmentIndex == 2)
+    {
+        return section == 0 ? nil : [[_arrFunctionSections[section] allKeys] firstObject];
+    }
+    
+    else
+    {
+        return nil;
+    }
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -316,11 +345,15 @@
     {
         case 0:
         {
-            return _arrDetailsSections.count;
+            return _arrDetailSections.count;
         }
         case 1:
         {
             return _arrCardSections.count;
+        }
+        case 2:
+        {
+            return _arrFunctionSections.count;
         }
         default:
         {
@@ -336,28 +369,43 @@
         return 1;
     }
     
-	switch (section)
+    else if (self.segmentedControl.selectedSegmentIndex == 1)
     {
-        case 1:
+        switch (section)
         {
-            return self.deck.arrLands.count + 1;
+            case 1:
+            {
+                return self.deck.arrLands.count + 1;
+            }
+            case 2:
+            {
+                return self.deck.arrCreatures.count + 1;
+            }
+            case 3:
+            {
+                return self.deck.arrOtherSpells.count + 1;
+            }
+            case 4:
+            {
+                return self.deck.arrSideboard.count + 1;
+            }
+            default:
+            {
+                return 0;
+            }
         }
-        case 2:
-        {
-            return self.deck.arrCreatures.count + 1;
-        }
-        case 3:
-        {
-            return self.deck.arrOtherSpells.count + 1;
-        }
-        case 4:
-        {
-            return self.deck.arrSideboard.count + 1;
-        }
-        default:
-        {
-            return 0;
-        }
+    }
+    
+    else if (self.segmentedControl.selectedSegmentIndex == 2)
+    {
+        NSDictionary *dict = _arrFunctionSections[section];
+        NSArray *array = [dict valueForKey:[[dict allKeys] firstObject]];
+        return array.count;
+    }
+    
+	else
+    {
+        return 1;
     }
 }
 
@@ -420,71 +468,96 @@
         return cell;
     }
     
-    NSInteger rows = [self tableView:tableView numberOfRowsInSection:indexPath.section];
-    if (rows > 1)
+    else if (self.segmentedControl.selectedSegmentIndex == 1)
     {
-        switch (indexPath.section)
+        NSInteger rows = [self tableView:tableView numberOfRowsInSection:indexPath.section];
+        if (rows > 1)
         {
-            case 1:
+            switch (indexPath.section)
             {
-                if (indexPath.row < self.deck.arrLands.count)
+                case 1:
                 {
-                    NSDictionary *dict = self.deck.arrLands[indexPath.row];
-                    cell = [self createSearchResultsTableCell:dict];
+                    if (indexPath.row < self.deck.arrLands.count)
+                    {
+                        NSDictionary *dict = self.deck.arrLands[indexPath.row];
+                        cell = [self createSearchResultsTableCell:dict];
+                    }
+                    else
+                    {
+                        cell = [self createAddTableCell:[NSString stringWithFormat:@"Add %@", _arrCardSections[indexPath.section]]];
+                    }
+                    break;
                 }
-                else
+                case 2:
                 {
-                    cell = [self createAddTableCell:[NSString stringWithFormat:@"Add %@", _arrCardSections[indexPath.section]]];
+                    if (indexPath.row < self.deck.arrCreatures.count)
+                    {
+                        NSDictionary *dict = self.deck.arrCreatures[indexPath.row];
+                        cell = [self createSearchResultsTableCell:dict];
+                    }
+                    else
+                    {
+                        cell = [self createAddTableCell:[NSString stringWithFormat:@"Add %@", _arrCardSections[indexPath.section]]];
+                    }
+                    break;
                 }
-                break;
+                case 3:
+                {
+                    if (indexPath.row < self.deck.arrOtherSpells.count)
+                    {
+                        NSDictionary *dict = self.deck.arrOtherSpells[indexPath.row];
+                        cell = [self createSearchResultsTableCell:dict];
+                    }
+                    else
+                    {
+                        cell = [self createAddTableCell:[NSString stringWithFormat:@"Add %@", _arrCardSections[indexPath.section]]];
+                    }
+                    break;
+                }
+                case 4:
+                {
+                    if (indexPath.row < self.deck.arrSideboard.count)
+                    {
+                        NSDictionary *dict = self.deck.arrSideboard[indexPath.row];
+                        cell = [self createSearchResultsTableCell:dict];
+                    }
+                    else
+                    {
+                        cell = [self createAddTableCell:[NSString stringWithFormat:@"Add %@", _arrCardSections[indexPath.section]]];
+                    }
+                    break;
+                }
             }
-            case 2:
+        }
+        else
+        {
+            if (indexPath.section != 0)
             {
-                if (indexPath.row < self.deck.arrCreatures.count)
-                {
-                    NSDictionary *dict = self.deck.arrCreatures[indexPath.row];
-                    cell = [self createSearchResultsTableCell:dict];
-                }
-                else
-                {
-                    cell = [self createAddTableCell:[NSString stringWithFormat:@"Add %@", _arrCardSections[indexPath.section]]];
-                }
-                break;
-            }
-            case 3:
-            {
-                if (indexPath.row < self.deck.arrOtherSpells.count)
-                {
-                    NSDictionary *dict = self.deck.arrOtherSpells[indexPath.row];
-                    cell = [self createSearchResultsTableCell:dict];
-                }
-                else
-                {
-                    cell = [self createAddTableCell:[NSString stringWithFormat:@"Add %@", _arrCardSections[indexPath.section]]];
-                }
-                break;
-            }
-            case 4:
-            {
-                if (indexPath.row < self.deck.arrSideboard.count)
-                {
-                    NSDictionary *dict = self.deck.arrSideboard[indexPath.row];
-                    cell = [self createSearchResultsTableCell:dict];
-                }
-                else
-                {
-                    cell = [self createAddTableCell:[NSString stringWithFormat:@"Add %@", _arrCardSections[indexPath.section]]];
-                }
-                break;
+                cell = [self createAddTableCell:[NSString stringWithFormat:@"Add %@", _arrCardSections[indexPath.section]]]
+                ;
             }
         }
     }
-    else
+    
+    else if (self.segmentedControl.selectedSegmentIndex == 2)
     {
+        cell = [tableView dequeueReusableCellWithIdentifier:@"Cell0"];
+        if (cell == nil)
+        {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Cell0"];
+        }
+        
+        cell.textLabel.text = nil;
+        cell.userInteractionEnabled = YES;
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        
         if (indexPath.section != 0)
         {
-            cell = [self createAddTableCell:[NSString stringWithFormat:@"Add %@", _arrCardSections[indexPath.section]]]
-            ;
+            NSDictionary *dict = _arrFunctionSections[indexPath.section];
+            NSString *key = [[dict allKeys] firstObject];
+            NSArray *arrFunctions = [dict valueForKey:key];
+            cell.textLabel.text = arrFunctions[indexPath.row];
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
     }
     
@@ -499,7 +572,7 @@
         UITableViewCell *cell = [self tableView:self.tblCards cellForRowAtIndexPath:indexPath];
         
         view.delegate = self;
-        view.fieldName = _arrDetailsSections[indexPath.section];
+        view.fieldName = _arrDetailSections[indexPath.section];
         view.oldValue = cell.textLabel.text;
         
         switch (indexPath.section)

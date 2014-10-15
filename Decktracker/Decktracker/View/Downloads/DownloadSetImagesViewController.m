@@ -7,7 +7,6 @@
 //
 
 #import "DownloadSetImagesViewController.h"
-#import "JJJ/JJJUtil.h"
 
 #import "FFCircularProgressView.h"
 #import "GAI.h"

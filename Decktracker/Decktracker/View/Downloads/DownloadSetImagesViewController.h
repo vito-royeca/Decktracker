@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "Set.h"
 
+#import "JJJ/JJJ.h"
+
 @interface DownloadSetImagesViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
 
 @property(strong,nonatomic) NSArray *arrSets;

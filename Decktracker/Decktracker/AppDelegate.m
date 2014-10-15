@@ -103,17 +103,7 @@
   sourceApplication:(NSString *)source
          annotation:(id)annotation
 {
-    if ([[url scheme] hasPrefix:@"boxsdk-"])
-    {
-        [[BoxSDK sharedSDK].OAuth2Session performAuthorizationCodeGrantWithReceivedURL:url];
-        
-        [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:YES] forKey:@"box_preference"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        [[FileManager sharedInstance] initFilesystem:FileSystemBox];
-        [[FileManager sharedInstance] syncFiles];
-        return YES;
-    }
-    else if ([[url scheme] hasPrefix:@"db-"])
+    if ([[url scheme] hasPrefix:@"db-"])
     {
         DBAccount *account = [[DBAccountManager sharedManager] handleOpenURL:url];
         
@@ -124,6 +114,13 @@
             [[FileManager sharedInstance] initFilesystem:FileSystemDropbox];
             [[FileManager sharedInstance] syncFiles];
             return YES;
+        }
+        else
+        {
+            [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:NO] forKey:@"dropbox_preference"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            [[FileManager sharedInstance] disconnectFromFileSystem:FileSystemDropbox];
+            return NO;
         }
     }
     

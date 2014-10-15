@@ -10,6 +10,8 @@
 
 #import "Card.h"
 
+#import "JJJ/JJJ.h"
+
 typedef NS_ENUM(NSInteger, DeckBoard)
 {
     MainBoard,

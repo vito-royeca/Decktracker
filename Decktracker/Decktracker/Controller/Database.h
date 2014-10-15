@@ -8,9 +8,10 @@
 
 @import Foundation;
 
-#import "JJJ/JJJ.h"
 #import "Card.h"
 #import "CardRarity.h"
+
+#import "JJJ/JJJ.h"
 
 #define kFetchBatchSize       100
 #define kDatabaseStore        @"decktracker.sqlite"

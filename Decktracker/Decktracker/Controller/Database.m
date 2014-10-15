@@ -247,7 +247,7 @@ static Database *_me;
         }
         else if ([key isEqualToString:@"Keyword"])
         {
-            fieldName = @"originalText";
+            fieldName = @"text";
         }
         else if ([key isEqualToString:@"Text"])
         {

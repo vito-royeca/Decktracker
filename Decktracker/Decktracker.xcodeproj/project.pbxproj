@@ -40,6 +40,7 @@
 		8C3277FD199A464D00899790 /* style.css in Resources */ = {isa = PBXBuildFile; fileRef = 8C3277FC199A464D00899790 /* style.css */; };
 		8C33E9BE19D73AAB000892D9 /* InAppPurchaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C33E9BD19D73AAB000892D9 /* InAppPurchaseViewController.m */; };
 		8C378E0019A7434B00B9367F /* MHFacebookImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C378DFF19A7434B00B9367F /* MHFacebookImageViewer.m */; };
+		8C389B0919ED502900FE28D8 /* GraphViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C389B0819ED502900FE28D8 /* GraphViewController.swift */; };
 		8C3C7D6719DE41CB0030B6E9 /* MTG-JSON.license in Resources */ = {isa = PBXBuildFile; fileRef = 8C3C7D6519DE41CB0030B6E9 /* MTG-JSON.license */; };
 		8C3C7D6E19DE41EE0030B6E9 /* MTG-Image.license in Resources */ = {isa = PBXBuildFile; fileRef = 8C3C7D6C19DE41EE0030B6E9 /* MTG-Image.license */; };
 		8C3CBDBE19A31615002CD96E /* CardForeignName.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDBD19A31615002CD96E /* CardForeignName.m */; };
@@ -66,6 +67,8 @@
 		8C5B446D19BEFFF60071604C /* AddCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5B446C19BEFFF60071604C /* AddCardViewController.m */; };
 		8C5FF9E819AE2EE3003CE54C /* keywords.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C5FF9E719AE2EE3003CE54C /* keywords.plist */; };
 		8C66751119D30B8E00A90C03 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8C66751019D30B8E00A90C03 /* Settings.bundle */; };
+		8C6847B619EE42370074960E /* JJJ.xcodeproj in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C6847A919EE41FF0074960E /* JJJ.xcodeproj */; };
+		8C6847B919EE426C0074960E /* libJJJ.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C6847B019EE41FF0074960E /* libJJJ.a */; };
 		8C7CEC0019CA8A0B0093327C /* FieldEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C7CEBFF19CA8A0B0093327C /* FieldEditorViewController.m */; };
 		8C89BD4319DD33870070E4F5 /* script.pl in Resources */ = {isa = PBXBuildFile; fileRef = 8C89BD4219DD33870070E4F5 /* script.pl */; };
 		8C89BD4419DD33870070E4F5 /* script.pl in Resources */ = {isa = PBXBuildFile; fileRef = 8C89BD4219DD33870070E4F5 /* script.pl */; };
@@ -81,7 +84,6 @@
 		8CADEF1719923DDE004D7658 /* images in Resources */ = {isa = PBXBuildFile; fileRef = 8CADEF1619923DDE004D7658 /* images */; };
 		8CD2E1EC19DACE1A00503ACC /* InAppPurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD2E1EB19DACE1A00503ACC /* InAppPurchase.m */; };
 		8CE7F2BE19C0A2D0004FBEA5 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CE7F2BD19C0A2D0004FBEA5 /* StoreKit.framework */; };
-		8CF0C9D71991CD8300349F35 /* libJJJ.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF0C9C11991CD0500349F35 /* libJJJ.a */; };
 		8CF418D719C9C6790082E3BC /* Collection.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF418D619C9C6790082E3BC /* Collection.m */; };
 		8CF79A6519A8BFA300BE4246 /* DecksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF79A6419A8BFA300BE4246 /* DecksViewController.m */; };
 		8CF79A6B19A8BFB400BE4246 /* CollectionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF79A6A19A8BFB400BE4246 /* CollectionsViewController.m */; };
@@ -100,26 +102,33 @@
 			remoteGlobalIDString = 8C2E13EC1990741100023BAA;
 			remoteInfo = Decktracker;
 		};
-		8CF0C9C01991CD0500349F35 /* PBXContainerItemProxy */ = {
+		8C6847AF19EE41FF0074960E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 8CF0C9BA1991CD0500349F35 /* JJJ.xcodeproj */;
+			containerPortal = 8C6847A919EE41FF0074960E /* JJJ.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 580E1D4C189E8DDA00336A44;
 			remoteInfo = JJJ;
 		};
-		8CF0C9C21991CD0500349F35 /* PBXContainerItemProxy */ = {
+		8C6847B119EE41FF0074960E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 8CF0C9BA1991CD0500349F35 /* JJJ.xcodeproj */;
+			containerPortal = 8C6847A919EE41FF0074960E /* JJJ.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 580E1D5C189E8DDB00336A44;
 			remoteInfo = JJJTests;
 		};
-		8CF0C9C41991CD0500349F35 /* PBXContainerItemProxy */ = {
+		8C6847B319EE41FF0074960E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 8CF0C9BA1991CD0500349F35 /* JJJ.xcodeproj */;
+			containerPortal = 8C6847A919EE41FF0074960E /* JJJ.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 580E1D79189E8F4000336A44;
 			remoteInfo = JJJBundle;
+		};
+		8C6847B719EE42650074960E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8C6847A919EE41FF0074960E /* JJJ.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 580E1D4B189E8DDA00336A44;
+			remoteInfo = JJJ;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -172,8 +181,10 @@
 		8C3277FC199A464D00899790 /* style.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = style.css; sourceTree = "<group>"; };
 		8C33E9BC19D73AAB000892D9 /* InAppPurchaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InAppPurchaseViewController.h; sourceTree = "<group>"; };
 		8C33E9BD19D73AAB000892D9 /* InAppPurchaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InAppPurchaseViewController.m; sourceTree = "<group>"; };
+		8C36A21519ECF6D400F09F78 /* Decktracker-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Decktracker-Bridging-Header.h"; sourceTree = "<group>"; };
 		8C378DFE19A7434B00B9367F /* MHFacebookImageViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MHFacebookImageViewer.h; sourceTree = "<group>"; };
 		8C378DFF19A7434B00B9367F /* MHFacebookImageViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MHFacebookImageViewer.m; sourceTree = "<group>"; };
+		8C389B0819ED502900FE28D8 /* GraphViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphViewController.swift; sourceTree = "<group>"; };
 		8C3C7D6519DE41CB0030B6E9 /* MTG-JSON.license */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "MTG-JSON.license"; sourceTree = "<group>"; };
 		8C3C7D6C19DE41EE0030B6E9 /* MTG-Image.license */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "MTG-Image.license"; sourceTree = "<group>"; };
 		8C3CBDBC19A31615002CD96E /* CardForeignName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardForeignName.h; sourceTree = "<group>"; };
@@ -220,6 +231,7 @@
 		8C5FF9E719AE2EE3003CE54C /* keywords.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = keywords.plist; sourceTree = "<group>"; };
 		8C66750B19D30AF800A90C03 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		8C66751019D30B8E00A90C03 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		8C6847A919EE41FF0074960E /* JJJ.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JJJ.xcodeproj; path = ../jjj/JJJ/JJJ.xcodeproj; sourceTree = "<group>"; };
 		8C7CEBFE19CA8A0B0093327C /* FieldEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FieldEditorViewController.h; sourceTree = "<group>"; };
 		8C7CEBFF19CA8A0B0093327C /* FieldEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FieldEditorViewController.m; sourceTree = "<group>"; };
 		8C89BD4219DD33870070E4F5 /* script.pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = script.pl; sourceTree = "<group>"; };
@@ -239,7 +251,6 @@
 		8CD2E1EB19DACE1A00503ACC /* InAppPurchase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InAppPurchase.m; sourceTree = "<group>"; };
 		8CE7F2BD19C0A2D0004FBEA5 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		8CE7F2C219C0A2F7004FBEA5 /* Decktracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Decktracker.entitlements; sourceTree = "<group>"; };
-		8CF0C9BA1991CD0500349F35 /* JJJ.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JJJ.xcodeproj; path = ../jjj/JJJ/JJJ.xcodeproj; sourceTree = "<group>"; };
 		8CF418D519C9C6790082E3BC /* Collection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Collection.h; sourceTree = "<group>"; };
 		8CF418D619C9C6790082E3BC /* Collection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Collection.m; sourceTree = "<group>"; };
 		8CF79A6319A8BFA300BE4246 /* DecksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DecksViewController.h; sourceTree = "<group>"; };
@@ -260,9 +271,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C6847B919EE426C0074960E /* libJJJ.a in Frameworks */,
+				8C6847B619EE42370074960E /* JJJ.xcodeproj in Frameworks */,
 				8CFA452A19E1C580000B5205 /* QuartzCore.framework in Frameworks */,
 				8C2E13F31990741100023BAA /* CoreGraphics.framework in Frameworks */,
-				8CF0C9D71991CD8300349F35 /* libJJJ.a in Frameworks */,
 				8C2E13F71990741100023BAA /* CoreData.framework in Frameworks */,
 				8CE7F2BE19C0A2D0004FBEA5 /* StoreKit.framework in Frameworks */,
 				8C2E13F51990741100023BAA /* UIKit.framework in Frameworks */,
@@ -314,7 +326,7 @@
 				8C2E13F81990741100023BAA /* Decktracker */,
 				8C2E14151990741200023BAA /* DecktrackerTests */,
 				8C2E13EF1990741100023BAA /* Frameworks */,
-				8CF0C9BA1991CD0500349F35 /* JJJ.xcodeproj */,
+				8C6847A919EE41FF0074960E /* JJJ.xcodeproj */,
 				8C89BD3E19DD33250070E4F5 /* Licenses */,
 				309BCACD310044B894E67292 /* Pods-Decktracker.xcconfig */,
 				8C2E13EE1990741100023BAA /* Products */,
@@ -352,11 +364,12 @@
 		8C2E13F81990741100023BAA /* Decktracker */ = {
 			isa = PBXGroup;
 			children = (
-				8CE7F2C219C0A2F7004FBEA5 /* Decktracker.entitlements */,
 				8C2E14011990741100023BAA /* AppDelegate.h */,
 				8C2E14021990741100023BAA /* AppDelegate.m */,
 				8C2E14271990747300023BAA /* Controller */,
 				8C2E14321990862900023BAA /* Data */,
+				8C36A21519ECF6D400F09F78 /* Decktracker-Bridging-Header.h */,
+				8CE7F2C219C0A2F7004FBEA5 /* Decktracker.entitlements */,
 				8C2E14071990741100023BAA /* Images.xcassets */,
 				8C378DF919A742D800B9367F /* Libs */,
 				8C2E142B199074A900023BAA /* Magic.h */,
@@ -444,6 +457,7 @@
 				8C21069F19B6EF85001DE039 /* QuantityTableViewCell.xib */,
 				8C26A66B19A63EA500FE00E7 /* Search */,
 				8C524A6D19B82BD8005E697B /* Settings */,
+				8C389B0819ED502900FE28D8 /* GraphViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -518,6 +532,16 @@
 			path = Card;
 			sourceTree = "<group>";
 		};
+		8C6847AA19EE41FF0074960E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8C6847B019EE41FF0074960E /* libJJJ.a */,
+				8C6847B219EE41FF0074960E /* JJJTests.xctest */,
+				8C6847B419EE41FF0074960E /* JJJBundle.bundle */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		8C89BD3E19DD33250070E4F5 /* Licenses */ = {
 			isa = PBXGroup;
 			children = (
@@ -535,16 +559,6 @@
 				8C89BD4219DD33870070E4F5 /* script.pl */,
 			);
 			path = Licenses;
-			sourceTree = "<group>";
-		};
-		8CF0C9BB1991CD0500349F35 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				8CF0C9C11991CD0500349F35 /* libJJJ.a */,
-				8CF0C9C31991CD0500349F35 /* JJJTests.xctest */,
-				8CF0C9C51991CD0500349F35 /* JJJBundle.bundle */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		8CF79A5C19A88B4500BE4246 /* Decks */ = {
@@ -600,6 +614,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				8C6847B819EE42650074960E /* PBXTargetDependency */,
 			);
 			name = Decktracker;
 			productName = Decktracker;
@@ -661,8 +676,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 8CF0C9BB1991CD0500349F35 /* Products */;
-					ProjectRef = 8CF0C9BA1991CD0500349F35 /* JJJ.xcodeproj */;
+					ProductGroup = 8C6847AA19EE41FF0074960E /* Products */;
+					ProjectRef = 8C6847A919EE41FF0074960E /* JJJ.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -674,25 +689,25 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		8CF0C9C11991CD0500349F35 /* libJJJ.a */ = {
+		8C6847B019EE41FF0074960E /* libJJJ.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libJJJ.a;
-			remoteRef = 8CF0C9C01991CD0500349F35 /* PBXContainerItemProxy */;
+			remoteRef = 8C6847AF19EE41FF0074960E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8CF0C9C31991CD0500349F35 /* JJJTests.xctest */ = {
+		8C6847B219EE41FF0074960E /* JJJTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = JJJTests.xctest;
-			remoteRef = 8CF0C9C21991CD0500349F35 /* PBXContainerItemProxy */;
+			remoteRef = 8C6847B119EE41FF0074960E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8CF0C9C51991CD0500349F35 /* JJJBundle.bundle */ = {
+		8C6847B419EE41FF0074960E /* JJJBundle.bundle */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = JJJBundle.bundle;
-			remoteRef = 8CF0C9C41991CD0500349F35 /* PBXContainerItemProxy */;
+			remoteRef = 8C6847B319EE41FF0074960E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -815,6 +830,7 @@
 				8C3CBDDC19A31618002CD96E /* SetType.m in Sources */,
 				8C378E0019A7434B00B9367F /* MHFacebookImageViewer.m in Sources */,
 				8CF79A6B19A8BFB400BE4246 /* CollectionsViewController.m in Sources */,
+				8C389B0919ED502900FE28D8 /* GraphViewController.swift in Sources */,
 				8C26A67A19A63FAC00FE00E7 /* AdvanceSearchViewController.m in Sources */,
 				8C524A7019B82C01005E697B /* SettingsViewController.m in Sources */,
 				8C3CBDC419A31615002CD96E /* CardRuling.m in Sources */,
@@ -866,6 +882,11 @@
 			target = 8C2E13EC1990741100023BAA /* Decktracker */;
 			targetProxy = 8C2E14131990741200023BAA /* PBXContainerItemProxy */;
 		};
+		8C6847B819EE42650074960E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = JJJ;
+			targetProxy = 8C6847B719EE42650074960E /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -907,6 +928,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Jovito Royeca (43CD66539H)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Jovito Royeca (43CD66539H)";
 				COPY_PHASE_STRIP = NO;
+				DEFINES_MODULE = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -923,6 +945,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_MODULE_NAME = Decktracker;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -947,6 +970,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Jovito Royeca (43CD66539H)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Jovito Royeca (43CD66539H)";
 				COPY_PHASE_STRIP = YES;
+				DEFINES_MODULE = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -956,6 +980,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				PRODUCT_MODULE_NAME = Decktracker;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -968,8 +993,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEFINES_MODULE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -978,8 +1005,11 @@
 				GCC_PREFIX_HEADER = "Decktracker/Decktracker-Prefix.pch";
 				INFOPLIST_FILE = "Decktracker/Decktracker-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Decktracker/Decktracker-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -991,8 +1021,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEFINES_MODULE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1001,8 +1033,10 @@
 				GCC_PREFIX_HEADER = "Decktracker/Decktracker-Prefix.pch";
 				INFOPLIST_FILE = "Decktracker/Decktracker-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Decktracker/Decktracker-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1012,6 +1046,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Decktracker.app/Decktracker";
+				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -1024,7 +1059,10 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "DecktrackerTests/DecktrackerTests-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Decktracker/DecktrackerTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -1034,6 +1072,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Decktracker.app/Decktracker";
+				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -1042,7 +1081,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Decktracker/Decktracker-Prefix.pch";
 				INFOPLIST_FILE = "DecktrackerTests/DecktrackerTests-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Decktracker/DecktrackerTests-Bridging-Header.h";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};

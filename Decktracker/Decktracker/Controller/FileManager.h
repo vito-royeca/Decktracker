@@ -11,6 +11,8 @@
 #import "Card.h"
 #import "Set.h"
 
+#import "JJJ/JJJ.h"
+
 #define kCardDownloadCompleted           @"kCardDownloadCompleted"
 #define kCropDownloadCompleted           @"kCropDownloadCompleted"
 #define kFolders                         @[@"Advance Search", @"Decks", @"Collections"]
@@ -50,7 +52,8 @@ typedef NS_ENUM(NSInteger, FileSystem)
 -(void) downloadCropImage:(Card*) card;
 -(NSArray*) loadKeywords;
 
--(void) connectToFileSystem:(FileSystem) fileSystem withViewController:(UIViewController*) viewController;
+-(void) connectToFileSystem:(FileSystem) fileSystem
+         withViewController:(UIViewController*) viewController;
 -(void) disconnectFromFileSystem:(FileSystem) fileSystem;
 
 -(void) initFilesystem:(FileSystem) fileSystem;

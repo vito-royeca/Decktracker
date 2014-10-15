@@ -7,7 +7,6 @@
 //
 
 #import "FilterInputViewController.h"
-#import "JJJ/JJJUtil.h"
 #import "Artist.h"
 #import "CardColor.h"
 #import "CardRarity.h"

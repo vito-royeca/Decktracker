@@ -89,10 +89,6 @@
     {
         [setHiddenKeys addObject:COLLECTIONS_IAP_PRODUCT_ID];
     }
-    if ([InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
-    {
-        [setHiddenKeys addObject:CLOUD_STORAGE_IAP_PRODUCT_ID];
-    }
     
     return setHiddenKeys;
 }
@@ -115,20 +111,6 @@
             view.productID = COLLECTIONS_IAP_PRODUCT_ID;
             view.productDetails = @{@"name" : @"Collections",
                                     @"description": @"Lets you manage your card collections."};
-            view.delegate = self;
-            [self.navigationController pushViewController:view animated:NO];
-        }
-    }
-    
-    else if ([specifier.key isEqualToString:CLOUD_STORAGE_IAP_PRODUCT_ID])
-    {
-        if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
-        {
-            InAppPurchaseViewController *view = [[InAppPurchaseViewController alloc] init];
-            
-            view.productID = CLOUD_STORAGE_IAP_PRODUCT_ID;
-            view.productDetails = @{@"name" : @"Cloud Storage",
-                                    @"description": @"Lets you store your Decks and Collections in the cloud via Box, Dropbox, Google Drive, iCloud, and OneDrive."};
             view.delegate = self;
             [self.navigationController pushViewController:view animated:NO];
         }
@@ -161,7 +143,6 @@
         view.delegate = self;
         view.navigationItem.title = @"Acknowledgements";
         [self.navigationController pushViewController:view animated:NO];
-        
     }
 }
 
@@ -171,70 +152,29 @@
     
     for (NSString *key in dict)
     {
-        if ([key isEqualToString:@"box_preference"] ||
-            [key isEqualToString:@"dropbox_preference"] ||
-            [key isEqualToString:@"google_drive_preference"] ||
-            [key isEqualToString:@"google_drive_preference"] ||
-            [key isEqualToString:@"icloud_preference"] ||
-            [key isEqualToString:@"onedrive_preference"])
+        if ([key isEqualToString:@"dropbox_preference"])
         {
-            if (![InAppPurchase isProductPurchased:CLOUD_STORAGE_IAP_PRODUCT_ID])
+            id value = [dict valueForKey:key];
+            FileSystem fileSystem = -1;
+            UIViewController *viewController = self;
+            
+            if ([key isEqualToString:@"dropbox_preference"])
             {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message"
-                                                                message:@"You may need to purchase Cloud Storage first."
-                                                               delegate:nil
-                                                      cancelButtonTitle:@"Ok"
-                                                      otherButtonTitles:nil];
-                [alert show];
-                
-                [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:NO] forKey:key];
-                [[NSUserDefaults standardUserDefaults] synchronize];
-                [self.appSettingsViewController.tableView reloadData];
-                
-                continue;
+                fileSystem = FileSystemDropbox;
+            }
+            
+            [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:[value boolValue]] forKey:key];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            if ([value boolValue])
+            {
+                [[FileManager sharedInstance] setupFilesystem:fileSystem];
+                [[FileManager sharedInstance] connectToFileSystem:fileSystem
+                                               withViewController:viewController];
             }
             else
             {
-                id value = [dict valueForKey:key];
-                FileSystem fileSystem = -1;
-                UIViewController *viewController = self;
-                
-                if ([key isEqualToString:@"box_preference"])
-                {
-                    fileSystem = FileSystemBox;
-                }
-                else if ([key isEqualToString:@"dropbox_preference"])
-                {
-                    fileSystem = FileSystemDropbox;
-                }
-                else if ([key isEqualToString:@"google_drive_preference"])
-                {
-                    fileSystem = FileSystemGoogleDrive;
-                }
-                
-                else if ([key isEqualToString:@"icloud_preference"])
-                {
-                    fileSystem = FileSystemICloud;
-                }
-                
-                else if ([key isEqualToString:@"onedrive_preference"])
-                {
-                    fileSystem = FileSystemOneDrive;
-                }
-                
-                if ([value boolValue])
-                {
-                    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:YES] forKey:key];
-                    [[NSUserDefaults standardUserDefaults] synchronize];
-                    [[FileManager sharedInstance] setupFilesystem:fileSystem];
-                    
-                    [[FileManager sharedInstance] connectToFileSystem:fileSystem
-                                                   withViewController:viewController];
-                }
-                else
-                {
-                    [[FileManager sharedInstance] disconnectFromFileSystem:fileSystem];
-                }
+                [[FileManager sharedInstance] disconnectFromFileSystem:fileSystem];
             }
         }
     }

@@ -8,7 +8,6 @@
 
 #import "CardDetailsViewController.h"
 
-#import "JJJ/JJJUtil.h"
 #import "AddCardViewController.h"
 #import "AdvanceSearchResultsViewController.h"
 #import "Artist.h"
@@ -441,10 +440,67 @@
     [html appendFormat:@"<tr><td>%@</td></tr>", type];
     [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
 
-    if (self.card.originalType)
+    if (self.card.originalType && ![self.card.originalType isEqualToString:self.card.type])
     {
         [html appendFormat:@"<tr><td><div class=\"detailHeader\">Original Type</div></td></tr>"];
         [html appendFormat:@"<tr><td>%@</tr>", self.card.originalType];
+        [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
+    }
+
+    if (self.card.types.count > 1)
+    {
+        NSMutableString *types = [[NSMutableString alloc] init];
+        int i=0;
+        for (CardType *type in self.card.types)
+        {
+            [types appendFormat:@"%@", type.name];
+            if (i != self.card.types.count-1)
+            {
+                [types appendFormat:@", "];
+            }
+            i++;
+        }
+
+        [html appendFormat:@"<tr><td><div class=\"detailHeader\">Types</div></td></tr>"];
+        [html appendFormat:@"<tr><td>%@</tr>", types];
+        [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
+    }
+    
+    if (self.card.superTypes.count > 0)
+    {
+        NSMutableString *types = [[NSMutableString alloc] init];
+        int i=0;
+        for (CardType *type in self.card.superTypes)
+        {
+            [types appendFormat:@"%@", type.name];
+            if (i != self.card.superTypes.count-1)
+            {
+                [types appendFormat:@", "];
+            }
+            i++;
+        }
+        
+        [html appendFormat:@"<tr><td><div class=\"detailHeader\">Super Types</div></td></tr>"];
+        [html appendFormat:@"<tr><td>%@</tr>", types];
+        [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
+    }
+    
+    if (self.card.subTypes.count > 0)
+    {
+        NSMutableString *types = [[NSMutableString alloc] init];
+        int i=0;
+        for (CardType *type in self.card.subTypes)
+        {
+            [types appendFormat:@"%@", type.name];
+            if (i != self.card.subTypes.count-1)
+            {
+                [types appendFormat:@", "];
+            }
+            i++;
+        }
+        
+        [html appendFormat:@"<tr><td><div class=\"detailHeader\">Sub Types</div></td></tr>"];
+        [html appendFormat:@"<tr><td>%@</tr>", types];
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
 
