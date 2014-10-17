@@ -15,8 +15,6 @@
 #import "LimitedSearchViewController.h"
 #import "SearchResultsTableViewCell.h"
 
-#import "Decktracker-Swift.h"
-
 @implementation DeckDetailsViewController
 {
     NSArray *_arrDetailSections;
@@ -64,7 +62,7 @@
     [self.tblCards registerNib:[UINib nibWithNibName:@"SearchResultsTableViewCell" bundle:nil]
           forCellReuseIdentifier:@"Cell1"];
     
-    self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Details", @"Cards", @"Functions"]];
+    self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Details", @"Cards"/*, @"Functions"*/]];
     self.segmentedControl.frame = CGRectMake(dX+10, dY+7, dWidth-20, 30);
     self.segmentedControl.selectedSegmentIndex = 0;
     [self.segmentedControl addTarget:self
