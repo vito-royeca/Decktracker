@@ -49,7 +49,8 @@
     _arrCardSections = @[@"", @"Lands", @"Creatures", @"Other Spells", @"Sideboard"];
     _arrFunctionSections = @[@{@"": @[@""]},
                              @{@"Statistics" : @[@"Mana Curve", @"Card Types", @"Colors", @"Mana Source"]},
-                             @{@"" :@[@"Starting Hand"]}];
+                             @{@"" :@[@"Starting Hand"]},
+                             @{@"Pricing" :@[@"TCGPlayer"]}];
 
     CGFloat dX = 0;
     CGFloat dY = 0;
@@ -723,6 +724,20 @@
             }
             
             [self showLimitedSearch:predicate];
+        }
+    }
+    else if (self.segmentedControl.selectedSegmentIndex == 2)
+    {
+        switch (indexPath.section)
+        {
+            case 1:
+            {
+                break;
+            }
+            default:
+            {
+                break;
+            }
         }
     }
 }

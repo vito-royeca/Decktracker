@@ -395,58 +395,60 @@
 {
     NSMutableString *html = [[NSMutableString alloc] init];
     
-    [html appendFormat:@"<html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"%@/style.css\"></head><body>", [[NSBundle mainBundle] bundlePath]];
-    [html appendFormat:@"<table>"];
+    [html appendFormat:@"<html><head><link rel='stylesheet' type='text/css' href='%@/style.css'></head><body>", [[NSBundle mainBundle] bundlePath]];
+    [html appendFormat:@"<table width='100%%'>"];
     
     NSMutableString *text = [[NSMutableString alloc] init];
+    if (self.card.originalType && ![self.card.originalType isEqualToString:self.card.type])
+    {
+        [text appendFormat:@"<div class='originalType'>%@</div><p>", self.card.originalType];
+    }
+    else
+    {
+        [text appendFormat:@"<div class='originalType'>%@</div><p>", self.card.type];
+    }
     if (self.card.originalText)
     {
-        [text appendFormat:@"<div class=\"originalText\">%@</div>", [self replaceSymbolsInText:self.card.originalText]];
+        [text appendFormat:@"<div class='originalText'>%@</div>", [self replaceSymbolsInText:self.card.originalText]];
     }
     if (self.card.flavor)
     {
-        [text appendFormat:@"<p><div class=\"flavorText\">%@</div></p>", [self replaceSymbolsInText:self.card.flavor]];
+        [text appendFormat:@"<p><div class='flavorText'>%@</div></p>", [self replaceSymbolsInText:self.card.flavor]];
+    }
+    if (self.card.power || self.card.toughness)
+    {
+        [text appendFormat:@"<p><div class='powerToughness'>%@/%@</div>", self.card.power, self.card.toughness];
+    }
+    else if ([self.card.types containsObject:_planeswalkerType])
+    {
+        [text appendFormat:@"<p><div class='powerToughness'>%@</div?", self.card.loyalty];
     }
     if (text.length > 0)
     {
-        [html appendFormat:@"<tr><td>%@</td></tr>", text];
+        [html appendFormat:@"<tr><td align='center'><table class='textBox'><tr><td>%@</td></tr></table></td></tr>", text];
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
     
     if (self.card.text)
     {
-        [html appendFormat:@"<tr><td><div class=\"detailHeader\">Oracle Text</div></td></tr>"];
-        [html appendFormat:@"<tr><td>%@</td></tr>", [self replaceSymbolsInText:self.card.text]];
+        [html appendFormat:@"<tr><td><div class='detailHeader'>Oracle Text</div></td></tr>"];
+        [html appendFormat:@"<tr><td>%@<p>%@</td></tr>", self.card.type, [self replaceSymbolsInText:self.card.text]];
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
     
-    if (self.card.cmc)
-    {
-        [html appendFormat:@"<tr><td><div class=\"detailHeader\">Converted Mana Cost</div></td></tr>"];
-        [html appendFormat:@"<tr><td>%@</td></tr>", [self replaceSymbolsInText:[NSString stringWithFormat:@"{%@}", self.card.cmc]]];
-        [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
-    }
-    
-    NSMutableString *type = [[NSMutableString alloc] initWithFormat:@"%@", self.card.type];
     if (self.card.power || self.card.toughness)
     {
-        [type appendFormat:@" (%@/%@)", self.card.power, self.card.toughness];
+        [html appendFormat:@"<tr><td><div class='detailHeader'>Power / Toughness</div></td></tr>"];
+        [html appendFormat:@"<tr><td>%@/%@</td></tr>", self.card.power, self.card.toughness];
+        [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
     else if ([self.card.types containsObject:_planeswalkerType])
     {
-        [type appendFormat:@" (Loyalty: %@)", self.card.loyalty];
-    }
-    [html appendFormat:@"<tr><td><div class=\"detailHeader\">Type</div></td></tr>"];
-    [html appendFormat:@"<tr><td>%@</td></tr>", type];
-    [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
-
-    if (self.card.originalType && ![self.card.originalType isEqualToString:self.card.type])
-    {
-        [html appendFormat:@"<tr><td><div class=\"detailHeader\">Original Type</div></td></tr>"];
-        [html appendFormat:@"<tr><td>%@</tr>", self.card.originalType];
+        [html appendFormat:@"<tr><td><div class='detailHeader'>Loyalty</div></td></tr>"];
+        [html appendFormat:@"<tr><td>%@</td></tr>", self.card.loyalty];
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
-
+    
     if (self.card.types.count > 1)
     {
         NSMutableString *types = [[NSMutableString alloc] init];
@@ -461,7 +463,7 @@
             i++;
         }
 
-        [html appendFormat:@"<tr><td><div class=\"detailHeader\">Types</div></td></tr>"];
+        [html appendFormat:@"<tr><td><div class='detailHeader'>Types</div></td></tr>"];
         [html appendFormat:@"<tr><td>%@</tr>", types];
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
@@ -480,7 +482,7 @@
             i++;
         }
         
-        [html appendFormat:@"<tr><td><div class=\"detailHeader\">Super Types</div></td></tr>"];
+        [html appendFormat:@"<tr><td><div class='detailHeader'>Super Types</div></td></tr>"];
         [html appendFormat:@"<tr><td>%@</tr>", types];
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
@@ -499,37 +501,44 @@
             i++;
         }
         
-        [html appendFormat:@"<tr><td><div class=\"detailHeader\">Sub Types</div></td></tr>"];
+        [html appendFormat:@"<tr><td><div class='detailHeader'>Sub Types</div></td></tr>"];
         [html appendFormat:@"<tr><td>%@</tr>", types];
+        [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
+    }
+
+    if (self.card.cmc)
+    {
+        [html appendFormat:@"<tr><td><div class='detailHeader'>Converted Mana Cost</div></td></tr>"];
+        [html appendFormat:@"<tr><td>%@</td></tr>", [self replaceSymbolsInText:[NSString stringWithFormat:@"{%@}", self.card.cmc]]];
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
 
     if (self.card.number)
     {
-        [html appendFormat:@"<tr><td><div class=\"detailHeader\">Number</div></td></tr>"];
+        [html appendFormat:@"<tr><td><div class='detailHeader'>Number</div></td></tr>"];
         [html appendFormat:@"<tr><td>%@/%@</td></tr>", self.card.number, self.card.set.numberOfCards];
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
     
-    [html appendFormat:@"<tr><td><div class=\"detailHeader\">Artist</div></td></tr>"];
+    [html appendFormat:@"<tr><td><div class='detailHeader'>Artist</div></td></tr>"];
     [html appendFormat:@"<tr><td>%@</td></tr>", self.card.artist.name];
     [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     
     if (self.card.number)
     {
-        [html appendFormat:@"<tr><td><div class=\"detailHeader\">Number</div></td></tr>"];
+        [html appendFormat:@"<tr><td><div class='detailHeader'>Number</div></td></tr>"];
         [html appendFormat:@"<tr><td>%@/%@</td></tr>", self.card.number, self.card.set.numberOfCards];
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
     
     if (self.card.source)
     {
-        [html appendFormat:@"<tr><td><div class=\"detailHeader\">Source</div></td></tr>"];
+        [html appendFormat:@"<tr><td><div class='detailHeader'>Source</div></td></tr>"];
         [html appendFormat:@"<tr><td>%@</td></tr>", self.card.source];
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
 
-    [html appendFormat:@"<tr><td><div class=\"detailHeader\">All Sets</div></td></tr>"];
+    [html appendFormat:@"<tr><td><div class='detailHeader'>All Sets</div></td></tr>"];
     [html appendFormat:@"<tr><td><table>"];
     for (Set *set in [[self.card.printings allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"releaseDate" ascending:YES]]])
     {
@@ -537,7 +546,7 @@
         
         NSString *link = [[NSString stringWithFormat:@"card?name=%@&set=%@", card.name, card.set.code] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         
-        [html appendFormat:@"<tr><td><a href=\"%@\">%@</a></td><td><a href=\"%@\">%@</a></td></tr>", link, [self composeSetImage:card], link, set.name];
+        [html appendFormat:@"<tr><td><a href='%@'>%@</a></td><td><a href='%@'>%@</a></td></tr>", link, [self composeSetImage:card], link, set.name];
         [html appendFormat:@"<tr><td>&nbsp;</td><td>Release Date: %@</td></tr>", [JJJUtil formatDate:set.releaseDate withFormat:@"YYYY-MM-dd"]];
     }
     [html appendFormat:@"</table></td></tr>"];
@@ -545,13 +554,13 @@
     
     if (self.card.names.count > 0)
     {
-        [html appendFormat:@"<tr><td><div class=\"detailHeader\">Names</div></td></tr>"];
+        [html appendFormat:@"<tr><td><div class='detailHeader'>Names</div></td></tr>"];
         [html appendFormat:@"<tr><td><table>"];
         for (Card *card in [[self.card.names allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]])
         {
             NSString *link = [[NSString stringWithFormat:@"card?name=%@&set=%@", card.name, card.set.code] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             
-            [html appendFormat:@"<tr><td><a href=\"%@\">%@</a></td><td><a href=\"%@\">%@</a></td></tr>", link, [self composeSetImage:card], link, card.name];
+            [html appendFormat:@"<tr><td><a href='%@'>%@</a></td><td><a href='%@'>%@</a></td></tr>", link, [self composeSetImage:card], link, card.name];
         }
         [html appendFormat:@"</table></td></tr>"];
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
@@ -559,13 +568,13 @@
     
     if (self.card.variations.count > 0)
     {
-        [html appendFormat:@"<tr><td><div class=\"detailHeader\">Variations</div></td></tr>"];
+        [html appendFormat:@"<tr><td><div class='detailHeader'>Variations</div></td></tr>"];
         [html appendFormat:@"<tr><td><table>"];
         for (Card *card in [[self.card.variations allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]])
         {
             NSString *link = [[NSString stringWithFormat:@"card?name=%@&set=%@", card.name, card.set.code] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             
-            [html appendFormat:@"<tr><td><a href=\"%@\">%@</a></td><td><a href=\"%@\">%@</a></td></tr>", link, [self composeSetImage:card], link, card.name];
+            [html appendFormat:@"<tr><td><a href='%@'>%@</a></td><td><a href='%@'>%@</a></td></tr>", link, [self composeSetImage:card], link, card.name];
         }
         [html appendFormat:@"</table></td></tr>"];
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
@@ -573,7 +582,7 @@
     
     if (self.card.rulings.count > 0)
     {
-        [html appendFormat:@"<tr><td><div class=\"detailHeader\">Rulings</div></td></tr>"];
+        [html appendFormat:@"<tr><td><div class='detailHeader'>Rulings</div></td></tr>"];
         for (CardRuling *ruling in [[self.card.rulings allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO]]])
         {
             [html appendFormat:@"<tr><td><i><b>%@</b></i>: %@</td></tr>", [JJJUtil formatDate:ruling.date withFormat:@"YYYY-MM-dd"], [self replaceSymbolsInText:ruling.text]];
@@ -583,12 +592,12 @@
     
     if (self.card.legalities.count > 0)
     {
-        [html appendFormat:@"<tr><td><div class=\"detailHeader\">Legalities</div></td></tr>"];
-        [html appendFormat:@"<tr><td><table width=\"100%%\">"];
+        [html appendFormat:@"<tr><td><div class='detailHeader'>Legalities</div></td></tr>"];
+        [html appendFormat:@"<tr><td><table width='100%%'>"];
         for (CardLegality *legality in [[self.card.legalities allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"format.name" ascending:YES],
               [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]])
         {
-            [html appendFormat:@"<tr><td width=\"50%%\">%@</td><td>%@</td></tr>", legality.format.name, legality.name];
+            [html appendFormat:@"<tr><td width='50%%'>%@</td><td>%@</td></tr>", legality.format.name, legality.name];
         }
         [html appendFormat:@"</table></td></tr>"];
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
@@ -596,11 +605,11 @@
 
     if (self.card.foreignNames.count > 0)
     {
-        [html appendFormat:@"<tr><td><div class=\"detailHeader\">Languages</div></td></tr>"];
-        [html appendFormat:@"<tr><td><table width=\"100%%\">"];
+        [html appendFormat:@"<tr><td><div class='detailHeader'>Languages</div></td></tr>"];
+        [html appendFormat:@"<tr><td><table width='100%%'>"];
         for (CardForeignName *foreignName in [[self.card.foreignNames allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"language" ascending:YES]]])
         {
-            [html appendFormat:@"<tr><td width=\"50%%\">%@</td><td>%@</td></tr>", foreignName.language, foreignName.name];
+            [html appendFormat:@"<tr><td width='50%%'>%@</td><td>%@</td></tr>", foreignName.language, foreignName.name];
         }
         [html appendFormat:@"</table></td></tr>"];
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
@@ -615,7 +624,7 @@
     NSString *setPath = [[FileManager sharedInstance] cardSetPath:card];
     UIImage *image = [[UIImage alloc] initWithContentsOfFile:setPath];
     
-    return [NSString stringWithFormat:@"<img src=\"%@\" width=\"%f\" height=\"%f\" border=\"0\" />", setPath, image.size.width/2, image.size.height/2];
+    return [NSString stringWithFormat:@"<img src='%@' width='%f' height='%f' border='0' />", setPath, image.size.width/2, image.size.height/2];
 }
 
 - (NSString*) composePricing
@@ -628,35 +637,35 @@
     [[Database sharedInstance] fetchTcgPlayerPriceForCard:self.card];
     NSMutableString *html = [[NSMutableString alloc] init];
     
-    [html appendFormat:@"<html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"%@/style.css\"></head><body>", [[NSBundle mainBundle] bundlePath]];
-    [html appendFormat:@"<center><table width=\"100%%\">"];
+    [html appendFormat:@"<html><head><link rel='stylesheet' type='text/css' href='%@/style.css'></head><body>", [[NSBundle mainBundle] bundlePath]];
+    [html appendFormat:@"<center><table width='100%%'>"];
 
     [html appendFormat:@"<tr>"];
-    [html appendFormat:@"<td align=\"center\" bgcolor=\"red\" width=\"25%%\"><font color=\"white\">Low</font></td>"];
-    [html appendFormat:@"<td align=\"center\" bgcolor=\"blue\" width=\"25%%\"><font color=\"white\">Median</font></td>"];
-    [html appendFormat:@"<td align=\"center\" bgcolor=\"green\" width=\"25%%\"><font color=\"white\">High</font></td>"];
-    [html appendFormat:@"<td align=\"center\" bgcolor=\"silver\" width=\"25%%\"><font color=\"white\">Foil</font></td>"];
+    [html appendFormat:@"<td align='center' bgcolor='red' width='25%%'><font color='white'>Low</font></td>"];
+    [html appendFormat:@"<td align='center' bgcolor='blue' width='25%%'><font color='white'>Median</font></td>"];
+    [html appendFormat:@"<td align='center' bgcolor='green' width='25%%'><font color='white'>High</font></td>"];
+    [html appendFormat:@"<td align='center' bgcolor='silver' width='25%%'><font color='white'>Foil</font></td>"];
     [html appendFormat:@"</tr>"];
     
     NSString *price;
     [html appendFormat:@"<tr>"];
     price = [self.card.tcgPlayerLowPrice doubleValue] != 0 ? [NSString stringWithFormat:@"$%@", [formatter stringFromNumber:self.card.tcgPlayerLowPrice]] : @"N/A";
-    [html appendFormat:@"<td align=\"right\" width=\"25%%\">%@</td>", price];
+    [html appendFormat:@"<td align='right' width='25%%'>%@</td>", price];
     
     price = [self.card.tcgPlayerMidPrice doubleValue] != 0 ? [NSString stringWithFormat:@"$%@", [formatter stringFromNumber:self.card.tcgPlayerMidPrice]] : @"N/A";
-    [html appendFormat:@"<td align=\"right\" width=\"25%%\">%@</td>", price];
+    [html appendFormat:@"<td align='right' width='25%%'>%@</td>", price];
     
     price = [self.card.tcgPlayerHighPrice doubleValue] != 0 ? [NSString stringWithFormat:@"$%@", [formatter stringFromNumber:self.card.tcgPlayerHighPrice]] : @"N/A";
-    [html appendFormat:@"<td align=\"right\" width=\"25%%\">%@</td>", price];
+    [html appendFormat:@"<td align='right' width='25%%'>%@</td>", price];
     
     price = [self.card.tcgPlayerFoilPrice doubleValue] != 0 ? [NSString stringWithFormat:@"$%@", [formatter stringFromNumber:self.card.tcgPlayerFoilPrice]] : @"N/A";
-    [html appendFormat:@"<td align=\"right\" width=\"25%%\">%@</td>", price];
+    [html appendFormat:@"<td align='right' width='25%%'>%@</td>", price];
     
     [html appendFormat:@"</tr>"];
-    [html appendFormat:@"<tr><td colspan=\"3\">&nbsp;</td></tr>"];
+    [html appendFormat:@"<tr><td colspan='3'>&nbsp;</td></tr>"];
     if (self.card.tcgPlayerLink)
     {
-        [html appendFormat:@"<tr><td colspan=\"3\">More details at <a href=%@>TCGPlayer</a>.</td></tr>", self.card.tcgPlayerLink];
+        [html appendFormat:@"<tr><td colspan='3'>More details at <a href=%@>TCGPlayer</a>.</td></tr>", self.card.tcgPlayerLink];
     }
 
     [html appendFormat:@"</table></center></body></html>"];
@@ -719,17 +728,17 @@
         {
             if ([mana isEqualToString:noCurlies])
             {
-                text = [text stringByReplacingOccurrencesOfString:symbol withString:[NSString stringWithFormat:@"<img src=\"%@/images/mana/%@/%d.png\" width=\"%d\"/ height=\"%d\" />", [[NSBundle mainBundle] bundlePath], noCurlies, pngSize, width, height]];
+                text = [text stringByReplacingOccurrencesOfString:symbol withString:[NSString stringWithFormat:@"<img src='%@/images/mana/%@/%d.png' width='%d'/ height='%d' />", [[NSBundle mainBundle] bundlePath], noCurlies, pngSize, width, height]];
                 bFound = YES;
             }
             else if ([mana isEqualToString:noCurliesReverse])
             {
-                text = [text stringByReplacingOccurrencesOfString:symbol withString:[NSString stringWithFormat:@"<img src=\"%@/images/mana/%@/%d.png\" width=\"%d\"/ height=\"%d\" />", [[NSBundle mainBundle] bundlePath], noCurliesReverse, pngSize, width, height]];
+                text = [text stringByReplacingOccurrencesOfString:symbol withString:[NSString stringWithFormat:@"<img src='%@/images/mana/%@/%d.png' width='%d'/ height='%d' />", [[NSBundle mainBundle] bundlePath], noCurliesReverse, pngSize, width, height]];
                 bFound = YES;
             }
             else if ([mana isEqualToString:@"Infinity"])
             {
-                text = [text stringByReplacingOccurrencesOfString:@"{∞}" withString:[NSString stringWithFormat:@"<img src=\"%@/images/mana/Infinity/%d.png\" width=\"%d\"/ height=\"%d\" />", [[NSBundle mainBundle] bundlePath], pngSize, width, height]];
+                text = [text stringByReplacingOccurrencesOfString:@"{∞}" withString:[NSString stringWithFormat:@"<img src='%@/images/mana/Infinity/%d.png' width='%d'/ height='%d' />", [[NSBundle mainBundle] bundlePath], pngSize, width, height]];
             }
         }
         
@@ -739,11 +748,11 @@
             {
                 if ([mana isEqualToString:noCurlies])
                 {
-                    text = [text stringByReplacingOccurrencesOfString:symbol withString:[NSString stringWithFormat:@"<img src=\"%@/images/other/%@/%d.png\" width=\"%d\"/ height=\"%d\" />", [[NSBundle mainBundle] bundlePath], noCurlies, pngSize, width, height]];
+                    text = [text stringByReplacingOccurrencesOfString:symbol withString:[NSString stringWithFormat:@"<img src='%@/images/other/%@/%d.png' width='%d'/ height='%d' />", [[NSBundle mainBundle] bundlePath], noCurlies, pngSize, width, height]];
                 }
                 else if ([mana isEqualToString:noCurlies])
                 {
-                    text = [text stringByReplacingOccurrencesOfString:symbol withString:[NSString stringWithFormat:@"<img src=\"%@/images/other/%@/%d.png\" width=\"%d\"/ height=\"%d\" />", [[NSBundle mainBundle] bundlePath], noCurliesReverse, pngSize, width, height]];
+                    text = [text stringByReplacingOccurrencesOfString:symbol withString:[NSString stringWithFormat:@"<img src='%@/images/other/%@/%d.png' width='%d'/ height='%d' />", [[NSBundle mainBundle] bundlePath], noCurliesReverse, pngSize, width, height]];
                 }
             }
         }

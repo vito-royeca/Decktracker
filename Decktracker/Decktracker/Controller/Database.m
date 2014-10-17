@@ -11,6 +11,8 @@
 #import "Magic.h"
 #import "Set.h"
 
+#import <Crashlytics/Crashlytics.h>
+
 @implementation Database
 
 static Database *_me;
@@ -45,6 +47,30 @@ static Database *_me;
     NSString *documentPath = [paths firstObject];
     NSString *storePath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", kDatabaseStore]];
     
+    NSDictionary *arrCardUpdates = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"Card Updates"];
+    for (NSString *ver in [arrCardUpdates allKeys])
+    {
+        for (NSString *setCode in arrCardUpdates[ver])
+        {
+            NSString *key = [NSString stringWithFormat:@"%@-%@", ver, setCode];
+            
+            if (![[NSUserDefaults standardUserDefaults] boolForKey:key])
+            {
+                NSString *path = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/card/%@/", setCode]];
+                
+                if ([[NSFileManager defaultManager] fileExistsAtPath:path])
+                {
+                    for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil])
+                    {
+                        [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@", path, file] error:nil];
+                    }
+                }
+            }
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:key];
+        }
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    
     if (![[NSFileManager defaultManager] fileExistsAtPath:storePath])
     {
         NSString *preloadPath = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] bundlePath], kDatabaseStore];
@@ -60,35 +86,10 @@ static Database *_me;
     }
     else
     {
-        BOOL bDelete = NO;
         NSString *currentJSONVersion = [[NSUserDefaults standardUserDefaults] valueForKey:@"JSON Version"];
-        NSString *currentImagesVersion = [[NSUserDefaults standardUserDefaults] valueForKey:@"Images Version"];
+        
         
         if (!currentJSONVersion || ![jsonVersion isEqualToString:currentJSONVersion])
-        {
-            bDelete = YES;
-        }
-        
-        if ((!currentImagesVersion || ![imagesVersion isEqualToString:currentImagesVersion]))
-        {
-            NSDictionary *arrCardUpdates = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"Card Updates"];
-            
-            for (NSString *ver in [arrCardUpdates allKeys])
-            {
-                for (NSString *set in arrCardUpdates[ver])
-                {
-                    NSString *path = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/card/%@/", set]];
-                    
-                    for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil])
-                    {
-                        [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@", path, file] error:nil];
-                    }
-
-                }
-            }
-        }
-        
-        if (bDelete)
         {
             for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentPath error:nil])
             {
@@ -445,7 +446,7 @@ static Database *_me;
         c.tcgPlayerLink = [JJJUtil trim:link];
         c.tcgPlayerFetchDate = [NSDate date];
         [currentContext MR_save];
-//        card = c;
+        card = c;
     }
 }
 

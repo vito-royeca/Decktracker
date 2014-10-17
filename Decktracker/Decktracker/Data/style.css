@@ -21,8 +21,20 @@ html, body
 
 @font-face
 {
+    font-family: Magic;
+    src: url('Goudy Medieval.ttf');
+}
+
+@font-face
+{
+    font-family: Matrix;
+    src: url('Matrix Bold.ttf');
+}
+
+@font-face
+{
     font-family: MPlantin;
-    src: url(MPlantin.ttf);
+    src: url('MPlantin.ttf');
 }
 
 .detailHeader
@@ -30,6 +42,12 @@ html, body
     font-family: Helvetica;
     font-size: 12pt;
     font-weight: bold;
+}
+
+.originalType
+{
+    font-family : MPlantin;
+    font-size: 14pt;
 }
 
 .originalText
@@ -43,4 +61,19 @@ html, body
     font-family : "Times New Roman";
     font-style: italic;
     font-size: 12pt;
+}
+
+.textBox
+{
+    padding: 10px;
+    width: 100%;
+    border: 1px solid gray;
+}
+
+.powerToughness
+{
+    font-family : MPlantin;
+    font-style: italic;
+    font-size: 14pt;
+    text-align: right;
 }

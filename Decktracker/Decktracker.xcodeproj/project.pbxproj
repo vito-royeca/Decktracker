@@ -40,7 +40,6 @@
 		8C3277FD199A464D00899790 /* style.css in Resources */ = {isa = PBXBuildFile; fileRef = 8C3277FC199A464D00899790 /* style.css */; };
 		8C33E9BE19D73AAB000892D9 /* InAppPurchaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C33E9BD19D73AAB000892D9 /* InAppPurchaseViewController.m */; };
 		8C378E0019A7434B00B9367F /* MHFacebookImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C378DFF19A7434B00B9367F /* MHFacebookImageViewer.m */; };
-		8C389B0919ED502900FE28D8 /* GraphViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C389B0819ED502900FE28D8 /* GraphViewController.swift */; };
 		8C3C7D6719DE41CB0030B6E9 /* MTG-JSON.license in Resources */ = {isa = PBXBuildFile; fileRef = 8C3C7D6519DE41CB0030B6E9 /* MTG-JSON.license */; };
 		8C3C7D6E19DE41EE0030B6E9 /* MTG-Image.license in Resources */ = {isa = PBXBuildFile; fileRef = 8C3C7D6C19DE41EE0030B6E9 /* MTG-Image.license */; };
 		8C3CBDBE19A31615002CD96E /* CardForeignName.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDBD19A31615002CD96E /* CardForeignName.m */; };
@@ -184,7 +183,6 @@
 		8C36A21519ECF6D400F09F78 /* Decktracker-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Decktracker-Bridging-Header.h"; sourceTree = "<group>"; };
 		8C378DFE19A7434B00B9367F /* MHFacebookImageViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MHFacebookImageViewer.h; sourceTree = "<group>"; };
 		8C378DFF19A7434B00B9367F /* MHFacebookImageViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MHFacebookImageViewer.m; sourceTree = "<group>"; };
-		8C389B0819ED502900FE28D8 /* GraphViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphViewController.swift; sourceTree = "<group>"; };
 		8C3C7D6519DE41CB0030B6E9 /* MTG-JSON.license */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "MTG-JSON.license"; sourceTree = "<group>"; };
 		8C3C7D6C19DE41EE0030B6E9 /* MTG-Image.license */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "MTG-Image.license"; sourceTree = "<group>"; };
 		8C3CBDBC19A31615002CD96E /* CardForeignName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardForeignName.h; sourceTree = "<group>"; };
@@ -457,7 +455,6 @@
 				8C21069F19B6EF85001DE039 /* QuantityTableViewCell.xib */,
 				8C26A66B19A63EA500FE00E7 /* Search */,
 				8C524A6D19B82BD8005E697B /* Settings */,
-				8C389B0819ED502900FE28D8 /* GraphViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -830,7 +827,6 @@
 				8C3CBDDC19A31618002CD96E /* SetType.m in Sources */,
 				8C378E0019A7434B00B9367F /* MHFacebookImageViewer.m in Sources */,
 				8CF79A6B19A8BFB400BE4246 /* CollectionsViewController.m in Sources */,
-				8C389B0919ED502900FE28D8 /* GraphViewController.swift in Sources */,
 				8C26A67A19A63FAC00FE00E7 /* AdvanceSearchViewController.m in Sources */,
 				8C524A7019B82C01005E697B /* SettingsViewController.m in Sources */,
 				8C3CBDC419A31615002CD96E /* CardRuling.m in Sources */,
