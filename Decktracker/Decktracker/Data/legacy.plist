@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Banned</key>
+	<array>
+	    <string>Advantageous Proclamation</string>
+    	<string>Amulet of Quoz</string>
+    	<string>Backup Plan</string>
+    	<string>Brago's Favor</string>
+    	<string>Bronze Tablet</string>
+    	<string>Chaos Orb</string>
+    	<string>Contract from Below</string>
+    	<string>Darkpact</string>
+    	<string>Demonic Attorney</string>
+    	<string>Double Stroke</string>
+    	<string>Falling Star</string>
+    	<string>Immediate Action</string>
+    	<string>Iterative Analysis</string>
+    	<string>Jeweled Bird</string>
+    	<string>Muzzio's Preparations</string>
+    	<string>Power Play</string>
+    	<string>Rebirth</string>
+    	<string>Secret Summoning</string>
+    	<string>Secrets of Paradise</string>
+    	<string>Sentinel Dispatch</string>
+    	<string>Shahrazad</string>
+    	<string>Tempest Efreet</string>
+    	<string>Timmerian Fiends</string>
+    	<string>Unexpected Potential</string>
+    	<string>Worldknit</string>
+	</array>
+	<key>Restricted</key>
+	<array>
+    <string>Ancestral Recall</string>
+    <string>Balance</string>
+    <string>Black Lotus</string>
+    <string>Brainstorm</string>
+    <string>Channel</string>
+    <string>Demonic Consultation</string>
+    <string>Demonic Tutor</string>
+    <string>Fastbond</string>
+    <string>Flash</string>
+    <string>Gifts Ungiven</string>
+    <string>Imperial Seal</string>
+    <string>Library of Alexandria</string>
+    <string>Lion's Eye Diamond</string>
+    <string>Lotus Petal</string>
+    <string>Mana Crypt</string>
+    <string>Mana Vault</string>
+    <string>Memory Jar</string>
+    <string>Merchant Scroll</string>
+    <string>Mind's Desire</string>
+    <string>Mox Emerald</string>
+    <string>Mox Jet</string>
+    <string>Mox Pearl</string>
+    <string>Mox Ruby</string>
+    <string>Mox Sapphire</string>
+    <string>Mystical Tutor</string>
+    <string>Necropotence</string>
+    <string>Ponder</string>
+    <string>Sol Ring</string>
+    <string>Strip Mine</string>
+    <string>Thirst for Knowledge</string>
+    <string>Time Vault</string>
+    <string>Time Walk</string>
+    <string>Timetwister</string>
+    <string>Tinker</string>
+    <string>Tolarian Academy</string>
+    <string>Trinisphere</string>
+    <string>Vampiric Tutor</string>
+    <string>Wheel of Fortune</string>
+    <string>Windfall</string>
+    <string>Yawgmoth's Bargain</string>
+    <string>Yawgmoth's Will</string>
+
+	</array>
+</dict>
+</plist>
