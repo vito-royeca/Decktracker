@@ -1,6 +1,0 @@
-#include "Pods-Decktracker-BugSense.xcconfig"
-FRAMEWORK_SEARCH_PATHS = ${PODS_DECKTRACKER_BUGSENSE_FRAMEWORK_SEARCH_PATHS}
-GCC_PREPROCESSOR_DEFINITIONS = COCOAPODS=1
-HEADER_SEARCH_PATHS = "${PODS_ROOT}/BuildHeaders" "${PODS_ROOT}/BuildHeaders/BugSense" "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/AFNetworking" "${PODS_ROOT}/Headers/BugSense" "${PODS_ROOT}/Headers/GoogleAnalytics-iOS-SDK" "${PODS_ROOT}/Headers/HMSegmentedControl" "${PODS_ROOT}/Headers/MBProgressHUD" "${PODS_ROOT}/Headers/MMDrawerController" "${PODS_ROOT}/Headers/MagicalRecord" "${PODS_ROOT}/Headers/hpple" ${PODS_DECKTRACKER_BUGSENSE_HEADER_SEARCH_PATHS}
-OTHER_LDFLAGS = -ObjC ${PODS_DECKTRACKER_BUGSENSE_OTHER_LDFLAGS}
-PODS_ROOT = ${SRCROOT}
