@@ -1,1 +1,0 @@
-../../../box-ios-sdk-v2/BoxSDK/FolderPicker/BoxFolderPickerHelper.h
