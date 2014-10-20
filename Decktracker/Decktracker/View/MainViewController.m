@@ -13,6 +13,8 @@
 #import "SimpleSearchViewController.h"
 #import "SettingsViewController.h"
 
+#import "Decktracker-Swift.h"
+
 @implementation MainViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -51,7 +53,12 @@
                                                    image:[UIImage imageNamed:@"settings.png"]
                                            selectedImage:nil];
     
-    self.viewControllers = @[nc1, nc2, nc4];
+    UINavigationController *nc5 = [[UINavigationController alloc] init];
+    UIViewController *vc5 = [[MoreViewController alloc] initWithNibName:nil bundle:nil];
+    nc5.viewControllers = [NSArray arrayWithObjects:vc5, nil];
+    nc5.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemMore tag:5];
+    
+    self.viewControllers = @[nc1, nc2, nc4, nc5];
     self.selectedViewController = nc1;
     
     if ([InAppPurchase isProductPurchased:COLLECTIONS_IAP_PRODUCT_ID])

@@ -12,8 +12,11 @@
 
 @interface SimpleSearchViewController : UIViewController<UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate, MBProgressHUDDelegate>
 
+@property(strong,nonatomic) NSString *titleString;
 @property(strong,nonatomic) UISearchBar *searchBar;
 @property(strong,nonatomic) UITableView *tblResults;
+@property(strong,nonatomic) NSPredicate *predicate;
 @property(strong,nonatomic) NSFetchedResultsController *fetchedResultsController;
 
+- (void) doSearch;
 @end

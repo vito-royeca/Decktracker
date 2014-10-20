@@ -22,8 +22,10 @@
 
 @implementation SimpleSearchViewController
 
+@synthesize titleString = _titleString;
 @synthesize searchBar  = _searchBar;
 @synthesize tblResults = _tblResults;
+@synthesize predicate = _predicate;
 @synthesize fetchedResultsController = _fetchedResultsController;
 
 - (NSFetchedResultsController *)fetchedResultsController
@@ -33,7 +35,7 @@
         return _fetchedResultsController;
     }
     
-    NSFetchedResultsController *nsfrc = [[Database sharedInstance] search:self.searchBar.text];
+    NSFetchedResultsController *nsfrc = self.predicate ? [[Database sharedInstance] search:self.searchBar.text withPredicate:self.predicate] : [[Database sharedInstance] search:self.searchBar.text];
     
     self.fetchedResultsController = nsfrc;
     _fetchedResultsController.delegate = self;
@@ -59,17 +61,23 @@
     CGFloat dY = 0;//[UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height;
     CGFloat dWidth = self.view.frame.size.width;
     CGFloat dHeight = self.view.frame.size.height - dY - self.tabBarController.tabBar.frame.size.height;
-    self.searchBar = [[UISearchBar alloc] init];
-    self.searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    self.searchBar.placeholder = @"Search";
-    self.searchBar.delegate = self;
-    // Add a Done button in the keyboard
-    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                               target:self.searchBar
-                                                                               action:@selector(resignFirstResponder)];
-    UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, dWidth, 44)];
-    toolbar.items = [NSArray arrayWithObject:barButton];
-    self.searchBar.inputAccessoryView = toolbar;
+    
+    if (!self.titleString)
+    {
+        self.searchBar = [[UISearchBar alloc] init];
+        self.searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        self.searchBar.placeholder = @"Search";
+        self.searchBar.delegate = self;
+    
+    
+        // Add a Done button in the keyboard
+        UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                   target:self.searchBar
+                                                                                   action:@selector(resignFirstResponder)];
+        UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, dWidth, 44)];
+        toolbar.items = [NSArray arrayWithObject:barButton];
+        self.searchBar.inputAccessoryView = toolbar;
+    }
     
     self.tblResults = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)
                                                    style:UITableViewStylePlain];
@@ -78,14 +86,20 @@
     [self.tblResults registerNib:[UINib nibWithNibName:@"SearchResultsTableViewCell" bundle:nil]
           forCellReuseIdentifier:@"Cell"];
     
-    self.navigationItem.titleView = self.searchBar;
+    if (self.titleString)
+    {
+        self.navigationItem.title = _titleString;
+    }
+    else
+    {
+        UIBarButtonItem *btnAdvance = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"filter.png"]
+                                                                       style:UIBarButtonItemStylePlain
+                                                                      target:self
+                                                                      action:@selector(btnAdvanceTapped:)];
+        self.navigationItem.leftBarButtonItem = btnAdvance;
+        self.navigationItem.titleView = self.searchBar;
+    }
     [self.view addSubview:self.tblResults];
-    
-    UIBarButtonItem *btnAdvance = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"filter.png"]
-                                                                   style:UIBarButtonItemStylePlain
-                                                                  target:self
-                                                                  action:@selector(btnAdvanceTapped:)];
-    self.navigationItem.leftBarButtonItem = btnAdvance;
     
     // send the screen to Google Analytics
     id tracker = [[GAI sharedInstance] defaultTracker];
