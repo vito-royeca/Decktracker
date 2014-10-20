@@ -1,0 +1,1 @@
+PODS_DECKTRACKER_BOX_IOS_SDK_V__OTHER_LDFLAGS = -ObjC -framework "QuartzCore" -framework "Security"
