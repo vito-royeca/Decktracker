@@ -312,7 +312,7 @@
         id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
         selectedRow = [sectionInfo.objects indexOfObject:self.card];
     }
-    
+
     UIImage *image = [UIImage imageWithContentsOfFile:[[FileManager sharedInstance] cardPath:self.card]];
     [self.cardImage setImage:image];
     self.cardImage.contentMode = UIViewContentModeScaleAspectFit;
@@ -513,13 +513,6 @@
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
 
-    if (self.card.number)
-    {
-        [html appendFormat:@"<tr><td><div class='detailHeader'>Number</div></td></tr>"];
-        [html appendFormat:@"<tr><td>%@/%@</td></tr>", self.card.number, self.card.set.numberOfCards];
-        [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
-    }
-    
     [html appendFormat:@"<tr><td><div class='detailHeader'>Artist</div></td></tr>"];
     [html appendFormat:@"<tr><td>%@</td></tr>", self.card.artist.name];
     [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];

@@ -56,9 +56,11 @@ static FileManager *_me;
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths firstObject];
     NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/card/%@/", card.set.code]];
-    NSString *cardPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.hq.jpg", card.imageName]];
+    NSString *cardHQPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.hq.jpg", card.imageName]];
+    NSString *cardPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.jpg", card.imageName]];
+    NSString *cardBackPath = [NSString stringWithFormat:@"%@/images/cardback.hq.jpg", [[NSBundle mainBundle] bundlePath]];
     
-    return [[NSFileManager defaultManager] fileExistsAtPath:cardPath] ? cardPath : [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.jpg", card.imageName]];
+    return [[NSFileManager defaultManager] fileExistsAtPath:cardHQPath] ? cardHQPath : ([[NSFileManager defaultManager] fileExistsAtPath:cardPath] ? cardPath : cardBackPath);
 }
 
 -(NSString*) cropPath:(Card*) card
@@ -66,9 +68,11 @@ static FileManager *_me;
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths firstObject];
     NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/crop/%@/", card.set.code]];
-    NSString *cropPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.crop.hq.jpg", card.imageName]];
+    NSString *cropHQPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.crop.hq.jpg", card.imageName]];
+    NSString *cropPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.crop.jpg", card.imageName]];
+    NSString *cropBackPath = [NSString stringWithFormat:@"%@/images/cropback.hq.jpg", [[NSBundle mainBundle] bundlePath]];
     
-    return [[NSFileManager defaultManager] fileExistsAtPath:cropPath] ? cropPath : [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.crop.jpg", card.imageName]];
+    return [[NSFileManager defaultManager] fileExistsAtPath:cropHQPath] ? cropHQPath : ([[NSFileManager defaultManager] fileExistsAtPath:cropPath] ? cropPath : cropBackPath);
 }
 
 -(NSString*) cardSetPath:(Card*) card

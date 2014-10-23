@@ -11,8 +11,6 @@
 #import "Magic.h"
 #import "Set.h"
 
-#import <Crashlytics/Crashlytics.h>
-
 @implementation Database
 
 static Database *_me;
