@@ -510,7 +510,7 @@
 				8C3E949C19E4246400C7EF21 /* database.xcdatamodel */,
 				8C3E949D19E4246400C7EF21 /* Oct-5-2014.xcdatamodel */,
 			);
-			currentVersion = 8C3E949C19E4246400C7EF21 /* database.xcdatamodel */;
+			currentVersion = 8C3E949D19E4246400C7EF21 /* Oct-5-2014.xcdatamodel */;
 			name = database.xcdatamodeld;
 			path = ../../Decktracker/Decktracker/Model/database.xcdatamodeld;
 			sourceTree = "<group>";
