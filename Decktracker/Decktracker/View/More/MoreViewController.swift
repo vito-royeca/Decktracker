@@ -28,6 +28,11 @@ public class MoreViewController: UIViewController, UITableViewDataSource, UITabl
         
         view.addSubview(tblMore)
         self.navigationItem.title = "More"
+        
+        // send the screen to Google Analytics
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.set(kGAIScreenName, value: "More")
+        tracker.send(GAIDictionaryBuilder.createScreenView().build())
     }
 
     public override func didReceiveMemoryWarning() {

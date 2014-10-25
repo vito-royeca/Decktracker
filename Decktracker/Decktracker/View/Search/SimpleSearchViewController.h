@@ -18,5 +18,7 @@
 @property(strong,nonatomic) NSPredicate *predicate;
 @property(strong,nonatomic) NSFetchedResultsController *fetchedResultsController;
 
+@property(nonatomic) BOOL showTabBar;
+
 - (void) doSearch;
 @end

@@ -5,6 +5,9 @@
 #import "CoreData+MagicalRecord.h"
 #import "CorePlot-CocoaTouch.h"
 #import "ReaderViewController.h"
+#import "GAI.h"
+#import "GAIDictionaryBuilder.h"
+#import "GAIFields.h"
 
 #import "Artist.h"
 #import "Block.h"

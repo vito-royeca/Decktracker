@@ -27,6 +27,7 @@
 @synthesize tblResults = _tblResults;
 @synthesize predicate = _predicate;
 @synthesize fetchedResultsController = _fetchedResultsController;
+@synthesize showTabBar = _showTabBar;
 
 - (NSFetchedResultsController *)fetchedResultsController
 {
@@ -48,6 +49,7 @@
     if (self)
     {
         // Custom initialization
+        self.showTabBar = YES;
     }
     return self;
 }
@@ -60,7 +62,8 @@
     CGFloat dX = 0;
     CGFloat dY = 0;//[UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height;
     CGFloat dWidth = self.view.frame.size.width;
-    CGFloat dHeight = self.view.frame.size.height - dY - self.tabBarController.tabBar.frame.size.height;
+    CGFloat dHeight = self.view.frame.size.height - dY -
+        (self.showTabBar ? self.tabBarController.tabBar.frame.size.height : 0);
     
     if (!self.titleString)
     {

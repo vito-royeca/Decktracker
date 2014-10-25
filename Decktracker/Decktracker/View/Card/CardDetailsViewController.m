@@ -513,9 +513,15 @@
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
 
-    [html appendFormat:@"<tr><td><div class='detailHeader'>Artist</div></td></tr>"];
-    [html appendFormat:@"<tr><td>%@</td></tr>", self.card.artist.name];
-    [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
+    if (self.card.artist)
+    {
+        NSString *link = [[NSString stringWithFormat:@"card?Artist=%@", self.card.artist.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        
+        [html appendFormat:@"<tr><td><div class='detailHeader'>Artist</div></td></tr>"];
+        [html appendFormat:@"<tr><td>%@</td></tr>", self.card.artist.name];
+        [html appendFormat:@"<tr><td><a href='%@'>Show cards by this artist</a></td></tr>", link];
+        [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
+    }
     
     if (self.card.number)
     {
@@ -790,6 +796,18 @@
 
         return NO;
     }
+    
+    else if (kvPairs[@"Artist"])
+    {
+        SimpleSearchViewController *view = [[SimpleSearchViewController alloc] init];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"artist.name CONTAINS[cd] %@", kvPairs[@"Artist"]];
+        view.predicate = predicate;
+        view.titleString = kvPairs[@"Artist"];
+        view.showTabBar = NO;
+        [view doSearch];
+        
+        [self.navigationController pushViewController:view animated:YES];
+    }
     return YES;
 }
 
@@ -1000,7 +1018,6 @@
                 [self.tblDetails addSubview:hud];
                 hud.delegate = self;
                 [hud showWhileExecuting:@selector(displayPricing) onTarget:self withObject:nil animated:NO];
-//                [self displayPricing];
                 break;
             }
         }
