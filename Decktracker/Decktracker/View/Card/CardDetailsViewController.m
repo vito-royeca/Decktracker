@@ -518,8 +518,7 @@
         NSString *link = [[NSString stringWithFormat:@"card?Artist=%@", self.card.artist.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         
         [html appendFormat:@"<tr><td><div class='detailHeader'>Artist</div></td></tr>"];
-        [html appendFormat:@"<tr><td>%@</td></tr>", self.card.artist.name];
-        [html appendFormat:@"<tr><td><a href='%@'>Show cards by this artist</a></td></tr>", link];
+        [html appendFormat:@"<tr><td><a href='%@'>%@</a></td></tr>", link, self.card.artist.name];
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
     
