@@ -11,10 +11,10 @@ import UIKit
 public class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, ReaderViewControllerDelegate {
     
     var tblMore:UITableView!
-    let arrayData = ["Rules": ["Basic Rulebook", "Comprehensive Rules"],
+    let arrayData = ["Rules": ["Basic Rulebook", "Comprehensive Rules"]/*,
                      "Restricted List": ["Vintage", "Legacy", "Modern"],
                      "Banned List": ["Vintage", "Legacy", "Modern"],
-                     "Other Lists": ["Reserved"]]
+                     "Other Lists": ["Reserved"]*/]
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,7 +61,7 @@ public class MoreViewController: UIViewController, UITableViewDataSource, UITabl
         let dict = arrayData[key]!
         let value = dict[indexPath.row]
         
-        cell.textLabel?.text = value
+        cell.textLabel.text = value
         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         return cell
     }

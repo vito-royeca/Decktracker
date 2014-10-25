@@ -22,7 +22,6 @@
 		8C2A96D219F4D8D00094C97F /* rules in Resources */ = {isa = PBXBuildFile; fileRef = 8C2A96D119F4D8D00094C97F /* rules */; };
 		8C2A96D619F4D9510094C97F /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2A96D519F4D9510094C97F /* ImageIO.framework */; };
 		8C2A96D719F4D95C0094C97F /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C66750B19D30AF800A90C03 /* MessageUI.framework */; };
-		8C2A96DD19F4DA010094C97F /* vfrReader.license in Sources */ = {isa = PBXBuildFile; fileRef = 8C2A96DC19F4DA010094C97F /* vfrReader.license */; };
 		8C2A978B19F5027B0094C97F /* Reader-Button-H.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C2A974919F5027B0094C97F /* Reader-Button-H.png */; };
 		8C2A978C19F5027B0094C97F /* Reader-Button-H@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C2A974A19F5027B0094C97F /* Reader-Button-H@2x.png */; };
 		8C2A978D19F5027B0094C97F /* Reader-Button-N.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C2A974B19F5027B0094C97F /* Reader-Button-N.png */; };
@@ -1090,7 +1089,6 @@
 				8C524A6519B81E9E005E697B /* DeckDetailsViewController.m in Sources */,
 				8C3CBDCD19A31618002CD96E /* Format.m in Sources */,
 				8C2E1431199085C700023BAA /* Database.m in Sources */,
-				8C2A96DD19F4DA010094C97F /* vfrReader.license in Sources */,
 				8C2E14031990741100023BAA /* AppDelegate.m in Sources */,
 				8C3CBDD019A31618002CD96E /* Artist.m in Sources */,
 				8C2A97AE19F5027B0094C97F /* UIXToolbarView.m in Sources */,
@@ -1244,7 +1242,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Decktracker/Decktracker-Prefix.pch";
 				INFOPLIST_FILE = "Decktracker/Decktracker-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -1272,7 +1270,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Decktracker/Decktracker-Prefix.pch";
 				INFOPLIST_FILE = "Decktracker/Decktracker-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

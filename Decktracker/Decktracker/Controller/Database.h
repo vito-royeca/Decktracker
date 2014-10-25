@@ -31,6 +31,6 @@
 
 -(Card*) findCard:(NSString*) card inSet:(NSString*) setCode;
 -(NSString*) cardRarityIndex:(Card*) card;
--(void) fetchTcgPlayerPriceForCard:(Card*) card;
+-(Card*) fetchTcgPlayerPriceForCard:(Card*) card;
 
 @end

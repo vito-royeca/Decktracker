@@ -61,10 +61,7 @@
     self.viewControllers = @[nc1, nc2, nc4, nc5];
     self.selectedViewController = nc1;
     
-    if ([InAppPurchase isProductPurchased:COLLECTIONS_IAP_PRODUCT_ID])
-    {
-        [self addCollectionsProduct];
-    }
+    [self addCollectionsProduct];
 }
 
 - (void)didReceiveMemoryWarning
@@ -75,6 +72,11 @@
 
 -(void) addCollectionsProduct
 {
+    if (![InAppPurchase isProductPurchased:COLLECTIONS_IAP_PRODUCT_ID])
+    {
+        return;
+    }
+    
     BOOL bAlreaddyAdded = NO;
     
     for (UINavigationController *view in self.viewControllers)

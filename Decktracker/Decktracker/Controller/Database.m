@@ -223,22 +223,22 @@ static Database *_me;
         else if ([key isEqualToString:@"Set"])
         {
             fieldName = @"set.name";
-            bToMany = YES;
+//            bToMany = YES;
         }
         else if ([key isEqualToString:@"Rarity"])
         {
             fieldName = @"rarity.name";
-            bToMany = YES;
+//            bToMany = YES;
         }
         else if ([key isEqualToString:@"Type"])
         {
             fieldName = @"types.name";
-            bToMany = YES;
+//            bToMany = YES;
         }
         else if ([key isEqualToString:@"Subtype"])
         {
             fieldName = @"subTypes.name";
-            bToMany = YES;
+//            bToMany = YES;
         }
         else if ([key isEqualToString:@"Color"])
         {
@@ -259,7 +259,7 @@ static Database *_me;
         else if ([key isEqualToString:@"Artist"])
         {
             fieldName = @"artist.name";
-            bToMany = YES;
+//            bToMany = YES;
         }
         
         for (NSDictionary *dict in query[key])
@@ -361,7 +361,7 @@ static Database *_me;
     return [card.rarity.name isEqualToString:@"Basic Land"] ? @"C" : [[card.rarity.name substringToIndex:1] uppercaseString];
 }
 
--(void) fetchTcgPlayerPriceForCard:(Card*) card
+-(Card*) fetchTcgPlayerPriceForCard:(Card*) card
 {
     BOOL bWillFetch = NO;
     
@@ -434,7 +434,6 @@ static Database *_me;
             }
         }
         
-        NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
         Card *c = [self findCard:card.name inSet:card.set.code];
         
         c.tcgPlayerHighPrice = high ? [NSNumber numberWithDouble:[high doubleValue]] : nil;
@@ -443,8 +442,15 @@ static Database *_me;
         c.tcgPlayerFoilPrice = foil ? [NSNumber numberWithDouble:[foil doubleValue]] : nil;
         c.tcgPlayerLink = [JJJUtil trim:link];
         c.tcgPlayerFetchDate = [NSDate date];
+        
+        NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
         [currentContext MR_save];
-        card = c;
+        return c;
+    }
+    
+    else
+    {
+        return card;
     }
 }
 

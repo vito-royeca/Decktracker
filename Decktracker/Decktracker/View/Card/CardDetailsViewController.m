@@ -627,7 +627,7 @@
     [formatter setMaximumFractionDigits:2];
     [formatter setRoundingMode:NSNumberFormatterRoundCeiling];
     
-    [[Database sharedInstance] fetchTcgPlayerPriceForCard:self.card];
+    Card *card = [[Database sharedInstance] fetchTcgPlayerPriceForCard:self.card];
     NSMutableString *html = [[NSMutableString alloc] init];
     
     [html appendFormat:@"<html><head><link rel='stylesheet' type='text/css' href='%@/style.css'></head><body>", [[NSBundle mainBundle] bundlePath]];
@@ -642,23 +642,23 @@
     
     NSString *price;
     [html appendFormat:@"<tr>"];
-    price = [self.card.tcgPlayerLowPrice doubleValue] != 0 ? [NSString stringWithFormat:@"$%@", [formatter stringFromNumber:self.card.tcgPlayerLowPrice]] : @"N/A";
+    price = [card.tcgPlayerLowPrice doubleValue] != 0 ? [NSString stringWithFormat:@"$%@", [formatter stringFromNumber:card.tcgPlayerLowPrice]] : @"N/A";
     [html appendFormat:@"<td align='right' width='25%%'>%@</td>", price];
     
-    price = [self.card.tcgPlayerMidPrice doubleValue] != 0 ? [NSString stringWithFormat:@"$%@", [formatter stringFromNumber:self.card.tcgPlayerMidPrice]] : @"N/A";
+    price = [card.tcgPlayerMidPrice doubleValue] != 0 ? [NSString stringWithFormat:@"$%@", [formatter stringFromNumber:card.tcgPlayerMidPrice]] : @"N/A";
     [html appendFormat:@"<td align='right' width='25%%'>%@</td>", price];
     
-    price = [self.card.tcgPlayerHighPrice doubleValue] != 0 ? [NSString stringWithFormat:@"$%@", [formatter stringFromNumber:self.card.tcgPlayerHighPrice]] : @"N/A";
+    price = [card.tcgPlayerHighPrice doubleValue] != 0 ? [NSString stringWithFormat:@"$%@", [formatter stringFromNumber:card.tcgPlayerHighPrice]] : @"N/A";
     [html appendFormat:@"<td align='right' width='25%%'>%@</td>", price];
     
-    price = [self.card.tcgPlayerFoilPrice doubleValue] != 0 ? [NSString stringWithFormat:@"$%@", [formatter stringFromNumber:self.card.tcgPlayerFoilPrice]] : @"N/A";
+    price = [card.tcgPlayerFoilPrice doubleValue] != 0 ? [NSString stringWithFormat:@"$%@", [formatter stringFromNumber:card.tcgPlayerFoilPrice]] : @"N/A";
     [html appendFormat:@"<td align='right' width='25%%'>%@</td>", price];
     
     [html appendFormat:@"</tr>"];
     [html appendFormat:@"<tr><td colspan='3'>&nbsp;</td></tr>"];
-    if (self.card.tcgPlayerLink)
+    if (card.tcgPlayerLink)
     {
-        [html appendFormat:@"<tr><td colspan='3'>More details at <a href=%@>TCGPlayer</a>.</td></tr>", self.card.tcgPlayerLink];
+        [html appendFormat:@"<tr><td colspan='3'>More details at <a href=%@>TCGPlayer</a>.</td></tr>", card.tcgPlayerLink];
     }
 
     [html appendFormat:@"</table></center></body></html>"];
@@ -1000,6 +1000,7 @@
                 [self.tblDetails addSubview:hud];
                 hud.delegate = self;
                 [hud showWhileExecuting:@selector(displayPricing) onTarget:self withObject:nil animated:NO];
+//                [self displayPricing];
                 break;
             }
         }
