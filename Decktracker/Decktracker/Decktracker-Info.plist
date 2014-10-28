@@ -46,9 +46,9 @@
 		</array>
 	</dict>
 	<key>Images Version</key>
-	<string>5.7.0</string>
+	<string>5.7.1</string>
 	<key>JSON Version</key>
-	<string>2.12.0</string>
+	<string>2.12.2</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIAppFonts</key>

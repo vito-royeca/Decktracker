@@ -17,7 +17,8 @@ int main(int argc, const char * argv[])
         [jsonLoader parseJSON];
 
 //        ImageLoader *imageLoader = [[ImageLoader alloc] init];
-//        [imageLoader downloadSets:@[@"KTK"]];
+//        [imageLoader downloadSets:@[@"8BS", @"9BS", @"MGB"]];
+        
 //        [imageLoader downloadSymbols];
 //        [imageLoader downloadOtherSymbols];
     }
