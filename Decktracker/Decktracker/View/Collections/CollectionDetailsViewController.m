@@ -13,6 +13,10 @@
 #import "FileManager.h"
 #import "SearchResultsTableViewCell.h"
 
+#import "GAI.h"
+#import "GAIDictionaryBuilder.h"
+#import "GAIFields.h"
+
 @implementation CollectionDetailsViewController
 {
     NSArray *_arrSections;
@@ -59,6 +63,12 @@
     
     [self.view addSubview:self.tblCards];
     [self.view addSubview:self.bottomToolbar];
+    
+    // send the screen to Google Analytics
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker set:kGAIScreenName
+           value:@"Collection Details"];
+    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
 }
 
 -(void) viewDidAppear:(BOOL)animated

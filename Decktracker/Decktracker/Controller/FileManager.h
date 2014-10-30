@@ -16,6 +16,8 @@
 #define kCardDownloadCompleted           @"kCardDownloadCompleted"
 #define kCropDownloadCompleted           @"kCropDownloadCompleted"
 #define kFolders                         @[@"Advance Search", @"Decks", @"Collections"]
+#define kHasAdvanceSearchSamples         @"HasAdvanceSearchSamples"
+#define kHasDeckSamples                  @"HasDeckSamples"
 
 #define kBoxID                           @"v3vx3t10k6genv8ao7r5f3rqunz23atm"
 #define kBoxSecret                       @"foPhGtidtVObEBEbNd2FZIbxk9nKSu99"
@@ -56,6 +58,7 @@ typedef NS_ENUM(NSInteger, FileSystem)
          withViewController:(UIViewController*) viewController;
 -(void) disconnectFromFileSystem:(FileSystem) fileSystem;
 
+-(void) moveFilesInDocumentsToCaches;
 -(void) initFilesystem:(FileSystem) fileSystem;
 -(void) setupFilesystem:(FileSystem) fileSystem;
 -(void) syncFiles;

@@ -15,6 +15,10 @@
 #import "LimitedSearchViewController.h"
 #import "SearchResultsTableViewCell.h"
 
+#import "GAI.h"
+#import "GAIDictionaryBuilder.h"
+#import "GAIFields.h"
+
 @implementation DeckDetailsViewController
 {
     NSArray *_arrDetailSections;
@@ -81,6 +85,12 @@
     
     [self.view addSubview:self.tblCards];
     [self.view addSubview:self.bottomToolbar];
+    
+    // send the screen to Google Analytics
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker set:kGAIScreenName
+           value:@"Deck Details"];
+    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
 }
 
 -(void) viewDidAppear:(BOOL)animated

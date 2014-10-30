@@ -32,17 +32,18 @@
     // Crashlytics
     [Crashlytics startWithAPIKey:@"114b3dd82452ec2f4024140ec862698d331b8f3f"];
 
-    // MagicalRecord
-    [[Database sharedInstance ] setupDb];
-    
     // FileSystem
+    [[FileManager sharedInstance] moveFilesInDocumentsToCaches];
     for (NSInteger i=FileSystemLocal; i<=FileSystemOneDrive; i++)
     {
         [[FileManager sharedInstance] setupFilesystem:i];
         [[FileManager sharedInstance] initFilesystem:i];
     }
     [[FileManager sharedInstance] syncFiles];
-    
+
+    // MagicalRecord
+    [[Database sharedInstance ] setupDb];
+
     // custom colors
     [[UINavigationBar appearance] setBarTintColor:UIColorFromRGB(0x691F01)];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];

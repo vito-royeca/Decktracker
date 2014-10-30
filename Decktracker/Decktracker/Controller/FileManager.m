@@ -53,9 +53,9 @@ static FileManager *_me;
 
 -(NSString*) cardPath:(Card*) card
 {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths firstObject];
-    NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/card/%@/", card.set.code]];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *cacheDirectory = [paths firstObject];
+    NSString *path = [cacheDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/card/%@/", card.set.code]];
     NSString *cardHQPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.hq.jpg", card.imageName]];
     NSString *cardPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.jpg", card.imageName]];
     NSString *cardBackPath = [NSString stringWithFormat:@"%@/images/cardback.hq.jpg", [[NSBundle mainBundle] bundlePath]];
@@ -65,9 +65,9 @@ static FileManager *_me;
 
 -(NSString*) cropPath:(Card*) card
 {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths firstObject];
-    NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/crop/%@/", card.set.code]];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *cacheDirectory = [paths firstObject];
+    NSString *path = [cacheDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/crop/%@/", card.set.code]];
     NSString *cropHQPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.crop.hq.jpg", card.imageName]];
     NSString *cropPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.crop.jpg", card.imageName]];
     NSString *cropBackPath = [NSString stringWithFormat:@"%@/images/cropback.hq.jpg", [[NSBundle mainBundle] bundlePath]];
@@ -87,9 +87,9 @@ static FileManager *_me;
         return;
     }
 
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths firstObject];
-    NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/card/%@/", card.set.code]];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *cacheDirectory = [paths firstObject];
+    NSString *path = [cacheDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/card/%@/", card.set.code]];
     NSString *cardPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.jpg", card.imageName]];
     BOOL bFound = YES;
     
@@ -142,9 +142,9 @@ static FileManager *_me;
         return;
     }
     
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths firstObject];
-    NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/crop/%@/", card.set.code]];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *cacheDirectory = [paths firstObject];
+    NSString *path = [cacheDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/crop/%@/", card.set.code]];
     NSString *cropPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.crop.jpg", card.imageName]];
     BOOL bFound = YES;
     
@@ -242,6 +242,29 @@ static FileManager *_me;
 }
 
 #pragma mark - Files
+-(void) moveFilesInDocumentsToCaches
+{
+    NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+    NSString *cachePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject];
+    
+    for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentPath error:nil])
+    {
+        if ([file hasPrefix:@"images"])
+        {
+            NSString *src = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", file]];
+            NSString *dest = [cachePath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", file]];
+            NSError *error;
+            
+            if ([[NSFileManager defaultManager] fileExistsAtPath:dest])
+            {
+                [[NSFileManager defaultManager] removeItemAtPath:dest error:&error];
+            }
+            [[NSFileManager defaultManager] moveItemAtPath:src toPath:dest error:&error];
+        }
+    }
+    
+}
+
 -(void) setupFilesystem:(FileSystem) fileSystem
 {
     if (![self isFileSystemEnabled:fileSystem])
@@ -505,6 +528,46 @@ static FileManager *_me;
                                               withIntermediateDirectories:YES
                                                                attributes:nil
                                                                     error:nil];
+                }
+                
+                // copy the the Samples
+                if ([folder isEqualToString:kFolders[0]])
+                {
+                    if (![[[NSUserDefaults standardUserDefaults] valueForKey:kHasAdvanceSearchSamples] boolValue])
+                    {
+                        for (NSString *file in [[NSBundle mainBundle] pathsForResourcesOfType:@"json"
+                                                                                  inDirectory:@"Advance Search"])
+                        {
+                            NSString *dest = [path stringByAppendingPathComponent:[file lastPathComponent]];
+                            
+                            if (![[NSFileManager defaultManager] fileExistsAtPath:dest])
+                            {
+                                [[NSFileManager defaultManager] copyItemAtPath:file toPath:dest error:nil];
+                            }
+                        }
+                        
+                        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES]
+                                                                  forKey:kHasAdvanceSearchSamples];
+                    }
+                }
+                else if ([folder isEqualToString:kFolders[1]])
+                {
+                    if (![[[NSUserDefaults standardUserDefaults] valueForKey:kHasDeckSamples] boolValue])
+                    {
+                        for (NSString *file in [[NSBundle mainBundle] pathsForResourcesOfType:@"json"
+                                                                                  inDirectory:@"Decks"])
+                        {
+                            NSString *dest = [path stringByAppendingPathComponent:[file lastPathComponent]];
+                            
+                            if (![[NSFileManager defaultManager] fileExistsAtPath:dest])
+                            {
+                                [[NSFileManager defaultManager] copyItemAtPath:file toPath:dest error:nil];
+                            }
+                        }
+                        
+                        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES]
+                                                                  forKey:kHasDeckSamples];
+                    }
                 }
             }
             break;

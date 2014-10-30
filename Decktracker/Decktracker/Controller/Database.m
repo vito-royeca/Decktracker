@@ -41,8 +41,8 @@ static Database *_me;
     NSString *jsonVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"JSON Version"];
     NSString *imagesVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"Images Version"];
     
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentPath = [paths firstObject];
+    NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+    NSString *cachePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
     NSString *storePath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", kDatabaseStore]];
     
     NSDictionary *arrCardUpdates = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"Card Updates"];
@@ -54,7 +54,7 @@ static Database *_me;
             
             if (![[NSUserDefaults standardUserDefaults] boolForKey:key])
             {
-                NSString *path = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/card/%@/", setCode]];
+                NSString *path = [cachePath stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/card/%@/", setCode]];
                 
                 if ([[NSFileManager defaultManager] fileExistsAtPath:path])
                 {
@@ -107,6 +107,15 @@ static Database *_me;
 #endif
 
     [MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:kDatabaseStore];
+    for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentPath error:nil])
+    {
+        if ([file hasPrefix:@"decktracker."])
+        {
+            NSURL *url = [[NSURL alloc] initFileURLWithPath:[documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", file]]];
+            [JJJUtil addSkipBackupAttributeToItemAtURL:url];
+        }
+    }
+    
 }
 
 -(void) closeDb
