@@ -86,7 +86,6 @@ static Database *_me;
     {
         NSString *currentJSONVersion = [[NSUserDefaults standardUserDefaults] valueForKey:@"JSON Version"];
         
-        
         if (!currentJSONVersion || ![jsonVersion isEqualToString:currentJSONVersion])
         {
             for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentPath error:nil])
