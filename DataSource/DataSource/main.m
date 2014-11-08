@@ -8,17 +8,21 @@
 
 #import "ImageLoader.h"
 #import "JSONLoader.h"
+#import "RulesLoader.h"
 
 int main(int argc, const char * argv[])
 {
     @autoreleasepool
     {
+        RulesLoader *rulesLoader = [[RulesLoader alloc] init];
+        [rulesLoader parseRules];
+
         JSONLoader *jsonLoader = [[JSONLoader alloc] init];
         [jsonLoader parseJSON];
 
+
 //        ImageLoader *imageLoader = [[ImageLoader alloc] init];
 //        [imageLoader downloadSets:@[@"8BS", @"9BS", @"MGB"]];
-        
 //        [imageLoader downloadSymbols];
 //        [imageLoader downloadOtherSymbols];
     }

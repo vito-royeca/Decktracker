@@ -10,9 +10,11 @@
 #import "CollectionDetailsViewController.h"
 #import "FileManager.h"
 
+#ifndef DEBUG
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"
 #import "GAIFields.h"
+#endif
 
 @implementation CollectionsViewController
 {
@@ -55,12 +57,14 @@
                                                                             action:@selector(btnAddTapped:)];
     self.navigationItem.rightBarButtonItem = btnAdd;
     self.navigationItem.title = @"Collections";
-    
+
+#ifndef DEBUG
     // send the screen to Google Analytics
     id tracker = [[GAI sharedInstance] defaultTracker];
     [tracker set:kGAIScreenName
            value:@"Collections"];
     [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+#endif
 }
 
 -(void) viewDidAppear:(BOOL)animated
@@ -71,6 +75,11 @@
     for (NSString *file in [[FileManager sharedInstance] listFilesAtPath:@"/Collections"
                                                        fromFileSystem:FileSystemLocal])
     {
+        if ([[JJJUtil trim:file] isEqualToString:@".json"])
+        {
+            [[FileManager sharedInstance] deleteFileAtPath:[NSString stringWithFormat:@"/Collections/%@", file]];
+            continue;
+        }
         [self.arrCollections addObject:[file stringByDeletingPathExtension]];
     }
     
@@ -79,12 +88,13 @@
 
 -(void) btnAddTapped:(id) sender
 {
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Save"
-                                                     message:@"New Collection Name"
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Create New Deck"
+                                                     message:nil
                                                     delegate:self
                                            cancelButtonTitle:@"Cancel"
                                            otherButtonTitles:@"OK", nil];
     alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [alert textFieldAtIndex:0].text = @"New Collection Name";
     alert.tag = 0;
     [alert show];
 }
@@ -106,13 +116,15 @@
                                    @"regular" : @[],
                                    @"foiled" : @[]};
             [[FileManager sharedInstance] saveData:dict atPath:[NSString stringWithFormat:@"/Collections/%@.json", dict[@"name"]]];
-            
+
+#ifndef DEBUG
             // send to Google Analytics
             id tracker = [[GAI sharedInstance] defaultTracker];
             [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Collections"
                                                                   action:nil
-                                                                   label:@"New Collection"
+                                                                   label:@"New Collections"
                                                                    value:nil] build]];
+#endif
             
             CollectionDetailsViewController *view = [[CollectionDetailsViewController alloc] init];
             NSDictionary *deck = [[FileManager sharedInstance] loadFileAtPath:[NSString stringWithFormat:@"/Collections/%@.json", dict[@"name"]]];
@@ -128,12 +140,15 @@
             [[FileManager sharedInstance] deleteFileAtPath:path];
             [self.arrCollections removeObject:name];
             
+#ifndef DEBUG
             // send to Google Analytics
             id tracker = [[GAI sharedInstance] defaultTracker];
             [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Collections"
                                                                   action:nil
                                                                    label:@"Delete"
                                                                    value:nil] build]];
+#endif
+
             [self.tblCollections reloadData];
         }
     }

@@ -183,6 +183,7 @@ PODS:
     - MagicalRecord/Core
   - MagicalRecord/Core (2.2)
   - MBProgressHUD (0.8)
+  - PureLayout (2.0.1)
 
 DEPENDENCIES:
   - AFNetworking
@@ -196,6 +197,7 @@ DEPENDENCIES:
   - InAppSettingsKit
   - MagicalRecord
   - MBProgressHUD
+  - PureLayout
 
 SPEC CHECKSUMS:
   AFNetworking: 0aabc6fae66d6e5d039eeb21c315843c7aae51ab
@@ -211,5 +213,6 @@ SPEC CHECKSUMS:
   InAppSettingsKit: 853cdc9fcc76b87a4694f8d2b930e116463b5a29
   MagicalRecord: 2b471584fc9e3137f3d0a56967917baa4979e224
   MBProgressHUD: c356980b0cd097f19acec959b49dca5eb8ec31be
+  PureLayout: 12eca5b6dc94f1a03fdf255d640604584ff1b55b
 
 COCOAPODS: 0.34.4

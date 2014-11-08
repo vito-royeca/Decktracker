@@ -15,9 +15,11 @@
 #import "Magic.h"
 #import "Set.h"
 
+#ifndef DEBUG
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"
 #import "GAIFields.h"
+#endif
 
 @implementation FilterInputViewController
 {
@@ -129,11 +131,13 @@
     self.navigationItem.leftBarButtonItem = btnCancel;
     self.navigationItem.title = self.filterName;
     
+#ifndef DEBUG
     // send the screen to Google Analytics
     id tracker = [[GAI sharedInstance] defaultTracker];
     [tracker set:kGAIScreenName
            value:[NSString stringWithFormat:@"Filter Input - %@", self.filterName]];
     [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+#endif
 }
 
 - (void)didReceiveMemoryWarning

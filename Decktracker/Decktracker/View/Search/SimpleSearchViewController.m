@@ -16,9 +16,11 @@
 #import "SearchResultsTableViewCell.h"
 #import "Set.h"
 
+#ifndef DEBUG
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"
 #import "GAIFields.h"
+#endif
 
 @implementation SimpleSearchViewController
 
@@ -104,12 +106,13 @@
     }
     [self.view addSubview:self.tblResults];
     
+#ifndef DEBUG
     // send the screen to Google Analytics
     id tracker = [[GAI sharedInstance] defaultTracker];
     [tracker set:kGAIScreenName
            value:@"Simple Search"];
     [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
-
+#endif
 }
 
 -(void) btnAdvanceTapped:(id) sender
@@ -206,12 +209,14 @@
     hud.delegate = self;
     [hud showWhileExecuting:@selector(doSearch) onTarget:self withObject:nil animated:NO];
     
+#ifndef DEBUG
     // send to Google Analytics
     id tracker = [[GAI sharedInstance] defaultTracker];
     [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Simple Search"
                                                           action:self.searchBar.text
                                                            label:@"Run"
                                                            value:nil] build]];
+#endif
 }
 
 - (void) doSearch

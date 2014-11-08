@@ -14,7 +14,10 @@
 #import "BoxSDK.h"
 #import <Crashlytics/Crashlytics.h>
 #import <Dropbox/Dropbox.h>
+
+#ifndef DEBUG
 #import "GAI.h"
+#endif
 
 @implementation AppDelegate
 
@@ -23,12 +26,14 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
 
+#ifndef DEBUG
     // Google Analytics
     [GAI sharedInstance].trackUncaughtExceptions = YES;
     [GAI sharedInstance].dispatchInterval = 20;
     [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelWarning];
     [[GAI sharedInstance] trackerWithTrackingId:@"UA-53780226-1"];
-    
+#endif
+
     // Crashlytics
     [Crashlytics startWithAPIKey:@"114b3dd82452ec2f4024140ec862698d331b8f3f"];
 

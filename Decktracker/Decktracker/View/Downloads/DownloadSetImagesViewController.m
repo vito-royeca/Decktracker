@@ -9,9 +9,12 @@
 #import "DownloadSetImagesViewController.h"
 
 #import "FFCircularProgressView.h"
+
+#ifndef DEBUG
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"
 #import "GAIFields.h"
+#endif
 
 @implementation DownloadSetImagesViewController
 
@@ -40,11 +43,13 @@
     
     self.arrSets = [Set MR_findAllSortedBy:@"name" ascending:YES];
     
+#ifndef DEBUG
     // send the screen to Google Analytics
     id tracker = [[GAI sharedInstance] defaultTracker];
     [tracker set:kGAIScreenName
            value:self.navigationItem.title];
     [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+#endif
 }
 
 - (void)didReceiveMemoryWarning

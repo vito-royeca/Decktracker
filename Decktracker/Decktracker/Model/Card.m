@@ -42,6 +42,7 @@
 @dynamic watermark;
 @dynamic source;
 @dynamic reserved;
+@dynamic releaseDate;
 @dynamic artist;
 @dynamic colors;
 @dynamic foreignNames;

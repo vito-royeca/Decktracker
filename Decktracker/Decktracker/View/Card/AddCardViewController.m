@@ -16,9 +16,11 @@
 #import "MainViewController.h"
 #import "SearchResultsTableViewCell.h"
 
+#ifndef DEBUG
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"
 #import "GAIFields.h"
+#endif
 
 @implementation AddCardViewController
 {
@@ -32,6 +34,7 @@
 @synthesize btnCancel = _btnCancel;
 @synthesize btnDone = _btnDone;
 @synthesize btnShowCard = _btnShowCard;
+@synthesize btnCreate = _btnCreate;
 @synthesize bottomToolbar = _bottomToolbar;
 
 @synthesize card = _card;
@@ -41,9 +44,16 @@
 @synthesize segmentedControlIndex = _segmentedControlIndex;
 @synthesize selectedDeckIndex = _selectedDeckIndex;
 @synthesize selectedCollectionIndex = _selectedCollectionIndex;
-@synthesize addDeckButtonVisible = _addDeckButtonVisible;
-@synthesize addCollectionButtonVisible = _addCollectionButtonVisible;
+@synthesize createButtonVisible = _createButtonVisible;
 @synthesize showCardButtonVisible = _showCardButtonVisible;
+
+-(void) setCard:(Card *)card
+{
+    _card = card;
+    
+    [[FileManager sharedInstance] downloadCardImage:_card immediately:YES];
+    [[FileManager sharedInstance] downloadCropImage:_card immediately:YES];
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -92,14 +102,26 @@
     
     dY = self.view.frame.size.height - dHeight;
     self.bottomToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
-    self.btnShowCard = [[UIBarButtonItem alloc] initWithTitle:@"Show Card"
-                                                        style:UIBarButtonItemStylePlain
-                                                       target:self
-                                                       action:@selector(btnShowCardTapped:)];
-    
     NSMutableArray *arrButtons = [[NSMutableArray alloc] init];
+    
+    if (self.createButtonVisible)
+    {
+        self.btnCreate = [[UIBarButtonItem alloc] initWithTitle:@"Create Deck"
+                                                          style:UIBarButtonItemStylePlain
+                                                         target:self
+                                                         action:@selector(btnCreateTapped:)];
+        
+        
+        [arrButtons addObject:self.btnCreate];
+    }
+    
     if (self.showCardButtonVisible)
     {
+        self.btnShowCard = [[UIBarButtonItem alloc] initWithTitle:@"Show Card"
+                                                            style:UIBarButtonItemStylePlain
+                                                           target:self
+                                                           action:@selector(btnShowCardTapped:)];
+        
         [arrButtons addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
                                                                             target:nil
                                                                             action:nil]];
@@ -135,12 +157,14 @@
             break;
         }
     }
-    
+
+#ifndef DEBUG
     // send the screen to Google Analytics
     id tracker = [[GAI sharedInstance] defaultTracker];
     [tracker set:kGAIScreenName
            value:self.navigationItem.title];
     [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+#endif
 }
 
 - (void)didReceiveMemoryWarning
@@ -156,6 +180,7 @@
         case 0:
         {
             self.segmentedControlIndex = (int)self.segmentedControl.selectedSegmentIndex;
+            self.btnCreate.title = @"Create Deck";
             [self loadCurrentDeck];
             break;
         }
@@ -177,6 +202,7 @@
             else
             {
                 self.segmentedControlIndex = (int)self.segmentedControl.selectedSegmentIndex;
+                self.btnCreate.title = @"Create Collections";
                 [self loadCurrentCollection];
             }
             break;
@@ -200,6 +226,39 @@
         [_currentCollection save:[NSString stringWithFormat:@"/Collections/%@.json", _currentCollection.name]];
     }
     [self.navigationController popViewControllerAnimated:NO];
+}
+
+-(void) btnCreateTapped:(id) sender
+{
+    switch (self.segmentedControl.selectedSegmentIndex)
+    {
+        case 0:
+        {
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Create New Deck"
+                                                             message:nil
+                                                            delegate:self
+                                                   cancelButtonTitle:@"Cancel"
+                                                   otherButtonTitles:@"OK", nil];
+            alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+            [alert textFieldAtIndex:0].text = @"New Deck Name";
+            alert.tag = 0;
+            [alert show];
+            break;
+        }
+        case 1:
+        {
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Create New Collections"
+                                                             message:nil
+                                                            delegate:self
+                                                   cancelButtonTitle:@"Cancel"
+                                                   otherButtonTitles:@"OK", nil];
+            alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+            [alert textFieldAtIndex:0].text = @"New Collection Name";
+            alert.tag = 1;
+            [alert show];
+            break;
+        }
+    }
 }
 
 -(void) btnShowCardTapped:(id) sender
@@ -655,7 +714,67 @@
     [view addCollectionsProduct];
     
     self.segmentedControlIndex = 1;
+    self.btnCreate.title = @"Create Collections";
     [self loadCurrentCollection];
+}
+
+#pragma mark - UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1)
+    {
+        if (alertView.tag == 0)
+        {
+            NSDictionary *dict = @{@"name" : [[alertView textFieldAtIndex:0] text],
+                                   @"format" : @"Standard",
+                                   @"mainBoard" : @[],
+                                   @"sideBoard" : @[]};
+            [[FileManager sharedInstance] saveData:dict
+                                            atPath:[NSString stringWithFormat:@"/Decks/%@.json", dict[@"name"]]];
+            self.arrDecks = [[NSMutableArray alloc] init];
+            for (NSString *file in [[FileManager sharedInstance] listFilesAtPath:@"/Decks"
+                                                                  fromFileSystem:FileSystemLocal])
+            {
+                [self.arrDecks addObject:[file stringByDeletingPathExtension]];
+            }
+            self.selectedDeckIndex = (int)[self.arrDecks indexOfObject:dict[@"name"]];
+            [self loadCurrentDeck];
+            
+#ifndef DEBUG
+            // send to Google Analytics
+            id tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:self.navigationItem.title
+                                                                  action:nil
+                                                                   label:@"New Deck"
+                                                                   value:nil] build]];
+#endif
+        }
+        
+        else if (alertView.tag == 1)
+        {
+            NSDictionary *dict = @{@"name" : [[alertView textFieldAtIndex:0] text],
+                                   @"regular" : @[],
+                                   @"foiled" : @[]};
+            [[FileManager sharedInstance] saveData:dict atPath:[NSString stringWithFormat:@"/Collections/%@.json", dict[@"name"]]];
+            self.arrCollections = [[NSMutableArray alloc] init];
+            for (NSString *file in [[FileManager sharedInstance] listFilesAtPath:@"/Collections"
+                                                                  fromFileSystem:FileSystemLocal])
+            {
+                [self.arrCollections addObject:[file stringByDeletingPathExtension]];
+            }
+            self.selectedCollectionIndex = (int)[self.arrCollections indexOfObject:dict[@"name"]];
+            [self loadCurrentCollection];
+            
+#ifndef DEBUG
+            // send to Google Analytics
+            id tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:self.navigationItem.title
+                                                                  action:nil
+                                                                   label:@"New Collections"
+                                                                   value:nil] build]];
+#endif
+        }
+    }
 }
 
 @end

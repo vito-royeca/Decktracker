@@ -24,15 +24,18 @@
 #import "SimpleSearchViewController.h"
 #import "Set.h"
 
+#ifndef DEBUG
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"
 #import "GAIFields.h"
+#endif
 
 @implementation CardDetailsViewController
 {
     CardType *_planeswalkerType;
     MHFacebookImageViewer *_fbImageViewer;
     UIView *_viewSegmented;
+    Set *_mediaInsertsSet;
 }
 
 @synthesize card = _card;
@@ -58,14 +61,17 @@
         NSInteger index = [sectionInfo.objects indexOfObject:self.card];
         self.navigationItem.title = [NSString stringWithFormat:@"%tu of %tu", index+1, sectionInfo.objects.count];
 
+        [[FileManager sharedInstance] downloadCardImage:_card immediately:YES];
+        [[FileManager sharedInstance] downloadCropImage:_card immediately:YES];
         // download next four card images
         for (int i = 0; i < 5; i++)
         {
             if (index+i <= sectionInfo.objects.count-1)
             {
-                Card *card = sectionInfo.objects[index+i];
-                [[FileManager sharedInstance] downloadCardImage:card];
-                [[FileManager sharedInstance] downloadCropImage:card];
+                Card *kard = sectionInfo.objects[index+i];
+                
+                [[FileManager sharedInstance] downloadCardImage:kard immediately:NO];
+                [[FileManager sharedInstance] downloadCropImage:kard immediately:NO];
             }
         }
     }
@@ -91,6 +97,8 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    _mediaInsertsSet = [Set MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"name == %@", @"Media Inserts"]];
     
     CGFloat dX = 0;
     CGFloat dY = 0;
@@ -123,19 +131,19 @@
     self.btnAction = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
                                                                   target:self
                                                                   action:@selector(btnActionTapped:)];
-    self.btnAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-                                                                target:self
-                                                                action:@selector(btnAddTapped:)];
     NSMutableArray *arrButtons = [[NSMutableArray alloc] init];
     [arrButtons addObject:self.btnAction];
     if (self.addButtonVisible)
     {
+        self.btnAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                    target:self
+                                                                    action:@selector(btnAddTapped:)];
+        
         [arrButtons addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
                                                                             target:nil
                                                                             action:nil]];
         [arrButtons addObject:self.btnAdd];
     }
-    
     self.bottomToolbar.items = arrButtons;
 
     [self.view addSubview:self.tblDetails];
@@ -214,7 +222,23 @@
         [sharingItems addObject:[NSString stringWithFormat:@"%@ - via #Decktracker", self.card.name]];
         [sharingItems addObject:[UIImage imageWithContentsOfFile:[[FileManager sharedInstance] cardPath:self.card]]];
     
-        UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:sharingItems applicationActivities:nil];
+        UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:sharingItems
+                                                                                         applicationActivities:nil];
+        activityController.completionWithItemsHandler = ^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError)
+        {
+            if (completed)
+            {
+#ifndef DEBUG
+                // send to Google Analytics
+                id tracker = [[GAI sharedInstance] defaultTracker];
+                [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Card Details - Share"
+                                                                      action:activityType
+                                                                       label:nil
+                                                                       value:nil] build]];
+#endif
+            }
+        };
+    
         [self presentViewController:activityController animated:YES completion:nil];
 }
 
@@ -237,6 +261,7 @@
     }
     
     view.card = self.card;
+    view.createButtonVisible = YES;
     view.showCardButtonVisible = NO;
     view.segmentedControlIndex = 0;
     [self.navigationController pushViewController:view animated:YES];
@@ -323,15 +348,17 @@
                                            onClose:^{ }];
     self.cardImage.clipsToBounds = YES;
     
-    [[FileManager sharedInstance] downloadCardImage:self.card];
+    [[FileManager sharedInstance] downloadCardImage:self.card immediately:YES];
     [self updateNavigationButtons];
-    
+
+#ifndef DEBUG
     // send to Google Analytics
     id tracker = [[GAI sharedInstance] defaultTracker];
     [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Card Details - Card"
                                                           action:nil
                                                            label:nil
                                                            value:nil] build]];
+#endif
 }
 
 - (void) displayDetails
@@ -342,12 +369,14 @@
     [self.webView loadHTMLString:[self composeDetails] baseURL:baseURL];
     [self updateNavigationButtons];
     
+#ifndef DEBUG
     // send to Google Analytics
     id tracker = [[GAI sharedInstance] defaultTracker];
     [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Card Details - Details"
                                                           action:nil
                                                            label:nil
                                                            value:nil] build]];
+#endif
 }
 
 - (void) displayPricing
@@ -357,13 +386,15 @@
     
     [self.webView loadHTMLString:[self composePricing] baseURL:baseURL];
     [self updateNavigationButtons];
-    
+
+#ifndef DEBUG
     // send to Google Analytics
     id tracker = [[GAI sharedInstance] defaultTracker];
     [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Card Details - Pricing"
                                                           action:nil
                                                            label:nil
                                                            value:nil] build]];
+#endif
 }
 
 - (void) updateNavigationButtons
@@ -436,6 +467,13 @@
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
     
+    if (self.card.cmc)
+    {
+        [html appendFormat:@"<tr><td><div class='detailHeader'>Converted Mana Cost</div></td></tr>"];
+        [html appendFormat:@"<tr><td>%@</td></tr>", [self replaceSymbolsInText:[NSString stringWithFormat:@"{%@}", self.card.cmc]]];
+        [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
+    }
+
     if (self.card.power || self.card.toughness)
     {
         [html appendFormat:@"<tr><td><div class='detailHeader'>Power / Toughness</div></td></tr>"];
@@ -506,13 +544,6 @@
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
 
-    if (self.card.cmc)
-    {
-        [html appendFormat:@"<tr><td><div class='detailHeader'>Converted Mana Cost</div></td></tr>"];
-        [html appendFormat:@"<tr><td>%@</td></tr>", [self replaceSymbolsInText:[NSString stringWithFormat:@"{%@}", self.card.cmc]]];
-        [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
-    }
-
     if (self.card.artist)
     {
         NSString *link = [[NSString stringWithFormat:@"card?Artist=%@", self.card.artist.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
@@ -543,9 +574,10 @@
         Card *card = [[Database sharedInstance] findCard:self.card.name inSet:set.code];
         
         NSString *link = [[NSString stringWithFormat:@"card?name=%@&set=%@", card.name, card.set.code] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        
+
         [html appendFormat:@"<tr><td><a href='%@'>%@</a></td><td><a href='%@'>%@</a></td></tr>", link, [self composeSetImage:card], link, set.name];
-        [html appendFormat:@"<tr><td>&nbsp;</td><td>Release Date: %@</td></tr>", [JJJUtil formatDate:set.releaseDate withFormat:@"YYYY-MM-dd"]];
+        NSLog(@"card.set == _mediaInsertsSet? %@", (card.set == _mediaInsertsSet ? @"yes" : @"no"));
+        [html appendFormat:@"<tr><td>&nbsp;</td><td>Release Date: %@</td></tr>", [card.set.name isEqualToString:_mediaInsertsSet.name] ? card.releaseDate : [JJJUtil formatDate:set.releaseDate withFormat:@"YYYY-MM-dd"]];
     }
     [html appendFormat:@"</table></td></tr>"];
     [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
@@ -863,7 +895,7 @@
 {
     UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
     
-    if(cell.selectionStyle == UITableViewCellSelectionStyleNone)
+    if (cell.selectionStyle == UITableViewCellSelectionStyleNone)
     {
         return nil;
     }

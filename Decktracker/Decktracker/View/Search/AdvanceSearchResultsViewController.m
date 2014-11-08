@@ -18,9 +18,11 @@
 #import "SearchResultsTableViewCell.h"
 #import "Set.h"
 
+#ifndef DEBUG
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"
 #import "GAIFields.h"
+#endif
 
 @implementation AdvanceSearchResultsViewController
 
@@ -73,12 +75,14 @@
                                                                   action:@selector(btnActionTapped:)];
     }
     self.navigationItem.rightBarButtonItem = btnAction;
-    
+
+#ifndef DEBUG
     // send the screen to Google Analytics
     id tracker = [[GAI sharedInstance] defaultTracker];
     [tracker set:kGAIScreenName
            value:@"Advance Search Results"];
     [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+#endif
 }
 
 -(void) viewDidAppear:(BOOL)animated
@@ -98,7 +102,7 @@
     if (self.mode == EditModeNew)
     {
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Save"
-                                                         message:@"Advance Search Name"
+                                                         message:nil
                                                         delegate:self
                                                cancelButtonTitle:@"Cancel"
                                                otherButtonTitles:@"OK", nil];
@@ -129,13 +133,15 @@
         
         AdvanceSearchViewController *view = [[AdvanceSearchViewController alloc] init];
         [self.navigationController pushViewController:view animated:NO];
-        
+
+#ifndef DEBUG
         // send to Google Analytics
         id tracker = [[GAI sharedInstance] defaultTracker];
         [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Advance Search"
                                                               action:nil
                                                                label:@"Save"
                                                                value:nil] build]];
+#endif
     }
 }
 

@@ -35,7 +35,7 @@
     _8thEditionSet = [Set MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"name == %@", @"Eighth Edition"]];
     _planeswalkerType = [CardType MR_findFirstByAttribute:@"name" withValue:@"Planeswalker"];
     _pre8thEditionFont = [UIFont fontWithName:@"Magic:the Gathering" size:20];
-    _8thEditionFont = [UIFont fontWithName:@"Matrix-Bold" size:20];
+    _8thEditionFont = [UIFont fontWithName:@"Matrix-Bold" size:18];
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -100,8 +100,8 @@
     {
         self.imgCrop.image = [[UIImage alloc] initWithContentsOfFile:path];
     }
-    [[FileManager sharedInstance] downloadCropImage:card];
-    [[FileManager sharedInstance] downloadCardImage:card];
+    [[FileManager sharedInstance] downloadCropImage:card immediately:NO];
+    [[FileManager sharedInstance] downloadCardImage:card immediately:NO];
     
     // set image
     path = [[FileManager sharedInstance] cardSetPath:card];

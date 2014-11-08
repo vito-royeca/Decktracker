@@ -14,9 +14,11 @@
 #import "NewAdvanceSearchViewController.h"
 #import "SimpleSearchViewController.h"
 
+#ifndef DEBUG
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"
 #import "GAIFields.h"
+#endif
 
 @implementation AdvanceSearchViewController
 {
@@ -83,12 +85,14 @@
                                                                             action:@selector(btnAddTapped:)];
     self.navigationItem.rightBarButtonItem = btnAdd;
     self.navigationItem.title = @"Advance Search";
-    
+
+#ifndef DEBUG
     // send the screen to Google Analytics
     id tracker = [[GAI sharedInstance] defaultTracker];
     [tracker set:kGAIScreenName
            value:@"Advance Search"];
     [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+#endif
 }
 
 - (void)didReceiveMemoryWarning
@@ -177,13 +181,15 @@
         NSString *path = [NSString stringWithFormat:@"/Advance Search/%@.json", name];
         [[FileManager sharedInstance] deleteFileAtPath:path];
         [self.arrAdvanceSearches removeObject:name];
-        
+
+#ifndef DEBUG
         // send to Google Analytics
         id tracker = [[GAI sharedInstance] defaultTracker];
         [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Advance Search"
                                                               action:nil
                                                                label:@"Delete"
                                                                value:nil] build]];
+#endif
     }
 
     [self.tblView reloadData];

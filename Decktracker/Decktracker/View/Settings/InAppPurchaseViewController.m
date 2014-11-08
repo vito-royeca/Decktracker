@@ -11,9 +11,11 @@
 #import "Magic.h"
 #import "MainViewController.h"
 
+#ifndef DEBUG
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"
 #import "GAIFields.h"
+#endif
 
 @implementation InAppPurchaseViewController
 {
@@ -59,15 +61,17 @@
     self.navigationItem.rightBarButtonItem = btnBuy;
     self.navigationItem.title = @"Product Details";
     
+    _inAppPurchase = [[InAppPurchase alloc] init];
+    _inAppPurchase.delegate = self;
+    [_inAppPurchase inquireProduct:self.productID];
+
+#ifndef DEBUG
     // send the screen to Google Analytics
     id tracker = [[GAI sharedInstance] defaultTracker];
     [tracker set:kGAIScreenName
            value:[NSString stringWithFormat:@"Product Details - %@", self.productID]];
     [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
-
-    _inAppPurchase = [[InAppPurchase alloc] init];
-    _inAppPurchase.delegate = self;
-    [_inAppPurchase inquireProduct:self.productID];
+#endif
 }
 
 - (void)didReceiveMemoryWarning
@@ -78,13 +82,16 @@
 
 -(void) cancelPurchase:(id) sender
 {
+    [self.navigationController popViewControllerAnimated:NO];
+    
+#ifndef DEBUG
     // send to Google Analytics
     id tracker = [[GAI sharedInstance] defaultTracker];
     [tracker send:[[GAIDictionaryBuilder createEventWithCategory:[NSString stringWithFormat:@"Product Details - %@", self.productID]
                                                           action:@"Cancel"
                                                            label:@"Cancel"
                                                            value:nil] build]];
-    [self.navigationController popViewControllerAnimated:NO];
+#endif
 }
 
 -(void) purchaseProduct:(id) sender
@@ -190,11 +197,13 @@
     
     [self.navigationController popViewControllerAnimated:NO];
     
+#ifndef DEBUG
     id tracker = [[GAI sharedInstance] defaultTracker];
     [tracker send:[[GAIDictionaryBuilder createEventWithCategory:[NSString stringWithFormat:@"Product Details - %@", self.productID]
                                                           action:@"Purchase"
                                                            label:@"Succeeded"
                                                            value:nil] build]];
+#endif
 }
 
 -(void) productPurchaseFailed:(InAppPurchase*) inAppPurchase withMessage:(NSString*) message

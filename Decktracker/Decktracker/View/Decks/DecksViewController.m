@@ -11,9 +11,11 @@
 #import "Deck.h"
 #import "FileManager.h"
 
+#ifndef DEBUG
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"
 #import "GAIFields.h"
+#endif
 
 @implementation DecksViewController
 {
@@ -58,11 +60,13 @@
     self.navigationItem.rightBarButtonItem = btnAdd;
     self.navigationItem.title = @"Decks";
     
+#ifndef DEBUG
     // send the screen to Google Analytics
     id tracker = [[GAI sharedInstance] defaultTracker];
     [tracker set:kGAIScreenName
            value:@"Decks"];
     [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+#endif
 }
 
 -(void) viewDidAppear:(BOOL)animated
@@ -73,6 +77,11 @@
     for (NSString *file in [[FileManager sharedInstance] listFilesAtPath:@"/Decks"
                                                           fromFileSystem:FileSystemLocal])
     {
+        if ([[JJJUtil trim:file] isEqualToString:@".json"])
+        {
+            [[FileManager sharedInstance] deleteFileAtPath:[NSString stringWithFormat:@"/Decks/%@", file]];
+            continue;
+        }
         [self.arrDecks addObject:[file stringByDeletingPathExtension]];
     }
     
@@ -81,12 +90,13 @@
 
 -(void) btnAddTapped:(id) sender
 {
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Save"
-                                                     message:@"New Deck Name"
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Create New Deck"
+                                                     message:nil
                                                     delegate:self
                                            cancelButtonTitle:@"Cancel"
                                            otherButtonTitles:@"OK", nil];
     alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [alert textFieldAtIndex:0].text = @"New Deck Name";
     alert.tag = 0;
     [alert show];
 }
@@ -108,14 +118,17 @@
                                    @"format" : @"Standard",
                                    @"mainBoard" : @[],
                                    @"sideBoard" : @[]};
-            [[FileManager sharedInstance] saveData:dict atPath:[NSString stringWithFormat:@"/Decks/%@.json", dict[@"name"]]];
+            [[FileManager sharedInstance] saveData:dict
+                                            atPath:[NSString stringWithFormat:@"/Decks/%@.json", dict[@"name"]]];
             
+#ifndef DEBUG
             // send to Google Analytics
             id tracker = [[GAI sharedInstance] defaultTracker];
             [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Decks"
                                                                   action:nil
                                                                    label:@"New Deck"
                                                                    value:nil] build]];
+#endif
             
             DeckDetailsViewController *view = [[DeckDetailsViewController alloc] init];
             Deck *deck = [[Deck alloc] initWithDictionary:dict];
@@ -130,12 +143,14 @@
             [[FileManager sharedInstance] deleteFileAtPath:path];
             [self.arrDecks removeObject:name];
             
+#ifndef DEBUG
             // send to Google Analytics
             id tracker = [[GAI sharedInstance] defaultTracker];
             [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Decks"
                                                                   action:nil
                                                                    label:@"Delete"
                                                                    value:nil] build]];
+#endif
             [self.tblDecks reloadData];
         }
     }

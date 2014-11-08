@@ -277,6 +277,7 @@
         card.border = dict[@"border"];
         card.timeshifted = [NSNumber numberWithBool:[dict[@"timeshifted"] boolValue]];
         card.reserved = [NSNumber numberWithBool:[dict[@"reserved"] boolValue]];
+        card.releaseDate = dict[@"releaseDate"];
         card.handModifier = [NSNumber numberWithInt:[dict[@"hand"] intValue]];
         card.printings = [self findSets:dict[@"printings"]];
         card.originalText = dict[@"originalText"];

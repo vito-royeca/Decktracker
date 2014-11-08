@@ -17,9 +17,11 @@
 #import "Format.h"
 #import "Set.h"
 
+#ifndef DEBUG
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"
 #import "GAIFields.h"
+#endif
 
 @implementation NewAdvanceSearchViewController
 {
@@ -108,11 +110,13 @@
         self.navigationItem.title = @"New Advance Search";
     }
     
+#ifndef DEBUG
     // send the screen to Google Analytics
     id tracker = [[GAI sharedInstance] defaultTracker];
     [tracker set:kGAIScreenName
            value:self.navigationItem.title];
     [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+#endif
 }
 
 -(void) viewDidAppear:(BOOL)animated
@@ -154,25 +158,30 @@
         [self.view addSubview:hud];
         hud.delegate = self;
         [hud showWhileExecuting:@selector(doSearch) onTarget:self withObject:nil animated:NO];
-        
+
+#ifndef DEBUG
         // send to Google Analytics
         id tracker = [[GAI sharedInstance] defaultTracker];
         [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Advance Search"
                                                               action:self.mode == EditModeEdit ? @"Edit" : @"New"
                                                                label:@"Run"
                                                                value:nil] build]];
+#endif
     }
 }
 
 -(void) btnCancelTapped:(id) sender
 {
+    [self.navigationController popViewControllerAnimated:NO];
+
+#ifndef DEBUG
     // send to Google Analytics
     id tracker = [[GAI sharedInstance] defaultTracker];
     [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Advance Search"
                                                           action:self.mode == EditModeEdit ? @"Edit" : @"New"
                                                            label:@"Cancel"
                                                            value:nil] build]];
-    [self.navigationController popViewControllerAnimated:NO];
+#endif
 }
 
 -(void) doSearch

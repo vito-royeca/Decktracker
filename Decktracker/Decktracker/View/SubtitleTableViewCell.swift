@@ -48,21 +48,13 @@ class SubtitleTableViewCell: UITableViewCell {
         titleLabel.lineBreakMode = .ByTruncatingTail
         titleLabel.numberOfLines = 1
         titleLabel.textAlignment = .Left
-//        titleLabel.textColor = UIColor.blackColor()
-//        titleLabel.backgroundColor = UIColor(red: 0, green: 0, blue: 1, alpha: 0.1) // light blue
         
         bodyLabel.lineBreakMode = .ByTruncatingTail
         bodyLabel.numberOfLines = 0
         bodyLabel.textAlignment = .Left
-//        bodyLabel.textColor = UIColor.darkGrayColor()
-//        bodyLabel.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.1) // light red
-        
-        updateFonts()
         
         contentView.addSubview(titleLabel)
         contentView.addSubview(bodyLabel)
-        
-//        contentView.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.1) // light green
     }
     
     override func updateConstraints()
@@ -100,7 +92,9 @@ class SubtitleTableViewCell: UITableViewCell {
     
     func updateFonts()
     {
-        titleLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
+        if bodyLabel.text?.utf16Count > 0 {
+            titleLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
+        }
         bodyLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption2)
     }
 }

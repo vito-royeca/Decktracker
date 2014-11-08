@@ -35,6 +35,7 @@
 @property (nonatomic, retain) NSString * watermark;
 @property (nonatomic, retain) NSString * source;
 @property (nonatomic, retain) NSNumber * reserved;
+@property (nonatomic, retain) NSString * releaseDate;
 @property (nonatomic, retain) Artist *artist;
 @property (nonatomic, retain) NSSet *colors;
 @property (nonatomic, retain) NSSet *foreignNames;

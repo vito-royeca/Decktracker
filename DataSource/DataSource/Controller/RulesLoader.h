@@ -10,4 +10,6 @@
 
 @interface RulesLoader : NSObject
 
+-(void) parseRules;
+
 @end

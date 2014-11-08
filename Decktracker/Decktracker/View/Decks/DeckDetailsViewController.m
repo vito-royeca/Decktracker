@@ -15,9 +15,11 @@
 #import "LimitedSearchViewController.h"
 #import "SearchResultsTableViewCell.h"
 
+#ifndef DEBUG
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"
 #import "GAIFields.h"
+#endif
 
 @implementation DeckDetailsViewController
 {
@@ -83,14 +85,47 @@
     dWidth = self.view.frame.size.width;
     self.bottomToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
     
+//    NSArray *arrIcons = @[[NSString stringWithFormat:@"%@/images/other/land/32.png", [[NSBundle mainBundle] bundlePath]],
+//                          [NSString stringWithFormat:@"%@/images/other/creature/48.png", [[NSBundle mainBundle] bundlePath]],
+//                          [NSString stringWithFormat:@"%@/images/other/instant/48.png", [[NSBundle mainBundle] bundlePath]],
+//                          [NSString stringWithFormat:@"%@/images/other/multiple/32.png", [[NSBundle mainBundle] bundlePath]]];
+//    
+//    self.bottomToolbar.items = @[[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:arrIcons[0]]
+//                                                                  style:UIBarButtonItemStylePlain
+//                                                                 target:self
+//                                                                 action:nil],
+//                                 [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+//                                                                               target:nil
+//                                                                               action:nil],
+//                                 [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:arrIcons[1]]
+//                                                                  style:UIBarButtonItemStylePlain
+//                                                                 target:self
+//                                                                 action:nil],
+//                                 [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+//                                                                               target:nil
+//                                                                               action:nil],
+//                                 [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:arrIcons[2]]
+//                                                                  style:UIBarButtonItemStylePlain
+//                                                                 target:self
+//                                                                 action:nil],
+//                                 [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+//                                                                               target:nil
+//                                                                               action:nil],
+//                                 [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:arrIcons[3]]
+//                                                                  style:UIBarButtonItemStylePlain
+//                                                                 target:self
+//                                                                 action:nil]];
+    
     [self.view addSubview:self.tblCards];
     [self.view addSubview:self.bottomToolbar];
-    
+
+#ifndef DEBUG
     // send the screen to Google Analytics
     id tracker = [[GAI sharedInstance] defaultTracker];
     [tracker set:kGAIScreenName
            value:@"Deck Details"];
     [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+#endif
 }
 
 -(void) viewDidAppear:(BOOL)animated
@@ -119,7 +154,8 @@
 -(UITableViewCell*) createSearchResultsTableCell:(NSDictionary*) dict
 {
     SearchResultsTableViewCell *cell = [self.tblCards dequeueReusableCellWithIdentifier:@"Cell1"];
-    if (cell == nil)
+    
+    if (!cell)
     {
         cell = [[SearchResultsTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                                  reuseIdentifier:@"Cell1"];
@@ -130,7 +166,7 @@
     return cell;
 }
 
--(UITableViewCell*) createAddTableCell:(NSString*) text
+-(UITableViewCell*) createAddTableCell:(NSString*) text withImagePath:(NSString*) imagePath
 {
     UITableViewCell *cell = [self.tblCards dequeueReusableCellWithIdentifier:@"Cell2"];
     
@@ -139,9 +175,11 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                       reuseIdentifier:@"Cell2"];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        
     }
     
     cell.textLabel.text = text;
+//    cell.imageView.image = [UIImage imageNamed:imagePath];
     return cell;
 }
 
@@ -493,7 +531,8 @@
                     }
                     else
                     {
-                        cell = [self createAddTableCell:[NSString stringWithFormat:@"Add %@", _arrCardSections[indexPath.section]]];
+                        NSString *path = [NSString stringWithFormat:@"%@/images/other/land/32.png", [[NSBundle mainBundle] bundlePath]];
+                        cell = [self createAddTableCell:[NSString stringWithFormat:@"Add %@", _arrCardSections[indexPath.section]] withImagePath:path];
                     }
                     break;
                 }
@@ -506,7 +545,8 @@
                     }
                     else
                     {
-                        cell = [self createAddTableCell:[NSString stringWithFormat:@"Add %@", _arrCardSections[indexPath.section]]];
+                        NSString *path = [NSString stringWithFormat:@"%@/images/other/creature/32.png", [[NSBundle mainBundle] bundlePath]];
+                        cell = [self createAddTableCell:[NSString stringWithFormat:@"Add %@", _arrCardSections[indexPath.section]] withImagePath:path];
                     }
                     break;
                 }
@@ -519,7 +559,8 @@
                     }
                     else
                     {
-                        cell = [self createAddTableCell:[NSString stringWithFormat:@"Add %@", _arrCardSections[indexPath.section]]];
+                        NSString *path = [NSString stringWithFormat:@"%@/images/other/instant/32.png", [[NSBundle mainBundle] bundlePath]];
+                        cell = [self createAddTableCell:[NSString stringWithFormat:@"Add %@", _arrCardSections[indexPath.section]] withImagePath:path];
                     }
                     break;
                 }
@@ -532,7 +573,8 @@
                     }
                     else
                     {
-                        cell = [self createAddTableCell:[NSString stringWithFormat:@"Add %@", _arrCardSections[indexPath.section]]];
+                        NSString *path = [NSString stringWithFormat:@"%@/images/other/multiple/32.png", [[NSBundle mainBundle] bundlePath]];
+                        cell = [self createAddTableCell:[NSString stringWithFormat:@"Add %@", _arrCardSections[indexPath.section]] withImagePath:path];
                     }
                     break;
                 }
@@ -542,8 +584,33 @@
         {
             if (indexPath.section != 0)
             {
-                cell = [self createAddTableCell:[NSString stringWithFormat:@"Add %@", _arrCardSections[indexPath.section]]]
-                ;
+                NSString *path;
+                
+                switch (indexPath.section)
+                {
+                    case 1:
+                    {
+                        path = [NSString stringWithFormat:@"%@/images/other/land/32.png", [[NSBundle mainBundle] bundlePath]];
+                        break;
+                    }
+                    case 2:
+                    {
+                        path = [NSString stringWithFormat:@"%@/images/other/creature/32.png", [[NSBundle mainBundle] bundlePath]];
+                        break;
+                    }
+                    case 3:
+                    {
+                        path = [NSString stringWithFormat:@"%@/images/other/instant/32.png", [[NSBundle mainBundle] bundlePath]];
+                        break;
+                    }
+                    case 4:
+                    {
+                        path = [NSString stringWithFormat:@"%@/images/other/multiple/32.png", [[NSBundle mainBundle] bundlePath]];
+                        break;
+                    }
+                }
+                cell = [self createAddTableCell:[NSString stringWithFormat:@"Add %@", _arrCardSections[indexPath.section]] withImagePath:path];
+
             }
         }
     }
@@ -692,7 +759,8 @@
                     [view.arrCollections addObject:[file stringByDeletingPathExtension]];
                 }
                 
-                view.card = card;
+                [view setCard:card];
+                view.createButtonVisible = NO;
                 view.showCardButtonVisible = YES;
                 view.segmentedControlIndex = 0;
                 [self.navigationController pushViewController:view animated:YES];

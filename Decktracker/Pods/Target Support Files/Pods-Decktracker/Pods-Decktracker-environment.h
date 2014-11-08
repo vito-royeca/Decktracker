@@ -282,6 +282,12 @@
 #define COCOAPODS_VERSION_MINOR_MagicalRecord_Core 2
 #define COCOAPODS_VERSION_PATCH_MagicalRecord_Core 0
 
+// PureLayout
+#define COCOAPODS_POD_AVAILABLE_PureLayout
+#define COCOAPODS_VERSION_MAJOR_PureLayout 2
+#define COCOAPODS_VERSION_MINOR_PureLayout 0
+#define COCOAPODS_VERSION_PATCH_PureLayout 1
+
 // box-ios-sdk-v2
 #define COCOAPODS_POD_AVAILABLE_box_ios_sdk_v2
 #define COCOAPODS_VERSION_MAJOR_box_ios_sdk_v2 1

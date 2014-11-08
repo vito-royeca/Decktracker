@@ -11,16 +11,18 @@
 #import "InAppPurchase.h"
 #import "Magic.h"
 
-#import "GAI.h"
-#import "GAIDictionaryBuilder.h"
-#import "GAIFields.h"
 
 #import "BoxSDK.h"
 #import <Dropbox/Dropbox.h>
-
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "GTMOAuth2ViewControllerTouch.h"
 #import "GTLDrive.h"
+
+#ifndef DEBUG
+#import "GAI.h"
+#import "GAIDictionaryBuilder.h"
+#import "GAIFields.h"
+#endif
 
 @implementation FileManager
 {
@@ -80,7 +82,7 @@ static FileManager *_me;
     return [NSString stringWithFormat:@"%@/images/set/%@/%@/48.png", [[NSBundle mainBundle] bundlePath], card.set.code, [[Database sharedInstance] cardRarityIndex:card]];
 }
 
--(void) downloadCardImage:(Card*) card
+-(void) downloadCardImage:(Card*) card immediately:(BOOL) immediately
 {
     if (!card)
     {
@@ -105,14 +107,17 @@ static FileManager *_me;
     {
         bFound = NO;
     }
+    
+    Card *oldCardInQueue;
     for (NSDictionary *dict in _downloadQueue)
     {
         if (dict[@"card"] == card)
         {
-            bFound = YES;
+            oldCardInQueue = dict[@"card"];
             break;
         }
     }
+    [_downloadQueue removeObject:oldCardInQueue];
     
     if (!bFound)
     {
@@ -129,13 +134,20 @@ static FileManager *_me;
 
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithObjects:@[card, cardPath, url]
                                                                          forKeys:@[@"card", @"path", @"url"]];
-//        [_downloadQueue insertObject:dict atIndex:0];
-        [_downloadQueue addObject:dict];
+        
+        if (immediately)
+        {
+            [_downloadQueue insertObject:dict atIndex:0];
+        }
+        else
+        {
+            [_downloadQueue addObject:dict];
+        }
         [self processDownloadQueue];
     }
 }
 
--(void) downloadCropImage:(Card*) card
+-(void) downloadCropImage:(Card*) card immediately:(BOOL) immediately
 {
     if (!card)
     {
@@ -160,14 +172,17 @@ static FileManager *_me;
     {
         bFound = NO;
     }
+    
+    Card *oldCardInQueue;
     for (NSDictionary *dict in _downloadQueue)
     {
         if (dict[@"crop"] == card)
         {
-            bFound = YES;
+            oldCardInQueue = dict[@"crop"];
             break;
         }
     }
+    [_downloadQueue removeObject:oldCardInQueue];
     
     if (!bFound)
     {
@@ -184,8 +199,15 @@ static FileManager *_me;
         
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithObjects:@[card, cropPath, url]
                                                                          forKeys:@[@"crop", @"path", @"url"]];
-//        [_downloadQueue insertObject:dict atIndex:0];
-        [_downloadQueue addObject:dict];
+        
+        if (immediately)
+        {
+            [_downloadQueue insertObject:dict atIndex:0];
+        }
+        else
+        {
+            [_downloadQueue addObject:dict];
+        }
         [self processDownloadQueue];
     }
 }

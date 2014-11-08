@@ -12,9 +12,11 @@
 #import "FileManager.h"
 #import "SearchResultsTableViewCell.h"
 
+#ifndef DEBUG
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"
 #import "GAIFields.h"
+#endif
 
 @implementation LimitedSearchViewController
 
@@ -99,13 +101,15 @@
     [self.view addSubview:hud];
     hud.delegate = self;
     [hud showWhileExecuting:@selector(doSearch) onTarget:self withObject:nil animated:NO];
-    
+
+#ifndef DEBUG
     // send to Google Analytics
     id tracker = [[GAI sharedInstance] defaultTracker];
     [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Simple Search"
                                                           action:self.searchBar.text
                                                            label:@"Run"
                                                            value:nil] build]];
+#endif
 }
 
 - (void) doSearch
@@ -190,6 +194,7 @@
     }
     
     view.card = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    view.createButtonVisible = NO;
     view.showCardButtonVisible = YES;
     view.segmentedControlIndex = 0;
     [self.navigationController pushViewController:view animated:YES];

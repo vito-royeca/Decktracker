@@ -17,9 +17,10 @@
 
 @property(strong,nonatomic) UISegmentedControl *segmentedControl;
 @property(strong,nonatomic) UITableView *tblAddTo;
-@property(strong, nonatomic) UIBarButtonItem *btnCancel;
-@property(strong, nonatomic) UIBarButtonItem *btnDone;
+@property(strong,nonatomic) UIBarButtonItem *btnCancel;
+@property(strong,nonatomic) UIBarButtonItem *btnDone;
 @property(strong,nonatomic) UIBarButtonItem *btnShowCard;
+@property(strong,nonatomic) UIBarButtonItem *btnCreate;
 @property(strong,nonatomic) UIToolbar *bottomToolbar;
 
 @property(strong,nonatomic) Card *card;
@@ -29,8 +30,9 @@
 @property(nonatomic) int segmentedControlIndex;
 @property(nonatomic) int selectedDeckIndex;
 @property(nonatomic) int selectedCollectionIndex;
-@property(nonatomic) BOOL addDeckButtonVisible;
-@property(nonatomic) BOOL addCollectionButtonVisible;
+//@property(nonatomic) BOOL addDeckButtonVisible;
+//@property(nonatomic) BOOL addCollectionButtonVisible;
+@property(nonatomic) BOOL createButtonVisible;
 @property(nonatomic) BOOL showCardButtonVisible;
 
 @end

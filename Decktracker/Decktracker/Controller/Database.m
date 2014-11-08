@@ -7,9 +7,10 @@
 //
 
 #import "Database.h"
-#import "TFHpple.h"
 #import "Magic.h"
 #import "Set.h"
+
+#import "TFHpple.h"
 
 @implementation Database
 
@@ -103,9 +104,12 @@ static Database *_me;
             [self setupDb];
         }
     }
+    
 #endif
-
+    
     [MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:kDatabaseStore];
+
+#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
     for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentPath error:nil])
     {
         if ([file hasPrefix:@"decktracker."])
@@ -114,7 +118,8 @@ static Database *_me;
             [JJJUtil addSkipBackupAttributeToItemAtURL:url];
         }
     }
-    
+#endif
+
 }
 
 -(void) closeDb

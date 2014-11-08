@@ -81,6 +81,18 @@
         <relationship name="cardSuperTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="superTypes" inverseEntity="Card" syncable="YES"/>
         <relationship name="cardTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="types" inverseEntity="Card" syncable="YES"/>
     </entity>
+    <entity name="ComprehensiveGlossary" representedClassName="ComprehensiveGlossary" syncable="YES">
+        <attribute name="definition" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="term" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="rules" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ComprehensiveRule" inverseName="glossary" inverseEntity="ComprehensiveRule" syncable="YES"/>
+    </entity>
+    <entity name="ComprehensiveRule" representedClassName="ComprehensiveRule" syncable="YES">
+        <attribute name="number" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="rule" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="children" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ComprehensiveRule" inverseName="parent" inverseEntity="ComprehensiveRule" syncable="YES"/>
+        <relationship name="glossary" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ComprehensiveGlossary" inverseName="rules" inverseEntity="ComprehensiveGlossary" syncable="YES"/>
+        <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ComprehensiveRule" inverseName="children" inverseEntity="ComprehensiveRule" syncable="YES"/>
+    </entity>
     <entity name="Format" representedClassName="Format" syncable="YES">
         <attribute name="name" attributeType="String" syncable="YES"/>
         <relationship name="legalities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CardLegality" inverseName="format" inverseEntity="CardLegality" syncable="YES"/>
@@ -115,6 +127,8 @@
         <element name="CardRarity" positionX="27" positionY="180" width="128" height="73"/>
         <element name="CardRuling" positionX="-9" positionY="162" width="128" height="88"/>
         <element name="CardType" positionX="-18" positionY="135" width="128" height="103"/>
+        <element name="ComprehensiveGlossary" positionX="-9" positionY="144" width="128" height="88"/>
+        <element name="ComprehensiveRule" positionX="-18" positionY="135" width="128" height="120"/>
         <element name="Format" positionX="27" positionY="189" width="128" height="73"/>
         <element name="Set" positionX="-54" positionY="-9" width="128" height="255"/>
         <element name="SetType" positionX="-18" positionY="135" width="128" height="73"/>

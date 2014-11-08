@@ -13,9 +13,11 @@
 #import "FileManager.h"
 #import "SearchResultsTableViewCell.h"
 
+#ifndef DEBUG
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"
 #import "GAIFields.h"
+#endif
 
 @implementation CollectionDetailsViewController
 {
@@ -63,12 +65,14 @@
     
     [self.view addSubview:self.tblCards];
     [self.view addSubview:self.bottomToolbar];
-    
+
+#ifndef DEBUG
     // send the screen to Google Analytics
     id tracker = [[GAI sharedInstance] defaultTracker];
     [tracker set:kGAIScreenName
            value:@"Collection Details"];
     [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+#endif
 }
 
 -(void) viewDidAppear:(BOOL)animated
@@ -250,7 +254,8 @@
         }
 
         view.arrCollections = [[NSMutableArray alloc] initWithArray:@[self.dictCollection[@"name"]]];
-        view.card = card;
+        [view setCard:card];
+        view.createButtonVisible = NO;
         view.showCardButtonVisible = YES;
         view.segmentedControlIndex = 1;
         [self.navigationController pushViewController:view animated:YES];

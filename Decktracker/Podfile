@@ -17,6 +17,7 @@ pod "InAppSettingsKit"
 pod "hpple"
 pod "MagicalRecord"
 pod "MBProgressHUD"
+pod "PureLayout"
 #pod "vfrReader", '~> 2.8.4'
 
 end

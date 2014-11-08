@@ -12,9 +12,11 @@
 #import "FileManager.h"
 #import "MainViewController.h"
 
+#ifndef DEBUG
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"
 #import "GAIFields.h"
+#endif
 
 @implementation SettingsViewController
 {
@@ -60,11 +62,13 @@
                                                  name:kIASKAppSettingChanged
                                                object:nil];
     
+#ifndef DEBUG
     // send the screen to Google Analytics
     id tracker = [[GAI sharedInstance] defaultTracker];
     [tracker set:kGAIScreenName
            value:self.navigationItem.title];
     [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+#endif
 }
 
 -(void) viewDidAppear:(BOOL)animated
@@ -242,11 +246,13 @@
                                           otherButtonTitles:nil];
     [alert show];
     
+#ifndef DEBUG
     id tracker = [[GAI sharedInstance] defaultTracker];
     [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Settings"
                                                           action:@"Restore Purchases"
                                                            label:@"Succeeded"
                                                            value:nil] build]];
+#endif
 }
 
 -(void) purchaseRestoreFailed:(InAppPurchase*) inAppPurchase withMessage:(NSString*) message

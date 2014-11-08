@@ -50,8 +50,8 @@ typedef NS_ENUM(NSInteger, FileSystem)
 -(NSString*) cardPath:(Card*) card;
 -(NSString*) cropPath:(Card*) card;
 -(NSString*) cardSetPath:(Card*) card;
--(void) downloadCardImage:(Card*) card;
--(void) downloadCropImage:(Card*) card;
+-(void) downloadCardImage:(Card*) card immediately:(BOOL) immediately;
+-(void) downloadCropImage:(Card*) card immediately:(BOOL) immediately;
 -(NSArray*) loadKeywords;
 
 -(void) connectToFileSystem:(FileSystem) fileSystem

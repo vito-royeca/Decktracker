@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, ReaderViewControllerDelegate {
+class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, ReaderViewControllerDelegate {
     
     var tblMore:UITableView!
     let arrayData = ["Rules": ["Basic Rulebook", "Comprehensive Rules"]/*,
@@ -16,7 +16,7 @@ public class MoreViewController: UIViewController, UITableViewDataSource, UITabl
                      "Banned List": ["Vintage", "Legacy", "Modern"],
                      "Other Lists": ["Reserved"]*/]
     
-    public override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
@@ -28,53 +28,57 @@ public class MoreViewController: UIViewController, UITableViewDataSource, UITabl
         
         view.addSubview(tblMore)
         self.navigationItem.title = "More"
-        
+
+#if !DEBUG
         // send the screen to Google Analytics
         let tracker = GAI.sharedInstance().defaultTracker
-        tracker.set(kGAIScreenName, value: "More")
+        tracker.set(kGAIScreenName, value: self.navigationItem.title)
         tracker.send(GAIDictionaryBuilder.createScreenView().build())
+#endif
     }
 
-    public override func didReceiveMemoryWarning() {
+    override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
     // UITableViewDataSource
-    public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
         let key = Array(arrayData.keys)[section]
         let dict = arrayData[key]!
         return dict.count
     }
     
-    public func numberOfSectionsInTableView(tableView: UITableView) -> Int
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int
     {
         return Array(arrayData.keys).count
     }
     
-    public func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String?
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String?
     {
         return Array(arrayData.keys)[section]
     }
     
-    public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     {
-        let cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: nil)
-        
+        var cell = tableView.dequeueReusableCellWithIdentifier("DefaultCell") as UITableViewCell?
+        if cell == cell {
+            cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "DefaultCell")
+            cell!.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+        }
         let key = Array(arrayData.keys)[indexPath.section]
         let dict = arrayData[key]!
         let value = dict[indexPath.row]
         
-        cell.textLabel.text = value
-        cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
-        return cell
+        cell!.textLabel.text = value
+        return cell!
     }
     
     // UITableViewDelegate
-    public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
     {
-        var view:UIViewController!;
+        var newView:UIViewController!;
         
         let key = Array(arrayData.keys)[indexPath.section]
         let dict = arrayData[key]!
@@ -82,14 +86,21 @@ public class MoreViewController: UIViewController, UITableViewDataSource, UITabl
         
         switch (indexPath.section) {
         case 0:
-            let pdfs = NSBundle.mainBundle().pathsForResourcesOfType("pdf", inDirectory:"rules")
-            let file = pdfs[indexPath.row] as NSString
-            let document = ReaderDocument.withDocumentFilePath(file, password: nil)
-            let readerView = ReaderViewController(readerDocument:document)
-            readerView.delegate = self
-            view = readerView
-            view.hidesBottomBarWhenPushed = true
-            navigationController?.setNavigationBarHidden(true, animated:true)
+            if indexPath.row == 0 {
+                let pdfs = NSBundle.mainBundle().pathsForResourcesOfType("pdf", inDirectory:"rules")
+                let file = pdfs[indexPath.row] as NSString
+                let document = ReaderDocument.withDocumentFilePath(file, password: nil)
+                let readerView = ReaderViewController(readerDocument:document)
+                readerView.delegate = self
+                newView = readerView
+                newView.hidesBottomBarWhenPushed = true
+                navigationController?.setNavigationBarHidden(true, animated:true)
+                
+            } else if indexPath.row == 1 {
+                let compView = ComprehensiveRulesViewController()
+                newView = compView
+                newView.hidesBottomBarWhenPushed = true
+            }
             
         case 1:
             let searchView = SimpleSearchViewController()
@@ -98,8 +109,8 @@ public class MoreViewController: UIViewController, UITableViewDataSource, UITabl
             searchView.predicate = predicate
             searchView.titleString = "\(key) - \(value)"
             searchView.doSearch()
-            view = searchView
-
+            newView = searchView
+            
         case 2:
             let searchView = SimpleSearchViewController()
             let banned = CardLegality.MR_findAllWithPredicate(NSPredicate(format:"name == %@ AND format.name == %@", "Banned", value))
@@ -107,27 +118,26 @@ public class MoreViewController: UIViewController, UITableViewDataSource, UITabl
             searchView.predicate = predicate
             searchView.titleString = "\(key) - \(value)"
             searchView.doSearch()
-            view = searchView
-
+            newView = searchView
+            
         case 3:
             let searchView = SimpleSearchViewController()
             let predicate = NSPredicate(format: "reserved == %@", true)
             searchView.predicate = predicate
             searchView.titleString = "\(key) - \(value)"
             searchView.doSearch()
-            view = searchView
-
+            newView = searchView
         default:
-            view = nil;
+            newView = nil
         }
         
-        if view != nil {
-            navigationController?.pushViewController(view, animated:true)
+        if newView != nil {
+            navigationController?.pushViewController(newView, animated:true)
         }
     }
     
     // ReaderViewControllerDelegate
-    public func dismissReaderViewController(viewController:ReaderViewController)
+    func dismissReaderViewController(viewController:ReaderViewController)
     {
         navigationController?.popViewControllerAnimated(true);
         navigationController?.setNavigationBarHidden(false, animated:true)
