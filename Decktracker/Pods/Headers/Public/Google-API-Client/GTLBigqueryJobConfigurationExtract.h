@@ -1,1 +1,0 @@
-../../../Google-API-Client/Source/Services/Bigquery/Generated/GTLBigqueryJobConfigurationExtract.h
