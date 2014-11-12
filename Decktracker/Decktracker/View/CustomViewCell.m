@@ -8,6 +8,7 @@
 
 #import "CustomViewCell.h"
 
+#import "IASKSettingsReader.h"
 
 @implementation CustomViewCell
 
@@ -16,6 +17,7 @@
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if ((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])) {
         // Initialization code
+        IASK_IF_PRE_IOS7(textView.textColor = [UIColor colorWithRed:0.275f green:0.376f blue:0.522f alpha:1.000f];);
     }
     return self;
 }

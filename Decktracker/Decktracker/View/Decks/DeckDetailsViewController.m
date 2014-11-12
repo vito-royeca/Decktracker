@@ -9,11 +9,15 @@
 #import "DeckDetailsViewController.h"
 #import "JJJ/JJJ.h"
 #import "AddCardViewController.h"
+#import "CustomViewCell.h"
 #import "Database.h"
+#import "DeckIASKSettingsStore.h"
 #import "FileManager.h"
 #import "Format.h"
 #import "LimitedSearchViewController.h"
 #import "SearchResultsTableViewCell.h"
+
+#import "IASKSpecifierValuesViewController.h"
 
 #ifndef DEBUG
 #import "GAI.h"
@@ -32,7 +36,7 @@
 @synthesize deck = _deck;
 @synthesize segmentedControl = _segmentedControl;
 @synthesize tblCards = _tblCards;
-@synthesize bottomToolbar = _bottomToolbar;
+@synthesize cardDetailsViewController = _cardDetailsViewController;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -57,68 +61,42 @@
                              @{@"Pricing" :@[@"TCGPlayer"]}];
 
     CGFloat dX = 0;
-    CGFloat dY = 0;
+    CGFloat dY = [UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height;
     CGFloat dWidth = self.view.frame.size.width;
-    CGFloat dHeight = self.view.frame.size.height - 44;
+    CGFloat dHeight = 44;
     
-    self.tblCards = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)
-                                                 style:UITableViewStyleGrouped];
-    self.tblCards.delegate = self;
-    self.tblCards.dataSource = self;
-    [self.tblCards registerNib:[UINib nibWithNibName:@"SearchResultsTableViewCell" bundle:nil]
-          forCellReuseIdentifier:@"Cell1"];
-    
-    self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Details", @"Cards"/*, @"Functions"*/]];
-    self.segmentedControl.frame = CGRectMake(dX+10, dY+7, dWidth-20, 30);
+    self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Cards", @"Details"/*, @"Functions"*/]];
+    self.segmentedControl.frame = CGRectMake(10, 7, dWidth-20, 30);
     self.segmentedControl.selectedSegmentIndex = 0;
     [self.segmentedControl addTarget:self
                               action:@selector(segmentedControlChangedValue:)
                     forControlEvents:UIControlEventValueChanged];
     
-    dHeight = 44;
     _viewSegmented = [[UIView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
     _viewSegmented.backgroundColor = [UIColor whiteColor];
     [_viewSegmented addSubview:self.segmentedControl];
     
-    dHeight = 44;
-    dY = self.view.frame.size.height - dHeight;
-    dWidth = self.view.frame.size.width;
-    self.bottomToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
     
-//    NSArray *arrIcons = @[[NSString stringWithFormat:@"%@/images/other/land/32.png", [[NSBundle mainBundle] bundlePath]],
-//                          [NSString stringWithFormat:@"%@/images/other/creature/48.png", [[NSBundle mainBundle] bundlePath]],
-//                          [NSString stringWithFormat:@"%@/images/other/instant/48.png", [[NSBundle mainBundle] bundlePath]],
-//                          [NSString stringWithFormat:@"%@/images/other/multiple/32.png", [[NSBundle mainBundle] bundlePath]]];
-//    
-//    self.bottomToolbar.items = @[[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:arrIcons[0]]
-//                                                                  style:UIBarButtonItemStylePlain
-//                                                                 target:self
-//                                                                 action:nil],
-//                                 [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-//                                                                               target:nil
-//                                                                               action:nil],
-//                                 [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:arrIcons[1]]
-//                                                                  style:UIBarButtonItemStylePlain
-//                                                                 target:self
-//                                                                 action:nil],
-//                                 [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-//                                                                               target:nil
-//                                                                               action:nil],
-//                                 [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:arrIcons[2]]
-//                                                                  style:UIBarButtonItemStylePlain
-//                                                                 target:self
-//                                                                 action:nil],
-//                                 [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-//                                                                               target:nil
-//                                                                               action:nil],
-//                                 [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:arrIcons[3]]
-//                                                                  style:UIBarButtonItemStylePlain
-//                                                                 target:self
-//                                                                 action:nil]];
+    dY = _viewSegmented.frame.origin.y + _viewSegmented.frame.size.height;
+    dHeight = self.view.frame.size.height - dY;
+    self.tblCards = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)
+                                                 style:UITableViewStylePlain];
+    self.tblCards.delegate = self;
+    self.tblCards.dataSource = self;
+    [self.tblCards registerNib:[UINib nibWithNibName:@"SearchResultsTableViewCell" bundle:nil]
+          forCellReuseIdentifier:@"Cell1"];
     
+    [self.view addSubview:_viewSegmented];
     [self.view addSubview:self.tblCards];
-    [self.view addSubview:self.bottomToolbar];
 
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:kIASKAppSettingChanged
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(settingsChanged:)
+                                                 name:kIASKAppSettingChanged
+                                               object:nil];
+    
 #ifndef DEBUG
     // send the screen to Google Analytics
     id tracker = [[GAI sharedInstance] defaultTracker];
@@ -146,9 +124,58 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [self.cardDetailsViewController.settingsStore synchronize];
+}
+
 -(void) segmentedControlChangedValue:(id) sender
 {
-    [self.tblCards reloadData];
+    CGFloat dX = 0;
+    CGFloat dY = _viewSegmented.frame.origin.y + _viewSegmented.frame.size.height;
+    CGFloat dWidth = self.view.frame.size.width;
+    CGFloat dHeight = self.view.frame.size.height - dY;
+    
+    if (self.segmentedControl.selectedSegmentIndex == 0)
+    {
+        [self.cardDetailsViewController.settingsStore synchronize];
+        [self.cardDetailsViewController.view removeFromSuperview];
+
+        self.tblCards = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)
+                                                     style:UITableViewStylePlain];
+        self.tblCards.delegate = self;
+        self.tblCards.dataSource = self;
+        [self.tblCards registerNib:[UINib nibWithNibName:@"SearchResultsTableViewCell" bundle:nil]
+            forCellReuseIdentifier:@"Cell1"];
+        
+        [self.view addSubview:self.tblCards];
+    }
+    
+    else if (self.segmentedControl.selectedSegmentIndex == 1)
+    {
+        [self.tblCards removeFromSuperview];
+        
+        DeckIASKSettingsStore *deckSettingsStore = [[DeckIASKSettingsStore alloc] init];
+        deckSettingsStore.deck = self.deck;
+        
+//        NSMutableSet *setHiddenKeys = [[NSMutableSet alloc] init];
+//        [setHiddenKeys addObject:@"format2"];
+        
+        self.cardDetailsViewController = [[IASKAppSettingsViewController alloc] init];
+//        self.cardDetailsViewController.hiddenKeys = setHiddenKeys;
+        self.cardDetailsViewController.view.frame = CGRectMake(dX, dY, dWidth, dHeight);
+        self.cardDetailsViewController.delegate = self;
+        self.cardDetailsViewController.settingsStore = deckSettingsStore;
+        self.cardDetailsViewController.file = @"deck.inApp";
+        self.cardDetailsViewController.showCreditsFooter = NO;
+        self.cardDetailsViewController.showDoneButton = NO;
+        [self.view addSubview:self.cardDetailsViewController.view];
+    }
+    
+    else if (self.segmentedControl.selectedSegmentIndex == 2)
+    {
+        
+    }
 }
 
 -(UITableViewCell*) createSearchResultsTableCell:(NSDictionary*) dict
@@ -198,55 +225,9 @@
 }
 
 #pragma mark - UITableView
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    switch (self.segmentedControl.selectedSegmentIndex)
-    {
-        case 0:
-        case 1:
-        case 2:
-        {
-            if (section == 0)
-            {
-                return _viewSegmented.frame.size.height;
-            }
-        }
-    }
-    
-    return UITableViewAutomaticDimension;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    if (section == 0)
-    {
-        return _viewSegmented;
-    }
-    else
-    {
-        return nil;
-    }
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (self.segmentedControl.selectedSegmentIndex == 0)
-    {
-        if (indexPath.section == 0)
-        {
-            return 0;
-        }
-        else if (indexPath.section == 4) // Notes
-        {
-            return SEARCH_RESULTS_CELL_HEIGHT;
-        }
-        else
-        {
-            return UITableViewAutomaticDimension;
-        }
-    }
-    
-    else if (self.segmentedControl.selectedSegmentIndex == 1)
     {
         NSInteger rows = [self tableView:tableView numberOfRowsInSection:indexPath.section];
         
@@ -325,11 +306,6 @@
 {
     if (self.segmentedControl.selectedSegmentIndex == 0)
     {
-        return section == 0 ? nil : _arrDetailSections[section];
-    }
-    
-    else if (self.segmentedControl.selectedSegmentIndex == 1)
-    {
         int count = 0;
         
         switch (section)
@@ -392,10 +368,6 @@
     {
         case 0:
         {
-            return _arrDetailSections.count;
-        }
-        case 1:
-        {
             return _arrCardSections.count;
         }
         case 2:
@@ -412,11 +384,6 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (self.segmentedControl.selectedSegmentIndex == 0)
-    {
-        return 1;
-    }
-    
-    else if (self.segmentedControl.selectedSegmentIndex == 1)
     {
         switch (section)
         {
@@ -461,61 +428,6 @@
     UITableViewCell *cell;
     
     if (self.segmentedControl.selectedSegmentIndex == 0)
-    {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"Cell0"];
-        if (cell == nil)
-        {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Cell0"];
-        }
-        
-        cell.textLabel.text = nil;
-        cell.userInteractionEnabled = YES;
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        
-        switch (indexPath.section)
-        {
-            case 1:
-            {
-                cell.textLabel.text = self.deck.name;
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                break;
-            }
-            case 2:
-            {
-                cell.textLabel.text = [NSString stringWithFormat:@"Mainboard: %d / Sideboard: %d", [self.deck cardsInBoard:MainBoard], [self.deck cardsInBoard:SideBoard]];
-                cell.userInteractionEnabled = NO;
-                break;
-            }
-            case 3:
-            {
-                cell.textLabel.text = self.deck.format;
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                break;
-            }
-            case 4:
-            {
-                cell.textLabel.text = self.deck.notes;
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                break;
-            }
-            case 5:
-            {
-                cell.textLabel.text = self.deck.originalDesigner;
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                break;
-            }
-            case 6:
-            {
-                cell.textLabel.text = self.deck.year ? [NSString stringWithFormat:@"%@", self.deck.year] : @"";
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                break;
-            }
-        }
-        
-        return cell;
-    }
-    
-    else if (self.segmentedControl.selectedSegmentIndex == 1)
     {
         NSInteger rows = [self tableView:tableView numberOfRowsInSection:indexPath.section];
         if (rows > 1)
@@ -614,7 +526,7 @@
             }
         }
     }
-    
+
     else if (self.segmentedControl.selectedSegmentIndex == 2)
     {
         cell = [tableView dequeueReusableCellWithIdentifier:@"Cell0"];
@@ -643,51 +555,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (self.segmentedControl.selectedSegmentIndex == 0)
-    {
-        FieldEditorViewController *view = [[FieldEditorViewController alloc] init];
-        UITableViewCell *cell = [self tableView:self.tblCards cellForRowAtIndexPath:indexPath];
-        
-        view.delegate = self;
-        view.fieldName = _arrDetailSections[indexPath.section];
-        view.oldValue = cell.textLabel.text;
-        
-        switch (indexPath.section)
-        {
-            case 1:
-            {
-                view.fieldEditorType = FieldEditorTypeText;
-                break;
-            }
-            case 3:
-            {
-                view.fieldEditorType = FieldEditorTypeSelection;
-                NSMutableArray *arrFormats = [[NSMutableArray alloc] init];
-                for (Format * format in [Format MR_findAllSortedBy:@"name" ascending:YES])
-                {
-                    [arrFormats addObject:format.name];
-                }
-                view.fieldOptions = arrFormats;
-                break;
-            }
-            case 4:
-            {
-                view.fieldEditorType = FieldEditorTypeTextArea;
-                break;
-            }
-            case 5:
-            {
-                view.fieldEditorType = FieldEditorTypeText;
-                break;
-            }
-            case 6:
-            {
-                view.fieldEditorType = FieldEditorTypeNumber;
-                break;
-            }
-        }
-        [self.navigationController pushViewController:view animated:YES];
-    }
-    else if (self.segmentedControl.selectedSegmentIndex == 1)
     {
         NSInteger rows = [self tableView:tableView numberOfRowsInSection:indexPath.section];
         NSPredicate *predicate;
@@ -802,6 +669,12 @@
             [self showLimitedSearch:predicate];
         }
     }
+    
+    else if (self.segmentedControl.selectedSegmentIndex == 1)
+    {
+        
+    }
+
     else if (self.segmentedControl.selectedSegmentIndex == 2)
     {
         switch (indexPath.section)
@@ -818,44 +691,82 @@
     }
 }
 
-#pragma mark - FieldEditorViewControllerDelegate
--(void) editorSaved:(id) newValue
+#pragma mark - IASKSettingsDelegate
+- (void)settingsViewControllerDidEnd:(IASKAppSettingsViewController*)sender
 {
-    NSString *path = [NSString stringWithFormat:@"/Decks/%@.json", self.deck.name];
-    [[FileManager sharedInstance] deleteFileAtPath:path];
+    [sender.tableView reloadData];
+}
+
+- (UITableViewCell*)tableView:(UITableView*)tableView cellForSpecifier:(IASKSpecifier*)specifier
+{
+    CustomViewCell *cell = (CustomViewCell*)[tableView dequeueReusableCellWithIdentifier:specifier.key];
     
-    switch ([self.tblCards indexPathForSelectedRow].section)
+    if (!cell)
     {
-        case 1:
+        cell = (CustomViewCell*)[[[NSBundle mainBundle] loadNibNamed:@"CustomViewCell"
+                                                               owner:self
+                                                             options:nil] objectAtIndex:0];
+    }
+    
+    cell.textView.text = [self.cardDetailsViewController.settingsStore objectForKey:@"notes"];
+    cell.textView.delegate = self;
+    [cell setNeedsLayout];
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView*)tableView heightForSpecifier:(IASKSpecifier*)specifier
+{
+    if ([specifier.key isEqualToString:@"notes"])
+    {
+        return 44*3;
+    }
+    return 0;
+}
+
+- (void)settingsViewController:(IASKAppSettingsViewController*)sender buttonTappedForSpecifier:(IASKSpecifier*)specifier
+{
+    if ([specifier.key isEqualToString:@"format"])
+    {
+        NSMutableArray *arrFormats = [[NSMutableArray alloc] init];
+        for (Format *format in [Format MR_findAllSortedBy:@"name" ascending:YES])
         {
-            self.deck.name = newValue;
-            break;
+            [arrFormats addObject:format.name];
         }
-        case 3:
+        NSDictionary *dict = @{@"Title": @"Format",
+                               @"DefaultValue": self.deck.format,
+                               @"Key": @"format",
+                               @"Titles": arrFormats,
+                               @"Values": arrFormats,
+                               @"Type": kIASKPSMultiValueSpecifier};
+        
+        IASKSpecifierValuesViewController *targetViewController = [[IASKSpecifierValuesViewController alloc] init];
+        [targetViewController setCurrentSpecifier:[[IASKSpecifier alloc] initWithSpecifier:dict]];
+        targetViewController.settingsReader = self.cardDetailsViewController.settingsReader;
+        targetViewController.settingsStore = self.cardDetailsViewController.settingsStore;
+        targetViewController.navigationItem.title = @"Select Format";
+        [self.navigationController pushViewController:targetViewController animated:YES];
+    }
+}
+
+-(void) settingsChanged:(id) sender
+{
+    NSDictionary *dict = [sender userInfo];
+    
+    for (NSString *key in dict)
+    {
+        if ([key isEqualToString:@"format"])
         {
-            self.deck.format = newValue;
-            break;
-        }
-        case 4:
-        {
-            self.deck.notes = newValue;
-            break;
-        }
-        case 5:
-        {
-            self.deck.originalDesigner = newValue;
-            break;
-        }
-        case 6:
-        {
-            self.deck.year = [NSNumber numberWithInt:[newValue intValue]];
+            [self.cardDetailsViewController.settingsStore setObject:dict[key] forKey:key];
+            [self.cardDetailsViewController.tableView reloadData];
             break;
         }
     }
-    
-    path = [NSString stringWithFormat:@"/Decks/%@.json", self.deck.name];
-    [self.deck save:path];
-    [self.tblCards reloadData];
+}
+
+#pragma mark UITextViewDelegate
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    [self.cardDetailsViewController.settingsStore setObject:textView.text forKey:@"notes"];
 }
 
 @end

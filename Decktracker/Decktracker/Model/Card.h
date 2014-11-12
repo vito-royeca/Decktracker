@@ -13,6 +13,7 @@
 
 @interface Card : NSManagedObject
 
+@property (nonatomic, retain) NSNumber * cardID;
 @property (nonatomic, retain) NSString * border;
 @property (nonatomic, retain) NSNumber * cmc;
 @property (nonatomic, retain) NSString * flavor;

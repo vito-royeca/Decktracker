@@ -20,6 +20,7 @@
 
 @implementation Card
 
+@dynamic cardID;
 @dynamic border;
 @dynamic cmc;
 @dynamic flavor;

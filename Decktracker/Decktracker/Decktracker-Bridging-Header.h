@@ -27,5 +27,8 @@
 #import "Set.h"
 #import "SetType.h"
 
+#import "Database.h"
 #import "Deck.h"
+#import "FileManager.h"
+#import "SettingsViewController.h"
 #import "SimpleSearchViewController.h"

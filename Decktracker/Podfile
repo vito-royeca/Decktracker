@@ -7,11 +7,11 @@ source 'https://github.com/CocoaPods/Specs.git'
 target "Decktracker" do
 
 pod "AFNetworking"
-pod "box-ios-sdk-v2"
+#pod "box-ios-sdk-v2"
 pod "CorePlot"
 pod "Dropbox-Sync-API-SDK"
 pod "FFCircularProgressView"
-pod "Google-API-Client"
+#pod "Google-API-Client"
 pod "GoogleAnalytics-iOS-SDK"
 pod "InAppSettingsKit"
 pod "hpple"

@@ -10,9 +10,14 @@ import UIKit
 
 class MultilineTableViewCell: UITableViewCell {
 
+    var textView:UITextView?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        
+        textView = UITextView()
+        self.addSubview(textView!)
     }
 
     override func setSelected(selected: Bool, animated: Bool) {

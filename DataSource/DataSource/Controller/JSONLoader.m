@@ -24,18 +24,22 @@
 #import "SetType.h"
 
 @implementation JSONLoader
+{
+    int _cardID;
+}
 
 -(void) parseJSON
 {
     NSDate *dateStart = [NSDate date];
     [[Database sharedInstance] setupDb];
-    
+    _cardID = 1;
+
     NSString *filePath = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] resourcePath], @"Data/AllSets-x.json"];
     NSData *data = [NSData dataWithContentsOfFile:filePath];
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
 
-//    [self parseCards1stPass:json];
-    [self parseCards2ndPass:json];
+    [self parseCards1stPass:json];
+//    [self parseCards2ndPass:json];
     [[Database sharedInstance] closeDb];
     
     NSDate *dateEnd = [NSDate date];
@@ -56,7 +60,6 @@
         [currentContext MR_save];
     }
     [self updateTCGSetNames];
-    
     
     for (NSString *setName in [json allKeys])
     {
@@ -159,6 +162,41 @@
     }
 }
 
+-(void) updateDeckInAppSettings
+{
+    // copy formats...
+    NSString *command = @"/usr/libexec/PlistBuddy";
+    NSString *destFile = @"\"/Users/tontonsevilla/deck.inApp.plist\"";
+    
+    NSString *deleteOp = [NSString stringWithFormat:@"%@ %@ -c \"Delete PreferenceSpecifiers:3:Titles\"", command, destFile];
+    [JJJUtil runCommand:deleteOp];
+    deleteOp = [NSString stringWithFormat:@"%@ %@ -c \"Delete PreferenceSpecifiers:3:Values\"", command, destFile];
+    [JJJUtil runCommand:deleteOp];
+    
+    NSString *addOp = [NSString stringWithFormat:@"%@ %@ -c \"Add PreferenceSpecifiers:3:Titles array\"", command, destFile];
+    [JJJUtil runCommand:addOp];
+    addOp = [NSString stringWithFormat:@"%@ %@ -c \"Add PreferenceSpecifiers:3:Values array\"", command, destFile];
+    [JJJUtil runCommand:addOp];
+    
+    
+    NSArray *arrFormats = [Format MR_findAllSortedBy:@"name" ascending:YES];
+    int i=0;
+    for (Format *format in arrFormats)
+    {
+        NSString *op = [NSString stringWithFormat:@"%@ %@ -c \"Add PreferenceSpecifiers:3:Titles:%d string '%@'\"", command, destFile, i, format.name];
+        [JJJUtil runCommand:op];
+        i++;
+    }
+    
+    i=0;
+    for (Format *format in arrFormats)
+    {
+        NSString *op = [NSString stringWithFormat:@"%@ %@ -c \"Add PreferenceSpecifiers:3:Values:%d string '%@'\"", command, destFile, i, format.name];
+        [JJJUtil runCommand:op];
+        i++;
+    }
+}
+
 #pragma mark - Sets parsing
 -(Set*) parseSet:(NSDictionary*) dict
 {
@@ -256,7 +294,8 @@
     for (NSDictionary *dict in array)
     {
         Card *card = [Card MR_createEntity];
-            
+        
+        card.cardID = [NSNumber numberWithInt:_cardID];
         card.layout = dict[@"layout"];
         card.name = dict[@"name"];
         card.manaCost = dict[@"manaCost"];
@@ -292,6 +331,7 @@
         [currentContext MR_save];
 
         [cards addObject:card];
+        _cardID++;
     }
 
     return cards;

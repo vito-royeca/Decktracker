@@ -8,6 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-@interface DeckIASKSettingsStore : NSObject
+#import "Deck.h"
+
+#import "IASKSettingsStore.h"
+
+@interface DeckIASKSettingsStore : IASKAbstractSettingsStore
+
+@property(strong,nonatomic) Deck *deck;
 
 @end

@@ -448,7 +448,7 @@ static Database *_me;
         }
         
         Card *c = [self findCard:card.name inSet:card.set.code];
-        
+
         c.tcgPlayerHighPrice = high ? [NSNumber numberWithDouble:[high doubleValue]] : nil;
         c.tcgPlayerMidPrice  = mid  ? [NSNumber numberWithDouble:[mid doubleValue]]  : nil;
         c.tcgPlayerLowPrice  = low  ? [NSNumber numberWithDouble:[low doubleValue]]  : nil;
@@ -465,6 +465,54 @@ static Database *_me;
     {
         return card;
     }
+}
+
+-(NSArray*) getRandomCards:(int) howMany
+{
+    NSManagedObjectContext *moc = [NSManagedObjectContext MR_defaultContext];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:@"name"
+                                                                    ascending:YES];
+    NSSortDescriptor *sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:@"set.releaseDate"
+                                                                    ascending:YES];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Card"
+                                              inManagedObjectContext:moc];
+    
+    [fetchRequest setEntity:entity];
+    NSUInteger count = [moc countForFetchRequest:fetchRequest error:NULL];
+    NSMutableArray *arrIDs = [[NSMutableArray alloc] initWithCapacity:howMany];
+    for (int i=0; i<howMany; i++)
+    {
+        [arrIDs addObject:[NSNumber numberWithInt:arc4random() %(count)]];
+    }
+    
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"cardID IN(%@)", arrIDs]];
+    [fetchRequest setSortDescriptors:@[sortDescriptor1, sortDescriptor2]];
+    [fetchRequest setFetchLimit:howMany];
+    
+    NSError *error = nil;
+    NSArray *array = [moc executeFetchRequest:fetchRequest error:&error];
+    return array;
+}
+
+-(NSArray*) getSets:(int) howMany
+{
+    NSManagedObjectContext *moc = [NSManagedObjectContext MR_defaultContext];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:@"releaseDate"
+                                                                    ascending:NO];
+    NSSortDescriptor *sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:@"name"
+                                                                    ascending:YES];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Set"
+                                              inManagedObjectContext:moc];
+    
+    [fetchRequest setEntity:entity];
+    [fetchRequest setSortDescriptors:@[sortDescriptor1, sortDescriptor2]];
+    [fetchRequest setFetchLimit:howMany];
+    
+    NSError *error = nil;
+    NSArray *array = [moc executeFetchRequest:fetchRequest error:&error];
+    return array;
 }
 
 @end

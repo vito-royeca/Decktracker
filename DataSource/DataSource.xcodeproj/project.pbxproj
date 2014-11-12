@@ -11,7 +11,6 @@
 		8C1B4DC9198CF0C000B4C948 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C1B4DC8198CF0C000B4C948 /* CoreData.framework */; };
 		8C1B4DCB198CF0C000B4C948 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C1B4DCA198CF0C000B4C948 /* Foundation.framework */; };
 		8C1B4DCE198CF0C000B4C948 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1B4DCD198CF0C000B4C948 /* main.m */; };
-		8C3D17EB1A087DA200D9CBD7 /* database.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8C3D17E71A087DA200D9CBD7 /* database.xcdatamodeld */; };
 		8C3D17F81A08847D00D9CBD7 /* RulesLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3D17F71A08847D00D9CBD7 /* RulesLoader.m */; };
 		8C3D18031A08A3A800D9CBD7 /* MagicCompRules_20140926.htm in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C3D18021A0884FF00D9CBD7 /* MagicCompRules_20140926.htm */; };
 		8C3E94A419E4246400C7EF21 /* Artist.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3E948A19E4246400C7EF21 /* Artist.m */; };
@@ -32,6 +31,7 @@
 		8C5FF9E419AE2A5D003CE54C /* tcgplayer_sets.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C5FF9E219AE2A0B003CE54C /* tcgplayer_sets.plist */; };
 		8C80A0C2198D01D600BADA6C /* JSONLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C80A0C1198D01D600BADA6C /* JSONLoader.m */; };
 		8C80A0CC198D040500BADA6C /* Database.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C80A0CB198D040500BADA6C /* Database.m */; };
+		8CC5BA641A133FE400F3BDD2 /* database.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8CC5BA5F1A133FE400F3BDD2 /* database.xcdatamodeld */; };
 		8CF0C9DC1991CDB900349F35 /* libJJJ.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF0C9CD1991CD5500349F35 /* libJJJ.a */; };
 		8CF9CE52199F9A22008127E5 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF9CE51199F9A22008127E5 /* AppKit.framework */; };
 		8CFD32F2198E7B2900F1AFC3 /* ImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CFD32F1198E7B2900F1AFC3 /* ImageLoader.m */; };
@@ -82,9 +82,6 @@
 		8C1B4DCA198CF0C000B4C948 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		8C1B4DCD198CF0C000B4C948 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8C1B4DD0198CF0C000B4C948 /* DataSource-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DataSource-Prefix.pch"; sourceTree = "<group>"; };
-		8C3D17E81A087DA200D9CBD7 /* database.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = database.xcdatamodel; sourceTree = "<group>"; };
-		8C3D17E91A087DA200D9CBD7 /* Nov-4-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Nov-4-2014.xcdatamodel"; sourceTree = "<group>"; };
-		8C3D17EA1A087DA200D9CBD7 /* Oct-5-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Oct-5-2014.xcdatamodel"; sourceTree = "<group>"; };
 		8C3D17F61A08847D00D9CBD7 /* RulesLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RulesLoader.h; sourceTree = "<group>"; };
 		8C3D17F71A08847D00D9CBD7 /* RulesLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RulesLoader.m; sourceTree = "<group>"; };
 		8C3D18021A0884FF00D9CBD7 /* MagicCompRules_20140926.htm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = MagicCompRules_20140926.htm; sourceTree = "<group>"; };
@@ -123,6 +120,10 @@
 		8C80A0CA198D040500BADA6C /* Database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Database.h; path = ../../../DeckTracker/DeckTracker/Controller/Database.h; sourceTree = "<group>"; };
 		8C80A0CB198D040500BADA6C /* Database.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Database.m; path = ../../../DeckTracker/DeckTracker/Controller/Database.m; sourceTree = "<group>"; };
 		8C80A0CD198D052A00BADA6C /* Magic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Magic.h; path = ../../DeckTracker/DeckTracker/Magic.h; sourceTree = "<group>"; };
+		8CC5BA601A133FE400F3BDD2 /* database.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = database.xcdatamodel; sourceTree = "<group>"; };
+		8CC5BA611A133FE400F3BDD2 /* Nov-12-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Nov-12-2014.xcdatamodel"; sourceTree = "<group>"; };
+		8CC5BA621A133FE400F3BDD2 /* Nov-4-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Nov-4-2014.xcdatamodel"; sourceTree = "<group>"; };
+		8CC5BA631A133FE400F3BDD2 /* Oct-5-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Oct-5-2014.xcdatamodel"; sourceTree = "<group>"; };
 		8CF0C9C61991CD5400349F35 /* JJJ.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JJJ.xcodeproj; path = ../jjj/JJJ/JJJ.xcodeproj; sourceTree = "<group>"; };
 		8CF9CE4B199F982A008127E5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		8CF9CE51199F9A22008127E5 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -225,7 +226,7 @@
 				8C49E7C51A09CE1F0034603A /* ComprehensiveGlossary.m */,
 				8C49E7C61A09CE1F0034603A /* ComprehensiveRule.h */,
 				8C49E7C71A09CE1F0034603A /* ComprehensiveRule.m */,
-				8C3D17E71A087DA200D9CBD7 /* database.xcdatamodeld */,
+				8CC5BA5F1A133FE400F3BDD2 /* database.xcdatamodeld */,
 				8C3E949E19E4246400C7EF21 /* Format.h */,
 				8C3E949F19E4246400C7EF21 /* Format.m */,
 				8C3E94A019E4246400C7EF21 /* Set.h */,
@@ -391,7 +392,6 @@
 				8C3E94AE19E4246400C7EF21 /* Format.m in Sources */,
 				8C49E7C81A09CE1F0034603A /* ComprehensiveGlossary.m in Sources */,
 				8C3E94A819E4246400C7EF21 /* CardForeignName.m in Sources */,
-				8C3D17EB1A087DA200D9CBD7 /* database.xcdatamodeld in Sources */,
 				8C3E94AB19E4246400C7EF21 /* CardRuling.m in Sources */,
 				8C49E7C91A09CE1F0034603A /* ComprehensiveRule.m in Sources */,
 				8C80A0CC198D040500BADA6C /* Database.m in Sources */,
@@ -406,6 +406,7 @@
 				8C3E94A419E4246400C7EF21 /* Artist.m in Sources */,
 				8C3E94AC19E4246400C7EF21 /* CardType.m in Sources */,
 				8C3E94B019E4246400C7EF21 /* SetType.m in Sources */,
+				8CC5BA641A133FE400F3BDD2 /* database.xcdatamodeld in Sources */,
 				8C3E94A719E4246400C7EF21 /* CardColor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -527,14 +528,15 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		8C3D17E71A087DA200D9CBD7 /* database.xcdatamodeld */ = {
+		8CC5BA5F1A133FE400F3BDD2 /* database.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				8C3D17E81A087DA200D9CBD7 /* database.xcdatamodel */,
-				8C3D17E91A087DA200D9CBD7 /* Nov-4-2014.xcdatamodel */,
-				8C3D17EA1A087DA200D9CBD7 /* Oct-5-2014.xcdatamodel */,
+				8CC5BA601A133FE400F3BDD2 /* database.xcdatamodel */,
+				8CC5BA611A133FE400F3BDD2 /* Nov-12-2014.xcdatamodel */,
+				8CC5BA621A133FE400F3BDD2 /* Nov-4-2014.xcdatamodel */,
+				8CC5BA631A133FE400F3BDD2 /* Oct-5-2014.xcdatamodel */,
 			);
-			currentVersion = 8C3D17E91A087DA200D9CBD7 /* Nov-4-2014.xcdatamodel */;
+			currentVersion = 8CC5BA611A133FE400F3BDD2 /* Nov-12-2014.xcdatamodel */;
 			name = database.xcdatamodeld;
 			path = ../../Decktracker/Decktracker/Model/database.xcdatamodeld;
 			sourceTree = "<group>";

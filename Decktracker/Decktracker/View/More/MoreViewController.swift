@@ -11,10 +11,8 @@ import UIKit
 class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, ReaderViewControllerDelegate {
     
     var tblMore:UITableView!
-    let arrayData = ["Rules": ["Basic Rulebook", "Comprehensive Rules"]/*,
-                     "Restricted List": ["Vintage", "Legacy", "Modern"],
-                     "Banned List": ["Vintage", "Legacy", "Modern"],
-                     "Other Lists": ["Reserved"]*/]
+    let arrayData = [["Rules": ["Basic Rulebook", "Comprehensive Rules"]],
+                     ["": ["Settings"]]]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,33 +43,41 @@ class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDe
     // UITableViewDataSource
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        let key = Array(arrayData.keys)[section]
-        let dict = arrayData[key]!
+        let row = arrayData[section]
+        let key = Array(row.keys)[0]
+        let dict = row[key]!
         return dict.count
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int
     {
-        return Array(arrayData.keys).count
+        return arrayData.count
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String?
     {
-        return Array(arrayData.keys)[section]
+        let row = arrayData[section]
+        return Array(row.keys)[0]
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     {
         var cell = tableView.dequeueReusableCellWithIdentifier("DefaultCell") as UITableViewCell?
-        if cell == cell {
+        if cell == nil {
             cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "DefaultCell")
             cell!.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         }
-        let key = Array(arrayData.keys)[indexPath.section]
-        let dict = arrayData[key]!
+        let row = arrayData[indexPath.section]
+        let key = Array(row.keys)[0]
+        let dict = row[key]!
         let value = dict[indexPath.row]
         
         cell!.textLabel.text = value
+        cell?.imageView.image = nil
+        
+        if indexPath.section == 1 {
+            cell?.imageView.image = UIImage(named: "settings.png")
+        }
         return cell!
     }
     
@@ -80,8 +86,9 @@ class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDe
     {
         var newView:UIViewController!;
         
-        let key = Array(arrayData.keys)[indexPath.section]
-        let dict = arrayData[key]!
+        let row = arrayData[indexPath.section]
+        let key = Array(row.keys)[0]
+        let dict = row[key]!
         let value = dict[indexPath.row]
         
         switch (indexPath.section) {
@@ -103,30 +110,9 @@ class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDe
             }
             
         case 1:
-            let searchView = SimpleSearchViewController()
-            let restricted = CardLegality.MR_findAllWithPredicate(NSPredicate(format:"name == %@ AND format.name == %@", "Restricted", value))
-            let predicate = NSPredicate(format: "ANY legalities IN %@", restricted)
-            searchView.predicate = predicate
-            searchView.titleString = "\(key) - \(value)"
-            searchView.doSearch()
+            let searchView = SettingsViewController()
             newView = searchView
-            
-        case 2:
-            let searchView = SimpleSearchViewController()
-            let banned = CardLegality.MR_findAllWithPredicate(NSPredicate(format:"name == %@ AND format.name == %@", "Banned", value))
-            let predicate = NSPredicate(format: "ANY legalities IN %@", banned)
-            searchView.predicate = predicate
-            searchView.titleString = "\(key) - \(value)"
-            searchView.doSearch()
-            newView = searchView
-            
-        case 3:
-            let searchView = SimpleSearchViewController()
-            let predicate = NSPredicate(format: "reserved == %@", true)
-            searchView.predicate = predicate
-            searchView.titleString = "\(key) - \(value)"
-            searchView.doSearch()
-            newView = searchView
+        
         default:
             newView = nil
         }

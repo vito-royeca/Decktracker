@@ -440,7 +440,16 @@
     }
     if (self.card.originalText)
     {
-        [text appendFormat:@"<div class='originalText'>%@</div>", [self replaceSymbolsInText:self.card.originalText]];
+        if (([self.card.originalType hasPrefix:@"Basic Land"] ||
+             [self.card.type hasPrefix:@"Basic Land"]) &&
+            self.card.originalText.length == 1)
+        {
+            [text appendFormat:@"<p align='center'><img src='%@/images/mana/%@/96.png' width='96'/ height='96' />", [[NSBundle mainBundle] bundlePath], self.card.originalText];
+        }
+        else
+        {
+            [text appendFormat:@"<div class='originalText'>%@</div>", [self replaceSymbolsInText:self.card.originalText]];
+        }
     }
     if (self.card.flavor)
     {
@@ -452,7 +461,7 @@
     }
     else if ([self.card.types containsObject:_planeswalkerType])
     {
-        [text appendFormat:@"<p><div class='powerToughness'>%@</div?", self.card.loyalty];
+        [text appendFormat:@"<p><div class='powerToughness'>%@</div>", self.card.loyalty];
     }
     if (text.length > 0)
     {
@@ -544,6 +553,13 @@
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
 
+    if (self.card.rarity)
+    {
+        [html appendFormat:@"<tr><td><div class='detailHeader'>Rarity</div></td></tr>"];
+        [html appendFormat:@"<tr><td>%@</td></tr>", self.card.rarity.name];
+        [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
+    }
+    
     if (self.card.artist)
     {
         NSString *link = [[NSString stringWithFormat:@"card?Artist=%@", self.card.artist.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
@@ -576,7 +592,6 @@
         NSString *link = [[NSString stringWithFormat:@"card?name=%@&set=%@", card.name, card.set.code] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 
         [html appendFormat:@"<tr><td><a href='%@'>%@</a></td><td><a href='%@'>%@</a></td></tr>", link, [self composeSetImage:card], link, set.name];
-        NSLog(@"card.set == _mediaInsertsSet? %@", (card.set == _mediaInsertsSet ? @"yes" : @"no"));
         [html appendFormat:@"<tr><td>&nbsp;</td><td>Release Date: %@</td></tr>", [card.set.name isEqualToString:_mediaInsertsSet.name] ? card.releaseDate : [JJJUtil formatDate:set.releaseDate withFormat:@"YYYY-MM-dd"]];
     }
     [html appendFormat:@"</table></td></tr>"];

@@ -11,7 +11,6 @@
 #import "FileManager.h"
 #import "MainViewController.h"
 
-#import "BoxSDK.h"
 #import <Crashlytics/Crashlytics.h>
 #import <Dropbox/Dropbox.h>
 

@@ -12,11 +12,8 @@
 #import "Magic.h"
 
 
-#import "BoxSDK.h"
 #import <Dropbox/Dropbox.h>
 #import <MobileCoreServices/MobileCoreServices.h>
-#import "GTMOAuth2ViewControllerTouch.h"
-#import "GTLDrive.h"
 
 #ifndef DEBUG
 #import "GAI.h"
@@ -28,7 +25,6 @@
 {
     NSMutableArray *_downloadQueue;
     NSDictionary *_currentQueue;
-    GTLServiceDrive *_gtlServiceDrive;
 }
 
 static FileManager *_me;
@@ -80,6 +76,11 @@ static FileManager *_me;
 -(NSString*) cardSetPath:(Card*) card
 {
     return [NSString stringWithFormat:@"%@/images/set/%@/%@/48.png", [[NSBundle mainBundle] bundlePath], card.set.code, [[Database sharedInstance] cardRarityIndex:card]];
+}
+
+-(NSString*) cardSetPathBig:(Set*) set
+{
+    return [NSString stringWithFormat:@"%@/images/set/%@/C/96.png", [[NSBundle mainBundle] bundlePath], set.code];
 }
 
 -(void) downloadCardImage:(Card*) card immediately:(BOOL) immediately

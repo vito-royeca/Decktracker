@@ -9,13 +9,16 @@
 @import UIKit;
 
 #import "Deck.h"
-#import "FieldEditorViewController.h"
 
-@interface DeckDetailsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, FieldEditorViewControllerDelegate>
+#import "IASKSettingsReader.h"
+#import "IASKAppSettingsViewController.h"
+
+
+@interface DeckDetailsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, IASKSettingsDelegate>
 
 @property(strong,nonatomic) Deck *deck;
 @property(strong,nonatomic) UISegmentedControl *segmentedControl;
 @property(strong,nonatomic) UITableView *tblCards;
-@property(strong, nonatomic) UIToolbar *bottomToolbar;
+@property(strong,nonatomic) IASKAppSettingsViewController *cardDetailsViewController;
 
 @end

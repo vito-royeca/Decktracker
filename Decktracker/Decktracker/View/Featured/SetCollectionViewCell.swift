@@ -1,0 +1,41 @@
+//
+//  SetCollectionViewCell.swift
+//  Decktracker
+//
+//  Created by Jovit Royeca on 11/12/14.
+//  Copyright (c) 2014 Jovito Royeca. All rights reserved.
+//
+
+import UIKit
+
+class SetCollectionViewCell: UICollectionViewCell {
+
+    @IBOutlet weak var imgSet: UIImageView!
+    @IBOutlet weak var lblSetName: UILabel!
+    @IBOutlet weak var lblReleaseDate: UILabel!
+    @IBOutlet weak var lblNumberOfCards: UILabel!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
+
+    func displaySet(set: Set) {
+        let path = FileManager.sharedInstance().cardSetPathBig(set)
+        var setImage = UIImage(contentsOfFile: path)
+        imgSet.image = setImage
+        // resize the image
+        if setImage != nil {
+            let itemSize = CGSizeMake(setImage!.size.width/2, setImage!.size.height/2)
+            UIGraphicsBeginImageContextWithOptions(itemSize, false, UIScreen.mainScreen().scale)
+            let imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height)
+            setImage!.drawInRect(imageRect)
+            imgSet.image = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+        }
+        
+        lblSetName.text = set.name
+        lblReleaseDate.text = JJJUtil.formatDate(set.releaseDate, withFormat:"YYYY-MM-dd")
+        lblNumberOfCards.text = "\(set.numberOfCards) cards"
+    }
+}

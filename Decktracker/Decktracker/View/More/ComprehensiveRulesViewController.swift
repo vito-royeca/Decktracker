@@ -89,6 +89,9 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
             view.addSubview(webView!)
             webView!.loadRequest(NSURLRequest(URL: NSURL(fileURLWithPath: oPath)!))
         }
+        
+        self.navigationItem.title = "Comprehensive Rules"
+        
 #if !DEBUG
         // send the screen to Google Analytics
         let tracker = GAI.sharedInstance().defaultTracker
@@ -170,8 +173,7 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
         return section
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
-    {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var key:String?
         var value:String?
         

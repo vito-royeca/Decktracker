@@ -11,7 +11,6 @@
 #import "DecksViewController.h"
 #import "Magic.h"
 #import "SimpleSearchViewController.h"
-#import "SettingsViewController.h"
 
 #import "Decktracker-Swift.h"
 
@@ -33,11 +32,9 @@
     // Do any additional setup after loading the view.
     
     UINavigationController *nc1 = [[UINavigationController alloc] init];
-    UIViewController *vc1 = [[SimpleSearchViewController alloc] initWithNibName:nil bundle:nil];
+    UIViewController *vc1 = [[FeaturedViewController alloc] initWithNibName:nil bundle:nil];
     nc1.viewControllers = [NSArray arrayWithObjects:vc1, nil];
-    nc1.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Search"
-                                                   image:[UIImage imageNamed:@"search.png"]
-                                           selectedImage:nil];
+    nc1.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemFeatured tag:1];
     
     UINavigationController *nc2 = [[UINavigationController alloc] init];
     UIViewController *vc2 = [[DecksViewController alloc] initWithNibName:nil bundle:nil];
@@ -47,10 +44,10 @@
                                            selectedImage:nil];
     
     UINavigationController *nc4 = [[UINavigationController alloc] init];
-    UIViewController *vc4 = [[SettingsViewController alloc] initWithNibName:nil bundle:nil];
+    UIViewController *vc4 = [[SimpleSearchViewController alloc] initWithNibName:nil bundle:nil];
     nc4.viewControllers = [NSArray arrayWithObjects:vc4, nil];
-    nc4.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Settings"
-                                                   image:[UIImage imageNamed:@"settings.png"]
+    nc4.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Search"
+                                                   image:[UIImage imageNamed:@"search.png"]
                                            selectedImage:nil];
     
     UINavigationController *nc5 = [[UINavigationController alloc] init];

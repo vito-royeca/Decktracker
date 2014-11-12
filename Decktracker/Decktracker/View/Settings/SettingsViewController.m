@@ -116,7 +116,7 @@
             view.productDetails = @{@"name" : @"Collections",
                                     @"description": @"Lets you manage your card collections."};
             view.delegate = self;
-            [self.navigationController pushViewController:view animated:NO];
+            [self.navigationController pushViewController:view animated:YES];
         }
     }
     
@@ -125,28 +125,23 @@
         [_inAppPurchase restorePurchases];
     }
     
-    else if ([specifier.key isEqualToString:@"download_set_images"])
-    {
-        DownloadSetImagesViewController *view = [[DownloadSetImagesViewController alloc] init];
-        
-        [self.navigationController pushViewController:view animated:NO];
-    }
+//    else if ([specifier.key isEqualToString:@"download_set_images"])
+//    {
+//        DownloadSetImagesViewController *view = [[DownloadSetImagesViewController alloc] init];
+//        
+//        [self.navigationController pushViewController:view animated:NO];
+//    }
     
     else if ([specifier.key isEqualToString:@"acknowledgements"])
     {
-        CGFloat dX = 0;
-        CGFloat dY = [UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height;
-        CGFloat dWidth = self.view.frame.size.width;
-        CGFloat dHeight = self.view.frame.size.height - dY - self.tabBarController.tabBar.frame.size.height;
-        
         IASKAppSettingsViewController *view = [[IASKAppSettingsViewController alloc] init];
-        view.view.frame = CGRectMake(dX, dY, dWidth, dHeight);
+
         view.showDoneButton = NO;
         view.showCreditsFooter = NO;
         view.file = @"Acknowledgements";
         view.delegate = self;
         view.navigationItem.title = @"Acknowledgements";
-        [self.navigationController pushViewController:view animated:NO];
+        [self.navigationController pushViewController:view animated:YES];
     }
 }
 

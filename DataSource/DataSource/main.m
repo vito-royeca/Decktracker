@@ -22,7 +22,7 @@ int main(int argc, const char * argv[])
 
 
 //        ImageLoader *imageLoader = [[ImageLoader alloc] init];
-//        [imageLoader downloadSets:@[@"8BS", @"9BS", @"MGB"]];
+//        [imageLoader downloadSets:@[@"C14"]];
 //        [imageLoader downloadSymbols];
 //        [imageLoader downloadOtherSymbols];
     }
