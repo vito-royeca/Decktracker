@@ -30,8 +30,6 @@
 @property(nonatomic) int segmentedControlIndex;
 @property(nonatomic) int selectedDeckIndex;
 @property(nonatomic) int selectedCollectionIndex;
-//@property(nonatomic) BOOL addDeckButtonVisible;
-//@property(nonatomic) BOOL addCollectionButtonVisible;
 @property(nonatomic) BOOL createButtonVisible;
 @property(nonatomic) BOOL showCardButtonVisible;
 

@@ -66,7 +66,7 @@
     // send the screen to Google Analytics
     id tracker = [[GAI sharedInstance] defaultTracker];
     [tracker set:kGAIScreenName
-           value:self.navigationItem.title];
+           value:@"Settings"];
     [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
 #endif
 }

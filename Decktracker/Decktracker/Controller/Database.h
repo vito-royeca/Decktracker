@@ -13,8 +13,16 @@
 
 #import "JJJ/JJJ.h"
 
+#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
+#import <Parse/Parse.h>
+#endif
+
 #define kFetchBatchSize       100
 #define kDatabaseStore        @"decktracker.sqlite"
+
+#define kFetchTopRatedDone    @"kFetchTopRatedDone"
+#define kFetchTopViewedDone   @"kFetchTopViewedDone"
+#define kParseSyncDone        @"kParseSyncDone"
 
 @interface Database : NSObject
 
@@ -32,7 +40,15 @@
 -(Card*) findCard:(NSString*) card inSet:(NSString*) setCode;
 -(NSString*) cardRarityIndex:(Card*) card;
 -(Card*) fetchTcgPlayerPriceForCard:(Card*) card;
--(NSArray*) getRandomCards:(int) howMany;
--(NSArray*) getSets:(int) howMany;
+-(NSArray*) fetchRandomCards:(int) howMany;
+-(NSArray*) fetchSets:(int) howMany;
+
+#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
+-(void) fetchTopRated:(int) limit;
+-(void) fetchTopViewed:(int) limit;
+-(void) incrementCardView:(Card*) card;
+-(void) rateCard:(Card*) card for:(float) rating;
+-(void) parseSynch:(Card*) card;
+#endif
 
 @end

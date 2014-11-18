@@ -26,8 +26,11 @@ class BannerCollectionViewCell: UICollectionViewCell {
         
         _8thEditionSet = Set.MR_findFirstWithPredicate(NSPredicate(format:"name == %@", "Eighth Edition")) as? Set
         planeswalkerType = CardType.MR_findFirstByAttribute("name", withValue:"Planeswalker") as CardType?
-        pre8thEditionFont = UIFont(name: "Magic:the Gathering", size:20)
-        _8thEditionFont = UIFont(name: "Matrix-Bold", size:18)
+        pre8thEditionFont = UIFont(name: "Magic:the Gathering", size:25)
+        _8thEditionFont = UIFont(name: "Matrix-Bold", size:25)
+        
+        self.lblCardName.adjustsFontSizeToFitWidth = true
+        lblCardName.shadowOffset = CGSizeMake(1, 1)
     }
 
     func displayCard(card: Card) {
@@ -42,11 +45,18 @@ class BannerCollectionViewCell: UICollectionViewCell {
         lblCardName.font = pre8thEditionFont
         
         var path = FileManager.sharedInstance().cropPath(self.card)
+        var cropImage:UIImage?
+        var averageColor:UIColor?
         if !NSFileManager.defaultManager().fileExistsAtPath(path) {
-            imgCrop.image = UIImage(named:"blank.png")
+            cropImage = UIImage(named:"cardback.hq.jpg")
+            
         } else {
-            imgCrop.image = UIImage(contentsOfFile: path)
+            cropImage = UIImage(contentsOfFile: path)
         }
+        averageColor = cropImage?.averageColor()
+        imgCrop.image = cropImage
+        lblCardName.shadowColor = cropImage?.patternColor(averageColor)
+        lblCardName.textColor = averageColor
         FileManager.sharedInstance().downloadCropImage(self.card, immediately:false)
         FileManager.sharedInstance().downloadCardImage(self.card, immediately:false)
         
@@ -73,6 +83,11 @@ class BannerCollectionViewCell: UICollectionViewCell {
             let hiResImage = UIImage(contentsOfFile:FileManager.sharedInstance().cropPath(card))
     
             imgCrop.image = hiResImage
+            let average = hiResImage!.averageColor()
+            lblCardName.shadowColor = hiResImage!.patternColor(average)
+            lblCardName.textColor = average
+//            lblCardName.shadowColor = average
+//            lblCardName.textColor = hiResImage!.patternColor(average)
         }
     }
 }

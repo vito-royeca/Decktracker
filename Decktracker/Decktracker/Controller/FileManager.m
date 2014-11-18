@@ -146,6 +146,12 @@ static FileManager *_me;
         }
         [self processDownloadQueue];
     }
+    else
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kCardDownloadCompleted
+                                                            object:nil
+                                                          userInfo:@{@"card": card}];
+    }
 }
 
 -(void) downloadCropImage:(Card*) card immediately:(BOOL) immediately
@@ -210,6 +216,12 @@ static FileManager *_me;
             [_downloadQueue addObject:dict];
         }
         [self processDownloadQueue];
+    }
+    else
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kCropDownloadCompleted
+                                                            object:nil
+                                                          userInfo:@{@"card": card}];
     }
 }
 

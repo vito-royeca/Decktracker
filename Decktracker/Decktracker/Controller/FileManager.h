@@ -19,20 +19,6 @@
 #define kHasAdvanceSearchSamples         @"HasAdvanceSearchSamples"
 #define kHasDeckSamples                  @"HasDeckSamples"
 
-#define kBoxID                           @"v3vx3t10k6genv8ao7r5f3rqunz23atm"
-#define kBoxSecret                       @"foPhGtidtVObEBEbNd2FZIbxk9nKSu99"
-
-#define kDropboxID                       @"v57bkxsnzi3gxt3"
-#define kDropBoxSecret                   @"qbyj5znuytk3ljj"
-
-#define kGoogleDriveID                   @"885791360366-rvgaob5mp4vpsghbilg7mrfqc1lsind8.apps.googleusercontent.com"
-#define kGoogleDriveSecret               @"zqynI0KVtpRhl6JVd5RrSP82"
-#define kGoogleDriveKeychain             @"Decktracker"
-
-#define kOneDriveID                      @""
-#define kOneDriveSecret                  @""
-
-
 typedef NS_ENUM(NSInteger, FileSystem)
 {
     FileSystemLocal,

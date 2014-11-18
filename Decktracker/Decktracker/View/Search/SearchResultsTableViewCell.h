@@ -27,6 +27,7 @@
 @property(strong,nonatomic) IBOutlet UIView *viewManaCost;
 @property(strong,nonatomic) IBOutlet UIImageView *imgSet;
 @property(strong,nonatomic) IBOutlet UILabel *lblBadge;
+@property(strong,nonatomic) IBOutlet UIView *viewRating;
 
 
 -(void) displayCard:(Card*) card;

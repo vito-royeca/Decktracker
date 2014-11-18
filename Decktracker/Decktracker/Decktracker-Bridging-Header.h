@@ -10,6 +10,7 @@
 #import "GAIDictionaryBuilder.h"
 #import "GAIFields.h"
 #import "MBProgressHUD.h"
+#import <Parse/Parse.h>
 #import "PureLayout.h"
 
 #import "Artist.h"
@@ -27,8 +28,10 @@
 #import "Set.h"
 #import "SetType.h"
 
+#import "CardDetailsViewController.h"
 #import "Database.h"
 #import "Deck.h"
 #import "FileManager.h"
 #import "SettingsViewController.h"
 #import "SimpleSearchViewController.h"
+#import "UIImage+AverageColor.h"

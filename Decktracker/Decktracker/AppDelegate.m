@@ -9,10 +9,12 @@
 #import "AppDelegate.h"
 #import "Database.h"
 #import "FileManager.h"
+#import "Magic.h"
 #import "MainViewController.h"
 
 #import <Crashlytics/Crashlytics.h>
 #import <Dropbox/Dropbox.h>
+#import <Parse/Parse.h>
 
 #ifndef DEBUG
 #import "GAI.h"
@@ -30,12 +32,17 @@
     [GAI sharedInstance].trackUncaughtExceptions = YES;
     [GAI sharedInstance].dispatchInterval = 20;
     [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelWarning];
-    [[GAI sharedInstance] trackerWithTrackingId:@"UA-53780226-1"];
+    [[GAI sharedInstance] trackerWithTrackingId:kGAITrackingID];
 #endif
 
     // Crashlytics
-    [Crashlytics startWithAPIKey:@"114b3dd82452ec2f4024140ec862698d331b8f3f"];
+    [Crashlytics startWithAPIKey:kCrashlyticsAPIKey];
 
+    // Parse
+    [Parse setApplicationId:kParseID
+                  clientKey:kParseClientKey];
+    [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+    
     // FileSystem
     [[FileManager sharedInstance] moveFilesInDocumentsToCaches];
     for (NSInteger i=FileSystemLocal; i<=FileSystemOneDrive; i++)

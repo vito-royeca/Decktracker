@@ -20,40 +20,58 @@ PODS:
   - AFNetworking/UIKit (2.4.1):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
+  - Bolts (1.1.3)
+  - CAAnimationBlocks (0.0.1)
   - CorePlot (1.5.1)
   - Dropbox-Sync-API-SDK (3.0.2)
+  - EDStarRating (1.1)
   - FFCircularProgressView (0.5)
   - GoogleAnalytics-iOS-SDK (3.0.9)
   - hpple (0.2.0)
   - InAppSettingsKit (2.1)
+  - LMAlertView (1.1.0):
+    - CAAnimationBlocks (~> 0.0.1)
+    - RBBAnimation (~> 0.3.0)
   - MagicalRecord (2.2):
     - MagicalRecord/Core
   - MagicalRecord/Core (2.2)
   - MBProgressHUD (0.8)
+  - Parse (1.5.0):
+    - Bolts (~> 1.1.3)
   - PureLayout (2.0.1)
+  - RBBAnimation (0.3.0)
 
 DEPENDENCIES:
   - AFNetworking
   - CorePlot
   - Dropbox-Sync-API-SDK
+  - EDStarRating
   - FFCircularProgressView
   - GoogleAnalytics-iOS-SDK
   - hpple
   - InAppSettingsKit
+  - LMAlertView
   - MagicalRecord
   - MBProgressHUD
+  - Parse
   - PureLayout
 
 SPEC CHECKSUMS:
   AFNetworking: 0aabc6fae66d6e5d039eeb21c315843c7aae51ab
+  Bolts: 3db0a875235e0c9042b013af13af0f00f79b102c
+  CAAnimationBlocks: 981bfca79ac481f07957aa8357885e620637f926
   CorePlot: b15cb1a9a687b9576545104248d6e22033e678bb
   Dropbox-Sync-API-SDK: 8110afff9598478e7fdc2d161e54024dab09a0d2
+  EDStarRating: c7b87f9866be0ea29bb054964023b8eb3f18286c
   FFCircularProgressView: 723b7a84c412b5d9d2a5531bc716b99965ad7192
   GoogleAnalytics-iOS-SDK: d9e198b1f955259a72886769be7377cdfcdb2250
   hpple: f4eb7c21a8db83ec264e5d614ec7509e10e5adec
   InAppSettingsKit: 853cdc9fcc76b87a4694f8d2b930e116463b5a29
+  LMAlertView: 1d7c0624323b6bde13c90b57b1d0f5605980f068
   MagicalRecord: 2b471584fc9e3137f3d0a56967917baa4979e224
   MBProgressHUD: c356980b0cd097f19acec959b49dca5eb8ec31be
+  Parse: 7de25b6f70f0b233e5d25835f62eabfa91e4f9d7
   PureLayout: 12eca5b6dc94f1a03fdf255d640604584ff1b55b
+  RBBAnimation: 243d73be1a526f1b51d266b182e4aa0cfe9cbf64
 
 COCOAPODS: 0.34.4

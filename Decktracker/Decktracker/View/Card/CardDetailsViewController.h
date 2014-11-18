@@ -14,7 +14,7 @@
 
 #import "JJJ/JJJ.h"
 
-@interface CardDetailsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIWebViewDelegate, MBProgressHUDDelegate, MHFacebookImageViewerDatasource>
+@interface CardDetailsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIWebViewDelegate, MBProgressHUDDelegate, MHFacebookImageViewerDatasource, UIAlertViewDelegate>
 
 @property(strong, nonatomic) Card *card;
 @property(strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
@@ -27,6 +27,7 @@
 @property(strong, nonatomic) UIBarButtonItem *btnPrevious;
 @property(strong, nonatomic) UIBarButtonItem *btnNext;
 @property(strong, nonatomic) UIBarButtonItem *btnAction;
+@property(strong, nonatomic) UIBarButtonItem *btnRate;
 @property(strong, nonatomic) UIBarButtonItem *btnAdd;
 
 @property(nonatomic) BOOL addButtonVisible;

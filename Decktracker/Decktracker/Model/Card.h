@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Artist, Card, CardColor, CardForeignName, CardLegality, CardRarity, CardRuling, CardType, Set;
+@class Artist, Card, CardColor, CardForeignName, CardLegality, CardRarity, CardRuling, CardType, Set, CardRating;
 
 @interface Card : NSManagedObject
 
@@ -37,6 +37,8 @@
 @property (nonatomic, retain) NSString * source;
 @property (nonatomic, retain) NSNumber * reserved;
 @property (nonatomic, retain) NSString * releaseDate;
+@property (nonatomic, retain) NSNumber * numberOfViews;
+@property (nonatomic, retain) NSNumber * rating;
 @property (nonatomic, retain) Artist *artist;
 @property (nonatomic, retain) NSSet *colors;
 @property (nonatomic, retain) NSSet *foreignNames;
@@ -50,6 +52,7 @@
 @property (nonatomic, retain) NSSet *superTypes;
 @property (nonatomic, retain) NSSet *types;
 @property (nonatomic, retain) NSSet *variations;
+@property (nonatomic, retain) NSSet *ratings;
 @property (nonatomic, retain) NSDate * tcgPlayerFetchDate;
 @property (nonatomic, retain) NSString * tcgPlayerLink;
 @property (nonatomic, retain) NSNumber * tcgPlayerHighPrice;
@@ -109,5 +112,10 @@
 - (void)removeVariationsObject:(Card *)value;
 - (void)addVariations:(NSSet *)values;
 - (void)removeVariations:(NSSet *)values;
+
+- (void)addRatingsObject:(CardRating *)value;
+- (void)removeRatingsObject:(CardRating *)value;
+- (void)addRatings:(NSSet *)values;
+- (void)removeRatingss:(NSSet *)values;
 
 @end

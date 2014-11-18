@@ -18,6 +18,10 @@ class SetCollectionViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        
+//        lblSetName.adjustsFontSizeToFitWidth = true
+        lblReleaseDate.adjustsFontSizeToFitWidth = true
+        lblNumberOfCards.adjustsFontSizeToFitWidth = true
     }
 
     func displaySet(set: Set) {

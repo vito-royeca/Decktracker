@@ -358,7 +358,6 @@ static Database *_me;
                                                  sectionNameKeyPath:nil
                                                           cacheName:nil];
 }
-
 #endif
 
 -(Card*) findCard:(NSString*) cardName inSet:(NSString*) setCode
@@ -467,7 +466,7 @@ static Database *_me;
     }
 }
 
--(NSArray*) getRandomCards:(int) howMany
+-(NSArray*) fetchRandomCards:(int) howMany
 {
     NSManagedObjectContext *moc = [NSManagedObjectContext MR_defaultContext];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -483,7 +482,7 @@ static Database *_me;
     NSMutableArray *arrIDs = [[NSMutableArray alloc] initWithCapacity:howMany];
     for (int i=0; i<howMany; i++)
     {
-        [arrIDs addObject:[NSNumber numberWithInt:arc4random() %(count)]];
+        [arrIDs addObject:[NSNumber numberWithInt:arc4random()%count]];
     }
     
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"cardID IN(%@)", arrIDs]];
@@ -495,7 +494,7 @@ static Database *_me;
     return array;
 }
 
--(NSArray*) getSets:(int) howMany
+-(NSArray*) fetchSets:(int) howMany
 {
     NSManagedObjectContext *moc = [NSManagedObjectContext MR_defaultContext];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -514,5 +513,283 @@ static Database *_me;
     NSArray *array = [moc executeFetchRequest:fetchRequest error:&error];
     return array;
 }
+
+#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
+-(void) fetchTopRated:(int) limit
+{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"rating >= 0"];
+    PFQuery *query = [PFQuery queryWithClassName:@"Card" predicate:predicate];
+    [query orderByDescending:@"rating"];
+    [query addAscendingOrder:@"name"];
+    [query includeKey:@"set"];
+    query.cachePolicy = kPFCachePolicyNetworkElseCache;
+    query.limit = limit;
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error)
+     {
+         NSMutableArray *arrResults = [[NSMutableArray alloc] init];
+         NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
+         
+         if (!error)
+         {
+             for (PFObject *object in objects)
+             {
+                 NSPredicate *p = [NSPredicate predicateWithFormat:@"(%K = %@ AND %K = %@ AND %K = %@)", @"name", object[@"name"], @"multiverseID", object[@"multiverseID"], @"set.name", object[@"set"][@"name"]];
+                 
+                 Card *card = [Card MR_findFirstWithPredicate:p];
+                 card.rating = object[@"rating"];
+                 [arrResults addObject:card];
+             }
+             [moc MR_save];
+         }
+         else
+         {
+             NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+             NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:@"rating"
+                                                                             ascending:NO];
+             NSSortDescriptor *sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:@"name"
+                                                                             ascending:YES];
+             NSEntityDescription *entity = [NSEntityDescription entityForName:@"Card"
+                                                       inManagedObjectContext:moc];
+             
+             [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"rating >= 0"]];
+             [fetchRequest setEntity:entity];
+             [fetchRequest setSortDescriptors:@[sortDescriptor1, sortDescriptor2]];
+             [fetchRequest setFetchLimit:limit];
+             
+             NSError *error = nil;
+             [arrResults addObjectsFromArray:[moc executeFetchRequest:fetchRequest error:&error]];
+         }
+         
+         [[NSNotificationCenter defaultCenter] postNotificationName:kFetchTopRatedDone
+                                                             object:nil
+                                                           userInfo:@{@"data": arrResults}];
+     }];
+}
+
+-(void) fetchTopViewed:(int) limit
+{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"numberOfViews >= 0"];
+    PFQuery *query = [PFQuery queryWithClassName:@"Card" predicate:predicate];
+    [query orderByDescending:@"numberOfViews"];
+    [query addAscendingOrder:@"name"];
+    [query includeKey:@"set"];
+    query.cachePolicy = kPFCachePolicyNetworkElseCache;
+    query.limit = limit;
+    
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error)
+    {
+        NSMutableArray *arrResults = [[NSMutableArray alloc] init];
+        NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
+        
+        if (!error)
+        {
+            for (PFObject *object in objects)
+            {
+                NSPredicate *p = [NSPredicate predicateWithFormat:@"(%K = %@ AND %K = %@ AND %K = %@)", @"name", object[@"name"], @"multiverseID", object[@"multiverseID"], @"set.name", object[@"set"][@"name"]];
+                Card *card = [Card MR_findFirstWithPredicate:p];
+                card.numberOfViews = object[@"numberOfViews"];
+                [arrResults addObject:card];
+            }
+            [moc MR_save];
+        }
+        else
+        {
+            NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+            NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:@"numberOfViews"
+                                                                            ascending:NO];
+            NSSortDescriptor *sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:@"name"
+                                                                            ascending:YES];
+            NSEntityDescription *entity = [NSEntityDescription entityForName:@"Card"
+                                                      inManagedObjectContext:moc];
+            
+            [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"numberOfViews >= 0"]];
+            [fetchRequest setEntity:entity];
+            [fetchRequest setSortDescriptors:@[sortDescriptor1, sortDescriptor2]];
+            [fetchRequest setFetchLimit:limit];
+            
+            NSError *error = nil;
+            [arrResults addObjectsFromArray:[moc executeFetchRequest:fetchRequest error:&error]];
+        }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kFetchTopViewedDone
+                                                            object:nil
+                                                          userInfo:@{@"data": arrResults}];
+    }];
+}
+
+-(void) processParseCard:(Card*) card callback:(void (^)(PFObject *pfCard)) callbackTask
+{
+    void (^callbackFindCard)(NSString *cardName, PFObject *pfSet) = ^void(NSString *cardName, PFObject *pfSet)
+    {
+        PFQuery *query = [PFQuery queryWithClassName:@"Card"];
+        [query whereKey:@"name" equalTo:cardName];
+        [query whereKey:@"set" equalTo:pfSet];
+        query.cachePolicy = kPFCachePolicyNetworkElseCache;
+        
+        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error)
+        {
+            PFObject *_pfCard;
+            
+            if (objects && objects.count > 0)
+            {
+                for (PFObject *object in objects)
+                {
+                    _pfCard = object;
+                }
+            }
+            if (!_pfCard)
+            {
+                _pfCard = [PFObject objectWithClassName:@"Card"];
+                _pfCard[@"name"] = card.name;
+                _pfCard[@"multiverseID"] = card.multiverseID;
+                _pfCard[@"set"] = pfSet;
+                [_pfCard saveEventually];
+//                [_pfCard saveEventually:^(BOOL success, NSError *error)
+//                 {
+//                     callbackTask(_pfCard);
+//                 }];
+            }
+//            else
+//            {
+//                callbackTask(_pfCard);
+//            }
+            callbackTask(_pfCard);
+        }];
+    };
+    
+    void (^callbackFindSet)(NSString *setName, NSString *cardName) = ^void(NSString *setName, NSString *cardName)
+    {
+        PFQuery *query = [PFQuery queryWithClassName:@"Set"];
+        [query whereKey:@"name" equalTo:setName];
+        query.cachePolicy = kPFCachePolicyNetworkElseCache;
+
+        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error)
+         {
+             PFObject *pfSet;
+             
+             if (objects && objects.count > 0)
+             {
+                 for (PFObject *object in objects)
+                 {
+                     pfSet = object;
+                 }
+             }
+             if (!pfSet)
+             {
+                 pfSet = [PFObject objectWithClassName:@"Set"];
+                 pfSet[@"name"] = card.set.name;
+                 pfSet[@"code"] = card.set.code;
+                 [pfSet saveEventually];
+//                 [pfSet saveEventually:^(BOOL success, NSError *error)
+//                  {
+//                      callbackFindCard(cardName, pfSet);
+//                  }];
+             }
+//             else
+//             {
+//                 callbackFindCard(cardName, pfSet);
+//             }
+             callbackFindCard(cardName, pfSet);
+         }];
+    };
+    
+    callbackFindSet(card.set.name, card.name);
+}
+
+-(void) incrementCardView:(Card*) card
+{
+    void (^callbackIncrementCard)(PFObject *pfCard) = ^void(PFObject *pfCard)
+    {
+        [pfCard incrementKey:@"numberOfViews"];
+        [pfCard saveEventually:^(BOOL success, NSError *error)
+        {
+            NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
+            card.numberOfViews = pfCard[@"numberOfViews"];
+            [moc MR_save];
+        }];
+    };
+    
+    [self processParseCard:card callback:callbackIncrementCard];
+}
+
+-(void) rateCard:(Card*) card for:(float) rating
+{
+    void (^callbackRateCard)(PFObject *pfCard) = ^void(PFObject *pfCard)
+    {
+        PFObject *pfRating = [PFObject objectWithClassName:@"CardRating"];
+        
+        pfRating[@"rating"] = [NSNumber numberWithDouble:rating];
+        pfRating[@"card"] = pfCard;
+        [pfRating saveEventually:^(BOOL success, NSError *error)
+        {
+            PFQuery *query = [PFQuery queryWithClassName:@"CardRating"];
+            [query whereKey:@"card" equalTo:pfCard];
+            query.cachePolicy = kPFCachePolicyNetworkElseCache;
+            
+            [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error)
+            {
+                double totalRating = 0;
+                double averageRating = 0;
+                for (PFObject *object in objects)
+                {
+                    totalRating += [object[@"rating"] doubleValue];
+                }
+                averageRating = totalRating/objects.count;
+                
+                pfCard[@"rating"] = [NSNumber numberWithDouble:averageRating];
+                [pfCard saveEventually:^(BOOL success, NSError *error)
+                {
+                    NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
+                    card.rating = [NSNumber numberWithDouble:averageRating];
+                    [moc MR_save];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kParseSyncDone
+                                                                        object:nil
+                                                                      userInfo:@{@"card": card}];
+                }];
+            }];
+        }];
+    };
+    
+    [self processParseCard:card callback:callbackRateCard];
+}
+
+-(void) parseSynch:(Card*) card
+{
+    void (^callbackParseSynchCard)(PFObject *pfCard) = ^void(PFObject *pfCard)
+    {
+        PFQuery *query = [PFQuery queryWithClassName:@"CardRating"];
+        [query whereKey:@"card" equalTo:pfCard];
+        query.cachePolicy = kPFCachePolicyNetworkElseCache;
+        
+        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error)
+         {
+             double totalRating = 0;
+             double averageRating = 0;
+             for (PFObject *object in objects)
+             {
+                 totalRating += [object[@"rating"] doubleValue];
+             }
+             averageRating = totalRating/objects.count;
+             if (isnan(averageRating))
+             {
+                 averageRating = 0;
+             }
+             
+             pfCard[@"rating"] = [NSNumber numberWithDouble:averageRating];
+             [pfCard saveEventually:^(BOOL success, NSError *error)
+              {
+                NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
+                card.rating = [NSNumber numberWithDouble:averageRating];
+                [moc MR_save];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kParseSyncDone
+                                                                    object:nil
+                                                                  userInfo:@{@"card": card}];
+              }];
+         }];
+    };
+    
+    [self processParseCard:card callback:callbackParseSynchCard];
+}
+#endif
 
 @end

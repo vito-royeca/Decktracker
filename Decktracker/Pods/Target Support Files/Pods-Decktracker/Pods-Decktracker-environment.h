@@ -48,6 +48,18 @@
 #define COCOAPODS_VERSION_MINOR_AFNetworking_UIKit 4
 #define COCOAPODS_VERSION_PATCH_AFNetworking_UIKit 1
 
+// Bolts
+#define COCOAPODS_POD_AVAILABLE_Bolts
+#define COCOAPODS_VERSION_MAJOR_Bolts 1
+#define COCOAPODS_VERSION_MINOR_Bolts 1
+#define COCOAPODS_VERSION_PATCH_Bolts 3
+
+// CAAnimationBlocks
+#define COCOAPODS_POD_AVAILABLE_CAAnimationBlocks
+#define COCOAPODS_VERSION_MAJOR_CAAnimationBlocks 0
+#define COCOAPODS_VERSION_MINOR_CAAnimationBlocks 0
+#define COCOAPODS_VERSION_PATCH_CAAnimationBlocks 1
+
 // CorePlot
 #define COCOAPODS_POD_AVAILABLE_CorePlot
 #define COCOAPODS_VERSION_MAJOR_CorePlot 1
@@ -59,6 +71,12 @@
 #define COCOAPODS_VERSION_MAJOR_Dropbox_Sync_API_SDK 3
 #define COCOAPODS_VERSION_MINOR_Dropbox_Sync_API_SDK 0
 #define COCOAPODS_VERSION_PATCH_Dropbox_Sync_API_SDK 2
+
+// EDStarRating
+#define COCOAPODS_POD_AVAILABLE_EDStarRating
+#define COCOAPODS_VERSION_MAJOR_EDStarRating 1
+#define COCOAPODS_VERSION_MINOR_EDStarRating 1
+#define COCOAPODS_VERSION_PATCH_EDStarRating 0
 
 // FFCircularProgressView
 #define COCOAPODS_POD_AVAILABLE_FFCircularProgressView
@@ -78,6 +96,12 @@
 #define COCOAPODS_VERSION_MINOR_InAppSettingsKit 1
 #define COCOAPODS_VERSION_PATCH_InAppSettingsKit 0
 
+// LMAlertView
+#define COCOAPODS_POD_AVAILABLE_LMAlertView
+#define COCOAPODS_VERSION_MAJOR_LMAlertView 1
+#define COCOAPODS_VERSION_MINOR_LMAlertView 1
+#define COCOAPODS_VERSION_PATCH_LMAlertView 0
+
 // MBProgressHUD
 #define COCOAPODS_POD_AVAILABLE_MBProgressHUD
 #define COCOAPODS_VERSION_MAJOR_MBProgressHUD 0
@@ -96,11 +120,23 @@
 #define COCOAPODS_VERSION_MINOR_MagicalRecord_Core 2
 #define COCOAPODS_VERSION_PATCH_MagicalRecord_Core 0
 
+// Parse
+#define COCOAPODS_POD_AVAILABLE_Parse
+#define COCOAPODS_VERSION_MAJOR_Parse 1
+#define COCOAPODS_VERSION_MINOR_Parse 5
+#define COCOAPODS_VERSION_PATCH_Parse 0
+
 // PureLayout
 #define COCOAPODS_POD_AVAILABLE_PureLayout
 #define COCOAPODS_VERSION_MAJOR_PureLayout 2
 #define COCOAPODS_VERSION_MINOR_PureLayout 0
 #define COCOAPODS_VERSION_PATCH_PureLayout 1
+
+// RBBAnimation
+#define COCOAPODS_POD_AVAILABLE_RBBAnimation
+#define COCOAPODS_VERSION_MAJOR_RBBAnimation 0
+#define COCOAPODS_VERSION_MINOR_RBBAnimation 3
+#define COCOAPODS_VERSION_PATCH_RBBAnimation 0
 
 // hpple
 #define COCOAPODS_POD_AVAILABLE_hpple

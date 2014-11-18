@@ -10,6 +10,8 @@
 #import "FileManager.h"
 #import "Set.h"
 
+#import "EDStarRating.h"
+
 @implementation SearchResultsTableViewCell
 {
     Card *_card;
@@ -17,6 +19,7 @@
     Set *_8thEditionSet;
     UIFont *_pre8thEditionFont;
     UIFont *_8thEditionFont;
+    EDStarRating *_ratingControl;
 }
 
 @synthesize imgCrop = _imgCrop;
@@ -25,6 +28,7 @@
 @synthesize viewManaCost = _viewManaCost;
 @synthesize imgSet = _imgSet;
 @synthesize lblBadge = _lblBadge;
+@synthesize viewRating = _viewRating;
 
 - (void)awakeFromNib
 {
@@ -36,6 +40,21 @@
     _planeswalkerType = [CardType MR_findFirstByAttribute:@"name" withValue:@"Planeswalker"];
     _pre8thEditionFont = [UIFont fontWithName:@"Magic:the Gathering" size:20];
     _8thEditionFont = [UIFont fontWithName:@"Matrix-Bold" size:18];
+    
+    _ratingControl = [[EDStarRating alloc] initWithFrame:self.viewRating.frame];
+    _ratingControl.userInteractionEnabled = NO;
+    _ratingControl.starImage = [UIImage imageNamed:@"star.png"];
+    _ratingControl.starHighlightedImage = [UIImage imageNamed:@"starhighlighted.png"];
+    _ratingControl.maxRating = 5.0;
+    _ratingControl.backgroundColor = [UIColor clearColor];
+    _ratingControl.displayMode=EDStarRatingDisplayHalf;
+    
+    self.lblCardName.adjustsFontSizeToFitWidth = YES;
+    self.lblDetail.adjustsFontSizeToFitWidth = YES;
+    self.lblSet.adjustsFontSizeToFitWidth = YES;
+    
+    [self.viewRating removeFromSuperview];
+    [self addSubview:_ratingControl];
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -66,7 +85,14 @@
                                              selector:@selector(loadCropImage:)
                                                  name:kCropDownloadCompleted
                                                object:nil];
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:kParseSyncDone
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(parseSyncDone:)
+                                                 name:kParseSyncDone
+                                               object:nil];
+
     NSMutableString *type = [[NSMutableString alloc] initWithFormat:@"%@", card.type];
     
     if (card.power || card.toughness)
@@ -89,7 +115,8 @@
     
     self.lblCardName.text = [NSString stringWithFormat:@" %@", card.name];
     self.lblDetail.text = type;
-    self.lblSet.text = [NSString stringWithFormat:@"%@ - %@", card.set.name, card.rarity.name];
+    self.lblSet.text = [NSString stringWithFormat:@"%@", card.set.name];
+    _ratingControl.rating = [_card.rating doubleValue];
     
     NSString *path = [[FileManager sharedInstance] cropPath:card];
     if (![[NSFileManager defaultManager] fileExistsAtPath:path])
@@ -271,6 +298,16 @@
         UIImage *hiResImage = [UIImage imageWithContentsOfFile:[[FileManager sharedInstance] cropPath:card]];
         
         self.imgCrop.image = hiResImage;
+    }
+}
+
+-(void) parseSyncDone:(id) sender
+{
+    Card *card = [sender userInfo][@"card"];
+    
+    if (_card == card)
+    {
+        _ratingControl.rating = [card.rating doubleValue];
     }
 }
 

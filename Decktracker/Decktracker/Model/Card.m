@@ -44,6 +44,8 @@
 @dynamic source;
 @dynamic reserved;
 @dynamic releaseDate;
+@dynamic numberOfViews;
+@dynamic rating;
 @dynamic artist;
 @dynamic colors;
 @dynamic foreignNames;
@@ -57,6 +59,7 @@
 @dynamic superTypes;
 @dynamic types;
 @dynamic variations;
+@dynamic ratings;
 @dynamic tcgPlayerFetchDate;
 @dynamic tcgPlayerLink;
 @dynamic tcgPlayerHighPrice;

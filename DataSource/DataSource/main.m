@@ -14,12 +14,11 @@ int main(int argc, const char * argv[])
 {
     @autoreleasepool
     {
-        RulesLoader *rulesLoader = [[RulesLoader alloc] init];
-        [rulesLoader parseRules];
-
         JSONLoader *jsonLoader = [[JSONLoader alloc] init];
         [jsonLoader parseJSON];
 
+//        RulesLoader *rulesLoader = [[RulesLoader alloc] init];
+//        [rulesLoader parseRules];
 
 //        ImageLoader *imageLoader = [[ImageLoader alloc] init];
 //        [imageLoader downloadSets:@[@"C14"]];

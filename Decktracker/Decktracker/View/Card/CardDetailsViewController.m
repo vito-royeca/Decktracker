@@ -24,6 +24,9 @@
 #import "SimpleSearchViewController.h"
 #import "Set.h"
 
+#import "EDStarRating.h"
+#import "LMAlertView.h"
+
 #ifndef DEBUG
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"
@@ -36,6 +39,7 @@
     MHFacebookImageViewer *_fbImageViewer;
     UIView *_viewSegmented;
     Set *_mediaInsertsSet;
+    float _newRating;
 }
 
 @synthesize card = _card;
@@ -48,6 +52,7 @@
 @synthesize btnPrevious = _btnPrevious;
 @synthesize btnNext = _btnNext;
 @synthesize btnAction = _btnAction;
+@synthesize btnRate = _btnRate;
 @synthesize btnAdd = _btnAdd;
 @synthesize addButtonVisible = _addButtonVisible;
 
@@ -80,6 +85,7 @@
         self.navigationItem.title = @"1 of 1";
     }
 
+    [[Database sharedInstance] incrementCardView:_card];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -99,6 +105,7 @@
     // Do any additional setup after loading the view.
     
     _mediaInsertsSet = [Set MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"name == %@", @"Media Inserts"]];
+    _newRating = 0;
     
     CGFloat dX = 0;
     CGFloat dY = 0;
@@ -112,7 +119,7 @@
     [self.tblDetails registerNib:[UINib nibWithNibName:@"SearchResultsTableViewCell" bundle:nil]
           forCellReuseIdentifier:@"Cell1"];
     
-    self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Card", @"Details", @"Pricing",]];
+    self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Card", @"Details", @"Pricing", @"Rating"]];
     self.segmentedControl.frame = CGRectMake(dX+10, dY+7, dWidth-20, 30);
     self.segmentedControl.selectedSegmentIndex = 0;
     [self.segmentedControl addTarget:self
@@ -133,6 +140,14 @@
                                                                   action:@selector(btnActionTapped:)];
     NSMutableArray *arrButtons = [[NSMutableArray alloc] init];
     [arrButtons addObject:self.btnAction];
+    self.btnRate = [[UIBarButtonItem alloc] initWithTitle:@"Rate This Card"
+                                                    style:UIBarButtonItemStylePlain
+                                                   target:self
+                                                   action:@selector(btnRateTapped:)];
+    [arrButtons addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                        target:nil
+                                                                        action:nil]];
+    [arrButtons addObject:self.btnRate];
     if (self.addButtonVisible)
     {
         self.btnAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
@@ -240,6 +255,35 @@
         };
     
         [self presentViewController:activityController animated:YES completion:nil];
+}
+
+-(void) btnRateTapped:(id) sender
+{
+    LMAlertView *alertView = [[LMAlertView alloc] initWithTitle:@"Rate This Card"
+                                                        message:nil
+                                                       delegate:self
+                                              cancelButtonTitle:@"Cancel"
+                                              otherButtonTitles:@"Rate", nil];
+    CGSize size = alertView.size;
+    [alertView setSize:CGSizeMake(size.width, 152.0)];
+    
+    
+    // Add your subviews here to customise
+    UIView *contentView = alertView.contentView;
+    EDStarRating *ratingControl = [[EDStarRating alloc] initWithFrame:CGRectMake((size.width/2.0 - 190.0/2.0), 55.0, 190.0, 50.0)];
+    ratingControl.starImage = [UIImage imageNamed:@"star.png"];
+    ratingControl.starHighlightedImage = [UIImage imageNamed:@"starhighlighted.png"];
+    ratingControl.maxRating = 5.0;
+    ratingControl.rating = 0;
+    ratingControl.editable = YES;
+    ratingControl.backgroundColor = [UIColor clearColor];
+    ratingControl.displayMode=EDStarRatingDisplayAccurate;
+    ratingControl.returnBlock = ^(float rating)
+    {
+        _newRating = rating;
+    };
+    [contentView addSubview:ratingControl];
+    [alertView show];
 }
 
 -(void) btnAddTapped:(id) sender
@@ -1006,6 +1050,7 @@
                                                      reuseIdentifier:@"Cell1"];
         }
         
+        [[Database sharedInstance] parseSynch:_card];
         [((SearchResultsTableViewCell*)cell) displayCard:self.card];
         tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         cell.userInteractionEnabled = NO;
@@ -1070,6 +1115,15 @@
     }
     
     return cell;
+}
+
+#pragma mark - UIAlerViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1)
+    {
+        [[Database sharedInstance] rateCard:self.card for:_newRating];
+    }
 }
 
 @end
