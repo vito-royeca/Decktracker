@@ -22,6 +22,7 @@
     EDStarRating *_ratingControl;
 }
 
+@synthesize lblRank = _lblRank;
 @synthesize imgCrop = _imgCrop;
 @synthesize lblCardName = _lblCardName;
 @synthesize lblDetail = _lblDetail;
@@ -287,6 +288,13 @@
     self.lblBadge.text = [NSString stringWithFormat:@"%dx", badgeValue];
     self.lblBadge.layer.backgroundColor = [UIColor redColor].CGColor;
     self.lblBadge.layer.cornerRadius = self.lblBadge.bounds.size.height / 4;
+}
+
+-(void) addRank:(int) rankValue
+{
+    self.lblRank.text = [NSString stringWithFormat:@"%d", rankValue];
+    self.lblRank.layer.backgroundColor = [UIColor whiteColor].CGColor;
+    self.lblRank.layer.cornerRadius = self.lblBadge.bounds.size.height / 2;
 }
 
 -(void) loadCropImage:(id) sender

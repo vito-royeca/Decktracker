@@ -38,8 +38,8 @@
     NSData *data = [NSData dataWithContentsOfFile:filePath];
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
 
-    [self parseCards1stPass:json];
-//    [self parseCards2ndPass:json];
+//    [self parseCards1stPass:json];
+    [self parseCards2ndPass:json];
     [[Database sharedInstance] closeDb];
     
     NSDate *dateEnd = [NSDate date];

@@ -20,6 +20,7 @@
 
 @interface SearchResultsTableViewCell : UITableViewCell
 
+@property(strong,nonatomic) IBOutlet UILabel *lblRank;
 @property(strong,nonatomic) IBOutlet UIImageView *imgCrop;
 @property(strong,nonatomic) IBOutlet UILabel *lblCardName;
 @property(strong,nonatomic) IBOutlet UILabel *lblDetail;
@@ -32,5 +33,6 @@
 
 -(void) displayCard:(Card*) card;
 -(void) addBadge:(int) badgeValue;
+-(void) addRank:(int) rankValue;
 
 @end

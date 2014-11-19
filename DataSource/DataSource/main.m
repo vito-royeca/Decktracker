@@ -17,8 +17,8 @@ int main(int argc, const char * argv[])
         JSONLoader *jsonLoader = [[JSONLoader alloc] init];
         [jsonLoader parseJSON];
 
-//        RulesLoader *rulesLoader = [[RulesLoader alloc] init];
-//        [rulesLoader parseRules];
+        RulesLoader *rulesLoader = [[RulesLoader alloc] init];
+        [rulesLoader parseRules];
 
 //        ImageLoader *imageLoader = [[ImageLoader alloc] init];
 //        [imageLoader downloadSets:@[@"C14"]];

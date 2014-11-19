@@ -44,11 +44,12 @@
 -(NSArray*) fetchSets:(int) howMany;
 
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
--(void) fetchTopRated:(int) limit;
--(void) fetchTopViewed:(int) limit;
+-(void) fetchTopRated:(int) limit skip:(int) skip;
+-(void) fetchTopViewed:(int) limit skip:(int) skip;
 -(void) incrementCardView:(Card*) card;
 -(void) rateCard:(Card*) card for:(float) rating;
 -(void) parseSynch:(Card*) card;
+-(void) uploadAllSetsToParse;
 #endif
 
 @end

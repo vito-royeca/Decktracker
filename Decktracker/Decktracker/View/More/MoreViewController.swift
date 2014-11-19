@@ -73,10 +73,10 @@ class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let value = dict[indexPath.row]
         
         cell!.textLabel.text = value
-        cell?.imageView.image = nil
+        cell!.imageView.image = nil
         
         if indexPath.section == 1 {
-            cell?.imageView.image = UIImage(named: "settings.png")
+            cell!.imageView.image = UIImage(named: "settings.png")
         }
         return cell!
     }

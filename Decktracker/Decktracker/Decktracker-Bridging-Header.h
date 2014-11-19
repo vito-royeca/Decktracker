@@ -32,6 +32,7 @@
 #import "Database.h"
 #import "Deck.h"
 #import "FileManager.h"
+#import "SearchResultsTableViewCell.h"
 #import "SettingsViewController.h"
 #import "SimpleSearchViewController.h"
 #import "UIImage+AverageColor.h"

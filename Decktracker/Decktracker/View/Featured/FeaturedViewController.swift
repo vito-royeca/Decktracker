@@ -68,8 +68,8 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         NSNotificationCenter.defaultCenter().addObserver(self,
             selector:"topViewedDone:",  name:kFetchTopViewedDone, object:nil)
         
-        Database.sharedInstance().fetchTopRated(10)
-        Database.sharedInstance().fetchTopViewed(10)
+        Database.sharedInstance().fetchTopRated(10, skip: 0)
+        Database.sharedInstance().fetchTopViewed(10, skip: 0)
     }
 
     override func viewWillDisappear(animated: Bool) {
@@ -301,23 +301,40 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
     
     // HorizontalScrollTableViewCellDelegate
     func seeAll(tag: NSInteger) {
+        let row = arrayData![tag]
+        let key = Array(row.keys)[0]
+        var view:UIViewController?
+        
         switch tag {
         case 1:
-            println("tag = \(tag)")
+            let view1 = TopListViewController()
+            view1.arrayData = row[key] as? [Card]
+            view1.navigationItem.title = key
+            view = view1
+            Database.sharedInstance().fetchTopRated(20, skip: 10)
         case 2:
-            println("tag = \(tag)")
+            let view1 = TopListViewController()
+            view1.arrayData = row[key] as? [Card]
+            view1.navigationItem.title = key
+            view = view1
+            Database.sharedInstance().fetchTopViewed(20, skip: 10)
         case 3:
             println("tag = \(tag)")
         default:
             println("tag = \(tag)")
         }
+        
+        if view != nil {
+            navigationController?.pushViewController(view!, animated:true)
+        }
     }
     
     func btnWishListTapped(sender: AnyObject) {
         println("How I wish!")
-        let path = NSIndexPath(forRow: 4, inSection: 0)
-        let cell = tableView(tblFeatured!, cellForRowAtIndexPath: NSIndexPath(forRow: 1, inSection: 0)) as? HorizontalScrollTableViewCell
-        
-        cell!.collectionView.scrollToItemAtIndexPath(path, atScrollPosition:UICollectionViewScrollPosition.None, animated:false)
+//        Database.sharedInstance().uploadAllSetsToParse()
+//        let path = NSIndexPath(forRow: 4, inSection: 0)
+//        let cell = tableView(tblFeatured!, cellForRowAtIndexPath: NSIndexPath(forRow: 1, inSection: 0)) as? HorizontalScrollTableViewCell
+//        
+//        cell!.collectionView.scrollToItemAtIndexPath(path, atScrollPosition:UICollectionViewScrollPosition.None, animated:false)
     }
 }

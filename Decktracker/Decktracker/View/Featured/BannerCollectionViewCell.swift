@@ -49,9 +49,11 @@ class BannerCollectionViewCell: UICollectionViewCell {
         var averageColor:UIColor?
         if !NSFileManager.defaultManager().fileExistsAtPath(path) {
             cropImage = UIImage(named:"cardback.hq.jpg")
+//            imgCrop.contentMode = UIViewContentMode.ScaleAspectFit
             
         } else {
             cropImage = UIImage(contentsOfFile: path)
+//            imgCrop.contentMode = UIViewContentMode.ScaleAspectFill
         }
         averageColor = cropImage?.averageColor()
         imgCrop.image = cropImage
