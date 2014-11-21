@@ -9,7 +9,7 @@
 
 import UIKit
 
-class FeaturedViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, HorizontalScrollTableViewCellDelegate {
+class FeaturedViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, HorizontalScrollTableViewCellDelegate, InAppPurchaseViewControllerDelegate, InAppPurchaseDelegate {
     
     let kHorizontalCellIdentifier   = "kHorizontalCellIdentifier"
     let kBannerCellIdentifier       = "kBannerCellIdentifier"
@@ -28,8 +28,8 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         let height = view.frame.size.height - tabBarController!.tabBar.frame.size.height
         var frame = CGRect(x:0, y:0, width:view.frame.width, height:height)
         
-        btnWishList = UIBarButtonItem(image:UIImage(named: "wishlist.png"), style:UIBarButtonItemStyle.Plain, target:self, action:"btnWishListTapped:")
-        self.navigationItem.rightBarButtonItem = btnWishList
+//        btnWishList = UIBarButtonItem(image:UIImage(named: "wishlist.png"), style:UIBarButtonItemStyle.Plain, target:self, action:"btnWishListTapped:")
+//        self.navigationItem.rightBarButtonItem = btnWishList
         
         tblFeatured = UITableView(frame: frame, style: UITableViewStyle.Plain)
         tblFeatured!.delegate = self
@@ -40,13 +40,6 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         
         self.navigationItem.title = "Featured"
         self.loadData()
-
-#if !DEBUG
-        // send the screen to Google Analytics
-        let tracker = GAI.sharedInstance().defaultTracker
-        tracker.set(kGAIScreenName, value: self.navigationItem.title)
-        tracker.send(GAIDictionaryBuilder.createScreenView().build())
-#endif
     }
 
     override func didReceiveMemoryWarning() {
@@ -57,8 +50,8 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        bannerCell = tableView(tblFeatured!, cellForRowAtIndexPath: NSIndexPath(forRow: 0, inSection: 0)) as? BannerScrollTableViewCell
-        bannerCell?.startSlideShow()
+//        bannerCell = tableView(tblFeatured!, cellForRowAtIndexPath: NSIndexPath(forRow: 0, inSection: 0)) as? BannerScrollTableViewCell
+//        bannerCell!.startSlideShow()
         
         NSNotificationCenter.defaultCenter().removeObserver(self, name:kFetchTopRatedDone,  object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self,
@@ -74,7 +67,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
 
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        bannerCell?.stopSlideShow()
+//        bannerCell!.stopSlideShow()
         
         NSNotificationCenter.defaultCenter().removeObserver(self, name:kFetchTopRatedDone,  object:nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name:kFetchTopViewedDone,  object:nil)
@@ -86,7 +79,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         arrayData!.append(["Random": Database.sharedInstance().fetchRandomCards(6) as [Card]])
         arrayData!.append(["Top Rated": [Card]()])
         arrayData!.append(["Top Viewed": [Card]()])
-        arrayData!.append(["Sets and Expansions": Database.sharedInstance().fetchSets(10) as [Set]])
+        arrayData!.append(["Sets": Database.sharedInstance().fetchSets(10) as [Set]])
         arrayData!.append(["In-App Purchase": ["Purchase Collections", "Restore Purchases"]])
         
         for dict in arrayData! {
@@ -147,7 +140,23 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
     }
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
+        if indexPath.row == 5 {
+            if !InAppPurchase.isProductPurchased(COLLECTIONS_IAP_PRODUCT_ID) {
+                let view = InAppPurchaseViewController()
+                
+                view.productID = COLLECTIONS_IAP_PRODUCT_ID
+                view.productDetails = ["name" : "Collections",
+                                      "description": "Lets you manage your card collections."]
+                view.delegate = self;
+                self.navigationController?.pushViewController(view, animated:true)
+            }
+            
+        } else if indexPath.row == 6 {
+            let iap = InAppPurchase()
+            
+            iap.delegate = self
+            iap.restorePurchases()
+        }
     }
     
     // UITableViewDataSource
@@ -275,66 +284,108 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         let row = arrayData![collectionView.tag]
         let key = Array(row.keys)[0]
         let dict = row[key]!
+        var view:UIViewController?
         
         if collectionView.tag == 0 || collectionView.tag == 1 || collectionView.tag == 2 {
             let card = dict[indexPath.row] as Card
-            let view = CardDetailsViewController()
+            let view2 = CardDetailsViewController()
             
-            view.addButtonVisible = true
-            view.card = card
-            self.navigationController?.pushViewController(view, animated:false)
-        } else if collectionView.tag == 3 { // Sets and Expansions
-            
-        }
-    }
-    
-    // UIScrollViewDelegate
-//    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-//        if scrollView.isKindOfClass(UICollectionView.classForCoder()) {
-//            let collectionView = scrollView as UICollectionView
-//            let flowLayout = collectionView.collectionViewLayout as UICollectionViewFlowLayout
+            view2.addButtonVisible = true
+            view2.card = card
+            view = view2
 
-//        } else if scrollView.isKindOfClass(UITableView.classForCoder()) {
-//
-//        }
-//    }
+        } else if collectionView.tag == 3 { // Sets
+            let set = dict[indexPath.row] as Set
+            let predicate = NSPredicate(format: "%K = %@", "set.name", set.name)
+            let data = Card.MR_findAllSortedBy("name", ascending: true, withPredicate: predicate)
+            var view2 = TopListViewController()
+            
+            view2.navigationItem.title = set.name
+            view2.arrayData = data
+            view = view2
+        }
+        
+        self.navigationController?.pushViewController(view!, animated:false)
+    }
     
     // HorizontalScrollTableViewCellDelegate
     func seeAll(tag: NSInteger) {
         let row = arrayData![tag]
         let key = Array(row.keys)[0]
-        var view:UIViewController?
+        var view = TopListViewController()
         
         switch tag {
         case 1:
-            let view1 = TopListViewController()
-            view1.arrayData = row[key] as? [Card]
-            view1.navigationItem.title = key
-            view = view1
+            view.arrayData = row[key] as? [Card]
             Database.sharedInstance().fetchTopRated(20, skip: 10)
         case 2:
-            let view1 = TopListViewController()
-            view1.arrayData = row[key] as? [Card]
-            view1.navigationItem.title = key
-            view = view1
+            view.arrayData = row[key] as? [Card]
             Database.sharedInstance().fetchTopViewed(20, skip: 10)
         case 3:
-            println("tag = \(tag)")
+            view.arrayData = Set.MR_findAllSortedBy("name", ascending: true)
         default:
             println("tag = \(tag)")
         }
         
-        if view != nil {
-            navigationController?.pushViewController(view!, animated:true)
-        }
+        view.navigationItem.title = key
+        navigationController?.pushViewController(view, animated:true)
     }
     
     func btnWishListTapped(sender: AnyObject) {
         println("How I wish!")
 //        Database.sharedInstance().uploadAllSetsToParse()
-//        let path = NSIndexPath(forRow: 4, inSection: 0)
-//        let cell = tableView(tblFeatured!, cellForRowAtIndexPath: NSIndexPath(forRow: 1, inSection: 0)) as? HorizontalScrollTableViewCell
-//        
-//        cell!.collectionView.scrollToItemAtIndexPath(path, atScrollPosition:UICollectionViewScrollPosition.None, animated:false)
+        let path = NSIndexPath(forRow: 0, inSection: 0)
+        let path2 = NSIndexPath(forRow: 3, inSection: 0)
+        
+        let cell = tableView(tblFeatured!, cellForRowAtIndexPath: path) as? BannerScrollTableViewCell
+        cell!.collectionView.setContentOffset(CGPoint(x:320*3, y:0), animated: true)
+        cell!.collectionView.scrollToItemAtIndexPath(path2, atScrollPosition:UICollectionViewScrollPosition.Left, animated:false)
+        
+    }
+    
+    // InAppPurchaseViewControllerDelegate
+    func productPurchaseSucceeded(productID: String)
+    {
+        if productID == COLLECTIONS_IAP_PRODUCT_ID {
+            let view = self.tabBarController as MainViewController
+            view.addCollectionsProduct()
+        }
+    }
+    
+    // InAppPurchaseDelegate
+    func productPurchaseFailed(inAppPurchase: InAppPurchase, withMessage message: String) {
+        let alert = UIAlertView(title: "Message",
+            message:message,
+            delegate:nil,
+            cancelButtonTitle: "Ok")
+        alert.show()
+    }
+    
+    func purchaseRestoreSucceeded(inAppPurchase: InAppPurchase, withMessage message: String) {
+        // Collections
+        let view = self.tabBarController as MainViewController
+        view.addCollectionsProduct()
+    
+        let alert = UIAlertView(title: "Message",
+            message:message,
+            delegate:nil,
+            cancelButtonTitle: "Ok")
+        alert.show()
+    
+#if !DEBUG
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.send(GAIDictionaryBuilder.createEventWithCategory("Settings",
+            action:"Restore Purchases",
+            label:"Succeeded",
+            value:nil).build())
+#endif
+    }
+    
+    func purchaseRestoreFailed(inAppPurchase: InAppPurchase, withMessage message: String) {
+        let alert = UIAlertView(title: "Message",
+            message:message,
+            delegate:nil,
+            cancelButtonTitle: "Ok")
+        alert.show()
     }
 }

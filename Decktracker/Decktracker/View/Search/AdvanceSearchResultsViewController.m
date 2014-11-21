@@ -85,12 +85,6 @@
 #endif
 }
 
--(void) viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [self.tblResults reloadData];
-}
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -188,7 +182,8 @@
         cell = [[SearchResultsTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                                  reuseIdentifier:CellIdentifier];
     }
-    
+    cell.selectionStyle = UITableViewCellSeparatorStyleNone;
+
     Card *card = [self.fetchedResultsController objectAtIndexPath:indexPath];
     [cell displayCard:card];
     

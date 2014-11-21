@@ -161,7 +161,7 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
         var section = -1
         
         if showSections {
-            var keys = Array(sections!.keys).sorted(<)
+            let keys = Array(sections!.keys).sorted(<)
             
             for (i, value) in enumerate(keys) {
                 if title == value {

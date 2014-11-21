@@ -71,6 +71,7 @@
     
     self.navigationItem.titleView = self.searchBar;
     [self.view addSubview:self.tblResults];
+    [self doSearch];
 }
 
 - (void)didReceiveMemoryWarning
@@ -79,37 +80,10 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void) viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:hud];
-    hud.delegate = self;
-    [hud showWhileExecuting:@selector(doSearch) onTarget:self withObject:nil animated:NO];
-}
-
 #pragma mark - UISearchBarDelegate
-- (void)searchBarSearchButtonClicked:(UISearchBar *)bar
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    if ([self.searchBar canResignFirstResponder])
-    {
-        [self.searchBar resignFirstResponder];
-    }
-    
-    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:hud];
-    hud.delegate = self;
-    [hud showWhileExecuting:@selector(doSearch) onTarget:self withObject:nil animated:NO];
-
-#ifndef DEBUG
-    // send to Google Analytics
-    id tracker = [[GAI sharedInstance] defaultTracker];
-    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Simple Search"
-                                                          action:self.searchBar.text
-                                                           label:@"Run"
-                                                           value:nil] build]];
-#endif
+    [self doSearch];
 }
 
 - (void) doSearch
@@ -174,6 +148,7 @@
         cell = [[SearchResultsTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                                  reuseIdentifier:CellIdentifier];
     }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     Card *card = [self.fetchedResultsController objectAtIndexPath:indexPath];
     [cell displayCard:card];

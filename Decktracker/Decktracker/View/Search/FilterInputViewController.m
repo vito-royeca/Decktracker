@@ -162,21 +162,9 @@
 }
 
 #pragma mark - UISearchBarDelegate
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     [self searchFilterOptions];
-    
-    if ([self.searchBar canResignFirstResponder])
-    {
-        [self.searchBar resignFirstResponder];
-    }
-}
-
-- (void)searchBarCancelButtonClicked:(UISearchBar *) searchBar
-{
-    _selectedFilterPath = nil;
-    _narrowedFilterOptions = nil;
-    [self.tblFilter reloadData];
 }
 
 - (void) searchFilterOptions

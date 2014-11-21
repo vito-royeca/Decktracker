@@ -21,6 +21,7 @@ class BannerScrollTableViewCell: UITableViewCell {
         // Initialization code
         
         collectionView!.registerNib(UINib(nibName: "BannerCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: kBannerCellIdentifier)
+        collectionView!.allowsSelection = true
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
@@ -38,8 +39,11 @@ class BannerScrollTableViewCell: UITableViewCell {
     }
 
     func showSlide() {
-        collectionView!.selectItemAtIndexPath(indexPath!, animated:true, scrollPosition:UICollectionViewScrollPosition.None)
-//        collectionView!.scrollToItemAtIndexPath(indexPath!, atScrollPosition:UICollectionViewScrollPosition.CenteredHorizontally, animated:true)
+//        collectionView!.selectItemAtIndexPath(indexPath!, animated:true, scrollPosition:UICollectionViewScrollPosition.None)
+        println("Scrolling to... \(indexPath!)")
+        collectionView!.setContentOffset(CGPoint(x: 320*indexPath!.row, y: 0), animated: true)
+        collectionView!.setNeedsDisplayInRect(CGRect(x: 320*indexPath!.row, y: 0, width: 320, height: 132))
+        collectionView!.scrollToItemAtIndexPath(indexPath!, atScrollPosition:UICollectionViewScrollPosition.Left, animated:false)
         
         if indexPath?.row == 5 {
             indexPath = NSIndexPath(forRow: 0, inSection: 0)
@@ -50,7 +54,7 @@ class BannerScrollTableViewCell: UITableViewCell {
     
     func startSlideShow() {
         indexPath = NSIndexPath(forRow: 0, inSection: 0)
-        slideshowTimer = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: "showSlide", userInfo: nil, repeats: true)
+        slideshowTimer = NSTimer.scheduledTimerWithTimeInterval(4, target: self, selector: "showSlide", userInfo: nil, repeats: true)
     }
     
     func stopSlideShow() {

@@ -7,6 +7,7 @@
 //
 
 #import "Database.h"
+#import "CardRating.h"
 #import "Magic.h"
 #import "Set.h"
 
@@ -15,6 +16,7 @@
 @implementation Database
 {
     NSMutableArray *_parseQueue;
+    NSArray *_currentParseQueue;
 }
 
 static Database *_me;
@@ -46,7 +48,7 @@ static Database *_me;
     NSString *imagesVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"Images Version"];
     
     NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
-    NSString *cachePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+    NSString *cachePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject];
     NSString *storePath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", kDatabaseStore]];
     
     NSDictionary *arrCardUpdates = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"Card Updates"];
@@ -59,6 +61,16 @@ static Database *_me;
             if (![[NSUserDefaults standardUserDefaults] boolForKey:key])
             {
                 NSString *path = [cachePath stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/card/%@/", setCode]];
+                
+                if ([[NSFileManager defaultManager] fileExistsAtPath:path])
+                {
+                    for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil])
+                    {
+                        [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@", path, file] error:nil];
+                    }
+                }
+                
+                path = [cachePath stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/crop/%@/", setCode]];
                 
                 if ([[NSFileManager defaultManager] fileExistsAtPath:path])
                 {
@@ -459,10 +471,7 @@ static Database *_me;
         c.tcgPlayerFetchDate = [NSDate date];
         
         NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
-        if ([currentContext hasChanges])
-        {
-            [currentContext MR_save];
-        }
+        [currentContext MR_saveToPersistentStoreAndWait];
         return c;
     }
     
@@ -552,13 +561,8 @@ static Database *_me;
                  
                  Card *card = [Card MR_findFirstWithPredicate:p];
                  card.rating = object[@"rating"];
+                 [moc MR_saveToPersistentStoreAndWait];
                  [arrResults addObject:card];
-             }
-             if ([moc hasChanges])
-             {
-                 dispatch_async(dispatch_get_main_queue(), ^{
-                     [moc MR_save];
-                 });
              }
          }
          else
@@ -616,13 +620,8 @@ static Database *_me;
                 NSPredicate *p = [NSPredicate predicateWithFormat:@"(%K = %@ AND %K = %@ AND %K = %@)", @"name", object[@"name"], @"multiverseID", object[@"multiverseID"], @"set.name", object[@"set"][@"name"]];
                 Card *card = [Card MR_findFirstWithPredicate:p];
                 card.numberOfViews = object[@"numberOfViews"];
+                [moc MR_saveToPersistentStoreAndWait];
                 [arrResults addObject:card];
-            }
-            if ([moc hasChanges])
-            {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [moc MR_save];
-                });
             }
         }
         else
@@ -650,8 +649,11 @@ static Database *_me;
     }];
 }
 
--(void) processParseCard:(Card*) card callback:(void (^)(PFObject *pfCard)) callbackTask
+-(void) processCurrentParseQueue
 {
+    Card *card = _currentParseQueue[0];
+    void (^callbackTask)(PFObject *pfCard) = _currentParseQueue[1];
+    
     void (^callbackFindCard)(NSString *cardName, NSNumber *multiverseID, PFObject *pfSet) = ^void(NSString *cardName, NSNumber *multiverseID, PFObject *pfSet)
     {
         PFQuery *query = [PFQuery queryWithClassName:@"Card"];
@@ -722,14 +724,14 @@ static Database *_me;
 
 -(void) processQueue
 {
-    if (_parseQueue.count == 0)
+    if (_parseQueue.count == 0 || _currentParseQueue)
     {
         return;
     }
     
-    NSArray *currentQueue = [_parseQueue objectAtIndex:0];
-    [_parseQueue removeObject:currentQueue];
-    [self processParseCard:currentQueue[0] callback:currentQueue[1]];
+    _currentParseQueue = [_parseQueue objectAtIndex:0];
+    [_parseQueue removeObject:_currentParseQueue];
+    [self processCurrentParseQueue];
 }
 
 -(void) incrementCardView:(Card*) card
@@ -741,16 +743,12 @@ static Database *_me;
             NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
             card.numberOfViews = pfCard[@"numberOfViews"];
             card.rating = pfCard[@"rating"];
-            if ([moc hasChanges])
-            {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [moc MR_save];
-                });
-            }
+            [moc MR_saveToPersistentStoreAndWait];
 
             [[NSNotificationCenter defaultCenter] postNotificationName:kParseSyncDone
                                                                 object:nil
                                                               userInfo:@{@"card": card}];
+            _currentParseQueue = nil;
             [self processQueue];
         }];
     };
@@ -772,10 +770,17 @@ static Database *_me;
             query.cachePolicy = kPFCachePolicyNetworkElseCache;
             
             [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+                NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
                 double totalRating = 0;
                 double averageRating = 0;
+                
                 for (PFObject *object in objects)
                 {
+                    CardRating *rating = [CardRating MR_createEntity];
+                    rating.rating = object[@"rating"];
+                    rating.card = card;
+                    [moc MR_saveToPersistentStoreAndWait];
+                    
                     totalRating += [object[@"rating"] doubleValue];
                 }
                 averageRating = totalRating/objects.count;
@@ -786,18 +791,13 @@ static Database *_me;
                 
                 pfCard[@"rating"] = [NSNumber numberWithDouble:averageRating];
                 [pfCard saveEventually:^(BOOL success, NSError *error) {
-                    NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
                     card.rating = [NSNumber numberWithDouble:averageRating];
-                    if ([moc hasChanges])
-                    {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            [moc MR_save];
-                        });
-                    }
+                    [moc MR_saveToPersistentStoreAndWait];
                     
                     [[NSNotificationCenter defaultCenter] postNotificationName:kParseSyncDone
                                                                         object:nil
                                                                       userInfo:@{@"card": card}];
+                    _currentParseQueue = nil;
                     [self processQueue];
                 }];
             }];
@@ -816,11 +816,16 @@ static Database *_me;
         query.cachePolicy = kPFCachePolicyNetworkElseCache;
         
         [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+            NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
             double totalRating = 0;
             double averageRating = 0;
 
             for (PFObject *object in objects)
             {
+                CardRating *rating = [CardRating MR_createEntity];
+                rating.rating = object[@"rating"];
+                rating.card = card;
+                [moc MR_saveToPersistentStoreAndWait];
                 totalRating += [object[@"rating"] doubleValue];
             }
             averageRating = totalRating/objects.count;
@@ -828,21 +833,16 @@ static Database *_me;
             {
                 averageRating = 0;
             }
-             
+            
             pfCard[@"rating"] = [NSNumber numberWithDouble:averageRating];
             [pfCard saveEventually:^(BOOL success, NSError *error) {
-                NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
                 card.rating = [NSNumber numberWithDouble:averageRating];
-                if ([moc hasChanges])
-                {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [moc MR_save];
-                    });
-                }
+                [moc MR_saveToPersistentStoreAndWait];
                 
                 [[NSNotificationCenter defaultCenter] postNotificationName:kParseSyncDone
                                                                     object:nil
                                                                   userInfo:@{@"card": card}];
+                _currentParseQueue = nil;
                 [self processQueue];
             }];
         }];
