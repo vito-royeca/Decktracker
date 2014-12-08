@@ -1,6 +1,6 @@
 //
 //  NSArray+PureLayout.m
-//  v2.0.1
+//  v2.0.3
 //  https://github.com/smileyborg/PureLayout
 //
 //  Copyright (c) 2012 Richard Turton
@@ -45,6 +45,20 @@
  */
 - (void)autoInstallConstraints
 {
+#if __PureLayout_MinBaseSDK_iOS_8_0 || __PureLayout_MinBaseSDK_OSX_10_10
+    if ([NSLayoutConstraint respondsToSelector:@selector(activateConstraints:)]) {
+        for (id object in self) {
+            if ([object isKindOfClass:[NSLayoutConstraint class]]) {
+                [ALView al_applyGlobalStateToConstraint:object];
+            }
+        }
+        if (![ALView al_preventAutomaticConstraintInstallation]) {
+            [NSLayoutConstraint activateConstraints:self];
+        }
+        return;
+    }
+#endif /* __PureLayout_MinBaseSDK_iOS_8_0 || __PureLayout_MinBaseSDK_OSX_10_10 */
+    
     for (id object in self) {
         if ([object isKindOfClass:[NSLayoutConstraint class]]) {
             [((NSLayoutConstraint *)object) autoInstall];
@@ -57,6 +71,13 @@
  */
 - (void)autoRemoveConstraints
 {
+#if __PureLayout_MinBaseSDK_iOS_8_0 || __PureLayout_MinBaseSDK_OSX_10_10
+    if ([NSLayoutConstraint respondsToSelector:@selector(deactivateConstraints:)]) {
+        [NSLayoutConstraint deactivateConstraints:self];
+        return;
+    }
+#endif /* __PureLayout_MinBaseSDK_iOS_8_0 || __PureLayout_MinBaseSDK_OSX_10_10 */
+    
     for (id object in self) {
         if ([object isKindOfClass:[NSLayoutConstraint class]]) {
             [((NSLayoutConstraint *)object) autoRemove];
@@ -358,8 +379,17 @@
             NSAssert(nil, @"Not a valid ALAxis.");
             return nil;
     }
-    BOOL isRightToLeftLanguage = [NSLocale characterDirectionForLanguage:[[NSBundle mainBundle] preferredLocalizations][0]] == NSLocaleLanguageDirectionRightToLeft;
-    BOOL shouldFlipOrder = isRightToLeftLanguage && (axis != ALAxisVertical); // imitate the effect of leading/trailing when distributing horizontally
+#if TARGET_OS_IPHONE
+    #if !defined(PURELAYOUT_APP_EXTENSIONS)
+    BOOL isRightToLeftLayout = [[UIApplication sharedApplication] userInterfaceLayoutDirection] == UIUserInterfaceLayoutDirectionRightToLeft;
+    #else
+    // App Extensions may not access -[UIApplication sharedApplication]; fall back to checking the bundle's preferred localization character direction
+    BOOL isRightToLeftLayout = [NSLocale characterDirectionForLanguage:[[NSBundle mainBundle] preferredLocalizations][0]] == NSLocaleLanguageDirectionRightToLeft;
+    #endif /* !defined(PURELAYOUT_APP_EXTENSIONS) */
+#else
+    BOOL isRightToLeftLayout = [[NSApplication sharedApplication] userInterfaceLayoutDirection] == NSUserInterfaceLayoutDirectionRightToLeft;
+#endif /* TARGET_OS_IPHONE */
+    BOOL shouldFlipOrder = isRightToLeftLayout && (axis != ALAxisVertical); // imitate the effect of leading/trailing when distributing horizontally
     
     NSMutableArray *constraints = [NSMutableArray new];
     NSArray *views = [self al_copyViewsOnly];
