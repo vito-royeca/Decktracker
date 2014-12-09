@@ -48,6 +48,12 @@
 #define COCOAPODS_VERSION_MINOR_AFNetworking_UIKit 5
 #define COCOAPODS_VERSION_PATCH_AFNetworking_UIKit 0
 
+// ActionSheetPicker-3.0
+#define COCOAPODS_POD_AVAILABLE_ActionSheetPicker_3_0
+#define COCOAPODS_VERSION_MAJOR_ActionSheetPicker_3_0 1
+#define COCOAPODS_VERSION_MINOR_ActionSheetPicker_3_0 3
+#define COCOAPODS_VERSION_PATCH_ActionSheetPicker_3_0 7
+
 // Bolts
 #define COCOAPODS_POD_AVAILABLE_Bolts
 #define COCOAPODS_VERSION_MAJOR_Bolts 1
@@ -106,7 +112,7 @@
 #define COCOAPODS_POD_AVAILABLE_InAppSettingsKit
 #define COCOAPODS_VERSION_MAJOR_InAppSettingsKit 2
 #define COCOAPODS_VERSION_MINOR_InAppSettingsKit 3
-#define COCOAPODS_VERSION_PATCH_InAppSettingsKit 1
+#define COCOAPODS_VERSION_PATCH_InAppSettingsKit 2
 
 // LMAlertView
 #define COCOAPODS_POD_AVAILABLE_LMAlertView
@@ -149,7 +155,7 @@
 #define COCOAPODS_POD_AVAILABLE_ParseUI
 #define COCOAPODS_VERSION_MAJOR_ParseUI 1
 #define COCOAPODS_VERSION_MINOR_ParseUI 0
-#define COCOAPODS_VERSION_PATCH_ParseUI 1
+#define COCOAPODS_VERSION_PATCH_ParseUI 2
 
 // PureLayout
 #define COCOAPODS_POD_AVAILABLE_PureLayout

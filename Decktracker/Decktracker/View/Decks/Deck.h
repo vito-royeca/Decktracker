@@ -8,8 +8,7 @@
 
 @import Foundation;
 
-#import "Card.h"
-
+#import "DTCard.h"
 #import "JJJ/JJJ.h"
 
 typedef NS_ENUM(NSInteger, DeckBoard)
@@ -32,8 +31,8 @@ typedef NS_ENUM(NSInteger, DeckBoard)
 
 -(id) initWithDictionary:(NSDictionary*) dict;
 -(void) save:(NSString*) filePath;
--(void) updateDeck:(DeckBoard) board withCard:(Card*) card withValue:(int) newValue;
--(int) cards:(Card*) card inBoard:(DeckBoard) deckboard;
+-(void) updateDeck:(DeckBoard) board withCard:(DTCard*) card withValue:(int) newValue;
+-(int) cards:(DTCard*) card inBoard:(DeckBoard) deckboard;
 -(int) cardsInBoard:(DeckBoard) deckboard;
 
 @end

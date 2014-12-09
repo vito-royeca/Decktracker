@@ -7,13 +7,13 @@
 //
 
 #import "FilterInputViewController.h"
-#import "Artist.h"
-#import "CardColor.h"
-#import "CardRarity.h"
-#import "CardType.h"
-#import "Format.h"
+#import "DTArtist.h"
+#import "DTCardColor.h"
+#import "DTCardRarity.h"
+#import "DTCardType.h"
+#import "DTFormat.h"
+#import "DTSet.h"
 #import "Magic.h"
-#import "Set.h"
 
 #ifndef DEBUG
 #import "GAI.h"
@@ -332,9 +332,9 @@
         {
             NSArray *arrFilter = _narrowedFilterOptions ? _narrowedFilterOptions : self.filterOptions;
             
-            if ([[self.filterOptions firstObject] isKindOfClass:[Set class]])
+            if ([[self.filterOptions firstObject] isKindOfClass:[DTSet class]])
             {
-                Set *set = arrFilter[indexPath.row];
+                DTSet *set = arrFilter[indexPath.row];
                 NSString *path = [NSString stringWithFormat:@"%@/images/set/%@/C/48.png", [[NSBundle mainBundle] bundlePath], set.code];
                 
                 if (![[NSFileManager defaultManager] fileExistsAtPath:path])
@@ -358,19 +358,19 @@
                 cell.textLabel.text = set.name;
                 cell.detailTextLabel.text = [NSString stringWithFormat:@"Released: %@ (%@ cards)", [JJJUtil formatDate:set.releaseDate withFormat:@"YYYY-MM-dd"], set.numberOfCards];
             }
-            else if ([[self.filterOptions firstObject] isKindOfClass:[CardRarity class]])
+            else if ([[self.filterOptions firstObject] isKindOfClass:[DTCardRarity class]])
             {
-                CardRarity *rarity = arrFilter[indexPath.row];
+                DTCardRarity *rarity = arrFilter[indexPath.row];
                 cell.textLabel.text = rarity.name;
             }
-            else if ([[self.filterOptions firstObject] isKindOfClass:[CardType class]])
+            else if ([[self.filterOptions firstObject] isKindOfClass:[DTCardType class]])
             {
-                CardType *type = arrFilter[indexPath.row];
+                DTCardType *type = arrFilter[indexPath.row];
                 cell.textLabel.text = type.name;
             }
-            else if ([[self.filterOptions firstObject] isKindOfClass:[CardColor class]])
+            else if ([[self.filterOptions firstObject] isKindOfClass:[DTCardColor class]])
             {
-                CardColor *color = arrFilter[indexPath.row];
+                DTCardColor *color = arrFilter[indexPath.row];
                 NSString *colorInitial;
                 if ([color.name isEqualToString:@"Blue"])
                 {
@@ -419,9 +419,9 @@
                     cell.textLabel.text = arrValues[indexPath.row];
                 }
             }
-            else if ([[self.filterOptions firstObject] isKindOfClass:[Artist class]])
+            else if ([[self.filterOptions firstObject] isKindOfClass:[DTArtist class]])
             {
-                Artist *artist = arrFilter[indexPath.row];
+                DTArtist *artist = arrFilter[indexPath.row];
                 cell.textLabel.text = artist.name;
             }
             if (_selectedFilterPath && [_selectedFilterPath compare:indexPath] == NSOrderedSame)

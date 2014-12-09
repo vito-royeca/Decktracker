@@ -14,9 +14,9 @@ class BannerCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var imgCrop: UIImageView!
 
     @IBOutlet weak var imgSet: UIImageView!
-    var card:Card?
-    var _8thEditionSet:Set?
-    var planeswalkerType:CardType?
+    var card:DTCard?
+    var _8thEditionSet:DTSet?
+    var planeswalkerType:DTCardType?
     var pre8thEditionFont:UIFont?
     var _8thEditionFont:UIFont?
     
@@ -24,8 +24,8 @@ class BannerCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
         // Initialization code
         
-        _8thEditionSet = Set.MR_findFirstWithPredicate(NSPredicate(format:"name == %@", "Eighth Edition")) as? Set
-        planeswalkerType = CardType.MR_findFirstByAttribute("name", withValue:"Planeswalker") as CardType?
+        _8thEditionSet = DTSet.MR_findFirstWithPredicate(NSPredicate(format:"name == %@", "Eighth Edition")) as? DTSet
+        planeswalkerType = DTCardType.MR_findFirstByAttribute("name", withValue:"Planeswalker") as DTCardType?
         pre8thEditionFont = UIFont(name: "Magic:the Gathering", size:25)
         _8thEditionFont = UIFont(name: "Matrix-Bold", size:25)
         
@@ -33,7 +33,7 @@ class BannerCollectionViewCell: UICollectionViewCell {
         lblCardName.shadowOffset = CGSizeMake(1, 1)
     }
 
-    func displayCard(card: Card) {
+    func displayCard(card: DTCard) {
         self.card = card
         
         NSNotificationCenter.defaultCenter().removeObserver(self,
@@ -79,7 +79,7 @@ class BannerCollectionViewCell: UICollectionViewCell {
     
     func loadCropImage(sender: AnyObject) {
         let dict = sender.userInfo as Dictionary?
-        let card = dict?["card"] as Card
+        let card = dict?["card"] as DTCard
     
         if (self.card == card) {
             let hiResImage = UIImage(contentsOfFile:FileManager.sharedInstance().cropPath(card))

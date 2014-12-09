@@ -10,19 +10,20 @@
 
 #import "AddCardViewController.h"
 #import "AdvanceSearchResultsViewController.h"
-#import "Artist.h"
-#import "CardForeignName.h"
-#import "CardLegality.h"
-#import "CardRarity.h"
-#import "CardRuling.h"
-#import "CardType.h"
+#import "DTArtist.h"
+#import "DTCardForeignName.h"
+#import "DTCardLegality.h"
+#import "DTCardRarity.h"
+#import "DTCardRuling.h"
+#import "DTCardType.h"
+#import "DTFormat.h"
+#import "DTSet.h"
 #import "Database.h"
 #import "FileManager.h"
-#import "Format.h"
 #import "Magic.h"
 #import "SearchResultsTableViewCell.h"
 #import "SimpleSearchViewController.h"
-#import "Set.h"
+
 
 #import "EDStarRating.h"
 #import "LMAlertView.h"
@@ -35,10 +36,10 @@
 
 @implementation CardDetailsViewController
 {
-    CardType *_planeswalkerType;
+    DTCardType *_planeswalkerType;
     MHFacebookImageViewer *_fbImageViewer;
     UIView *_viewSegmented;
-    Set *_mediaInsertsSet;
+    DTSet *_mediaInsertsSet;
     float _newRating;
 }
 
@@ -56,7 +57,7 @@
 @synthesize btnAdd = _btnAdd;
 @synthesize addButtonVisible = _addButtonVisible;
 
--(void) setCard:(Card *)card
+-(void) setCard:(DTCard *)card
 {
     _card = card;
     
@@ -73,7 +74,7 @@
         {
             if (index+i <= sectionInfo.objects.count-1)
             {
-                Card *kard = sectionInfo.objects[index+i];
+                DTCard *kard = sectionInfo.objects[index+i];
                 
                 [[FileManager sharedInstance] downloadCardImage:kard immediately:NO];
                 [[FileManager sharedInstance] downloadCropImage:kard immediately:NO];
@@ -104,7 +105,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    _mediaInsertsSet = [Set MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"name == %@", @"Media Inserts"]];
+    _mediaInsertsSet = [DTSet MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"name == %@", @"Media Inserts"]];
     _newRating = 0;
     
     CGFloat dX = 0;
@@ -189,7 +190,7 @@
         }
     }
     
-    _planeswalkerType = [CardType MR_findFirstByAttribute:@"name" withValue:@"Planeswalker"];
+    _planeswalkerType = [DTCardType MR_findFirstByAttribute:@"name" withValue:@"Planeswalker"];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:kCardDownloadCompleted
@@ -224,7 +225,7 @@
             }
         }
         
-        Card *card = sectionInfo.objects[index];
+        DTCard *card = sectionInfo.objects[index];
         [self setCard:card];
         [self.tblDetails reloadData];
     }
@@ -322,7 +323,7 @@
         index = 0;
     }
     
-    Card *card = sectionInfo.objects[index];
+    DTCard *card = sectionInfo.objects[index];
     [self setCard:card];
     [self.tblDetails reloadData];
 }
@@ -338,7 +339,7 @@
         index = sectionInfo.objects.count-1;
     }
     
-    Card *card = sectionInfo.objects[index];
+    DTCard *card = sectionInfo.objects[index];
     [self setCard:card];
     [self.tblDetails reloadData];
 }
@@ -361,7 +362,7 @@
 
 -(void) loadCardImage:(id) sender
 {
-    Card *card = [sender userInfo][@"card"];
+    DTCard *card = [sender userInfo][@"card"];
     
     if (self.card == card)
     {
@@ -473,6 +474,9 @@
     [html appendFormat:@"<html><head><link rel='stylesheet' type='text/css' href='%@/style.css'></head><body>", [[NSBundle mainBundle] bundlePath]];
     [html appendFormat:@"<table width='100%%'>"];
     
+    [html appendFormat:@"<tr><td><div class='cardName'>%@</div></td></tr>", self.card.name];
+
+    
     NSMutableString *text = [[NSMutableString alloc] init];
     if (self.card.originalType && ![self.card.originalType isEqualToString:self.card.type])
     {
@@ -544,7 +548,7 @@
     {
         NSMutableString *types = [[NSMutableString alloc] init];
         int i=0;
-        for (CardType *type in self.card.types)
+        for (DTCardType *type in self.card.types)
         {
             [types appendFormat:@"%@", type.name];
             if (i != self.card.types.count-1)
@@ -563,7 +567,7 @@
     {
         NSMutableString *types = [[NSMutableString alloc] init];
         int i=0;
-        for (CardType *type in self.card.superTypes)
+        for (DTCardType *type in self.card.superTypes)
         {
             [types appendFormat:@"%@", type.name];
             if (i != self.card.superTypes.count-1)
@@ -582,7 +586,7 @@
     {
         NSMutableString *types = [[NSMutableString alloc] init];
         int i=0;
-        for (CardType *type in self.card.subTypes)
+        for (DTCardType *type in self.card.subTypes)
         {
             [types appendFormat:@"%@", type.name];
             if (i != self.card.subTypes.count-1)
@@ -629,9 +633,9 @@
 
     [html appendFormat:@"<tr><td><div class='detailHeader'>All Sets</div></td></tr>"];
     [html appendFormat:@"<tr><td><table>"];
-    for (Set *set in [[self.card.printings allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"releaseDate" ascending:YES]]])
+    for (DTSet *set in [[self.card.printings allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"releaseDate" ascending:YES]]])
     {
-        Card *card = [[Database sharedInstance] findCard:self.card.name inSet:set.code];
+        DTCard *card = [[Database sharedInstance] findCard:self.card.name inSet:set.code];
         
         NSString *link = [[NSString stringWithFormat:@"card?name=%@&set=%@", card.name, card.set.code] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 
@@ -645,7 +649,7 @@
     {
         [html appendFormat:@"<tr><td><div class='detailHeader'>Names</div></td></tr>"];
         [html appendFormat:@"<tr><td><table>"];
-        for (Card *card in [[self.card.names allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]])
+        for (DTCard *card in [[self.card.names allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]])
         {
             NSString *link = [[NSString stringWithFormat:@"card?name=%@&set=%@", card.name, card.set.code] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             
@@ -659,7 +663,7 @@
     {
         [html appendFormat:@"<tr><td><div class='detailHeader'>Variations</div></td></tr>"];
         [html appendFormat:@"<tr><td><table>"];
-        for (Card *card in [[self.card.variations allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]])
+        for (DTCard *card in [[self.card.variations allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]])
         {
             NSString *link = [[NSString stringWithFormat:@"card?name=%@&set=%@", card.name, card.set.code] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             
@@ -672,7 +676,7 @@
     if (self.card.rulings.count > 0)
     {
         [html appendFormat:@"<tr><td><div class='detailHeader'>Rulings</div></td></tr>"];
-        for (CardRuling *ruling in [[self.card.rulings allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO]]])
+        for (DTCardRuling *ruling in [[self.card.rulings allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO]]])
         {
             [html appendFormat:@"<tr><td><i><b>%@</b></i>: %@</td></tr>", [JJJUtil formatDate:ruling.date withFormat:@"YYYY-MM-dd"], [self replaceSymbolsInText:ruling.text]];
         }
@@ -683,7 +687,7 @@
     {
         [html appendFormat:@"<tr><td><div class='detailHeader'>Legalities</div></td></tr>"];
         [html appendFormat:@"<tr><td><table width='100%%'>"];
-        for (CardLegality *legality in [[self.card.legalities allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"format.name" ascending:YES],
+        for (DTCardLegality *legality in [[self.card.legalities allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"format.name" ascending:YES],
               [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]])
         {
             [html appendFormat:@"<tr><td width='50%%'>%@</td><td>%@</td></tr>", legality.format.name, legality.name];
@@ -696,7 +700,7 @@
     {
         [html appendFormat:@"<tr><td><div class='detailHeader'>Languages</div></td></tr>"];
         [html appendFormat:@"<tr><td><table width='100%%'>"];
-        for (CardForeignName *foreignName in [[self.card.foreignNames allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"language" ascending:YES]]])
+        for (DTCardForeignName *foreignName in [[self.card.foreignNames allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"language" ascending:YES]]])
         {
             [html appendFormat:@"<tr><td width='50%%'>%@</td><td>%@</td></tr>", foreignName.language, foreignName.name];
         }
@@ -708,7 +712,7 @@
     return html;
 }
 
-- (NSString*) composeSetImage:(Card*) card
+- (NSString*) composeSetImage:(DTCard*) card
 {
     NSString *setPath = [[FileManager sharedInstance] cardSetPath:card];
     UIImage *image = [[UIImage alloc] initWithContentsOfFile:setPath];
@@ -723,7 +727,7 @@
     [formatter setMaximumFractionDigits:2];
     [formatter setRoundingMode:NSNumberFormatterRoundCeiling];
     
-    Card *card = [[Database sharedInstance] fetchTcgPlayerPriceForCard:self.card];
+    DTCard *card = [[Database sharedInstance] fetchTcgPlayerPriceForCard:self.card];
     NSMutableString *html = [[NSMutableString alloc] init];
     
     [html appendFormat:@"<html><head><link rel='stylesheet' type='text/css' href='%@/style.css'></head><body>", [[NSBundle mainBundle] bundlePath]];
@@ -872,7 +876,7 @@
     
         self.fetchedResultsController = nil;
         
-        Card *card = [[Database sharedInstance] findCard:kvPairs[@"name"]
+        DTCard *card = [[Database sharedInstance] findCard:kvPairs[@"name"]
                                                    inSet:kvPairs[@"set"]];
     
         [self setCard:card];
@@ -927,7 +931,7 @@
     
     if (self.fetchedResultsController)
     {
-        Card *card = [self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+        DTCard *card = [self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
     
         [self setCard:card];
         [self.tblDetails reloadData];
@@ -941,7 +945,7 @@
     
     if (self.fetchedResultsController)
     {
-        Card *card = [self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+        DTCard *card = [self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
     
         [self setCard:card];
         [self.tblDetails reloadData];

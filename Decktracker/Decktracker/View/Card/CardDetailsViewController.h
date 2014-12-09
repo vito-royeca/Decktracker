@@ -8,7 +8,7 @@
 
 @import UIKit;
 
-#import "Card.h"
+#import "DTCard.h"
 #import "MBProgressHUD.h"
 #import "MHFacebookImageViewer.h"
 
@@ -16,7 +16,7 @@
 
 @interface CardDetailsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIWebViewDelegate, MBProgressHUDDelegate, MHFacebookImageViewerDatasource, UIAlertViewDelegate>
 
-@property(strong, nonatomic) Card *card;
+@property(strong, nonatomic) DTCard *card;
 @property(strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property(strong, nonatomic) UITableView *tblView;
 @property(strong, nonatomic) UISegmentedControl *segmentedControl;

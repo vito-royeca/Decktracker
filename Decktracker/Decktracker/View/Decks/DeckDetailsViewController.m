@@ -12,8 +12,8 @@
 #import "CustomViewCell.h"
 #import "Database.h"
 #import "DeckIASKSettingsStore.h"
+#import "DTFormat.h"
 #import "FileManager.h"
-#import "Format.h"
 #import "LimitedSearchViewController.h"
 #import "SearchResultsTableViewCell.h"
 
@@ -561,7 +561,7 @@
         
         if (rows > 1)
         {
-            Card *card;
+            DTCard *card;
             
             switch (indexPath.section)
             {
@@ -728,7 +728,7 @@
     if ([specifier.key isEqualToString:@"format"])
     {
         NSMutableArray *arrFormats = [[NSMutableArray alloc] init];
-        for (Format *format in [Format MR_findAllSortedBy:@"name" ascending:YES])
+        for (DTFormat *format in [DTFormat MR_findAllSortedBy:@"name" ascending:YES])
         {
             [arrFormats addObject:format.name];
         }

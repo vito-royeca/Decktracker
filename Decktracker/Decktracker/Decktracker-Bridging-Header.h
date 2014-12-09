@@ -2,6 +2,8 @@
 //  Use this file to import your target's public headers that you would like to expose to Swift.
 //
 
+#import "ActionSheetStringPicker.h"
+#import "ActionSheetDatePicker.h"
 #import <CoreData/CoreData.h>
 #import "CoreData+MagicalRecord.h"
 #import "CorePlot-CocoaTouch.h"
@@ -11,22 +13,24 @@
 #import "GAIFields.h"
 #import "MBProgressHUD.h"
 #import <Parse/Parse.h>
+#import <ParseUI/PFLoginViewController.h>
 #import "PureLayout.h"
 
-#import "Artist.h"
-#import "Block.h"
-#import "Card.h"
-#import "CardColor.h"
-#import "CardForeignName.h"
-#import "CardLegality.h"
-#import "CardRarity.h"
-#import "CardRuling.h"
-#import "CardType.h"
-#import "ComprehensiveGlossary.h"
-#import "ComprehensiveRule.h"
-#import "Format.h"
-#import "Set.h"
-#import "SetType.h"
+#import "DTArtist.h"
+#import "DTBlock.h"
+#import "DTCard.h"
+#import "DTCardColor.h"
+#import "DTCardForeignName.h"
+#import "DTCardLegality.h"
+#import "DTCardRarity.h"
+#import "DTCardRating.h"
+#import "DTCardRuling.h"
+#import "DTCardType.h"
+#import "DTComprehensiveGlossary.h"
+#import "DTComprehensiveRule.h"
+#import "DTFormat.h"
+#import "DTSet.h"
+#import "DTSetType.h"
 
 #import "CardDetailsViewController.h"
 #import "Database.h"

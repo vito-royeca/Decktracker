@@ -10,6 +10,8 @@
 
 @interface JSONLoader : NSObject
 
--(void) parseJSON;
+-(void) parseCards1stPass;
+-(void) parseCards2ndPass;
+-(void) fetchTcgPrices;
 
 @end

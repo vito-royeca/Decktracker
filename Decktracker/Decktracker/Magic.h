@@ -46,7 +46,7 @@ typedef NSString* Layout;
 
 
 #define TCGPLAYER_PARTNER_KEY           @"DECKTRACKER"
-#define TCGPLAYER_FETCH_STORAGE         24*3 // 3 days
+#define TCGPLAYER_FETCH_STORAGE         24*14 // 14 days
 #define COLLECTIONS_IAP_PRODUCT_ID      @"Collections_ID"
 #define CLOUD_STORAGE_IAP_PRODUCT_ID    @"CloudStorage_ID"
 
@@ -74,5 +74,8 @@ typedef NS_ENUM(NSInteger, EditMode)
 
 #define kParseID                         @"gWQ4zjHnoXHJK15ipFVgWLUSA979mqHaZ7sOlPU9"
 #define kParseClientKey                  @"VVX6xrtslagHUKOSBXV3hj0B0i08izWSk53gSGem"
+
+#define kTwitterKey                      @"M9SYMK8TAvUxFVpa6qVOAH8Bb"
+#define kTwitterSecret                   @"xOlE7XZgtTeM8LVmXYZ5xtxvOZXBrupYNYLOzHtkIuZpCzEWBf"
 
 #endif

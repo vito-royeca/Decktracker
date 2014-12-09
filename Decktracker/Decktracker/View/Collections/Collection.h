@@ -8,7 +8,7 @@
 
 @import Foundation;
 
-#import "Card.h"
+#import "DTCard.h"
 typedef NS_ENUM(NSInteger, CollectionType)
 {
     CollectionTypeRegular,
@@ -24,8 +24,8 @@ typedef NS_ENUM(NSInteger, CollectionType)
 
 -(id) initWithDictionary:(NSDictionary*) dict;
 -(void) save:(NSString*) filePath;
--(void) updateCollection:(CollectionType) type withCard:(Card*) card withValue:(int) newValue;
--(int) cards:(Card*) card inType:(CollectionType) type;
+-(void) updateCollection:(CollectionType) type withCard:(DTCard*) card withValue:(int) newValue;
+-(int) cards:(DTCard*) card inType:(CollectionType) type;
 
 
 @end

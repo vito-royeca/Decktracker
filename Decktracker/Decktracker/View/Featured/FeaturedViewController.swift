@@ -63,6 +63,10 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         
         Database.sharedInstance().fetchTopRated(10, skip: 0)
         Database.sharedInstance().fetchTopViewed(10, skip: 0)
+        
+        arrayData!.removeAtIndex(4)
+        arrayData!.insert(["Highest Priced": Database.sharedInstance().fetchHighestPriced(10) as [DTCard]], atIndex: 4)
+        tblFeatured?.reloadData()
     }
 
     override func viewWillDisappear(animated: Bool) {
@@ -76,18 +80,19 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
     func loadData() {
         arrayData = [[String: [AnyObject]]]()
         
-        arrayData!.append(["Random": Database.sharedInstance().fetchRandomCards(6) as [Card]])
-        arrayData!.append(["Top Rated": [Card]()])
-        arrayData!.append(["Top Viewed": [Card]()])
-        arrayData!.append(["Sets": Database.sharedInstance().fetchSets(10) as [Set]])
+        arrayData!.append(["Random": Database.sharedInstance().fetchRandomCards(6) as [DTCard]])
+        arrayData!.append(["Top Rated": [DTCard]()])
+        arrayData!.append(["Top Viewed": [DTCard]()])
+        arrayData!.append(["Sets": Database.sharedInstance().fetchSets(10) as [DTSet]])
+        arrayData!.append(["Highest Priced": [DTCard]()])
         arrayData!.append(["In-App Purchase": ["Purchase Collections", "Restore Purchases"]])
         
         for dict in arrayData! {
             for (key,value) in dict {
                 for x in value {
-                    if x.isKindOfClass(Card.classForCoder()) {
-                        FileManager.sharedInstance().downloadCropImage(x as Card, immediately:false)
-                        FileManager.sharedInstance().downloadCardImage(x as Card, immediately:false)
+                    if x.isKindOfClass(DTCard.classForCoder()) {
+                        FileManager.sharedInstance().downloadCropImage(x as DTCard, immediately:false)
+                        FileManager.sharedInstance().downloadCardImage(x as DTCard, immediately:false)
                     }
                 }
             }
@@ -110,8 +115,8 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         let newRow = [key: cards]
         
         for x in cards {
-            FileManager.sharedInstance().downloadCropImage(x as? Card, immediately:false)
-            FileManager.sharedInstance().downloadCardImage(x as? Card, immediately:false)
+            FileManager.sharedInstance().downloadCropImage(x as? DTCard, immediately:false)
+            FileManager.sharedInstance().downloadCardImage(x as? DTCard, immediately:false)
         }
         
         var i = 0
@@ -132,7 +137,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.row == 0 {
             return 132
-        } else if indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 3 {
+        } else if indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 3 || indexPath.row == 4 {
             return 170
         } else {
             return UITableViewAutomaticDimension
@@ -140,7 +145,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
     }
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if indexPath.row == 5 {
+        if indexPath.row == 6 {
             if !InAppPurchase.isProductPurchased(COLLECTIONS_IAP_PRODUCT_ID) {
                 let view = InAppPurchaseViewController()
                 
@@ -151,7 +156,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
                 self.navigationController?.pushViewController(view, animated:true)
             }
             
-        } else if indexPath.row == 6 {
+        } else if indexPath.row == 7 {
             let iap = InAppPurchase()
             
             iap.delegate = self
@@ -165,7 +170,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 7 // arrayData.count + arrayData[5].count
+        return 8 // arrayData.count + arrayData[5].count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -183,7 +188,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
             cell2!.selectionStyle = UITableViewCellSelectionStyle.None
             cell2!.setCollectionViewDataSourceDelegate(self, index: indexPath.row)
             cell = cell2
-        } else if indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 3 {
+        } else if indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 3 || indexPath.row == 4 {
             let row = arrayData![indexPath.row]
             let key = Array(row.keys)[0]
             
@@ -197,7 +202,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
             cell2!.setCollectionViewDataSourceDelegate(self, index: indexPath.row)
             cell = cell2
         } else {
-            let row = arrayData![4]
+            let row = arrayData![5]
             let key = Array(row.keys)[0]
             let dict = row[key] as [String]
             
@@ -207,17 +212,17 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
                 cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: kDefaultCellIdentifier)
             }
             
-            if indexPath.row == 4 {
+            if indexPath.row == 5 {
                 cell!.textLabel.text = key
                 cell!.imageView.image = nil
                 cell!.selectionStyle = UITableViewCellSelectionStyle.None
                 cell!.accessoryType = UITableViewCellAccessoryType.None
             }
-            else if indexPath.row == 5 {
+            else if indexPath.row == 6 {
                 cell!.imageView.image = UIImage(named: "cards.png")
                 cell!.textLabel.text = dict[0]
                 cell!.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
-            } else if indexPath.row == 6 {
+            } else if indexPath.row == 7 {
                 cell!.imageView.image = UIImage(named: "download.png")
                 cell!.textLabel.text = dict[1]
                 cell!.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
@@ -232,7 +237,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         if indexPath.row == 0  {
             let cell2 = cell as BannerScrollTableViewCell
             cell2.setCollectionViewDataSourceDelegate(self, index: indexPath.row)
-        } else if indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 3 {
+        } else if indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 3 || indexPath.row == 4 {
             let cell2 = cell as HorizontalScrollTableViewCell
             cell2.setCollectionViewDataSourceDelegate(self, index: indexPath.row)
             cell2.delegate = self
@@ -259,18 +264,18 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         var cell:UICollectionViewCell?
         
         if collectionView.tag == 0 {
-            let card = dict[indexPath.row] as Card
+            let card = dict[indexPath.row] as DTCard
             var cell2 = collectionView.dequeueReusableCellWithReuseIdentifier(kBannerCellIdentifier, forIndexPath:indexPath) as BannerCollectionViewCell
             cell2.displayCard(card)
             cell = cell2
             
-        } else if collectionView.tag == 1 || collectionView.tag == 2 {
-            let card = dict[indexPath.row] as Card
+        } else if collectionView.tag == 1 || collectionView.tag == 2 || collectionView.tag == 4 {
+            let card = dict[indexPath.row] as DTCard
             var cell2 = collectionView.dequeueReusableCellWithReuseIdentifier("kThumbCellIdentifier", forIndexPath:indexPath) as ThumbCollectionViewCell
             cell2.displayCard(card)
             cell = cell2
         }  else if collectionView.tag == 3 {
-            let set = dict[indexPath.row] as Set
+            let set = dict[indexPath.row] as DTSet
             var cell2 = collectionView.dequeueReusableCellWithReuseIdentifier("kSetCellIdentifier", forIndexPath:indexPath) as SetCollectionViewCell
             cell2.displaySet(set)
             cell = cell2
@@ -286,8 +291,8 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         let dict = row[key]!
         var view:UIViewController?
         
-        if collectionView.tag == 0 || collectionView.tag == 1 || collectionView.tag == 2 {
-            let card = dict[indexPath.row] as Card
+        if collectionView.tag == 0 || collectionView.tag == 1 || collectionView.tag == 2 || collectionView.tag == 4 {
+            let card = dict[indexPath.row] as DTCard
             let view2 = CardDetailsViewController()
             
             view2.addButtonVisible = true
@@ -295,13 +300,13 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
             view = view2
 
         } else if collectionView.tag == 3 { // Sets
-            let set = dict[indexPath.row] as Set
+            let set = dict[indexPath.row] as DTSet
             let predicate = NSPredicate(format: "%K = %@", "set.name", set.name)
-            let data = Card.MR_findAllSortedBy("name", ascending: true, withPredicate: predicate)
-            var view2 = TopListViewController()
+            var view2 = SetListViewController()
             
             view2.navigationItem.title = set.name
-            view2.arrayData = data
+            view2.predicate = predicate
+            view2.doSearch()
             view = view2
         }
         
@@ -312,23 +317,33 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
     func seeAll(tag: NSInteger) {
         let row = arrayData![tag]
         let key = Array(row.keys)[0]
-        var view = TopListViewController()
+        var view:UIViewController?
         
         switch tag {
         case 1:
-            view.arrayData = row[key] as? [Card]
+            var view2 = TopListViewController()
+            view2.arrayData = row[key] as? [DTCard]
             Database.sharedInstance().fetchTopRated(20, skip: 10)
+            view = view2;
         case 2:
-            view.arrayData = row[key] as? [Card]
+            var view2 = TopListViewController()
+            view2.arrayData = row[key] as? [DTCard]
             Database.sharedInstance().fetchTopViewed(20, skip: 10)
+            view = view2;
         case 3:
-            view.arrayData = Set.MR_findAllSortedBy("name", ascending: true)
+            var view2 = SetListViewController()
+            view2.arrayData = DTSet.MR_findAllSortedBy("name", ascending: true)
+            view = view2;
+        case 4:
+            var view2 = TopListViewController()
+            view2.arrayData = Database.sharedInstance().fetchHighestPriced(100) as [DTCard]?
+            view = view2;
         default:
             println("tag = \(tag)")
         }
         
-        view.navigationItem.title = key
-        navigationController?.pushViewController(view, animated:true)
+        view!.navigationItem.title = key
+        navigationController?.pushViewController(view!, animated:true)
     }
     
     func btnWishListTapped(sender: AnyObject) {

@@ -7,9 +7,9 @@
 //
 
 #import "RulesLoader.h"
-#import "ComprehensiveGlossary.h"
-#import "ComprehensiveRule.h"
 #import "Database.h"
+#import "DTComprehensiveGlossary.h"
+#import "DTComprehensiveRule.h"
 
 #import "TFHpple.h"
 
@@ -71,7 +71,7 @@
                         NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
                         NSString *content = [JJJUtil removeNewLines:[self extractContent:child]];
                         
-                        ComprehensiveRule *rule = [self createRule:_lastContent];
+                        DTComprehensiveRule *rule = [self createRule:_lastContent];
                         
                         rule.rule = [NSString stringWithFormat:@"%@ %@", rule.rule, content];
                         [currentContext MR_save];
@@ -86,8 +86,8 @@
                     {
                         if (_lastContent) {
                             
-                            ComprehensiveGlossary *glossary = [ComprehensiveGlossary MR_findFirstByAttribute:@"term"
-                                                                                                   withValue:_lastContent];
+                            DTComprehensiveGlossary *glossary = [DTComprehensiveGlossary MR_findFirstByAttribute:@"term"
+                                                                                                       withValue:_lastContent];
                             
                             if (glossary)
                             {
@@ -134,7 +134,7 @@
     return content;
 }
 
--(ComprehensiveRule*) createRule:(NSString*) content
+-(DTComprehensiveRule*) createRule:(NSString*) content
 {
     if ([content rangeOfString:@"."].location == NSNotFound)
     {
@@ -156,13 +156,13 @@
     }
     
     NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
-    ComprehensiveRule *rule = [ComprehensiveRule MR_findFirstByAttribute:@"number"
+    DTComprehensiveRule *rule = [DTComprehensiveRule MR_findFirstByAttribute:@"number"
                                                                withValue:number];
-    ComprehensiveRule *parent;
+    DTComprehensiveRule *parent;
     
     if (!rule)
     {
-        rule = [ComprehensiveRule MR_createEntity];
+        rule = [DTComprehensiveRule MR_createEntity];
         rule.number = number;
         rule.rule = text;
         
@@ -170,14 +170,14 @@
         if (range.location != NSNotFound)
         {
             number = [number substringToIndex:range.location];
-            parent = [ComprehensiveRule MR_findFirstByAttribute:@"number"
-                                                      withValue:number];
+            parent = [DTComprehensiveRule MR_findFirstByAttribute:@"number"
+                                                        withValue:number];
         }
         else
         {
             number = [number substringToIndex:1];
-            parent = [ComprehensiveRule MR_findFirstByAttribute:@"number"
-                                                      withValue:number];
+            parent = [DTComprehensiveRule MR_findFirstByAttribute:@"number"
+                                                        withValue:number];
         }
         
         if (![rule.number isEqualToString:parent.number])
@@ -190,21 +190,21 @@
     return rule;
 }
 
--(ComprehensiveRule*) findParentRule:(NSString*) content
+-(DTComprehensiveRule*) findParentRule:(NSString*) content
 {
-    return [ComprehensiveRule MR_findFirstByAttribute:@"number"
-                                            withValue:[content substringToIndex:1]];
+    return [DTComprehensiveRule MR_findFirstByAttribute:@"number"
+                                              withValue:[content substringToIndex:1]];
 }
 
--(ComprehensiveGlossary*) createGlossary:(NSString*) term withDefinition:(NSString*) definition
+-(DTComprehensiveGlossary*) createGlossary:(NSString*) term withDefinition:(NSString*) definition
 {
     NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
-    ComprehensiveGlossary *glossary = [ComprehensiveGlossary MR_findFirstByAttribute:@"term"
-                                                                           withValue:term];
+    DTComprehensiveGlossary *glossary = [DTComprehensiveGlossary MR_findFirstByAttribute:@"term"
+                                                                               withValue:term];
     
     if (!glossary)
     {
-        glossary = [ComprehensiveGlossary MR_createEntity];
+        glossary = [DTComprehensiveGlossary MR_createEntity];
         glossary.term = term;
         glossary.definition = definition;
         [currentContext MR_save];

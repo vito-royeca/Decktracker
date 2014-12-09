@@ -47,7 +47,7 @@
 @synthesize createButtonVisible = _createButtonVisible;
 @synthesize showCardButtonVisible = _showCardButtonVisible;
 
--(void) setCard:(Card *)card
+-(void) setCard:(DTCard *)card
 {
     _card = card;
     
@@ -264,7 +264,7 @@
 -(void) btnShowCardTapped:(id) sender
 {
     CardDetailsViewController *view = [[CardDetailsViewController alloc] init];
-    Card *card = self.card;
+    DTCard *card = self.card;
     
     view.fetchedResultsController = nil;
     view.addButtonVisible = NO;

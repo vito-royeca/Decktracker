@@ -8,11 +8,11 @@
 
 #import "ImageLoader.h"
 #import "JJJ/JJJUtil.h"
-#import "Card.h"
-#import "CardRarity.h"
 #import "Database.h"
+#import "DTCard.h"
+#import "DTCardRarity.h"
+#import "DTSet.h"
 #import "Magic.h"
-#import "Set.h"
 
 @implementation ImageLoader
 
@@ -81,7 +81,7 @@
     
     [self createDir:path];
     
-    for (Set *set in [Set MR_findAllSortedBy:@"releaseDate" ascending:YES])
+    for (DTSet *set in [DTSet MR_findAllSortedBy:@"releaseDate" ascending:YES])
     {
         NSString *setPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", set.code]];
         [self createDir:setPath];
@@ -166,7 +166,7 @@
     
     [self createDir:path];
     
-    for (Set *set in [Set MR_findAllSortedBy:@"releaseDate" ascending:YES])
+    for (DTSet *set in [DTSet MR_findAllSortedBy:@"releaseDate" ascending:YES])
     {
         NSString *setPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", set.code]];
         
@@ -179,7 +179,7 @@
         {
             [self createDir:setPath];
             
-            for (Card *card in set.cards)
+            for (DTCard *card in set.cards)
             {
                 
                 NSString *filePath = [setPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.hq.jpg", card.imageName]];

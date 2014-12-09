@@ -8,13 +8,13 @@
 
 #import "SimpleSearchViewController.h"
 #import "AdvanceSearchViewController.h"
-#import "Card.h"
 #import "CardDetailsViewController.h"
-#import "CardRarity.h"
-#import "CardType.h"
 #import "Database.h"
+#import "DTCard.h"
+#import "DTCardRarity.h"
+#import "DTCardType.h"
+#import "DTSet.h"
 #import "SearchResultsTableViewCell.h"
-#import "Set.h"
 
 #ifndef DEBUG
 #import "GAI.h"
@@ -173,7 +173,7 @@
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    Card *card = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    DTCard *card = [self.fetchedResultsController objectAtIndexPath:indexPath];
     [cell displayCard:card];
 
     return cell;
@@ -182,7 +182,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CardDetailsViewController *view = [[CardDetailsViewController alloc] init];
-    Card *card = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    DTCard *card = [self.fetchedResultsController objectAtIndexPath:indexPath];
     
     view.fetchedResultsController = self.fetchedResultsController;
     view.addButtonVisible = YES;
@@ -250,7 +250,7 @@
         }
         case NSFetchedResultsChangeUpdate:
         {
-            Card *card = [self.fetchedResultsController objectAtIndexPath:indexPath];
+            DTCard *card = [self.fetchedResultsController objectAtIndexPath:indexPath];
             SearchResultsTableViewCell *cell = (SearchResultsTableViewCell*)[tableView cellForRowAtIndexPath:indexPath];
             [cell displayCard:card];
             break;

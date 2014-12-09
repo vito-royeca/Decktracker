@@ -8,8 +8,8 @@
 
 @import Foundation;
 
-#import "Card.h"
-#import "CardRarity.h"
+#import "DTCard.h"
+#import "DTCardRarity.h"
 
 #import "JJJ/JJJ.h"
 
@@ -17,12 +17,12 @@
 #import <Parse/Parse.h>
 #endif
 
-#define kFetchBatchSize       100
-#define kDatabaseStore        @"decktracker.sqlite"
+#define kFetchBatchSize         100
+#define kDatabaseStore          @"decktracker.sqlite"
 
-#define kFetchTopRatedDone    @"kFetchTopRatedDone"
-#define kFetchTopViewedDone   @"kFetchTopViewedDone"
-#define kParseSyncDone        @"kParseSyncDone"
+#define kFetchTopRatedDone      @"kFetchTopRatedDone"
+#define kFetchTopViewedDone     @"kFetchTopViewedDone"
+#define kParseSyncDone          @"kParseSyncDone"
 
 @interface Database : NSObject
 
@@ -37,18 +37,19 @@
 -(NSFetchedResultsController*) advanceSearch:(NSDictionary*)query withSorter:(NSDictionary*) sorter;
 #endif
 
--(Card*) findCard:(NSString*) card inSet:(NSString*) setCode;
--(NSString*) cardRarityIndex:(Card*) card;
--(Card*) fetchTcgPlayerPriceForCard:(Card*) card;
+-(DTCard*) findCard:(NSString*) card inSet:(NSString*) setCode;
+-(NSString*) cardRarityIndex:(DTCard*) card;
+-(DTCard*) fetchTcgPlayerPriceForCard:(DTCard*) card;
 -(NSArray*) fetchRandomCards:(int) howMany;
 -(NSArray*) fetchSets:(int) howMany;
+-(NSArray*) fetchHighestPriced:(int) limit;
 
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
 -(void) fetchTopRated:(int) limit skip:(int) skip;
 -(void) fetchTopViewed:(int) limit skip:(int) skip;
--(void) incrementCardView:(Card*) card;
--(void) rateCard:(Card*) card for:(float) rating;
--(void) parseSynch:(Card*) card;
+-(void) incrementCardView:(DTCard*) card;
+-(void) rateCard:(DTCard*) card for:(float) rating;
+-(void) parseSynch:(DTCard*) card;
 -(void) uploadAllSetsToParse;
 #endif
 

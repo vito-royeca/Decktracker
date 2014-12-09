@@ -8,11 +8,11 @@
 
 @import UIKit;
 
-#import "Card.h"
-#import "CardType.h"
+#import "DTCard.h"
+#import "DTCardType.h"
+#import "DTSet.h"
 #import "Database.h"
 #import "Magic.h"
-#import "Set.h"
 
 #import "JJJ/JJJ.h"
 
@@ -31,7 +31,7 @@
 @property(strong,nonatomic) IBOutlet UIView *viewRating;
 
 
--(void) displayCard:(Card*) card;
+-(void) displayCard:(DTCard*) card;
 -(void) addBadge:(int) badgeValue;
 -(void) addRank:(int) rankValue;
 

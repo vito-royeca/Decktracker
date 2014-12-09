@@ -31,6 +31,7 @@ class BannerScrollTableViewCell: UITableViewCell {
     }
     
     func setCollectionViewDataSourceDelegate(dataSourceDelegate: protocol<UICollectionViewDataSource, UICollectionViewDelegate>, index: NSInteger) {
+        
         collectionView!.dataSource = dataSourceDelegate
         collectionView!.delegate = dataSourceDelegate
         collectionView!.tag = index

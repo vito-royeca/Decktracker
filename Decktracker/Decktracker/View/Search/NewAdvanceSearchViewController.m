@@ -8,14 +8,14 @@
 
 #import "NewAdvanceSearchViewController.h"
 #import "AdvanceSearchResultsViewController.h"
-#import "Artist.h"
-#import "CardColor.h"
-#import "CardRarity.h"
-#import "CardType.h"
 #import "Database.h"
+#import "DTArtist.h"
+#import "DTCardColor.h"
+#import "DTCardRarity.h"
+#import "DTCardType.h"
+#import "DTFormat.h"
+#import "DTSet.h"
 #import "FileManager.h"
-#import "Format.h"
-#import "Set.h"
 
 #ifndef DEBUG
 #import "GAI.h"
@@ -444,23 +444,23 @@
 
     if ([_arrFilters[indexPath.row] isEqualToString:@"Set"])
     {
-        arrFilterOptions = [Set MR_findAllSortedBy:@"name" ascending:YES];
+        arrFilterOptions = [DTSet MR_findAllSortedBy:@"name" ascending:YES];
     }
     else if ([_arrFilters[indexPath.row] isEqualToString:@"Rarity"])
     {
-        arrFilterOptions = [CardRarity MR_findAll];
+        arrFilterOptions = [DTCardRarity MR_findAll];
     }
     else if ([_arrFilters[indexPath.row] isEqualToString:@"Type"])
     {
-        arrFilterOptions = [CardType MR_findAllSortedBy:@"name" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"name IN %@", CARD_TYPES]];
+        arrFilterOptions = [DTCardType MR_findAllSortedBy:@"name" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"name IN %@", CARD_TYPES]];
     }
     else if ([_arrFilters[indexPath.row] isEqualToString:@"Subtype"])
     {
-        arrFilterOptions = [CardType MR_findAllSortedBy:@"name" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"NOT (name IN %@)", CARD_TYPES]];
+        arrFilterOptions = [DTCardType MR_findAllSortedBy:@"name" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"NOT (name IN %@)", CARD_TYPES]];
     }
     else if ([_arrFilters[indexPath.row] isEqualToString:@"Color"])
     {
-        arrFilterOptions = [CardColor MR_findAllSortedBy:@"name" ascending:YES];;
+        arrFilterOptions = [DTCardColor MR_findAllSortedBy:@"name" ascending:YES];;
     }
     else if ([_arrFilters[indexPath.row] isEqualToString:@"Keyword"])
     {
@@ -468,7 +468,7 @@
     }
     else if ([_arrFilters[indexPath.row] isEqualToString:@"Artist"])
     {
-        arrFilterOptions = [Artist MR_findAllSortedBy:@"name" ascending:YES];
+        arrFilterOptions = [DTArtist MR_findAllSortedBy:@"name" ascending:YES];
     }
     
     FilterInputViewController *view = [[FilterInputViewController alloc] init];

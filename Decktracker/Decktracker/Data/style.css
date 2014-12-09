@@ -37,6 +37,13 @@ html, body
     src: url('MPlantin.ttf');
 }
 
+.cardName
+{
+    font-family: Magic;
+    font-size: 14pt;
+}
+
+
 .detailHeader
 {
     font-family: Helvetica;
@@ -47,7 +54,7 @@ html, body
 .originalType
 {
     font-family : MPlantin;
-    font-size: 14pt;
+    font-size: 12pt;
 }
 
 .originalText

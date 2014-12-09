@@ -5,7 +5,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 `$(inherited)`
 
 target "Decktracker" do
-
+pod "ActionSheetPicker-3.0"
 pod "AFNetworking"
 pod "CorePlot"
 pod "Dropbox-Sync-API-SDK"
@@ -22,7 +22,7 @@ pod "Parse"
 pod "ParseFacebookUtils"
 pod "ParseUI"
 pod "PureLayout"
-#pod "vfrReader", '~> 2.8.4'
+#pod "vfrReader", '~> 2.8.5'
 pod "XLForm"
 
 

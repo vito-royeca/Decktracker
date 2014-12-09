@@ -28,12 +28,12 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>db-v57bkxsnzi3gxt3</string>
-				<string>boxsdk-v3vx3t10k6genv8ao7r5f3rqunz23atm</string>
+				<string>fb341320496039341</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1004</string>
+	<string>10A4</string>
 	<key>Card Updates</key>
 	<dict>
 		<key>5.6.6</key>
@@ -49,6 +49,10 @@
 			<string>C14</string>
 		</array>
 	</dict>
+	<key>FacebookAppID</key>
+	<string>341320496039341</string>
+	<key>FacebookDisplayName</key>
+	<string>Decktracker</string>
 	<key>Images Version</key>
 	<string>5.8.0</string>
 	<key>JSON Version</key>

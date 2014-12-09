@@ -8,6 +8,7 @@
 
 #import "SettingsViewController.h"
 #import "AcknowledgementTableViewCell.h"
+#import "Decktracker-Swift.h"
 #import "DownloadSetImagesViewController.h"
 #import "FileManager.h"
 #import "MainViewController.h"
@@ -62,6 +63,9 @@
                                                  name:kIASKAppSettingChanged
                                                object:nil];
     
+    PFUser *user = [PFUser currentUser];
+    [self setupUser:user];
+    
 #ifndef DEBUG
     // send the screen to Google Analytics
     id tracker = [[GAI sharedInstance] defaultTracker];
@@ -74,9 +78,6 @@
 -(void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    self.appSettingsViewController.hiddenKeys = [self hiddenKeys];
-    [self.appSettingsViewController.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -95,6 +96,63 @@
     }
     
     return setHiddenKeys;
+}
+
+-(void) setupUser:(PFUser *)user
+{
+    if (!user)
+    {
+        return;
+    }
+
+    if ([PFFacebookUtils isLinkedWithUser:user])
+    {
+        [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error)
+         {
+             if (!error)
+             {
+                 NSDictionary *userData = (NSDictionary *)result;
+                 
+                 
+                 //                    NSURL *pictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large&return_ssl_resources=1", userData[@"id"]]];
+                 //                    https://graph.facebook.com/579917805441932/picture?type=square&return_ssl_resources=1&width=16&height=16
+                 
+                 [[NSUserDefaults standardUserDefaults] setValue:userData[@"name"] forKey:@"User_FullName"];
+                 [[NSUserDefaults standardUserDefaults] synchronize];
+                 
+                 self.appSettingsViewController.hiddenKeys = [self hiddenKeys];
+                 [self.appSettingsViewController.tableView reloadData];
+                 
+             }
+             else
+             {
+                 // An error occurred, we need to handle the error
+                 // Check out our error handling guide: https://developers.facebook.com/docs/ios/errors/
+                 NSLog(@"error %@", error.description);
+             }
+         }];
+    }
+    else if ([PFTwitterUtils isLinkedWithUser:user])
+    {
+        NSURL *verify = [NSURL URLWithString:@"https://api.twitter.com/1.1/account/verify_credentials.json"];
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:verify];
+        [[PFTwitterUtils twitter] signRequest:request];
+        NSURLResponse *response = nil;
+        NSError *error;
+        NSData *data = [NSURLConnection sendSynchronousRequest:request
+                                             returningResponse:&response
+                                                         error:&error];
+        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data
+                                                            options:kNilOptions
+                                                               error:&error];
+        NSString *fullName = json[@"name"];
+        NSString *pictureURL= json[@"profile_image_url"];
+        
+        [[NSUserDefaults standardUserDefaults] setValue:fullName forKey:@"User_FullName"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        self.appSettingsViewController.hiddenKeys = [self hiddenKeys];
+        [self.appSettingsViewController.tableView reloadData];
+    }
 }
 
 #pragma mark - IASKSettingsDelegate
@@ -142,6 +200,33 @@
         view.delegate = self;
         view.navigationItem.title = @"Acknowledgements";
         [self.navigationController pushViewController:view animated:YES];
+    }
+    
+    else if ([specifier.key isEqualToString:@"User_FullName"])
+    {
+        PFUser *user = [PFUser currentUser];
+        
+        if (user)
+        {
+            UserAccountViewController *view = [[UserAccountViewController alloc] init];
+            
+            view.user = user;
+            [self.navigationController pushViewController:view animated:YES];
+        }
+        else
+        {
+            DecktrackerPFLoginViewController *view = [[DecktrackerPFLoginViewController alloc] init];
+            
+            view.fields = PFLogInFieldsDismissButton |
+            PFLogInFieldsUsernameAndPassword |
+            PFLogInFieldsPasswordForgotten |
+            PFLogInFieldsLogInButton |
+            PFLogInFieldsSignUpButton |
+            PFLogInFieldsFacebook |
+            PFLogInFieldsTwitter;
+            view.delegate = self;
+            [self presentViewController:view animated:YES completion:nil];
+        }
     }
 }
 
@@ -258,6 +343,19 @@
                                           cancelButtonTitle:@"Ok"
                                           otherButtonTitles:nil];
     [alert show];
+}
+
+#pragma mark - PFLogInViewControllerDelegate
+- (void)logInViewController:(PFLogInViewController *)controller
+               didLogInUser:(PFUser *)user
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+    [self setupUser:user];
+}
+
+- (void)logInViewControllerDidCancelLogIn:(PFLogInViewController *)logInController
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

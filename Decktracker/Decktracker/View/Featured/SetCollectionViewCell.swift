@@ -24,7 +24,7 @@ class SetCollectionViewCell: UICollectionViewCell {
         lblNumberOfCards.adjustsFontSizeToFitWidth = true
     }
 
-    func displaySet(set: Set) {
+    func displaySet(set: DTSet) {
         let path = FileManager.sharedInstance().cardSetPathBig(set)
         var setImage = UIImage(contentsOfFile: path)
         imgSet.image = setImage

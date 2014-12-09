@@ -14,7 +14,9 @@
 
 #import <Crashlytics/Crashlytics.h>
 #import <Dropbox/Dropbox.h>
+#import <FacebookSDK/FacebookSDK.h>
 #import <Parse/Parse.h>
+#import <ParseFacebookUtils/PFFacebookUtils.h>
 
 #ifndef DEBUG
 #import "GAI.h"
@@ -41,6 +43,9 @@
     // Parse
     [Parse setApplicationId:kParseID
                   clientKey:kParseClientKey];
+    [PFFacebookUtils initializeFacebook];
+    [PFTwitterUtils initializeWithConsumerKey:kTwitterKey
+                               consumerSecret:kTwitterSecret];
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     
     // FileSystem
@@ -102,11 +107,15 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    
+//    [FBAppEvents activateApp];
+    [FBAppCall handleDidBecomeActiveWithSession:[PFFacebookUtils session]];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     [[Database sharedInstance] closeDb];
+    [[PFFacebookUtils session] close];
 }
 
 // Dropbox handler after authenticating
@@ -136,7 +145,10 @@
         }
     }
     
-    return NO;
+    // attempt to extract a token from the url
+    return [FBAppCall handleOpenURL:url
+                  sourceApplication:source
+                        withSession:[PFFacebookUtils session]];
 }
 
 @end

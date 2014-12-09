@@ -14,8 +14,12 @@
 
 #import "IASKSettingsReader.h"
 #import "IASKAppSettingsViewController.h"
+#import <Parse/Parse.h>
+#import <ParseUI/PFLoginViewController.h>
+#import <ParseFacebookUtils/PFFacebookUtils.h>
 
-@interface SettingsViewController : UIViewController<InAppPurchaseDelegate, InAppPurchaseViewControllerDelegate, IASKSettingsDelegate>
+
+@interface SettingsViewController : UIViewController<InAppPurchaseDelegate, InAppPurchaseViewControllerDelegate, IASKSettingsDelegate, PFLogInViewControllerDelegate>
 
 @property(strong,nonatomic) IASKAppSettingsViewController *appSettingsViewController;
 

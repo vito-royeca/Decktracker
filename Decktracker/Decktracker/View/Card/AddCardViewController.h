@@ -8,7 +8,7 @@
 
 @import UIKit;
 
-#import "Card.h"
+#import "DTCard.h"
 #import "InAppPurchaseViewController.h"
 #import "MBProgressHUD.h"
 #import "QuantityTableViewCell.h"
@@ -23,7 +23,7 @@
 @property(strong,nonatomic) UIBarButtonItem *btnCreate;
 @property(strong,nonatomic) UIToolbar *bottomToolbar;
 
-@property(strong,nonatomic) Card *card;
+@property(strong,nonatomic) DTCard *card;
 @property(strong,nonatomic) NSMutableArray *arrDecks;
 @property(strong,nonatomic) NSMutableArray *arrCollections;
 

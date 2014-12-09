@@ -49,7 +49,7 @@ static FileManager *_me;
     return self;
 }
 
--(NSString*) cardPath:(Card*) card
+-(NSString*) cardPath:(DTCard*) card
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *cacheDirectory = [paths firstObject];
@@ -61,7 +61,7 @@ static FileManager *_me;
     return [[NSFileManager defaultManager] fileExistsAtPath:cardHQPath] ? cardHQPath : ([[NSFileManager defaultManager] fileExistsAtPath:cardPath] ? cardPath : cardBackPath);
 }
 
--(NSString*) cropPath:(Card*) card
+-(NSString*) cropPath:(DTCard*) card
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *cacheDirectory = [paths firstObject];
@@ -73,17 +73,17 @@ static FileManager *_me;
     return [[NSFileManager defaultManager] fileExistsAtPath:cropHQPath] ? cropHQPath : ([[NSFileManager defaultManager] fileExistsAtPath:cropPath] ? cropPath : cropBackPath);
 }
 
--(NSString*) cardSetPath:(Card*) card
+-(NSString*) cardSetPath:(DTCard*) card
 {
     return [NSString stringWithFormat:@"%@/images/set/%@/%@/48.png", [[NSBundle mainBundle] bundlePath], card.set.code, [[Database sharedInstance] cardRarityIndex:card]];
 }
 
--(NSString*) cardSetPathBig:(Set*) set
+-(NSString*) cardSetPathBig:(DTSet*) set
 {
     return [NSString stringWithFormat:@"%@/images/set/%@/C/96.png", [[NSBundle mainBundle] bundlePath], set.code];
 }
 
--(void) downloadCardImage:(Card*) card immediately:(BOOL) immediately
+-(void) downloadCardImage:(DTCard*) card immediately:(BOOL) immediately
 {
     if (!card)
     {
@@ -109,7 +109,7 @@ static FileManager *_me;
         bFound = NO;
     }
     
-    Card *oldCardInQueue;
+    DTCard *oldCardInQueue;
     for (NSDictionary *dict in _downloadQueue)
     {
         if (dict[@"card"] == card)
@@ -154,7 +154,7 @@ static FileManager *_me;
     }
 }
 
--(void) downloadCropImage:(Card*) card immediately:(BOOL) immediately
+-(void) downloadCropImage:(DTCard*) card immediately:(BOOL) immediately
 {
     if (!card)
     {
@@ -180,7 +180,7 @@ static FileManager *_me;
         bFound = NO;
     }
     
-    Card *oldCardInQueue;
+    DTCard *oldCardInQueue;
     for (NSDictionary *dict in _downloadQueue)
     {
         if (dict[@"crop"] == card)
@@ -247,7 +247,7 @@ static FileManager *_me;
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            Card *card = _currentQueue[@"card"];
+            DTCard *card = _currentQueue[@"card"];
             if (card)
             {
                 [[NSNotificationCenter defaultCenter] postNotificationName:kCardDownloadCompleted

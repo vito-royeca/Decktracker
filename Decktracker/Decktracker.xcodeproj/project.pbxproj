@@ -82,30 +82,33 @@
 		8C2EC95F1A1670900011BAA2 /* UIImage+AverageColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2EC95E1A1670900011BAA2 /* UIImage+AverageColor.m */; };
 		8C3277FD199A464D00899790 /* style.css in Resources */ = {isa = PBXBuildFile; fileRef = 8C3277FC199A464D00899790 /* style.css */; };
 		8C33E9BE19D73AAB000892D9 /* InAppPurchaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C33E9BD19D73AAB000892D9 /* InAppPurchaseViewController.m */; };
+		8C372C771A2DD900001D7EF3 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C372C761A2DD900001D7EF3 /* Accounts.framework */; };
+		8C372C7B1A2DD908001D7EF3 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C372C7A1A2DD908001D7EF3 /* Social.framework */; };
 		8C378E0019A7434B00B9367F /* MHFacebookImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C378DFF19A7434B00B9367F /* MHFacebookImageViewer.m */; };
+		8C3857921A36E6D100E5B38C /* DTCardRarity.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3857911A36E6D100E5B38C /* DTCardRarity.m */; };
+		8C3857951A36E6D100E5B38C /* DTCardLegality.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3857941A36E6D100E5B38C /* DTCardLegality.m */; };
+		8C3857981A36E6D200E5B38C /* DTCardType.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3857971A36E6D200E5B38C /* DTCardType.m */; };
+		8C38579B1A36E6D200E5B38C /* DTArtist.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C38579A1A36E6D200E5B38C /* DTArtist.m */; };
+		8C38579E1A36E6D200E5B38C /* DTSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C38579D1A36E6D200E5B38C /* DTSet.m */; };
+		8C3857A11A36E6D200E5B38C /* DTCardRuling.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3857A01A36E6D200E5B38C /* DTCardRuling.m */; };
+		8C3857A41A36E6D200E5B38C /* DTCardRating.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3857A31A36E6D200E5B38C /* DTCardRating.m */; };
+		8C3857A71A36E6D200E5B38C /* DTBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3857A61A36E6D200E5B38C /* DTBlock.m */; };
+		8C3857AA1A36E6D200E5B38C /* DTFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3857A91A36E6D200E5B38C /* DTFormat.m */; };
+		8C3857AD1A36E6D200E5B38C /* DTSetType.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3857AC1A36E6D200E5B38C /* DTSetType.m */; };
+		8C3857B01A36E6D200E5B38C /* DTComprehensiveRule.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3857AF1A36E6D200E5B38C /* DTComprehensiveRule.m */; };
+		8C3857B31A36E6D200E5B38C /* DTCardForeignName.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3857B21A36E6D200E5B38C /* DTCardForeignName.m */; };
+		8C3857B61A36E6D300E5B38C /* DTComprehensiveGlossary.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3857B51A36E6D300E5B38C /* DTComprehensiveGlossary.m */; };
+		8C3857B91A36E6D300E5B38C /* DTCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3857B81A36E6D300E5B38C /* DTCard.m */; };
+		8C3857BC1A36E6D300E5B38C /* DTCardColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3857BB1A36E6D300E5B38C /* DTCardColor.m */; };
 		8C38C0501A15F6E500FC3411 /* BannerScrollTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C38C04E1A15F6E500FC3411 /* BannerScrollTableViewCell.swift */; };
 		8C38C0511A15F6E500FC3411 /* BannerScrollTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C38C04F1A15F6E500FC3411 /* BannerScrollTableViewCell.xib */; };
 		8C3C7D6719DE41CB0030B6E9 /* MTG-JSON.license in Resources */ = {isa = PBXBuildFile; fileRef = 8C3C7D6519DE41CB0030B6E9 /* MTG-JSON.license */; };
 		8C3C7D6E19DE41EE0030B6E9 /* MTG-Image.license in Resources */ = {isa = PBXBuildFile; fileRef = 8C3C7D6C19DE41EE0030B6E9 /* MTG-Image.license */; };
-		8C3CBDBE19A31615002CD96E /* CardForeignName.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDBD19A31615002CD96E /* CardForeignName.m */; };
-		8C3CBDC119A31615002CD96E /* Card.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDC019A31615002CD96E /* Card.m */; };
-		8C3CBDC419A31615002CD96E /* CardRuling.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDC319A31615002CD96E /* CardRuling.m */; };
-		8C3CBDC719A31617002CD96E /* CardColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDC619A31617002CD96E /* CardColor.m */; };
-		8C3CBDCA19A31617002CD96E /* CardLegality.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDC919A31617002CD96E /* CardLegality.m */; };
-		8C3CBDCD19A31618002CD96E /* Format.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDCC19A31618002CD96E /* Format.m */; };
-		8C3CBDD019A31618002CD96E /* Artist.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDCF19A31618002CD96E /* Artist.m */; };
-		8C3CBDD319A31618002CD96E /* Set.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDD219A31618002CD96E /* Set.m */; };
-		8C3CBDD619A31618002CD96E /* Block.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDD519A31618002CD96E /* Block.m */; };
-		8C3CBDD919A31618002CD96E /* CardType.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDD819A31618002CD96E /* CardType.m */; };
-		8C3CBDDC19A31618002CD96E /* SetType.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDDB19A31618002CD96E /* SetType.m */; };
-		8C3CBDDF19A31618002CD96E /* CardRarity.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CBDDE19A31618002CD96E /* CardRarity.m */; };
 		8C3E948319E4207200C7EF21 /* AcknowledgementTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3E948119E4207200C7EF21 /* AcknowledgementTableViewCell.m */; };
 		8C3E948419E4207200C7EF21 /* AcknowledgementTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C3E948219E4207200C7EF21 /* AcknowledgementTableViewCell.xib */; };
 		8C467CF019F1132600B27F05 /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C467CEF19F1132600B27F05 /* MoreViewController.swift */; };
 		8C49655D19B0692A001C7935 /* Goudy Medieval.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8C49655C19B06929001C7935 /* Goudy Medieval.ttf */; };
 		8C49656719B0A01F001C7935 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C49656619B0A01E001C7935 /* Crashlytics.framework */; };
-		8C49E7BF1A09CDDF0034603A /* ComprehensiveRule.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C49E7BE1A09CDDE0034603A /* ComprehensiveRule.m */; };
-		8C49E7C21A09CDDF0034603A /* ComprehensiveGlossary.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C49E7C11A09CDDF0034603A /* ComprehensiveGlossary.m */; };
 		8C5246E119A5137300B10147 /* FileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5246E019A5137300B10147 /* FileManager.m */; };
 		8C524A6519B81E9E005E697B /* DeckDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C524A6419B81E9E005E697B /* DeckDetailsViewController.m */; };
 		8C524A7019B82C01005E697B /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C524A6F19B82C01005E697B /* SettingsViewController.m */; };
@@ -116,6 +119,7 @@
 		8C66751119D30B8E00A90C03 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8C66751019D30B8E00A90C03 /* Settings.bundle */; };
 		8C6847B619EE42370074960E /* JJJ.xcodeproj in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C6847A919EE41FF0074960E /* JJJ.xcodeproj */; };
 		8C6847B919EE426C0074960E /* libJJJ.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C6847B019EE41FF0074960E /* libJJJ.a */; };
+		8C71A0A21A28127A00162CA2 /* SetListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C71A0A11A28127A00162CA2 /* SetListViewController.swift */; };
 		8C74B82B1A10A2F3004A350F /* DeckIASKSettingsStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C74B82A1A10A2F3004A350F /* DeckIASKSettingsStore.m */; };
 		8C74B8351A10BE67004A350F /* MultilineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C74B8341A10BE67004A350F /* MultilineTableViewCell.swift */; };
 		8C74B8391A10C3FC004A350F /* CustomViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C74B8371A10C3FC004A350F /* CustomViewCell.m */; };
@@ -143,7 +147,8 @@
 		8CE7F2BE19C0A2D0004FBEA5 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CE7F2BD19C0A2D0004FBEA5 /* StoreKit.framework */; };
 		8CE971C61A126C0000D4386B /* BannerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE971C41A126C0000D4386B /* BannerCollectionViewCell.swift */; };
 		8CE971C71A126C0000D4386B /* BannerCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CE971C51A126C0000D4386B /* BannerCollectionViewCell.xib */; };
-		8CE9B9361A19C38700DA7964 /* CardRating.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE9B9351A19C38700DA7964 /* CardRating.m */; };
+		8CF14BF41A2E199600BEC434 /* DecktrackerPFLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF14BF31A2E199600BEC434 /* DecktrackerPFLoginViewController.swift */; };
+		8CF3309F1A35B33D00B6301D /* UserAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF3309E1A35B33D00B6301D /* UserAccountViewController.swift */; };
 		8CF418D719C9C6790082E3BC /* Collection.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF418D619C9C6790082E3BC /* Collection.m */; };
 		8CF79A6519A8BFA300BE4246 /* DecksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF79A6419A8BFA300BE4246 /* DecksViewController.m */; };
 		8CF79A6B19A8BFB400BE4246 /* CollectionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF79A6A19A8BFB400BE4246 /* CollectionsViewController.m */; };
@@ -305,46 +310,51 @@
 		8C33E9BC19D73AAB000892D9 /* InAppPurchaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InAppPurchaseViewController.h; sourceTree = "<group>"; };
 		8C33E9BD19D73AAB000892D9 /* InAppPurchaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InAppPurchaseViewController.m; sourceTree = "<group>"; };
 		8C36A21519ECF6D400F09F78 /* Decktracker-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Decktracker-Bridging-Header.h"; sourceTree = "<group>"; };
+		8C372C761A2DD900001D7EF3 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		8C372C7A1A2DD908001D7EF3 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		8C378DFE19A7434B00B9367F /* MHFacebookImageViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MHFacebookImageViewer.h; sourceTree = "<group>"; };
 		8C378DFF19A7434B00B9367F /* MHFacebookImageViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MHFacebookImageViewer.m; sourceTree = "<group>"; };
+		8C3857601A36E55500E5B38C /* Dec-9-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Dec-9-2014.xcdatamodel"; sourceTree = "<group>"; };
+		8C3857901A36E6D100E5B38C /* DTCardRarity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTCardRarity.h; sourceTree = "<group>"; };
+		8C3857911A36E6D100E5B38C /* DTCardRarity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTCardRarity.m; sourceTree = "<group>"; };
+		8C3857931A36E6D100E5B38C /* DTCardLegality.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTCardLegality.h; sourceTree = "<group>"; };
+		8C3857941A36E6D100E5B38C /* DTCardLegality.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTCardLegality.m; sourceTree = "<group>"; };
+		8C3857961A36E6D200E5B38C /* DTCardType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTCardType.h; sourceTree = "<group>"; };
+		8C3857971A36E6D200E5B38C /* DTCardType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTCardType.m; sourceTree = "<group>"; };
+		8C3857991A36E6D200E5B38C /* DTArtist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTArtist.h; sourceTree = "<group>"; };
+		8C38579A1A36E6D200E5B38C /* DTArtist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTArtist.m; sourceTree = "<group>"; };
+		8C38579C1A36E6D200E5B38C /* DTSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTSet.h; sourceTree = "<group>"; };
+		8C38579D1A36E6D200E5B38C /* DTSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTSet.m; sourceTree = "<group>"; };
+		8C38579F1A36E6D200E5B38C /* DTCardRuling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTCardRuling.h; sourceTree = "<group>"; };
+		8C3857A01A36E6D200E5B38C /* DTCardRuling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTCardRuling.m; sourceTree = "<group>"; };
+		8C3857A21A36E6D200E5B38C /* DTCardRating.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTCardRating.h; sourceTree = "<group>"; };
+		8C3857A31A36E6D200E5B38C /* DTCardRating.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTCardRating.m; sourceTree = "<group>"; };
+		8C3857A51A36E6D200E5B38C /* DTBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTBlock.h; sourceTree = "<group>"; };
+		8C3857A61A36E6D200E5B38C /* DTBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTBlock.m; sourceTree = "<group>"; };
+		8C3857A81A36E6D200E5B38C /* DTFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTFormat.h; sourceTree = "<group>"; };
+		8C3857A91A36E6D200E5B38C /* DTFormat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTFormat.m; sourceTree = "<group>"; };
+		8C3857AB1A36E6D200E5B38C /* DTSetType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTSetType.h; sourceTree = "<group>"; };
+		8C3857AC1A36E6D200E5B38C /* DTSetType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTSetType.m; sourceTree = "<group>"; };
+		8C3857AE1A36E6D200E5B38C /* DTComprehensiveRule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTComprehensiveRule.h; sourceTree = "<group>"; };
+		8C3857AF1A36E6D200E5B38C /* DTComprehensiveRule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTComprehensiveRule.m; sourceTree = "<group>"; };
+		8C3857B11A36E6D200E5B38C /* DTCardForeignName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTCardForeignName.h; sourceTree = "<group>"; };
+		8C3857B21A36E6D200E5B38C /* DTCardForeignName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTCardForeignName.m; sourceTree = "<group>"; };
+		8C3857B41A36E6D300E5B38C /* DTComprehensiveGlossary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTComprehensiveGlossary.h; sourceTree = "<group>"; };
+		8C3857B51A36E6D300E5B38C /* DTComprehensiveGlossary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTComprehensiveGlossary.m; sourceTree = "<group>"; };
+		8C3857B71A36E6D300E5B38C /* DTCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTCard.h; sourceTree = "<group>"; };
+		8C3857B81A36E6D300E5B38C /* DTCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTCard.m; sourceTree = "<group>"; };
+		8C3857BA1A36E6D300E5B38C /* DTCardColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTCardColor.h; sourceTree = "<group>"; };
+		8C3857BB1A36E6D300E5B38C /* DTCardColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTCardColor.m; sourceTree = "<group>"; };
 		8C38C04E1A15F6E500FC3411 /* BannerScrollTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BannerScrollTableViewCell.swift; sourceTree = "<group>"; };
 		8C38C04F1A15F6E500FC3411 /* BannerScrollTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BannerScrollTableViewCell.xib; sourceTree = "<group>"; };
 		8C3C7D6519DE41CB0030B6E9 /* MTG-JSON.license */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "MTG-JSON.license"; sourceTree = "<group>"; };
 		8C3C7D6C19DE41EE0030B6E9 /* MTG-Image.license */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "MTG-Image.license"; sourceTree = "<group>"; };
-		8C3CBDBC19A31615002CD96E /* CardForeignName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardForeignName.h; sourceTree = "<group>"; };
-		8C3CBDBD19A31615002CD96E /* CardForeignName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardForeignName.m; sourceTree = "<group>"; };
-		8C3CBDBF19A31615002CD96E /* Card.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Card.h; sourceTree = "<group>"; };
-		8C3CBDC019A31615002CD96E /* Card.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Card.m; sourceTree = "<group>"; };
-		8C3CBDC219A31615002CD96E /* CardRuling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardRuling.h; sourceTree = "<group>"; };
-		8C3CBDC319A31615002CD96E /* CardRuling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardRuling.m; sourceTree = "<group>"; };
-		8C3CBDC519A31617002CD96E /* CardColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardColor.h; sourceTree = "<group>"; };
-		8C3CBDC619A31617002CD96E /* CardColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardColor.m; sourceTree = "<group>"; };
-		8C3CBDC819A31617002CD96E /* CardLegality.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardLegality.h; sourceTree = "<group>"; };
-		8C3CBDC919A31617002CD96E /* CardLegality.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardLegality.m; sourceTree = "<group>"; };
-		8C3CBDCB19A31618002CD96E /* Format.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Format.h; sourceTree = "<group>"; };
-		8C3CBDCC19A31618002CD96E /* Format.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Format.m; sourceTree = "<group>"; };
-		8C3CBDCE19A31618002CD96E /* Artist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Artist.h; sourceTree = "<group>"; };
-		8C3CBDCF19A31618002CD96E /* Artist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Artist.m; sourceTree = "<group>"; };
-		8C3CBDD119A31618002CD96E /* Set.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Set.h; sourceTree = "<group>"; };
-		8C3CBDD219A31618002CD96E /* Set.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Set.m; sourceTree = "<group>"; };
-		8C3CBDD419A31618002CD96E /* Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Block.h; sourceTree = "<group>"; };
-		8C3CBDD519A31618002CD96E /* Block.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Block.m; sourceTree = "<group>"; };
-		8C3CBDD719A31618002CD96E /* CardType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardType.h; sourceTree = "<group>"; };
-		8C3CBDD819A31618002CD96E /* CardType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardType.m; sourceTree = "<group>"; };
-		8C3CBDDA19A31618002CD96E /* SetType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetType.h; sourceTree = "<group>"; };
-		8C3CBDDB19A31618002CD96E /* SetType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SetType.m; sourceTree = "<group>"; };
-		8C3CBDDD19A31618002CD96E /* CardRarity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardRarity.h; sourceTree = "<group>"; };
-		8C3CBDDE19A31618002CD96E /* CardRarity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardRarity.m; sourceTree = "<group>"; };
 		8C3E948019E4207200C7EF21 /* AcknowledgementTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AcknowledgementTableViewCell.h; sourceTree = "<group>"; };
 		8C3E948119E4207200C7EF21 /* AcknowledgementTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AcknowledgementTableViewCell.m; sourceTree = "<group>"; };
 		8C3E948219E4207200C7EF21 /* AcknowledgementTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AcknowledgementTableViewCell.xib; sourceTree = "<group>"; };
 		8C467CEF19F1132600B27F05 /* MoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
 		8C49655C19B06929001C7935 /* Goudy Medieval.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Goudy Medieval.ttf"; sourceTree = "<group>"; };
 		8C49656619B0A01E001C7935 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
-		8C49E7BD1A09CDDE0034603A /* ComprehensiveRule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComprehensiveRule.h; sourceTree = "<group>"; };
-		8C49E7BE1A09CDDE0034603A /* ComprehensiveRule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComprehensiveRule.m; sourceTree = "<group>"; };
-		8C49E7C01A09CDDF0034603A /* ComprehensiveGlossary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComprehensiveGlossary.h; sourceTree = "<group>"; };
-		8C49E7C11A09CDDF0034603A /* ComprehensiveGlossary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComprehensiveGlossary.m; sourceTree = "<group>"; };
 		8C5246DF19A5137300B10147 /* FileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileManager.h; sourceTree = "<group>"; };
 		8C5246E019A5137300B10147 /* FileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileManager.m; sourceTree = "<group>"; };
 		8C524A6319B81E9E005E697B /* DeckDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeckDetailsViewController.h; sourceTree = "<group>"; };
@@ -361,6 +371,7 @@
 		8C66750B19D30AF800A90C03 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		8C66751019D30B8E00A90C03 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		8C6847A919EE41FF0074960E /* JJJ.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JJJ.xcodeproj; path = ../jjj/JJJ/JJJ.xcodeproj; sourceTree = "<group>"; };
+		8C71A0A11A28127A00162CA2 /* SetListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetListViewController.swift; sourceTree = "<group>"; };
 		8C74B8291A10A2F3004A350F /* DeckIASKSettingsStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeckIASKSettingsStore.h; sourceTree = "<group>"; };
 		8C74B82A1A10A2F3004A350F /* DeckIASKSettingsStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeckIASKSettingsStore.m; sourceTree = "<group>"; };
 		8C74B8341A10BE67004A350F /* MultilineTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultilineTableViewCell.swift; sourceTree = "<group>"; };
@@ -394,9 +405,9 @@
 		8CE7F2C219C0A2F7004FBEA5 /* Decktracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Decktracker.entitlements; sourceTree = "<group>"; };
 		8CE971C41A126C0000D4386B /* BannerCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BannerCollectionViewCell.swift; sourceTree = "<group>"; };
 		8CE971C51A126C0000D4386B /* BannerCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BannerCollectionViewCell.xib; sourceTree = "<group>"; };
-		8CE9B9341A19C38700DA7964 /* CardRating.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardRating.h; sourceTree = "<group>"; };
-		8CE9B9351A19C38700DA7964 /* CardRating.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardRating.m; sourceTree = "<group>"; };
 		8CF0ECEC1A07DF93008E60DB /* Nov-4-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Nov-4-2014.xcdatamodel"; sourceTree = "<group>"; };
+		8CF14BF31A2E199600BEC434 /* DecktrackerPFLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecktrackerPFLoginViewController.swift; sourceTree = "<group>"; };
+		8CF3309E1A35B33D00B6301D /* UserAccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAccountViewController.swift; sourceTree = "<group>"; };
 		8CF418D519C9C6790082E3BC /* Collection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Collection.h; sourceTree = "<group>"; };
 		8CF418D619C9C6790082E3BC /* Collection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Collection.m; sourceTree = "<group>"; };
 		8CF79A6319A8BFA300BE4246 /* DecksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DecksViewController.h; sourceTree = "<group>"; };
@@ -420,6 +431,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C372C7B1A2DD908001D7EF3 /* Social.framework in Frameworks */,
+				8C372C771A2DD900001D7EF3 /* Accounts.framework in Frameworks */,
 				8C2A96D719F4D95C0094C97F /* MessageUI.framework in Frameworks */,
 				8C2A96D619F4D9510094C97F /* ImageIO.framework in Frameworks */,
 				8C6847B919EE426C0074960E /* libJJJ.a in Frameworks */,
@@ -492,6 +505,7 @@
 				8CAAA0EC1A15057100DD209D /* HorizontalScrollTableViewCell.xib */,
 				8CC5BA6F1A1386A700F3BDD2 /* SetCollectionViewCell.swift */,
 				8CC5BA701A1386A700F3BDD2 /* SetCollectionViewCell.xib */,
+				8C71A0A11A28127A00162CA2 /* SetListViewController.swift */,
 				8CC5BA661A13509600F3BDD2 /* ThumbCollectionViewCell.swift */,
 				8CC5BA671A13509600F3BDD2 /* ThumbCollectionViewCell.xib */,
 				8C1623181A1C816400ABC4DB /* TopListViewController.swift */,
@@ -606,6 +620,8 @@
 		8C2E13EF1990741100023BAA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8C372C7A1A2DD908001D7EF3 /* Social.framework */,
+				8C372C761A2DD900001D7EF3 /* Accounts.framework */,
 				8C2A96D519F4D9510094C97F /* ImageIO.framework */,
 				8CFA452919E1C580000B5205 /* QuartzCore.framework */,
 				8C66750B19D30AF800A90C03 /* MessageUI.framework */,
@@ -645,9 +661,9 @@
 			isa = PBXGroup;
 			children = (
 				8C2E13FA1990741100023BAA /* Decktracker-Info.plist */,
+				8C2E14001990741100023BAA /* Decktracker-Prefix.pch */,
 				8C2E13FB1990741100023BAA /* InfoPlist.strings */,
 				8C2E13FE1990741100023BAA /* main.m */,
-				8C2E14001990741100023BAA /* Decktracker-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -673,37 +689,37 @@
 		8C2E14251990744E00023BAA /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				8C3CBDCE19A31618002CD96E /* Artist.h */,
-				8C3CBDCF19A31618002CD96E /* Artist.m */,
-				8C3CBDD419A31618002CD96E /* Block.h */,
-				8C3CBDD519A31618002CD96E /* Block.m */,
-				8C3CBDBF19A31615002CD96E /* Card.h */,
-				8C3CBDC019A31615002CD96E /* Card.m */,
-				8C3CBDC519A31617002CD96E /* CardColor.h */,
-				8C3CBDC619A31617002CD96E /* CardColor.m */,
-				8C3CBDBC19A31615002CD96E /* CardForeignName.h */,
-				8C3CBDBD19A31615002CD96E /* CardForeignName.m */,
-				8C3CBDC819A31617002CD96E /* CardLegality.h */,
-				8C3CBDC919A31617002CD96E /* CardLegality.m */,
-				8C3CBDDD19A31618002CD96E /* CardRarity.h */,
-				8C3CBDDE19A31618002CD96E /* CardRarity.m */,
-				8CE9B9341A19C38700DA7964 /* CardRating.h */,
-				8CE9B9351A19C38700DA7964 /* CardRating.m */,
-				8C3CBDC219A31615002CD96E /* CardRuling.h */,
-				8C3CBDC319A31615002CD96E /* CardRuling.m */,
-				8C3CBDD719A31618002CD96E /* CardType.h */,
-				8C3CBDD819A31618002CD96E /* CardType.m */,
-				8C49E7C01A09CDDF0034603A /* ComprehensiveGlossary.h */,
-				8C49E7C11A09CDDF0034603A /* ComprehensiveGlossary.m */,
-				8C49E7BD1A09CDDE0034603A /* ComprehensiveRule.h */,
-				8C49E7BE1A09CDDE0034603A /* ComprehensiveRule.m */,
 				8C2E14281990748C00023BAA /* database.xcdatamodeld */,
-				8C3CBDCB19A31618002CD96E /* Format.h */,
-				8C3CBDCC19A31618002CD96E /* Format.m */,
-				8C3CBDD119A31618002CD96E /* Set.h */,
-				8C3CBDD219A31618002CD96E /* Set.m */,
-				8C3CBDDA19A31618002CD96E /* SetType.h */,
-				8C3CBDDB19A31618002CD96E /* SetType.m */,
+				8C3857991A36E6D200E5B38C /* DTArtist.h */,
+				8C38579A1A36E6D200E5B38C /* DTArtist.m */,
+				8C3857A51A36E6D200E5B38C /* DTBlock.h */,
+				8C3857A61A36E6D200E5B38C /* DTBlock.m */,
+				8C3857B71A36E6D300E5B38C /* DTCard.h */,
+				8C3857B81A36E6D300E5B38C /* DTCard.m */,
+				8C3857BA1A36E6D300E5B38C /* DTCardColor.h */,
+				8C3857BB1A36E6D300E5B38C /* DTCardColor.m */,
+				8C3857B11A36E6D200E5B38C /* DTCardForeignName.h */,
+				8C3857B21A36E6D200E5B38C /* DTCardForeignName.m */,
+				8C3857931A36E6D100E5B38C /* DTCardLegality.h */,
+				8C3857941A36E6D100E5B38C /* DTCardLegality.m */,
+				8C3857901A36E6D100E5B38C /* DTCardRarity.h */,
+				8C3857911A36E6D100E5B38C /* DTCardRarity.m */,
+				8C3857A21A36E6D200E5B38C /* DTCardRating.h */,
+				8C3857A31A36E6D200E5B38C /* DTCardRating.m */,
+				8C38579F1A36E6D200E5B38C /* DTCardRuling.h */,
+				8C3857A01A36E6D200E5B38C /* DTCardRuling.m */,
+				8C3857961A36E6D200E5B38C /* DTCardType.h */,
+				8C3857971A36E6D200E5B38C /* DTCardType.m */,
+				8C3857B41A36E6D300E5B38C /* DTComprehensiveGlossary.h */,
+				8C3857B51A36E6D300E5B38C /* DTComprehensiveGlossary.m */,
+				8C3857AE1A36E6D200E5B38C /* DTComprehensiveRule.h */,
+				8C3857AF1A36E6D200E5B38C /* DTComprehensiveRule.m */,
+				8C3857A81A36E6D200E5B38C /* DTFormat.h */,
+				8C3857A91A36E6D200E5B38C /* DTFormat.m */,
+				8C38579C1A36E6D200E5B38C /* DTSet.h */,
+				8C38579D1A36E6D200E5B38C /* DTSet.m */,
+				8C3857AB1A36E6D200E5B38C /* DTSetType.h */,
+				8C3857AC1A36E6D200E5B38C /* DTSetType.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -794,12 +810,14 @@
 				8C3E948019E4207200C7EF21 /* AcknowledgementTableViewCell.h */,
 				8C3E948119E4207200C7EF21 /* AcknowledgementTableViewCell.m */,
 				8C3E948219E4207200C7EF21 /* AcknowledgementTableViewCell.xib */,
+				8CF14BF31A2E199600BEC434 /* DecktrackerPFLoginViewController.swift */,
 				8CD2E1EA19DACE1A00503ACC /* InAppPurchase.h */,
 				8CD2E1EB19DACE1A00503ACC /* InAppPurchase.m */,
 				8C33E9BC19D73AAB000892D9 /* InAppPurchaseViewController.h */,
 				8C33E9BD19D73AAB000892D9 /* InAppPurchaseViewController.m */,
 				8C524A6E19B82C01005E697B /* SettingsViewController.h */,
 				8C524A6F19B82C01005E697B /* SettingsViewController.m */,
+				8CF3309E1A35B33D00B6301D /* UserAccountViewController.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1129,49 +1147,50 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C3857A11A36E6D200E5B38C /* DTCardRuling.m in Sources */,
 				8CAAA0ED1A15057100DD209D /* HorizontalScrollTableViewCell.swift in Sources */,
 				8C26A67919A63FAC00FE00E7 /* AdvanceSearchResultsViewController.m in Sources */,
 				8C74B8351A10BE67004A350F /* MultilineTableViewCell.swift in Sources */,
-				8C3CBDD619A31618002CD96E /* Block.m in Sources */,
+				8C3857B01A36E6D200E5B38C /* DTComprehensiveRule.m in Sources */,
 				8C13467819A9B17B00E0B3C3 /* SearchResultsTableViewCell.m in Sources */,
+				8CF3309F1A35B33D00B6301D /* UserAccountViewController.swift in Sources */,
 				8C26A67D19A63FAC00FE00E7 /* SimpleSearchViewController.m in Sources */,
-				8C49E7C21A09CDDF0034603A /* ComprehensiveGlossary.m in Sources */,
 				8C2A97A419F5027B0094C97F /* ReaderThumbCache.m in Sources */,
 				8C2A97A519F5027B0094C97F /* ReaderThumbFetch.m in Sources */,
 				8C2A97A319F5027B0094C97F /* ReaderMainToolbar.m in Sources */,
 				8C5B446A19BEF3C00071604C /* CollectionDetailsViewController.m in Sources */,
 				8C2908AA1A11E8E30045394F /* FeaturedViewController.swift in Sources */,
 				8C74B82B1A10A2F3004A350F /* DeckIASKSettingsStore.m in Sources */,
-				8C3CBDDC19A31618002CD96E /* SetType.m in Sources */,
 				8C378E0019A7434B00B9367F /* MHFacebookImageViewer.m in Sources */,
 				8CF79A6B19A8BFB400BE4246 /* CollectionsViewController.m in Sources */,
+				8C3857B91A36E6D300E5B38C /* DTCard.m in Sources */,
 				8C1623191A1C816400ABC4DB /* TopListViewController.swift in Sources */,
 				8C26A67A19A63FAC00FE00E7 /* AdvanceSearchViewController.m in Sources */,
 				8C524A7019B82C01005E697B /* SettingsViewController.m in Sources */,
 				8CCD852A1A0B911400991CAF /* SubtitleTableViewCell.swift in Sources */,
 				8C74B8391A10C3FC004A350F /* CustomViewCell.m in Sources */,
 				8C2A97A619F5027B0094C97F /* ReaderThumbQueue.m in Sources */,
-				8C3CBDC419A31615002CD96E /* CardRuling.m in Sources */,
 				8C2A97A019F5027B0094C97F /* ReaderDocument.m in Sources */,
+				8C3857AA1A36E6D200E5B38C /* DTFormat.m in Sources */,
 				8C2E142A1990748C00023BAA /* database.xcdatamodeld in Sources */,
 				8C38C0501A15F6E500FC3411 /* BannerScrollTableViewCell.swift in Sources */,
+				8C3857A71A36E6D200E5B38C /* DTBlock.m in Sources */,
+				8C3857981A36E6D200E5B38C /* DTCardType.m in Sources */,
 				8C2A97A919F5027B0094C97F /* ReaderThumbsView.m in Sources */,
 				8C2A97A219F5027B0094C97F /* ReaderMainPagebar.m in Sources */,
-				8C3CBDCA19A31617002CD96E /* CardLegality.m in Sources */,
 				8C2106A019B6EF85001DE039 /* QuantityTableViewCell.m in Sources */,
 				8CD2E1EC19DACE1A00503ACC /* InAppPurchase.m in Sources */,
-				8C3CBDC719A31617002CD96E /* CardColor.m in Sources */,
-				8C3CBDC119A31615002CD96E /* Card.m in Sources */,
+				8C71A0A21A28127A00162CA2 /* SetListViewController.swift in Sources */,
 				8C90A17F19C97ADF00F7278C /* Deck.m in Sources */,
 				8C930AA31A090B380061C082 /* ComprehensiveRulesViewController.swift in Sources */,
-				8C3CBDD319A31618002CD96E /* Set.m in Sources */,
 				8C26A67C19A63FAC00FE00E7 /* NewAdvanceSearchViewController.m in Sources */,
 				8C2A97AC19F5027B0094C97F /* ThumbsMainToolbar.m in Sources */,
-				8C49E7BF1A09CDDF0034603A /* ComprehensiveRule.m in Sources */,
 				8C2A97AD19F5027B0094C97F /* ThumbsViewController.m in Sources */,
 				8C467CF019F1132600B27F05 /* MoreViewController.swift in Sources */,
+				8C38579B1A36E6D200E5B38C /* DTArtist.m in Sources */,
 				8CF79A6519A8BFA300BE4246 /* DecksViewController.m in Sources */,
 				8C56F56119B5B5BB0084B2B8 /* CardDetailsViewController.m in Sources */,
+				8C3857B61A36E6D300E5B38C /* DTComprehensiveGlossary.m in Sources */,
 				8C2A97A819F5027B0094C97F /* ReaderThumbRequest.m in Sources */,
 				8CC5BA711A1386A700F3BDD2 /* SetCollectionViewCell.swift in Sources */,
 				8CE971C61A126C0000D4386B /* BannerCollectionViewCell.swift in Sources */,
@@ -1181,30 +1200,32 @@
 				8C5B446D19BEFFF60071604C /* AddCardViewController.m in Sources */,
 				8C2A97A719F5027B0094C97F /* ReaderThumbRender.m in Sources */,
 				8C2A979C19F5027B0094C97F /* ReaderConstants.m in Sources */,
+				8C3857A41A36E6D200E5B38C /* DTCardRating.m in Sources */,
 				8C2A979E19F5027B0094C97F /* ReaderContentTile.m in Sources */,
+				8C3857921A36E6D100E5B38C /* DTCardRarity.m in Sources */,
 				8C2A97AB19F5027B0094C97F /* ReaderViewController.m in Sources */,
 				8C2A97A119F5027B0094C97F /* ReaderDocumentOutline.m in Sources */,
 				8C3E948319E4207200C7EF21 /* AcknowledgementTableViewCell.m in Sources */,
 				8C2CFCF519BB1F8B00F5348B /* LimitedSearchViewController.m in Sources */,
 				8C2A979B19F5027B0094C97F /* CGPDFDocument.m in Sources */,
 				8C2A979D19F5027B0094C97F /* ReaderContentPage.m in Sources */,
+				8C3857AD1A36E6D200E5B38C /* DTSetType.m in Sources */,
 				8C524A6519B81E9E005E697B /* DeckDetailsViewController.m in Sources */,
-				8C3CBDCD19A31618002CD96E /* Format.m in Sources */,
 				8C2EC95F1A1670900011BAA2 /* UIImage+AverageColor.m in Sources */,
 				8C2E1431199085C700023BAA /* Database.m in Sources */,
+				8C3857951A36E6D100E5B38C /* DTCardLegality.m in Sources */,
 				8C2E14031990741100023BAA /* AppDelegate.m in Sources */,
-				8C3CBDD019A31618002CD96E /* Artist.m in Sources */,
 				8C2A97AE19F5027B0094C97F /* UIXToolbarView.m in Sources */,
+				8C3857B31A36E6D200E5B38C /* DTCardForeignName.m in Sources */,
 				8C2A979F19F5027B0094C97F /* ReaderContentView.m in Sources */,
 				8CC5BA681A13509600F3BDD2 /* ThumbCollectionViewCell.swift in Sources */,
-				8C3CBDD919A31618002CD96E /* CardType.m in Sources */,
-				8C3CBDBE19A31615002CD96E /* CardForeignName.m in Sources */,
 				8CF418D719C9C6790082E3BC /* Collection.m in Sources */,
+				8C3857BC1A36E6D300E5B38C /* DTCardColor.m in Sources */,
+				8C38579E1A36E6D200E5B38C /* DTSet.m in Sources */,
 				8C2E13FF1990741100023BAA /* main.m in Sources */,
 				8C26A67B19A63FAC00FE00E7 /* FilterInputViewController.m in Sources */,
-				8C3CBDDF19A31618002CD96E /* CardRarity.m in Sources */,
+				8CF14BF41A2E199600BEC434 /* DecktrackerPFLoginViewController.swift in Sources */,
 				8C2E142E199085A900023BAA /* MainViewController.m in Sources */,
-				8CE9B9361A19C38700DA7964 /* CardRating.m in Sources */,
 				8C5246E119A5137300B10147 /* FileManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1286,7 +1307,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_MODULE_NAME = Decktracker;
 				SDKROOT = iphoneos;
@@ -1322,7 +1343,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				PRODUCT_MODULE_NAME = Decktracker;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1470,13 +1491,14 @@
 		8C2E14281990748C00023BAA /* database.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				8C3857601A36E55500E5B38C /* Dec-9-2014.xcdatamodel */,
 				8CF8B5901A16E77700B97680 /* Nov-15-2014.xcdatamodel */,
 				8CC5BA581A133CEA00F3BDD2 /* Nov-12-2014.xcdatamodel */,
 				8CF0ECEC1A07DF93008E60DB /* Nov-4-2014.xcdatamodel */,
 				8CFA451719E19729000B5205 /* Oct-5-2014.xcdatamodel */,
 				8C2E14291990748C00023BAA /* database.xcdatamodel */,
 			);
-			currentVersion = 8CF8B5901A16E77700B97680 /* Nov-15-2014.xcdatamodel */;
+			currentVersion = 8C3857601A36E55500E5B38C /* Dec-9-2014.xcdatamodel */;
 			path = database.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

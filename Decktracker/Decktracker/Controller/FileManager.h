@@ -8,8 +8,8 @@
 
 @import Foundation;
 
-#import "Card.h"
-#import "Set.h"
+#import "DTCard.h"
+#import "DTSet.h"
 
 #import "JJJ/JJJ.h"
 
@@ -33,12 +33,12 @@ typedef NS_ENUM(NSInteger, FileSystem)
 
 +(id) sharedInstance;
 
--(NSString*) cardPath:(Card*) card;
--(NSString*) cropPath:(Card*) card;
--(NSString*) cardSetPath:(Card*) card;
--(NSString*) cardSetPathBig:(Set*) set;
--(void) downloadCardImage:(Card*) card immediately:(BOOL) immediately;
--(void) downloadCropImage:(Card*) card immediately:(BOOL) immediately;
+-(NSString*) cardPath:(DTCard*) card;
+-(NSString*) cropPath:(DTCard*) card;
+-(NSString*) cardSetPath:(DTCard*) card;
+-(NSString*) cardSetPathBig:(DTSet*) set;
+-(void) downloadCardImage:(DTCard*) card immediately:(BOOL) immediately;
+-(void) downloadCropImage:(DTCard*) card immediately:(BOOL) immediately;
 -(NSArray*) loadKeywords;
 
 -(void) connectToFileSystem:(FileSystem) fileSystem

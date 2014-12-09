@@ -13,9 +13,7 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
     let kSearchResultsIdentifier = "kSearchResultsIdentifier"
     
     var tblList:UITableView?
-    var arrayData:[AnyObject]?
-    var sections:[String: [Set]]?
-    var sectionIndexTitles:[String]?
+    var arrayData:[DTCard]?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,41 +43,13 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func loadData() {
-        if navigationItem.title == "Top Rated"  || navigationItem.title == "Top Viewed" {
-            NSNotificationCenter.defaultCenter().removeObserver(self, name:kFetchTopRatedDone,  object:nil)
-            NSNotificationCenter.defaultCenter().addObserver(self,
-                selector:"updateData:",  name:kFetchTopRatedDone, object:nil)
-            
-            NSNotificationCenter.defaultCenter().removeObserver(self, name:kFetchTopViewedDone,  object:nil)
-            NSNotificationCenter.defaultCenter().addObserver(self,
-                selector:"updateData:",  name:kFetchTopViewedDone, object:nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name:kFetchTopRatedDone,  object:nil)
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector:"updateData:",  name:kFetchTopRatedDone, object:nil)
         
-        } else if navigationItem.title == "Sets" {
-            sections = [String: [Set]]()
-            sectionIndexTitles = [String]()
-            
-            for setType in SetType.MR_findAllSortedBy("name", ascending: true) as [SetType] {
-                for set in arrayData! as [Set] {
-                    if set.type == setType {
-                        let keys = Array(sections!.keys)
-                        var sets:[Set]?
-                        
-                        if contains(keys, setType.name) {
-                            sets = sections![setType.name]
-                        } else {
-                            sets = [Set]()
-                        }
-                        sets!.append(set)
-                        sections!.updateValue(sets!, forKey: setType.name)
-                        
-                        let letter = setType.name.substringWithRange(Range(start: setType.name.startIndex, end: advance(setType.name.startIndex, 1)))
-                        if !contains(sectionIndexTitles!, letter) {
-                            sectionIndexTitles!.append(letter)
-                        }
-                    }
-                }
-            }
-        }
+        NSNotificationCenter.defaultCenter().removeObserver(self, name:kFetchTopViewedDone,  object:nil)
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector:"updateData:",  name:kFetchTopViewedDone, object:nil)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -90,163 +60,41 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
     
     // UITableViewDataSource
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if navigationItem.title == "Sets" {
-            return UITableViewAutomaticDimension
-        } else {
-            return CGFloat(SEARCH_RESULTS_CELL_HEIGHT)
-        }
+        return CGFloat(SEARCH_RESULTS_CELL_HEIGHT)
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
-    {
-        if navigationItem.title == "Top Rated" || navigationItem.title == "Top Viewed"{
-            return arrayData!.count
-            
-        } else if navigationItem.title == "Sets" {
-            let keys = Array(sections!.keys).sorted(<)
-            let key = keys[section]
-            let sets = sections![key]
-            return sets!.count
-            
-        } else {
-            return arrayData!.count
-        }
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return arrayData!.count
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        if navigationItem.title == "Top Rated" || navigationItem.title == "Top Viewed" {
-            return 1
-            
-        } else if navigationItem.title == "Sets" {
-            return sections!.count
-            
-        } else {
-            return 1
-        }
-    }
-    
-    func sectionIndexTitlesForTableView(tableView: UITableView) -> [AnyObject]! {
-        
-        if navigationItem.title == "Sets" {
-            return sectionIndexTitles
-        } else {
-            return nil
-        }
-    }
-    
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if navigationItem.title == "Sets" {
-            let keys = Array(sections!.keys).sorted(<)
-            let key = keys[section]
-            return key
-        } else {
-            return nil
-        }
-    }
-    
-    func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int {
-        var section = -1
-        
-        if navigationItem.title == "Sets" {
-            let keys = Array(sections!.keys).sorted(<)
-            
-            for (i, value) in enumerate(keys) {
-                if value.hasPrefix(title) {
-                    section = i
-                    break
-                }
-            }
-        }
-        
-        return section
+        return 1
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     {
-        var cell:UITableViewCell?
+        let card = arrayData![indexPath.row] as DTCard
         
-        if navigationItem.title == "Sets" {
-            let keys = Array(sections!.keys).sorted(<)
-            let key = keys[indexPath.section]
-            let sets = sections![key]
-            let set = sets![indexPath.row]
-            let date = JJJUtil.formatDate(set.releaseDate, withFormat:"YYYY-MM-dd")
-            
-            var cell1 = tableView.dequeueReusableCellWithIdentifier("Default") as UITableViewCell?
-            if cell1 == nil {
-                cell1 = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "Default")
-            }
-            
-            cell1!.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
-            cell1!.selectionStyle = UITableViewCellSelectionStyle.None
-            cell1!.textLabel.text = set.name
-            cell1!.detailTextLabel?.text = "Released: \(date) (\(set.numberOfCards) cards)"
-            
-            
-            let path = "\(NSBundle.mainBundle().bundlePath)/images/set/\(set.code)/C/48.png"
-            
-            if !NSFileManager.defaultManager().fileExistsAtPath(path) {
-                cell1!.imageView.image = UIImage(named: "blank.png")
-            } else {
-                let setImage = UIImage(contentsOfFile: path)
-                
-                cell1!.imageView.image = setImage;
-                
-                // resize the image
-                let itemSize = CGSizeMake(setImage!.size.width/2, setImage!.size.height/2)
-                UIGraphicsBeginImageContextWithOptions(itemSize, false, UIScreen.mainScreen().scale)
-                let imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height)
-                setImage!.drawInRect(imageRect)
-                cell1!.imageView.image = UIGraphicsGetImageFromCurrentImageContext()
-                UIGraphicsEndImageContext()
-            }
-            
-            cell = cell1;
-            
-        } else {
-            let card = arrayData![indexPath.row] as Card
-            
-            var cell1 = tableView.dequeueReusableCellWithIdentifier(kSearchResultsIdentifier) as SearchResultsTableViewCell?
-            if cell1 == nil {
-                cell1 = SearchResultsTableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: kSearchResultsIdentifier)
-            }
-            
-            cell1!.accessoryType = UITableViewCellAccessoryType.None
-            cell1!.selectionStyle = UITableViewCellSelectionStyle.None
-            cell1!.displayCard(card)
-            if navigationItem.title == "Top Rated" || navigationItem.title == "Top Viewed" {
-                cell1!.addRank(indexPath.row+1);
-            }
-            cell = cell1;
+        var cell = tableView.dequeueReusableCellWithIdentifier(kSearchResultsIdentifier) as SearchResultsTableViewCell?
+        if cell == nil {
+            cell = SearchResultsTableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: kSearchResultsIdentifier)
         }
+        
+        cell!.accessoryType = UITableViewCellAccessoryType.None
+        cell!.selectionStyle = UITableViewCellSelectionStyle.None
+        cell!.displayCard(card)
+        cell!.addRank(indexPath.row+1);
         
         return cell!
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var view:UIViewController?
-        var card:Card?
+        let view = CardDetailsViewController()
+        let card = arrayData![indexPath.row] as DTCard
         
-        if navigationItem.title == "Sets" {
-            let keys = Array(sections!.keys).sorted(<)
-            let key = keys[indexPath.section]
-            let sets = sections![key]
-            let set = sets![indexPath.row]
-            let predicate = NSPredicate(format: "%K = %@", "set.name", set.name)
-            let data = Card.MR_findAllSortedBy("name", ascending: true, withPredicate: predicate)
-            var view2 = TopListViewController()
-            
-            view2.navigationItem.title = set.name
-            view2.arrayData = data
-            view = view2
-        } else {
-            let card = arrayData![indexPath.row] as Card
-            let view2 = CardDetailsViewController()
-            view2.card = card
-            view = view2
-        }
-        
-        self.navigationController?.pushViewController(view!, animated:false)
+        view.addButtonVisible = true
+        view.card = card
+        self.navigationController?.pushViewController(view, animated:false)
     }
     
     // UIScrollViewDelegate
@@ -271,12 +119,12 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
     
     func updateData(sender: AnyObject) {
         let notif = sender as NSNotification
-        let dict = notif.userInfo as [String: [Card]]
+        let dict = notif.userInfo as [String: [DTCard]]
         let cards = dict["data"]!
         var paths = [NSIndexPath]()
 
         for card in cards {
-            if !contains(arrayData! as [Card], card) {
+            if !contains(arrayData! as [DTCard], card) {
                 arrayData!.append(card)
                 paths.append(NSIndexPath(forRow: arrayData!.count-1, inSection: 0))
                 FileManager.sharedInstance().downloadCropImage(card, immediately:false)

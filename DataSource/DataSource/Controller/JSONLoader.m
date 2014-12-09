@@ -8,49 +8,36 @@
 
 #import "JSONLoader.h"
 #import "JJJ/JJJUtil.h"
-#import "Artist.h"
-#import "Block.h"
-#import "Card.h"
-#import "CardColor.h"
-#import "CardForeignName.h"
-#import "CardLegality.h"
-#import "CardRarity.h"
-#import "CardRuling.h"
-#import "CardType.h"
 #import "Database.h"
-#import "Format.h"
+#import "DTArtist.h"
+#import "DTBlock.h"
+#import "DTCard.h"
+#import "DTCardColor.h"
+#import "DTCardForeignName.h"
+#import "DTCardLegality.h"
+#import "DTCardRarity.h"
+#import "DTCardRuling.h"
+#import "DTCardType.h"
+#import "DTFormat.h"
+#import "DTSet.h"
+#import "DTSetType.h"
 #import "Magic.h"
-#import "Set.h"
-#import "SetType.h"
 
 @implementation JSONLoader
 {
     int _cardID;
 }
 
--(void) parseJSON
+-(void) parseCards1stPass
 {
     NSDate *dateStart = [NSDate date];
     [[Database sharedInstance] setupDb];
     _cardID = 1;
-
+    
     NSString *filePath = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] resourcePath], @"Data/AllSets-x.json"];
     NSData *data = [NSData dataWithContentsOfFile:filePath];
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-
-//    [self parseCards1stPass:json];
-    [self parseCards2ndPass:json];
-    [[Database sharedInstance] closeDb];
     
-    NSDate *dateEnd = [NSDate date];
-    NSTimeInterval timeDifference = [dateEnd timeIntervalSinceDate:dateStart];
-    NSLog(@"Started: %@", dateStart);
-    NSLog(@"Ended: %@", dateEnd);
-    NSLog(@"Time Elapsed: %@",  [JJJUtil formatInterval:timeDifference]);
-}
-
--(void) parseCards1stPass:(NSDictionary*) json
-{
     NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
 
     for (NSString *setName in [json allKeys])
@@ -64,18 +51,18 @@
     for (NSString *setName in [json allKeys])
     {
         NSDictionary * dict = json[setName];
-        Set *set = [self parseSet:dict];
+        DTSet *set = [self parseSet:dict];
         NSSet *cards = [self parseCards:dict[@"cards"] forSet:set];
         set.numberOfCards = [NSNumber numberWithInt:(int)cards.count];
         [currentContext MR_save];
         
         for (NSDictionary *dictCard in dict[@"cards"])
         {
-            Card *card;
+            DTCard *card;
             
             if (dictCard[@"multiverseID"])
             {
-                card = [Card MR_findFirstByAttribute:@"multiverseID" withValue:dictCard[@"multiverseID"]];
+                card = [DTCard MR_findFirstByAttribute:@"multiverseID" withValue:dictCard[@"multiverseID"]];
             }
             if (!card)
             {
@@ -100,27 +87,42 @@
     }
     
     // Create colorless CardColor
-    CardColor *color = [CardColor MR_createEntity];
+    DTCardColor *color = [DTCardColor MR_createEntity];
     color.name = @"Colorless";
     [currentContext MR_save];
+    
+    [[Database sharedInstance] closeDb];
+    NSDate *dateEnd = [NSDate date];
+    NSTimeInterval timeDifference = [dateEnd timeIntervalSinceDate:dateStart];
+    NSLog(@"Started: %@", dateStart);
+    NSLog(@"Ended: %@", dateEnd);
+    NSLog(@"Time Elapsed: %@",  [JJJUtil formatInterval:timeDifference]);
 }
 
--(void) parseCards2ndPass:(NSDictionary*) json
+-(void) parseCards2ndPass
 {
+    NSDate *dateStart = [NSDate date];
+    [[Database sharedInstance] setupDb];
+    _cardID = 1;
+    
+    NSString *filePath = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] resourcePath], @"Data/AllSets-x.json"];
+    NSData *data = [NSData dataWithContentsOfFile:filePath];
+    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+    
     for (NSString *setName in [json allKeys])
     {
         NSDictionary * dict = json[setName];
-        Set *set = [self parseSet:dict];
+        DTSet *set = [self parseSet:dict];
         
         for (NSDictionary *dictCard in dict[@"cards"])
         {
             NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
             
-            Card *card;
+            DTCard *card;
             
             if (dictCard[@"multiverseID"])
             {
-                card = [Card MR_findFirstByAttribute:@"multiverseID" withValue:dictCard[@"multiverseID"]];
+                card = [DTCard MR_findFirstByAttribute:@"multiverseID" withValue:dictCard[@"multiverseID"]];
             }
             if (!card)
             {
@@ -134,6 +136,37 @@
             }
         }
     }
+    
+    [[Database sharedInstance] closeDb];
+    NSDate *dateEnd = [NSDate date];
+    NSTimeInterval timeDifference = [dateEnd timeIntervalSinceDate:dateStart];
+    NSLog(@"Started: %@", dateStart);
+    NSLog(@"Ended: %@", dateEnd);
+    NSLog(@"Time Elapsed: %@",  [JJJUtil formatInterval:timeDifference]);
+}
+
+-(void) fetchTcgPrices
+{
+    NSDate *dateStart = [NSDate date];
+    [[Database sharedInstance] setupDb];
+    _cardID = 1;
+    
+    NSString *filePath = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] resourcePath], @"Data/AllSets-x.json"];
+    NSData *data = [NSData dataWithContentsOfFile:filePath];
+    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+    
+    for (DTCard *card in [DTCard MR_findAllSortedBy:@"set.releaseDate" ascending:YES])
+    {
+        NSLog(@"Fetching price for %@ (%@)", card.name, card.set.code);
+        [[Database sharedInstance] fetchTcgPlayerPriceForCard:card];
+    }
+    
+    [[Database sharedInstance] closeDb];
+    NSDate *dateEnd = [NSDate date];
+    NSTimeInterval timeDifference = [dateEnd timeIntervalSinceDate:dateStart];
+    NSLog(@"Started: %@", dateStart);
+    NSLog(@"Ended: %@", dateEnd);
+    NSLog(@"Time Elapsed: %@",  [JJJUtil formatInterval:timeDifference]);
 }
 
 -(void) updateTCGSetNames
@@ -143,7 +176,7 @@
     NSArray *array = [[NSArray alloc] initWithContentsOfFile:filePath];
     NSDictionary *tcgNames = array[0];
     
-    for (Set *set in [Set MR_findAll])
+    for (DTSet *set in [DTSet MR_findAll])
     {
         NSString *tcgName;
         
@@ -162,43 +195,8 @@
     }
 }
 
--(void) updateDeckInAppSettings
-{
-    // copy formats...
-    NSString *command = @"/usr/libexec/PlistBuddy";
-    NSString *destFile = @"\"/Users/tontonsevilla/deck.inApp.plist\"";
-    
-    NSString *deleteOp = [NSString stringWithFormat:@"%@ %@ -c \"Delete PreferenceSpecifiers:3:Titles\"", command, destFile];
-    [JJJUtil runCommand:deleteOp];
-    deleteOp = [NSString stringWithFormat:@"%@ %@ -c \"Delete PreferenceSpecifiers:3:Values\"", command, destFile];
-    [JJJUtil runCommand:deleteOp];
-    
-    NSString *addOp = [NSString stringWithFormat:@"%@ %@ -c \"Add PreferenceSpecifiers:3:Titles array\"", command, destFile];
-    [JJJUtil runCommand:addOp];
-    addOp = [NSString stringWithFormat:@"%@ %@ -c \"Add PreferenceSpecifiers:3:Values array\"", command, destFile];
-    [JJJUtil runCommand:addOp];
-    
-    
-    NSArray *arrFormats = [Format MR_findAllSortedBy:@"name" ascending:YES];
-    int i=0;
-    for (Format *format in arrFormats)
-    {
-        NSString *op = [NSString stringWithFormat:@"%@ %@ -c \"Add PreferenceSpecifiers:3:Titles:%d string '%@'\"", command, destFile, i, format.name];
-        [JJJUtil runCommand:op];
-        i++;
-    }
-    
-    i=0;
-    for (Format *format in arrFormats)
-    {
-        NSString *op = [NSString stringWithFormat:@"%@ %@ -c \"Add PreferenceSpecifiers:3:Values:%d string '%@'\"", command, destFile, i, format.name];
-        [JJJUtil runCommand:op];
-        i++;
-    }
-}
-
 #pragma mark - Sets parsing
--(Set*) parseSet:(NSDictionary*) dict
+-(DTSet*) parseSet:(NSDictionary*) dict
 {
     if (!dict || dict.count == 0)
     {
@@ -206,12 +204,12 @@
     }
     
     NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
-    Set *set = [Set MR_findFirstByAttribute:@"name"
-                                  withValue:dict[@"name"]];
+    DTSet *set = [DTSet MR_findFirstByAttribute:@"name"
+                                      withValue:dict[@"name"]];
     
     if (!set)
     {
-        set = [Set MR_createEntity];
+        set = [DTSet MR_createEntity];
         
         set.name = dict[@"name"];
         set.code = dict[@"code"];
@@ -228,7 +226,7 @@
     return set;
 }
 
--(SetType*) findSetType:(NSString*) name
+-(DTSetType*) findSetType:(NSString*) name
 {
     if (!name || name.length == 0)
     {
@@ -236,36 +234,36 @@
     }
 
     NSString *cap = [self capitalizeFirstLetterOfWords:name];
-    SetType *setType = [SetType MR_findFirstByAttribute:@"name"
-                                              withValue:cap];
+    DTSetType *setType = [DTSetType MR_findFirstByAttribute:@"name"
+                                                  withValue:cap];
     
     if (!setType)
     {
-        setType = [SetType MR_createEntity];
+        setType = [DTSetType MR_createEntity];
         setType.name = cap;
     }
     return setType;
 }
 
--(Block*) findBlock:(NSString*) name
+-(DTBlock*) findBlock:(NSString*) name
 {
     if (!name || name.length == 0)
     {
         return nil;
     }
     
-    Block *block = [Block MR_findFirstByAttribute:@"name"
-                                        withValue:name];
+    DTBlock *block = [DTBlock MR_findFirstByAttribute:@"name"
+                                            withValue:name];
     
     if (!block)
     {
-        block = [Block MR_createEntity];
+        block = [DTBlock MR_createEntity];
         block.name = name;
     }
     return block;
 }
 
--(CardRarity*) findCardRarity:(NSString*) name
+-(DTCardRarity*) findCardRarity:(NSString*) name
 {
     if (!name || name.length == 0)
     {
@@ -273,27 +271,26 @@
     }
 
     NSString *cap = [self capitalizeFirstLetterOfWords:name];
-    CardRarity *cardRarity = [CardRarity MR_findFirstByAttribute:@"name"
-                                                       withValue:cap];
+    DTCardRarity *cardRarity = [DTCardRarity MR_findFirstByAttribute:@"name"
+                                                           withValue:cap];
     
     if (!cardRarity)
     {
-        cardRarity = [CardRarity MR_createEntity];
+        cardRarity = [DTCardRarity MR_createEntity];
         cardRarity.name = cap;
     }
     return cardRarity;
 }
 
 #pragma mark - Cards parsing
-
--(NSSet*) parseCards:(NSArray*) array forSet:(Set*) set
+-(NSSet*) parseCards:(NSArray*) array forSet:(DTSet*) set
 {
     NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
     NSMutableSet *cards = [[NSMutableSet alloc] init];
     
     for (NSDictionary *dict in array)
     {
-        Card *card = [Card MR_createEntity];
+        DTCard *card = [DTCard MR_createEntity];
         
         card.cardID = [NSNumber numberWithInt:_cardID];
         card.layout = dict[@"layout"];
@@ -337,19 +334,19 @@
     return cards;
 }
 
--(Artist*) findArtist:(NSString*) name
+-(DTArtist*) findArtist:(NSString*) name
 {
     if (!name || name.length == 0)
     {
         return nil;
     }
     
-    Artist *artist = [Artist MR_findFirstByAttribute:@"name"
-                                                 withValue:name];
+    DTArtist *artist = [DTArtist MR_findFirstByAttribute:@"name"
+                                                    withValue:name];
     
     if (!artist)
     {
-        artist = [Artist MR_createEntity];
+        artist = [DTArtist MR_createEntity];
         artist.name = name;
     }
     return artist;
@@ -366,7 +363,7 @@
     
     for (NSDictionary *dict in array)
     {
-        CardRuling *ruling = [CardRuling MR_createEntity];
+        DTCardRuling *ruling = [DTCardRuling MR_createEntity];
         
         for (NSString *key in [dict allKeys])
         {
@@ -396,7 +393,7 @@
     
     for (NSDictionary *dict in array)
     {
-        CardForeignName *foreignName = [CardForeignName MR_createEntity];
+        DTCardForeignName *foreignName = [DTCardForeignName MR_createEntity];
         
         for (NSString *key in [dict allKeys])
         {
@@ -426,12 +423,12 @@
     
     for (NSString *name in array)
     {
-        Set *printing = [Set MR_findFirstByAttribute:@"name"
+        DTSet *printing = [DTSet MR_findFirstByAttribute:@"name"
                                            withValue:name];
         
         if (!printing)
         {
-            printing = [Set MR_createEntity];
+            printing = [DTSet MR_createEntity];
             
             printing.name = name;
         }
@@ -452,12 +449,12 @@
     
     for (NSString *name in array)
     {
-        CardType *type = [CardType MR_findFirstByAttribute:@"name"
-                                                 withValue:name];
+        DTCardType *type = [DTCardType MR_findFirstByAttribute:@"name"
+                                                     withValue:name];
         
         if (!type)
         {
-            type = [CardType MR_createEntity];
+            type = [DTCardType MR_createEntity];
             
             type.name = name;
         }
@@ -478,12 +475,12 @@
     
     for (NSString *name in array)
     {
-        CardColor *color = [CardColor MR_findFirstByAttribute:@"name"
-                                                    withValue:name];
+        DTCardColor *color = [DTCardColor MR_findFirstByAttribute:@"name"
+                                                        withValue:name];
         
         if (!color)
         {
-            color = [CardColor MR_createEntity];
+            color = [DTCardColor MR_createEntity];
             
             color.name = name;
         }
@@ -504,7 +501,7 @@
     
     for (NSString *key in [dict allKeys])
     {
-        CardLegality *legality = [CardLegality MR_createEntity];
+        DTCardLegality *legality = [DTCardLegality MR_createEntity];
         
         legality.name = dict[key];
         legality.format = [self findFormat:key];
@@ -513,33 +510,33 @@
     return set;
 }
 
--(Format*) findFormat:(NSString*) name
+-(DTFormat*) findFormat:(NSString*) name
 {
     if (!name || name.length == 0)
     {
         return nil;
     }
     
-    Format *format = [Format MR_findFirstByAttribute:@"name"
-                                           withValue:name];
+    DTFormat *format = [DTFormat MR_findFirstByAttribute:@"name"
+                                               withValue:name];
     
     if (!format)
     {
-        format = [Format MR_createEntity];
+        format = [DTFormat MR_createEntity];
         format.name = name;
     }
     return format;
 }
 
--(void) setNames:(NSArray*)names andVariations:(NSArray*)variations forCard:(Card*)card
+-(void) setNames:(NSArray*)names andVariations:(NSArray*)variations forCard:(DTCard*)card
 {
     NSMutableSet *setNames = [[NSMutableSet alloc] init];
     NSMutableSet *setVariations = [[NSMutableSet alloc] init];
     
     for (NSString *x in names)
     {
-        Card *xCard = [Card MR_findFirstByAttribute:@"name"
-                                          withValue:x];
+        DTCard *xCard = [DTCard MR_findFirstByAttribute:@"name"
+                                              withValue:x];
         if (xCard)
         {
             [setNames addObject:xCard];
@@ -548,8 +545,8 @@
     
     for (NSString *x in variations)
     {
-        Card *xCard = [Card MR_findFirstByAttribute:@"multiverseID"
-                                          withValue:x];
+        DTCard *xCard = [DTCard MR_findFirstByAttribute:@"multiverseID"
+                                              withValue:x];
         if (xCard)
         {
             [setVariations addObject:xCard];
@@ -561,7 +558,6 @@
 }
 
 #pragma mark - Utility methods
-
 -(NSString*) capitalizeFirstLetterOfWords:(NSString*) phrase
 {
     NSMutableArray *newWords = [[NSMutableArray alloc] init];
@@ -588,6 +584,41 @@
     }
     
     return [newWords componentsJoinedByString:@" "];
+}
+
+-(void) updateDeckInAppSettings
+{
+    // copy formats...
+    NSString *command = @"/usr/libexec/PlistBuddy";
+    NSString *destFile = @"\"/Users/tontonsevilla/deck.inApp.plist\"";
+    
+    NSString *deleteOp = [NSString stringWithFormat:@"%@ %@ -c \"Delete PreferenceSpecifiers:3:Titles\"", command, destFile];
+    [JJJUtil runCommand:deleteOp];
+    deleteOp = [NSString stringWithFormat:@"%@ %@ -c \"Delete PreferenceSpecifiers:3:Values\"", command, destFile];
+    [JJJUtil runCommand:deleteOp];
+    
+    NSString *addOp = [NSString stringWithFormat:@"%@ %@ -c \"Add PreferenceSpecifiers:3:Titles array\"", command, destFile];
+    [JJJUtil runCommand:addOp];
+    addOp = [NSString stringWithFormat:@"%@ %@ -c \"Add PreferenceSpecifiers:3:Values array\"", command, destFile];
+    [JJJUtil runCommand:addOp];
+    
+    
+    NSArray *arrFormats = [DTFormat MR_findAllSortedBy:@"name" ascending:YES];
+    int i=0;
+    for (DTFormat *format in arrFormats)
+    {
+        NSString *op = [NSString stringWithFormat:@"%@ %@ -c \"Add PreferenceSpecifiers:3:Titles:%d string '%@'\"", command, destFile, i, format.name];
+        [JJJUtil runCommand:op];
+        i++;
+    }
+    
+    i=0;
+    for (DTFormat *format in arrFormats)
+    {
+        NSString *op = [NSString stringWithFormat:@"%@ %@ -c \"Add PreferenceSpecifiers:3:Values:%d string '%@'\"", command, destFile, i, format.name];
+        [JJJUtil runCommand:op];
+        i++;
+    }
 }
 
 @end

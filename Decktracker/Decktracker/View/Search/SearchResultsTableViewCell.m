@@ -7,16 +7,16 @@
 //
 
 #import "SearchResultsTableViewCell.h"
+#import "DTSet.h"
 #import "FileManager.h"
-#import "Set.h"
 
 #import "EDStarRating.h"
 
 @implementation SearchResultsTableViewCell
 {
-    Card *_card;
-    CardType *_planeswalkerType;
-    Set *_8thEditionSet;
+    DTCard *_card;
+    DTCardType *_planeswalkerType;
+    DTSet *_8thEditionSet;
     UIFont *_pre8thEditionFont;
     UIFont *_8thEditionFont;
     EDStarRating *_ratingControl;
@@ -37,8 +37,8 @@
     self.imgCrop.layer.cornerRadius = 10.0;
     self.imgCrop.layer.masksToBounds = YES;
 
-    _8thEditionSet = [Set MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"name == %@", @"Eighth Edition"]];
-    _planeswalkerType = [CardType MR_findFirstByAttribute:@"name" withValue:@"Planeswalker"];
+    _8thEditionSet = [DTSet MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"name == %@", @"Eighth Edition"]];
+    _planeswalkerType = [DTCardType MR_findFirstByAttribute:@"name" withValue:@"Planeswalker"];
     _pre8thEditionFont = [UIFont fontWithName:@"Magic:the Gathering" size:20];
     _8thEditionFont = [UIFont fontWithName:@"Matrix-Bold" size:18];
     
@@ -75,7 +75,7 @@
     // Configure the view for the selected state
 }
 
--(void) displayCard:(Card*) card
+-(void) displayCard:(DTCard*) card
 {
     _card = card;
     
@@ -299,7 +299,7 @@
 
 -(void) loadCropImage:(id) sender
 {
-    Card *card = [sender userInfo][@"card"];
+    DTCard *card = [sender userInfo][@"card"];
     
     if (_card == card)
     {
@@ -311,7 +311,7 @@
 
 -(void) parseSyncDone:(id) sender
 {
-    Card *card = [sender userInfo][@"card"];
+    DTCard *card = [sender userInfo][@"card"];
     
     if (_card == card)
     {

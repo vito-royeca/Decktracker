@@ -90,8 +90,6 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
             webView!.loadRequest(NSURLRequest(URL: NSURL(fileURLWithPath: oPath)!))
         }
         
-        self.navigationItem.title = "Comprehensive Rules"
-        
 #if !DEBUG
         // send the screen to Google Analytics
         let tracker = GAI.sharedInstance().defaultTracker
@@ -111,7 +109,7 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
         
         var array = [String]()
         array.append("Introduction")
-        for rule in ComprehensiveRule.MR_findByAttribute("parent", withValue:nil) {
+        for rule in DTComprehensiveRule.MR_findByAttribute("parent", withValue:nil) {
             array.append(rule.number + ". " + rule.rule)
         }
         array.append("Glossary")
@@ -200,7 +198,7 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
                 var number:NSString = value!
                 var range:NSRange = number.rangeOfString(" ")
                 number = number.substringToIndex(range.location-1)
-                if let rule = ComprehensiveRule.MR_findFirstByAttribute("number", withValue:number) as? ComprehensiveRule {
+                if let rule = DTComprehensiveRule.MR_findFirstByAttribute("number", withValue:number) as? DTComprehensiveRule {
                     if rule.children.count == 0 {
                         cell.accessoryType = UITableViewCellAccessoryType.None
                         cell.titleLabel.text = rule.number
@@ -209,7 +207,7 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
                 }
 
             } else if key == "Glossary" {
-                if let glossary = ComprehensiveGlossary.MR_findFirstByAttribute("term", withValue:value) as? ComprehensiveGlossary {
+                if let glossary = DTComprehensiveGlossary.MR_findFirstByAttribute("term", withValue:value) as? DTComprehensiveGlossary {
                     cell.accessoryType = UITableViewCellAccessoryType.None
                     cell.titleLabel.text = glossary.term
                     cell.bodyLabel.text = glossary.definition
@@ -252,7 +250,7 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
         } else if value == "Glossary" {
             var array = [String]()
             
-            for child in ComprehensiveGlossary.MR_findAllSortedBy("term", ascending: true) {
+            for child in DTComprehensiveGlossary.MR_findAllSortedBy("term", ascending: true) {
                 array.append(child.term)
             }
             compView = ComprehensiveRulesViewController(data: ["Glossary": array], showSections: true)
@@ -266,7 +264,7 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
                 var number:NSString = value!
                 var range:NSRange = number.rangeOfString(" ")
                 number = number.substringToIndex(range.location-1)
-                let rule = ComprehensiveRule.MR_findFirstByAttribute("number", withValue:number) as ComprehensiveRule
+                let rule = DTComprehensiveRule.MR_findFirstByAttribute("number", withValue:number) as DTComprehensiveRule
                 
                 if rule.children.count == 0 {
                     bWillPush = false
@@ -274,7 +272,7 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
                 } else {
                     var array = [String]()
                     
-                    for child in ComprehensiveRule.MR_findByAttribute("parent.number", withValue:number) {
+                    for child in DTComprehensiveRule.MR_findByAttribute("parent.number", withValue:number) {
                         array.append(child.number + ". " + child.rule)
                     }
                     compView = ComprehensiveRulesViewController(data: ["Rules": array], showSections: false)
@@ -291,7 +289,10 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
         }
     }
     
-    
+//    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+//        return UITableViewAutomaticDimension
+//    }
+
     // UIWebViewDelegate
     func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         if navigationType == UIWebViewNavigationType.LinkClicked {

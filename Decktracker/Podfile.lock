@@ -1,4 +1,5 @@
 PODS:
+  - ActionSheetPicker-3.0 (1.3.7)
   - AFNetworking (2.5.0):
     - AFNetworking/NSURLConnection (= 2.5.0)
     - AFNetworking/NSURLSession (= 2.5.0)
@@ -32,7 +33,7 @@ PODS:
     - GoogleAnalytics-iOS-SDK/Core (= 3.10)
   - GoogleAnalytics-iOS-SDK/Core (3.10)
   - hpple (0.2.0)
-  - InAppSettingsKit (2.3.1)
+  - InAppSettingsKit (2.3.2)
   - LMAlertView (1.1.0):
     - CAAnimationBlocks (~> 0.0.1)
     - RBBAnimation (~> 0.3.0)
@@ -45,14 +46,15 @@ PODS:
   - ParseFacebookUtils (1.5.0.1):
     - Facebook-iOS-SDK (~> 3.20)
     - Parse (~> 1.5.0)
-  - ParseUI (1.0.1):
-    - Parse (~> 1.5.0)
-    - ParseFacebookUtils (~> 1.5.0)
+  - ParseUI (1.0.2):
+    - Parse (~> 1.5)
+    - ParseFacebookUtils (~> 1.5)
   - PureLayout (2.0.3)
   - RBBAnimation (0.3.0)
   - XLForm (2.1.0)
 
 DEPENDENCIES:
+  - ActionSheetPicker-3.0
   - AFNetworking
   - CorePlot
   - Dropbox-Sync-API-SDK
@@ -72,6 +74,7 @@ DEPENDENCIES:
   - XLForm
 
 SPEC CHECKSUMS:
+  ActionSheetPicker-3.0: f0cd35cbafd5534a9100549eac092ae198450b85
   AFNetworking: 0f54cb5d16ce38c1b76948faffb8d5fb705021c7
   Bolts: 3db0a875235e0c9042b013af13af0f00f79b102c
   CAAnimationBlocks: 981bfca79ac481f07957aa8357885e620637f926
@@ -82,13 +85,13 @@ SPEC CHECKSUMS:
   FFCircularProgressView: 723b7a84c412b5d9d2a5531bc716b99965ad7192
   GoogleAnalytics-iOS-SDK: f422062075d9ccb1ea8d783fc5ba3829461e9502
   hpple: f4eb7c21a8db83ec264e5d614ec7509e10e5adec
-  InAppSettingsKit: c4eb758abf9d71a3b7847a80ceebf02ce4299113
+  InAppSettingsKit: 4bae27eb319bf350af5f933196ebc68dbfc65538
   LMAlertView: 1d7c0624323b6bde13c90b57b1d0f5605980f068
   MagicalRecord: 2b471584fc9e3137f3d0a56967917baa4979e224
   MBProgressHUD: 2038dbcf3dce73215abed6001657043d53aa79a8
   Parse: 7de25b6f70f0b233e5d25835f62eabfa91e4f9d7
   ParseFacebookUtils: df2c8634a66883326629099af3690f1862fe126d
-  ParseUI: 7a9d600d93fbb56b1a4019d5a3a0f43d74516a01
+  ParseUI: 0eed358b238dcd66949ebc22513eba603e110087
   PureLayout: 9658675ed95dabfcdf5154c0771ec9ed0980b370
   RBBAnimation: 243d73be1a526f1b51d266b182e4aa0cfe9cbf64
   XLForm: 7d6855fe88df37b44ea00da80cc0cf3a945cfb1b

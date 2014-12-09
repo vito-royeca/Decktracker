@@ -8,8 +8,8 @@
 
 #import "Collection.h"
 #import "Database.h"
+#import "DTSet.h"
 #import "FileManager.h"
-#import "Set.h"
 
 @implementation Collection
 
@@ -35,11 +35,11 @@
         
         for (NSDictionary *d in dict[@"regular"])
         {
-            Card *card;
+            DTCard *card;
             
             if (d[@"multiverseID"])
             {
-                card = [Card MR_findFirstByAttribute:@"multiverseID" withValue:d[@"multiverseID"]];
+                card = [DTCard MR_findFirstByAttribute:@"multiverseID" withValue:d[@"multiverseID"]];
             }
             if (!card)
             {
@@ -55,11 +55,11 @@
         
         for (NSDictionary *d in dict[@"foiled"])
         {
-            Card *card;
+            DTCard *card;
             
             if (d[@"multiverseID"])
             {
-                card = [Card MR_findFirstByAttribute:@"multiverseID" withValue:d[@"multiverseID"]];
+                card = [DTCard MR_findFirstByAttribute:@"multiverseID" withValue:d[@"multiverseID"]];
             }
             if (!card)
             {
@@ -86,7 +86,7 @@
     for (NSDictionary *dict in self.arrRegulars)
     {
         NSMutableDictionary *newDict = [[NSMutableDictionary alloc] initWithDictionary:dict];
-        Card *card = dict[@"card"];
+        DTCard *card = dict[@"card"];
         
         [newDict setValue:card.name forKey:@"card"];
         [arrRegulars addObject:newDict];
@@ -94,7 +94,7 @@
     for (NSDictionary *dict in self.arrFoils)
     {
         NSMutableDictionary *newDict = [[NSMutableDictionary alloc] initWithDictionary:dict];
-        Card *card = dict[@"card"];
+        DTCard *card = dict[@"card"];
         
         [newDict setValue:card.name forKey:@"card"];
         [arrFoils addObject:newDict];
@@ -108,7 +108,7 @@
     [[FileManager sharedInstance] saveData:dict atPath:filePath];
 }
 
--(void) updateCollection:(CollectionType) type withCard:(Card*) card withValue:(int) newValue
+-(void) updateCollection:(CollectionType) type withCard:(DTCard*) card withValue:(int) newValue
 {
     NSMutableArray *arrType;
     NSDictionary *dictMain;
@@ -130,7 +130,7 @@
     
     for (NSDictionary *dict in arrType)
     {
-        Card *c = dict[@"card"];
+        DTCard *c = dict[@"card"];
         
         if ([dict[@"multiverseID"] intValue] == [card.multiverseID intValue] ||
             ([c.name isEqualToString:card.name] && [c.set.code isEqualToString:card.set.code]))
@@ -161,7 +161,7 @@
     }
 }
 
--(int) cards:(Card*) card inType:(CollectionType) type
+-(int) cards:(DTCard*) card inType:(CollectionType) type
 {
     NSMutableArray *arrType;
     int qty = 0;
@@ -183,7 +183,7 @@
     
     for (NSDictionary *dict in arrType)
     {
-        Card *c = dict[@"card"];
+        DTCard *c = dict[@"card"];
         
         if ([dict[@"multiverseID"] intValue] == [card.multiverseID intValue] ||
             ([c.name isEqualToString:card.name] && [c.set.code isEqualToString:card.set.code]))

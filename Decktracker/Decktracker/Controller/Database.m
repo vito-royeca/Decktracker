@@ -7,9 +7,9 @@
 //
 
 #import "Database.h"
-#import "CardRating.h"
+#import "DTCardRating.h"
+#import "DTSet.h"
 #import "Magic.h"
-#import "Set.h"
 
 #import "TFHpple.h"
 
@@ -375,20 +375,20 @@ static Database *_me;
 }
 #endif
 
--(Card*) findCard:(NSString*) cardName inSet:(NSString*) setCode
+-(DTCard*) findCard:(NSString*) cardName inSet:(NSString*) setCode
 {
     NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"name == %@", cardName];
     NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"set.code == %@", setCode];
     
-    return [Card MR_findFirstWithPredicate:[NSCompoundPredicate andPredicateWithSubpredicates:@[pred1, pred2]]];
+    return [DTCard MR_findFirstWithPredicate:[NSCompoundPredicate andPredicateWithSubpredicates:@[pred1, pred2]]];
 }
 
--(NSString*) cardRarityIndex:(Card*) card
+-(NSString*) cardRarityIndex:(DTCard*) card
 {
     return [card.rarity.name isEqualToString:@"Basic Land"] ? @"C" : [[card.rarity.name substringToIndex:1] uppercaseString];
 }
 
--(Card*) fetchTcgPlayerPriceForCard:(Card*) card
+-(DTCard*) fetchTcgPlayerPriceForCard:(DTCard*) card
 {
     BOOL bWillFetch = NO;
     
@@ -461,7 +461,7 @@ static Database *_me;
             }
         }
         
-        Card *c = [self findCard:card.name inSet:card.set.code];
+        DTCard *c = [self findCard:card.name inSet:card.set.code];
 
         c.tcgPlayerHighPrice = high ? [NSNumber numberWithDouble:[high doubleValue]] : nil;
         c.tcgPlayerMidPrice  = mid  ? [NSNumber numberWithDouble:[mid doubleValue]]  : nil;
@@ -529,6 +529,28 @@ static Database *_me;
     return array;
 }
 
+-(NSArray*) fetchHighestPriced:(int)limit
+{
+    NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:@"tcgPlayerMidPrice"
+                                                                    ascending:NO];
+    NSSortDescriptor *sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:@"name"
+                                                                    ascending:YES];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Card"
+                                              inManagedObjectContext:moc];
+    
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"tcgPlayerMidPrice > 0"]];
+    [fetchRequest setEntity:entity];
+    [fetchRequest setSortDescriptors:@[sortDescriptor1, sortDescriptor2]];
+    [fetchRequest setFetchLimit:limit];
+    
+    NSError *error = nil;
+    NSArray *array = [moc executeFetchRequest:fetchRequest error:&error];
+    return array;
+}
+
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
 -(void) fetchTopRated:(int) limit skip:(int) skip
 {
@@ -559,7 +581,7 @@ static Database *_me;
              {
                  NSPredicate *p = [NSPredicate predicateWithFormat:@"(%K = %@ AND %K = %@ AND %K = %@)", @"name", object[@"name"], @"multiverseID", object[@"multiverseID"], @"set.name", object[@"set"][@"name"]];
                  
-                 Card *card = [Card MR_findFirstWithPredicate:p];
+                 DTCard *card = [DTCard MR_findFirstWithPredicate:p];
                  card.rating = object[@"rating"];
                  [moc MR_saveToPersistentStoreAndWait];
                  [arrResults addObject:card];
@@ -618,7 +640,7 @@ static Database *_me;
             for (PFObject *object in objects)
             {
                 NSPredicate *p = [NSPredicate predicateWithFormat:@"(%K = %@ AND %K = %@ AND %K = %@)", @"name", object[@"name"], @"multiverseID", object[@"multiverseID"], @"set.name", object[@"set"][@"name"]];
-                Card *card = [Card MR_findFirstWithPredicate:p];
+                DTCard *card = [DTCard MR_findFirstWithPredicate:p];
                 card.numberOfViews = object[@"numberOfViews"];
                 [moc MR_saveToPersistentStoreAndWait];
                 [arrResults addObject:card];
@@ -651,7 +673,7 @@ static Database *_me;
 
 -(void) processCurrentParseQueue
 {
-    Card *card = _currentParseQueue[0];
+    DTCard *card = _currentParseQueue[0];
     void (^callbackTask)(PFObject *pfCard) = _currentParseQueue[1];
     
     void (^callbackFindCard)(NSString *cardName, NSNumber *multiverseID, PFObject *pfSet) = ^void(NSString *cardName, NSNumber *multiverseID, PFObject *pfSet)
@@ -734,7 +756,7 @@ static Database *_me;
     [self processCurrentParseQueue];
 }
 
--(void) incrementCardView:(Card*) card
+-(void) incrementCardView:(DTCard*) card
 {
     void (^callbackIncrementCard)(PFObject *pfCard) = ^void(PFObject *pfCard) {
         [pfCard incrementKey:@"numberOfViews"];
@@ -757,7 +779,7 @@ static Database *_me;
     [self processQueue];
 }
 
--(void) rateCard:(Card*) card for:(float) rating
+-(void) rateCard:(DTCard*) card for:(float) rating
 {
     void (^callbackRateCard)(PFObject *pfCard) = ^void(PFObject *pfCard) {
         PFObject *pfRating = [PFObject objectWithClassName:@"CardRating"];
@@ -776,7 +798,7 @@ static Database *_me;
                 
                 for (PFObject *object in objects)
                 {
-                    CardRating *rating = [CardRating MR_createEntity];
+                    DTCardRating *rating = [DTCardRating MR_createEntity];
                     rating.rating = object[@"rating"];
                     rating.card = card;
                     [moc MR_saveToPersistentStoreAndWait];
@@ -808,7 +830,7 @@ static Database *_me;
     [self processQueue];
 }
 
--(void) parseSynch:(Card*) card
+-(void) parseSynch:(DTCard*) card
 {
     void (^callbackParseSynchCard)(PFObject *pfCard) = ^void(PFObject *pfCard) {
         PFQuery *query = [PFQuery queryWithClassName:@"CardRating"];
@@ -822,7 +844,7 @@ static Database *_me;
 
             for (PFObject *object in objects)
             {
-                CardRating *rating = [CardRating MR_createEntity];
+                DTCardRating *rating = [DTCardRating MR_createEntity];
                 rating.rating = object[@"rating"];
                 rating.card = card;
                 [moc MR_saveToPersistentStoreAndWait];
@@ -854,7 +876,7 @@ static Database *_me;
 
 -(void) uploadAllSetsToParse
 {
-    for (Set *set in [Set MR_findAllSortedBy:@"name" ascending:YES])
+    for (DTSet *set in [DTSet MR_findAllSortedBy:@"name" ascending:YES])
     {
         PFQuery *query = [PFQuery queryWithClassName:@"Set"];
         [query whereKey:@"name" equalTo:set.name];

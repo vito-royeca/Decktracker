@@ -41,7 +41,7 @@
     
     self.navigationItem.title = @"Download Set Images";
     
-    self.arrSets = [Set MR_findAllSortedBy:@"name" ascending:YES];
+    self.arrSets = [DTSet MR_findAllSortedBy:@"name" ascending:YES];
     
 #ifndef DEBUG
     // send the screen to Google Analytics
@@ -120,7 +120,7 @@
         }
     }
     
-    Set *set = self.arrSets[indexPath.row];
+    DTSet *set = self.arrSets[indexPath.row];
     NSString *path = [NSString stringWithFormat:@"%@/images/set/%@/C/48.png", [[NSBundle mainBundle] bundlePath], set.code];
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:path])

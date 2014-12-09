@@ -8,7 +8,7 @@
 
 #import "LimitedSearchViewController.h"
 #import "AddCardViewController.h"
-#import "Card.h"
+#import "DTCard.h"
 #import "FileManager.h"
 #import "SearchResultsTableViewCell.h"
 
@@ -150,7 +150,7 @@
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    Card *card = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    DTCard *card = [self.fetchedResultsController objectAtIndexPath:indexPath];
     [cell displayCard:card];
     
     return cell;
@@ -209,7 +209,7 @@
         }
         case NSFetchedResultsChangeUpdate:
         {
-            Card *card = [self.fetchedResultsController objectAtIndexPath:indexPath];
+            DTCard *card = [self.fetchedResultsController objectAtIndexPath:indexPath];
             SearchResultsTableViewCell *cell = (SearchResultsTableViewCell*)[tableView cellForRowAtIndexPath:indexPath];
             [cell displayCard:card];
             break;

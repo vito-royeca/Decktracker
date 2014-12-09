@@ -47,11 +47,11 @@
         
         for (NSDictionary *d in dict[@"mainBoard"])
         {
-            Card *card;
+            DTCard *card;
             
             if (d[@"multiverseID"])
             {
-                card = [Card MR_findFirstByAttribute:@"multiverseID" withValue:d[@"multiverseID"]];
+                card = [DTCard MR_findFirstByAttribute:@"multiverseID" withValue:d[@"multiverseID"]];
             }
             if (!card)
             {
@@ -86,11 +86,11 @@
         
         for (NSDictionary *d in dict[@"sideBoard"])
         {
-            Card *card;
+            DTCard *card;
             
             if (d[@"multiverseID"])
             {
-                card = [Card MR_findFirstByAttribute:@"multiverseID" withValue:d[@"multiverseID"]];
+                card = [DTCard MR_findFirstByAttribute:@"multiverseID" withValue:d[@"multiverseID"]];
             }
             if (!card)
             {
@@ -119,7 +119,7 @@
     for (NSDictionary *dict in self.arrLands)
     {
         NSMutableDictionary *newDict = [[NSMutableDictionary alloc] initWithDictionary:dict];
-        Card *card = dict[@"card"];
+        DTCard *card = dict[@"card"];
         
         [newDict setValue:card.name forKey:@"card"];
         [arrMainBoard addObject:newDict];
@@ -127,7 +127,7 @@
     for (NSDictionary *dict in self.arrCreatures)
     {
         NSMutableDictionary *newDict = [[NSMutableDictionary alloc] initWithDictionary:dict];
-        Card *card = dict[@"card"];
+        DTCard *card = dict[@"card"];
         
         [newDict setValue:card.name forKey:@"card"];
         [arrMainBoard addObject:newDict];
@@ -135,7 +135,7 @@
     for (NSDictionary *dict in self.arrOtherSpells)
     {
         NSMutableDictionary *newDict = [[NSMutableDictionary alloc] initWithDictionary:dict];
-        Card *card = dict[@"card"];
+        DTCard *card = dict[@"card"];
         
         [newDict setValue:card.name forKey:@"card"];
         [arrMainBoard addObject:newDict];
@@ -143,7 +143,7 @@
     for (NSDictionary *dict in self.arrSideboard)
     {
         NSMutableDictionary *newDict = [[NSMutableDictionary alloc] initWithDictionary:dict];
-        Card *card = dict[@"card"];
+        DTCard *card = dict[@"card"];
         
         [newDict setValue:card.name forKey:@"card"];
         [arrSideBoard addObject:newDict];
@@ -160,7 +160,7 @@
     [[FileManager sharedInstance] saveData:dict atPath:filePath];
 }
 
--(void) updateDeck:(DeckBoard) board withCard:(Card*) card withValue:(int) newValue
+-(void) updateDeck:(DeckBoard) board withCard:(DTCard*) card withValue:(int) newValue
 {
     NSMutableArray *arrBoard;
     NSDictionary *dictMain;
@@ -193,7 +193,7 @@
 
     for (NSDictionary *dict in arrBoard)
     {
-        Card *c = dict[@"card"];
+        DTCard *c = dict[@"card"];
         
         if ([dict[@"multiverseID"] intValue] == [card.multiverseID intValue] ||
             ([c.name isEqualToString:card.name] && [c.set.code isEqualToString:card.set.code]))
@@ -224,7 +224,7 @@
     }
 }
 
--(int) cards:(Card*) card inBoard:(DeckBoard) deckboard
+-(int) cards:(DTCard*) card inBoard:(DeckBoard) deckboard
 {
     NSMutableArray *arrBoard;
     int qty = 0;
@@ -256,7 +256,7 @@
     
     for (NSDictionary *dict in arrBoard)
     {
-        Card *c = dict[@"card"];
+        DTCard *c = dict[@"card"];
         
         if ([dict[@"multiverseID"] intValue] == [card.multiverseID intValue] ||
             ([c.name isEqualToString:card.name] && [c.set.code isEqualToString:card.set.code]))

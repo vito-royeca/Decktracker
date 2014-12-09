@@ -15,7 +15,7 @@ class ThumbCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var lblSetName: UILabel!
     @IBOutlet weak var imgSet: UIImageView!
     
-    var card:Card?
+    var card:DTCard?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -25,7 +25,7 @@ class ThumbCollectionViewCell: UICollectionViewCell {
         imgCrop.layer.masksToBounds = true
     }
 
-    func displayCard(card: Card) {
+    func displayCard(card: DTCard) {
         self.card = card
         
         NSNotificationCenter.defaultCenter().removeObserver(self,
@@ -62,7 +62,7 @@ class ThumbCollectionViewCell: UICollectionViewCell {
     
     func loadCropImage(sender: AnyObject) {
         let dict = sender.userInfo as Dictionary?
-        let card = dict?["card"] as Card
+        let card = dict?["card"] as DTCard
         
         if (self.card == card) {
             let hiResImage = UIImage(contentsOfFile:FileManager.sharedInstance().cropPath(card))

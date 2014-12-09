@@ -103,7 +103,7 @@
     
     for (NSDictionary *dict in deck[@"regular"])
     {
-        Card *card = [[Database sharedInstance] findCard:dict[@"card"] inSet:dict[@"set"]];
+        DTCard *card = [[Database sharedInstance] findCard:dict[@"card"] inSet:dict[@"set"]];
         
         [_arrRegulars addObject:@{@"card": card,
                                   @"qty" : dict[@"qty"]}];
@@ -112,7 +112,7 @@
     
     for (NSDictionary *dict in deck[@"foiled"])
     {
-        Card *card = [[Database sharedInstance] findCard:dict[@"card"] inSet:dict[@"set"]];
+        DTCard *card = [[Database sharedInstance] findCard:dict[@"card"] inSet:dict[@"set"]];
         
         [_arrFoils addObject:@{@"card": card,
                                @"qty" : dict[@"qty"]}];
@@ -226,7 +226,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Card *card;
+    DTCard *card;
     
     switch (indexPath.section)
     {
