@@ -33,7 +33,9 @@
         return _fetchedResultsController;
     }
     
-    NSFetchedResultsController *nsfrc = [[Database sharedInstance] search:self.searchBar.text withPredicate:self.predicate];
+    NSFetchedResultsController *nsfrc = [[Database sharedInstance] search:self.searchBar.text
+                                                            withPredicate:self.predicate
+                                                      withSortDescriptors:nil];
     
     self.fetchedResultsController = nsfrc;
     _fetchedResultsController.delegate = self;

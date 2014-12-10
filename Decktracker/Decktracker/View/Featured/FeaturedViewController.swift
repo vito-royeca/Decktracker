@@ -332,7 +332,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
             view = view2;
         case 3:
             var view2 = SetListViewController()
-            view2.arrayData = DTSet.MR_findAllSortedBy("name", ascending: true)
+            view2.arrayData = DTSet.MR_findAllSortedBy("releaseDate", ascending: false)
             view = view2;
         case 4:
             var view2 = TopListViewController()

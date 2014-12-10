@@ -33,7 +33,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>10A4</string>
+	<string>10D0</string>
 	<key>Card Updates</key>
 	<dict>
 		<key>5.6.6</key>
@@ -54,9 +54,9 @@
 	<key>FacebookDisplayName</key>
 	<string>Decktracker</string>
 	<key>Images Version</key>
-	<string>5.8.0</string>
+	<string>5.8.2</string>
 	<key>JSON Version</key>
-	<string>2.13.0</string>
+	<string>2.13.1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIAppFonts</key>

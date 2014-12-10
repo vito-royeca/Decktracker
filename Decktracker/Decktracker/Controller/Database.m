@@ -144,6 +144,7 @@ static Database *_me;
 
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
 -(NSFetchedResultsController*) search:(NSString*)query
+                  withSortDescriptors:(NSArray*) sorters
 {
     NSPredicate *predicate;
     
@@ -166,16 +167,22 @@ static Database *_me;
     
     NSManagedObjectContext *moc = [NSManagedObjectContext MR_defaultContext];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:@"name"
-                                                                    ascending:YES];
-    NSSortDescriptor *sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:@"set.releaseDate"
-                                                                    ascending:YES];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Card"
+    if (!sorters)
+    {
+        NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:@"name"
+                                                                        ascending:YES];
+        NSSortDescriptor *sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:@"set.releaseDate"
+                                                                        ascending:YES];
+        
+        sorters = @[sortDescriptor1, sortDescriptor2];
+    }
+    
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"DTCard"
                                               inManagedObjectContext:moc];
     
     [fetchRequest setPredicate:predicate];
     [fetchRequest setEntity:entity];
-    [fetchRequest setSortDescriptors:@[sortDescriptor1, sortDescriptor2]];
+    [fetchRequest setSortDescriptors:sorters];
     [fetchRequest setFetchBatchSize:kFetchBatchSize];
     
     return [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
@@ -184,7 +191,9 @@ static Database *_me;
                                                           cacheName:nil];
 }
 
--(NSFetchedResultsController*) search:(NSString*) query withPredicate:(NSPredicate*)predicate
+-(NSFetchedResultsController*) search:(NSString*) query
+                        withPredicate:(NSPredicate*)predicate
+                  withSortDescriptors:(NSArray*) sorters
 {
     NSPredicate *predicate2;
     
@@ -217,16 +226,21 @@ static Database *_me;
     }
     NSManagedObjectContext *moc = [NSManagedObjectContext MR_defaultContext];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:@"name"
-                                                                    ascending:YES];
-    NSSortDescriptor *sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:@"set.releaseDate"
-                                                                    ascending:YES];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Card"
+    if (!sorters)
+    {
+        NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:@"name"
+                                                                        ascending:YES];
+        NSSortDescriptor *sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:@"set.releaseDate"
+                                                                        ascending:YES];
+        
+        sorters = @[sortDescriptor1, sortDescriptor2];
+    }
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"DTCard"
                                               inManagedObjectContext:moc];
     
     [fetchRequest setPredicate:predicate2 ? predicate2 : predicate];
     [fetchRequest setEntity:entity];
-    [fetchRequest setSortDescriptors:@[sortDescriptor1, sortDescriptor2]];
+    [fetchRequest setSortDescriptors:sorters];
     [fetchRequest setFetchBatchSize:kFetchBatchSize];
     
     return [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
@@ -360,7 +374,7 @@ static Database *_me;
                                                                    ascending:YES];
     NSSortDescriptor *sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:@"set.releaseDate"
                                                                     ascending:YES];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Card"
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"DTCard"
                                               inManagedObjectContext:moc];
     
     [fetchRequest setPredicate:predicate];
@@ -489,7 +503,7 @@ static Database *_me;
                                                                     ascending:YES];
     NSSortDescriptor *sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:@"set.releaseDate"
                                                                     ascending:YES];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Card"
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"DTCard"
                                               inManagedObjectContext:moc];
     
     [fetchRequest setEntity:entity];
@@ -517,7 +531,7 @@ static Database *_me;
                                                                     ascending:NO];
     NSSortDescriptor *sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:@"name"
                                                                     ascending:YES];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Set"
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"DTSet"
                                               inManagedObjectContext:moc];
     
     [fetchRequest setEntity:entity];
@@ -538,7 +552,7 @@ static Database *_me;
                                                                     ascending:NO];
     NSSortDescriptor *sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:@"name"
                                                                     ascending:YES];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Card"
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"DTCard"
                                               inManagedObjectContext:moc];
     
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"tcgPlayerMidPrice > 0"]];
@@ -594,7 +608,7 @@ static Database *_me;
                                                                              ascending:NO];
              NSSortDescriptor *sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:@"name"
                                                                              ascending:YES];
-             NSEntityDescription *entity = [NSEntityDescription entityForName:@"Card"
+             NSEntityDescription *entity = [NSEntityDescription entityForName:@"DTCard"
                                                        inManagedObjectContext:moc];
              
              [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"rating >= 0"]];
@@ -653,7 +667,7 @@ static Database *_me;
                                                                             ascending:NO];
             NSSortDescriptor *sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:@"name"
                                                                             ascending:YES];
-            NSEntityDescription *entity = [NSEntityDescription entityForName:@"Card"
+            NSEntityDescription *entity = [NSEntityDescription entityForName:@"DTCard"
                                                       inManagedObjectContext:moc];
             
             [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"numberOfViews >= 0"]];

@@ -9,19 +9,17 @@
 import UIKit
 
 enum SortMode: Printable  {
-    case BySetReleaseDate
-    case BySetName
-    case BySetType
-    case ByCardName
-    case ByCardNumber
+    case ByReleaseDate
+    case ByName
+    case ByType
+    case ByNumber
     
     var description : String {
         switch self {
-        case BySetReleaseDate: return "By Release Date"
-        case BySetName: return "By Name"
-        case BySetType: return "By Type"
-        case ByCardName: return "By Name"
-        case ByCardNumber: return "By Collector Number"
+        case ByReleaseDate: return "Release Date"
+        case ByName: return "Name"
+        case ByType: return "Type"
+        case ByNumber: return "Collector Number"
         }
     }
 }
@@ -36,10 +34,11 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
     var sectionIndexTitles:[String]?
     var arrayData:[AnyObject]?
     var predicate:NSPredicate?
+    var sorters:[NSSortDescriptor]?
     var sortMode:SortMode?
 
     lazy var fetchedResultsController: NSFetchedResultsController = {
-        var nsfrc = Database.sharedInstance().search(nil, withPredicate:self.predicate)
+        var nsfrc = Database.sharedInstance().search(nil, withPredicate:self.predicate, withSortDescriptors: self.sorters)
         
         self.fetchedResultsController = nsfrc
         self.fetchedResultsController.delegate = self
@@ -63,7 +62,7 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
         navigationItem.rightBarButtonItem = sortButton
         view.addSubview(tblSet!)
         
-        self.sortMode = SortMode.BySetReleaseDate
+        self.sortMode = SortMode.ByReleaseDate
         self.loadData()
 
 #if !DEBUG
@@ -76,21 +75,70 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
     
     func sortButtonTapped() {
         var sortOptions:[String]?
-//        typealias DoneBlock = NSString? -> ()
-//        var doneBlock: DoneBlock = { reason in println(reason) }
-//        
-//        ActionSheetStringPicker.showPickerWithTitle("Sort By",
-//            rows:sortOptions,  initialSelection:0,
-//            doneBlock:{ (picker: ActionSheetStringPicker, selectedIndex: NSInteger, selectedValue: AnyObject) in
-//            
-//            },
-//            cancelBlock:{ (picker: ActionSheetStringPicker) in
-//            
-//            },
-//            origin:self.view)
+        var initialSelection = 0
         
-//        ActionSheetStringPicker.showPickerWithTitle("Sort By", rows: sortOptions, initialSelection: 1, doneBlock: {ActionStringDoneBlock in return}, cancelBlock: {ActionStringCancelBlock in return }, origin: view)
+        if navigationItem.title == "Sets" {
+            sortOptions = [SortMode.ByReleaseDate.description, SortMode.ByName.description, SortMode.ByType.description]
+            
+            switch self.sortMode! {
+            case .ByReleaseDate:
+                initialSelection = 0
+            case .ByName:
+                initialSelection = 1
+            case .ByType:
+                initialSelection = 2
+            default:
+                break
+            }
+            
+        } else {
+            sortOptions = [SortMode.ByName.description, SortMode.ByNumber.description]
+            
+            switch self.sortMode! {
+            case .ByName:
+                initialSelection = 0
+            case .ByNumber:
+                initialSelection = 1
+            default:
+                break
+            }
+        }
         
+        let doneBlock = { (picker: ActionSheetStringPicker?, selectedIndex: NSInteger, selectedValue: AnyObject?) -> Void in
+            
+            if self.navigationItem.title == "Sets" {
+                switch selectedIndex {
+                case 0:
+                    self.sortMode = .ByReleaseDate
+                case 1:
+                    self.sortMode = .ByName
+                case 2:
+                    self.sortMode = .ByType
+                default:
+                    break
+                }
+                
+            } else {
+                switch selectedIndex {
+                case 0:
+                    self.sortMode = .ByName
+                case 1:
+                    self.sortMode = .ByNumber
+                default:
+                    break
+                }
+            }
+            
+            self.loadData()
+            self.tblSet!.reloadData()
+        }
+        
+        ActionSheetStringPicker.showPickerWithTitle("Sort By",
+            rows: sortOptions,
+            initialSelection: initialSelection,
+            doneBlock: doneBlock,
+            cancelBlock: nil,
+            origin: view)
     }
     
     func loadData() {
@@ -99,13 +147,54 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
             sectionIndexTitles = [String]()
             
             switch sortMode! {
-            case .BySetReleaseDate:
-                println("")
+            case .ByReleaseDate:
+                arrayData!.sort({ ($0.releaseDate as NSDate).compare($1.releaseDate as NSDate) == NSComparisonResult.OrderedDescending })
+                let formatter = NSDateFormatter()
+                formatter.dateFormat = "yyyy"
                 
-            case .BySetName:
-                println("")
+                for set in arrayData! as [DTSet] {
+                    let keys = Array(sections!.keys)
+                    var sets:[DTSet]?
+                    
+                    let year = formatter.stringFromDate(set.releaseDate)
+                    
+                    if contains(keys, year) {
+                        sets = sections![year]
+                    } else {
+                        sets = [DTSet]()
+                    }
+                    sets!.append(set)
+                    sections!.updateValue(sets!, forKey: year)
+                }
                 
-            case .BySetType:
+            case .ByName:
+                arrayData!.sort{ $0.name < $1.name }
+                
+                for set in arrayData! as [DTSet] {
+                    let keys = Array(sections!.keys)
+                    var sets:[DTSet]?
+                    
+                    var letter = set.name.substringWithRange(Range(start: set.name.startIndex, end: advance(set.name.startIndex, 1)))
+                    let formatter = NSNumberFormatter()
+                    if formatter.numberFromString(letter) != nil {
+                        letter = "#"
+                    }
+                    if !contains(sectionIndexTitles!, letter) {
+                        sectionIndexTitles!.append(letter)
+                    }
+                    
+                    if contains(keys, letter) {
+                        sets = sections![letter]
+                    } else {
+                        sets = [DTSet]()
+                    }
+                    sets!.append(set)
+                    sections!.updateValue(sets!, forKey: letter)
+                }
+                
+            case .ByType:
+                arrayData!.sort{ $0.name < $1.name }
+                
                 for setType in DTSetType.MR_findAllSortedBy("name", ascending: true) as [DTSetType] {
                     for set in arrayData! as [DTSet] {
                         if set.type == setType {
@@ -131,6 +220,22 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
             default:
                 break
             }
+        
+        } else {
+            switch sortMode! {
+            case .ByName:
+                sorters = [NSSortDescriptor(key: "name", ascending: true)]
+
+            case .ByNumber:
+                sorters = [NSSortDescriptor(key: "number", ascending: true)]
+            default:
+                break
+            }
+            
+            var nsfrc = Database.sharedInstance().search(nil, withPredicate:self.predicate, withSortDescriptors: sorters)
+            self.fetchedResultsController = nsfrc
+            self.fetchedResultsController.delegate = self
+            self.doSearch()
         }
     }
 
@@ -161,23 +266,20 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.navigationItem.title == "Sets" {
+            var keys:[String]?
             
-            switch sortMode! {
-            case .BySetReleaseDate:
-                println("")
-                
-            case .BySetName:
-                println("")
-                
-            case .BySetType:
-                println("")
-                
+            switch self.sortMode! {
+            case .ByReleaseDate:
+                keys = Array(sections!.keys).sorted(>)
+            case .ByName:
+                keys = Array(sections!.keys).sorted(<)
+            case .ByType:
+                keys = Array(sections!.keys).sorted(<)
             default:
                 break
             }
             
-            let keys = Array(sections!.keys).sorted(<)
-            let key = keys[section]
+            let key = keys![section]
             let sets = sections![key]
             return sets!.count
             
@@ -206,14 +308,24 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if navigationItem.title == "Sets" {
-            let keys = Array(sections!.keys).sorted(<)
-            let key = keys[section]
+            var keys:[String]?
+            
+            switch self.sortMode! {
+            case .ByReleaseDate:
+                keys = Array(sections!.keys).sorted(>)
+            case .ByName:
+                keys = Array(sections!.keys).sorted(<)
+            case .ByType:
+                keys = Array(sections!.keys).sorted(<)
+            default:
+                break
+            }
+            
+            let key = keys![section]
             return key
             
         } else {
-            let sectionInfos = fetchedResultsController.sections as [NSFetchedResultsSectionInfo]?
-            let sectionInfo = sectionInfos![section]
-            return "Cards: \(sectionInfo.numberOfObjects)"
+            return nil
         }
     }
     
@@ -239,8 +351,20 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
         var cell:UITableViewCell?
         
         if navigationItem.title == "Sets" {
-            let keys = Array(sections!.keys).sorted(<)
-            let key = keys[indexPath.section]
+            var keys:[String]?
+            
+            switch self.sortMode! {
+            case .ByReleaseDate:
+                keys = Array(sections!.keys).sorted(>)
+            case .ByName:
+                keys = Array(sections!.keys).sorted(<)
+            case .ByType:
+                keys = Array(sections!.keys).sorted(<)
+            default:
+                break
+            }
+            
+            let key = keys![indexPath.section]
             let sets = sections![key]
             let set = sets![indexPath.row]
             let date = JJJUtil.formatDate(set.releaseDate, withFormat:"YYYY-MM-dd")
@@ -299,12 +423,24 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
         var card:DTCard?
         
         if navigationItem.title == "Sets" {
-            let keys = Array(sections!.keys).sorted(<)
-            let key = keys[indexPath.section]
+            var keys:[String]?
+            
+            switch self.sortMode! {
+            case .ByReleaseDate:
+                keys = Array(sections!.keys).sorted(>)
+            case .ByName:
+                keys = Array(sections!.keys).sorted(<)
+            case .ByType:
+                keys = Array(sections!.keys).sorted(<)
+            default:
+                break
+            }
+            let key = keys![indexPath.section]
             let sets = sections![key]
             let set = sets![indexPath.row]
-            var view2 = SetListViewController()
+
             
+            var view2 = SetListViewController()
             view2.navigationItem.title = set.name
             view2.predicate =  NSPredicate(format: "%K = %@", "set.name", set.name)
             view2.doSearch()
