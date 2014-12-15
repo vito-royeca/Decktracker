@@ -44,15 +44,19 @@ static Database *_me;
 -(void) setupDb
 {
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
-    NSString *jsonVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"JSON Version"];
-    NSString *imagesVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"Images Version"];
+    NSString *filePath = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] bundlePath], @"decktracker.plist"];
+    NSDictionary *dict = [[NSDictionary alloc] initWithContentsOfFile:filePath];
+    
+    NSString *jsonVersion = [dict objectForKey:@"JSON Version"];
+    NSString *imagesVersion = [dict objectForKey:@"Images Version"];
     
     NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
     NSString *cachePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject];
     NSString *storePath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", kDatabaseStore]];
     
-    NSDictionary *arrCardUpdates = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"Card Updates"];
-    for (NSString *ver in [arrCardUpdates allKeys])
+    NSDictionary *arrCardUpdates = [dict objectForKey:@"Card Updates"];
+    NSArray *sortedKeys = [[arrCardUpdates allKeys] sortedArrayUsingSelector: @selector(compare:)];
+    for (NSString *ver in sortedKeys)
     {
         for (NSString *setCode in arrCardUpdates[ver])
         {

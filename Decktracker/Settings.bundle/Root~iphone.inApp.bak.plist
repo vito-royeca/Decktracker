@@ -6,17 +6,113 @@
 	<array>
 		<dict>
 			<key>Title</key>
-			<string>Downloads</string>
+			<string>User Account</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>IASKCellImage</key>
+			<string>user_male</string>
+			<key>IASKUITextAlignment</key>
+			<string>IASKUITextAlignmentLeft</string>
+			<key>Key</key>
+			<string>User_FullName</string>
+			<key>Title</key>
+			<string>Login or Signup</string>
+			<key>Type</key>
+			<string>IASKButtonSpecifier</string>
+		</dict>
+		<dict>
+			<key>Title</key>
+			<string>Cloud Storage</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>DefaultValue</key>
+			<false/>
+			<key>IASKCellImage</key>
+			<string>dropbox</string>
+			<key>Key</key>
+			<string>dropbox_preference</string>
+			<key>Title</key>
+			<string>Dropbox</string>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+		</dict>
+		<dict>
+			<key>Title</key>
+			<string>In-App Purchase</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>IASKCellImage</key>
+			<string>cards</string>
+			<key>IASKUITextAlignment</key>
+			<string>IASKUITextAlignmentLeft</string>
+			<key>Key</key>
+			<string>Collections_ID</string>
+			<key>Title</key>
+			<string>Purchase Collections</string>
+			<key>Type</key>
+			<string>IASKButtonSpecifier</string>
+		</dict>
+		<dict>
+			<key>IASKCellImage</key>
+			<string>download</string>
+			<key>IASKUITextAlignment</key>
+			<string>IASKUITextAlignmentLeft</string>
+			<key>Key</key>
+			<string>restore_purchases</string>
+			<key>Title</key>
+			<string>Restore Purchases</string>
+			<key>Type</key>
+			<string>IASKButtonSpecifier</string>
+		</dict>
+		<dict>
+			<key>Title</key>
+			<string>Application Information</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>DefaultValue</key>
+			<string>Decktracker</string>
+			<key>Key</key>
+			<string>name</string>
+			<key>Title</key>
+			<string>Name</string>
+			<key>Type</key>
+			<string>PSTitleValueSpecifier</string>
+		</dict>
+		<dict>
+			<key>DefaultValue</key>
+			<string>1.4.0</string>
+			<key>Key</key>
+			<string>version</string>
+			<key>Title</key>
+			<string>Version</string>
+			<key>Type</key>
+			<string>PSTitleValueSpecifier</string>
+		</dict>
+		<dict>
+			<key>DefaultValue</key>
+			<string>Jovito Royeca</string>
+			<key>Key</key>
+			<string>developer</string>
+			<key>Title</key>
+			<string>Developer</string>
+			<key>Type</key>
+			<string>PSTitleValueSpecifier</string>
 		</dict>
 		<dict>
 			<key>IASKTextAlignment</key>
 			<string>IASKUITextAlignmentLeft</string>
 			<key>Key</key>
-			<string>download_set_images</string>
+			<string>acknowledgements</string>
 			<key>Title</key>
-			<string>Set Images</string>
+			<string>Acknowledgements</string>
 			<key>Type</key>
 			<string>IASKButtonSpecifier</string>
 		</dict>

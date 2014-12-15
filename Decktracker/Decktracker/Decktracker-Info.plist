@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.4.0</string>
+	<string>1.4.1</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -33,30 +33,11 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1132</string>
-	<key>Card Updates</key>
-	<dict>
-		<key>5.6.6</key>
-		<array>
-			<string>MD1</string>
-		</array>
-		<key>5.6.7</key>
-		<array>
-			<string>DDM</string>
-		</array>
-		<key>5.8.2</key>
-		<array>
-			<string>C14</string>
-		</array>
-	</dict>
+	<string>1143</string>
 	<key>FacebookAppID</key>
 	<string>341320496039341</string>
 	<key>FacebookDisplayName</key>
 	<string>Decktracker</string>
-	<key>Images Version</key>
-	<string>5.8.2</string>
-	<key>JSON Version</key>
-	<string>2.13.1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIAppFonts</key>

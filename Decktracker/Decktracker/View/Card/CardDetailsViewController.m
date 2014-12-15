@@ -389,11 +389,11 @@
     self.cardImage.contentMode = UIViewContentModeScaleAspectFit;
     self.cardImage.clipsToBounds = YES;
     
-    [self.cardImage removeImageViewer];
-    [self.cardImage setupImageViewerWithDatasource:self
-                                      initialIndex:selectedRow
-                                            onOpen:^{ }
-                                           onClose:^{ }];
+//    [self.cardImage removeImageViewer];
+//    [self.cardImage setupImageViewerWithDatasource:self
+//                                      initialIndex:selectedRow
+//                                            onOpen:^{ }
+//                                           onClose:^{ }];
     
     
     [[FileManager sharedInstance] downloadCardImage:self.card immediately:YES];
@@ -926,13 +926,9 @@
     if (self.fetchedResultsController)
     {
         DTCard *card = [self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
-//        id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
-//        NSInteger index = [sectionInfo.objects indexOfObject:self.card];
-//        DTCard *card = sectionInfo.objects[index];
         
-//        [self setCard:card];
-        self.card = card;
-//        [self.tblDetails reloadData];
+        [self setCard:card];
+        [self.tblDetails reloadData];
     }
     return [NSURL fileURLWithPath:[[FileManager sharedInstance] cardPath:self.card]];
 }
@@ -944,13 +940,9 @@
     if (self.fetchedResultsController)
     {
         DTCard *card = [self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
-//        id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
-//        NSInteger index = [sectionInfo.objects indexOfObject:self.card];
-//        DTCard *card = sectionInfo.objects[index];
     
-//        [self setCard:card];
-        self.card = card;
-//        [self.tblDetails reloadData];
+        [self setCard:card];
+        [self.tblDetails reloadData];
     }
     return [UIImage imageWithContentsOfFile:[[FileManager sharedInstance] cardPath:self.card]];
 }

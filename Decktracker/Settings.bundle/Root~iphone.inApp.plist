@@ -6,24 +6,6 @@
 	<array>
 		<dict>
 			<key>Title</key>
-			<string>User Account</string>
-			<key>Type</key>
-			<string>PSGroupSpecifier</string>
-		</dict>
-		<dict>
-			<key>IASKCellImage</key>
-			<string>user_male</string>
-			<key>IASKUITextAlignment</key>
-			<string>IASKUITextAlignmentLeft</string>
-			<key>Key</key>
-			<string>User_FullName</string>
-			<key>Title</key>
-			<string>Login or Signup</string>
-			<key>Type</key>
-			<string>IASKButtonSpecifier</string>
-		</dict>
-		<dict>
-			<key>Title</key>
 			<string>Cloud Storage</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
@@ -88,7 +70,7 @@
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
-			<string>1.4.0</string>
+			<string>1.4.1</string>
 			<key>Key</key>
 			<string>version</string>
 			<key>Title</key>

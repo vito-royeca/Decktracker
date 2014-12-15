@@ -143,6 +143,7 @@
 		8CC5BA711A1386A700F3BDD2 /* SetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC5BA6F1A1386A700F3BDD2 /* SetCollectionViewCell.swift */; };
 		8CC5BA721A1386A700F3BDD2 /* SetCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CC5BA701A1386A700F3BDD2 /* SetCollectionViewCell.xib */; };
 		8CCD852A1A0B911400991CAF /* SubtitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCD85291A0B911400991CAF /* SubtitleTableViewCell.swift */; };
+		8CCFC02E1A3E7C2C004B1853 /* decktracker.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8CCFC02D1A3E7C2C004B1853 /* decktracker.plist */; };
 		8CD2E1EC19DACE1A00503ACC /* InAppPurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD2E1EB19DACE1A00503ACC /* InAppPurchase.m */; };
 		8CDEC7951A383784004053CF /* SpecialListsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CDEC7941A383784004053CF /* SpecialListsViewController.swift */; };
 		8CE7F2BE19C0A2D0004FBEA5 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CE7F2BD19C0A2D0004FBEA5 /* StoreKit.framework */; };
@@ -400,6 +401,7 @@
 		8CC5BA6F1A1386A700F3BDD2 /* SetCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetCollectionViewCell.swift; sourceTree = "<group>"; };
 		8CC5BA701A1386A700F3BDD2 /* SetCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SetCollectionViewCell.xib; sourceTree = "<group>"; };
 		8CCD85291A0B911400991CAF /* SubtitleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubtitleTableViewCell.swift; sourceTree = "<group>"; };
+		8CCFC02D1A3E7C2C004B1853 /* decktracker.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = decktracker.plist; sourceTree = "<group>"; };
 		8CD2E1EA19DACE1A00503ACC /* InAppPurchase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InAppPurchase.h; sourceTree = "<group>"; };
 		8CD2E1EB19DACE1A00503ACC /* InAppPurchase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InAppPurchase.m; sourceTree = "<group>"; };
 		8CDEC7941A383784004053CF /* SpecialListsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecialListsViewController.swift; sourceTree = "<group>"; };
@@ -768,6 +770,7 @@
 			children = (
 				8C26A67F19A6418800FE00E7 /* Advance Search */,
 				8C0CF16A1A01E101009137C5 /* Decks */,
+				8CCFC02D1A3E7C2C004B1853 /* decktracker.plist */,
 				8C019A9F1998A10F00FB22D7 /* decktracker.sqlite */,
 				8C49655C19B06929001C7935 /* Goudy Medieval.ttf */,
 				8CADEF1619923DDE004D7658 /* images */,
@@ -1033,6 +1036,7 @@
 				8CADEF1719923DDE004D7658 /* images in Resources */,
 				8C3277FD199A464D00899790 /* style.css in Resources */,
 				8C89BD5319DD4FFE0070E4F5 /* InAppSettingsKit.license in Resources */,
+				8CCFC02E1A3E7C2C004B1853 /* decktracker.plist in Resources */,
 				8C3C7D6E19DE41EE0030B6E9 /* MTG-Image.license in Resources */,
 				8C0CF16B1A01E102009137C5 /* Decks in Resources */,
 				8C2A979219F5027B0094C97F /* Reader-Export@2x.png in Resources */,

@@ -29,7 +29,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         let height = view.frame.size.height - tabBarController!.tabBar.frame.size.height
         var frame = CGRect(x:0, y:0, width:view.frame.width, height:height)
         
-        btnSpecial = UIBarButtonItem(title: "Special", style: UIBarButtonItemStyle.Plain, target: self, action: "specialButtonTapped")
+//        btnSpecial = UIBarButtonItem(title: "Special", style: UIBarButtonItemStyle.Plain, target: self, action: "specialButtonTapped")
         
         tblFeatured = UITableView(frame: frame, style: UITableViewStyle.Plain)
         tblFeatured!.delegate = self
@@ -66,8 +66,6 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         Database.sharedInstance().fetchTopRated(10, skip: 0)
         Database.sharedInstance().fetchTopViewed(10, skip: 0)
         
-        arrayData!.removeAtIndex(4)
-        arrayData!.insert(["Highest Priced": Database.sharedInstance().fetchHighestPriced(10) as [DTCard]], atIndex: 4)
         tblFeatured?.reloadData()
     }
 
@@ -92,7 +90,6 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         arrayData!.append(["Top Rated": [DTCard]()])
         arrayData!.append(["Top Viewed": [DTCard]()])
         arrayData!.append(["Sets": Database.sharedInstance().fetchSets(10) as [DTSet]])
-        arrayData!.append(["Highest Priced": [DTCard]()])
         arrayData!.append(["In-App Purchase": ["Purchase Collections", "Restore Purchases"]])
         
         for dict in arrayData! {
@@ -145,7 +142,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.row == 0 {
             return 132
-        } else if indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 3 || indexPath.row == 4 {
+        } else if indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 3 {
             return 170
         } else {
             return UITableViewAutomaticDimension
@@ -153,7 +150,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
     }
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if indexPath.row == 6 {
+        if indexPath.row == 5 {
             if !InAppPurchase.isProductPurchased(COLLECTIONS_IAP_PRODUCT_ID) {
                 let view = InAppPurchaseViewController()
                 
@@ -164,7 +161,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
                 self.navigationController?.pushViewController(view, animated:true)
             }
             
-        } else if indexPath.row == 7 {
+        } else if indexPath.row == 6 {
             let iap = InAppPurchase()
             
             iap.delegate = self
@@ -178,7 +175,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 8 // arrayData.count + arrayData[5].count
+        return 7 // arrayData.count + arrayData[5].count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -196,7 +193,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
             cell2!.selectionStyle = UITableViewCellSelectionStyle.None
             cell2!.setCollectionViewDataSourceDelegate(self, index: indexPath.row)
             cell = cell2
-        } else if indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 3 || indexPath.row == 4 {
+        } else if indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 3 {
             let row = arrayData![indexPath.row]
             let key = Array(row.keys)[0]
             
@@ -210,7 +207,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
             cell2!.setCollectionViewDataSourceDelegate(self, index: indexPath.row)
             cell = cell2
         } else {
-            let row = arrayData![5]
+            let row = arrayData![4]
             let key = Array(row.keys)[0]
             let dict = row[key] as [String]
             
@@ -220,17 +217,17 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
                 cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: kDefaultCellIdentifier)
             }
             
-            if indexPath.row == 5 {
+            if indexPath.row == 4 {
                 cell!.textLabel.text = key
                 cell!.imageView.image = nil
                 cell!.selectionStyle = UITableViewCellSelectionStyle.None
                 cell!.accessoryType = UITableViewCellAccessoryType.None
             }
-            else if indexPath.row == 6 {
+            else if indexPath.row == 5 {
                 cell!.imageView.image = UIImage(named: "cards.png")
                 cell!.textLabel.text = dict[0]
                 cell!.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
-            } else if indexPath.row == 7 {
+            } else if indexPath.row == 6 {
                 cell!.imageView.image = UIImage(named: "download.png")
                 cell!.textLabel.text = dict[1]
                 cell!.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
@@ -245,7 +242,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         if indexPath.row == 0  {
             let cell2 = cell as BannerScrollTableViewCell
             cell2.setCollectionViewDataSourceDelegate(self, index: indexPath.row)
-        } else if indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 3 || indexPath.row == 4 {
+        } else if indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 3 {
             let cell2 = cell as HorizontalScrollTableViewCell
             cell2.setCollectionViewDataSourceDelegate(self, index: indexPath.row)
             cell2.delegate = self
@@ -277,7 +274,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
             cell2.displayCard(card)
             cell = cell2
             
-        } else if collectionView.tag == 1 || collectionView.tag == 2 || collectionView.tag == 4 {
+        } else if collectionView.tag == 1 || collectionView.tag == 2 {
             let card = dict[indexPath.row] as DTCard
             var cell2 = collectionView.dequeueReusableCellWithReuseIdentifier("kThumbCellIdentifier", forIndexPath:indexPath) as ThumbCollectionViewCell
             cell2.displayCard(card)
@@ -299,7 +296,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         let dict = row[key]!
         var view:UIViewController?
         
-        if collectionView.tag == 0 || collectionView.tag == 1 || collectionView.tag == 2 || collectionView.tag == 4 {
+        if collectionView.tag == 0 || collectionView.tag == 1 || collectionView.tag == 2 {
             let card = dict[indexPath.row] as DTCard
             let view2 = CardDetailsViewController()
             
@@ -341,10 +338,6 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         case 3:
             var view2 = SetListViewController()
             view2.arrayData = DTSet.MR_findAllSortedBy("releaseDate", ascending: false)
-            view = view2;
-        case 4:
-            var view2 = TopListViewController()
-            view2.arrayData = Database.sharedInstance().fetchHighestPriced(100) as [DTCard]?
             view = view2;
         default:
             println("tag = \(tag)")
