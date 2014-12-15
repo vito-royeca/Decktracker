@@ -29,7 +29,7 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
     let kSearchResultsIdentifier = "kSearchResultsIdentifier"
     
     var sortButton:UIBarButtonItem?
-    var tblSet:UITableView?
+    var tblSets:UITableView?
     var sections:[String: [DTSet]]?
     var sectionIndexTitles:[String]?
     var arrayData:[AnyObject]?
@@ -38,7 +38,7 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
     var sortMode:SortMode?
 
     lazy var fetchedResultsController: NSFetchedResultsController = {
-        var nsfrc = Database.sharedInstance().search(nil, withPredicate:self.predicate, withSortDescriptors: self.sorters)
+        var nsfrc = Database.sharedInstance().search(nil, withPredicate:self.predicate, withSortDescriptors: self.sorters, withSectionName:nil)
         
         self.fetchedResultsController = nsfrc
         self.fetchedResultsController.delegate = self
@@ -54,13 +54,13 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
         
         sortButton = UIBarButtonItem(title: "Sort", style: UIBarButtonItemStyle.Plain, target: self, action: "sortButtonTapped")
         
-        tblSet = UITableView(frame: frame, style: UITableViewStyle.Plain)
-        tblSet!.delegate = self
-        tblSet!.dataSource = self
-        tblSet!.registerNib(UINib(nibName: "SearchResultsTableViewCell", bundle: nil), forCellReuseIdentifier: kSearchResultsIdentifier)
+        tblSets = UITableView(frame: frame, style: UITableViewStyle.Plain)
+        tblSets!.delegate = self
+        tblSets!.dataSource = self
+        tblSets!.registerNib(UINib(nibName: "SearchResultsTableViewCell", bundle: nil), forCellReuseIdentifier: kSearchResultsIdentifier)
 
         navigationItem.rightBarButtonItem = sortButton
-        view.addSubview(tblSet!)
+        view.addSubview(tblSets!)
         
         self.sortMode = SortMode.ByReleaseDate
         self.loadData()
@@ -130,7 +130,7 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
             }
             
             self.loadData()
-            self.tblSet!.reloadData()
+            self.tblSets!.reloadData()
         }
         
         ActionSheetStringPicker.showPickerWithTitle("Sort By",
@@ -232,7 +232,7 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
                 break
             }
             
-            var nsfrc = Database.sharedInstance().search(nil, withPredicate:self.predicate, withSortDescriptors: sorters)
+            var nsfrc = Database.sharedInstance().search(nil, withPredicate:self.predicate, withSortDescriptors: sorters, withSectionName:nil)
             self.fetchedResultsController = nsfrc
             self.fetchedResultsController.delegate = self
             self.doSearch()
@@ -245,8 +245,8 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
             println("Unresolved error \(error), \(error?.userInfo)");
         }
 
-        if tblSet != nil {
-            tblSet!.reloadData()
+        if tblSets != nil {
+            tblSets!.reloadData()
         }
     }
     
@@ -322,10 +322,15 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
             }
             
             let key = keys![section]
-            return key
+            let sets = sections![key]
+            let setsString = sets!.count > 1 ? "sets" : "set"
+            return "\(key) (\(sets!.count) \(setsString))"
             
         } else {
-            return nil
+            let sectionInfos = fetchedResultsController.sections as [NSFetchedResultsSectionInfo]?
+            let sectionInfo = sectionInfos![section]
+            let cardsString = sectionInfo.numberOfObjects > 1 ? "cards" : "card"
+            return "\(sectionInfo.numberOfObjects) \(cardsString)"
         }
     }
     
@@ -346,8 +351,7 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
         return section
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
-    {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:UITableViewCell?
         
         if navigationItem.title == "Sets" {
@@ -398,7 +402,7 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
                 UIGraphicsEndImageContext()
             }
             
-            cell = cell1;
+            cell = cell1
             
         } else {
             
@@ -451,8 +455,8 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
             let view2 = CardDetailsViewController()
             
             view2.addButtonVisible = true
-            view2.card = card
             view2.fetchedResultsController = fetchedResultsController
+            view2.card = card
             view = view2
         }
         
@@ -463,29 +467,29 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
     func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
 //        println("\(__LINE__) \(__PRETTY_FUNCTION__) \(__FUNCTION__)")
         
-        let tableView = tblSet;
+        let tableView = tblSets;
         var paths = [NSIndexPath]()
         
         switch(type) {
         case NSFetchedResultsChangeType.Insert:
             paths.append(newIndexPath!)
-            tblSet!.insertRowsAtIndexPaths(paths, withRowAnimation:UITableViewRowAnimation.Fade)
+            tblSets!.insertRowsAtIndexPaths(paths, withRowAnimation:UITableViewRowAnimation.Fade)
 
         case NSFetchedResultsChangeType.Delete:
             paths.append(indexPath!)
-            tblSet!.deleteRowsAtIndexPaths(paths, withRowAnimation:UITableViewRowAnimation.Fade)
+            tblSets!.deleteRowsAtIndexPaths(paths, withRowAnimation:UITableViewRowAnimation.Fade)
             
         case NSFetchedResultsChangeType.Update:
             let card = fetchedResultsController.objectAtIndexPath(indexPath!) as DTCard
-            let cell = tblSet!.cellForRowAtIndexPath(indexPath!) as SearchResultsTableViewCell?
-            cell!.displayCard(card)
+            let cell = tblSets!.cellForRowAtIndexPath(indexPath!) as SearchResultsTableViewCell?
+            cell?.displayCard(card)
         case NSFetchedResultsChangeType.Move:
             paths.append(indexPath!)
-            tblSet!.deleteRowsAtIndexPaths(paths, withRowAnimation:UITableViewRowAnimation.Fade)
+            tblSets!.deleteRowsAtIndexPaths(paths, withRowAnimation:UITableViewRowAnimation.Fade)
             
             paths = [NSIndexPath]()
             paths.append(newIndexPath!)
-            tblSet!.insertRowsAtIndexPaths(paths, withRowAnimation:UITableViewRowAnimation.Fade)
+            tblSets!.insertRowsAtIndexPaths(paths, withRowAnimation:UITableViewRowAnimation.Fade)
         }
     }
     
@@ -494,21 +498,21 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
         
         switch(type) {
         case NSFetchedResultsChangeType.Insert:
-            tblSet!.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation:UITableViewRowAnimation.Fade)
+            tblSets!.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation:UITableViewRowAnimation.Fade)
         case NSFetchedResultsChangeType.Delete:
-            tblSet!.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation:UITableViewRowAnimation.Fade)
+            tblSets!.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation:UITableViewRowAnimation.Fade)
         default:
             break;
         }
     }
     
     func controllerWillChangeContent(controller: NSFetchedResultsController) {
-        tblSet!.beginUpdates()
+        tblSets!.beginUpdates()
 //        println("\(__LINE__) \(__PRETTY_FUNCTION__) \(__FUNCTION__)")
     }
     
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
 //        println("\(__LINE__) \(__PRETTY_FUNCTION__) \(__FUNCTION__)")        
-        tblSet!.endUpdates()
+        tblSets!.endUpdates()
     }
 }

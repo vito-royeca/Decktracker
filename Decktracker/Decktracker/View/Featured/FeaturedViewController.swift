@@ -15,6 +15,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
     let kBannerCellIdentifier       = "kBannerCellIdentifier"
     let kDefaultCellIdentifier      = "kDefaultCellIdentifier"
     
+    var btnSpecial:UIBarButtonItem?
     var btnWishList:UIBarButtonItem?
     var tblFeatured:UITableView?
     var colBanner:UICollectionView?
@@ -28,14 +29,15 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         let height = view.frame.size.height - tabBarController!.tabBar.frame.size.height
         var frame = CGRect(x:0, y:0, width:view.frame.width, height:height)
         
-//        btnWishList = UIBarButtonItem(image:UIImage(named: "wishlist.png"), style:UIBarButtonItemStyle.Plain, target:self, action:"btnWishListTapped:")
-//        self.navigationItem.rightBarButtonItem = btnWishList
+        btnSpecial = UIBarButtonItem(title: "Special", style: UIBarButtonItemStyle.Plain, target: self, action: "specialButtonTapped")
         
         tblFeatured = UITableView(frame: frame, style: UITableViewStyle.Plain)
         tblFeatured!.delegate = self
         tblFeatured!.dataSource = self
         tblFeatured!.registerNib(UINib(nibName: "BannerScrollTableViewCell", bundle: nil), forCellReuseIdentifier: kBannerCellIdentifier)
         tblFeatured!.registerNib(UINib(nibName: "HorizontalScrollTableViewCell", bundle: nil), forCellReuseIdentifier: kHorizontalCellIdentifier)
+        
+        self.navigationItem.leftBarButtonItem = btnSpecial
         view.addSubview(tblFeatured!)
         
         self.navigationItem.title = "Featured"
@@ -75,6 +77,12 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         
         NSNotificationCenter.defaultCenter().removeObserver(self, name:kFetchTopRatedDone,  object:nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name:kFetchTopViewedDone,  object:nil)
+    }
+    
+    func specialButtonTapped() {
+        let view = SpecialListsViewController()
+        
+        self.navigationController?.pushViewController(view, animated:false)
     }
     
     func loadData() {

@@ -40,9 +40,11 @@
     
     NSFetchedResultsController *nsfrc = self.predicate ? [[Database sharedInstance] search:self.searchBar.text
                                                                              withPredicate:self.predicate
-                                                          withSortDescriptors:nil] :
+                                                                       withSortDescriptors:nil
+                                                                           withSectionName:nil] :
                                                          [[Database sharedInstance] search:self.searchBar.text
-                                                                       withSortDescriptors:nil];
+                                                                       withSortDescriptors:nil
+                                                                           withSectionName:nil];
     
     self.fetchedResultsController = nsfrc;
     _fetchedResultsController.delegate = self;
@@ -150,7 +152,7 @@
     
 	if (self.fetchedResultsController)
     {
-        return [NSString stringWithFormat:@"%tu Results", [sectionInfo numberOfObjects]];
+        return [NSString stringWithFormat:@"%tu results", [sectionInfo numberOfObjects]];
     }
     else
     {
@@ -188,8 +190,8 @@
     CardDetailsViewController *view = [[CardDetailsViewController alloc] init];
     DTCard *card = [self.fetchedResultsController objectAtIndexPath:indexPath];
     
-    view.fetchedResultsController = self.fetchedResultsController;
     view.addButtonVisible = YES;
+    view.fetchedResultsController = self.fetchedResultsController;
     [view setCard:card];
     
     [self.navigationController pushViewController:view animated:NO];

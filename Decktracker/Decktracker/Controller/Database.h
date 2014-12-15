@@ -32,11 +32,15 @@
 -(void) closeDb;
 
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
--(NSFetchedResultsController*) search:(NSString*)query
-                  withSortDescriptors:(NSArray*) sorters;
+-(NSFetchedResultsController*) search:(NSString*) query
+                  withSortDescriptors:(NSArray*) sorters
+                      withSectionName:(NSString*) sectionName;
+
 -(NSFetchedResultsController*) search:(NSString*)query
                         withPredicate:(NSPredicate*)predicate
-                  withSortDescriptors:(NSArray*) sorters;
+                  withSortDescriptors:(NSArray*) sorters
+                      withSectionName:(NSString*) sectionName;
+
 -(NSFetchedResultsController*) advanceSearch:(NSDictionary*)query withSorter:(NSDictionary*) sorter;
 #endif
 

@@ -60,6 +60,9 @@
 -(void) setCard:(DTCard *)card
 {
     _card = card;
+
+    [[FileManager sharedInstance] downloadCardImage:_card immediately:YES];
+    [[FileManager sharedInstance] downloadCropImage:_card immediately:YES];
     
     if (self.fetchedResultsController)
     {
@@ -67,8 +70,6 @@
         NSInteger index = [sectionInfo.objects indexOfObject:self.card];
         self.navigationItem.title = [NSString stringWithFormat:@"%tu of %tu", index+1, sectionInfo.objects.count];
 
-        [[FileManager sharedInstance] downloadCardImage:_card immediately:YES];
-        [[FileManager sharedInstance] downloadCropImage:_card immediately:YES];
         // download next four card images
         for (int i = 0; i < 5; i++)
         {
@@ -386,24 +387,17 @@
     UIImage *image = [UIImage imageWithContentsOfFile:[[FileManager sharedInstance] cardPath:self.card]];
     [self.cardImage setImage:image];
     self.cardImage.contentMode = UIViewContentModeScaleAspectFit;
+    self.cardImage.clipsToBounds = YES;
+    
     [self.cardImage removeImageViewer];
     [self.cardImage setupImageViewerWithDatasource:self
                                       initialIndex:selectedRow
                                             onOpen:^{ }
                                            onClose:^{ }];
-    self.cardImage.clipsToBounds = YES;
+    
     
     [[FileManager sharedInstance] downloadCardImage:self.card immediately:YES];
     [self updateNavigationButtons];
-
-#ifndef DEBUG
-    // send to Google Analytics
-    id tracker = [[GAI sharedInstance] defaultTracker];
-    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Card Details - Card"
-                                                          action:nil
-                                                           label:nil
-                                                           value:nil] build]];
-#endif
 }
 
 - (void) displayDetails
@@ -932,9 +926,13 @@
     if (self.fetchedResultsController)
     {
         DTCard *card = [self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
-    
-        [self setCard:card];
-        [self.tblDetails reloadData];
+//        id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
+//        NSInteger index = [sectionInfo.objects indexOfObject:self.card];
+//        DTCard *card = sectionInfo.objects[index];
+        
+//        [self setCard:card];
+        self.card = card;
+//        [self.tblDetails reloadData];
     }
     return [NSURL fileURLWithPath:[[FileManager sharedInstance] cardPath:self.card]];
 }
@@ -946,9 +944,13 @@
     if (self.fetchedResultsController)
     {
         DTCard *card = [self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+//        id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
+//        NSInteger index = [sectionInfo.objects indexOfObject:self.card];
+//        DTCard *card = sectionInfo.objects[index];
     
-        [self setCard:card];
-        [self.tblDetails reloadData];
+//        [self setCard:card];
+        self.card = card;
+//        [self.tblDetails reloadData];
     }
     return [UIImage imageWithContentsOfFile:[[FileManager sharedInstance] cardPath:self.card]];
 }

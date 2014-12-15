@@ -143,8 +143,9 @@ static Database *_me;
 }
 
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
--(NSFetchedResultsController*) search:(NSString*)query
+-(NSFetchedResultsController*) search:(NSString*) query
                   withSortDescriptors:(NSArray*) sorters
+                      withSectionName:(NSString*) sectionName
 {
     NSPredicate *predicate;
     
@@ -187,13 +188,14 @@ static Database *_me;
     
     return [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                managedObjectContext:moc
-                                                 sectionNameKeyPath:nil
+                                                 sectionNameKeyPath:sectionName
                                                           cacheName:nil];
 }
 
 -(NSFetchedResultsController*) search:(NSString*) query
                         withPredicate:(NSPredicate*)predicate
                   withSortDescriptors:(NSArray*) sorters
+                      withSectionName:(NSString*) sectionName
 {
     NSPredicate *predicate2;
     
@@ -224,6 +226,7 @@ static Database *_me;
             }
         }
     }
+    
     NSManagedObjectContext *moc = [NSManagedObjectContext MR_defaultContext];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     if (!sorters)
@@ -245,7 +248,7 @@ static Database *_me;
     
     return [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                managedObjectContext:moc
-                                                 sectionNameKeyPath:nil
+                                                 sectionNameKeyPath:sectionName
                                                           cacheName:nil];
 }
 
