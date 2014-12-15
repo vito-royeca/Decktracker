@@ -1,5 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict/>
+<dict>
+	<key>JSON Version</key>
+	<string>2.13.1</string>
+	<key>Images Version</key>
+	<string>5.8.6</string>
+	<key>Card Updates</key>
+	<dict>
+		<key>5.8.6</key>
+		<array>
+			<string>M15</string>
+		</array>
+		<key>5.8.5</key>
+		<array>
+			<string>DDN</string>
+			<string>KTK</string>
+			<string>CMS</string>
+			<string>M15</string>
+		</array>
+		<key>5.8.4</key>
+		<array>
+			<string>CM1</string>
+		</array>
+		<key>5.8.2</key>
+		<array>
+			<string>C14</string>
+		</array>
+		<key>5.6.6</key>
+		<array>
+			<string>MD1</string>
+		</array>
+		<key>5.6.7</key>
+		<array>
+			<string>DDM</string>
+		</array>
+	</dict>
+</dict>
 </plist>
