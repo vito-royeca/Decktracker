@@ -52,7 +52,7 @@
 #define COCOAPODS_POD_AVAILABLE_ActionSheetPicker_3_0
 #define COCOAPODS_VERSION_MAJOR_ActionSheetPicker_3_0 1
 #define COCOAPODS_VERSION_MINOR_ActionSheetPicker_3_0 3
-#define COCOAPODS_VERSION_PATCH_ActionSheetPicker_3_0 7
+#define COCOAPODS_VERSION_PATCH_ActionSheetPicker_3_0 9
 
 // Bolts
 #define COCOAPODS_POD_AVAILABLE_Bolts
@@ -76,7 +76,7 @@
 #define COCOAPODS_POD_AVAILABLE_Dropbox_Sync_API_SDK
 #define COCOAPODS_VERSION_MAJOR_Dropbox_Sync_API_SDK 3
 #define COCOAPODS_VERSION_MINOR_Dropbox_Sync_API_SDK 1
-#define COCOAPODS_VERSION_PATCH_Dropbox_Sync_API_SDK 1
+#define COCOAPODS_VERSION_PATCH_Dropbox_Sync_API_SDK 2
 
 // EDStarRating
 #define COCOAPODS_POD_AVAILABLE_EDStarRating
@@ -112,7 +112,7 @@
 #define COCOAPODS_POD_AVAILABLE_InAppSettingsKit
 #define COCOAPODS_VERSION_MAJOR_InAppSettingsKit 2
 #define COCOAPODS_VERSION_MINOR_InAppSettingsKit 3
-#define COCOAPODS_VERSION_PATCH_InAppSettingsKit 2
+#define COCOAPODS_VERSION_PATCH_InAppSettingsKit 3
 
 // LMAlertView
 #define COCOAPODS_POD_AVAILABLE_LMAlertView
@@ -141,15 +141,14 @@
 // Parse
 #define COCOAPODS_POD_AVAILABLE_Parse
 #define COCOAPODS_VERSION_MAJOR_Parse 1
-#define COCOAPODS_VERSION_MINOR_Parse 5
-#define COCOAPODS_VERSION_PATCH_Parse 0
+#define COCOAPODS_VERSION_MINOR_Parse 6
+#define COCOAPODS_VERSION_PATCH_Parse 1
 
 // ParseFacebookUtils
 #define COCOAPODS_POD_AVAILABLE_ParseFacebookUtils
-// This library does not follow semantic-versioning,
-// so we were not able to define version macros.
-// Please contact the author.
-// Version: 1.5.0.1.
+#define COCOAPODS_VERSION_MAJOR_ParseFacebookUtils 1
+#define COCOAPODS_VERSION_MINOR_ParseFacebookUtils 6
+#define COCOAPODS_VERSION_PATCH_ParseFacebookUtils 1
 
 // ParseUI
 #define COCOAPODS_POD_AVAILABLE_ParseUI
@@ -161,7 +160,7 @@
 #define COCOAPODS_POD_AVAILABLE_PureLayout
 #define COCOAPODS_VERSION_MAJOR_PureLayout 2
 #define COCOAPODS_VERSION_MINOR_PureLayout 0
-#define COCOAPODS_VERSION_PATCH_PureLayout 3
+#define COCOAPODS_VERSION_PATCH_PureLayout 4
 
 // RBBAnimation
 #define COCOAPODS_POD_AVAILABLE_RBBAnimation
