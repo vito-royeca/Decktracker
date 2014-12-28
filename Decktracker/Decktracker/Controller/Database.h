@@ -23,6 +23,7 @@
 #define kFetchTopRatedDone      @"kFetchTopRatedDone"
 #define kFetchTopViewedDone     @"kFetchTopViewedDone"
 #define kParseSyncDone          @"kParseSyncDone"
+#define kPriceUpdateDone        @"kPriceUpdateDone"
 
 @interface Database : NSObject
 
@@ -46,7 +47,7 @@
 
 -(DTCard*) findCard:(NSString*) card inSet:(NSString*) setCode;
 -(NSString*) cardRarityIndex:(DTCard*) card;
--(DTCard*) fetchTcgPlayerPriceForCard:(DTCard*) card;
+-(void) fetchTcgPlayerPriceForCard:(DTCard*) card;
 -(NSArray*) fetchRandomCards:(int) howMany;
 -(NSArray*) fetchSets:(int) howMany;
 -(NSArray*) fetchHighestPriced:(int) limit;

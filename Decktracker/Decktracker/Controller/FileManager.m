@@ -78,9 +78,35 @@ static FileManager *_me;
     return [NSString stringWithFormat:@"%@/images/set/%@/%@/48.png", [[NSBundle mainBundle] bundlePath], card.set.code, [[Database sharedInstance] cardRarityIndex:card]];
 }
 
--(NSString*) cardSetPathBig:(DTSet*) set
+-(NSString*) cardTypePath:(DTCard*) card
 {
-    return [NSString stringWithFormat:@"%@/images/set/%@/C/96.png", [[NSBundle mainBundle] bundlePath], set.code];
+    NSString *typePath;
+    
+    for (NSString *type in CARD_TYPES_WITH_SYMBOL)
+    {
+        if ([card.type hasPrefix:type])
+        {
+            typePath = [type lowercaseString];
+        }
+    }
+    return [NSString stringWithFormat:@"%@/images/other/%@/48.png", [[NSBundle mainBundle] bundlePath], typePath];
+}
+
+-(NSString*) setPath:(DTSet*) set small:(BOOL) small
+{
+    NSArray *rarities = @[@"C", @"R", @"U", @"M", @"S"];
+    
+    for (NSString *rarity in rarities)
+    {
+        NSString *path = [NSString stringWithFormat:@"%@/images/set/%@/%@/%@.png", [[NSBundle mainBundle] bundlePath], set.code, rarity, small? @"48":@"96"];
+        
+        if ([[NSFileManager defaultManager] fileExistsAtPath:path])
+        {
+            return path;
+        }
+    }
+    
+    return nil;
 }
 
 -(void) downloadCardImage:(DTCard*) card immediately:(BOOL) immediately

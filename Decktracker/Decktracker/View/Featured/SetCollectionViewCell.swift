@@ -25,8 +25,15 @@ class SetCollectionViewCell: UICollectionViewCell {
     }
 
     func displaySet(set: DTSet) {
-        let path = FileManager.sharedInstance().cardSetPathBig(set)
-        var setImage = UIImage(contentsOfFile: path)
+        let path = FileManager.sharedInstance().setPath(set, small: false)
+        var setImage:UIImage?
+        
+        if path != nil && NSFileManager.defaultManager().fileExistsAtPath(path) {
+            setImage = UIImage(contentsOfFile: path)
+        } else {
+            setImage = UIImage(named: "blank.png")
+        }
+        
         imgSet.image = setImage
         // resize the image
         if setImage != nil {

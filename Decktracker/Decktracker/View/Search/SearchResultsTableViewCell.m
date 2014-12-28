@@ -30,6 +30,11 @@
 @synthesize imgSet = _imgSet;
 @synthesize lblBadge = _lblBadge;
 @synthesize viewRating = _viewRating;
+@synthesize lblLowPrice = _lblLowPrice;
+@synthesize lblMedianPrice = _lblMedianPrice;
+@synthesize lblHighPrice = _lblHighPrice;
+@synthesize lblFoilPrice = _lblFoilPrice;
+@synthesize imgType = _imgType;
 
 - (void)awakeFromNib
 {
@@ -50,12 +55,18 @@
     _ratingControl.backgroundColor = [UIColor clearColor];
     _ratingControl.displayMode=EDStarRatingDisplayHalf;
     
+    
     self.lblCardName.adjustsFontSizeToFitWidth = YES;
     self.lblDetail.adjustsFontSizeToFitWidth = YES;
     self.lblSet.adjustsFontSizeToFitWidth = YES;
+    self.lblLowPrice.adjustsFontSizeToFitWidth = YES;
+    self.lblMedianPrice.adjustsFontSizeToFitWidth = YES;
+    self.lblHighPrice.adjustsFontSizeToFitWidth = YES;
+    self.lblFoilPrice.adjustsFontSizeToFitWidth = YES;
     
     [self.viewRating removeFromSuperview];
     [self addSubview:_ratingControl];
+//    [_ratingControl sizeToFit];
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -93,7 +104,14 @@
                                              selector:@selector(parseSyncDone:)
                                                  name:kParseSyncDone
                                                object:nil];
-
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:kPriceUpdateDone
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updatePricing:)
+                                                 name:kPriceUpdateDone
+                                               object:nil];
+    
     NSMutableString *type = [[NSMutableString alloc] initWithFormat:@"%@", card.type];
     
     if (card.power || card.toughness)
@@ -116,7 +134,7 @@
     
     self.lblCardName.text = [NSString stringWithFormat:@" %@", card.name];
     self.lblDetail.text = type;
-    self.lblSet.text = [NSString stringWithFormat:@"%@", card.set.name];
+    self.lblSet.text = [NSString stringWithFormat:@"%@ (%@)", card.set.name, card.rarity.name];
     _ratingControl.rating = [_card.rating doubleValue];
     
     NSString *path = [[FileManager sharedInstance] cropPath:card];
@@ -131,17 +149,43 @@
     [[FileManager sharedInstance] downloadCropImage:card immediately:NO];
     [[FileManager sharedInstance] downloadCardImage:card immediately:NO];
     
+    // type image
+    path = [[FileManager sharedInstance] cardTypePath:card];
+    if (path)
+    {
+        UIImage *typeImage = [[UIImage alloc] initWithContentsOfFile:path];
+        self.imgType.image = typeImage;
+        // resize the image
+        CGSize itemSize = CGSizeMake(typeImage.size.width/2, typeImage.size.height/2);
+        UIGraphicsBeginImageContextWithOptions(itemSize, NO, UIScreen.mainScreen.scale);
+        CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
+        [typeImage drawInRect:imageRect];
+        self.imgType.image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+    }
+    else
+    {
+        self.imgType.image = nil;
+    }
+    
     // set image
     path = [[FileManager sharedInstance] cardSetPath:card];
-    UIImage *setImage = [[UIImage alloc] initWithContentsOfFile:path];
-    self.imgSet.image = setImage;
-    // resize the image
-    CGSize itemSize = CGSizeMake(setImage.size.width/2, setImage.size.height/2);
-    UIGraphicsBeginImageContextWithOptions(itemSize, NO, UIScreen.mainScreen.scale);
-    CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
-    [setImage drawInRect:imageRect];
-    self.imgSet.image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
+    if (path)
+    {
+        UIImage *setImage = [[UIImage alloc] initWithContentsOfFile:path];
+        self.imgSet.image = setImage;
+        // resize the image
+        CGSize itemSize = CGSizeMake(setImage.size.width/2, setImage.size.height/2);
+        UIGraphicsBeginImageContextWithOptions(itemSize, NO, UIScreen.mainScreen.scale);
+        CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
+        [setImage drawInRect:imageRect];
+        self.imgSet.image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+    }
+    else
+    {
+        self.imgSet.image = nil;
+    }
     
     // draw the mana cost
     NSMutableArray *arrImages = [[NSMutableArray alloc] init];
@@ -281,6 +325,8 @@
         
         [self.viewManaCost addSubview:imgMana];
     }
+    
+    [self showCardPricing];
 }
 
 -(void) addBadge:(int) badgeValue
@@ -295,6 +341,36 @@
     self.lblRank.text = [NSString stringWithFormat:@"%d", rankValue];
     self.lblRank.layer.backgroundColor = [UIColor whiteColor].CGColor;
     self.lblRank.layer.cornerRadius = self.lblBadge.bounds.size.height / 2;
+}
+
+-(void) updatePricing:(id) sender
+{
+    DTCard *card = [sender userInfo][@"card"];
+    
+    if (_card == card)
+    {
+        [self showCardPricing];
+    }
+}
+
+-(void) showCardPricing
+{
+    NSNumberFormatter *formatter =  [[NSNumberFormatter alloc] init];
+    [formatter setUsesSignificantDigits:YES];
+    [formatter setMaximumFractionDigits:2];
+    [formatter setRoundingMode:NSNumberFormatterRoundCeiling];
+    
+    NSString *price = [_card.tcgPlayerLowPrice doubleValue] != 0 ? [NSString stringWithFormat:@"$%@", [formatter stringFromNumber:_card.tcgPlayerLowPrice]] : @"N/A";
+    self.lblLowPrice.text = price;
+    
+    price = [_card.tcgPlayerMidPrice doubleValue] != 0 ? [NSString stringWithFormat:@"$%@", [formatter stringFromNumber:_card.tcgPlayerMidPrice]] : @"N/A";
+    self.lblMedianPrice.text = price;
+    
+    price = [_card.tcgPlayerHighPrice doubleValue] != 0 ? [NSString stringWithFormat:@"$%@", [formatter stringFromNumber:_card.tcgPlayerHighPrice]] : @"N/A";
+    self.lblHighPrice.text = price;
+    
+    price = [_card.tcgPlayerFoilPrice doubleValue] != 0 ? [NSString stringWithFormat:@"$%@", [formatter stringFromNumber:_card.tcgPlayerFoilPrice]] : @"N/A";
+    self.lblFoilPrice.text = price;
 }
 
 -(void) loadCropImage:(id) sender

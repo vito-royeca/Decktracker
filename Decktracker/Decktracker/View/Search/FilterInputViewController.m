@@ -13,6 +13,7 @@
 #import "DTCardType.h"
 #import "DTFormat.h"
 #import "DTSet.h"
+#import "FileManager.h"
 #import "Magic.h"
 
 #ifndef DEBUG
@@ -335,13 +336,9 @@
             if ([[self.filterOptions firstObject] isKindOfClass:[DTSet class]])
             {
                 DTSet *set = arrFilter[indexPath.row];
-                NSString *path = [NSString stringWithFormat:@"%@/images/set/%@/C/48.png", [[NSBundle mainBundle] bundlePath], set.code];
+                NSString *path = [[FileManager sharedInstance] setPath:set small:YES];
                 
-                if (![[NSFileManager defaultManager] fileExistsAtPath:path])
-                {
-                    cell.imageView.image = [UIImage imageNamed:@"blank.png"];
-                }
-                else
+                if (path && [[NSFileManager defaultManager] fileExistsAtPath:path])
                 {
                     UIImage *imgSet = [[UIImage alloc] initWithContentsOfFile:path];
                     cell.imageView.image = imgSet;
@@ -353,6 +350,10 @@
                     [cell.imageView.image drawInRect:imageRect];
                     cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
                     UIGraphicsEndImageContext();
+                }
+                else
+                {
+                    cell.imageView.image = [UIImage imageNamed:@"blank.png"];
                 }
                 
                 cell.textLabel.text = set.name;

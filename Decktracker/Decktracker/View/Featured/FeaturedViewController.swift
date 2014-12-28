@@ -37,11 +37,15 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         tblFeatured!.registerNib(UINib(nibName: "BannerScrollTableViewCell", bundle: nil), forCellReuseIdentifier: kBannerCellIdentifier)
         tblFeatured!.registerNib(UINib(nibName: "HorizontalScrollTableViewCell", bundle: nil), forCellReuseIdentifier: kHorizontalCellIdentifier)
         
-        self.navigationItem.leftBarButtonItem = btnSpecial
         view.addSubview(tblFeatured!)
         
         self.navigationItem.title = "Featured"
         self.loadData()
+        
+        
+        // test scrolling
+//        var btnScroll = UIBarButtonItem(title: "Scroll", style: UIBarButtonItemStyle.Plain, target: self, action: "btnScrollTapped:")
+//        self.navigationItem.rightBarButtonItem = btnScroll
     }
 
     override func didReceiveMemoryWarning() {
@@ -189,8 +193,8 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
             
             if cell2 == nil {
                 cell2 = BannerScrollTableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: kBannerCellIdentifier)
+                
             }
-            cell2!.selectionStyle = UITableViewCellSelectionStyle.None
             cell2!.setCollectionViewDataSourceDelegate(self, index: indexPath.row)
             cell = cell2
         } else if indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 3 {
@@ -202,9 +206,8 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
             if cell2 == nil {
                 cell2 = HorizontalScrollTableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: kHorizontalCellIdentifier)
             }
-            cell2!.lblTitle?.text = key
-            cell2!.selectionStyle = UITableViewCellSelectionStyle.None
             cell2!.setCollectionViewDataSourceDelegate(self, index: indexPath.row)
+            cell2!.lblTitle?.text = key
             cell = cell2
         } else {
             let row = arrayData![4]
@@ -220,20 +223,20 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
             if indexPath.row == 4 {
                 cell!.textLabel.text = key
                 cell!.imageView.image = nil
-                cell!.selectionStyle = UITableViewCellSelectionStyle.None
                 cell!.accessoryType = UITableViewCellAccessoryType.None
             }
             else if indexPath.row == 5 {
-                cell!.imageView.image = UIImage(named: "cards.png")
                 cell!.textLabel.text = dict[0]
+                cell!.imageView.image = UIImage(named: "cards.png")
                 cell!.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
             } else if indexPath.row == 6 {
-                cell!.imageView.image = UIImage(named: "download.png")
                 cell!.textLabel.text = dict[1]
+                cell!.imageView.image = UIImage(named: "download.png")
                 cell!.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
             }
         }
 
+        cell!.selectionStyle = UITableViewCellSelectionStyle.None
         return cell!
     }
     
@@ -347,16 +350,15 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         navigationController?.pushViewController(view!, animated:true)
     }
     
-    func btnWishListTapped(sender: AnyObject) {
-        println("How I wish!")
-//        Database.sharedInstance().uploadAllSetsToParse()
+    func btnScrollTapped(sender: AnyObject) {
         let path = NSIndexPath(forRow: 0, inSection: 0)
-        let path2 = NSIndexPath(forRow: 3, inSection: 0)
+        let path2 = NSIndexPath(forRow: 1, inSection: 0)
         
         let cell = tableView(tblFeatured!, cellForRowAtIndexPath: path) as? BannerScrollTableViewCell
-        cell!.collectionView.setContentOffset(CGPoint(x:320*3, y:0), animated: true)
+//        cell!.collectionView.setContentOffset(CGPoint(x:320*3, y:0), animated: true)
         cell!.collectionView.scrollToItemAtIndexPath(path2, atScrollPosition:UICollectionViewScrollPosition.Left, animated:false)
-        
+        cell!.collectionView.reloadData()
+//        cell?.showSlide()
     }
     
     // InAppPurchaseViewControllerDelegate

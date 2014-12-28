@@ -153,7 +153,7 @@
     
     NSString *filePath = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] resourcePath], @"Data/AllSets-x.json"];
     NSData *data = [NSData dataWithContentsOfFile:filePath];
-    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+//    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
     
     for (DTCard *card in [DTCard MR_findAllSortedBy:@"set.releaseDate" ascending:YES])
     {

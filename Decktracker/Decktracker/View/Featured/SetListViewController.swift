@@ -384,11 +384,9 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
             cell1!.detailTextLabel?.text = "Released: \(date) (\(set.numberOfCards) cards)"
             
             
-            let path = "\(NSBundle.mainBundle().bundlePath)/images/set/\(set.code)/C/48.png"
+            let path = FileManager.sharedInstance().setPath(set, small: true)
             
-            if !NSFileManager.defaultManager().fileExistsAtPath(path) {
-                cell1!.imageView.image = UIImage(named: "blank.png")
-            } else {
+            if path != nil && NSFileManager.defaultManager().fileExistsAtPath(path) {
                 let setImage = UIImage(contentsOfFile: path)
                 
                 cell1!.imageView.image = setImage;
@@ -400,6 +398,9 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
                 setImage!.drawInRect(imageRect)
                 cell1!.imageView.image = UIGraphicsGetImageFromCurrentImageContext()
                 UIGraphicsEndImageContext()
+
+            } else {
+                cell1!.imageView.image = UIImage(named: "blank.png")
             }
             
             cell = cell1

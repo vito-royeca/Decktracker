@@ -9,18 +9,6 @@
 #ifndef Decktracker_Magic_h
 #define Decktracker_Magic_h
 
-#define LayoutNormal                     @"Normal"
-#define LayoutSplit                      @"Split"
-#define LayoutFlip                       @"Flip"
-#define LayoutDoubleFaced                @"Double-Faced"
-#define LayoutToken                      @"Token"
-#define LayoutPlane                      @"Plane"
-#define LayoutScheme                     @"Scheme"
-#define LayoutPhenomenon                 @"Phenomenon"
-#define LayoutLeveler                    @"Leveler"
-#define LayoutVanguard                   @"Vanguard"
-typedef NSString* Layout;
-
 #define kManaSymbols                   @[@"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", \
                                          @"10", @"11", @"12", @"13", @"14", @"15", @"16", @"17", \
                                          @"18", @"19", @"20", @"100", @"1000000", @"W", @"U", @"B", \
@@ -44,6 +32,10 @@ typedef NSString* Layout;
                                           @"Planeswalker", @"Scheme", @"Snow", @"Sorcery", \
                                           @"Tribal", @"Vanguard", @"World"]
 
+#define CARD_TYPES_WITH_SYMBOL          @[@"Artifact", @"Creature", \
+                                          @"Enchantment", @"Instant", @"Land", \
+                                          @"Planeswalker", @"Sorcery"]
+
 
 #define TCGPLAYER_PARTNER_KEY           @"DECKTRACKER"
 #define TCGPLAYER_FETCH_STORAGE         24*14 // 14 days
@@ -58,9 +50,6 @@ typedef NS_ENUM(NSInteger, EditMode)
 
 #define kCrashlyticsAPIKey               @"114b3dd82452ec2f4024140ec862698d331b8f3f"
 
-#define kBoxID                           @"v3vx3t10k6genv8ao7r5f3rqunz23atm"
-#define kBoxSecret                       @"foPhGtidtVObEBEbNd2FZIbxk9nKSu99"
-
 #define kDropboxID                       @"v57bkxsnzi3gxt3"
 #define kDropBoxSecret                   @"qbyj5znuytk3ljj"
 
@@ -68,9 +57,6 @@ typedef NS_ENUM(NSInteger, EditMode)
 #define kGoogleDriveSecret               @"zqynI0KVtpRhl6JVd5RrSP82"
 #define kGoogleDriveKeychain             @"Decktracker"
 #define kGAITrackingID                   @"UA-53780226-1"
-
-#define kOneDriveID                      @""
-#define kOneDriveSecret                  @""
 
 #define kParseID                         @"gWQ4zjHnoXHJK15ipFVgWLUSA979mqHaZ7sOlPU9"
 #define kParseClientKey                  @"VVX6xrtslagHUKOSBXV3hj0B0i08izWSk53gSGem"

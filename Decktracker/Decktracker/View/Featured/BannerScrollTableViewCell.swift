@@ -35,16 +35,21 @@ class BannerScrollTableViewCell: UITableViewCell {
         collectionView!.dataSource = dataSourceDelegate
         collectionView!.delegate = dataSourceDelegate
         collectionView!.tag = index
-        
         collectionView!.reloadData()
     }
 
     func showSlide() {
-//        collectionView!.selectItemAtIndexPath(indexPath!, animated:true, scrollPosition:UICollectionViewScrollPosition.None)
+//        if indexPath == nil {
+//            indexPath = NSIndexPath(forRow: 0, inSection: 0)
+//        }
+
         println("Scrolling to... \(indexPath!)")
-        collectionView!.setContentOffset(CGPoint(x: 320*indexPath!.row, y: 0), animated: true)
-        collectionView!.setNeedsDisplayInRect(CGRect(x: 320*indexPath!.row, y: 0, width: 320, height: 132))
-        collectionView!.scrollToItemAtIndexPath(indexPath!, atScrollPosition:UICollectionViewScrollPosition.Left, animated:false)
+        collectionView!.selectItemAtIndexPath(indexPath!, animated:true, scrollPosition:UICollectionViewScrollPosition.Left)
+        
+        
+//        collectionView!.setContentOffset(CGPoint(x: 320*indexPath!.row, y: 0), animated: true)
+//        collectionView!.setNeedsDisplayInRect(CGRect(x: 320*indexPath!.row, y: 0, width: 320, height: 132))
+//        collectionView!.scrollToItemAtIndexPath(indexPath!, atScrollPosition:UICollectionViewScrollPosition.Left, animated:true)
         
         if indexPath?.row == 5 {
             indexPath = NSIndexPath(forRow: 0, inSection: 0)

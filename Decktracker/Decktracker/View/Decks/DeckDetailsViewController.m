@@ -56,9 +56,8 @@
     _arrDetailSections = @[@"", @"Name", @"Number of Cards", @"Format", @"Notes", @"Original Designer", @"Year"];
     _arrCardSections = @[@"", @"Lands", @"Creatures", @"Other Spells", @"Sideboard"];
     _arrFunctionSections = @[@{@"": @[@""]},
-                             @{@"Statistics" : @[@"Mana Curve", @"Card Types", @"Colors", @"Mana Source"]},
-                             @{@"" :@[@"Starting Hand"]},
-                             @{@"Pricing" :@[@"TCGPlayer"]}];
+                             @{@"Graphs" : @[@"Mana Curve", @"Card Types", @"Colors", @"Mana Sources"]},
+                             @{@"" :@[@"Starting Hand"]}];
 
     CGFloat dX = 0;
     CGFloat dY = [UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height;

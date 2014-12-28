@@ -40,7 +40,7 @@ html, body
 .cardName
 {
     font-family: Magic;
-    font-size: 14pt;
+    font-size: 16pt;
 }
 
 
@@ -49,6 +49,19 @@ html, body
     font-family: Helvetica;
     font-size: 12pt;
     font-weight: bold;
+}
+
+.detailHeaderSmall
+{
+    font-family: Helvetica;
+    font-size: 10pt;
+    color: silver;
+}
+
+.detailTextSmall
+{
+    font-family: Helvetica;
+    font-size: 10pt;
 }
 
 .originalType

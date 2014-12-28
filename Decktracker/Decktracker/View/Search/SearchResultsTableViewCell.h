@@ -16,7 +16,7 @@
 
 #import "JJJ/JJJ.h"
 
-#define SEARCH_RESULTS_CELL_HEIGHT            80
+#define SEARCH_RESULTS_CELL_HEIGHT            95
 
 @interface SearchResultsTableViewCell : UITableViewCell
 
@@ -29,10 +29,16 @@
 @property(strong,nonatomic) IBOutlet UIImageView *imgSet;
 @property(strong,nonatomic) IBOutlet UILabel *lblBadge;
 @property(strong,nonatomic) IBOutlet UIView *viewRating;
+@property (weak, nonatomic) IBOutlet UILabel *lblLowPrice;
+@property (weak, nonatomic) IBOutlet UILabel *lblMedianPrice;
+@property (weak, nonatomic) IBOutlet UILabel *lblHighPrice;
+@property (weak, nonatomic) IBOutlet UILabel *lblFoilPrice;
+@property (weak, nonatomic) IBOutlet UIImageView *imgType;
 
 
 -(void) displayCard:(DTCard*) card;
 -(void) addBadge:(int) badgeValue;
 -(void) addRank:(int) rankValue;
+//-(void) updatePricing;
 
 @end

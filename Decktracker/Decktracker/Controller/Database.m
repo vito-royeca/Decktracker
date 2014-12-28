@@ -409,7 +409,7 @@ static Database *_me;
     return [card.rarity.name isEqualToString:@"Basic Land"] ? @"C" : [[card.rarity.name substringToIndex:1] uppercaseString];
 }
 
--(DTCard*) fetchTcgPlayerPriceForCard:(DTCard*) card
+-(void) fetchTcgPlayerPriceForCard:(DTCard*) card
 {
     BOOL bWillFetch = NO;
     
@@ -435,70 +435,71 @@ static Database *_me;
     
     if (bWillFetch)
     {
-        NSString *tcgPricing = [[NSString stringWithFormat:@"http://partner.tcgplayer.com/x3/phl.asmx/p?pk=%@&s=%@&p=%@", TCGPLAYER_PARTNER_KEY, card.set.tcgPlayerName, card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        if (!card.set.tcgPlayerName)
-        {
-            tcgPricing = [[NSString stringWithFormat:@"http://partner.tcgplayer.com/x3/phl.asmx/p?pk=%@&p=%@", TCGPLAYER_PARTNER_KEY, card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        }
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
         
-        NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:tcgPricing]];
-        TFHpple *parser = [TFHpple hppleWithHTMLData:data];
-        NSString *low, *mid, *high, *foil, *link;
-        
-        NSArray *nodes = [parser searchWithXPathQuery:@"//product"];
-        for (TFHppleElement *element in nodes)
-        {
-            if ([element hasChildren])
+            NSString *tcgPricing = [[NSString stringWithFormat:@"http://partner.tcgplayer.com/x3/phl.asmx/p?pk=%@&s=%@&p=%@", TCGPLAYER_PARTNER_KEY, card.set.tcgPlayerName, card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            if (!card.set.tcgPlayerName)
             {
-                BOOL linkIsNext = NO;
-                
-                for (TFHppleElement *child in element.children)
+                tcgPricing = [[NSString stringWithFormat:@"http://partner.tcgplayer.com/x3/phl.asmx/p?pk=%@&p=%@", TCGPLAYER_PARTNER_KEY, card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            }
+            
+            NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:tcgPricing]];
+            TFHpple *parser = [TFHpple hppleWithHTMLData:data];
+            NSString *low, *mid, *high, *foil, *link;
+            
+            NSArray *nodes = [parser searchWithXPathQuery:@"//product"];
+            for (TFHppleElement *element in nodes)
+            {
+                if ([element hasChildren])
                 {
-                    if ([[child tagName] isEqualToString:@"hiprice"])
+                    BOOL linkIsNext = NO;
+                    
+                    for (TFHppleElement *child in element.children)
                     {
-                        high = [[child firstChild] content];
-                    }
-                    else if ([[child tagName] isEqualToString:@"avgprice"])
-                    {
-                        mid = [[child firstChild] content];
-                    }
-                    else if ([[child tagName] isEqualToString:@"lowprice"])
-                    {
-                        low = [[child firstChild] content];
-                    }
-                    else if ([[child tagName] isEqualToString:@"foilavgprice"])
-                    {
-                        foil = [[child firstChild] content];
-                    }
-                    else if ([[child tagName] isEqualToString:@"link"])
-                    {
-                        linkIsNext = YES;
-                    }
-                    else if ([[child tagName] isEqualToString:@"text"] && linkIsNext)
-                    {
-                        link = [child content];
+                        if ([[child tagName] isEqualToString:@"hiprice"])
+                        {
+                            high = [[child firstChild] content];
+                        }
+                        else if ([[child tagName] isEqualToString:@"avgprice"])
+                        {
+                            mid = [[child firstChild] content];
+                        }
+                        else if ([[child tagName] isEqualToString:@"lowprice"])
+                        {
+                            low = [[child firstChild] content];
+                        }
+                        else if ([[child tagName] isEqualToString:@"foilavgprice"])
+                        {
+                            foil = [[child firstChild] content];
+                        }
+                        else if ([[child tagName] isEqualToString:@"link"])
+                        {
+                            linkIsNext = YES;
+                        }
+                        else if ([[child tagName] isEqualToString:@"text"] && linkIsNext)
+                        {
+                            link = [child content];
+                        }
                     }
                 }
             }
-        }
-        
-        DTCard *c = [self findCard:card.name inSet:card.set.code];
-
-        c.tcgPlayerHighPrice = high ? [NSNumber numberWithDouble:[high doubleValue]] : nil;
-        c.tcgPlayerMidPrice  = mid  ? [NSNumber numberWithDouble:[mid doubleValue]]  : nil;
-        c.tcgPlayerLowPrice  = low  ? [NSNumber numberWithDouble:[low doubleValue]]  : nil;
-        c.tcgPlayerFoilPrice = foil ? [NSNumber numberWithDouble:[foil doubleValue]] : nil;
-        c.tcgPlayerLink = [JJJUtil trim:link];
-        c.tcgPlayerFetchDate = [NSDate date];
-        
-        NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
-        [currentContext MR_saveToPersistentStoreAndWait];
-        return c;
-    }
-    
-    else
-    {
-        return card;
+            
+            card.tcgPlayerHighPrice = high ? [NSNumber numberWithDouble:[high doubleValue]] : card.tcgPlayerHighPrice;
+            card.tcgPlayerMidPrice  = mid  ? [NSNumber numberWithDouble:[mid doubleValue]]  : card.tcgPlayerMidPrice;
+            card.tcgPlayerLowPrice  = low  ? [NSNumber numberWithDouble:[low doubleValue]]  : card.tcgPlayerLowPrice;
+            card.tcgPlayerFoilPrice = foil ? [NSNumber numberWithDouble:[foil doubleValue]] : card.tcgPlayerFoilPrice;
+            card.tcgPlayerLink = link ? [JJJUtil trim:link] : card.tcgPlayerLink;
+            card.tcgPlayerFetchDate = [NSDate date];
+            
+            NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
+            [currentContext MR_saveToPersistentStoreAndWait];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[NSNotificationCenter defaultCenter] postNotificationName:kPriceUpdateDone
+                                                                    object:nil
+                                                                  userInfo:@{@"card": card}];
+            });
+        });
     }
 }
 

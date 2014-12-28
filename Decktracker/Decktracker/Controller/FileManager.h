@@ -36,7 +36,8 @@ typedef NS_ENUM(NSInteger, FileSystem)
 -(NSString*) cardPath:(DTCard*) card;
 -(NSString*) cropPath:(DTCard*) card;
 -(NSString*) cardSetPath:(DTCard*) card;
--(NSString*) cardSetPathBig:(DTSet*) set;
+-(NSString*) cardTypePath:(DTCard*) card;
+-(NSString*) setPath:(DTSet*) set small:(BOOL) small;
 -(void) downloadCardImage:(DTCard*) card immediately:(BOOL) immediately;
 -(void) downloadCropImage:(DTCard*) card immediately:(BOOL) immediately;
 -(NSArray*) loadKeywords;
