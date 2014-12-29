@@ -66,7 +66,6 @@
     
     [self.viewRating removeFromSuperview];
     [self addSubview:_ratingControl];
-//    [_ratingControl sizeToFit];
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -148,6 +147,7 @@
     }
     [[FileManager sharedInstance] downloadCropImage:card immediately:NO];
     [[FileManager sharedInstance] downloadCardImage:card immediately:NO];
+    [[Database sharedInstance] fetchTcgPlayerPriceForCard:card];
     
     // type image
     path = [[FileManager sharedInstance] cardTypePath:card];

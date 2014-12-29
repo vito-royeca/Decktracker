@@ -37,7 +37,6 @@
     NSString *filePath = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] resourcePath], @"Data/AllSets-x.json"];
     NSData *data = [NSData dataWithContentsOfFile:filePath];
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-    
     NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
 
     for (NSString *setName in [json allKeys])
@@ -46,7 +45,6 @@
         [self parseSet:dict];
         [currentContext MR_save];
     }
-    [self updateTCGSetNames];
     
     for (NSString *setName in [json allKeys])
     {
@@ -145,17 +143,34 @@
     NSLog(@"Time Elapsed: %@",  [JJJUtil formatInterval:timeDifference]);
 }
 
+-(void) updateTCGSetNames
+{
+    [[Database sharedInstance] setupDb];
+    
+    NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
+    NSString *filePath = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] resourcePath], @"Data/tcgplayer_sets.plist"];
+    NSDictionary *tcgNames = [[NSDictionary alloc] initWithContentsOfFile:filePath];
+    
+    for (DTSet *set in [DTSet MR_findAll])
+    {
+        NSString *tcgName = [tcgNames objectForKey:set.name];
+        
+        set.tcgPlayerName = tcgName.length > 0 ? tcgName : nil;
+        [currentContext MR_save];
+    }
+    
+    [[Database sharedInstance] closeDb];
+}
+
 -(void) fetchTcgPrices
 {
     NSDate *dateStart = [NSDate date];
+    
     [[Database sharedInstance] setupDb];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"set.tcgPlayerName != nil"];
     _cardID = 1;
     
-    NSString *filePath = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] resourcePath], @"Data/AllSets-x.json"];
-    NSData *data = [NSData dataWithContentsOfFile:filePath];
-//    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-    
-    for (DTCard *card in [DTCard MR_findAllSortedBy:@"set.releaseDate" ascending:YES])
+    for (DTCard *card in [DTCard MR_findAllSortedBy:@"set.releaseDate" ascending:YES withPredicate:predicate])
     {
         NSLog(@"Fetching price for %@ (%@)", card.name, card.set.code);
         [[Database sharedInstance] fetchTcgPlayerPriceForCard:card];
@@ -167,32 +182,6 @@
     NSLog(@"Started: %@", dateStart);
     NSLog(@"Ended: %@", dateEnd);
     NSLog(@"Time Elapsed: %@",  [JJJUtil formatInterval:timeDifference]);
-}
-
--(void) updateTCGSetNames
-{
-    NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
-    NSString *filePath = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] resourcePath], @"Data/tcgplayer_sets.plist"];
-    NSArray *array = [[NSArray alloc] initWithContentsOfFile:filePath];
-    NSDictionary *tcgNames = array[0];
-    
-    for (DTSet *set in [DTSet MR_findAll])
-    {
-        NSString *tcgName;
-        
-        if ([set.name rangeOfString:@" vs. "].location != NSNotFound)
-        {
-            tcgName = [set.name stringByReplacingOccurrencesOfString:@" vs. " withString:@" vs "];
-        }
-        else
-        {
-            tcgName = [tcgNames objectForKey:set.name];
-        }
-        
-        set.tcgPlayerName = tcgName ? tcgName : set.name;
-        
-        [currentContext MR_save];
-    }
 }
 
 #pragma mark - Sets parsing

@@ -29,8 +29,8 @@
 		8C3857F51A36FCE600E5B38C /* DTSetType.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3857E51A36FCE600E5B38C /* DTSetType.m */; };
 		8C3D17F81A08847D00D9CBD7 /* RulesLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3D17F71A08847D00D9CBD7 /* RulesLoader.m */; };
 		8C3D18031A08A3A800D9CBD7 /* MagicCompRules_20140926.htm in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C3D18021A0884FF00D9CBD7 /* MagicCompRules_20140926.htm */; };
+		8C4B9D0E1A515D0B00F727E7 /* tcgplayer_sets.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C4B9D091A51384400F727E7 /* tcgplayer_sets.plist */; };
 		8C5FF9E319AE2A5D003CE54C /* AllSets-x.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C5FF9E119AE2A0B003CE54C /* AllSets-x.json */; };
-		8C5FF9E419AE2A5D003CE54C /* tcgplayer_sets.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C5FF9E219AE2A0B003CE54C /* tcgplayer_sets.plist */; };
 		8C80A0C2198D01D600BADA6C /* JSONLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C80A0C1198D01D600BADA6C /* JSONLoader.m */; };
 		8C80A0CC198D040500BADA6C /* Database.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C80A0CB198D040500BADA6C /* Database.m */; };
 		8CF0C9DC1991CDB900349F35 /* libJJJ.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF0C9CD1991CD5500349F35 /* libJJJ.a */; };
@@ -69,9 +69,9 @@
 			dstPath = Data;
 			dstSubfolderSpec = 16;
 			files = (
+				8C4B9D0E1A515D0B00F727E7 /* tcgplayer_sets.plist in CopyFiles */,
 				8C3D18031A08A3A800D9CBD7 /* MagicCompRules_20140926.htm in CopyFiles */,
 				8C5FF9E319AE2A5D003CE54C /* AllSets-x.json in CopyFiles */,
-				8C5FF9E419AE2A5D003CE54C /* tcgplayer_sets.plist in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -122,8 +122,9 @@
 		8C3D17F61A08847D00D9CBD7 /* RulesLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RulesLoader.h; sourceTree = "<group>"; };
 		8C3D17F71A08847D00D9CBD7 /* RulesLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RulesLoader.m; sourceTree = "<group>"; };
 		8C3D18021A0884FF00D9CBD7 /* MagicCompRules_20140926.htm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = MagicCompRules_20140926.htm; sourceTree = "<group>"; };
+		8C4B9D091A51384400F727E7 /* tcgplayer_sets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = tcgplayer_sets.plist; sourceTree = "<group>"; };
+		8C4B9D0D1A51562F00F727E7 /* tcgplayer_sets.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tcgplayer_sets.txt; sourceTree = "<group>"; };
 		8C5FF9E119AE2A0B003CE54C /* AllSets-x.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "AllSets-x.json"; sourceTree = "<group>"; };
-		8C5FF9E219AE2A0B003CE54C /* tcgplayer_sets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = tcgplayer_sets.plist; sourceTree = "<group>"; };
 		8C80A0C0198D01D600BADA6C /* JSONLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONLoader.h; sourceTree = "<group>"; };
 		8C80A0C1198D01D600BADA6C /* JSONLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONLoader.m; sourceTree = "<group>"; };
 		8C80A0CA198D040500BADA6C /* Database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Database.h; path = ../../../DeckTracker/DeckTracker/Controller/Database.h; sourceTree = "<group>"; };
@@ -248,9 +249,10 @@
 		8C3E414219AE29850058FF67 /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				8C3D18021A0884FF00D9CBD7 /* MagicCompRules_20140926.htm */,
 				8C5FF9E119AE2A0B003CE54C /* AllSets-x.json */,
-				8C5FF9E219AE2A0B003CE54C /* tcgplayer_sets.plist */,
+				8C3D18021A0884FF00D9CBD7 /* MagicCompRules_20140926.htm */,
+				8C4B9D091A51384400F727E7 /* tcgplayer_sets.plist */,
+				8C4B9D0D1A51562F00F727E7 /* tcgplayer_sets.txt */,
 			);
 			path = Data;
 			sourceTree = "<group>";

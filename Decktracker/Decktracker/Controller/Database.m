@@ -433,10 +433,16 @@ static Database *_me;
         }
     }
     
+    if (!card.set.tcgPlayerName)
+    {
+        bWillFetch = NO;
+    }
+    
     if (bWillFetch)
     {
+#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
-        
+#endif
             NSString *tcgPricing = [[NSString stringWithFormat:@"http://partner.tcgplayer.com/x3/phl.asmx/p?pk=%@&s=%@&p=%@", TCGPLAYER_PARTNER_KEY, card.set.tcgPlayerName, card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             if (!card.set.tcgPlayerName)
             {
@@ -493,13 +499,17 @@ static Database *_me;
             
             NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
             [currentContext MR_saveToPersistentStoreAndWait];
-            
+
+#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
             dispatch_async(dispatch_get_main_queue(), ^{
+#endif
                 [[NSNotificationCenter defaultCenter] postNotificationName:kPriceUpdateDone
                                                                     object:nil
                                                                   userInfo:@{@"card": card}];
+#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
             });
         });
+#endif
     }
 }
 

@@ -850,6 +850,7 @@
 - (NSInteger) numberImagesForImageViewer:(MHFacebookImageViewer*) imageViewer
 {
     _fbImageViewer = imageViewer;
+
     if (self.fetchedResultsController)
     {
         return self.fetchedResultsController.fetchedObjects.count;
@@ -868,8 +869,13 @@
     {
         DTCard *card = [self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
         
-        return [NSURL fileURLWithPath:[[FileManager sharedInstance] cardPath:card]];
+        if (self.card != card)
+        {
+            self.card = card;
+            [self.tblDetails reloadData];
+        }
     }
+
     return [NSURL fileURLWithPath:[[FileManager sharedInstance] cardPath:self.card]];
 }
 
@@ -881,8 +887,13 @@
     {
         DTCard *card = [self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
     
-        return [UIImage imageWithContentsOfFile:[[FileManager sharedInstance] cardPath:card]];
+        if (self.card != card)
+        {
+            self.card = card;
+            [self.tblDetails reloadData];
+        }
     }
+
     return [UIImage imageWithContentsOfFile:[[FileManager sharedInstance] cardPath:self.card]];
 }
 
@@ -989,7 +1000,6 @@
         
 //        [[Database sharedInstance] parseSynch:_card];
         [((SearchResultsTableViewCell*)cell) displayCard:self.card];
-        [[Database sharedInstance] fetchTcgPlayerPriceForCard:self.card];
         tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         cell.userInteractionEnabled = NO;
     }
