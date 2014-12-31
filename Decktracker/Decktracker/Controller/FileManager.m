@@ -84,7 +84,7 @@ static FileManager *_me;
     
     for (NSString *type in CARD_TYPES_WITH_SYMBOL)
     {
-        if ([card.type hasPrefix:type])
+        if ([card.type hasPrefix:type] || [card.type containsString:type])
         {
             typePath = [type lowercaseString];
         }

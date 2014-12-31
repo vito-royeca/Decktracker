@@ -20,6 +20,26 @@
 		</dict>
 		<dict>
 			<key>Title</key>
+			<string>Cards</string>
+			<key>DefaultValue</key>
+			<string></string>
+			<key>Key</key>
+			<string>numberOfCards</string>
+			<key>Type</key>
+			<string>PSTitleValueSpecifier</string>
+		</dict>
+		<dict>
+			<key>Title</key>
+			<string>Average Price</string>
+			<key>DefaultValue</key>
+			<string></string>
+			<key>Key</key>
+			<string>averagePrice</string>
+			<key>Type</key>
+			<string>PSTitleValueSpecifier</string>
+		</dict>
+		<dict>
+			<key>Title</key>
 			<string>Format</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>

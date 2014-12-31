@@ -16,6 +16,7 @@
 #import "FileManager.h"
 #import "LimitedSearchViewController.h"
 #import "SearchResultsTableViewCell.h"
+#import "Decktracker-Swift.h"
 
 #import "IASKSpecifierValuesViewController.h"
 
@@ -27,9 +28,8 @@
 
 @implementation DeckDetailsViewController
 {
-    NSArray *_arrDetailSections;
     NSArray *_arrCardSections;
-    NSArray *_arrFunctionSections;
+    NSArray *_arrToolSections;
     UIView *_viewSegmented;
 }
 
@@ -53,18 +53,18 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    _arrDetailSections = @[@"", @"Name", @"Number of Cards", @"Format", @"Notes", @"Original Designer", @"Year"];
     _arrCardSections = @[@"", @"Lands", @"Creatures", @"Other Spells", @"Sideboard"];
-    _arrFunctionSections = @[@{@"": @[@""]},
-                             @{@"Graphs" : @[@"Mana Curve", @"Card Types", @"Colors", @"Mana Sources"]},
-                             @{@"" :@[@"Starting Hand"]}];
+    _arrToolSections = @[@{@"": @[@""]},
+                         @{@"Statistics" : @[/*@"Mana Curve",*/ @"Card Type Distribution", @"Color Distribution"/*, @"Mana Source Distribution"*/]},
+                         @{@"Draws" :@[@"Starting Hand"]},
+                         /*@{@"Print" :@[@"Proxies", @"Deck Sheet"]}*/];
 
     CGFloat dX = 0;
     CGFloat dY = [UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height;
     CGFloat dWidth = self.view.frame.size.width;
     CGFloat dHeight = 44;
     
-    self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Cards", @"Details"/*, @"Functions"*/]];
+    self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Cards", @"Details", @"Tools"]];
     self.segmentedControl.frame = CGRectMake(10, 7, dWidth-20, 30);
     self.segmentedControl.selectedSegmentIndex = 0;
     [self.segmentedControl addTarget:self
@@ -157,11 +157,7 @@
         DeckIASKSettingsStore *deckSettingsStore = [[DeckIASKSettingsStore alloc] init];
         deckSettingsStore.deck = self.deck;
         
-//        NSMutableSet *setHiddenKeys = [[NSMutableSet alloc] init];
-//        [setHiddenKeys addObject:@"format2"];
-        
         self.cardDetailsViewController = [[IASKAppSettingsViewController alloc] init];
-//        self.cardDetailsViewController.hiddenKeys = setHiddenKeys;
         self.cardDetailsViewController.view.frame = CGRectMake(dX, dY, dWidth, dHeight);
         self.cardDetailsViewController.delegate = self;
         self.cardDetailsViewController.settingsStore = deckSettingsStore;
@@ -173,7 +169,14 @@
     
     else if (self.segmentedControl.selectedSegmentIndex == 2)
     {
+        [self.cardDetailsViewController.settingsStore synchronize];
+        [self.cardDetailsViewController.view removeFromSuperview];
         
+        self.tblCards = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)
+                                                     style:UITableViewStylePlain];
+        self.tblCards.delegate = self;
+        self.tblCards.dataSource = self;
+        [self.view addSubview:self.tblCards];
     }
 }
 
@@ -205,7 +208,6 @@
     }
     
     cell.textLabel.text = text;
-//    cell.imageView.image = [UIImage imageNamed:imagePath];
     return cell;
 }
 
@@ -352,7 +354,7 @@
     
     else if (self.segmentedControl.selectedSegmentIndex == 2)
     {
-        return section == 0 ? nil : [[_arrFunctionSections[section] allKeys] firstObject];
+        return section == 0 ? nil : [[_arrToolSections[section] allKeys] firstObject];
     }
     
     else
@@ -371,7 +373,7 @@
         }
         case 2:
         {
-            return _arrFunctionSections.count;
+            return _arrToolSections.count;
         }
         default:
         {
@@ -411,7 +413,7 @@
     
     else if (self.segmentedControl.selectedSegmentIndex == 2)
     {
-        NSDictionary *dict = _arrFunctionSections[section];
+        NSDictionary *dict = _arrToolSections[section];
         NSArray *array = [dict valueForKey:[[dict allKeys] firstObject]];
         return array.count;
     }
@@ -540,7 +542,7 @@
         
         if (indexPath.section != 0)
         {
-            NSDictionary *dict = _arrFunctionSections[indexPath.section];
+            NSDictionary *dict = _arrToolSections[indexPath.section];
             NSString *key = [[dict allKeys] firstObject];
             NSArray *arrFunctions = [dict valueForKey:key];
             cell.textLabel.text = arrFunctions[indexPath.row];
@@ -669,23 +671,111 @@
         }
     }
     
-    else if (self.segmentedControl.selectedSegmentIndex == 1)
-    {
-        
-    }
-
     else if (self.segmentedControl.selectedSegmentIndex == 2)
     {
+        UIViewController *view;
+        
         switch (indexPath.section)
         {
             case 1:
             {
+                switch (indexPath.row)
+                {
+                    case 0:
+                    {
+                        // Mana Curve
+                        BarGraphViewController *view2 = [[BarGraphViewController alloc] init];
+                        view2.graphTitle = self.deck.name;
+//                        view2.conciseData = [self.deck cardTypeDistribution:NO];
+//                        view2.detailedData = [self.deck cardTypeDistribution:YES];
+                        view2.navigationItem.title = @"Mana Curve";
+                        view = view2;
+                        break;
+                    }
+                    case 1:
+                    {
+                        // Card Type Distribution
+                        PieChartViewController *view2 = [[PieChartViewController alloc] init];
+                        view2.graphTitle = self.deck.name;
+                        view2.conciseData = [self.deck cardTypeDistribution:NO];
+                        view2.detailedData = [self.deck cardTypeDistribution:YES];
+                        view2.navigationItem.title = @"Card Type Distribution";
+                        view = view2;
+                        break;
+                    }
+                    case 2:
+                    {
+                        // Color Distribution
+                        PieChartViewController *view2 = [[PieChartViewController alloc] init];
+                        view2.graphTitle = self.deck.name;
+                        view2.conciseData = [self.deck colorDistribution:NO];
+                        view2.conciseColors = [self.deck cardColors:NO];
+                        view2.detailedData = [self.deck colorDistribution:YES];
+                        view2.detailedColors = [self.deck cardColors:YES];
+                        
+                        view2.navigationItem.title = @"Color Distribution";
+                        view = view2;
+                        break;
+                    }
+                    /*case 3:
+                    {
+                        // Mana Source Distribution
+                        PieChartViewController *view2 = [[PieChartViewController alloc] init];
+                        view2.graphTitle = self.deck.name;
+                        view2.conciseData = [self.deck manaSourceDistribution:NO];
+                        view2.conciseColors = [self.deck manaSourceColors:NO];
+                        view2.detailedData = [self.deck manaSourceDistribution:YES];
+                        view2.detailedColors = [self.deck manaSourceColors:YES];
+                        view2.navigationItem.title = @"Mana Source Distribution";
+                        view = view2;
+                        break;
+                    }*/
+                    default:
+                    {
+                        break;
+                    }
+                }
+                break;
+            }
+            case 2:
+            {
+                // Starting Hand
+                StartingHandViewController *view2 = [[StartingHandViewController alloc] init];
+                
+                view2.deck = self.deck;
+                view = view2;
+                break;
+            }
+            case 3:
+            {
+                switch (indexPath.row)
+                {
+                    case 0:
+                    {
+                        // Proxies
+                        break;
+                    }
+                    case 1:
+                    {
+                        // Deck Sheet
+                        break;
+                    }
+                    default:
+                    {
+                        break;
+                    }
+                }
                 break;
             }
             default:
             {
                 break;
             }
+        }
+        
+        if (view)
+        {
+            [self.navigationController pushViewController:view animated:YES];
         }
     }
 }

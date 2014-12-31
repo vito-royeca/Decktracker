@@ -11,6 +11,7 @@
 #import "AddCardViewController.h"
 #import "AdvanceSearchResultsViewController.h"
 #import "DTArtist.h"
+#import "DTCardColor.h"
 #import "DTCardForeignName.h"
 #import "DTCardLegality.h"
 #import "DTCardRarity.h"
@@ -61,6 +62,11 @@
 {
     _card = card;
 
+    for (DTCardColor *color in card.colors)
+    {
+        NSLog(@"%@ ", color.name);
+    }
+    
     [[FileManager sharedInstance] downloadCardImage:_card immediately:YES];
     [[FileManager sharedInstance] downloadCropImage:_card immediately:YES];
     
@@ -123,7 +129,7 @@
     [self.tblDetails registerNib:[UINib nibWithNibName:@"SearchResultsTableViewCell" bundle:nil]
           forCellReuseIdentifier:@"Cell1"];
     
-    self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Card", @"Details"]];
+    self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Card", @"Details"/*, @"Reviews"*/]];
     self.segmentedControl.frame = CGRectMake(dX+10, dY+7, dWidth-20, 30);
     self.segmentedControl.selectedSegmentIndex = 0;
     [self.segmentedControl addTarget:self

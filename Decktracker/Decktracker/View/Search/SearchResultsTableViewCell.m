@@ -356,20 +356,22 @@
 -(void) showCardPricing
 {
     NSNumberFormatter *formatter =  [[NSNumberFormatter alloc] init];
-    [formatter setUsesSignificantDigits:YES];
+//    [formatter setUsesSignificantDigits:YES];
     [formatter setMaximumFractionDigits:2];
     [formatter setRoundingMode:NSNumberFormatterRoundCeiling];
+    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+    formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
     
-    NSString *price = [_card.tcgPlayerLowPrice doubleValue] != 0 ? [NSString stringWithFormat:@"$%@", [formatter stringFromNumber:_card.tcgPlayerLowPrice]] : @"N/A";
+    NSString *price = [_card.tcgPlayerLowPrice doubleValue] != 0 ? [formatter stringFromNumber:_card.tcgPlayerLowPrice] : @"N/A";
     self.lblLowPrice.text = price;
     
-    price = [_card.tcgPlayerMidPrice doubleValue] != 0 ? [NSString stringWithFormat:@"$%@", [formatter stringFromNumber:_card.tcgPlayerMidPrice]] : @"N/A";
+    price = [_card.tcgPlayerMidPrice doubleValue] != 0 ? [formatter stringFromNumber:_card.tcgPlayerMidPrice] : @"N/A";
     self.lblMedianPrice.text = price;
     
-    price = [_card.tcgPlayerHighPrice doubleValue] != 0 ? [NSString stringWithFormat:@"$%@", [formatter stringFromNumber:_card.tcgPlayerHighPrice]] : @"N/A";
+    price = [_card.tcgPlayerHighPrice doubleValue] != 0 ? [formatter stringFromNumber:_card.tcgPlayerHighPrice] : @"N/A";
     self.lblHighPrice.text = price;
     
-    price = [_card.tcgPlayerFoilPrice doubleValue] != 0 ? [NSString stringWithFormat:@"$%@", [formatter stringFromNumber:_card.tcgPlayerFoilPrice]] : @"N/A";
+    price = [_card.tcgPlayerFoilPrice doubleValue] != 0 ? [formatter stringFromNumber:_card.tcgPlayerFoilPrice] : @"N/A";
     self.lblFoilPrice.text = price;
 }
 

@@ -134,6 +134,8 @@
 		8C89BD5519DD50160070E4F5 /* MagicalRecord.license in Resources */ = {isa = PBXBuildFile; fileRef = 8C89BD5419DD50160070E4F5 /* MagicalRecord.license */; };
 		8C89BD5719DD50340070E4F5 /* MBProgressHUD.license in Resources */ = {isa = PBXBuildFile; fileRef = 8C89BD5619DD50340070E4F5 /* MBProgressHUD.license */; };
 		8C90A17F19C97ADF00F7278C /* Deck.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C90A17E19C97ADF00F7278C /* Deck.m */; };
+		8C911E1C1A526D5D006210B5 /* StartingHandViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C911E1B1A526D5D006210B5 /* StartingHandViewController.swift */; };
+		8C911E2D1A52DF89006210B5 /* PieChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C911E2C1A52DF89006210B5 /* PieChartViewController.swift */; };
 		8C930AA31A090B380061C082 /* ComprehensiveRulesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C930AA21A090B380061C082 /* ComprehensiveRulesViewController.swift */; };
 		8CAAA0ED1A15057100DD209D /* HorizontalScrollTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAAA0EB1A15057100DD209D /* HorizontalScrollTableViewCell.swift */; };
 		8CAAA0EE1A15057100DD209D /* HorizontalScrollTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CAAA0EC1A15057100DD209D /* HorizontalScrollTableViewCell.xib */; };
@@ -145,6 +147,7 @@
 		8CCD852A1A0B911400991CAF /* SubtitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCD85291A0B911400991CAF /* SubtitleTableViewCell.swift */; };
 		8CCFC02E1A3E7C2C004B1853 /* decktracker.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8CCFC02D1A3E7C2C004B1853 /* decktracker.plist */; };
 		8CD2E1EC19DACE1A00503ACC /* InAppPurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD2E1EB19DACE1A00503ACC /* InAppPurchase.m */; };
+		8CD705981A540E3600CF8425 /* BarGraphViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD705971A540E3600CF8425 /* BarGraphViewController.swift */; };
 		8CDEC7951A383784004053CF /* SpecialListsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CDEC7941A383784004053CF /* SpecialListsViewController.swift */; };
 		8CE7F2BE19C0A2D0004FBEA5 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CE7F2BD19C0A2D0004FBEA5 /* StoreKit.framework */; };
 		8CE971C61A126C0000D4386B /* BannerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE971C41A126C0000D4386B /* BannerCollectionViewCell.swift */; };
@@ -390,6 +393,8 @@
 		8C89BD5619DD50340070E4F5 /* MBProgressHUD.license */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MBProgressHUD.license; sourceTree = "<group>"; };
 		8C90A17D19C97ADF00F7278C /* Deck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Deck.h; sourceTree = "<group>"; };
 		8C90A17E19C97ADF00F7278C /* Deck.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Deck.m; sourceTree = "<group>"; };
+		8C911E1B1A526D5D006210B5 /* StartingHandViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartingHandViewController.swift; sourceTree = "<group>"; };
+		8C911E2C1A52DF89006210B5 /* PieChartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieChartViewController.swift; sourceTree = "<group>"; };
 		8C930AA21A090B380061C082 /* ComprehensiveRulesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComprehensiveRulesViewController.swift; sourceTree = "<group>"; };
 		8CA317C719C56B73001F94F5 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		8CAAA0EB1A15057100DD209D /* HorizontalScrollTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HorizontalScrollTableViewCell.swift; sourceTree = "<group>"; };
@@ -404,6 +409,7 @@
 		8CCFC02D1A3E7C2C004B1853 /* decktracker.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = decktracker.plist; sourceTree = "<group>"; };
 		8CD2E1EA19DACE1A00503ACC /* InAppPurchase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InAppPurchase.h; sourceTree = "<group>"; };
 		8CD2E1EB19DACE1A00503ACC /* InAppPurchase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InAppPurchase.m; sourceTree = "<group>"; };
+		8CD705971A540E3600CF8425 /* BarGraphViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarGraphViewController.swift; sourceTree = "<group>"; };
 		8CDEC7941A383784004053CF /* SpecialListsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecialListsViewController.swift; sourceTree = "<group>"; };
 		8CE7F2BD19C0A2D0004FBEA5 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		8CE7F2C219C0A2F7004FBEA5 /* Decktracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Decktracker.entitlements; sourceTree = "<group>"; };
@@ -871,6 +877,7 @@
 		8CF79A5C19A88B4500BE4246 /* Decks */ = {
 			isa = PBXGroup;
 			children = (
+				8CD705971A540E3600CF8425 /* BarGraphViewController.swift */,
 				8C90A17D19C97ADF00F7278C /* Deck.h */,
 				8C90A17E19C97ADF00F7278C /* Deck.m */,
 				8C524A6319B81E9E005E697B /* DeckDetailsViewController.h */,
@@ -879,6 +886,8 @@
 				8C74B82A1A10A2F3004A350F /* DeckIASKSettingsStore.m */,
 				8CF79A6319A8BFA300BE4246 /* DecksViewController.h */,
 				8CF79A6419A8BFA300BE4246 /* DecksViewController.m */,
+				8C911E2C1A52DF89006210B5 /* PieChartViewController.swift */,
+				8C911E1B1A526D5D006210B5 /* StartingHandViewController.swift */,
 			);
 			path = Decks;
 			sourceTree = "<group>";
@@ -1219,6 +1228,8 @@
 				8C2A979D19F5027B0094C97F /* ReaderContentPage.m in Sources */,
 				8C3857AD1A36E6D200E5B38C /* DTSetType.m in Sources */,
 				8C524A6519B81E9E005E697B /* DeckDetailsViewController.m in Sources */,
+				8CD705981A540E3600CF8425 /* BarGraphViewController.swift in Sources */,
+				8C911E2D1A52DF89006210B5 /* PieChartViewController.swift in Sources */,
 				8C2EC95F1A1670900011BAA2 /* UIImage+AverageColor.m in Sources */,
 				8C2E1431199085C700023BAA /* Database.m in Sources */,
 				8C3857951A36E6D100E5B38C /* DTCardLegality.m in Sources */,
@@ -1226,6 +1237,7 @@
 				8C2A97AE19F5027B0094C97F /* UIXToolbarView.m in Sources */,
 				8C3857B31A36E6D200E5B38C /* DTCardForeignName.m in Sources */,
 				8C2A979F19F5027B0094C97F /* ReaderContentView.m in Sources */,
+				8C911E1C1A526D5D006210B5 /* StartingHandViewController.swift in Sources */,
 				8CC5BA681A13509600F3BDD2 /* ThumbCollectionViewCell.swift in Sources */,
 				8CF418D719C9C6790082E3BC /* Collection.m in Sources */,
 				8C3857BC1A36E6D300E5B38C /* DTCardColor.m in Sources */,

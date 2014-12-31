@@ -35,4 +35,12 @@ typedef NS_ENUM(NSInteger, DeckBoard)
 -(int) cards:(DTCard*) card inBoard:(DeckBoard) deckboard;
 -(int) cardsInBoard:(DeckBoard) deckboard;
 
+-(NSArray*) cardTypeDistribution:(BOOL) detailed;
+
+-(NSArray*) colorDistribution:(BOOL) detailed;
+-(NSArray*) cardColors:(BOOL) detailed;
+
+-(NSArray*) manaSourceDistribution:(BOOL) detailed;
+-(NSArray*) manaSourceColors:(BOOL) detailed;
+
 @end

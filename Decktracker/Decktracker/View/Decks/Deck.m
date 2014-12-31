@@ -8,7 +8,9 @@
 
 #import "Deck.h"
 #import "Database.h"
+#import "DTCardColor.h"
 #import "FileManager.h"
+#import "Magic.h"
 
 @implementation Deck
 {
@@ -58,7 +60,7 @@
                 card = [[Database sharedInstance] findCard:d[@"card"] inSet:d[@"set"]];
             }
             
-            if ([JJJUtil string:card.type containsString:@"land"])
+            if ([card.type containsString:@"Land"] || [card.type hasPrefix:@"Land"])
             {
                 [self.arrLands addObject:@{@"card" : card,
                                            @"set" : card.set.code,
@@ -66,7 +68,7 @@
                                            @"qty" : d[@"qty"]}];
                 totalCards += [d[@"qty"] intValue];
             }
-            else if ([JJJUtil string:card.type containsString:@"creature"])
+            else if ([card.type containsString:@"Creature"] || [card.type hasPrefix:@"Creature"])
             {
                 [self.arrCreatures addObject:@{@"card": card,
                                                @"set" : card.set.code,
@@ -169,11 +171,12 @@
     {
         case MainBoard:
         {
-            if ([JJJUtil string:card.type containsString:@"land"])
+            if ([card.type containsString:@"Land"] || [card.type hasPrefix:@"Land"])
+                
             {
                 arrBoard = self.arrLands;
             }
-            else if ([JJJUtil string:card.type containsString:@"creature"])
+            else if ([card.type containsString:@"Creature"] || [card.type hasPrefix:@"Creature"])
             {
                 arrBoard = self.arrCreatures;
             }
@@ -233,11 +236,11 @@
     {
         case MainBoard:
         {
-            if ([JJJUtil string:card.type containsString:@"land"])
+            if ([card.type containsString:@"Land"] || [card.type hasPrefix:@"Land"])
             {
                 arrBoard = self.arrLands;
             }
-            else if ([JJJUtil string:card.type containsString:@"creature"])
+            else if ([card.type containsString:@"Creature"] || [card.type hasPrefix:@"Creature"])
             {
                 arrBoard = self.arrCreatures;
             }
@@ -297,5 +300,350 @@
     
     return qty;
 }
+
+-(NSArray*) cardTypeDistribution:(BOOL) detailed
+{
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    int total = 0;
+    
+    if (self.arrLands.count > 0)
+    {
+        for (NSDictionary *dict in self.arrLands)
+        {
+            total += [dict[@"qty"] intValue];
+        }
+        [array addObject:@{@"Lands": [NSNumber numberWithInt:total]}];
+    }
+    
+    if (self.arrCreatures.count > 0)
+    {
+        total = 0;
+        for (NSDictionary *dict in self.arrCreatures)
+        {
+            total += [dict[@"qty"] intValue];
+        }
+        [array addObject:@{@"Creatures": [NSNumber numberWithInt:total]}];
+    }
+
+    if (detailed)
+    {
+        for (NSDictionary *dict in self.arrOtherSpells)
+        {
+            DTCard *card = dict[@"card"];
+            int qty = [dict[@"qty"] intValue];
+            
+            for (NSString *type in CARD_TYPES)
+            {
+                if ([card.type containsString:type] || [card.type hasPrefix:type])
+                {
+                    NSDictionary *object;
+                    
+                    for (NSDictionary *dict in array)
+                    {
+                        if ([[dict allKeys][0] isEqualToString:type])
+                        {
+                            object = dict;
+                            break;
+                        }
+                    }
+                    
+                    if (object)
+                    {
+                        int num = [object[type] intValue];
+                        
+                        NSMutableDictionary *mut = (NSMutableDictionary*) object;
+                        [mut setObject:[NSNumber numberWithInt:num+qty] forKey:type];
+                    }
+                    else
+                    {
+                        NSMutableDictionary *mut = [[NSMutableDictionary alloc] init];
+                        [mut setObject:[NSNumber numberWithInt:qty] forKey:type];
+                        [array addObject:mut];
+                    }
+                }
+            }
+        }
+    }
+    else
+    {
+        total = 0;
+        for (NSDictionary *dict in self.arrOtherSpells)
+        {
+            total += [dict[@"qty"] intValue];
+        }
+        [array addObject:@{@"Other Spells": [NSNumber numberWithInt:total]}];
+    }
+    
+    return array;
+}
+
+-(NSArray*) colorDistribution:(BOOL) detailed
+{
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    NSMutableArray *combinedArray = [NSMutableArray arrayWithArray:self.arrCreatures];
+    
+    [combinedArray addObjectsFromArray:self.arrOtherSpells];
+    
+    for (NSDictionary *dict in combinedArray)
+    {
+        DTCard *card = dict[@"card"];
+        int qty = [dict[@"qty"] intValue];
+        
+        if (card.colors.count > 0)
+        {
+            for (DTCardColor *color in card.colors)
+            {
+                NSDictionary *object;
+                
+                for (NSDictionary *dict in array)
+                {
+                    if ([[dict allKeys][0] isEqualToString:color.name])
+                    {
+                        object = dict;
+                        break;
+                    }
+                }
+                
+                if (object)
+                {
+                    int num = [object[color.name] intValue];
+                    
+                    NSMutableDictionary *mut = (NSMutableDictionary*) object;
+                    [mut setObject:[NSNumber numberWithInt:num+qty] forKey:color.name];
+                }
+                else
+                {
+                    NSMutableDictionary *mut = [[NSMutableDictionary alloc] init];
+                    [mut setObject:[NSNumber numberWithInt:qty] forKey:color.name];
+                    [array addObject:mut];
+                }
+            }
+        }
+        else
+        {
+            if (detailed)
+            {
+                NSDictionary *object;
+                NSString *colorless = @"Colorless";
+                
+                for (NSDictionary *dict in array)
+                {
+                    if ([[dict allKeys][0] isEqualToString:colorless])
+                    {
+                        object = dict;
+                        break;
+                    }
+                }
+                
+                if (object)
+                {
+                    int num = [object[colorless] intValue];
+                    
+                    NSMutableDictionary *mut = (NSMutableDictionary*) object;
+                    [mut setObject:[NSNumber numberWithInt:num+qty] forKey:colorless];
+                }
+                else
+                {
+                    NSMutableDictionary *mut = [[NSMutableDictionary alloc] init];
+                    [mut setObject:[NSNumber numberWithInt:qty] forKey:colorless];
+                    [array addObject:mut];
+                }
+            }
+        }
+    }
+    
+    return array;
+}
+
+-(NSArray*) manaSourceDistribution:(BOOL) detailed
+{
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    
+    for (NSDictionary *dict in self.arrLands)
+    {
+        DTCard *card = dict[@"card"];
+        int qty = [dict[@"qty"] intValue];
+        
+        if (card.colors.count > 0)
+        {
+            for (DTCardColor *color in card.colors)
+            {
+                NSDictionary *object;
+                
+                for (NSDictionary *dict in array)
+                {
+                    if ([[dict allKeys][0] isEqualToString:color.name])
+                    {
+                        object = dict;
+                        break;
+                    }
+                }
+                
+                if (object)
+                {
+                    int num = [object[color.name] intValue];
+                    
+                    NSMutableDictionary *mut = (NSMutableDictionary*) object;
+                    [mut setObject:[NSNumber numberWithInt:num+qty] forKey:color.name];
+                }
+                else
+                {
+                    NSMutableDictionary *mut = [[NSMutableDictionary alloc] init];
+                    [mut setObject:[NSNumber numberWithInt:qty] forKey:color.name];
+                    [array addObject:mut];
+                }
+            }
+        }
+        else
+        {
+            if (detailed)
+            {
+                NSDictionary *object;
+                NSString *colorless = @"Colorless";
+                
+                for (NSDictionary *dict in array)
+                {
+                    if ([[dict allKeys][0] isEqualToString:colorless])
+                    {
+                        object = dict;
+                        break;
+                    }
+                }
+                
+                if (object)
+                {
+                    int num = [object[colorless] intValue];
+                    
+                    NSMutableDictionary *mut = (NSMutableDictionary*) object;
+                    [mut setObject:[NSNumber numberWithInt:num+qty] forKey:colorless];
+                }
+                else
+                {
+                    NSMutableDictionary *mut = [[NSMutableDictionary alloc] init];
+                    [mut setObject:[NSNumber numberWithInt:qty] forKey:colorless];
+                    [array addObject:mut];
+                }
+            }
+        }
+    }
+    
+    return array;
+}
+
+-(NSArray*) cardColors:(BOOL) detailed
+{
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    NSMutableArray *combinedArray = [NSMutableArray arrayWithArray:self.arrCreatures];
+    
+    [combinedArray addObjectsFromArray:self.arrOtherSpells];
+    
+    for (NSDictionary *dict in combinedArray)
+    {
+        DTCard *card = dict[@"card"];
+        
+        if (card.colors.count > 0)
+        {
+            for (DTCardColor *color in card.colors)
+            {
+                BOOL hasColor = NO;
+                
+                for (NSString *colorName in array)
+                {
+                    if ([colorName isEqualToString:color.name])
+                    {
+                        hasColor = YES;
+                        break;
+                    }
+                }
+                
+                if (!hasColor)
+                {
+                    [array addObject:color.name];
+                }
+            }
+        }
+        else
+        {
+            if (detailed)
+            {
+                BOOL hasColor = NO;
+                NSString *colorless = @"Colorless";
+                
+                for (NSString *colorName in array)
+                {
+                    if ([colorName isEqualToString:colorless])
+                    {
+                        hasColor = YES;
+                        break;
+                    }
+                }
+                
+                if (!hasColor)
+                {
+                    [array addObject:colorless];
+                }
+            }
+        }
+    }
+    
+    return array;
+}
+
+-(NSArray*) manaSourceColors:(BOOL) detailed
+{
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    
+    for (NSDictionary *dict in self.arrLands)
+    {
+        DTCard *card = dict[@"card"];
+        
+        if (card.colors.count > 0)
+        {
+            for (DTCardColor *color in card.colors)
+            {
+                BOOL hasColor = NO;
+                
+                for (NSString *colorName in array)
+                {
+                    if ([colorName isEqualToString:color.name])
+                    {
+                        hasColor = YES;
+                        break;
+                    }
+                }
+                
+                if (!hasColor)
+                {
+                    [array addObject:color.name];
+                }
+            }
+        }
+        else
+        {
+            if (detailed)
+            {
+                BOOL hasColor = NO;
+                NSString *colorless = @"Colorless";
+                
+                for (NSString *colorName in array)
+                {
+                    if ([colorName isEqualToString:colorless])
+                    {
+                        hasColor = YES;
+                        break;
+                    }
+                }
+                
+                if (!hasColor)
+                {
+                    [array addObject:colorless];
+                }
+            }
+        }
+    }
+    
+    return array;
+}
+
 
 @end
