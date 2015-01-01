@@ -504,18 +504,18 @@
     [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     if (self.card.cmc)
     {
-        [html appendFormat:@"<tr><td width='50%%' align='right'><div class='detailHeaderSmall'>Converted Mana Cost</div>&nbsp;&nbsp;&nbsp;</td>"];
+        [html appendFormat:@"<tr><td width='50%%' align='right'><div class='detailHeaderSmall'>Converted Mana Cost&nbsp;&nbsp;</div></td>"];
         [html appendFormat:@"<td><div class='detailTextSmall'>%@</div></td></tr>", [self replaceSymbolsInText:[NSString stringWithFormat:@"{%@}", self.card.cmc]]];
     }
 
     if (self.card.power || self.card.toughness)
     {
-        [html appendFormat:@"<tr><td width='50%%' align='right'><div class='detailHeaderSmall'>Power/Toughness</div>&nbsp;&nbsp;&nbsp;</td>"];
+        [html appendFormat:@"<tr><td width='50%%' align='right'><div class='detailHeaderSmall'>Power/Toughness&nbsp;&nbsp;</div></td>"];
         [html appendFormat:@"<td><div class='detailTextSmall'>%@/%@</div></td></tr>", self.card.power, self.card.toughness];
     }
     else if ([self.card.types containsObject:_planeswalkerType])
     {
-        [html appendFormat:@"<tr><td width='50%%' align='right'><div class='detailHeaderSmall'>Loyalty</div>&nbsp;&nbsp;&nbsp;</td>"];
+        [html appendFormat:@"<tr><td width='50%%' align='right'><div class='detailHeaderSmall'>Loyalty&nbsp;&nbsp;</div></td>"];
         [html appendFormat:@"<td><div class='detailTextSmall'>%@</div></td></tr>", self.card.loyalty];
     }
     
@@ -533,7 +533,7 @@
             i++;
         }
 
-        [html appendFormat:@"<tr><td width='50%%' align='right'><div class='detailHeaderSmall'>Types</div>&nbsp;&nbsp;&nbsp;</td>"];
+        [html appendFormat:@"<tr><td width='50%%' align='right'><div class='detailHeaderSmall'>Types&nbsp;&nbsp;</div></td>"];
         [html appendFormat:@"<td><div class='detailTextSmall'>%@</div></tr>", types];
     }
     
@@ -551,7 +551,7 @@
             i++;
         }
         
-        [html appendFormat:@"<tr><td width='50%%' align='right'><div class='detailHeaderSmall'>Super Types</div>&nbsp;&nbsp;&nbsp;</td>"];
+        [html appendFormat:@"<tr><td width='50%%' align='right'><div class='detailHeaderSmall'>Super Types&nbsp;&nbsp;</div></td>"];
         [html appendFormat:@"<td><div class='detailTextSmall'>%@</div></tr>", types];
     }
     
@@ -569,13 +569,13 @@
             i++;
         }
         
-        [html appendFormat:@"<tr><td width='50%%' align='right'><div class='detailHeaderSmall'>Sub Types</div>&nbsp;&nbsp;&nbsp;</td>"];
+        [html appendFormat:@"<tr><td width='50%%' align='right'><div class='detailHeaderSmall'>Sub Types&nbsp;&nbsp;</div></td>"];
         [html appendFormat:@"<td><div class='detailTextSmall'>%@</div></tr>", types];
     }
 
     if (self.card.rarity)
     {
-        [html appendFormat:@"<tr><td width='50%%' align='right'><div class='detailHeaderSmall'>Rarity</div>&nbsp;&nbsp;&nbsp;</td>"];
+        [html appendFormat:@"<tr><td width='50%%' align='right'><div class='detailHeaderSmall'>Rarity&nbsp;&nbsp;</div></td>"];
         [html appendFormat:@"<td><div class='detailTextSmall'>%@</div></td></tr>", self.card.rarity.name];
     }
     
@@ -583,19 +583,19 @@
     {
         NSString *link = [[NSString stringWithFormat:@"card?Artist=%@", self.card.artist.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         
-        [html appendFormat:@"<tr><td width='50%%' align='right'><div class='detailHeaderSmall'>Artist</div>&nbsp;&nbsp;&nbsp;</td>"];
+        [html appendFormat:@"<tr><td width='50%%' align='right'><div class='detailHeaderSmall'>Artist&nbsp;&nbsp;</div></td>"];
         [html appendFormat:@"<td><div class='detailTextSmall'><a href='%@'>%@</a></div></td></tr>", link, self.card.artist.name];
     }
     
     if (self.card.number)
     {
-        [html appendFormat:@"<tr><td width='50%%' align='right'><div class='detailHeaderSmall'>Number</div>&nbsp;&nbsp;&nbsp;</td>"];
+        [html appendFormat:@"<tr><td width='50%%' align='right'><div class='detailHeaderSmall'>Number&nbsp;&nbsp;</div></td>"];
         [html appendFormat:@"<td><div class='detailTextSmall'>%@/%@</div></td></tr>", self.card.number, self.card.set.numberOfCards];
     }
     
     if (self.card.source)
     {
-        [html appendFormat:@"<tr><td width='50%%' align='right'><div class='detailHeaderSmall'>Source</div>&nbsp;&nbsp;&nbsp;</td>"];
+        [html appendFormat:@"<tr><td width='50%%' align='right'><div class='detailHeaderSmall'>Source</div>&nbsp;</td>"];
         [html appendFormat:@"<td><div class='detailTextSmall'>%@</div></td></tr>", self.card.source];
     }
 

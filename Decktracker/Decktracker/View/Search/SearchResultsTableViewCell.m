@@ -356,23 +356,30 @@
 -(void) showCardPricing
 {
     NSNumberFormatter *formatter =  [[NSNumberFormatter alloc] init];
-//    [formatter setUsesSignificantDigits:YES];
     [formatter setMaximumFractionDigits:2];
     [formatter setRoundingMode:NSNumberFormatterRoundCeiling];
     [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
     formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
     
     NSString *price = [_card.tcgPlayerLowPrice doubleValue] != 0 ? [formatter stringFromNumber:_card.tcgPlayerLowPrice] : @"N/A";
+    UIColor *color = [_card.tcgPlayerLowPrice doubleValue] != 0 ? [UIColor redColor] : [UIColor lightGrayColor];
     self.lblLowPrice.text = price;
+    self.lblLowPrice.textColor = color;
     
     price = [_card.tcgPlayerMidPrice doubleValue] != 0 ? [formatter stringFromNumber:_card.tcgPlayerMidPrice] : @"N/A";
+    color = [_card.tcgPlayerMidPrice doubleValue] != 0 ? [UIColor blueColor] : [UIColor lightGrayColor];
     self.lblMedianPrice.text = price;
+    self.lblMedianPrice.textColor = color;
     
     price = [_card.tcgPlayerHighPrice doubleValue] != 0 ? [formatter stringFromNumber:_card.tcgPlayerHighPrice] : @"N/A";
+    color = [_card.tcgPlayerHighPrice doubleValue] != 0 ? [self colorFromHexString:@"#008000"] : [UIColor lightGrayColor];
     self.lblHighPrice.text = price;
+    self.lblHighPrice.textColor = color;
     
     price = [_card.tcgPlayerFoilPrice doubleValue] != 0 ? [formatter stringFromNumber:_card.tcgPlayerFoilPrice] : @"N/A";
+    color = [_card.tcgPlayerFoilPrice doubleValue] != 0 ? [self colorFromHexString:@"#998100"] : [UIColor lightGrayColor];
     self.lblFoilPrice.text = price;
+    self.lblFoilPrice.textColor = color;
 }
 
 -(void) loadCropImage:(id) sender
@@ -397,4 +404,17 @@
     }
 }
 
+// Assumes input like "#00FF00" (#RRGGBB).
+- (UIColor*)colorFromHexString:(NSString *)hexString
+{
+    unsigned rgbValue = 0;
+    NSScanner *scanner = [NSScanner scannerWithString:hexString];
+    [scanner setScanLocation:1]; // bypass '#' character
+    [scanner scanHexInt:&rgbValue];
+    
+    return [UIColor colorWithRed:((rgbValue & 0xFF0000) >> 16)/255.0
+                           green:((rgbValue & 0xFF00) >> 8)/255.0
+                            blue:(rgbValue & 0xFF)/255.0
+                           alpha:1.0];
+}
 @end

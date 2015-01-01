@@ -13,6 +13,7 @@ enum SortMode: Printable  {
     case ByName
     case ByType
     case ByNumber
+    case ByPrice
     
     var description : String {
         switch self {
@@ -20,6 +21,7 @@ enum SortMode: Printable  {
         case ByName: return "Name"
         case ByType: return "Type"
         case ByNumber: return "Collector Number"
+        case ByPrice: return "Price (Median)"
         }
     }
 }
@@ -92,13 +94,15 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
             }
             
         } else {
-            sortOptions = [SortMode.ByName.description, SortMode.ByNumber.description]
+            sortOptions = [SortMode.ByName.description, SortMode.ByNumber.description, SortMode.ByPrice.description]
             
             switch self.sortMode! {
             case .ByName:
                 initialSelection = 0
             case .ByNumber:
                 initialSelection = 1
+            case .ByPrice:
+                initialSelection = 2
             default:
                 break
             }
@@ -124,6 +128,8 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
                     self.sortMode = .ByName
                 case 1:
                     self.sortMode = .ByNumber
+                case 2:
+                    self.sortMode = .ByPrice
                 default:
                     break
                 }
@@ -228,6 +234,9 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
 
             case .ByNumber:
                 sorters = [NSSortDescriptor(key: "number", ascending: true)]
+                
+            case .ByPrice:
+                sorters = [NSSortDescriptor(key: "tcgPlayerMidPrice", ascending: false)]
             default:
                 break
             }
