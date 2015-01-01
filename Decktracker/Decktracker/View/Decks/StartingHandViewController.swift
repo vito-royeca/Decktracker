@@ -139,6 +139,7 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
     func newButtonTapped() {
         initialHand = 7
         self.mulliganButton!.enabled = true
+        self.drawButton!.enabled = true
         
         arrayHand = Array()
         arrayGraveyard = Array()
@@ -177,6 +178,9 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     func drawButtonTapped() {
+        if arrayLibrary!.count <= 0 {
+            self.drawButton!.enabled = false
+        }
         self.drawCards(1)
         self.viewMode = ViewMode.ByHand
         self.tblHand!.reloadData()

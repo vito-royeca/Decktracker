@@ -683,17 +683,6 @@
                 {
                     case 0:
                     {
-                        // Mana Curve
-                        BarGraphViewController *view2 = [[BarGraphViewController alloc] init];
-                        view2.graphTitle = self.deck.name;
-//                        view2.conciseData = [self.deck cardTypeDistribution:NO];
-//                        view2.detailedData = [self.deck cardTypeDistribution:YES];
-                        view2.navigationItem.title = @"Mana Curve";
-                        view = view2;
-                        break;
-                    }
-                    case 1:
-                    {
                         // Card Type Distribution
                         PieChartViewController *view2 = [[PieChartViewController alloc] init];
                         view2.graphTitle = self.deck.name;
@@ -703,7 +692,7 @@
                         view = view2;
                         break;
                     }
-                    case 2:
+                    case 1:
                     {
                         // Color Distribution
                         PieChartViewController *view2 = [[PieChartViewController alloc] init];
@@ -717,19 +706,6 @@
                         view = view2;
                         break;
                     }
-                    /*case 3:
-                    {
-                        // Mana Source Distribution
-                        PieChartViewController *view2 = [[PieChartViewController alloc] init];
-                        view2.graphTitle = self.deck.name;
-                        view2.conciseData = [self.deck manaSourceDistribution:NO];
-                        view2.conciseColors = [self.deck manaSourceColors:NO];
-                        view2.detailedData = [self.deck manaSourceDistribution:YES];
-                        view2.detailedColors = [self.deck manaSourceColors:YES];
-                        view2.navigationItem.title = @"Mana Source Distribution";
-                        view = view2;
-                        break;
-                    }*/
                     default:
                     {
                         break;

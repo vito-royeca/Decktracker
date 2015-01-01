@@ -22,9 +22,9 @@
 #define kOtherSymbols                   @[@"T", @"Q", @"C", @"artifact", @"creature", \
                                          @"enchantment", @"instant", @"land", @"multiple", \
                                          @"planeswalker", @"sorcery", @"power", @"toughness", \
-                                         @"chaosdice", @"planeswalk", @"forwardslash"]
+                                         @"chaosdice", @"planeswalk", @"forwardslash", @"tombstone"]
 
-#define kImageSizes                     @[@"32", @"48", @"64", @"96"]
+#define kImageSizes                     @[@"16", @"32", @"48", @"64", @"96"]
 
 #define CARD_TYPES                      @[@"Artifact", @"Conspiracy", @"Creature", \
                                           @"Enchantment", @"Instant", @"Land", \

@@ -50,7 +50,7 @@
     NSString *path = [documentsDirectory stringByAppendingPathComponent:@"/images-raw/other"];
     
     [self createDir:path];
-    
+
     for (NSString *other in kOtherSymbols)
     {
         NSString *dirPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", other]];
@@ -115,7 +115,7 @@
     [[Database sharedInstance] closeDb];
 }
 
--(void) downloadSets:(NSArray*) arrSetCodes
+-(void) downloadSetIcons:(NSArray*) arrSetCodes
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];

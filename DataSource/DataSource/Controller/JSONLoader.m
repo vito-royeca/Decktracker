@@ -36,7 +36,9 @@
     
     NSString *filePath = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] resourcePath], @"Data/AllSets-x.json"];
     NSData *data = [NSData dataWithContentsOfFile:filePath];
-    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data
+                                                         options:NSJSONReadingMutableContainers
+                                                           error:nil];
     NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
 
     for (NSString *setName in [json allKeys])
@@ -105,7 +107,9 @@
     
     NSString *filePath = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] resourcePath], @"Data/AllSets-x.json"];
     NSData *data = [NSData dataWithContentsOfFile:filePath];
-    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data
+                                                         options:NSJSONReadingMutableContainers
+                                                           error:nil];
     
     for (NSString *setName in [json allKeys])
     {
