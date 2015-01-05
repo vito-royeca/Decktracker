@@ -301,6 +301,62 @@
     return qty;
 }
 
+-(NSString*) averagePrice
+{
+    NSNumberFormatter *formatter =  [[NSNumberFormatter alloc] init];
+    [formatter setMaximumFractionDigits:2];
+    [formatter setRoundingMode:NSNumberFormatterRoundCeiling];
+    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+    formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
+    double totalPrice = 0;
+    
+    for (NSDictionary *dict in self.arrLands)
+    {
+        DTCard *card = dict[@"card"];
+        NSNumber *qty = dict[@"qty"];
+        
+        if (card.tcgPlayerMidPrice)
+        {
+            totalPrice += ([card.tcgPlayerMidPrice doubleValue] * [qty intValue]);
+        }
+    }
+    
+    for (NSDictionary *dict in self.arrCreatures)
+    {
+        DTCard *card = dict[@"card"];
+        NSNumber *qty = dict[@"qty"];
+        
+        if (card.tcgPlayerMidPrice)
+        {
+            totalPrice += ([card.tcgPlayerMidPrice doubleValue] * [qty intValue]);
+        }
+    }
+    
+    for (NSDictionary *dict in self.arrOtherSpells)
+    {
+        DTCard *card = dict[@"card"];
+        NSNumber *qty = dict[@"qty"];
+        
+        if (card.tcgPlayerMidPrice)
+        {
+            totalPrice += ([card.tcgPlayerMidPrice doubleValue] * [qty intValue]);
+        }
+    }
+    
+    for (NSDictionary *dict in self.arrSideboard)
+    {
+        DTCard *card = dict[@"card"];
+        NSNumber *qty = dict[@"qty"];
+        
+        if (card.tcgPlayerMidPrice)
+        {
+            totalPrice += ([card.tcgPlayerMidPrice doubleValue] * [qty intValue]);
+        }
+    }
+    
+    return [NSString stringWithFormat:@"%@", [formatter stringFromNumber:[NSNumber numberWithDouble:totalPrice]]];
+}
+
 -(NSArray*) cardTypeDistribution:(BOOL) detailed
 {
     NSMutableArray *array = [[NSMutableArray alloc] init];

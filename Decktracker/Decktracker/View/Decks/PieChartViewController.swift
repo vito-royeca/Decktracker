@@ -72,7 +72,7 @@ class PieChartViewController: UIViewController, CPTPlotDataSource {
         graph.paddingTop    = 0.0
         graph.paddingRight  = 0.0
         graph.paddingBottom = 0.0
-        graph.axisSet = nil;
+        graph.axisSet = nil
         
         // 2 - Set up text style
         let textStyle = CPTMutableTextStyle.textStyle() as CPTMutableTextStyle
@@ -87,6 +87,7 @@ class PieChartViewController: UIViewController, CPTPlotDataSource {
         graph.titleDisplacement = CGPoint(x:0, y:-80)
         
         graph.applyTheme(CPTTheme(named: kCPTPlainWhiteTheme))
+        graph.plotAreaFrame.borderLineStyle = nil
     }
     
     func configureChart() {

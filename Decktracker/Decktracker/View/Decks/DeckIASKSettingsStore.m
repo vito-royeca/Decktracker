@@ -50,59 +50,7 @@
     }
     else if ([key isEqualToString:@"averagePrice"])
     {
-        NSNumberFormatter *formatter =  [[NSNumberFormatter alloc] init];
-//        [formatter setUsesSignificantDigits:YES];
-        [formatter setMaximumFractionDigits:2];
-        [formatter setRoundingMode:NSNumberFormatterRoundCeiling];
-        [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-        formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
-        double totalPrice = 0;
-        
-        for (NSDictionary *dict in self.deck.arrLands)
-        {
-            DTCard *card = dict[@"card"];
-            NSNumber *qty = dict[@"qty"];
-            
-            if (card.tcgPlayerMidPrice)
-            {
-                totalPrice += ([card.tcgPlayerMidPrice doubleValue] * [qty intValue]);
-            }
-        }
-        
-        for (NSDictionary *dict in self.deck.arrCreatures)
-        {
-            DTCard *card = dict[@"card"];
-            NSNumber *qty = dict[@"qty"];
-            
-            if (card.tcgPlayerMidPrice)
-            {
-                totalPrice += ([card.tcgPlayerMidPrice doubleValue] * [qty intValue]);
-            }
-        }
-        
-        for (NSDictionary *dict in self.deck.arrOtherSpells)
-        {
-            DTCard *card = dict[@"card"];
-            NSNumber *qty = dict[@"qty"];
-            
-            if (card.tcgPlayerMidPrice)
-            {
-                totalPrice += ([card.tcgPlayerMidPrice doubleValue] * [qty intValue]);
-            }
-        }
-        
-        for (NSDictionary *dict in self.deck.arrSideboard)
-        {
-            DTCard *card = dict[@"card"];
-            NSNumber *qty = dict[@"qty"];
-            
-            if (card.tcgPlayerMidPrice)
-            {
-                totalPrice += ([card.tcgPlayerMidPrice doubleValue] * [qty intValue]);
-            }
-        }
-        
-        return [NSString stringWithFormat:@"%@", [formatter stringFromNumber:[NSNumber numberWithDouble:totalPrice]]];
+        return [self.deck averagePrice];
     }
     else if ([key isEqualToString:@"format"])
     {

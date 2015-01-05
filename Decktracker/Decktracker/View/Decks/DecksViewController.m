@@ -9,6 +9,7 @@
 #import "DecksViewController.h"
 #import "DeckDetailsViewController.h"
 #import "Deck.h"
+#import "Decktracker-Swift.h"
 #import "FileManager.h"
 
 #ifndef DEBUG
@@ -51,6 +52,8 @@
                                                    style:UITableViewStylePlain];
     self.tblDecks.delegate = self;
     self.tblDecks.dataSource = self;
+    [self.tblDecks registerNib:[UINib nibWithNibName:@"DecksTableViewCell" bundle:nil]
+          forCellReuseIdentifier:@"Cell"];
     
     [self.view addSubview:self.tblDecks];
     
@@ -171,25 +174,28 @@
 {
     static NSString *CellIdentifier = @"Cell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    DecksTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+        cell = [[DecksTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
  
     if (self.arrDecks.count > 0)
     {
-        NSDictionary *deck = [[FileManager sharedInstance] loadFileAtPath:[NSString stringWithFormat:@"/Decks/%@.json", self.arrDecks[indexPath.row]]];
+        NSDictionary *dict = [[FileManager sharedInstance] loadFileAtPath:[NSString stringWithFormat:@"/Decks/%@.json", self.arrDecks[indexPath.row]]];
+        Deck *deck = [[Deck alloc] initWithDictionary:dict];
         
-        NSString *format = @"";
+//        NSString *format = @"";
         
-        if (deck[@"format"] && [deck[@"format"] isKindOfClass:[NSString class]])
-        {
-            format = deck[@"format"];
-        }
-        cell.textLabel.text = deck[@"name"];
-        cell.detailTextLabel.text = format;
+//        if (deck[@"format"] && [deck[@"format"] isKindOfClass:[NSString class]])
+//        {
+//            format = deck[@"format"];
+//        }
+//        cell.textLabel.text = deck[@"name"];
+//        cell.detailTextLabel.text = format;
+        
+        [cell displayDeck: deck];
     }
     return cell;
 }
