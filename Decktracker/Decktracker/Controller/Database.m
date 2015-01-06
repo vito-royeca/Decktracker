@@ -21,7 +21,7 @@
 
 static Database *_me;
 
-@synthesize pfSets = _pfSets;
+//@synthesize pfSets = _pfSets;
 
 +(id) sharedInstance
 {
@@ -713,7 +713,7 @@ static Database *_me;
     
     void (^callbackFindCard)(NSString *cardName, NSNumber *multiverseID, PFObject *pfSet) = ^void(NSString *cardName, NSNumber *multiverseID, PFObject *pfSet)
     {
-        PFQuery *query = [PFQuery queryWithClassName:@"Card"];
+        __block PFQuery *query = [PFQuery queryWithClassName:@"Card"];
         [query whereKey:@"name" equalTo:cardName];
         [query whereKey:@"multiverseID" equalTo:multiverseID];
         [query whereKey:@"set" equalTo:pfSet];
@@ -726,7 +726,7 @@ static Database *_me;
                 return task;
             }
            
-            PFObject *pfCard;
+            __block PFObject *pfCard;
             
             for (PFObject *object in task.result)
             {
@@ -739,13 +739,37 @@ static Database *_me;
             }
             else
             {
-                pfCard = [PFObject objectWithClassName:@"Card"];
-                pfCard[@"name"] = cardName;
-                pfCard[@"multiverseID"] = multiverseID;
-                pfCard[@"set"] = pfSet;
-                [pfCard pinInBackgroundWithBlock:^(BOOL success, NSError *error) {
-                    callbackTask(pfCard);
-                }];
+                // not found in local datastore, find remotely
+                query = [PFQuery queryWithClassName:@"Card"];
+                [query whereKey:@"name" equalTo:cardName];
+                [query whereKey:@"multiverseID" equalTo:multiverseID];
+                [query whereKey:@"set" equalTo:pfSet];
+                
+                [[query findObjectsInBackground] continueWithSuccessBlock:^id(BFTask *task)
+                 {
+                    return [[PFObject unpinAllObjectsInBackgroundWithName:@"Cards"] continueWithSuccessBlock:^id(BFTask *ignored)
+                    {
+                        NSArray *results = task.result;
+                        
+                        if (results.count > 0)
+                        {
+                            pfCard = task.result[0];
+                        }
+                        else
+                        {
+                            // not found remotely
+                            pfCard = [PFObject objectWithClassName:@"Card"];
+                            pfCard[@"name"] = cardName;
+                            pfCard[@"multiverseID"] = multiverseID;
+                            pfCard[@"set"] = pfSet;
+                        }
+                        
+                        [pfCard pinInBackgroundWithBlock:^(BOOL success, NSError *error) {
+                            callbackTask(pfCard);
+                        }];
+                        return nil;
+                    }];
+                 }];
             }
             
             return task;
@@ -815,10 +839,8 @@ static Database *_me;
         [pfRating saveEventually:^(BOOL success, NSError *error) {
             PFQuery *query = [PFQuery queryWithClassName:@"CardRating"];
             [query whereKey:@"card" equalTo:pfCard];
-            query.cachePolicy = kPFCachePolicyNetworkElseCache;
             
             [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-                NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
                 double totalRating = 0;
                 double averageRating = 0;
                 
@@ -912,8 +934,8 @@ static Database *_me;
                 [[NSUserDefaults standardUserDefaults] setObject:remoteDate forKey:@"PFSets.updatedAt"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
                 
-                _pfSets = task.result;
-                return [PFObject pinAllInBackground:_pfSets withName:@"AllSets"];
+                NSArray *pfSets = task.result;
+                return [PFObject pinAllInBackground:pfSets withName:@"AllSets"];
             }];
         }];
     }
@@ -933,7 +955,6 @@ static Database *_me;
                  return task;
              }
 
-             _pfSets = task.result;
              return task;
          }];
     }

@@ -12,6 +12,7 @@
 #import "Decktracker-Swift.h"
 #import "FileManager.h"
 
+
 #ifndef DEBUG
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"
@@ -75,7 +76,15 @@
 -(void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
+ 
+    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.tblDecks];
+    [self.tblDecks addSubview:hud];
+    hud.delegate = self;
+    [hud showWhileExecuting:@selector(loadDecks) onTarget:self withObject:nil animated:NO];
+}
+
+-(void) loadDecks
+{
     self.arrDecks = [[NSMutableArray alloc] init];
     for (NSString *file in [[FileManager sharedInstance] listFilesAtPath:@"/Decks"
                                                           fromFileSystem:FileSystemLocal])
@@ -186,15 +195,6 @@
         NSDictionary *dict = [[FileManager sharedInstance] loadFileAtPath:[NSString stringWithFormat:@"/Decks/%@.json", self.arrDecks[indexPath.row]]];
         Deck *deck = [[Deck alloc] initWithDictionary:dict];
         
-//        NSString *format = @"";
-        
-//        if (deck[@"format"] && [deck[@"format"] isKindOfClass:[NSString class]])
-//        {
-//            format = deck[@"format"];
-//        }
-//        cell.textLabel.text = deck[@"name"];
-//        cell.detailTextLabel.text = format;
-        
         [cell displayDeck: deck];
     }
     return cell;
@@ -231,6 +231,12 @@
         alert.tag = 1;
         [alert show];
     }
+}
+
+#pragma mark - MBProgressHUDDelegate methods
+- (void)hudWasHidden:(MBProgressHUD *)hud
+{
+    [hud removeFromSuperview];
 }
 
 @end

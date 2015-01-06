@@ -29,7 +29,6 @@
 @interface Database : NSObject
 
 + (id)sharedInstance;
-@property(readonly) NSArray* pfSets;
 
 -(void) setupDb;
 -(void) closeDb;

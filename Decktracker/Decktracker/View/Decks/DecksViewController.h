@@ -8,7 +8,9 @@
 
 @import UIKit;
 
-@interface DecksViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
+#import "MBProgressHUD.h"
+
+@interface DecksViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, MBProgressHUDDelegate>
 
 @property(strong,nonatomic) UITableView *tblDecks;
 @property(strong,nonatomic) NSMutableArray *arrDecks;
