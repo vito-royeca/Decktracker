@@ -23,6 +23,9 @@
 #endif
 
 @implementation SimpleSearchViewController
+{
+    NSTimer *_searchTimer;
+}
 
 @synthesize titleString = _titleString;
 @synthesize searchBar  = _searchBar;
@@ -206,7 +209,17 @@
 #pragma mark - UISearchBarDelegate
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    [self doSearch];
+    if (_searchTimer.isValid)
+    {
+        [_searchTimer invalidate];
+    }
+    _searchTimer = [NSTimer timerWithTimeInterval:2.0
+                                           target:self
+                                         selector:@selector(doSearch)
+                                         userInfo:nil
+                                          repeats:NO];
+    [[NSRunLoop mainRunLoop] addTimer:_searchTimer
+                              forMode:NSDefaultRunLoopMode];
 }
 
 - (void) doSearch

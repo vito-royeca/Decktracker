@@ -28,9 +28,9 @@
 
 #define CARD_TYPES                      @[@"Artifact", @"Conspiracy", @"Creature", \
                                           @"Enchantment", @"Instant", @"Land", \
-                                          @"Legendary", @"Ongoing", @"Phenomenon", @"Plane", \
-                                          @"Planeswalker", @"Scheme", @"Snow", @"Sorcery", \
-                                          @"Tribal", @"Vanguard", @"World"]
+                                          @"Legendary", @"Phenomenon", @"Plane", \
+                                          @"Planeswalker", @"Scheme", @"Sorcery", \
+                                          @"Tribal", @"Vanguard"]
 
 #define CARD_TYPES_WITH_SYMBOL          @[@"Artifact", @"Creature", \
                                           @"Enchantment", @"Instant", @"Land", \

@@ -82,6 +82,7 @@
 		8C2EC95F1A1670900011BAA2 /* UIImage+AverageColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2EC95E1A1670900011BAA2 /* UIImage+AverageColor.m */; };
 		8C325F3D1A5A60B200FA58E6 /* DecksTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C325F3B1A5A60B200FA58E6 /* DecksTableViewCell.swift */; };
 		8C325F3E1A5A60B200FA58E6 /* DecksTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C325F3C1A5A60B200FA58E6 /* DecksTableViewCell.xib */; };
+		8C325F401A5A778100FA58E6 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C325F3F1A5A778100FA58E6 /* libsqlite3.dylib */; };
 		8C3277FD199A464D00899790 /* style.css in Resources */ = {isa = PBXBuildFile; fileRef = 8C3277FC199A464D00899790 /* style.css */; };
 		8C33E9BE19D73AAB000892D9 /* InAppPurchaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C33E9BD19D73AAB000892D9 /* InAppPurchaseViewController.m */; };
 		8C372C771A2DD900001D7EF3 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C372C761A2DD900001D7EF3 /* Accounts.framework */; };
@@ -315,6 +316,7 @@
 		8C2EC95E1A1670900011BAA2 /* UIImage+AverageColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+AverageColor.m"; sourceTree = "<group>"; };
 		8C325F3B1A5A60B200FA58E6 /* DecksTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecksTableViewCell.swift; sourceTree = "<group>"; };
 		8C325F3C1A5A60B200FA58E6 /* DecksTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DecksTableViewCell.xib; sourceTree = "<group>"; };
+		8C325F3F1A5A778100FA58E6 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		8C3277FC199A464D00899790 /* style.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = style.css; sourceTree = "<group>"; };
 		8C33E9BC19D73AAB000892D9 /* InAppPurchaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InAppPurchaseViewController.h; sourceTree = "<group>"; };
 		8C33E9BD19D73AAB000892D9 /* InAppPurchaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InAppPurchaseViewController.m; sourceTree = "<group>"; };
@@ -445,6 +447,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C325F401A5A778100FA58E6 /* libsqlite3.dylib in Frameworks */,
 				8C372C7B1A2DD908001D7EF3 /* Social.framework in Frameworks */,
 				8C372C771A2DD900001D7EF3 /* Accounts.framework in Frameworks */,
 				8C2A96D719F4D95C0094C97F /* MessageUI.framework in Frameworks */,
@@ -635,6 +638,7 @@
 		8C2E13EF1990741100023BAA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8C325F3F1A5A778100FA58E6 /* libsqlite3.dylib */,
 				8C372C7A1A2DD908001D7EF3 /* Social.framework */,
 				8C372C761A2DD900001D7EF3 /* Accounts.framework */,
 				8C2A96D519F4D9510094C97F /* ImageIO.framework */,

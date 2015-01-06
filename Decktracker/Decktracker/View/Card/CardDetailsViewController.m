@@ -999,7 +999,6 @@
                                                      reuseIdentifier:@"Cell1"];
         }
         
-//        [[Database sharedInstance] parseSynch:_card];
         [((SearchResultsTableViewCell*)cell) displayCard:self.card];
         tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         cell.userInteractionEnabled = NO;

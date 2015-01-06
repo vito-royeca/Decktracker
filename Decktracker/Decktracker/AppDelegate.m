@@ -41,6 +41,7 @@
     [Crashlytics startWithAPIKey:kCrashlyticsAPIKey];
 
     // Parse
+    [Parse enableLocalDatastore];
     [Parse setApplicationId:kParseID
                   clientKey:kParseClientKey];
     [PFFacebookUtils initializeFacebook];

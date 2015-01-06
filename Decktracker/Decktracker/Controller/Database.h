@@ -14,6 +14,7 @@
 #import "JJJ/JJJ.h"
 
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
+#import "Bolts.h"
 #import <Parse/Parse.h>
 #endif
 
@@ -28,6 +29,7 @@
 @interface Database : NSObject
 
 + (id)sharedInstance;
+@property(readonly) NSArray* pfSets;
 
 -(void) setupDb;
 -(void) closeDb;
@@ -57,8 +59,8 @@
 -(void) fetchTopViewed:(int) limit skip:(int) skip;
 -(void) incrementCardView:(DTCard*) card;
 -(void) rateCard:(DTCard*) card for:(float) rating;
--(void) parseSynch:(DTCard*) card;
 -(void) uploadAllSetsToParse;
+-(void) prefetchAllSetObjects;
 #endif
 
 @end

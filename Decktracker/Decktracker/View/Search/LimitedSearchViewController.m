@@ -19,6 +19,9 @@
 #endif
 
 @implementation LimitedSearchViewController
+{
+    NSTimer *_searchTimer;
+}
 
 @synthesize deck = _deck;
 @synthesize searchBar = _searchBar;
@@ -72,6 +75,14 @@
     [self.tblResults registerNib:[UINib nibWithNibName:@"SearchResultsTableViewCell" bundle:nil]
           forCellReuseIdentifier:@"Cell"];
     
+    // Add a Done button in the keyboard
+    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                               target:self.searchBar
+                                                                               action:@selector(resignFirstResponder)];
+    UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, dWidth, 44)];
+    toolbar.items = [NSArray arrayWithObject:barButton];
+    self.searchBar.inputAccessoryView = toolbar;
+
     self.navigationItem.titleView = self.searchBar;
     [self.view addSubview:self.tblResults];
     [self doSearch];
@@ -86,7 +97,17 @@
 #pragma mark - UISearchBarDelegate
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    [self doSearch];
+    if (_searchTimer.isValid)
+    {
+        [_searchTimer invalidate];
+    }
+    _searchTimer = [NSTimer timerWithTimeInterval:2.0
+                                           target:self
+                                         selector:@selector(doSearch)
+                                         userInfo:nil
+                                          repeats:NO];
+    [[NSRunLoop mainRunLoop] addTimer:_searchTimer
+                              forMode:NSDefaultRunLoopMode];
 }
 
 - (void) doSearch

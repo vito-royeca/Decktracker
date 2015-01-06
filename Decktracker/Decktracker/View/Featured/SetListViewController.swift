@@ -66,7 +66,7 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
         
         self.sortMode = SortMode.ByReleaseDate
         self.loadData()
-
+        
 #if !DEBUG
     // send the screen to Google Analytics
     let tracker = GAI.sharedInstance().defaultTracker
