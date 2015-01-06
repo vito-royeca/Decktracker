@@ -125,13 +125,13 @@ static Database *_me;
             [self setupDb];
         }
     }
-    
-    [self prefetchAllSetObjects];
 #endif
     
     [MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:kDatabaseStore];
 
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
+    [self prefetchAllSetObjects];
+    
     for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentPath error:nil])
     {
         if ([file hasPrefix:@"decktracker."])
