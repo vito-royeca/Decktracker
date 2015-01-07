@@ -1,1 +1,1 @@
-../../../../Facebook-iOS-SDK/src/FBLikeButtonPopWAV.h
+../../../../Facebook-iOS-SDK/src/AudioResources/FBLikeButtonPopWAV.h

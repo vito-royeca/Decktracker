@@ -1,1 +1,1 @@
-../../../../Facebook-iOS-SDK/src/FBSessionInlineWebViewLoginStategy.h
+../../../../Facebook-iOS-SDK/src/Login/FBSessionInlineWebViewLoginStategy.h

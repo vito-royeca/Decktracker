@@ -1,1 +1,1 @@
-../../../../Facebook-iOS-SDK/src/FBDialogClosePNG.h
+../../../../Facebook-iOS-SDK/src/ImageResources/FBDialogClosePNG.h

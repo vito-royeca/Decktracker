@@ -1,1 +1,1 @@
-../../../../Facebook-iOS-SDK/src/FBLoginViewButtonPNG.h
+../../../../Facebook-iOS-SDK/src/ImageResources/FBLoginViewButtonPNG.h

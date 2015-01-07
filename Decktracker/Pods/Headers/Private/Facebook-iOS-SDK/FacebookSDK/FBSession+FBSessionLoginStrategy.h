@@ -1,1 +1,1 @@
-../../../../Facebook-iOS-SDK/src/FBSession+FBSessionLoginStrategy.h
+../../../../Facebook-iOS-SDK/src/Login/FBSession+FBSessionLoginStrategy.h

@@ -1,1 +1,1 @@
-../../../../Facebook-iOS-SDK/src/FBPlacePickerViewGenericPlacePNG.h
+../../../../Facebook-iOS-SDK/src/ImageResources/FBPlacePickerViewGenericPlacePNG.h

@@ -1,1 +1,1 @@
-../../../../Facebook-iOS-SDK/src/FBProfilePictureViewBlankProfileSquarePNG.h
+../../../../Facebook-iOS-SDK/src/ImageResources/FBProfilePictureViewBlankProfileSquarePNG.h

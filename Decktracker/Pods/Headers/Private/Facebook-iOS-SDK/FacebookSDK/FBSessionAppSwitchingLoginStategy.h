@@ -1,1 +1,1 @@
-../../../../Facebook-iOS-SDK/src/FBSessionAppSwitchingLoginStategy.h
+../../../../Facebook-iOS-SDK/src/Login/FBSessionAppSwitchingLoginStategy.h

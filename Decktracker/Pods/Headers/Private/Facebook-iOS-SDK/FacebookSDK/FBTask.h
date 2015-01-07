@@ -1,1 +1,1 @@
-../../../../Facebook-iOS-SDK/src/FBTask.h
+../../../../Facebook-iOS-SDK/src/FBTask/FBTask.h

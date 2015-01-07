@@ -1,1 +1,1 @@
-../../../../Facebook-iOS-SDK/src/FBLikeButtonIconPNG.h
+../../../../Facebook-iOS-SDK/src/ImageResources/FBLikeButtonIconPNG.h

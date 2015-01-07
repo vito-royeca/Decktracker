@@ -1,1 +1,1 @@
-../../../../Facebook-iOS-SDK/src/FBFriendPickerViewDefaultPNG.h
+../../../../Facebook-iOS-SDK/src/ImageResources/FBFriendPickerViewDefaultPNG.h
