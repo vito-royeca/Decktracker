@@ -60,6 +60,12 @@
 #define COCOAPODS_VERSION_MINOR_Bolts 1
 #define COCOAPODS_VERSION_PATCH_Bolts 3
 
+// CAAnimation-EasingEquations
+#define COCOAPODS_POD_AVAILABLE_CAAnimation_EasingEquations
+#define COCOAPODS_VERSION_MAJOR_CAAnimation_EasingEquations 1
+#define COCOAPODS_VERSION_MINOR_CAAnimation_EasingEquations 0
+#define COCOAPODS_VERSION_PATCH_CAAnimation_EasingEquations 3
+
 // CAAnimationBlocks
 #define COCOAPODS_POD_AVAILABLE_CAAnimationBlocks
 #define COCOAPODS_VERSION_MAJOR_CAAnimationBlocks 0
@@ -93,8 +99,8 @@
 // Facebook-iOS-SDK
 #define COCOAPODS_POD_AVAILABLE_Facebook_iOS_SDK
 #define COCOAPODS_VERSION_MAJOR_Facebook_iOS_SDK 3
-#define COCOAPODS_VERSION_MINOR_Facebook_iOS_SDK 21
-#define COCOAPODS_VERSION_PATCH_Facebook_iOS_SDK 1
+#define COCOAPODS_VERSION_MINOR_Facebook_iOS_SDK 22
+#define COCOAPODS_VERSION_PATCH_Facebook_iOS_SDK 0
 
 // GoogleAnalytics-iOS-SDK
 #define COCOAPODS_POD_AVAILABLE_GoogleAnalytics_iOS_SDK
