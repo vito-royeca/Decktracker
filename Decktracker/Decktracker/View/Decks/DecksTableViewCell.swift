@@ -10,11 +10,12 @@ import UIKit
 
 class DecksTableViewCell: UITableViewCell, CPTPlotDataSource {
 
-    @IBOutlet weak var vwGraph: UIView!
+    @IBOutlet weak var imgGraph: UIImageView!
     @IBOutlet weak var lblName: UILabel!
     @IBOutlet weak var lblCreator: UILabel!
     @IBOutlet weak var lblFormat: UILabel!    
     @IBOutlet weak var lblPrice: UILabel!
+    
     
     var deck:Deck?
     var conciseData:Array<Dictionary<String, Int>>?
@@ -24,10 +25,6 @@ class DecksTableViewCell: UITableViewCell, CPTPlotDataSource {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        
-        self.configureHost()
-        self.configureGraph()
-        self.configureChart()
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
@@ -45,14 +42,32 @@ class DecksTableViewCell: UITableViewCell, CPTPlotDataSource {
         lblCreator.text = deck.originalDesigner != nil && countElements(deck.originalDesigner) > 0 ? "by \(deck.originalDesigner)" : ""
         lblFormat.text = deck.format
         lblPrice.text = deck.averagePrice()
-        self.hostView!.hostedGraph.reloadData()
+        
+        let imgPath = FileManager.sharedInstance().tempPath() + "/" + deck.name + ".png"
+        var image:UIImage?
+        
+        if !NSFileManager.defaultManager().fileExistsAtPath(imgPath) {
+            self.configureHost()
+            self.configureGraph()
+            self.configureChart()
+            self.hostView!.hostedGraph.reloadData()
+            
+            let graph = self.hostView!.hostedGraph
+            image = graph.imageOfLayer()
+            let png = UIImagePNGRepresentation(image)
+            png.writeToFile(imgPath, atomically: true)
+            self.hostView!.removeFromSuperview()
+
+        }
+        
+        image = UIImage(contentsOfFile: imgPath)
+        self.imgGraph.image = image
     }
     
     func configureHost() {
-        let frame = CGRect(x: self.vwGraph.frame.origin.x, y: self.vwGraph.frame.origin.y, width: self.vwGraph.frame.size.width, height: self.vwGraph.frame.size.height)
+        let frame = CGRect(x: self.imgGraph.frame.origin.x, y: self.imgGraph.frame.origin.y, width: self.imgGraph.frame.size.width, height: self.imgGraph.frame.size.height)
         self.hostView = CPTGraphHostingView(frame: frame)
         self.hostView!.allowPinchScaling = false
-        self.vwGraph.removeFromSuperview()
         self.addSubview(self.hostView!)
     }
     

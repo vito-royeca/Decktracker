@@ -76,11 +76,16 @@
 -(void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
- 
+
     MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.tblDecks];
     [self.tblDecks addSubview:hud];
     hud.delegate = self;
-    [hud showWhileExecuting:@selector(loadDecks) onTarget:self withObject:nil animated:NO];
+
+    [hud showAnimated:YES whileExecutingBlock:^{
+      [self loadDecks];
+    } completionBlock:^ {
+          [self.tblDecks reloadData];
+    }];
 }
 
 -(void) loadDecks
@@ -89,15 +94,33 @@
     for (NSString *file in [[FileManager sharedInstance] listFilesAtPath:@"/Decks"
                                                           fromFileSystem:FileSystemLocal])
     {
-        if ([[JJJUtil trim:file] isEqualToString:@".json"])
-        {
-            [[FileManager sharedInstance] deleteFileAtPath:[NSString stringWithFormat:@"/Decks/%@", file]];
-            continue;
-        }
-        [self.arrDecks addObject:[file stringByDeletingPathExtension]];
+        NSDictionary *dict = [[FileManager sharedInstance] loadFileAtPath:[NSString stringWithFormat:@"/Decks/%@", file]];
+        
+        Deck *deck = [[Deck alloc] initWithDictionary:dict];
+        
+        [self.arrDecks addObject:deck];
     }
+}
+
+-(void) deleteDeck
+{
+    Deck *deck = self.arrDecks[_selectedRow];
+    NSString *path = [NSString stringWithFormat:@"/Decks/%@.json", deck.name];
     
-    [self.tblDecks reloadData];
+    [[FileManager sharedInstance] deleteFileAtPath:path];
+    [deck deletePieImage];
+
+    [self.arrDecks removeObject:deck.name];
+    [self loadDecks];
+    
+#ifndef DEBUG
+    // send to Google Analytics
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Decks"
+                                                          action:nil
+                                                           label:@"Delete"
+                                                           value:nil] build]];
+#endif
 }
 
 -(void) btnAddTapped:(id) sender
@@ -127,11 +150,13 @@
         if (alertView.tag == 0)
         {
             NSDictionary *dict = @{@"name" : [[alertView textFieldAtIndex:0] text],
-                                   @"format" : @"Standard",
                                    @"mainBoard" : @[],
                                    @"sideBoard" : @[]};
-            [[FileManager sharedInstance] saveData:dict
-                                            atPath:[NSString stringWithFormat:@"/Decks/%@.json", dict[@"name"]]];
+            Deck *deck = [[Deck alloc] initWithDictionary:dict];
+            [deck save:[NSString stringWithFormat:@"/Decks/%@.json", dict[@"name"]]];
+            
+            DeckDetailsViewController *view = [[DeckDetailsViewController alloc] init];
+            view.deck = deck;
             
 #ifndef DEBUG
             // send to Google Analytics
@@ -141,29 +166,20 @@
                                                                    label:@"New Deck"
                                                                    value:nil] build]];
 #endif
-            
-            DeckDetailsViewController *view = [[DeckDetailsViewController alloc] init];
-            Deck *deck = [[Deck alloc] initWithDictionary:dict];
-            view.deck = deck;
             [self.navigationController pushViewController:view animated:YES];
         }
         
         else if (alertView.tag == 1)
         {
-            NSString *name = self.arrDecks[_selectedRow];
-            NSString *path = [NSString stringWithFormat:@"/Decks/%@.json", name];
-            [[FileManager sharedInstance] deleteFileAtPath:path];
-            [self.arrDecks removeObject:name];
+            MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.tblDecks];
+            [self.tblDecks addSubview:hud];
+            hud.delegate = self;
             
-#ifndef DEBUG
-            // send to Google Analytics
-            id tracker = [[GAI sharedInstance] defaultTracker];
-            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Decks"
-                                                                  action:nil
-                                                                   label:@"Delete"
-                                                                   value:nil] build]];
-#endif
-            [self.tblDecks reloadData];
+            [hud showAnimated:YES whileExecutingBlock:^{
+                [self loadDecks];
+            } completionBlock:^ {
+                [self.tblDecks reloadData];
+            }];
         }
     }
 }
@@ -192,8 +208,7 @@
  
     if (self.arrDecks.count > 0)
     {
-        NSDictionary *dict = [[FileManager sharedInstance] loadFileAtPath:[NSString stringWithFormat:@"/Decks/%@.json", self.arrDecks[indexPath.row]]];
-        Deck *deck = [[Deck alloc] initWithDictionary:dict];
+        Deck *deck = self.arrDecks[indexPath.row];
         
         [cell displayDeck: deck];
     }
@@ -210,9 +225,8 @@
     _selectedRow = indexPath.row;
     
     DeckDetailsViewController *view = [[DeckDetailsViewController alloc] init];
+    Deck *deck = self.arrDecks[_selectedRow];
     
-    NSDictionary *dict = [[FileManager sharedInstance] loadFileAtPath:[NSString stringWithFormat:@"/Decks/%@.json", self.arrDecks[_selectedRow]]];
-    Deck *deck = [[Deck alloc] initWithDictionary:dict];
     view.deck = deck;
     [self.navigationController pushViewController:view animated:YES];
 }
@@ -223,8 +237,9 @@
     
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
+        Deck *deck = self.arrDecks[indexPath.row];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Delete Deck"
-                                                        message:[NSString stringWithFormat:@"Are you sure you want to delete %@?", self.arrDecks[indexPath.row]]
+                                                        message:[NSString stringWithFormat:@"Are you sure you want to delete %@?", deck.name]
                                                        delegate:self
                                               cancelButtonTitle:@"No"
                                               otherButtonTitles:@"Yes", nil];

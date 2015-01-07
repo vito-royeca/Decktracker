@@ -34,6 +34,7 @@ typedef NS_ENUM(NSInteger, DeckBoard)
 -(void) updateDeck:(DeckBoard) board withCard:(DTCard*) card withValue:(int) newValue;
 -(int) cards:(DTCard*) card inBoard:(DeckBoard) deckboard;
 -(int) cardsInBoard:(DeckBoard) deckboard;
+-(void) deletePieImage;
 
 -(NSString*) averagePrice;
 

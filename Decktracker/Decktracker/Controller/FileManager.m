@@ -49,6 +49,23 @@ static FileManager *_me;
     return self;
 }
 
+-(NSString*) tempPath
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *cacheDirectory = [paths firstObject];
+    NSString *tmp = [cacheDirectory stringByAppendingPathComponent:@"/tmp"];
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:tmp])
+    {
+        [[NSFileManager defaultManager] createDirectoryAtPath:tmp
+                                  withIntermediateDirectories:YES
+                                                   attributes:nil
+                                                        error:nil];
+    }
+    
+    return tmp;
+}
+
 -(NSString*) cardPath:(DTCard*) card
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);

@@ -33,6 +33,7 @@ typedef NS_ENUM(NSInteger, FileSystem)
 
 +(id) sharedInstance;
 
+-(NSString*) tempPath;
 -(NSString*) cardPath:(DTCard*) card;
 -(NSString*) cropPath:(DTCard*) card;
 -(NSString*) cardSetPath:(DTCard*) card;

@@ -13,6 +13,7 @@
 		8C13467819A9B17B00E0B3C3 /* SearchResultsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C13467619A9B17B00E0B3C3 /* SearchResultsTableViewCell.m */; };
 		8C13467919A9B17B00E0B3C3 /* SearchResultsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C13467719A9B17B00E0B3C3 /* SearchResultsTableViewCell.xib */; };
 		8C1623191A1C816400ABC4DB /* TopListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1623181A1C816400ABC4DB /* TopListViewController.swift */; };
+		8C2094E11A5D1611008878D6 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2094E01A5D1611008878D6 /* Accelerate.framework */; };
 		8C2106A019B6EF85001DE039 /* QuantityTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C21069E19B6EF85001DE039 /* QuantityTableViewCell.m */; };
 		8C2106A119B6EF85001DE039 /* QuantityTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C21069F19B6EF85001DE039 /* QuantityTableViewCell.xib */; };
 		8C26A67919A63FAC00FE00E7 /* AdvanceSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C26A67019A63FAC00FE00E7 /* AdvanceSearchResultsViewController.m */; };
@@ -213,6 +214,7 @@
 		8C13467619A9B17B00E0B3C3 /* SearchResultsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultsTableViewCell.m; sourceTree = "<group>"; };
 		8C13467719A9B17B00E0B3C3 /* SearchResultsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultsTableViewCell.xib; sourceTree = "<group>"; };
 		8C1623181A1C816400ABC4DB /* TopListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopListViewController.swift; sourceTree = "<group>"; };
+		8C2094E01A5D1611008878D6 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		8C21069D19B6EF85001DE039 /* QuantityTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuantityTableViewCell.h; sourceTree = "<group>"; };
 		8C21069E19B6EF85001DE039 /* QuantityTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuantityTableViewCell.m; sourceTree = "<group>"; };
 		8C21069F19B6EF85001DE039 /* QuantityTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QuantityTableViewCell.xib; sourceTree = "<group>"; };
@@ -447,6 +449,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C2094E11A5D1611008878D6 /* Accelerate.framework in Frameworks */,
 				8C325F401A5A778100FA58E6 /* libsqlite3.dylib in Frameworks */,
 				8C372C7B1A2DD908001D7EF3 /* Social.framework in Frameworks */,
 				8C372C771A2DD900001D7EF3 /* Accounts.framework in Frameworks */,
@@ -638,6 +641,7 @@
 		8C2E13EF1990741100023BAA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8C2094E01A5D1611008878D6 /* Accelerate.framework */,
 				8C325F3F1A5A778100FA58E6 /* libsqlite3.dylib */,
 				8C372C7A1A2DD908001D7EF3 /* Social.framework */,
 				8C372C761A2DD900001D7EF3 /* Accounts.framework */,

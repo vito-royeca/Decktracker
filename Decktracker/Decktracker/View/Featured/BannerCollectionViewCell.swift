@@ -86,6 +86,7 @@ class BannerCollectionViewCell: UICollectionViewCell {
         if (self.card == card) {
             let hiResImage = UIImage(contentsOfFile:FileManager.sharedInstance().cropPath(card))
     
+            imgCrop.contentMode = UIViewContentMode.ScaleAspectFill
             imgCrop.image = hiResImage
             let average = hiResImage!.averageColor()
             lblCardName.shadowColor = hiResImage!.patternColor(average)

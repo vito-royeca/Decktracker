@@ -7,6 +7,8 @@ source 'https://github.com/CocoaPods/Specs.git'
 target "Decktracker" do
 pod "ActionSheetPicker-3.0"
 pod "AFNetworking"
+pod "CAAnimationBlocks"
+pod "CAAnimation-EasingEquations"
 pod "CorePlot"
 pod "Dropbox-Sync-API-SDK"
 pod "EDStarRating"

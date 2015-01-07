@@ -41,13 +41,7 @@
     [Crashlytics startWithAPIKey:kCrashlyticsAPIKey];
 
     // Parse
-    [Parse enableLocalDatastore];
-    [Parse setApplicationId:kParseID
-                  clientKey:kParseClientKey];
-    [PFFacebookUtils initializeFacebook];
-    [PFTwitterUtils initializeWithConsumerKey:kTwitterKey
-                               consumerSecret:kTwitterSecret];
-    [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+    [self setupParse:launchOptions];
     
     // FileSystem
     [[FileManager sharedInstance] moveFilesInDocumentsToCaches];
@@ -150,6 +144,22 @@
     return [FBAppCall handleOpenURL:url
                   sourceApplication:source
                         withSession:[PFFacebookUtils session]];
+}
+
+-(void) setupParse:(NSDictionary *)launchOptions
+{
+    [Parse enableLocalDatastore];
+    [Parse setApplicationId:kParseID
+                  clientKey:kParseClientKey];
+    [PFFacebookUtils initializeFacebook];
+    [PFTwitterUtils initializeWithConsumerKey:kTwitterKey
+                               consumerSecret:kTwitterSecret];
+    [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+    
+//    [PFPurchase addObserverForProduct:COLLECTIONS_IAP_PRODUCT_ID block:^(SKPaymentTransaction *transaction) {
+//        
+//
+//    }];
 }
 
 @end

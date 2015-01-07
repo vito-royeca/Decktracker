@@ -21,8 +21,6 @@
 
 static Database *_me;
 
-//@synthesize pfSets = _pfSets;
-
 +(id) sharedInstance
 {
     if (!_me)
@@ -130,7 +128,7 @@ static Database *_me;
     [MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:kDatabaseStore];
 
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
-    [self prefetchAllSetObjects];
+//    [self prefetchAllSetObjects];
     
     for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentPath error:nil])
     {
@@ -424,8 +422,8 @@ static Database *_me;
     {
         NSDate *today = [NSDate date];
         
-        NSCalendar *gregorian = [[NSCalendar alloc]initWithCalendarIdentifier:NSGregorianCalendar];
-        NSDateComponents *components = [gregorian components:NSHourCalendarUnit
+        NSCalendar *gregorian = [[NSCalendar alloc]initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+        NSDateComponents *components = [gregorian components:NSCalendarUnitHour
                                                     fromDate:card.tcgPlayerFetchDate
                                                       toDate:today
                                                      options:0];
@@ -615,10 +613,13 @@ static Database *_me;
              for (PFObject *object in objects)
              {
                  NSPredicate *p = [NSPredicate predicateWithFormat:@"(%K = %@ AND %K = %@ AND %K = %@)", @"name", object[@"name"], @"multiverseID", object[@"multiverseID"], @"set.name", object[@"set"][@"name"]];
-                 
                  DTCard *card = [DTCard MR_findFirstWithPredicate:p];
-                 card.rating = object[@"rating"];
-                 [moc MR_saveToPersistentStoreAndWait];
+                 
+                 if (![card.rating isEqualToNumber:object[@"rating"]])
+                 {
+                     card.rating = object[@"rating"];
+                     [moc MR_saveToPersistentStoreAndWait];
+                 }
                  [arrResults addObject:card];
              }
          }
@@ -676,8 +677,12 @@ static Database *_me;
             {
                 NSPredicate *p = [NSPredicate predicateWithFormat:@"(%K = %@ AND %K = %@ AND %K = %@)", @"name", object[@"name"], @"multiverseID", object[@"multiverseID"], @"set.name", object[@"set"][@"name"]];
                 DTCard *card = [DTCard MR_findFirstWithPredicate:p];
-                card.numberOfViews = object[@"numberOfViews"];
-                [moc MR_saveToPersistentStoreAndWait];
+                
+                if (![card.numberOfViews isEqualToNumber:object[@"numberOfViews"]])
+                {
+                    card.numberOfViews = object[@"numberOfViews"];
+                    [moc MR_saveToPersistentStoreAndWait];
+                }
                 [arrResults addObject:card];
             }
         }
@@ -778,7 +783,7 @@ static Database *_me;
     
     void (^callbackFindSet)(NSString *setName, NSString *setCode, NSString *cardName, NSNumber *multiverseID) = ^void(NSString *setName, NSString *setCode, NSString *cardName, NSNumber *multiverseID)
     {
-        PFQuery *query = [PFQuery queryWithClassName:@"Set"];
+        __block PFQuery *query = [PFQuery queryWithClassName:@"Set"];
         [query whereKey:@"name" equalTo:setName];
         [query whereKey:@"code" equalTo:setCode];
         [query fromLocalDatastore];
@@ -790,8 +795,51 @@ static Database *_me;
                  return task;
              }
              
-             PFObject *pfSet = task.result[0];
-             callbackFindCard(cardName, multiverseID, pfSet);
+             __block PFObject *pfSet;
+             
+             for (PFObject *object in task.result)
+             {
+                 pfSet = object;
+             }
+             
+             if (pfSet)
+             {
+                 callbackFindCard(cardName, multiverseID, pfSet);
+             }
+             else
+             {
+                 // not found in local datastore, find remotely
+                 query = [PFQuery queryWithClassName:@"Set"];
+                 [query whereKey:@"name" equalTo:setName];
+                 [query whereKey:@"code" equalTo:setCode];
+                 
+                 [[query findObjectsInBackground] continueWithSuccessBlock:^id(BFTask *task)
+                  {
+                      return [[PFObject unpinAllObjectsInBackgroundWithName:@"Sets"] continueWithSuccessBlock:^id(BFTask *ignored)
+                      {
+                          NSArray *results = task.result;
+                                  
+                          if (results.count > 0)
+                          {
+                              pfSet = task.result[0];
+                          }
+                          else
+                          {
+                              // not found remotely
+                              pfSet = [PFObject objectWithClassName:@"Set"];
+                              pfSet[@"name"] = setName;
+                              pfSet[@"code"] = setCode;
+                          }
+                                  
+                          [pfSet pinInBackgroundWithBlock:^(BOOL success, NSError *error)
+                           {
+                               callbackFindCard(cardName, multiverseID, pfSet);
+                           }];
+                          return nil;
+                      }];
+                  }];
+             }
+             
              return task;
          }];
     };

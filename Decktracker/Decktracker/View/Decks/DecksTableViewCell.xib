@@ -17,7 +17,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Deck Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pHl-mi-9mz">
-                        <rect key="frame" x="48" y="0.0" width="272" height="18"/>
+                        <rect key="frame" x="48" y="0.0" width="268" height="18"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
@@ -35,23 +35,22 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Price" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Pi-TJ-Sil">
-                        <rect key="frame" x="184" y="30" width="136" height="12"/>
+                        <rect key="frame" x="184" y="30" width="132" height="12"/>
                         <fontDescription key="fontDescription" type="system" pointSize="10"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xj1-dn-OUx">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UFL-ky-zPj">
                         <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
+                    </imageView>
                 </subviews>
             </tableViewCellContentView>
             <connections>
+                <outlet property="imgGraph" destination="UFL-ky-zPj" id="OeF-8l-OwA"/>
                 <outlet property="lblCreator" destination="01l-qW-oRW" id="fsy-lY-gha"/>
                 <outlet property="lblFormat" destination="meL-XO-awM" id="dk1-cQ-0pM"/>
                 <outlet property="lblName" destination="pHl-mi-9mz" id="KzT-8b-y7C"/>
                 <outlet property="lblPrice" destination="8Pi-TJ-Sil" id="pzP-Zt-Iio"/>
-                <outlet property="vwGraph" destination="xj1-dn-OUx" id="x6v-ig-mca"/>
             </connections>
             <point key="canvasLocation" x="412" y="196"/>
         </tableViewCell>

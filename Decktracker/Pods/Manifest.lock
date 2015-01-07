@@ -22,11 +22,12 @@ PODS:
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - Bolts (1.1.3)
+  - CAAnimation-EasingEquations (1.0.3)
   - CAAnimationBlocks (0.0.1)
   - CorePlot (1.5.1)
   - Dropbox-Sync-API-SDK (3.1.2)
   - EDStarRating (1.1)
-  - Facebook-iOS-SDK (3.21.1):
+  - Facebook-iOS-SDK (3.22.0):
     - Bolts (~> 1.0)
   - FFCircularProgressView (0.5)
   - GoogleAnalytics-iOS-SDK (3.10):
@@ -56,6 +57,8 @@ PODS:
 DEPENDENCIES:
   - ActionSheetPicker-3.0
   - AFNetworking
+  - CAAnimation-EasingEquations
+  - CAAnimationBlocks
   - CorePlot
   - Dropbox-Sync-API-SDK
   - EDStarRating
@@ -77,11 +80,12 @@ SPEC CHECKSUMS:
   ActionSheetPicker-3.0: e94da444f041f0609a9511bafd9a84f545107026
   AFNetworking: 0f54cb5d16ce38c1b76948faffb8d5fb705021c7
   Bolts: 3db0a875235e0c9042b013af13af0f00f79b102c
+  CAAnimation-EasingEquations: 36bf39151d4423d4946b62373f2ea8ec3d40c478
   CAAnimationBlocks: 981bfca79ac481f07957aa8357885e620637f926
   CorePlot: b15cb1a9a687b9576545104248d6e22033e678bb
   Dropbox-Sync-API-SDK: 16aef545267acf60efdbecbfd1fbdf04d3ee5a7c
   EDStarRating: c7b87f9866be0ea29bb054964023b8eb3f18286c
-  Facebook-iOS-SDK: 18c26e86ab25c17854a2ee2a8f60562099c6600f
+  Facebook-iOS-SDK: 0eda8ff7120aada0a9c5f98552f7625da6c3440a
   FFCircularProgressView: 723b7a84c412b5d9d2a5531bc716b99965ad7192
   GoogleAnalytics-iOS-SDK: f422062075d9ccb1ea8d783fc5ba3829461e9502
   hpple: f4eb7c21a8db83ec264e5d614ec7509e10e5adec
@@ -96,4 +100,4 @@ SPEC CHECKSUMS:
   RBBAnimation: 243d73be1a526f1b51d266b182e4aa0cfe9cbf64
   XLForm: 7d6855fe88df37b44ea00da80cc0cf3a945cfb1b
 
-COCOAPODS: 0.35.0
+COCOAPODS: 0.36.0.beta.1

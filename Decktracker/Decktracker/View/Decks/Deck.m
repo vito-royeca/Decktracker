@@ -31,6 +31,15 @@
 {
     if (self = [super init])
     {
+//        NSManagedObjectContext *privateContext = [NSManagedObjectContext MR_context];
+//        [privateContext performBlock:^{
+//            
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                
+//                
+//            });
+//        }];
+        
         NSSortDescriptor *sorter1 = [[NSSortDescriptor alloc] initWithKey:@"card.name"  ascending:YES];
         NSSortDescriptor *sorter2 = [[NSSortDescriptor alloc] initWithKey:@"card.set.releaseDate"  ascending:YES];
         NSArray *sorters = @[sorter1, sorter2];
@@ -50,6 +59,7 @@
         for (NSDictionary *d in dict[@"mainBoard"])
         {
             DTCard *card;
+            NSDictionary *pack;
             
             if (d[@"multiverseID"])
             {
@@ -60,28 +70,24 @@
                 card = [[Database sharedInstance] findCard:d[@"card"] inSet:d[@"set"]];
             }
             
+            pack = @{@"card" : card,
+                     @"set" : card.set ? card.set.code : @"",
+                     @"multiverseID" : card.multiverseID,
+                     @"qty" : d[@"qty"]};
+            
             if ([card.type containsString:@"Land"] || [card.type hasPrefix:@"Land"])
             {
-                [self.arrLands addObject:@{@"card" : card,
-                                           @"set" : card.set.code,
-                                           @"multiverseID" : card.multiverseID,
-                                           @"qty" : d[@"qty"]}];
+                [self.arrLands addObject:pack];
                 totalCards += [d[@"qty"] intValue];
             }
             else if ([card.type containsString:@"Creature"] || [card.type hasPrefix:@"Creature"])
             {
-                [self.arrCreatures addObject:@{@"card": card,
-                                               @"set" : card.set.code,
-                                               @"multiverseID" : card.multiverseID,
-                                               @"qty" : d[@"qty"]}];
+                [self.arrCreatures addObject:pack];
                 totalCards += [d[@"qty"] intValue];
             }
             else
             {
-                [self.arrOtherSpells addObject:@{@"card": card,
-                                                 @"set" : card.set.code,
-                                                 @"multiverseID" : card.multiverseID,
-                                                 @"qty" : d[@"qty"]}];
+                [self.arrOtherSpells addObject:pack];
                 totalCards += [d[@"qty"] intValue];
             }
         }
@@ -89,6 +95,7 @@
         for (NSDictionary *d in dict[@"sideBoard"])
         {
             DTCard *card;
+            NSDictionary *pack;
             
             if (d[@"multiverseID"])
             {
@@ -99,10 +106,12 @@
                 card = [[Database sharedInstance] findCard:d[@"card"] inSet:d[@"set"]];
             }
             
-            [self.arrSideboard addObject:@{@"card": card,
-                                           @"set" : card.set.code,
-                                           @"multiverseID" : card.multiverseID,
-                                           @"qty" : d[@"qty"]}];
+            pack = @{@"card" : card,
+                     @"set" : card.set ? card.set.code : @"",
+                     @"multiverseID" : card.multiverseID,
+                     @"qty" : d[@"qty"]};
+            
+            [self.arrSideboard addObject:pack];
         }
         
         self.arrLands = [[NSMutableArray alloc] initWithArray:[self.arrLands sortedArrayUsingDescriptors:sorters]];
@@ -299,6 +308,15 @@
     }
     
     return qty;
+}
+
+-(void) deletePieImage
+{
+    NSString *path = [NSString stringWithFormat:@"%@/%@.png", [[FileManager sharedInstance] tempPath], self.name];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:path])
+    {
+        [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
+    }
 }
 
 -(NSString*) averagePrice

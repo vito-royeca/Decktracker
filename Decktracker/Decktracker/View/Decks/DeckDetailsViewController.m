@@ -125,6 +125,9 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
+    [super viewWillDisappear:animated];
+    
+    [self.deck deletePieImage];
     [self.cardDetailsViewController.settingsStore synchronize];
 }
 
