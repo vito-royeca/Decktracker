@@ -8,7 +8,6 @@
 
 #import "DecksViewController.h"
 #import "DeckDetailsViewController.h"
-#import "Deck.h"
 #import "Decktracker-Swift.h"
 #import "FileManager.h"
 
@@ -63,6 +62,7 @@
                                                                             action:@selector(btnAddTapped:)];
     self.navigationItem.rightBarButtonItem = btnAdd;
     self.navigationItem.title = @"Decks";
+    [self loadDecks];
     
 #ifndef DEBUG
     // send the screen to Google Analytics
@@ -73,54 +73,67 @@
 #endif
 }
 
--(void) viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-
-    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.tblDecks];
-    [self.tblDecks addSubview:hud];
-    hud.delegate = self;
-
-    [hud showAnimated:YES whileExecutingBlock:^{
-      [self loadDecks];
-    } completionBlock:^ {
-          [self.tblDecks reloadData];
-    }];
-}
-
 -(void) loadDecks
 {
-    self.arrDecks = [[NSMutableArray alloc] init];
-    for (NSString *file in [[FileManager sharedInstance] listFilesAtPath:@"/Decks"
-                                                          fromFileSystem:FileSystemLocal])
-    {
-        NSDictionary *dict = [[FileManager sharedInstance] loadFileAtPath:[NSString stringWithFormat:@"/Decks/%@", file]];
-        
-        Deck *deck = [[Deck alloc] initWithDictionary:dict];
-        
-        [self.arrDecks addObject:deck];
-    }
+    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.tblDecks];
+    hud.delegate = self;
+    [self.view addSubview:hud];
+    
+    [hud showAnimated:YES whileExecutingBlock:^{
+        self.arrDecks = [[NSMutableArray alloc] init];
+        for (NSString *file in [[FileManager sharedInstance] listFilesAtPath:@"/Decks"
+                                                              fromFileSystem:FileSystemLocal])
+        {
+            NSDictionary *dict = [[FileManager sharedInstance] loadFileAtPath:[NSString stringWithFormat:@"/Decks/%@", file]];
+            
+            Deck *deck = [[Deck alloc] initWithDictionary:dict];
+            
+            [self.arrDecks addObject:deck];
+        }
+    } completionBlock:^ {
+        [self.tblDecks reloadData];
+    }];
 }
 
 -(void) deleteDeck
 {
-    Deck *deck = self.arrDecks[_selectedRow];
-    NSString *path = [NSString stringWithFormat:@"/Decks/%@.json", deck.name];
+    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.tblDecks];
+    hud.delegate = self;
+    [self.view addSubview:hud];
     
-    [[FileManager sharedInstance] deleteFileAtPath:path];
-    [deck deletePieImage];
-
-    [self.arrDecks removeObject:deck.name];
-    [self loadDecks];
-    
+    [hud showAnimated:YES whileExecutingBlock:^{
+        Deck *deck = self.arrDecks[_selectedRow];
+        
+        [self.arrDecks removeObject:deck];
+        [[FileManager sharedInstance] deleteFileAtPath:[NSString stringWithFormat:@"/Decks/%@.json", deck.name]];
+        [deck deletePieImage];
+        
 #ifndef DEBUG
-    // send to Google Analytics
-    id tracker = [[GAI sharedInstance] defaultTracker];
-    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Decks"
-                                                          action:nil
-                                                           label:@"Delete"
-                                                           value:nil] build]];
+        // send to Google Analytics
+        id tracker = [[GAI sharedInstance] defaultTracker];
+        [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Decks"
+                                                              action:nil
+                                                               label:@"Delete"
+                                                               value:nil] build]];
 #endif
+    } completionBlock:^ {
+        [self.tblDecks reloadData];
+    }];
+}
+
+-(void) updateDeck:(Deck*) deck
+{
+    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.tblDecks];
+    hud.delegate = self;
+    [self.view addSubview:hud];
+    
+    [hud showAnimated:YES whileExecutingBlock:^{
+        Deck *oldDeck = self.arrDecks[_selectedRow];
+        [self.arrDecks removeObject:oldDeck];
+        [self.arrDecks insertObject:deck atIndex:_selectedRow];
+    } completionBlock:^ {
+        [self.tblDecks reloadData];
+    }];
 }
 
 -(void) btnAddTapped:(id) sender
@@ -154,6 +167,11 @@
                                    @"sideBoard" : @[]};
             Deck *deck = [[Deck alloc] initWithDictionary:dict];
             [deck save:[NSString stringWithFormat:@"/Decks/%@.json", dict[@"name"]]];
+            [self.arrDecks addObject:deck];
+            NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"name"  ascending:YES];
+            NSArray *arrSorted = [self.arrDecks sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
+            self.arrDecks = [[NSMutableArray alloc] initWithArray:arrSorted];
+            _selectedRow = [self.arrDecks indexOfObject:deck];
             
             DeckDetailsViewController *view = [[DeckDetailsViewController alloc] init];
             view.deck = deck;
@@ -171,15 +189,7 @@
         
         else if (alertView.tag == 1)
         {
-            MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.tblDecks];
-            [self.tblDecks addSubview:hud];
-            hud.delegate = self;
-            
-            [hud showAnimated:YES whileExecutingBlock:^{
-                [self loadDecks];
-            } completionBlock:^ {
-                [self.tblDecks reloadData];
-            }];
+            [self deleteDeck];
         }
     }
 }
@@ -228,7 +238,7 @@
     Deck *deck = self.arrDecks[_selectedRow];
     
     view.deck = deck;
-    [self.navigationController pushViewController:view animated:YES];
+    [self.navigationController pushViewController:view animated:NO];
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -237,7 +247,7 @@
     
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        Deck *deck = self.arrDecks[indexPath.row];
+        Deck *deck = self.arrDecks[_selectedRow];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Delete Deck"
                                                         message:[NSString stringWithFormat:@"Are you sure you want to delete %@?", deck.name]
                                                        delegate:self

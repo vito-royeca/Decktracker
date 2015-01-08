@@ -23,7 +23,7 @@
     NSTimer *_searchTimer;
 }
 
-@synthesize deck = _deck;
+@synthesize deckName = _deckName;
 @synthesize searchBar = _searchBar;
 @synthesize tblResults = _tblResults;
 @synthesize predicate = _predicate;
@@ -123,12 +123,6 @@
     [self.tblResults reloadData];
 }
 
-#pragma mark - MBProgressHUDDelegate methods
-- (void)hudWasHidden:(MBProgressHUD *)hud
-{
-	[hud removeFromSuperview];
-}
-
 #pragma mark - UITableView
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -184,7 +178,7 @@
 {
     AddCardViewController *view = [[AddCardViewController alloc] init];
     
-    view.arrDecks = [[NSMutableArray alloc] initWithArray:@[self.deck.name]];
+    view.arrDecks = [[NSMutableArray alloc] initWithArray:@[self.deckName]];
     view.arrCollections = [[NSMutableArray alloc] init];
     for (NSString *file in [[FileManager sharedInstance] listFilesAtPath:@"/Collections"
                                                           fromFileSystem:FileSystemLocal])

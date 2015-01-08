@@ -225,6 +225,7 @@
     {
         [_currentCollection save:[NSString stringWithFormat:@"/Collections/%@.json", _currentCollection.name]];
     }
+    
     [self.navigationController popViewControllerAnimated:NO];
 }
 
@@ -625,7 +626,7 @@
     }
 }
 
-#pragma mark -
+#pragma mark - QuantityTableViewCellDelegate
 -(void) stepperChanged:(QuantityTableViewCell*) cell withValue:(int) value
 {
     switch (self.segmentedControl.selectedSegmentIndex)

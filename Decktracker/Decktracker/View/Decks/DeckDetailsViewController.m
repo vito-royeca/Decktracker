@@ -12,6 +12,7 @@
 #import "CustomViewCell.h"
 #import "Database.h"
 #import "DeckIASKSettingsStore.h"
+#import "DecksViewController.h"
 #import "DTFormat.h"
 #import "FileManager.h"
 #import "LimitedSearchViewController.h"
@@ -33,10 +34,11 @@
     UIView *_viewSegmented;
 }
 
-@synthesize deck = _deck;
+@synthesize btnBack = _btnBack;
 @synthesize segmentedControl = _segmentedControl;
 @synthesize tblCards = _tblCards;
 @synthesize cardDetailsViewController = _cardDetailsViewController;
+@synthesize deck = _deck;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -64,6 +66,11 @@
     CGFloat dWidth = self.view.frame.size.width;
     CGFloat dHeight = 44;
     
+    self.btnBack = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back.png"]
+                                                    style:UIBarButtonItemStylePlain
+                                                   target:self
+                                                   action:@selector(backButtonTapped)];
+    
     self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Cards", @"Details", @"Tools"]];
     self.segmentedControl.frame = CGRectMake(10, 7, dWidth-20, 30);
     self.segmentedControl.selectedSegmentIndex = 0;
@@ -85,6 +92,7 @@
     [self.tblCards registerNib:[UINib nibWithNibName:@"SearchResultsTableViewCell" bundle:nil]
           forCellReuseIdentifier:@"Cell1"];
     
+    self.navigationItem.leftBarButtonItem = self.btnBack;
     [self.view addSubview:_viewSegmented];
     [self.view addSubview:self.tblCards];
 
@@ -108,7 +116,7 @@
 -(void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
+ 
     NSDictionary *dict = [[FileManager sharedInstance] loadFileAtPath:[NSString stringWithFormat:@"/Decks/%@.json", self.deck.name]];
     Deck *deck = [[Deck alloc] initWithDictionary:dict];
     
@@ -123,12 +131,14 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewWillDisappear:(BOOL)animated
+-(void) backButtonTapped
 {
-    [super viewWillDisappear:animated];
-    
     [self.deck deletePieImage];
     [self.cardDetailsViewController.settingsStore synchronize];
+    
+    DecksViewController *view = ((UINavigationController*)self.parentViewController).viewControllers[0];
+    [view loadDecks];
+    [self.navigationController popToRootViewControllerAnimated:NO];
 }
 
 -(void) segmentedControlChangedValue:(id) sender
@@ -219,7 +229,7 @@
     LimitedSearchViewController *view = [[LimitedSearchViewController alloc] init];
     
     view.predicate = predicate;
-    view.deck = self.deck;
+    view.deckName = self.deck.name;
     [self.navigationController pushViewController:view animated:YES];
 }
 
@@ -589,7 +599,7 @@
                     }
                     else
                     {
-                        predicate = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", @"type", @"creature"];
+                        predicate = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@ OR %K CONTAINS[cd] %@", @"type", @"creature", @"type", @"summon"];
                     }
                     break;
                 }
@@ -603,7 +613,8 @@
                     {
                         NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"NOT(%K CONTAINS[cd] %@)", @"type", @"land"];
                         NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"NOT(%K CONTAINS[cd] %@)", @"type", @"creature"];
-                        predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[pred1, pred2]];
+                        NSPredicate *pred3 = [NSPredicate predicateWithFormat:@"NOT(%K CONTAINS[cd] %@)", @"type", @"summon"];
+                        predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[pred1, pred2, pred3]];
                     }
                     break;
                 }
@@ -658,14 +669,15 @@
                 }
                 case 2:
                 {
-                    predicate = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", @"type", @"creature"];
+                    predicate = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@ OR %K CONTAINS[cd] %@", @"type", @"creature", @"type", @"summon"];
                     break;
                 }
                 case 3:
                 {
                     NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"NOT(%K CONTAINS[cd] %@)", @"type", @"land"];
                     NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"NOT(%K CONTAINS[cd] %@)", @"type", @"creature"];
-                    predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[pred1, pred2]];
+                    NSPredicate *pred3 = [NSPredicate predicateWithFormat:@"NOT(%K CONTAINS[cd] %@)", @"type", @"summon"];
+                    predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[pred1, pred2, pred3]];
                     break;
                 }
             }

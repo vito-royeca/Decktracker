@@ -37,7 +37,7 @@
         {
             DTCard *card;
             
-            if (d[@"multiverseID"])
+            if (d[@"multiverseID"] && [d[@"multiverseID"] longValue] != 0)
             {
                 card = [DTCard MR_findFirstByAttribute:@"multiverseID" withValue:d[@"multiverseID"]];
             }
@@ -57,7 +57,7 @@
         {
             DTCard *card;
             
-            if (d[@"multiverseID"])
+            if (d[@"multiverseID"] && [d[@"multiverseID"] longValue] != 0)
             {
                 card = [DTCard MR_findFirstByAttribute:@"multiverseID" withValue:d[@"multiverseID"]];
             }
@@ -132,7 +132,7 @@
     {
         DTCard *c = dict[@"card"];
         
-        if ([dict[@"multiverseID"] intValue] == [card.multiverseID intValue] ||
+        if (([dict[@"multiverseID"] longValue] != 0 && ([dict[@"multiverseID"] longValue] == [card.multiverseID longValue])) ||
             ([c.name isEqualToString:card.name] && [c.set.code isEqualToString:card.set.code]))
         {
             dictMain = dict;
@@ -185,7 +185,7 @@
     {
         DTCard *c = dict[@"card"];
         
-        if ([dict[@"multiverseID"] intValue] == [card.multiverseID intValue] ||
+        if (([dict[@"multiverseID"] longValue] != 0 && ([dict[@"multiverseID"] longValue] == [card.multiverseID longValue])) ||
             ([c.name isEqualToString:card.name] && [c.set.code isEqualToString:card.set.code]))
         {
             qty = [dict[@"qty"] intValue];

@@ -61,7 +61,7 @@
             DTCard *card;
             NSDictionary *pack;
             
-            if (d[@"multiverseID"])
+            if (d[@"multiverseID"] && [d[@"multiverseID"] longValue] != 0)
             {
                 card = [DTCard MR_findFirstByAttribute:@"multiverseID" withValue:d[@"multiverseID"]];
             }
@@ -80,7 +80,8 @@
                 [self.arrLands addObject:pack];
                 totalCards += [d[@"qty"] intValue];
             }
-            else if ([card.type containsString:@"Creature"] || [card.type hasPrefix:@"Creature"])
+            else if ([card.type containsString:@"Creature"] || [card.type hasPrefix:@"Creature"] ||
+                     [card.type containsString:@"Summon"] || [card.type hasPrefix:@"Summon"])
             {
                 [self.arrCreatures addObject:pack];
                 totalCards += [d[@"qty"] intValue];
@@ -97,7 +98,7 @@
             DTCard *card;
             NSDictionary *pack;
             
-            if (d[@"multiverseID"])
+            if (d[@"multiverseID"] && [d[@"multiverseID"] longValue] != 0)
             {
                 card = [DTCard MR_findFirstByAttribute:@"multiverseID" withValue:d[@"multiverseID"]];
             }
@@ -127,6 +128,7 @@
 {
     NSMutableArray *arrMainBoard = [[NSMutableArray alloc] init];
     NSMutableArray *arrSideBoard = [[NSMutableArray alloc] init];
+
     for (NSDictionary *dict in self.arrLands)
     {
         NSMutableDictionary *newDict = [[NSMutableDictionary alloc] initWithDictionary:dict];
@@ -185,7 +187,8 @@
             {
                 arrBoard = self.arrLands;
             }
-            else if ([card.type containsString:@"Creature"] || [card.type hasPrefix:@"Creature"])
+            else if ([card.type containsString:@"Creature"] || [card.type hasPrefix:@"Creature"] ||
+                     [card.type containsString:@"Summon"] || [card.type hasPrefix:@"Summon"])
             {
                 arrBoard = self.arrCreatures;
             }
@@ -207,7 +210,7 @@
     {
         DTCard *c = dict[@"card"];
         
-        if ([dict[@"multiverseID"] intValue] == [card.multiverseID intValue] ||
+        if (([dict[@"multiverseID"] longValue] != 0 && ([dict[@"multiverseID"] longValue] == [card.multiverseID longValue])) ||
             ([c.name isEqualToString:card.name] && [c.set.code isEqualToString:card.set.code]))
         {
             dictMain = dict;
@@ -249,7 +252,8 @@
             {
                 arrBoard = self.arrLands;
             }
-            else if ([card.type containsString:@"Creature"] || [card.type hasPrefix:@"Creature"])
+            else if ([card.type containsString:@"Creature"] || [card.type hasPrefix:@"Creature"] ||
+                     [card.type containsString:@"Summon"] || [card.type hasPrefix:@"Summon"])
             {
                 arrBoard = self.arrCreatures;
             }
@@ -270,7 +274,7 @@
     {
         DTCard *c = dict[@"card"];
         
-        if ([dict[@"multiverseID"] intValue] == [card.multiverseID intValue] ||
+        if (([dict[@"multiverseID"] longValue] != 0 && ([dict[@"multiverseID"] longValue] == [card.multiverseID longValue])) ||
             ([c.name isEqualToString:card.name] && [c.set.code isEqualToString:card.set.code]))
         {
             qty = [dict[@"qty"] intValue];

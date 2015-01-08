@@ -9,11 +9,10 @@
 @import UIKit;
 
 #import "Deck.h"
-#import "MBProgressHUD.h"
 
-@interface LimitedSearchViewController : UIViewController<UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate, MBProgressHUDDelegate>
+@interface LimitedSearchViewController : UIViewController<UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate>
 
-@property(strong,nonatomic) Deck *deck;
+@property(strong,nonatomic) NSString *deckName;
 @property(strong,nonatomic) UISearchBar *searchBar;
 @property(strong,nonatomic) UITableView *tblResults;
 @property(strong,nonatomic) NSPredicate *predicate;

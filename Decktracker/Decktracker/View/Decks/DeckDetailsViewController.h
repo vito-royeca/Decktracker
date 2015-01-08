@@ -16,9 +16,11 @@
 
 @interface DeckDetailsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, IASKSettingsDelegate>
 
-@property(strong,nonatomic) Deck *deck;
+@property(strong,nonatomic) UIBarButtonItem *btnBack;
 @property(strong,nonatomic) UISegmentedControl *segmentedControl;
 @property(strong,nonatomic) UITableView *tblCards;
 @property(strong,nonatomic) IASKAppSettingsViewController *cardDetailsViewController;
+
+@property(strong,nonatomic) Deck *deck;
 
 @end
