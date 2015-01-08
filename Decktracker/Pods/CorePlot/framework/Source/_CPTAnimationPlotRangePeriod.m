@@ -9,14 +9,14 @@
 {
     IMP getterMethod = [boundObject methodForSelector:boundGetter];
 
-    self.startValue = getterMethod(boundObject, boundGetter);
+//    self.startValue = getterMethod(boundObject, boundGetter);
 }
 
 -(BOOL)canStartWithValueFromObject:(id)boundObject propertyGetter:(SEL)boundGetter
 {
     IMP getterMethod = [boundObject methodForSelector:boundGetter];
 
-    CPTPlotRange *current = getterMethod(boundObject, boundGetter);
+    CPTPlotRange *current; //= getterMethod(boundObject, boundGetter);
     CPTPlotRange *start   = (CPTPlotRange *)self.startValue;
     CPTPlotRange *end     = (CPTPlotRange *)self.endValue;
 
