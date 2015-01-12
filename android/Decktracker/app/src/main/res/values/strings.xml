@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Decktracker</string>
+    <string name="hello_world">Decktracker is coming to Android soon!</string>
+    <string name="action_settings">Settings</string>
+
+</resources>
