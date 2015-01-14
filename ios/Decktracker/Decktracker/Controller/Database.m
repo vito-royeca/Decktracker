@@ -309,6 +309,10 @@ static Database *_me;
             fieldName = @"artist.name";
 //            bToMany = YES;
         }
+        else if ([key isEqualToString:@"Will Be Reprinted?"])
+        {
+            fieldName = @"reserved";
+        }
         
         for (NSDictionary *dict in query[key])
         {
@@ -329,33 +333,52 @@ static Database *_me;
                 }
             }
             
-            if (stringValue)
+            else if ([key isEqualToString:@"Will Be Reprinted?"])
             {
-                if (bToMany)
+                NSNumber *reserved;
+                
+                if ([stringValue isEqualToString:@"Yes"])
                 {
-                    pred = [NSPredicate predicateWithFormat:@"ANY %K ==[cd] %@", fieldName, stringValue];
+                    reserved = [NSNumber numberWithBool:NO];
                 }
                 else
                 {
-                    if (stringValue.length == 1)
+                    reserved = [NSNumber numberWithBool:YES];
+                }
+                
+                pred = [NSPredicate predicateWithFormat:@"%K == %@", fieldName, reserved];
+            }
+            
+            if (!pred)
+            {
+                if (stringValue)
+                {
+                    if (bToMany)
                     {
-                        pred = [NSPredicate predicateWithFormat:@"%K BEGINSWITH[cd] %@", fieldName, stringValue];
+                        pred = [NSPredicate predicateWithFormat:@"ANY %K ==[cd] %@", fieldName, stringValue];
                     }
                     else
                     {
-                        pred = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", fieldName, stringValue];
+                        if (stringValue.length == 1)
+                        {
+                            pred = [NSPredicate predicateWithFormat:@"%K BEGINSWITH[cd] %@", fieldName, stringValue];
+                        }
+                        else
+                        {
+                            pred = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", fieldName, stringValue];
+                        }
                     }
-                }
-            }
-            else
-            {
-                if (bToMany)
-                {
-                    pred = [NSPredicate predicateWithFormat:@"ANY %K = nil", fieldName];
                 }
                 else
                 {
-                    pred = [NSPredicate predicateWithFormat:@"%K = nil", fieldName];
+                    if (bToMany)
+                    {
+                        pred = [NSPredicate predicateWithFormat:@"ANY %K = nil", fieldName];
+                    }
+                    else
+                    {
+                        pred = [NSPredicate predicateWithFormat:@"%K = nil", fieldName];
+                    }
                 }
             }
             
@@ -496,7 +519,7 @@ static Database *_me;
             card.tcgPlayerLink = link ? [JJJUtil trim:link] : card.tcgPlayerLink;
             card.tcgPlayerFetchDate = [NSDate date];
             
-            NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
+            NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_defaultContext];
             [currentContext MR_saveToPersistentStoreAndWait];
 
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)

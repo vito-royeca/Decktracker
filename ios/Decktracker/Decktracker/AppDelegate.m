@@ -65,7 +65,7 @@
     [[UISearchBar appearance] setTintColor:UIColorFromRGB(0x691F01)];
     [[UISegmentedControl appearance] setTintColor:[UIColor grayColor]];
     
-    // remove the "< Back" title in back buttons
+    // remove the "Back" title in  back buttons
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60)
                                                          forBarMetrics:UIBarMetricsDefault];
     

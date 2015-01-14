@@ -13,15 +13,15 @@ class BannerScrollTableViewCell: UITableViewCell {
     let kBannerCellIdentifier  = "kBannerCellIdentifier"
     
     @IBOutlet weak var collectionView: UICollectionView!
+    var arrayData:[AnyObject]?
     var slideshowTimer:NSTimer?
-    var indexPath:NSIndexPath?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         
-        collectionView!.registerNib(UINib(nibName: "BannerCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: kBannerCellIdentifier)
-        collectionView!.allowsSelection = true
+        collectionView.registerNib(UINib(nibName: "BannerCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: kBannerCellIdentifier)
+        collectionView.allowsSelection = true
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
@@ -32,39 +32,40 @@ class BannerScrollTableViewCell: UITableViewCell {
     
     func setCollectionViewDataSourceDelegate(dataSourceDelegate: protocol<UICollectionViewDataSource, UICollectionViewDelegate>, index: NSInteger) {
         
-        collectionView!.dataSource = dataSourceDelegate
-        collectionView!.delegate = dataSourceDelegate
-        collectionView!.tag = index
-        collectionView!.reloadData()
+        collectionView.dataSource = dataSourceDelegate
+        collectionView.delegate = dataSourceDelegate
+        collectionView.tag = index
+        collectionView.reloadData()
     }
 
     func showSlide() {
-//        if indexPath == nil {
-//            indexPath = NSIndexPath(forRow: 0, inSection: 0)
-//        }
+        let indexPath = collectionView.indexPathsForVisibleItems()[0] as NSIndexPath
+        let rows = collectionView.dataSource?.collectionView(collectionView, numberOfItemsInSection: 0)
+        var row = indexPath.row
+        var newIndexPath:NSIndexPath?
+        var bWillSlide = true
+        
+        if row == rows!-1 {
+            row = 0
+            bWillSlide = false
 
-        println("Scrolling to... \(indexPath!)")
-        collectionView!.selectItemAtIndexPath(indexPath!, animated:true, scrollPosition:UICollectionViewScrollPosition.Left)
-        
-        
-//        collectionView!.setContentOffset(CGPoint(x: 320*indexPath!.row, y: 0), animated: true)
-//        collectionView!.setNeedsDisplayInRect(CGRect(x: 320*indexPath!.row, y: 0, width: 320, height: 132))
-//        collectionView!.scrollToItemAtIndexPath(indexPath!, atScrollPosition:UICollectionViewScrollPosition.Left, animated:true)
-        
-        if indexPath?.row == 5 {
-            indexPath = NSIndexPath(forRow: 0, inSection: 0)
         } else {
-            indexPath = NSIndexPath(forRow: indexPath!.row+1, inSection: 0)
+            row++
         }
+        
+        newIndexPath = NSIndexPath(forRow: row, inSection: 0)
+#if DEBUG
+        println("Scrolling to... \(newIndexPath!)")
+#endif
+        collectionView.scrollToItemAtIndexPath(newIndexPath!, atScrollPosition: UICollectionViewScrollPosition.Left, animated: bWillSlide)
     }
     
     func startSlideShow() {
-        indexPath = NSIndexPath(forRow: 0, inSection: 0)
-        slideshowTimer = NSTimer.scheduledTimerWithTimeInterval(4, target: self, selector: "showSlide", userInfo: nil, repeats: true)
+        slideshowTimer = NSTimer.scheduledTimerWithTimeInterval(8, target: self, selector: "showSlide", userInfo: nil, repeats: true)
     }
     
     func stopSlideShow() {
-        slideshowTimer?.invalidate()
+        slideshowTimer!.invalidate()
         slideshowTimer = nil
     }
 }

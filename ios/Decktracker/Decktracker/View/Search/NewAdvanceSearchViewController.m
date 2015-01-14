@@ -70,7 +70,7 @@
     // Do any additional setup after loading the view.
     
     _arrFilters = @[@"Name", @"Set", @"Rarity", @"Type", @"Subtype", @"Color", @"Keyword", @"Text", @"Flavor Text",
-                    @"Artist"];
+                    @"Artist", @"Will Be Reprinted?"];
     
     _arrSorters = @[@"Name"];
     
@@ -469,6 +469,10 @@
     else if ([_arrFilters[indexPath.row] isEqualToString:@"Artist"])
     {
         arrFilterOptions = [DTArtist MR_findAllSortedBy:@"name" ascending:YES];
+    }
+    else if ([_arrFilters[indexPath.row] isEqualToString:@"Will Be Reprinted?"])
+    {
+        arrFilterOptions = @[@"Yes", @"No"];
     }
     
     FilterInputViewController *view = [[FilterInputViewController alloc] init];

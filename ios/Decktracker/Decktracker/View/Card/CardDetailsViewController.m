@@ -595,8 +595,14 @@
     
     if (self.card.source)
     {
-        [html appendFormat:@"<tr><td width='50%%' align='right'><div class='detailHeaderSmall'>Source</div>&nbsp;</td>"];
+        [html appendFormat:@"<tr><td width='50%%' align='right'><div class='detailHeaderSmall'>Source&nbsp;&nbsp;</div></td>"];
         [html appendFormat:@"<td><div class='detailTextSmall'>%@</div></td></tr>", self.card.source];
+    }
+
+    if (self.card.reserved)
+    {
+        [html appendFormat:@"<tr><td width='50%%' align='right'><div class='detailHeaderSmall'>Will Be Reprinted?&nbsp;&nbsp;</div></td>"];
+        [html appendFormat:@"<td><div class='detailTextSmall'>%@</div></td></tr>", [self.card.reserved boolValue] ? @"No" : @"Yes"];
     }
 
     [html appendFormat:@"<tr><td>&nbsp;</td>"];

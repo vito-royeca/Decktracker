@@ -15,8 +15,6 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
     let kBannerCellIdentifier       = "kBannerCellIdentifier"
     let kDefaultCellIdentifier      = "kDefaultCellIdentifier"
     
-    var btnSpecial:UIBarButtonItem?
-    var btnWishList:UIBarButtonItem?
     var tblFeatured:UITableView?
     var colBanner:UICollectionView?
     var arrayData:[[String: [AnyObject]]]?
@@ -29,8 +27,6 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         let height = view.frame.size.height - tabBarController!.tabBar.frame.size.height
         var frame = CGRect(x:0, y:0, width:view.frame.width, height:height)
         
-//        btnSpecial = UIBarButtonItem(title: "Special", style: UIBarButtonItemStyle.Plain, target: self, action: "specialButtonTapped")
-        
         tblFeatured = UITableView(frame: frame, style: UITableViewStyle.Plain)
         tblFeatured!.delegate = self
         tblFeatured!.dataSource = self
@@ -41,11 +37,6 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         
         self.navigationItem.title = "Featured"
         self.loadData()
-        
-        
-        // test scrolling
-//        var btnScroll = UIBarButtonItem(title: "Scroll", style: UIBarButtonItemStyle.Plain, target: self, action: "btnScrollTapped:")
-//        self.navigationItem.rightBarButtonItem = btnScroll
     }
 
     override func didReceiveMemoryWarning() {
@@ -55,9 +46,6 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
-//        bannerCell = tableView(tblFeatured!, cellForRowAtIndexPath: NSIndexPath(forRow: 0, inSection: 0)) as? BannerScrollTableViewCell
-//        bannerCell!.startSlideShow()
         
         NSNotificationCenter.defaultCenter().removeObserver(self, name:kFetchTopRatedDone,  object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self,
@@ -70,12 +58,15 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         Database.sharedInstance().fetchTopRated(10, skip: 0)
         Database.sharedInstance().fetchTopViewed(10, skip: 0)
         
-        tblFeatured?.reloadData()
+        tblFeatured!.reloadData()
     }
 
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-//        bannerCell!.stopSlideShow()
+        if bannerCell != nil {
+            bannerCell!.stopSlideShow()
+            bannerCell = nil
+        }
         
         NSNotificationCenter.defaultCenter().removeObserver(self, name:kFetchTopRatedDone,  object:nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name:kFetchTopViewedDone,  object:nil)
@@ -193,10 +184,9 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
             
             if cell2 == nil {
                 cell2 = BannerScrollTableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: kBannerCellIdentifier)
-                
             }
-            cell2!.setCollectionViewDataSourceDelegate(self, index: indexPath.row)
             cell = cell2
+
         } else if indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 3 {
             let row = arrayData![indexPath.row]
             let key = Array(row.keys)[0]
@@ -206,9 +196,9 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
             if cell2 == nil {
                 cell2 = HorizontalScrollTableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: kHorizontalCellIdentifier)
             }
-            cell2!.setCollectionViewDataSourceDelegate(self, index: indexPath.row)
             cell2!.lblTitle?.text = key
             cell = cell2
+            
         } else {
             let row = arrayData![4]
             let key = Array(row.keys)[0]
@@ -245,6 +235,12 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         if indexPath.row == 0  {
             let cell2 = cell as BannerScrollTableViewCell
             cell2.setCollectionViewDataSourceDelegate(self, index: indexPath.row)
+            
+            if bannerCell == nil {
+                bannerCell = cell2
+                bannerCell!.startSlideShow()
+            }
+            
         } else if indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 3 {
             let cell2 = cell as HorizontalScrollTableViewCell
             cell2.setCollectionViewDataSourceDelegate(self, index: indexPath.row)
@@ -282,6 +278,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
             var cell2 = collectionView.dequeueReusableCellWithReuseIdentifier("kThumbCellIdentifier", forIndexPath:indexPath) as ThumbCollectionViewCell
             cell2.displayCard(card)
             cell = cell2
+            
         }  else if collectionView.tag == 3 {
             let set = dict[indexPath.row] as DTSet
             var cell2 = collectionView.dequeueReusableCellWithReuseIdentifier("kSetCellIdentifier", forIndexPath:indexPath) as SetCollectionViewCell
@@ -348,17 +345,6 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         
         view!.navigationItem.title = key
         navigationController?.pushViewController(view!, animated:true)
-    }
-    
-    func btnScrollTapped(sender: AnyObject) {
-        let path = NSIndexPath(forRow: 0, inSection: 0)
-        let path2 = NSIndexPath(forRow: 1, inSection: 0)
-        
-        let cell = tableView(tblFeatured!, cellForRowAtIndexPath: path) as? BannerScrollTableViewCell
-//        cell!.collectionView.setContentOffset(CGPoint(x:320*3, y:0), animated: true)
-        cell!.collectionView.scrollToItemAtIndexPath(path2, atScrollPosition:UICollectionViewScrollPosition.Left, animated:false)
-        cell!.collectionView.reloadData()
-//        cell?.showSlide()
     }
     
     // InAppPurchaseViewControllerDelegate

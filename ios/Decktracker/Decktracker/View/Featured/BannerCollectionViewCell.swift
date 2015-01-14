@@ -91,8 +91,6 @@ class BannerCollectionViewCell: UICollectionViewCell {
             let average = hiResImage!.averageColor()
             lblCardName.shadowColor = hiResImage!.patternColor(average)
             lblCardName.textColor = average
-//            lblCardName.shadowColor = average
-//            lblCardName.textColor = hiResImage!.patternColor(average)
         }
     }
 }

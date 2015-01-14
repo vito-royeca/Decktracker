@@ -12,6 +12,7 @@ class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     var tblMore:UITableView!
     let arrayData = [["Rules": ["Basic Rulebook", "Comprehensive Rules"]],
+                     ["Tools": ["Card Quiz", "Life Counter"]],
                      ["": ["Settings"]]]
     
     override func viewDidLoad() {
@@ -75,7 +76,7 @@ class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDe
         cell!.textLabel.text = value
         cell!.imageView.image = nil
         
-        if indexPath.section == 1 {
+        if indexPath.section == 2 {
             cell!.imageView.image = UIImage(named: "settings.png")
         }
         return cell!
@@ -108,10 +109,17 @@ class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 newView = compView
                 newView.hidesBottomBarWhenPushed = true
             }
-            
+
         case 1:
-            let searchView = SettingsViewController()
-            newView = searchView
+            if indexPath.row == 0 {
+                newView = CardQuizViewController()
+                
+            } else if indexPath.row == 1 {
+                
+            }
+            
+        case 2:
+            newView = SettingsViewController()
         
         default:
             newView = nil

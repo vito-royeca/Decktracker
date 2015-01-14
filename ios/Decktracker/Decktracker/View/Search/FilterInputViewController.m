@@ -425,6 +425,12 @@
                 DTArtist *artist = arrFilter[indexPath.row];
                 cell.textLabel.text = artist.name;
             }
+            else
+            {
+                NSString *opt = arrFilter[indexPath.row];
+                cell.textLabel.text = opt;
+            }
+            
             if (_selectedFilterPath && [_selectedFilterPath compare:indexPath] == NSOrderedSame)
             {
                 cell.accessoryType = UITableViewCellAccessoryCheckmark;
