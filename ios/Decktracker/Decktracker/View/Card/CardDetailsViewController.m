@@ -41,6 +41,7 @@
     MHFacebookImageViewer *_fbImageViewer;
     UIView *_viewSegmented;
     DTSet *_mediaInsertsSet;
+    DTSet *_8thEditionSet;
     float _newRating;
 }
 
@@ -88,9 +89,9 @@
         self.navigationItem.title = @"1 of 1";
     }
 
-#ifndef DEBUG
+//#ifndef DEBUG
     [[Database sharedInstance] incrementCardView:_card];
-#endif
+//#endif
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -110,6 +111,7 @@
     // Do any additional setup after loading the view.
     
     _mediaInsertsSet = [DTSet MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"name == %@", @"Media Inserts"]];
+    _8thEditionSet = [DTSet MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"name == %@", @"Eighth Edition"]];
     _newRating = 0;
     
     CGFloat dX = 0;
@@ -452,7 +454,16 @@
     [html appendFormat:@"<html><head><link rel='stylesheet' type='text/css' href='%@/style.css'></head><body>", [[NSBundle mainBundle] bundlePath]];
     [html appendFormat:@"<table width='100%%'>"];
     
-    [html appendFormat:@"<tr><td colspan='2'><div class='cardName'>%@</div></td></tr>", self.card.name];
+    NSString *cardNameFont;
+    if ([self.card.set.releaseDate compare:_8thEditionSet.releaseDate] == NSOrderedAscending)
+    {
+        cardNameFont = @"cardNamePreEightEdition";
+    }
+    else
+    {
+        cardNameFont = @"cardNameEightEdition";
+    }
+    [html appendFormat:@"<tr><td colspan='2'><div class='%@'>%@</div></td></tr>", cardNameFont, self.card.name];
 
     
     NSMutableString *text = [[NSMutableString alloc] init];

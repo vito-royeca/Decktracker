@@ -122,14 +122,14 @@
         [type appendFormat:@" (Loyalty: %@)", card.loyalty];
     }
     
-//    if ([card.set.releaseDate compare:_8thEditionSet.releaseDate] == NSOrderedAscending)
-//    {
+    if ([card.set.releaseDate compare:_8thEditionSet.releaseDate] == NSOrderedAscending)
+    {
         self.lblCardName.font = _pre8thEditionFont;
-//    }
-//    else
-//    {
-//        self.lblCardName.font = _8thEditionFont;
-//    }
+    }
+    else
+    {
+        self.lblCardName.font = _8thEditionFont;
+    }
     
     self.lblCardName.text = [NSString stringWithFormat:@" %@", card.name];
     self.lblDetail.text = type;

@@ -14,6 +14,7 @@ enum SortMode: Printable  {
     case ByType
     case ByPrice
     case ByColor
+    case ByRarity
     
     var description : String {
         switch self {
@@ -22,6 +23,7 @@ enum SortMode: Printable  {
         case ByType: return "Type"
         case ByPrice: return "Price (Median)"
         case ByColor: return "Color"
+        case ByRarity: return "Rarity"
         }
     }
 }
@@ -96,7 +98,7 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
             }
             
         } else {
-            sortOptions = [SortMode.ByName.description, SortMode.ByColor.description, SortMode.ByType.description, SortMode.ByPrice.description]
+            sortOptions = [SortMode.ByName.description, SortMode.ByColor.description, SortMode.ByType.description, SortMode.ByRarity.description, SortMode.ByPrice.description]
             
             switch self.sortMode! {
             case .ByName:
@@ -105,8 +107,10 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
                 initialSelection = 1
             case .ByType:
                 initialSelection = 2
-            case .ByPrice:
+            case .ByRarity:
                 initialSelection = 3
+            case .ByPrice:
+                initialSelection = 4
             default:
                 break
             }
@@ -138,6 +142,9 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
                     self.sortMode = .ByType
                     self.sectionName = "sectionType"
                 case 3:
+                    self.sortMode = .ByRarity
+                    self.sectionName = "rarity.name"
+                case 4:
                     self.sortMode = .ByPrice
                     self.sectionName = nil
                 default:
@@ -249,6 +256,10 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
             case .ByType:
                 self.sorters = [NSSortDescriptor(key: "sectionType", ascending: true),
                            NSSortDescriptor(key: "name", ascending: true)]
+            
+            case .ByRarity:
+                self.sorters = [NSSortDescriptor(key: "rarity.name", ascending: true),
+                    NSSortDescriptor(key: "name", ascending: true)]
                 
             case .ByPrice:
                 self.sorters = [NSSortDescriptor(key: "tcgPlayerMidPrice", ascending: false),

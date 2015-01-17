@@ -14,8 +14,6 @@
 		8C13467919A9B17B00E0B3C3 /* SearchResultsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C13467719A9B17B00E0B3C3 /* SearchResultsTableViewCell.xib */; };
 		8C1623191A1C816400ABC4DB /* TopListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1623181A1C816400ABC4DB /* TopListViewController.swift */; };
 		8C2094E11A5D1611008878D6 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2094E01A5D1611008878D6 /* Accelerate.framework */; };
-		8C2106A019B6EF85001DE039 /* QuantityTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C21069E19B6EF85001DE039 /* QuantityTableViewCell.m */; };
-		8C2106A119B6EF85001DE039 /* QuantityTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C21069F19B6EF85001DE039 /* QuantityTableViewCell.xib */; };
 		8C26A67919A63FAC00FE00E7 /* AdvanceSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C26A67019A63FAC00FE00E7 /* AdvanceSearchResultsViewController.m */; };
 		8C26A67A19A63FAC00FE00E7 /* AdvanceSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C26A67219A63FAC00FE00E7 /* AdvanceSearchViewController.m */; };
 		8C26A67B19A63FAC00FE00E7 /* FilterInputViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C26A67419A63FAC00FE00E7 /* FilterInputViewController.m */; };
@@ -77,7 +75,6 @@
 		8C2E14121990741200023BAA /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2E13F61990741100023BAA /* CoreData.framework */; };
 		8C2E141A1990741200023BAA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8C2E14181990741200023BAA /* InfoPlist.strings */; };
 		8C2E141C1990741200023BAA /* DecktrackerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2E141B1990741200023BAA /* DecktrackerTests.m */; };
-		8C2E142E199085A900023BAA /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2E142D199085A900023BAA /* MainViewController.m */; };
 		8C2E1431199085C700023BAA /* Database.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2E1430199085C700023BAA /* Database.m */; };
 		8C2EC95F1A1670900011BAA2 /* UIImage+AverageColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2EC95E1A1670900011BAA2 /* UIImage+AverageColor.m */; };
 		8C325F3D1A5A60B200FA58E6 /* DecksTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C325F3B1A5A60B200FA58E6 /* DecksTableViewCell.swift */; };
@@ -125,9 +122,6 @@
 		8C6847B919EE426C0074960E /* libJJJ.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C6847B019EE41FF0074960E /* libJJJ.a */; };
 		8C71A0A21A28127A00162CA2 /* SetListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C71A0A11A28127A00162CA2 /* SetListViewController.swift */; };
 		8C74B82B1A10A2F3004A350F /* DeckIASKSettingsStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C74B82A1A10A2F3004A350F /* DeckIASKSettingsStore.m */; };
-		8C74B8351A10BE67004A350F /* MultilineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C74B8341A10BE67004A350F /* MultilineTableViewCell.swift */; };
-		8C74B8391A10C3FC004A350F /* CustomViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C74B8371A10C3FC004A350F /* CustomViewCell.m */; };
-		8C74B83A1A10C3FC004A350F /* CustomViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C74B8381A10C3FC004A350F /* CustomViewCell.xib */; };
 		8C89BD4319DD33870070E4F5 /* script.pl in Resources */ = {isa = PBXBuildFile; fileRef = 8C89BD4219DD33870070E4F5 /* script.pl */; };
 		8C89BD4419DD33870070E4F5 /* script.pl in Resources */ = {isa = PBXBuildFile; fileRef = 8C89BD4219DD33870070E4F5 /* script.pl */; };
 		8C89BD4719DD39F60070E4F5 /* AFNetworking.license in Resources */ = {isa = PBXBuildFile; fileRef = 8C89BD4619DD39F60070E4F5 /* AFNetworking.license */; };
@@ -149,7 +143,14 @@
 		8CC5BA691A13509600F3BDD2 /* ThumbCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CC5BA671A13509600F3BDD2 /* ThumbCollectionViewCell.xib */; };
 		8CC5BA711A1386A700F3BDD2 /* SetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC5BA6F1A1386A700F3BDD2 /* SetCollectionViewCell.swift */; };
 		8CC5BA721A1386A700F3BDD2 /* SetCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CC5BA701A1386A700F3BDD2 /* SetCollectionViewCell.xib */; };
-		8CCD852A1A0B911400991CAF /* SubtitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCD85291A0B911400991CAF /* SubtitleTableViewCell.swift */; };
+		8CCE99641A6A80D400ECCA1C /* CustomViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CCE99591A6A80D400ECCA1C /* CustomViewCell.m */; };
+		8CCE99651A6A80D400ECCA1C /* CustomViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CCE995A1A6A80D400ECCA1C /* CustomViewCell.xib */; };
+		8CCE99661A6A80D400ECCA1C /* FieldEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CCE995C1A6A80D400ECCA1C /* FieldEditorViewController.m */; };
+		8CCE99671A6A80D400ECCA1C /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CCE995E1A6A80D400ECCA1C /* MainViewController.m */; };
+		8CCE99681A6A80D400ECCA1C /* MultilineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCE995F1A6A80D400ECCA1C /* MultilineTableViewCell.swift */; };
+		8CCE99691A6A80D400ECCA1C /* QuantityTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CCE99611A6A80D400ECCA1C /* QuantityTableViewCell.m */; };
+		8CCE996A1A6A80D400ECCA1C /* QuantityTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CCE99621A6A80D400ECCA1C /* QuantityTableViewCell.xib */; };
+		8CCE996B1A6A80D400ECCA1C /* SubtitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCE99631A6A80D400ECCA1C /* SubtitleTableViewCell.swift */; };
 		8CCFC02E1A3E7C2C004B1853 /* decktracker.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8CCFC02D1A3E7C2C004B1853 /* decktracker.plist */; };
 		8CD2E1EC19DACE1A00503ACC /* InAppPurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD2E1EB19DACE1A00503ACC /* InAppPurchase.m */; };
 		8CD705981A540E3600CF8425 /* BarGraphViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD705971A540E3600CF8425 /* BarGraphViewController.swift */; };
@@ -217,9 +218,6 @@
 		8C13467719A9B17B00E0B3C3 /* SearchResultsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultsTableViewCell.xib; sourceTree = "<group>"; };
 		8C1623181A1C816400ABC4DB /* TopListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopListViewController.swift; sourceTree = "<group>"; };
 		8C2094E01A5D1611008878D6 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
-		8C21069D19B6EF85001DE039 /* QuantityTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuantityTableViewCell.h; sourceTree = "<group>"; };
-		8C21069E19B6EF85001DE039 /* QuantityTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuantityTableViewCell.m; sourceTree = "<group>"; };
-		8C21069F19B6EF85001DE039 /* QuantityTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QuantityTableViewCell.xib; sourceTree = "<group>"; };
 		8C26A66F19A63FAC00FE00E7 /* AdvanceSearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvanceSearchResultsViewController.h; sourceTree = "<group>"; };
 		8C26A67019A63FAC00FE00E7 /* AdvanceSearchResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvanceSearchResultsViewController.m; sourceTree = "<group>"; };
 		8C26A67119A63FAC00FE00E7 /* AdvanceSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvanceSearchViewController.h; sourceTree = "<group>"; };
@@ -311,8 +309,6 @@
 		8C2E14191990741200023BAA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8C2E141B1990741200023BAA /* DecktrackerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DecktrackerTests.m; sourceTree = "<group>"; };
 		8C2E142B199074A900023BAA /* Magic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Magic.h; sourceTree = "<group>"; };
-		8C2E142C199085A900023BAA /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
-		8C2E142D199085A900023BAA /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		8C2E142F199085C700023BAA /* Database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Database.h; sourceTree = "<group>"; };
 		8C2E1430199085C700023BAA /* Database.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Database.m; sourceTree = "<group>"; };
 		8C2EC95D1A1670900011BAA2 /* UIImage+AverageColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+AverageColor.h"; sourceTree = "<group>"; };
@@ -394,10 +390,6 @@
 		8C71A0A11A28127A00162CA2 /* SetListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetListViewController.swift; sourceTree = "<group>"; };
 		8C74B8291A10A2F3004A350F /* DeckIASKSettingsStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeckIASKSettingsStore.h; sourceTree = "<group>"; };
 		8C74B82A1A10A2F3004A350F /* DeckIASKSettingsStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeckIASKSettingsStore.m; sourceTree = "<group>"; };
-		8C74B8341A10BE67004A350F /* MultilineTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultilineTableViewCell.swift; sourceTree = "<group>"; };
-		8C74B8361A10C3FC004A350F /* CustomViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomViewCell.h; sourceTree = "<group>"; };
-		8C74B8371A10C3FC004A350F /* CustomViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomViewCell.m; sourceTree = "<group>"; };
-		8C74B8381A10C3FC004A350F /* CustomViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomViewCell.xib; sourceTree = "<group>"; };
 		8C89BD4219DD33870070E4F5 /* script.pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = script.pl; sourceTree = "<group>"; };
 		8C89BD4619DD39F60070E4F5 /* AFNetworking.license */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AFNetworking.license; sourceTree = "<group>"; };
 		8C89BD4A19DD3D110070E4F5 /* CorePlot.license */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CorePlot.license; sourceTree = "<group>"; };
@@ -420,7 +412,18 @@
 		8CC5BA671A13509600F3BDD2 /* ThumbCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThumbCollectionViewCell.xib; sourceTree = "<group>"; };
 		8CC5BA6F1A1386A700F3BDD2 /* SetCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetCollectionViewCell.swift; sourceTree = "<group>"; };
 		8CC5BA701A1386A700F3BDD2 /* SetCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SetCollectionViewCell.xib; sourceTree = "<group>"; };
-		8CCD85291A0B911400991CAF /* SubtitleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubtitleTableViewCell.swift; sourceTree = "<group>"; };
+		8CCE99581A6A80D400ECCA1C /* CustomViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomViewCell.h; sourceTree = "<group>"; };
+		8CCE99591A6A80D400ECCA1C /* CustomViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomViewCell.m; sourceTree = "<group>"; };
+		8CCE995A1A6A80D400ECCA1C /* CustomViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomViewCell.xib; sourceTree = "<group>"; };
+		8CCE995B1A6A80D400ECCA1C /* FieldEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FieldEditorViewController.h; sourceTree = "<group>"; };
+		8CCE995C1A6A80D400ECCA1C /* FieldEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FieldEditorViewController.m; sourceTree = "<group>"; };
+		8CCE995D1A6A80D400ECCA1C /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		8CCE995E1A6A80D400ECCA1C /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		8CCE995F1A6A80D400ECCA1C /* MultilineTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultilineTableViewCell.swift; sourceTree = "<group>"; };
+		8CCE99601A6A80D400ECCA1C /* QuantityTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuantityTableViewCell.h; sourceTree = "<group>"; };
+		8CCE99611A6A80D400ECCA1C /* QuantityTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuantityTableViewCell.m; sourceTree = "<group>"; };
+		8CCE99621A6A80D400ECCA1C /* QuantityTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QuantityTableViewCell.xib; sourceTree = "<group>"; };
+		8CCE99631A6A80D400ECCA1C /* SubtitleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubtitleTableViewCell.swift; sourceTree = "<group>"; };
 		8CCFC02D1A3E7C2C004B1853 /* decktracker.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = decktracker.plist; sourceTree = "<group>"; };
 		8CD2E1EA19DACE1A00503ACC /* InAppPurchase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InAppPurchase.h; sourceTree = "<group>"; };
 		8CD2E1EB19DACE1A00503ACC /* InAppPurchase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InAppPurchase.m; sourceTree = "<group>"; };
@@ -759,22 +762,14 @@
 				8C56F55B19B5B5770084B2B8 /* Card */,
 				8CA376B61A667B290041FDAA /* Card Quiz */,
 				8CF79A6019A88B5300BE4246 /* Collections */,
-				8C74B8361A10C3FC004A350F /* CustomViewCell.h */,
-				8C74B8371A10C3FC004A350F /* CustomViewCell.m */,
-				8C74B8381A10C3FC004A350F /* CustomViewCell.xib */,
 				8CF79A5C19A88B4500BE4246 /* Decks */,
 				8CFA451D19E1B49A000B5205 /* Downloads */,
 				8C2908A81A11E8C40045394F /* Featured */,
-				8C2E142C199085A900023BAA /* MainViewController.h */,
-				8C2E142D199085A900023BAA /* MainViewController.m */,
+				8CCE99541A6A7F4800ECCA1C /* Life Counter */,
+				8CCE99571A6A7F8B00ECCA1C /* Miscellaneous */,
 				8C467CEE19F112F600B27F05 /* More */,
-				8C74B8341A10BE67004A350F /* MultilineTableViewCell.swift */,
-				8C21069D19B6EF85001DE039 /* QuantityTableViewCell.h */,
-				8C21069E19B6EF85001DE039 /* QuantityTableViewCell.m */,
-				8C21069F19B6EF85001DE039 /* QuantityTableViewCell.xib */,
 				8C26A66B19A63EA500FE00E7 /* Search */,
 				8C524A6D19B82BD8005E697B /* Settings */,
-				8CCD85291A0B911400991CAF /* SubtitleTableViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -899,6 +894,32 @@
 				8CA376B71A667B6C0041FDAA /* CardQuizViewController.swift */,
 			);
 			path = "Card Quiz";
+			sourceTree = "<group>";
+		};
+		8CCE99541A6A7F4800ECCA1C /* Life Counter */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Life Counter";
+			sourceTree = "<group>";
+		};
+		8CCE99571A6A7F8B00ECCA1C /* Miscellaneous */ = {
+			isa = PBXGroup;
+			children = (
+				8CCE99581A6A80D400ECCA1C /* CustomViewCell.h */,
+				8CCE99591A6A80D400ECCA1C /* CustomViewCell.m */,
+				8CCE995A1A6A80D400ECCA1C /* CustomViewCell.xib */,
+				8CCE995B1A6A80D400ECCA1C /* FieldEditorViewController.h */,
+				8CCE995C1A6A80D400ECCA1C /* FieldEditorViewController.m */,
+				8CCE995D1A6A80D400ECCA1C /* MainViewController.h */,
+				8CCE995E1A6A80D400ECCA1C /* MainViewController.m */,
+				8CCE995F1A6A80D400ECCA1C /* MultilineTableViewCell.swift */,
+				8CCE99601A6A80D400ECCA1C /* QuantityTableViewCell.h */,
+				8CCE99611A6A80D400ECCA1C /* QuantityTableViewCell.m */,
+				8CCE99621A6A80D400ECCA1C /* QuantityTableViewCell.xib */,
+				8CCE99631A6A80D400ECCA1C /* SubtitleTableViewCell.swift */,
+			);
+			path = Miscellaneous;
 			sourceTree = "<group>";
 		};
 		8CF79A5C19A88B4500BE4246 /* Decks */ = {
@@ -1067,7 +1088,6 @@
 				8C2A979719F5027B0094C97F /* Reader-Print.png in Resources */,
 				8C89BD5119DD4FD70070E4F5 /* hpple.license in Resources */,
 				8C2A979119F5027B0094C97F /* Reader-Export.png in Resources */,
-				8C2106A119B6EF85001DE039 /* QuantityTableViewCell.xib in Resources */,
 				8C5FF9E819AE2EE3003CE54C /* keywords.plist in Resources */,
 				8C2A96D219F4D8D00094C97F /* rules in Resources */,
 				8C019AA01998A10F00FB22D7 /* decktracker.sqlite in Resources */,
@@ -1094,12 +1114,13 @@
 				8C3E948419E4207200C7EF21 /* AcknowledgementTableViewCell.xib in Resources */,
 				8CC5BA721A1386A700F3BDD2 /* SetCollectionViewCell.xib in Resources */,
 				8C2A979419F5027B0094C97F /* Reader-Mark-N@2x.png in Resources */,
-				8C74B83A1A10C3FC004A350F /* CustomViewCell.xib in Resources */,
 				8C2A979319F5027B0094C97F /* Reader-Mark-N.png in Resources */,
 				8C89BD5519DD50160070E4F5 /* MagicalRecord.license in Resources */,
 				8C2A978C19F5027B0094C97F /* Reader-Button-H@2x.png in Resources */,
+				8CCE996A1A6A80D400ECCA1C /* QuantityTableViewCell.xib in Resources */,
 				8C2A979019F5027B0094C97F /* Reader-Email@2x.png in Resources */,
 				8C26A68019A6418900FE00E7 /* Advance Search in Resources */,
+				8CCE99651A6A80D400ECCA1C /* CustomViewCell.xib in Resources */,
 				8C2A978E19F5027B0094C97F /* Reader-Button-N@2x.png in Resources */,
 				8CFA451319E17817000B5205 /* MPlantin.ttf in Resources */,
 				8C89BD5719DD50340070E4F5 /* MBProgressHUD.license in Resources */,
@@ -1197,10 +1218,10 @@
 				8C3857A11A36E6D200E5B38C /* DTCardRuling.m in Sources */,
 				8CAAA0ED1A15057100DD209D /* HorizontalScrollTableViewCell.swift in Sources */,
 				8C26A67919A63FAC00FE00E7 /* AdvanceSearchResultsViewController.m in Sources */,
-				8C74B8351A10BE67004A350F /* MultilineTableViewCell.swift in Sources */,
 				8C3857B01A36E6D200E5B38C /* DTComprehensiveRule.m in Sources */,
 				8C13467819A9B17B00E0B3C3 /* SearchResultsTableViewCell.m in Sources */,
 				8CF3309F1A35B33D00B6301D /* UserAccountViewController.swift in Sources */,
+				8CCE996B1A6A80D400ECCA1C /* SubtitleTableViewCell.swift in Sources */,
 				8C26A67D19A63FAC00FE00E7 /* SimpleSearchViewController.m in Sources */,
 				8C2A97A419F5027B0094C97F /* ReaderThumbCache.m in Sources */,
 				8C2A97A519F5027B0094C97F /* ReaderThumbFetch.m in Sources */,
@@ -1215,8 +1236,6 @@
 				8C1623191A1C816400ABC4DB /* TopListViewController.swift in Sources */,
 				8C26A67A19A63FAC00FE00E7 /* AdvanceSearchViewController.m in Sources */,
 				8C524A7019B82C01005E697B /* SettingsViewController.m in Sources */,
-				8CCD852A1A0B911400991CAF /* SubtitleTableViewCell.swift in Sources */,
-				8C74B8391A10C3FC004A350F /* CustomViewCell.m in Sources */,
 				8C2A97A619F5027B0094C97F /* ReaderThumbQueue.m in Sources */,
 				8C2A97A019F5027B0094C97F /* ReaderDocument.m in Sources */,
 				8C3857AA1A36E6D200E5B38C /* DTFormat.m in Sources */,
@@ -1227,11 +1246,12 @@
 				8C2A97A919F5027B0094C97F /* ReaderThumbsView.m in Sources */,
 				8C325F3D1A5A60B200FA58E6 /* DecksTableViewCell.swift in Sources */,
 				8C2A97A219F5027B0094C97F /* ReaderMainPagebar.m in Sources */,
-				8C2106A019B6EF85001DE039 /* QuantityTableViewCell.m in Sources */,
 				8CD2E1EC19DACE1A00503ACC /* InAppPurchase.m in Sources */,
 				8C71A0A21A28127A00162CA2 /* SetListViewController.swift in Sources */,
 				8C90A17F19C97ADF00F7278C /* Deck.m in Sources */,
+				8CCE99661A6A80D400ECCA1C /* FieldEditorViewController.m in Sources */,
 				8C930AA31A090B380061C082 /* ComprehensiveRulesViewController.swift in Sources */,
+				8CCE99681A6A80D400ECCA1C /* MultilineTableViewCell.swift in Sources */,
 				8C26A67C19A63FAC00FE00E7 /* NewAdvanceSearchViewController.m in Sources */,
 				8C2A97AC19F5027B0094C97F /* ThumbsMainToolbar.m in Sources */,
 				8C2A97AD19F5027B0094C97F /* ThumbsViewController.m in Sources */,
@@ -1242,6 +1262,7 @@
 				8C3857B61A36E6D300E5B38C /* DTComprehensiveGlossary.m in Sources */,
 				8C2A97A819F5027B0094C97F /* ReaderThumbRequest.m in Sources */,
 				8CC5BA711A1386A700F3BDD2 /* SetCollectionViewCell.swift in Sources */,
+				8CCE99691A6A80D400ECCA1C /* QuantityTableViewCell.m in Sources */,
 				8CE971C61A126C0000D4386B /* BannerCollectionViewCell.swift in Sources */,
 				8C33E9BE19D73AAB000892D9 /* InAppPurchaseViewController.m in Sources */,
 				8C2A97AA19F5027B0094C97F /* ReaderThumbView.m in Sources */,
@@ -1249,6 +1270,7 @@
 				8C5B446D19BEFFF60071604C /* AddCardViewController.m in Sources */,
 				8C2A97A719F5027B0094C97F /* ReaderThumbRender.m in Sources */,
 				8C2A979C19F5027B0094C97F /* ReaderConstants.m in Sources */,
+				8CCE99641A6A80D400ECCA1C /* CustomViewCell.m in Sources */,
 				8C3857A41A36E6D200E5B38C /* DTCardRating.m in Sources */,
 				8C2A979E19F5027B0094C97F /* ReaderContentTile.m in Sources */,
 				8C3857921A36E6D100E5B38C /* DTCardRarity.m in Sources */,
@@ -1263,6 +1285,7 @@
 				8C524A6519B81E9E005E697B /* DeckDetailsViewController.m in Sources */,
 				8CD705981A540E3600CF8425 /* BarGraphViewController.swift in Sources */,
 				8C911E2D1A52DF89006210B5 /* PieChartViewController.swift in Sources */,
+				8CCE99671A6A80D400ECCA1C /* MainViewController.m in Sources */,
 				8C2EC95F1A1670900011BAA2 /* UIImage+AverageColor.m in Sources */,
 				8C2E1431199085C700023BAA /* Database.m in Sources */,
 				8C3857951A36E6D100E5B38C /* DTCardLegality.m in Sources */,
@@ -1278,7 +1301,6 @@
 				8C2E13FF1990741100023BAA /* main.m in Sources */,
 				8C26A67B19A63FAC00FE00E7 /* FilterInputViewController.m in Sources */,
 				8CF14BF41A2E199600BEC434 /* DecktrackerPFLoginViewController.swift in Sources */,
-				8C2E142E199085A900023BAA /* MainViewController.m in Sources */,
 				8C5246E119A5137300B10147 /* FileManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -604,28 +604,6 @@ static Database *_me;
     return array;
 }
 
--(NSArray*) fetchHighestPriced:(int)limit
-{
-    NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:@"tcgPlayerMidPrice"
-                                                                    ascending:NO];
-    NSSortDescriptor *sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:@"name"
-                                                                    ascending:YES];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"DTCard"
-                                              inManagedObjectContext:moc];
-    
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"tcgPlayerMidPrice > 0"]];
-    [fetchRequest setEntity:entity];
-    [fetchRequest setSortDescriptors:@[sortDescriptor1, sortDescriptor2]];
-    [fetchRequest setFetchLimit:limit];
-    
-    NSError *error = nil;
-    NSArray *array = [moc executeFetchRequest:fetchRequest error:&error];
-    return array;
-}
-
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
 -(void) fetchTopRated:(int) limit skip:(int) skip
 {
@@ -646,48 +624,48 @@ static Database *_me;
     }
     
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error)
-     {
-         NSMutableArray *arrResults = [[NSMutableArray alloc] init];
-         NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
-         
-         if (!error)
-         {
-             for (PFObject *object in objects)
-             {
-                 NSPredicate *p = [NSPredicate predicateWithFormat:@"(%K = %@ AND %K = %@ AND %K = %@)", @"name", object[@"name"], @"multiverseID", object[@"multiverseID"], @"set.name", object[@"set"][@"name"]];
-                 DTCard *card = [DTCard MR_findFirstWithPredicate:p];
-                 
-                 if (![card.rating isEqualToNumber:object[@"rating"]])
-                 {
-                     card.rating = object[@"rating"];
-                     [moc MR_saveToPersistentStoreAndWait];
-                 }
-                 [arrResults addObject:card];
-             }
-         }
-         else
-         {
-             NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-             NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:@"rating"
-                                                                             ascending:NO];
-             NSSortDescriptor *sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:@"name"
-                                                                             ascending:YES];
-             NSEntityDescription *entity = [NSEntityDescription entityForName:@"DTCard"
-                                                       inManagedObjectContext:moc];
-             
-             [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"rating >= 0"]];
-             [fetchRequest setEntity:entity];
-             [fetchRequest setSortDescriptors:@[sortDescriptor1, sortDescriptor2]];
-             [fetchRequest setFetchLimit:limit];
-             
-             NSError *error = nil;
-             [arrResults addObjectsFromArray:[moc executeFetchRequest:fetchRequest error:&error]];
-         }
-         
-         [[NSNotificationCenter defaultCenter] postNotificationName:kFetchTopRatedDone
-                                                             object:nil
-                                                           userInfo:@{@"data": arrResults}];
-     }];
+    {
+        NSMutableArray *arrResults = [[NSMutableArray alloc] init];
+        NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
+        
+        if (!error)
+        {
+            for (PFObject *object in objects)
+            {
+                NSPredicate *p = [NSPredicate predicateWithFormat:@"(%K = %@ AND %K = %@ AND %K = %@)", @"name", object[@"name"], @"multiverseID", object[@"multiverseID"], @"set.name", object[@"set"][@"name"]];
+                DTCard *card = [DTCard MR_findFirstWithPredicate:p];
+                
+                if (![card.rating isEqualToNumber:object[@"rating"]])
+                {
+                    card.rating = object[@"rating"];
+                    [moc MR_saveToPersistentStoreAndWait];
+                }
+                [arrResults addObject:card];
+            }
+        }
+        else
+        {
+            NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+            NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:@"rating"
+                                                                            ascending:NO];
+            NSSortDescriptor *sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:@"name"
+                                                                            ascending:YES];
+            NSEntityDescription *entity = [NSEntityDescription entityForName:@"DTCard"
+                                                      inManagedObjectContext:moc];
+            
+            [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"rating >= 0"]];
+            [fetchRequest setEntity:entity];
+            [fetchRequest setSortDescriptors:@[sortDescriptor1, sortDescriptor2]];
+            [fetchRequest setFetchLimit:limit];
+            
+            NSError *error = nil;
+            [arrResults addObjectsFromArray:[moc executeFetchRequest:fetchRequest error:&error]];
+        }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kFetchTopRatedDone
+                                                            object:nil
+                                                          userInfo:@{@"data": arrResults}];
+    }];
 }
 
 -(void) fetchTopViewed:(int) limit skip:(int) skip
@@ -711,7 +689,6 @@ static Database *_me;
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error)
     {
         NSMutableArray *arrResults = [[NSMutableArray alloc] init];
-        NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
         
         if (!error)
         {
@@ -809,12 +786,12 @@ static Database *_me;
         
         [[query findObjectsInBackground] continueWithBlock:^id(BFTask *task)
          {
+             __block PFObject *pfSet;
+             
              if (task.error)
              {
                  return task;
              }
-             
-             __block PFObject *pfSet;
              
              for (PFObject *object in task.result)
              {
@@ -851,9 +828,9 @@ static Database *_me;
                           }
                                   
                           [pfSet pinInBackgroundWithBlock:^(BOOL success, NSError *error)
-                           {
+                          {
                                callbackFindCard(cardName, multiverseID, pfSet);
-                           }];
+                          }];
                           return nil;
                       }];
                   }];
@@ -980,50 +957,50 @@ static Database *_me;
             remoteDate = latestSet.updatedAt;
             [[NSUserDefaults standardUserDefaults] setObject:remoteDate forKey:@"PFSets.updatedAt"];
             bWillFetch = [localDate compare:remoteDate] == NSOrderedAscending;
+    
+            if (bWillFetch)
+            {
+                PFQuery *q = [PFQuery queryWithClassName:@"Set"];
+                [q orderByDescending:@"updatedAt"];
+                [q setLimit:200];
+                
+                // Query from the network
+                [[q findObjectsInBackground] continueWithSuccessBlock:^id(BFTask *task)
+                 {
+                     return [[PFObject unpinAllObjectsInBackgroundWithName:@"AllSets"] continueWithSuccessBlock:^id(BFTask *ignored)
+                     {
+                         PFObject *latestSet = task.result[0];
+                         remoteDate = latestSet.updatedAt;
+                         [[NSUserDefaults standardUserDefaults] setObject:remoteDate forKey:@"PFSets.updatedAt"];
+                         [[NSUserDefaults standardUserDefaults] synchronize];
+                                 
+                         NSArray *pfSets = task.result;
+                         return [PFObject pinAllInBackground:pfSets withName:@"AllSets"];
+                     }];
+                 }];
+            }
+            
+            else
+            {
+                // Query for from locally
+                PFQuery *q = [PFQuery queryWithClassName:@"Set"];
+                [q orderByAscending:@"name"];
+                [q setLimit:200];
+                [q fromLocalDatastore];
+                
+                [[q findObjectsInBackground] continueWithBlock:^id(BFTask *task)
+                {
+                    if (task.error)
+                    {
+                        return task;
+                    }
+                     
+                    return task;
+                }];
+            }
             
             return nil;
         }];
-    }
-    
-    if (bWillFetch)
-    {
-        query = [PFQuery queryWithClassName:@"Set"];
-        [query orderByDescending:@"updatedAt"];
-        [query setLimit:200];
-        
-        // Query from the network
-        [[query findObjectsInBackground] continueWithSuccessBlock:^id(BFTask *task)
-         {
-            return [[PFObject unpinAllObjectsInBackgroundWithName:@"AllSets"] continueWithSuccessBlock:^id(BFTask *ignored)
-            {
-                PFObject *latestSet = task.result[0];
-                remoteDate = latestSet.updatedAt;
-                [[NSUserDefaults standardUserDefaults] setObject:remoteDate forKey:@"PFSets.updatedAt"];
-                [[NSUserDefaults standardUserDefaults] synchronize];
-                
-                NSArray *pfSets = task.result;
-                return [PFObject pinAllInBackground:pfSets withName:@"AllSets"];
-            }];
-        }];
-    }
-    
-    else
-    {
-        // Query for from locally
-        query = [PFQuery queryWithClassName:@"Set"];
-        [query orderByAscending:@"name"];
-        [query setLimit:200];
-        [query fromLocalDatastore];
-        
-        [[query findObjectsInBackground] continueWithBlock:^id(BFTask *task)
-         {
-             if (task.error)
-             {
-                 return task;
-             }
-
-             return task;
-         }];
     }
 }
 

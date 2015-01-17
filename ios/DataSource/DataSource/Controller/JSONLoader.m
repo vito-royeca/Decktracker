@@ -343,7 +343,6 @@
             
             for (NSString *colorName in CARD_COLORS)
             {
-                
                 if ([color.name isEqualToString:colorName])
                 {
                     card.sectionColor = color.name;
@@ -356,12 +355,17 @@
         {
             for (NSString *typeName in CARD_TYPES)
             {
-                // to do: fix Plane and Planeswalker types!!!
-                if ([type.name isEqualToString:typeName] || [type.name containsString:typeName])
+                // done: fix Plane and Planeswalker types!!!
+                if ([typeName isEqualToString:type.name] || [typeName containsString:type.name])
                 {
                     card.sectionType = typeName;
                     break;
                 }
+            }
+            
+            if (card.sectionType)
+            {
+                break;
             }
         }
         

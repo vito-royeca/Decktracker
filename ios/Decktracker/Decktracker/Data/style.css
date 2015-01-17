@@ -37,9 +37,15 @@ html, body
     src: url('MPlantin.ttf');
 }
 
-.cardName
+.cardNamePreEightEdition
 {
     font-family: Magic;
+    font-size: 16pt;
+}
+
+.cardNameEightEdition
+{
+    font-family: Matrix;
     font-size: 16pt;
 }
 
