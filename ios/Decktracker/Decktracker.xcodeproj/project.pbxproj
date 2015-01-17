@@ -77,7 +77,6 @@
 		8C2E14121990741200023BAA /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2E13F61990741100023BAA /* CoreData.framework */; };
 		8C2E141A1990741200023BAA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8C2E14181990741200023BAA /* InfoPlist.strings */; };
 		8C2E141C1990741200023BAA /* DecktrackerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2E141B1990741200023BAA /* DecktrackerTests.m */; };
-		8C2E142A1990748C00023BAA /* database.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8C2E14281990748C00023BAA /* database.xcdatamodeld */; };
 		8C2E142E199085A900023BAA /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2E142D199085A900023BAA /* MainViewController.m */; };
 		8C2E1431199085C700023BAA /* Database.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2E1430199085C700023BAA /* Database.m */; };
 		8C2EC95F1A1670900011BAA2 /* UIImage+AverageColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2EC95E1A1670900011BAA2 /* UIImage+AverageColor.m */; };
@@ -111,6 +110,7 @@
 		8C3E948319E4207200C7EF21 /* AcknowledgementTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3E948119E4207200C7EF21 /* AcknowledgementTableViewCell.m */; };
 		8C3E948419E4207200C7EF21 /* AcknowledgementTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C3E948219E4207200C7EF21 /* AcknowledgementTableViewCell.xib */; };
 		8C467CF019F1132600B27F05 /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C467CEF19F1132600B27F05 /* MoreViewController.swift */; };
+		8C48669E1A69FF200059F2A4 /* database.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8C4866961A69FF200059F2A4 /* database.xcdatamodeld */; };
 		8C49655D19B0692A001C7935 /* Goudy Medieval.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8C49655C19B06929001C7935 /* Goudy Medieval.ttf */; };
 		8C49656719B0A01F001C7935 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C49656619B0A01E001C7935 /* Crashlytics.framework */; };
 		8C5246E119A5137300B10147 /* FileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5246E019A5137300B10147 /* FileManager.m */; };
@@ -310,7 +310,6 @@
 		8C2E14171990741200023BAA /* DecktrackerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DecktrackerTests-Info.plist"; sourceTree = "<group>"; };
 		8C2E14191990741200023BAA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8C2E141B1990741200023BAA /* DecktrackerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DecktrackerTests.m; sourceTree = "<group>"; };
-		8C2E14291990748C00023BAA /* database.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = database.xcdatamodel; sourceTree = "<group>"; };
 		8C2E142B199074A900023BAA /* Magic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Magic.h; sourceTree = "<group>"; };
 		8C2E142C199085A900023BAA /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		8C2E142D199085A900023BAA /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
@@ -329,7 +328,6 @@
 		8C372C7A1A2DD908001D7EF3 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		8C378DFE19A7434B00B9367F /* MHFacebookImageViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MHFacebookImageViewer.h; sourceTree = "<group>"; };
 		8C378DFF19A7434B00B9367F /* MHFacebookImageViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MHFacebookImageViewer.m; sourceTree = "<group>"; };
-		8C3857601A36E55500E5B38C /* Dec-9-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Dec-9-2014.xcdatamodel"; sourceTree = "<group>"; };
 		8C3857901A36E6D100E5B38C /* DTCardRarity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTCardRarity.h; sourceTree = "<group>"; };
 		8C3857911A36E6D100E5B38C /* DTCardRarity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTCardRarity.m; sourceTree = "<group>"; };
 		8C3857931A36E6D100E5B38C /* DTCardLegality.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTCardLegality.h; sourceTree = "<group>"; };
@@ -368,6 +366,13 @@
 		8C3E948119E4207200C7EF21 /* AcknowledgementTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AcknowledgementTableViewCell.m; sourceTree = "<group>"; };
 		8C3E948219E4207200C7EF21 /* AcknowledgementTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AcknowledgementTableViewCell.xib; sourceTree = "<group>"; };
 		8C467CEF19F1132600B27F05 /* MoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
+		8C4866971A69FF200059F2A4 /* database.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = database.xcdatamodel; sourceTree = "<group>"; };
+		8C4866981A69FF200059F2A4 /* Dec-9-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Dec-9-2014.xcdatamodel"; sourceTree = "<group>"; };
+		8C4866991A69FF200059F2A4 /* Jan-16-2015.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Jan-16-2015.xcdatamodel"; sourceTree = "<group>"; };
+		8C48669A1A69FF200059F2A4 /* Nov-12-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Nov-12-2014.xcdatamodel"; sourceTree = "<group>"; };
+		8C48669B1A69FF200059F2A4 /* Nov-15-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Nov-15-2014.xcdatamodel"; sourceTree = "<group>"; };
+		8C48669C1A69FF200059F2A4 /* Nov-4-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Nov-4-2014.xcdatamodel"; sourceTree = "<group>"; };
+		8C48669D1A69FF200059F2A4 /* Oct-5-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Oct-5-2014.xcdatamodel"; sourceTree = "<group>"; };
 		8C49655C19B06929001C7935 /* Goudy Medieval.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Goudy Medieval.ttf"; sourceTree = "<group>"; };
 		8C49656619B0A01E001C7935 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		8C5246DF19A5137300B10147 /* FileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileManager.h; sourceTree = "<group>"; };
@@ -411,7 +416,6 @@
 		8CAAA0EB1A15057100DD209D /* HorizontalScrollTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HorizontalScrollTableViewCell.swift; sourceTree = "<group>"; };
 		8CAAA0EC1A15057100DD209D /* HorizontalScrollTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HorizontalScrollTableViewCell.xib; sourceTree = "<group>"; };
 		8CADEF1619923DDE004D7658 /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
-		8CC5BA581A133CEA00F3BDD2 /* Nov-12-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Nov-12-2014.xcdatamodel"; sourceTree = "<group>"; };
 		8CC5BA661A13509600F3BDD2 /* ThumbCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbCollectionViewCell.swift; sourceTree = "<group>"; };
 		8CC5BA671A13509600F3BDD2 /* ThumbCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThumbCollectionViewCell.xib; sourceTree = "<group>"; };
 		8CC5BA6F1A1386A700F3BDD2 /* SetCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -426,7 +430,6 @@
 		8CE7F2C219C0A2F7004FBEA5 /* Decktracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Decktracker.entitlements; sourceTree = "<group>"; };
 		8CE971C41A126C0000D4386B /* BannerCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BannerCollectionViewCell.swift; sourceTree = "<group>"; };
 		8CE971C51A126C0000D4386B /* BannerCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BannerCollectionViewCell.xib; sourceTree = "<group>"; };
-		8CF0ECEC1A07DF93008E60DB /* Nov-4-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Nov-4-2014.xcdatamodel"; sourceTree = "<group>"; };
 		8CF14BF31A2E199600BEC434 /* DecktrackerPFLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecktrackerPFLoginViewController.swift; sourceTree = "<group>"; };
 		8CF3309E1A35B33D00B6301D /* UserAccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAccountViewController.swift; sourceTree = "<group>"; };
 		8CF418D519C9C6790082E3BC /* Collection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Collection.h; sourceTree = "<group>"; };
@@ -435,11 +438,9 @@
 		8CF79A6419A8BFA300BE4246 /* DecksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DecksViewController.m; sourceTree = "<group>"; };
 		8CF79A6919A8BFB400BE4246 /* CollectionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionsViewController.h; sourceTree = "<group>"; };
 		8CF79A6A19A8BFB400BE4246 /* CollectionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionsViewController.m; sourceTree = "<group>"; };
-		8CF8B5901A16E77700B97680 /* Nov-15-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Nov-15-2014.xcdatamodel"; sourceTree = "<group>"; };
 		8CFA21D21A64F8CC00E5409B /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		8CFA451019E17817000B5205 /* Matrix Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Matrix Bold.ttf"; sourceTree = "<group>"; };
 		8CFA451119E17817000B5205 /* MPlantin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MPlantin.ttf; sourceTree = "<group>"; };
-		8CFA451719E19729000B5205 /* Oct-5-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Oct-5-2014.xcdatamodel"; sourceTree = "<group>"; };
 		8CFA451E19E1B4C0000B5205 /* DownloadSetImagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadSetImagesViewController.h; sourceTree = "<group>"; };
 		8CFA451F19E1B4C0000B5205 /* DownloadSetImagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadSetImagesViewController.m; sourceTree = "<group>"; };
 		8CFA452219E1B69A000B5205 /* FCCircularProgressView.license */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = FCCircularProgressView.license; sourceTree = "<group>"; };
@@ -717,7 +718,7 @@
 		8C2E14251990744E00023BAA /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				8C2E14281990748C00023BAA /* database.xcdatamodeld */,
+				8C4866961A69FF200059F2A4 /* database.xcdatamodeld */,
 				8C3857991A36E6D200E5B38C /* DTArtist.h */,
 				8C38579A1A36E6D200E5B38C /* DTArtist.m */,
 				8C3857A51A36E6D200E5B38C /* DTBlock.h */,
@@ -1219,7 +1220,6 @@
 				8C2A97A619F5027B0094C97F /* ReaderThumbQueue.m in Sources */,
 				8C2A97A019F5027B0094C97F /* ReaderDocument.m in Sources */,
 				8C3857AA1A36E6D200E5B38C /* DTFormat.m in Sources */,
-				8C2E142A1990748C00023BAA /* database.xcdatamodeld in Sources */,
 				8CDEC7951A383784004053CF /* SpecialListsViewController.swift in Sources */,
 				8C38C0501A15F6E500FC3411 /* BannerScrollTableViewCell.swift in Sources */,
 				8C3857A71A36E6D200E5B38C /* DTBlock.m in Sources */,
@@ -1258,6 +1258,7 @@
 				8C2CFCF519BB1F8B00F5348B /* LimitedSearchViewController.m in Sources */,
 				8C2A979B19F5027B0094C97F /* CGPDFDocument.m in Sources */,
 				8C2A979D19F5027B0094C97F /* ReaderContentPage.m in Sources */,
+				8C48669E1A69FF200059F2A4 /* database.xcdatamodeld in Sources */,
 				8C3857AD1A36E6D200E5B38C /* DTSetType.m in Sources */,
 				8C524A6519B81E9E005E697B /* DeckDetailsViewController.m in Sources */,
 				8CD705981A540E3600CF8425 /* BarGraphViewController.swift in Sources */,
@@ -1540,17 +1541,18 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		8C2E14281990748C00023BAA /* database.xcdatamodeld */ = {
+		8C4866961A69FF200059F2A4 /* database.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				8C3857601A36E55500E5B38C /* Dec-9-2014.xcdatamodel */,
-				8CF8B5901A16E77700B97680 /* Nov-15-2014.xcdatamodel */,
-				8CC5BA581A133CEA00F3BDD2 /* Nov-12-2014.xcdatamodel */,
-				8CF0ECEC1A07DF93008E60DB /* Nov-4-2014.xcdatamodel */,
-				8CFA451719E19729000B5205 /* Oct-5-2014.xcdatamodel */,
-				8C2E14291990748C00023BAA /* database.xcdatamodel */,
+				8C4866971A69FF200059F2A4 /* database.xcdatamodel */,
+				8C4866981A69FF200059F2A4 /* Dec-9-2014.xcdatamodel */,
+				8C4866991A69FF200059F2A4 /* Jan-16-2015.xcdatamodel */,
+				8C48669A1A69FF200059F2A4 /* Nov-12-2014.xcdatamodel */,
+				8C48669B1A69FF200059F2A4 /* Nov-15-2014.xcdatamodel */,
+				8C48669C1A69FF200059F2A4 /* Nov-4-2014.xcdatamodel */,
+				8C48669D1A69FF200059F2A4 /* Oct-5-2014.xcdatamodel */,
 			);
-			currentVersion = 8C3857601A36E55500E5B38C /* Dec-9-2014.xcdatamodel */;
+			currentVersion = 8C4866991A69FF200059F2A4 /* Jan-16-2015.xcdatamodel */;
 			path = database.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

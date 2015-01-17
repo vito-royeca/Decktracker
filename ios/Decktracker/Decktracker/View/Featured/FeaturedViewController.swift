@@ -307,7 +307,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         } else if collectionView.tag == 3 { // Sets
             let set = dict[indexPath.row] as DTSet
             let predicate = NSPredicate(format: "%K = %@", "set.name", set.name)
-            var view2 = SetListViewController()
+            let view2 = SetListViewController()
             
             view2.navigationItem.title = set.name
             view2.predicate = predicate
@@ -326,17 +326,17 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         
         switch tag {
         case 1:
-            var view2 = TopListViewController()
+            let view2 = TopListViewController()
             view2.arrayData = row[key] as? [DTCard]
             Database.sharedInstance().fetchTopRated(20, skip: 10)
             view = view2;
         case 2:
-            var view2 = TopListViewController()
+            let view2 = TopListViewController()
             view2.arrayData = row[key] as? [DTCard]
             Database.sharedInstance().fetchTopViewed(20, skip: 10)
             view = view2;
         case 3:
-            var view2 = SetListViewController()
+            let view2 = SetListViewController()
             view2.arrayData = DTSet.MR_findAllSortedBy("releaseDate", ascending: false)
             view = view2;
         default:

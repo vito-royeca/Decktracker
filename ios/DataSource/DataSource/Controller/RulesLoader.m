@@ -52,6 +52,7 @@
                     if ([child.attributes[@"class"] isEqualToString:@"CR1100"])
                     {
                         NSString *content = [JJJUtil removeNewLines:[self extractContent:child]];
+//                        NSString *content = [self extractContent:child];
                         [self createRule:content];
                     }
                     
@@ -59,6 +60,7 @@
                              [child.attributes[@"class"] isEqualToString:@"CR1001a"])
                     {
                         NSString *content = [JJJUtil removeNewLines:[self extractContent:child]];
+//                        NSString *content = [self extractContent:child];
                         
                         if (content.length > 0)
                         {
@@ -70,6 +72,7 @@
                     {
                         NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
                         NSString *content = [JJJUtil removeNewLines:[self extractContent:child]];
+//                        NSString *content = [self extractContent:child];
                         
                         DTComprehensiveRule *rule = [self createRule:_lastContent];
                         

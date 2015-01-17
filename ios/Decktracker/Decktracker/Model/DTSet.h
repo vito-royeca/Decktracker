@@ -22,6 +22,8 @@
 @property (nonatomic, retain) NSString * oldCode;
 @property (nonatomic, retain) NSNumber * onlineOnly;
 @property (nonatomic, retain) NSDate * releaseDate;
+@property (nonatomic, retain) NSString * sectionNameInitial;
+@property (nonatomic, retain) NSString * sectionYear;
 @property (nonatomic, retain) NSString * tcgPlayerName;
 @property (nonatomic, retain) DTBlock *block;
 @property (nonatomic, retain) NSSet *cards;

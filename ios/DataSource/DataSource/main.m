@@ -16,8 +16,8 @@ int main(int argc, const char * argv[])
     {
         /* Step 1 */
         
-//        JSONLoader *jsonLoader = [[JSONLoader alloc] init];
-//        [jsonLoader parseCards1stPass];
+        JSONLoader *jsonLoader = [[JSONLoader alloc] init];
+        [jsonLoader parseCards1stPass];
 //        [jsonLoader parseCards2ndPass];
 //        [jsonLoader updateTCGSetNames];
 //        [jsonLoader fetchTcgPrices];
@@ -28,10 +28,10 @@ int main(int argc, const char * argv[])
 //        [rulesLoader parseRules];
 
         /* Optional */
-        ImageLoader *imageLoader = [[ImageLoader alloc] init];
-//        [imageLoader downloadSetIcons:@[@"C14"]];
+//        ImageLoader *imageLoader = [[ImageLoader alloc] init];
+//        [imageLoader downloadSetIcons:@[@"FRF"]];
 //        [imageLoader downloadSymbols];
-        [imageLoader downloadOtherSymbols];
+//        [imageLoader downloadOtherSymbols];
     }
     return 0;
 }

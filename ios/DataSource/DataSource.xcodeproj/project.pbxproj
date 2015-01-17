@@ -129,6 +129,7 @@
 		8C80A0C1198D01D600BADA6C /* JSONLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONLoader.m; sourceTree = "<group>"; };
 		8C80A0CA198D040500BADA6C /* Database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Database.h; path = ../../../DeckTracker/DeckTracker/Controller/Database.h; sourceTree = "<group>"; };
 		8C80A0CB198D040500BADA6C /* Database.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Database.m; path = ../../../DeckTracker/DeckTracker/Controller/Database.m; sourceTree = "<group>"; };
+		8CE5E9771A68F56D0001852A /* Jan-16-2015.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Jan-16-2015.xcdatamodel"; sourceTree = "<group>"; };
 		8CE731571A552249007B51B2 /* Magic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Magic.h; path = ../../Decktracker/Decktracker/Magic.h; sourceTree = "<group>"; };
 		8CF0C9C61991CD5400349F35 /* JJJ.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JJJ.xcodeproj; path = ../jjj/JJJ/JJJ.xcodeproj; sourceTree = "<group>"; };
 		8CF9CE4B199F982A008127E5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -551,6 +552,7 @@
 		8C3857C11A36FCE600E5B38C /* database.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				8CE5E9771A68F56D0001852A /* Jan-16-2015.xcdatamodel */,
 				8C3857C21A36FCE600E5B38C /* database.xcdatamodel */,
 				8C3857C31A36FCE600E5B38C /* Dec-9-2014.xcdatamodel */,
 				8C3857C41A36FCE600E5B38C /* Nov-12-2014.xcdatamodel */,
@@ -558,7 +560,7 @@
 				8C3857C61A36FCE600E5B38C /* Nov-4-2014.xcdatamodel */,
 				8C3857C71A36FCE600E5B38C /* Oct-5-2014.xcdatamodel */,
 			);
-			currentVersion = 8C3857C31A36FCE600E5B38C /* Dec-9-2014.xcdatamodel */;
+			currentVersion = 8CE5E9771A68F56D0001852A /* Jan-16-2015.xcdatamodel */;
 			name = database.xcdatamodeld;
 			path = ../../Decktracker/Decktracker/Model/database.xcdatamodeld;
 			sourceTree = "<group>";

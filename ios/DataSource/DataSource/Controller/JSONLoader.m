@@ -60,7 +60,7 @@
         {
             DTCard *card;
             
-            if (dictCard[@"multiverseID"])
+            if (dictCard[@"multiverseID"] && [dictCard[@"multiverseID"] intValue] != 0)
             {
                 card = [DTCard MR_findFirstByAttribute:@"multiverseID" withValue:dictCard[@"multiverseID"]];
             }
@@ -89,6 +89,9 @@
     // Create colorless CardColor
     DTCardColor *color = [DTCardColor MR_createEntity];
     color.name = @"Colorless";
+    [currentContext MR_save];
+    color = [DTCardColor MR_createEntity];
+    color.name = @"Multicolored";
     [currentContext MR_save];
     
     [[Database sharedInstance] closeDb];
@@ -122,7 +125,7 @@
             
             DTCard *card;
             
-            if (dictCard[@"multiverseID"])
+            if (dictCard[@"multiverseID"] && [dictCard[@"multiverseID"] intValue] != 0)
             {
                 card = [DTCard MR_findFirstByAttribute:@"multiverseID" withValue:dictCard[@"multiverseID"]];
             }
@@ -176,7 +179,6 @@
     
     for (DTCard *card in [DTCard MR_findAllSortedBy:@"set.releaseDate" ascending:YES withPredicate:predicate])
     {
-        NSLog(@"Fetching price for %@ (%@)", card.name, card.set.code);
         [[Database sharedInstance] fetchTcgPlayerPriceForCard:card];
     }
     
@@ -200,6 +202,10 @@
     DTSet *set = [DTSet MR_findFirstByAttribute:@"name"
                                       withValue:dict[@"name"]];
     
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    formatter.dateFormat = @"yyyy";
+    
     if (!set)
     {
         set = [DTSet MR_createEntity];
@@ -213,6 +219,9 @@
         set.type = [self findSetType:dict[@"type"]];
         set.block = [self findBlock:dict[@"block"]];
         set.onlineOnly = [NSNumber numberWithBool:[dict[@"onlineOnly"] boolValue]];
+
+        set.sectionNameInitial = [JJJUtil isAlphaStart:set.name] ?  [set.name substringToIndex:1] : @"#";
+        set.sectionYear = [formatter stringFromDate:set.releaseDate];
         
         [currentContext MR_save];
     }
@@ -318,6 +327,44 @@
         card.colors = [self findColors:dict[@"colors"]];
         card.set = set;
 
+        card.sectionNameInitial = [JJJUtil isAlphaStart:card.name] ?  [card.name substringToIndex:1] : @"#";
+        
+        if (!card.colors || card.colors.count == 0)
+        {
+            card.sectionColor = @"Colorless";
+        }
+        else if (card.colors.count > 1)
+        {
+            card.sectionColor = @"Multicolored";
+        }
+        else if (card.colors.count == 1)
+        {
+            DTCardColor *color = [card.colors allObjects][0];
+            
+            for (NSString *colorName in CARD_COLORS)
+            {
+                
+                if ([color.name isEqualToString:colorName])
+                {
+                    card.sectionColor = color.name;
+                    break;
+                }
+            }
+        }
+        
+        for (DTCardType *type in [card.types allObjects])
+        {
+            for (NSString *typeName in CARD_TYPES)
+            {
+                // to do: fix Plane and Planeswalker types!!!
+                if ([type.name isEqualToString:typeName] || [type.name containsString:typeName])
+                {
+                    card.sectionType = typeName;
+                    break;
+                }
+            }
+        }
+        
         [currentContext MR_save];
 
         [cards addObject:card];

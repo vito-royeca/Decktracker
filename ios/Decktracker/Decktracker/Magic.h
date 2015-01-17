@@ -28,7 +28,7 @@
 
 #define CARD_TYPES                      @[@"Artifact", @"Conspiracy", @"Creature", \
                                           @"Enchantment", @"Instant", @"Land", \
-                                          @"Legendary", @"Phenomenon", @"Plane", \
+                                          @"Phenomenon", @"Plane", \
                                           @"Planeswalker", @"Scheme", @"Sorcery", \
                                           @"Tribal", @"Vanguard"]
 
@@ -36,6 +36,9 @@
                                           @"Enchantment", @"Instant", @"Land", \
                                           @"Planeswalker", @"Sorcery"]
 
+
+#define CARD_COLORS                      @[@"Black", @"Blue", \
+                                           @"Green", @"Red", @"White"]
 
 #define TCGPLAYER_PARTNER_KEY           @"DECKTRACKER"
 #define TCGPLAYER_FETCH_STORAGE         24*3 // 3 days

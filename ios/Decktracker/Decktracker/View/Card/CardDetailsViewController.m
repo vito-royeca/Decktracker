@@ -67,16 +67,16 @@
     
     if (self.fetchedResultsController)
     {
-        id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
-        NSInteger index = [sectionInfo.objects indexOfObject:self.card];
-        self.navigationItem.title = [NSString stringWithFormat:@"%tu of %tu", index+1, sectionInfo.objects.count];
+        NSArray *objects = self.fetchedResultsController.fetchedObjects;
+        NSInteger index = [objects indexOfObject:self.card];
+        self.navigationItem.title = [NSString stringWithFormat:@"%tu of %tu", index+1, objects.count];
 
         // download next four card images
         for (int i = 0; i < 5; i++)
         {
-            if (index+i <= sectionInfo.objects.count-1)
+            if (index+i <= objects.count-1)
             {
-                DTCard *kard = sectionInfo.objects[index+i];
+                DTCard *kard = objects[index+i];
                 
                 [[FileManager sharedInstance] downloadCardImage:kard immediately:NO];
                 [[FileManager sharedInstance] downloadCropImage:kard immediately:NO];
@@ -181,14 +181,14 @@
     
     if (self.fetchedResultsController)
     {
-        id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
-        NSInteger index = [sectionInfo.objects indexOfObject:self.card];
+        NSArray *objects = self.fetchedResultsController.fetchedObjects;
+        NSInteger index = [objects indexOfObject:self.card];
         
         if (index == 0)
         {
             self.btnPrevious.enabled = NO;
         }
-        if (index == [sectionInfo numberOfObjects]-1)
+        if (index == objects.count-1)
         {
             self.btnNext.enabled = NO;
         }
@@ -209,8 +209,8 @@
 {
     if (self.fetchedResultsController)
     {
-        id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
-        NSInteger index = [sectionInfo.objects indexOfObject:self.card];
+        NSArray *objects = self.fetchedResultsController.fetchedObjects;
+        NSInteger index = [objects indexOfObject:self.card];
         
         if (swipe.direction == UISwipeGestureRecognizerDirectionRight)
         {
@@ -223,13 +223,13 @@
         else if (swipe.direction == UISwipeGestureRecognizerDirectionLeft)
         {
             index++;
-            if (index > sectionInfo.objects.count-1)
+            if (index > objects.count-1)
             {
-                index = sectionInfo.objects.count-1;
+                index = objects.count-1;
             }
         }
         
-        DTCard *card = sectionInfo.objects[index];
+        DTCard *card = objects[index];
         [self setCard:card];
         [self.tblDetails reloadData];
     }
@@ -318,8 +318,8 @@
 
 -(void) btnPreviousTapped:(id) sender
 {
-    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
-    NSInteger index = [sectionInfo.objects indexOfObject:self.card];
+    NSArray *objects = self.fetchedResultsController.fetchedObjects;
+    NSInteger index = [objects indexOfObject:self.card];
     
     index--;
     if (index < 0)
@@ -327,23 +327,23 @@
         index = 0;
     }
     
-    DTCard *card = sectionInfo.objects[index];
+    DTCard *card = objects[index];
     [self setCard:card];
     [self.tblDetails reloadData];
 }
 
 -(void) btnNextTapped:(id) sender
 {
-    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
-    NSInteger index = [sectionInfo.objects indexOfObject:self.card];
+    NSArray *objects = self.fetchedResultsController.fetchedObjects;
+    NSInteger index = [objects indexOfObject:self.card];
     
     index++;
-    if (index > sectionInfo.objects.count-1)
+    if (index > objects.count-1)
     {
-        index = sectionInfo.objects.count-1;
+        index = objects.count-1;
     }
     
-    DTCard *card = sectionInfo.objects[index];
+    DTCard *card = objects[index];
     [self setCard:card];
     [self.tblDetails reloadData];
 }
@@ -383,8 +383,8 @@
     NSInteger selectedRow = 0;
     if (self.fetchedResultsController)
     {
-        id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
-        selectedRow = [sectionInfo.objects indexOfObject:self.card];
+        NSArray *objects = self.fetchedResultsController.fetchedObjects;
+        selectedRow = [objects indexOfObject:self.card];
     }
 
     UIImage *image = [UIImage imageWithContentsOfFile:[[FileManager sharedInstance] cardPath:self.card]];
@@ -424,12 +424,12 @@
 {
     if (self.fetchedResultsController)
     {
-        id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
-        NSInteger index = [sectionInfo.objects indexOfObject:self.card];
+        NSArray *objects = self.fetchedResultsController.fetchedObjects;
+        NSInteger index = [objects indexOfObject:self.card];
         
         self.btnPrevious.enabled = YES;
         self.btnNext.enabled = YES;
-        if (index == sectionInfo.objects.count-1)
+        if (index == objects.count-1)
         {
             self.btnNext.enabled = NO;
         }

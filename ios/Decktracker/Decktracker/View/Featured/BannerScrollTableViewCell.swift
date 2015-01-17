@@ -39,25 +39,28 @@ class BannerScrollTableViewCell: UITableViewCell {
     }
 
     func showSlide() {
-        let indexPath = collectionView.indexPathsForVisibleItems()[0] as NSIndexPath
-        let rows = collectionView.dataSource?.collectionView(collectionView, numberOfItemsInSection: 0)
-        var row = indexPath.row
-        var newIndexPath:NSIndexPath?
-        var bWillSlide = true
-        
-        if row == rows!-1 {
-            row = 0
-            bWillSlide = false
-
-        } else {
-            row++
-        }
-        
-        newIndexPath = NSIndexPath(forRow: row, inSection: 0)
+        if (collectionView.indexPathsForVisibleItems().count > 0)
+        {
+            let indexPath = collectionView.indexPathsForVisibleItems()[0] as NSIndexPath
+            let rows = collectionView.dataSource?.collectionView(collectionView, numberOfItemsInSection: 0)
+            var row = indexPath.row
+            var newIndexPath:NSIndexPath?
+            var bWillSlide = true
+            
+            if row == rows!-1 {
+                row = 0
+                bWillSlide = false
+                
+            } else {
+                row++
+            }
+            
+            newIndexPath = NSIndexPath(forRow: row, inSection: 0)
 #if DEBUG
-        println("Scrolling to... \(newIndexPath!)")
+            println("Scrolling to... \(newIndexPath!)")
 #endif
-        collectionView.scrollToItemAtIndexPath(newIndexPath!, atScrollPosition: UICollectionViewScrollPosition.Left, animated: bWillSlide)
+            collectionView.scrollToItemAtIndexPath(newIndexPath!, atScrollPosition: UICollectionViewScrollPosition.Left, animated: bWillSlide)
+        }
     }
     
     func startSlideShow() {

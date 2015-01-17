@@ -11,6 +11,7 @@
 #import "CardDetailsViewController.h"
 #import "Database.h"
 #import "DTCard.h"
+#import "DTCardColor.h"
 #import "DTCardRarity.h"
 #import "DTCardType.h"
 #import "DTSet.h"

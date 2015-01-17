@@ -12,16 +12,16 @@ enum SortMode: Printable  {
     case ByReleaseDate
     case ByName
     case ByType
-    case ByNumber
     case ByPrice
+    case ByColor
     
     var description : String {
         switch self {
         case ByReleaseDate: return "Release Date"
         case ByName: return "Name"
         case ByType: return "Type"
-        case ByNumber: return "Collector Number"
         case ByPrice: return "Price (Median)"
+        case ByColor: return "Color"
         }
     }
 }
@@ -32,15 +32,16 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
     
     var sortButton:UIBarButtonItem?
     var tblSets:UITableView?
-    var sections:[String: [DTSet]]?
+    var sections:[String: [AnyObject]]?
     var sectionIndexTitles:[String]?
     var arrayData:[AnyObject]?
     var predicate:NSPredicate?
     var sorters:[NSSortDescriptor]?
     var sortMode:SortMode?
+    var sectionName:String?
 
     lazy var fetchedResultsController: NSFetchedResultsController = {
-        var nsfrc = Database.sharedInstance().search(nil, withPredicate:self.predicate, withSortDescriptors: self.sorters, withSectionName:nil)
+        var nsfrc = Database.sharedInstance().search(nil, withPredicate:self.predicate, withSortDescriptors: self.sorters, withSectionName:self.sectionName)
         
         self.fetchedResultsController = nsfrc
         self.fetchedResultsController.delegate = self
@@ -65,6 +66,7 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
         view.addSubview(tblSets!)
         
         self.sortMode = SortMode.ByReleaseDate
+        self.sectionName = "sectionNameInitial"
         self.loadData()
         
 #if !DEBUG
@@ -94,15 +96,17 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
             }
             
         } else {
-            sortOptions = [SortMode.ByName.description, SortMode.ByNumber.description, SortMode.ByPrice.description]
+            sortOptions = [SortMode.ByName.description, SortMode.ByColor.description, SortMode.ByType.description, SortMode.ByPrice.description]
             
             switch self.sortMode! {
             case .ByName:
                 initialSelection = 0
-            case .ByNumber:
+            case .ByColor:
                 initialSelection = 1
-            case .ByPrice:
+            case .ByType:
                 initialSelection = 2
+            case .ByPrice:
+                initialSelection = 3
             default:
                 break
             }
@@ -126,10 +130,16 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
                 switch selectedIndex {
                 case 0:
                     self.sortMode = .ByName
+                    self.sectionName = "sectionNameInitial"
                 case 1:
-                    self.sortMode = .ByNumber
+                    self.sortMode = .ByColor
+                    self.sectionName = "sectionColor"
                 case 2:
+                    self.sortMode = .ByType
+                    self.sectionName = "sectionType"
+                case 3:
                     self.sortMode = .ByPrice
+                    self.sectionName = nil
                 default:
                     break
                 }
@@ -149,7 +159,7 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
     
     func loadData() {
         if self.navigationItem.title == "Sets" {
-            sections = [String: [DTSet]]()
+            sections = [String: [AnyObject]]()
             sectionIndexTitles = [String]()
             
             switch sortMode! {
@@ -165,7 +175,7 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
                     let year = formatter.stringFromDate(set.releaseDate)
                     
                     if contains(keys, year) {
-                        sets = sections![year]
+                        sets = sections![year] as? [DTSet]
                     } else {
                         sets = [DTSet]()
                     }
@@ -190,7 +200,7 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
                     }
                     
                     if contains(keys, letter) {
-                        sets = sections![letter]
+                        sets = sections![letter] as? [DTSet]
                     } else {
                         sets = [DTSet]()
                     }
@@ -208,7 +218,7 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
                             var sets:[DTSet]?
                             
                             if contains(keys, setType.name) {
-                                sets = sections![setType.name]
+                                sets = sections![setType.name] as? [DTSet]
                             } else {
                                 sets = [DTSet]()
                             }
@@ -230,18 +240,24 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
         } else {
             switch sortMode! {
             case .ByName:
-                sorters = [NSSortDescriptor(key: "name", ascending: true)]
+                self.sorters = [NSSortDescriptor(key: "name", ascending: true)]
 
-            case .ByNumber:
-                sorters = [NSSortDescriptor(key: "number", ascending: true)]
+            case .ByColor:
+                self.sorters = [NSSortDescriptor(key: "sectionColor", ascending: true),
+                           NSSortDescriptor(key: "name", ascending: true)]
+                
+            case .ByType:
+                self.sorters = [NSSortDescriptor(key: "sectionType", ascending: true),
+                           NSSortDescriptor(key: "name", ascending: true)]
                 
             case .ByPrice:
-                sorters = [NSSortDescriptor(key: "tcgPlayerMidPrice", ascending: false)]
+                self.sorters = [NSSortDescriptor(key: "tcgPlayerMidPrice", ascending: false),
+                           NSSortDescriptor(key: "name", ascending: true)]
             default:
                 break
             }
             
-            var nsfrc = Database.sharedInstance().search(nil, withPredicate:self.predicate, withSortDescriptors: sorters, withSectionName:nil)
+            var nsfrc = Database.sharedInstance().search(nil, withPredicate:self.predicate, withSortDescriptors: self.sorters, withSectionName:self.sectionName)
             self.fetchedResultsController = nsfrc
             self.fetchedResultsController.delegate = self
             self.doSearch()
@@ -249,11 +265,40 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
     }
 
     func doSearch() {
-        var error:NSError?;
+        var error:NSError?
+        
         if (!fetchedResultsController.performFetch(&error)) {
             println("Unresolved error \(error), \(error?.userInfo)");
         }
 
+        if navigationItem.title != "Sets" {
+            sections = [String: [AnyObject]]()
+            sectionIndexTitles = [String]()
+            
+            for sectionInfo in fetchedResultsController.sections as [NSFetchedResultsSectionInfo]! {
+                if self.sortMode != .ByPrice {
+                    let name = sectionInfo.name
+                    
+                    
+                    if (name != nil) {
+                        let cards = sectionInfo.objects
+                        var indexTitle:String?
+                        
+                        if name == "Blue" {
+                            indexTitle = "U"
+                            
+                        } else {
+                            let index = advance(name!.startIndex, 1)
+                            indexTitle = name!.substringToIndex(index);
+                        }
+                        
+                        sections!.updateValue(cards, forKey: name!)
+                        self.sectionIndexTitles!.append(indexTitle!)
+                    }
+                }
+            }
+        }
+        
         if tblSets != nil {
             tblSets!.reloadData()
         }
@@ -302,16 +347,10 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         if navigationItem.title == "Sets" {
             return sections!.count
+            
         } else {
-            return 1
-        }
-    }
-    
-    func sectionIndexTitlesForTableView(tableView: UITableView) -> [AnyObject]! {
-        if navigationItem.title == "Sets" {
-            return sectionIndexTitles
-        } else {
-            return nil
+            let sectionInfos = fetchedResultsController.sections as [NSFetchedResultsSectionInfo]?
+            return sectionInfos!.count
         }
     }
     
@@ -336,20 +375,34 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
             return "\(key) (\(sets!.count) \(setsString))"
             
         } else {
-            let sectionInfos = fetchedResultsController.sections as [NSFetchedResultsSectionInfo]?
-            let sectionInfo = sectionInfos![section]
-            let cardsString = sectionInfo.numberOfObjects > 1 ? "cards" : "card"
-            return "\(sectionInfo.numberOfObjects) \(cardsString)"
+            if (self.sortMode == SortMode.ByPrice) {
+                return nil
+            
+            } else {
+                let sectionInfos = fetchedResultsController.sections as [NSFetchedResultsSectionInfo]
+                let sectionInfo = sectionInfos[section]
+                let cardsString = sectionInfo.numberOfObjects > 1 ? "cards" : "card"
+                let name = sectionInfo.name
+                return "\(name!) (\(sectionInfo.numberOfObjects) \(cardsString))"
+            }
         }
     }
     
+    func sectionIndexTitlesForTableView(tableView: UITableView) -> [AnyObject]! {
+        return sectionIndexTitles
+    }
+
     func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int {
         var section = -1
         
-        if navigationItem.title == "Sets" {
-            let keys = Array(sections!.keys).sorted(<)
-            
-            for (i, value) in enumerate(keys) {
+        let keys = Array(sections!.keys).sorted(<)
+        
+        for (i, value) in enumerate(keys) {
+            if (value == "Blue" && title == "U") {
+                section = i
+                break
+                
+            } else {
                 if value.hasPrefix(title) {
                     section = i
                     break
@@ -379,7 +432,7 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
             
             let key = keys![indexPath.section]
             let sets = sections![key]
-            let set = sets![indexPath.row]
+            let set = sets![indexPath.row] as DTSet
             let date = JJJUtil.formatDate(set.releaseDate, withFormat:"YYYY-MM-dd")
             
             var cell1 = tableView.dequeueReusableCellWithIdentifier("Default") as UITableViewCell?
@@ -415,7 +468,6 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
             cell = cell1
             
         } else {
-            
             let card = fetchedResultsController.objectAtIndexPath(indexPath) as DTCard
             
             var cell1 = tableView.dequeueReusableCellWithIdentifier(kSearchResultsIdentifier) as SearchResultsTableViewCell?
@@ -450,11 +502,10 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
                 break
             }
             let key = keys![indexPath.section]
-            let sets = sections![key]
+            let sets = sections![key] as? [DTSet]
             let set = sets![indexPath.row]
-
+            let view2 = SetListViewController()
             
-            var view2 = SetListViewController()
             view2.navigationItem.title = set.name
             view2.predicate =  NSPredicate(format: "%K = %@", "set.name", set.name)
             view2.doSearch()

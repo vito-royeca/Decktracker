@@ -34,13 +34,15 @@
 @dynamic multiverseID;
 @dynamic name;
 @dynamic number;
-@dynamic numberOfViews;
 @dynamic originalText;
 @dynamic originalType;
 @dynamic power;
 @dynamic rating;
 @dynamic releaseDate;
 @dynamic reserved;
+@dynamic sectionColor;
+@dynamic sectionNameInitial;
+@dynamic sectionType;
 @dynamic source;
 @dynamic tcgPlayerFetchDate;
 @dynamic tcgPlayerFoilPrice;

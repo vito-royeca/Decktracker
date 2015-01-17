@@ -379,7 +379,7 @@
                 }
                 else if ([color.name isEqualToString:@"Colorless"])
                 {
-                    colorInitial = @"1";
+                    colorInitial = @"X";
                 }
                 else
                 {

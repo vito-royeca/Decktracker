@@ -26,13 +26,15 @@
 @property (nonatomic, retain) NSNumber * multiverseID;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * number;
-@property (nonatomic, retain) NSNumber * numberOfViews;
 @property (nonatomic, retain) NSString * originalText;
 @property (nonatomic, retain) NSString * originalType;
 @property (nonatomic, retain) NSString * power;
 @property (nonatomic, retain) NSNumber * rating;
 @property (nonatomic, retain) NSString * releaseDate;
 @property (nonatomic, retain) NSNumber * reserved;
+@property (nonatomic, retain) NSString * sectionColor;
+@property (nonatomic, retain) NSString * sectionNameInitial;
+@property (nonatomic, retain) NSString * sectionType;
 @property (nonatomic, retain) NSString * source;
 @property (nonatomic, retain) NSDate * tcgPlayerFetchDate;
 @property (nonatomic, retain) NSNumber * tcgPlayerFoilPrice;

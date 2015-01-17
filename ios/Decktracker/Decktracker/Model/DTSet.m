@@ -23,6 +23,8 @@
 @dynamic oldCode;
 @dynamic onlineOnly;
 @dynamic releaseDate;
+@dynamic sectionNameInitial;
+@dynamic sectionYear;
 @dynamic tcgPlayerName;
 @dynamic block;
 @dynamic cards;

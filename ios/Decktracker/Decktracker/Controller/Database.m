@@ -263,6 +263,7 @@ static Database *_me;
     {
         NSString *fieldName;
         BOOL bToMany = NO;
+        BOOL bExact = NO;
         
         if ([key isEqualToString:@"Name"])
         {
@@ -272,25 +273,29 @@ static Database *_me;
         {
             fieldName = @"set.name";
 //            bToMany = YES;
+            bExact = YES;
         }
         else if ([key isEqualToString:@"Rarity"])
         {
             fieldName = @"rarity.name";
 //            bToMany = YES;
+            bExact = YES;
         }
         else if ([key isEqualToString:@"Type"])
         {
             fieldName = @"types.name";
 //            bToMany = YES;
+            bExact = YES;
         }
         else if ([key isEqualToString:@"Subtype"])
         {
             fieldName = @"subTypes.name";
 //            bToMany = YES;
+            bExact = YES;
         }
         else if ([key isEqualToString:@"Color"])
         {
-            fieldName = @"colors.name";
+            fieldName = @"sectionColor";
         }
         else if ([key isEqualToString:@"Keyword"])
         {
@@ -308,6 +313,7 @@ static Database *_me;
         {
             fieldName = @"artist.name";
 //            bToMany = YES;
+            bExact = YES;
         }
         else if ([key isEqualToString:@"Will Be Reprinted?"])
         {
@@ -322,15 +328,12 @@ static Database *_me;
             
             if ([key isEqualToString:@"Color"])
             {
-                if ([stringValue isEqualToString:@"Colorless"])
-                {
-                    fieldName = @"colors";
-                    stringValue = nil;
-                }
-                else
-                {
-                    fieldName = @"colors.name";
-                }
+                pred = [NSPredicate predicateWithFormat:@"%K == %@", fieldName, stringValue];
+                
+//                if ([stringValue isEqualToString:@"Colorless"])
+//                {
+//                    pred = [NSPredicate predicateWithFormat:@"ANY %K = nil", fieldName];
+//                }
             }
             
             else if ([key isEqualToString:@"Will Be Reprinted?"])
@@ -355,17 +358,24 @@ static Database *_me;
                 {
                     if (bToMany)
                     {
-                        pred = [NSPredicate predicateWithFormat:@"ANY %K ==[cd] %@", fieldName, stringValue];
+                        pred = [NSPredicate predicateWithFormat:@"ANY %K == [cd] %@", fieldName, stringValue];
                     }
                     else
                     {
-                        if (stringValue.length == 1)
+                        if (bExact)
                         {
-                            pred = [NSPredicate predicateWithFormat:@"%K BEGINSWITH[cd] %@", fieldName, stringValue];
+                            pred = [NSPredicate predicateWithFormat:@"ANY %K == [cd] %@", fieldName, stringValue];
                         }
                         else
                         {
-                            pred = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", fieldName, stringValue];
+                            if (stringValue.length == 1)
+                            {
+                                pred = [NSPredicate predicateWithFormat:@"%K BEGINSWITH[cd] %@", fieldName, stringValue];
+                            }
+                            else
+                            {
+                                pred = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", fieldName, stringValue];
+                            }
                         }
                     }
                 }
@@ -465,6 +475,11 @@ static Database *_me;
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
 #endif
+
+#ifdef DEBUG
+            NSLog(@"Fetching price for %@ (%@)", card.name, card.set.code);
+#endif
+
             NSString *tcgPricing = [[NSString stringWithFormat:@"http://partner.tcgplayer.com/x3/phl.asmx/p?pk=%@&s=%@&p=%@", TCGPLAYER_PARTNER_KEY, card.set.tcgPlayerName, card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             if (!card.set.tcgPlayerName)
             {
@@ -549,17 +564,23 @@ static Database *_me;
     [fetchRequest setEntity:entity];
     NSUInteger count = [moc countForFetchRequest:fetchRequest error:NULL];
     NSMutableArray *arrIDs = [[NSMutableArray alloc] initWithCapacity:howMany];
-    for (int i=0; i<howMany; i++)
+    NSArray *array = [[NSMutableArray alloc] init];
+    
+    if (count > 0)
     {
-        [arrIDs addObject:[NSNumber numberWithInt:arc4random()%count]];
+        for (int i=0; i<howMany; i++)
+        {
+            [arrIDs addObject:[NSNumber numberWithInt:arc4random()%count]];
+        }
+        
+        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"cardID IN(%@)", arrIDs]];
+        [fetchRequest setSortDescriptors:@[sortDescriptor1, sortDescriptor2]];
+        [fetchRequest setFetchLimit:howMany];
+        
+        NSError *error = nil;
+        array = [moc executeFetchRequest:fetchRequest error:&error];
     }
     
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"cardID IN(%@)", arrIDs]];
-    [fetchRequest setSortDescriptors:@[sortDescriptor1, sortDescriptor2]];
-    [fetchRequest setFetchLimit:howMany];
-    
-    NSError *error = nil;
-    NSArray *array = [moc executeFetchRequest:fetchRequest error:&error];
     return array;
 }
 
@@ -699,31 +720,8 @@ static Database *_me;
                 NSPredicate *p = [NSPredicate predicateWithFormat:@"(%K = %@ AND %K = %@ AND %K = %@)", @"name", object[@"name"], @"multiverseID", object[@"multiverseID"], @"set.name", object[@"set"][@"name"]];
                 DTCard *card = [DTCard MR_findFirstWithPredicate:p];
                 
-                if (![card.numberOfViews isEqualToNumber:object[@"numberOfViews"]])
-                {
-                    card.numberOfViews = object[@"numberOfViews"];
-                    [moc MR_saveToPersistentStoreAndWait];
-                }
                 [arrResults addObject:card];
             }
-        }
-        else
-        {
-            NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-            NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:@"numberOfViews"
-                                                                            ascending:NO];
-            NSSortDescriptor *sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:@"name"
-                                                                            ascending:YES];
-            NSEntityDescription *entity = [NSEntityDescription entityForName:@"DTCard"
-                                                      inManagedObjectContext:moc];
-            
-            [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"numberOfViews >= 0"]];
-            [fetchRequest setEntity:entity];
-            [fetchRequest setSortDescriptors:@[sortDescriptor1, sortDescriptor2]];
-            [fetchRequest setFetchLimit:limit];
-            
-            NSError *error = nil;
-            [arrResults addObjectsFromArray:[moc executeFetchRequest:fetchRequest error:&error]];
         }
         
         [[NSNotificationCenter defaultCenter] postNotificationName:kFetchTopViewedDone
