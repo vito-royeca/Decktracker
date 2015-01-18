@@ -45,7 +45,6 @@
 
 // In-App Purchase
 #define COLLECTIONS_IAP_PRODUCT_ID      @"Collections_ID"
-#define CLOUD_STORAGE_IAP_PRODUCT_ID    @"CloudStorage_ID"
 
 typedef NS_ENUM(NSInteger, EditMode)
 {

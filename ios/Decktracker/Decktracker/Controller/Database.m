@@ -9,6 +9,7 @@
 #import "Database.h"
 #import "DTCardRating.h"
 #import "DTSet.h"
+#import "InAppPurchase.h"
 #import "Magic.h"
 
 #import "TFHpple.h"
@@ -18,6 +19,7 @@
     NSMutableArray *_parseQueue;
     NSArray *_currentParseQueue;
     NSDate *_8thEditionReleaseDate;
+    NSMutableArray *_arrInAppSets;
 }
 
 static Database *_me;
@@ -129,7 +131,11 @@ static Database *_me;
     [MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:kDatabaseStore];
     DTSet *set = [DTSet MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"name == %@", @"Eighth Edition"]];
     _8thEditionReleaseDate = set.releaseDate;
+    [self loadInAppSets];
     
+    
+
+
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
     for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentPath error:nil])
     {
@@ -633,6 +639,33 @@ static Database *_me;
     }
     return [releaseDate compare:_8thEditionReleaseDate] == NSOrderedSame ||
         [releaseDate compare:_8thEditionReleaseDate] == NSOrderedDescending;
+}
+
+-(void) loadInAppSets
+{
+    NSString *filePath = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] bundlePath], @"In-App Sets.plist"];
+    _arrInAppSets = [[NSMutableArray alloc] init];
+    
+    for (NSDictionary *dict in [NSArray arrayWithContentsOfFile:filePath])
+    {
+        if (![InAppPurchase isProductPurchased:dict[@"In-App Product ID"]])
+        {
+            [_arrInAppSets addObject:dict];
+        }
+    }
+}
+
+-(NSDictionary*) inAppSettingsForSet:(DTSet*) set
+{
+    for (NSDictionary *dict in _arrInAppSets)
+    {
+        if ([dict[@"Name"] isEqualToString:set.name] &&
+            [dict[@"Code"] isEqualToString:set.code])
+        {
+            return dict;
+        }
+    }
+    return nil;
 }
 
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)

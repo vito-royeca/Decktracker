@@ -22,7 +22,7 @@ enum SetSortMode: Printable  {
     }
 }
 
-class SetListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class SetListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, InAppPurchaseViewControllerDelegate {
 
     let kSearchResultsIdentifier = "kSearchResultsIdentifier"
     
@@ -287,30 +287,37 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
         cell!.textLabel.text = set.name
         cell!.detailTextLabel?.text = "Released: \(date) (\(set.numberOfCards) cards)"
         
-        let path = FileManager.sharedInstance().setPath(set, small: true)
+        let dict = Database.sharedInstance().inAppSettingsForSet(set)
         
-        if path != nil && NSFileManager.defaultManager().fileExistsAtPath(path) {
-            let setImage = UIImage(contentsOfFile: path)
-            
-            cell!.imageView.image = setImage;
-            
-            // resize the image
-            let itemSize = CGSizeMake(setImage!.size.width/2, setImage!.size.height/2)
-            UIGraphicsBeginImageContextWithOptions(itemSize, false, UIScreen.mainScreen().scale)
-            let imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height)
-            setImage!.drawInRect(imageRect)
-            cell!.imageView.image = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-            
+        if dict != nil {
+            cell!.imageView.image = UIImage(named: "locked.png")
+
         } else {
-            cell!.imageView.image = UIImage(named: "blank.png")
+            let path = FileManager.sharedInstance().setPath(set, small: true)
+            
+            if path != nil && NSFileManager.defaultManager().fileExistsAtPath(path) {
+                let setImage = UIImage(contentsOfFile: path)
+                
+                cell!.imageView.image = setImage
+                
+                // resize the image
+                let itemSize = CGSizeMake(setImage!.size.width/2, setImage!.size.height/2)
+                UIGraphicsBeginImageContextWithOptions(itemSize, false, UIScreen.mainScreen().scale)
+                let imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height)
+                setImage!.drawInRect(imageRect)
+                cell!.imageView.image = UIGraphicsGetImageFromCurrentImageContext()
+                UIGraphicsEndImageContext()
+                
+            } else {
+                cell!.imageView.image = UIImage(named: "blank.png")
+            }
         }
         
         return cell!
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let view = CardListViewController()
+        var view:UIViewController?
         var keys:[String]?
         
         switch self.sortMode! {
@@ -326,10 +333,31 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
         let key = keys![indexPath.section]
         let sets = sections![key] as? [DTSet]
         let set = sets![indexPath.row]
+        let dict = Database.sharedInstance().inAppSettingsForSet(set)
         
-        view.navigationItem.title = set.name
-        view.predicate =  NSPredicate(format: "%K = %@", "set.name", set.name)
+        if dict != nil {
+            let view2 = InAppPurchaseViewController()
+            
+            view2.productID = dict["In-App Product ID"] as String
+            view2.delegate = self;
+            view2.productDetails = ["name" : dict["In-App Display Name"] as String,
+                                    "description": dict["In-App Description"] as String]
+            view = view2
+
+        } else {
+            let view2 = CardListViewController()
+            view2.navigationItem.title = set.name
+            view2.predicate =  NSPredicate(format: "%K = %@", "set.name", set.name)
+            view = view2
+        }
         
-        self.navigationController?.pushViewController(view, animated:false)
+        self.navigationController?.pushViewController(view!, animated:false)
+    }
+    
+    // InAppPurchaseViewControllerDelegate
+    func productPurchaseSucceeded(productID: String)
+    {
+        Database.sharedInstance().loadInAppSets()
+        tblSets!.reloadData()
     }
 }

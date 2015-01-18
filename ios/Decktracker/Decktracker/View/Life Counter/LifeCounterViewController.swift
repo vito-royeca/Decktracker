@@ -1,27 +1,21 @@
 //
-//  CardQuizViewController.swift
+//  LifeCounterViewController.swift
 //  Decktracker
 //
-//  Created by Jovit Royeca on 1/14/15.
+//  Created by Jovit Royeca on 1/18/15.
 //  Copyright (c) 2015 Jovito Royeca. All rights reserved.
 //
 
 import UIKit
 
-class CardQuizViewController: UIViewController {
+class LifeCounterViewController: UIViewController {
 
-    var viewMana:UIView?
-    var viewImage:UIImageView?
-    var viewCastingCost:UIView?
-    var viewAnswer:UIView?
-    var viewQuiz:UIView?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         
-        self.navigationItem.title = "Card Quiz"
+        self.navigationItem.title = "Life Counter"
 #if !DEBUG
         // send the screen to Google Analytics
         let tracker = GAI.sharedInstance().defaultTracker
@@ -33,8 +27,5 @@ class CardQuizViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-        
     }
-    
-
 }

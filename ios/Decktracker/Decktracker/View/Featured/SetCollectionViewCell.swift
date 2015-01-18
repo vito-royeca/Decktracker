@@ -14,6 +14,7 @@ class SetCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var lblSetName: UILabel!
     @IBOutlet weak var lblReleaseDate: UILabel!
     @IBOutlet weak var lblNumberOfCards: UILabel!
+    @IBOutlet weak var imgLocked: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -43,6 +44,13 @@ class SetCollectionViewCell: UICollectionViewCell {
             setImage!.drawInRect(imageRect)
             imgSet.image = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
+        }
+        
+        let dict = Database.sharedInstance().inAppSettingsForSet(set)
+        if dict != nil {
+            imgLocked.image = UIImage(named: "locked.png")
+        } else {
+            imgLocked.image = UIImage(named: "blank.png")
         }
         
         lblSetName.text = set.name

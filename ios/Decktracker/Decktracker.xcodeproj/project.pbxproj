@@ -153,6 +153,8 @@
 		8CCE996B1A6A80D400ECCA1C /* SubtitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCE99631A6A80D400ECCA1C /* SubtitleTableViewCell.swift */; };
 		8CCFC02E1A3E7C2C004B1853 /* decktracker.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8CCFC02D1A3E7C2C004B1853 /* decktracker.plist */; };
 		8CD2E1EC19DACE1A00503ACC /* InAppPurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD2E1EB19DACE1A00503ACC /* InAppPurchase.m */; };
+		8CD627A61A6BE7E100382143 /* LifeCounterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD627A51A6BE7E100382143 /* LifeCounterViewController.swift */; };
+		8CD627A81A6BEDE000382143 /* In-App Sets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8CD627A71A6BEDE000382143 /* In-App Sets.plist */; };
 		8CD705981A540E3600CF8425 /* BarGraphViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD705971A540E3600CF8425 /* BarGraphViewController.swift */; };
 		8CDEC7951A383784004053CF /* SpecialListsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CDEC7941A383784004053CF /* SpecialListsViewController.swift */; };
 		8CE7F2BE19C0A2D0004FBEA5 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CE7F2BD19C0A2D0004FBEA5 /* StoreKit.framework */; };
@@ -428,6 +430,8 @@
 		8CCFC02D1A3E7C2C004B1853 /* decktracker.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = decktracker.plist; sourceTree = "<group>"; };
 		8CD2E1EA19DACE1A00503ACC /* InAppPurchase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InAppPurchase.h; sourceTree = "<group>"; };
 		8CD2E1EB19DACE1A00503ACC /* InAppPurchase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InAppPurchase.m; sourceTree = "<group>"; };
+		8CD627A51A6BE7E100382143 /* LifeCounterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LifeCounterViewController.swift; sourceTree = "<group>"; };
+		8CD627A71A6BEDE000382143 /* In-App Sets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "In-App Sets.plist"; sourceTree = "<group>"; };
 		8CD705971A540E3600CF8425 /* BarGraphViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarGraphViewController.swift; sourceTree = "<group>"; };
 		8CDEC7941A383784004053CF /* SpecialListsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecialListsViewController.swift; sourceTree = "<group>"; };
 		8CE7F2BD19C0A2D0004FBEA5 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
@@ -768,8 +772,7 @@
 				8CF79A5C19A88B4500BE4246 /* Decks */,
 				8CFA451D19E1B49A000B5205 /* Downloads */,
 				8C2908A81A11E8C40045394F /* Featured */,
-				8CCB3BB71A6B7EB900402758 /* Life Counter */,
-				8CCE99541A6A7F4800ECCA1C /* Life Counter */,
+				8CD627A41A6BE7C900382143 /* Life Counter */,
 				8CCE99571A6A7F8B00ECCA1C /* Miscellaneous */,
 				8C467CEE19F112F600B27F05 /* More */,
 				8C26A66B19A63EA500FE00E7 /* Search */,
@@ -799,6 +802,7 @@
 				8C49655C19B06929001C7935 /* Goudy Medieval.ttf */,
 				8CADEF1619923DDE004D7658 /* images */,
 				8C5FF9E719AE2EE3003CE54C /* keywords.plist */,
+				8CD627A71A6BEDE000382143 /* In-App Sets.plist */,
 				8CFA451019E17817000B5205 /* Matrix Bold.ttf */,
 				8CFA451119E17817000B5205 /* MPlantin.ttf */,
 				8C2A96D119F4D8D00094C97F /* rules */,
@@ -900,20 +904,6 @@
 			path = "Card Quiz";
 			sourceTree = "<group>";
 		};
-		8CCB3BB71A6B7EB900402758 /* Life Counter */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Life Counter";
-			sourceTree = "<group>";
-		};
-		8CCE99541A6A7F4800ECCA1C /* Life Counter */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Life Counter";
-			sourceTree = "<group>";
-		};
 		8CCE99571A6A7F8B00ECCA1C /* Miscellaneous */ = {
 			isa = PBXGroup;
 			children = (
@@ -931,6 +921,14 @@
 				8CCE99631A6A80D400ECCA1C /* SubtitleTableViewCell.swift */,
 			);
 			path = Miscellaneous;
+			sourceTree = "<group>";
+		};
+		8CD627A41A6BE7C900382143 /* Life Counter */ = {
+			isa = PBXGroup;
+			children = (
+				8CD627A51A6BE7E100382143 /* LifeCounterViewController.swift */,
+			);
+			path = "Life Counter";
 			sourceTree = "<group>";
 		};
 		8CF79A5C19A88B4500BE4246 /* Decks */ = {
@@ -1127,6 +1125,7 @@
 				8C2A979419F5027B0094C97F /* Reader-Mark-N@2x.png in Resources */,
 				8C2A979319F5027B0094C97F /* Reader-Mark-N.png in Resources */,
 				8C89BD5519DD50160070E4F5 /* MagicalRecord.license in Resources */,
+				8CD627A81A6BEDE000382143 /* In-App Sets.plist in Resources */,
 				8C2A978C19F5027B0094C97F /* Reader-Button-H@2x.png in Resources */,
 				8CCE996A1A6A80D400ECCA1C /* QuantityTableViewCell.xib in Resources */,
 				8C2A979019F5027B0094C97F /* Reader-Email@2x.png in Resources */,
@@ -1286,6 +1285,7 @@
 				8C3857A41A36E6D200E5B38C /* DTCardRating.m in Sources */,
 				8C2A979E19F5027B0094C97F /* ReaderContentTile.m in Sources */,
 				8C3857921A36E6D100E5B38C /* DTCardRarity.m in Sources */,
+				8CD627A61A6BE7E100382143 /* LifeCounterViewController.swift in Sources */,
 				8C2A97AB19F5027B0094C97F /* ReaderViewController.m in Sources */,
 				8C2A97A119F5027B0094C97F /* ReaderDocumentOutline.m in Sources */,
 				8C3E948319E4207200C7EF21 /* AcknowledgementTableViewCell.m in Sources */,

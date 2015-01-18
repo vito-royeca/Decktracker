@@ -9,7 +9,7 @@
 
 import UIKit
 
-class FeaturedViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, HorizontalScrollTableViewCellDelegate {
+class FeaturedViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, HorizontalScrollTableViewCellDelegate, InAppPurchaseViewControllerDelegate {
     
     let kHorizontalCellIdentifier   = "kHorizontalCellIdentifier"
     let kBannerCellIdentifier       = "kBannerCellIdentifier"
@@ -96,7 +96,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
                 }
             }
         }
-        tblFeatured?.reloadData()
+        tblFeatured!.reloadData()
     }
 
     func topRatedDone(sender: AnyObject) {
@@ -129,7 +129,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
             }
             i++
         }
-        tblFeatured?.reloadData()
+        tblFeatured!.reloadData()
     }
     
     // UITableViewDelegate
@@ -261,15 +261,30 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
 
         } else if collectionView.tag == 3 { // Sets
             let set = dict[indexPath.row] as DTSet
-            let predicate = NSPredicate(format: "%K = %@", "set.name", set.name)
-            let view2 = CardListViewController()
+            let dict = Database.sharedInstance().inAppSettingsForSet(set)
             
-            view2.navigationItem.title = set.name
-            view2.predicate = predicate
-            view = view2
+            if dict != nil {
+                let view2 = InAppPurchaseViewController()
+                
+                view2.productID = dict["In-App Product ID"] as String
+                view2.delegate = self
+                view2.productDetails = ["name" : dict["In-App Display Name"] as String,
+                                        "description": dict["In-App Description"] as String]
+                view = view2
+                
+            } else {
+                let predicate = NSPredicate(format: "%K = %@", "set.name", set.name)
+                let view2 = CardListViewController()
+                
+                view2.navigationItem.title = set.name
+                view2.predicate = predicate
+                view = view2
+            }
         }
         
-        self.navigationController?.pushViewController(view!, animated:false)
+        if view != nil {
+            self.navigationController?.pushViewController(view!, animated:false)
+        }
     }
     
     // HorizontalScrollTableViewCellDelegate
@@ -299,5 +314,14 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         
         view!.navigationItem.title = key
         navigationController?.pushViewController(view!, animated:true)
+    }
+    
+    // InAppPurchaseViewControllerDelegate
+    func productPurchaseSucceeded(productID: String)
+    {
+        Database.sharedInstance().loadInAppSets()
+        arrayData!.removeLast()
+        arrayData!.append(["Sets": Database.sharedInstance().fetchSets(10) as [DTSet]])
+        tblFeatured!.reloadData()
     }
 }

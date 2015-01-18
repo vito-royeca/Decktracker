@@ -316,6 +316,9 @@
     MainViewController *view = (MainViewController*)self.tabBarController;
     [view addCollectionsProduct];
     
+    // In-App Sets
+    [[Database sharedInstance] loadInAppSets];
+    
     self.appSettingsViewController.hiddenKeys = [self hiddenKeys];
     [self.appSettingsViewController.tableView reloadData];
     

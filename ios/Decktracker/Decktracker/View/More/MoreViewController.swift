@@ -115,7 +115,7 @@ class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 newView = CardQuizViewController()
                 
             } else if indexPath.row == 1 {
-                
+                newView = LifeCounterViewController()
             }
             
         case 2:
