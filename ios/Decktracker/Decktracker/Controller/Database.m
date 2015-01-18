@@ -193,6 +193,14 @@ static Database *_me;
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"DTCard"
                                               inManagedObjectContext:moc];
     
+    // to do: exclude In-App Sets
+    NSArray *inAppSetCodes = [self inAppSetCodes];
+    if (inAppSetCodes.count > 0)
+    {
+        NSPredicate *predInAppSets = [NSPredicate predicateWithFormat:@"NOT (set.code IN %@)", inAppSetCodes];
+        predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, predInAppSets]];
+    }
+    
     [fetchRequest setPredicate:predicate];
     [fetchRequest setEntity:entity];
     [fetchRequest setSortDescriptors:sorters];
@@ -253,7 +261,17 @@ static Database *_me;
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"DTCard"
                                               inManagedObjectContext:moc];
     
-    [fetchRequest setPredicate:predicate2 ? predicate2 : predicate];
+    
+    NSPredicate *pred = predicate2 ? predicate2 : predicate;
+    // to do: exclude In-App Sets
+    NSArray *inAppSetCodes = [self inAppSetCodes];
+    if (inAppSetCodes.count > 0)
+    {
+        NSPredicate *predInAppSets = [NSPredicate predicateWithFormat:@"NOT (set.code IN %@)", inAppSetCodes];
+        pred = [NSCompoundPredicate andPredicateWithSubpredicates:@[pred, predInAppSets]];
+    }
+    
+    [fetchRequest setPredicate:pred];
     [fetchRequest setEntity:entity];
     [fetchRequest setSortDescriptors:sorters];
     [fetchRequest setFetchBatchSize:kFetchBatchSize];
@@ -338,11 +356,6 @@ static Database *_me;
             if ([key isEqualToString:@"Color"])
             {
                 pred = [NSPredicate predicateWithFormat:@"%K == %@", fieldName, stringValue];
-                
-//                if ([stringValue isEqualToString:@"Colorless"])
-//                {
-//                    pred = [NSPredicate predicateWithFormat:@"ANY %K = nil", fieldName];
-//                }
             }
             
             else if ([key isEqualToString:@"Will Be Reprinted?"])
@@ -425,6 +438,13 @@ static Database *_me;
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"DTCard"
                                               inManagedObjectContext:moc];
     
+    // to do: exclude In-App Sets
+    NSArray *inAppSetCodes = [self inAppSetCodes];
+    if (inAppSetCodes.count > 0)
+    {
+        NSPredicate *predInAppSets = [NSPredicate predicateWithFormat:@"NOT (set.code IN %@)", inAppSetCodes];
+        predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, predInAppSets]];
+    }
     [fetchRequest setPredicate:predicate];
     [fetchRequest setEntity:entity];
     [fetchRequest setSortDescriptors:@[sortDescriptor1, sortDescriptor2]];
@@ -581,8 +601,17 @@ static Database *_me;
         {
             [arrIDs addObject:[NSNumber numberWithInt:arc4random()%count]];
         }
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"cardID IN(%@)", arrIDs];
         
-        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"cardID IN(%@)", arrIDs]];
+        // to do: exclude In-App Sets
+        NSArray *inAppSetCodes = [self inAppSetCodes];
+        if (inAppSetCodes.count > 0)
+        {
+            NSPredicate *predInAppSets = [NSPredicate predicateWithFormat:@"NOT (set.code IN %@)", inAppSetCodes];
+            predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, predInAppSets]];
+        }
+        
+        [fetchRequest setPredicate:predicate];
         [fetchRequest setSortDescriptors:@[sortDescriptor1, sortDescriptor2]];
         [fetchRequest setFetchLimit:howMany];
         
@@ -666,6 +695,17 @@ static Database *_me;
         }
     }
     return nil;
+}
+
+-(NSArray*) inAppSetCodes
+{
+    NSMutableArray *arrSetCodes = [[NSMutableArray alloc] init];
+    
+    for (NSDictionary *dict in _arrInAppSets) {
+        [arrSetCodes addObject:dict[@"Code"]];
+    }
+    
+    return arrSetCodes;
 }
 
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
