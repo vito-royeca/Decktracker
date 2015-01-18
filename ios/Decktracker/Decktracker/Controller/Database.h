@@ -51,6 +51,7 @@
 -(void) fetchTcgPlayerPriceForCard:(DTCard*) card;
 -(NSArray*) fetchRandomCards:(int) howMany;
 -(NSArray*) fetchSets:(int) howMany;
+-(BOOL) isCardModern:(DTCard*) card;
 
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
 -(void) fetchTopRated:(int) limit skip:(int) skip;

@@ -16,7 +16,6 @@
 {
     DTCard *_card;
     DTCardType *_planeswalkerType;
-    DTSet *_8thEditionSet;
     UIFont *_pre8thEditionFont;
     UIFont *_8thEditionFont;
     EDStarRating *_ratingControl;
@@ -42,7 +41,6 @@
     self.imgCrop.layer.cornerRadius = 10.0;
     self.imgCrop.layer.masksToBounds = YES;
 
-    _8thEditionSet = [DTSet MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"name == %@", @"Eighth Edition"]];
     _planeswalkerType = [DTCardType MR_findFirstByAttribute:@"name" withValue:@"Planeswalker"];
     _pre8thEditionFont = [UIFont fontWithName:@"Magic:the Gathering" size:20];
     _8thEditionFont = [UIFont fontWithName:@"Matrix-Bold" size:18];
@@ -122,13 +120,13 @@
         [type appendFormat:@" (Loyalty: %@)", card.loyalty];
     }
     
-    if ([card.set.releaseDate compare:_8thEditionSet.releaseDate] == NSOrderedAscending)
+    if ([[Database sharedInstance] isCardModern:card])
     {
-        self.lblCardName.font = _pre8thEditionFont;
+        self.lblCardName.font = _8thEditionFont;
     }
     else
     {
-        self.lblCardName.font = _8thEditionFont;
+        self.lblCardName.font = _pre8thEditionFont;
     }
     
     self.lblCardName.text = [NSString stringWithFormat:@" %@", card.name];

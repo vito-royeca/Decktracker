@@ -40,8 +40,6 @@
     DTCardType *_planeswalkerType;
     MHFacebookImageViewer *_fbImageViewer;
     UIView *_viewSegmented;
-    DTSet *_mediaInsertsSet;
-    DTSet *_8thEditionSet;
     float _newRating;
 }
 
@@ -110,8 +108,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    _mediaInsertsSet = [DTSet MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"name == %@", @"Media Inserts"]];
-    _8thEditionSet = [DTSet MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"name == %@", @"Eighth Edition"]];
     _newRating = 0;
     
     CGFloat dX = 0;
@@ -455,13 +451,13 @@
     [html appendFormat:@"<table width='100%%'>"];
     
     NSString *cardNameFont;
-    if ([self.card.set.releaseDate compare:_8thEditionSet.releaseDate] == NSOrderedAscending)
+    if ([[Database sharedInstance] isCardModern:self.card])
     {
-        cardNameFont = @"cardNamePreEightEdition";
+        cardNameFont = @"cardNameEightEdition";
     }
     else
     {
-        cardNameFont = @"cardNameEightEdition";
+        cardNameFont = @"cardNamePreEightEdition";
     }
     [html appendFormat:@"<tr><td colspan='2'><div class='%@'>%@</div></td></tr>", cardNameFont, self.card.name];
 
@@ -628,7 +624,7 @@
         [html appendFormat:@"<tr><td><a href='%@'>%@</a></td>", link, [self composeSetImage:card]];
         [html appendFormat:@"<td><a href='%@'>%@</a></td></tr>", link, set.name];
         [html appendFormat:@"<tr><td>&nbsp;</td>"];
-        [html appendFormat:@"<td><div class='detailTextSmall'>Release Date: %@</div></td></tr>", [card.set.name isEqualToString:_mediaInsertsSet.name] ? card.releaseDate : [JJJUtil formatDate:set.releaseDate withFormat:@"YYYY-MM-dd"]];
+        [html appendFormat:@"<td><div class='detailTextSmall'>Release Date: %@</div></td></tr>", card.releaseDate ? card.releaseDate : [JJJUtil formatDate:set.releaseDate withFormat:@"YYYY-MM-dd"]];
     }
     [html appendFormat:@"</table></td></tr>"];
     
@@ -885,7 +881,8 @@
     
     if (self.fetchedResultsController)
     {
-        DTCard *card = [self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+        NSArray *objects = self.fetchedResultsController.fetchedObjects;
+        DTCard *card = objects[index];
         
         if (self.card != card)
         {
@@ -903,8 +900,9 @@
     
     if (self.fetchedResultsController)
     {
-        DTCard *card = [self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
-    
+        NSArray *objects = self.fetchedResultsController.fetchedObjects;
+        DTCard *card = objects[index];
+        
         if (self.card != card)
         {
             self.card = card;
@@ -1038,7 +1036,7 @@
                 tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
                 self.cardImage = [[UIImageView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
-                self.cardImage.backgroundColor = [UIColor grayColor];
+                self.cardImage.backgroundColor = [UIColor lightGrayColor];
                 [self.cardImage setUserInteractionEnabled:YES];
                 UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
                 UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];

@@ -15,7 +15,6 @@ class BannerCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var imgSet: UIImageView!
     var card:DTCard?
-    var _8thEditionSet:DTSet?
     var planeswalkerType:DTCardType?
     var _pre8thEditionFont:UIFont?
     var _8thEditionFont:UIFont?
@@ -24,7 +23,6 @@ class BannerCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
         // Initialization code
         
-        _8thEditionSet = DTSet.MR_findFirstWithPredicate(NSPredicate(format:"name == %@", "Eighth Edition")) as? DTSet
         planeswalkerType = DTCardType.MR_findFirstByAttribute("name", withValue:"Planeswalker") as DTCardType?
         _pre8thEditionFont = UIFont(name: "Magic:the Gathering", size:25)
         _8thEditionFont = UIFont(name: "Matrix-Bold", size:25)
@@ -41,11 +39,11 @@ class BannerCollectionViewCell: UICollectionViewCell {
         NSNotificationCenter.defaultCenter().addObserver(self,
             selector:"loadCropImage:",  name:kCropDownloadCompleted, object:nil)
         
-        if card.set.releaseDate.compare(_8thEditionSet!.releaseDate) == NSComparisonResult.OrderedAscending {
-            lblCardName.font = _pre8thEditionFont;
+        if Database.sharedInstance().isCardModern(card) {
+            lblCardName.font = _8thEditionFont;
         
         } else {
-            lblCardName.font = _8thEditionFont;
+            lblCardName.font = _pre8thEditionFont;
         }
         lblCardName.text = self.card?.name
         

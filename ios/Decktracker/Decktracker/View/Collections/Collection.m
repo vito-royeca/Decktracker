@@ -23,7 +23,7 @@
     if (self = [super init])
     {
         NSSortDescriptor *sorter1 = [[NSSortDescriptor alloc] initWithKey:@"card.name"  ascending:YES];
-        NSSortDescriptor *sorter2 = [[NSSortDescriptor alloc] initWithKey:@"card.set.releaseDate"  ascending:YES];
+        NSSortDescriptor *sorter2 = [[NSSortDescriptor alloc] initWithKey:@"card.set.releaseDate"  ascending:NO];
         NSArray *sorters = @[sorter1, sorter2];
         
         self.arrRegulars = [[NSMutableArray alloc] init];

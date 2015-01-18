@@ -17,6 +17,7 @@
 {
     NSMutableArray *_parseQueue;
     NSArray *_currentParseQueue;
+    NSDate *_8thEditionReleaseDate;
 }
 
 static Database *_me;
@@ -126,7 +127,9 @@ static Database *_me;
 #endif
     
     [MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:kDatabaseStore];
-
+    DTSet *set = [DTSet MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"name == %@", @"Eighth Edition"]];
+    _8thEditionReleaseDate = set.releaseDate;
+    
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
     for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentPath error:nil])
     {
@@ -176,7 +179,7 @@ static Database *_me;
         NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:@"name"
                                                                         ascending:YES];
         NSSortDescriptor *sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:@"set.releaseDate"
-                                                                        ascending:YES];
+                                                                        ascending:NO];
         
         sorters = @[sortDescriptor1, sortDescriptor2];
     }
@@ -237,7 +240,7 @@ static Database *_me;
         NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:@"name"
                                                                         ascending:YES];
         NSSortDescriptor *sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:@"set.releaseDate"
-                                                                        ascending:YES];
+                                                                        ascending:NO];
         
         sorters = @[sortDescriptor1, sortDescriptor2];
     }
@@ -412,7 +415,7 @@ static Database *_me;
     NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:@"name"
                                                                    ascending:YES];
     NSSortDescriptor *sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:@"set.releaseDate"
-                                                                    ascending:YES];
+                                                                    ascending:NO];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"DTCard"
                                               inManagedObjectContext:moc];
     
@@ -534,12 +537,12 @@ static Database *_me;
             card.tcgPlayerLink = link ? [JJJUtil trim:link] : card.tcgPlayerLink;
             card.tcgPlayerFetchDate = [NSDate date];
             
-            NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_defaultContext];
-            [currentContext MR_saveToPersistentStoreAndWait];
-
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
             dispatch_async(dispatch_get_main_queue(), ^{
 #endif
+                NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_defaultContext];
+                [currentContext MR_saveToPersistentStoreAndWait];
+                
                 [[NSNotificationCenter defaultCenter] postNotificationName:kPriceUpdateDone
                                                                     object:nil
                                                                   userInfo:@{@"card": card}];
@@ -557,7 +560,7 @@ static Database *_me;
     NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:@"name"
                                                                     ascending:YES];
     NSSortDescriptor *sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:@"set.releaseDate"
-                                                                    ascending:YES];
+                                                                    ascending:NO];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"DTCard"
                                               inManagedObjectContext:moc];
     
@@ -602,6 +605,34 @@ static Database *_me;
     NSError *error = nil;
     NSArray *array = [moc executeFetchRequest:fetchRequest error:&error];
     return array;
+}
+
+-(BOOL) isCardModern:(DTCard*) card
+{
+    NSDate *releaseDate;
+    
+    if (card.releaseDate)
+    {
+        NSString *format = @"YYYY-MM-dd";
+        NSString *tempReleaseDate;
+        
+        if (card.releaseDate.length == 4)
+        {
+            tempReleaseDate = [NSString stringWithFormat:@"%@-01-01", card.releaseDate];
+        }
+        else if (card.releaseDate.length == 7)
+        {
+            tempReleaseDate = [NSString stringWithFormat:@"%@-01", card.releaseDate];
+        }
+        releaseDate = [JJJUtil parseDate:(tempReleaseDate ? tempReleaseDate : card.releaseDate)
+                              withFormat:format];
+    }
+    else
+    {
+        releaseDate = card.set.releaseDate;
+    }
+    return [releaseDate compare:_8thEditionReleaseDate] == NSOrderedSame ||
+        [releaseDate compare:_8thEditionReleaseDate] == NSOrderedDescending;
 }
 
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
