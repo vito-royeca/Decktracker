@@ -15,17 +15,16 @@ int main(int argc, const char * argv[])
     @autoreleasepool
     {
         /* Step 1 */
-        
         JSONLoader *jsonLoader = [[JSONLoader alloc] init];
-        [jsonLoader parseCards1stPass];
+//        [jsonLoader parseCards1stPass];
 //        [jsonLoader parseCards2ndPass];
 //        [jsonLoader updateTCGSetNames];
 //        [jsonLoader fetchTcgPrices];
         
 
         /* Step 2 */
-//        RulesLoader *rulesLoader = [[RulesLoader alloc] init];
-//        [rulesLoader parseRules];
+        RulesLoader *rulesLoader = [[RulesLoader alloc] init];
+        [rulesLoader parseRules];
 
         /* Optional */
 //        ImageLoader *imageLoader = [[ImageLoader alloc] init];

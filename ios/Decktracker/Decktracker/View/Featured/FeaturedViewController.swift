@@ -9,7 +9,7 @@
 
 import UIKit
 
-class FeaturedViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, HorizontalScrollTableViewCellDelegate, InAppPurchaseViewControllerDelegate, InAppPurchaseDelegate {
+class FeaturedViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, HorizontalScrollTableViewCellDelegate {
     
     let kHorizontalCellIdentifier   = "kHorizontalCellIdentifier"
     let kBannerCellIdentifier       = "kBannerCellIdentifier"
@@ -72,11 +72,11 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         NSNotificationCenter.defaultCenter().removeObserver(self, name:kFetchTopViewedDone,  object:nil)
     }
     
-    func specialButtonTapped() {
+    /*func specialButtonTapped() {
         let view = SpecialListsViewController()
         
         self.navigationController?.pushViewController(view, animated:false)
-    }
+    }*/
     
     func loadData() {
         arrayData = [[String: [AnyObject]]]()
@@ -85,7 +85,6 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         arrayData!.append(["Top Rated": [DTCard]()])
         arrayData!.append(["Top Viewed": [DTCard]()])
         arrayData!.append(["Sets": Database.sharedInstance().fetchSets(10) as [DTSet]])
-        arrayData!.append(["In-App Purchase": ["Purchase Collections", "Restore Purchases"]])
         
         for dict in arrayData! {
             for (key,value) in dict {
@@ -137,40 +136,22 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.row == 0 {
             return 132
+            
         } else if indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 3 {
             return 170
+            
         } else {
             return UITableViewAutomaticDimension
         }
     }
 
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if indexPath.row == 5 {
-            if !InAppPurchase.isProductPurchased(COLLECTIONS_IAP_PRODUCT_ID) {
-                let view = InAppPurchaseViewController()
-                
-                view.productID = COLLECTIONS_IAP_PRODUCT_ID
-                view.productDetails = ["name" : "Collections",
-                                      "description": "Lets you manage your card collections."]
-                view.delegate = self;
-                self.navigationController?.pushViewController(view, animated:true)
-            }
-            
-        } else if indexPath.row == 6 {
-            let iap = InAppPurchase()
-            
-            iap.delegate = self
-            iap.restorePurchases()
-        }
-    }
-    
     // UITableViewDataSource
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 7 // arrayData.count + arrayData[5].count
+        return arrayData!.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -198,32 +179,6 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
             }
             cell2!.lblTitle?.text = key
             cell = cell2
-            
-        } else {
-            let row = arrayData![4]
-            let key = Array(row.keys)[0]
-            let dict = row[key] as [String]
-            
-            cell = tableView.dequeueReusableCellWithIdentifier(kDefaultCellIdentifier) as UITableViewCell?
-            
-            if cell == nil {
-                cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: kDefaultCellIdentifier)
-            }
-            
-            if indexPath.row == 4 {
-                cell!.textLabel.text = key
-                cell!.imageView.image = nil
-                cell!.accessoryType = UITableViewCellAccessoryType.None
-            }
-            else if indexPath.row == 5 {
-                cell!.textLabel.text = dict[0]
-                cell!.imageView.image = UIImage(named: "cards.png")
-                cell!.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
-            } else if indexPath.row == 6 {
-                cell!.textLabel.text = dict[1]
-                cell!.imageView.image = UIImage(named: "download.png")
-                cell!.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
-            }
         }
 
         cell!.selectionStyle = UITableViewCellSelectionStyle.None
@@ -307,11 +262,10 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         } else if collectionView.tag == 3 { // Sets
             let set = dict[indexPath.row] as DTSet
             let predicate = NSPredicate(format: "%K = %@", "set.name", set.name)
-            let view2 = SetListViewController()
+            let view2 = CardListViewController()
             
             view2.navigationItem.title = set.name
             view2.predicate = predicate
-            view2.doSearch()
             view = view2
         }
         
@@ -345,51 +299,5 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         
         view!.navigationItem.title = key
         navigationController?.pushViewController(view!, animated:true)
-    }
-    
-    // InAppPurchaseViewControllerDelegate
-    func productPurchaseSucceeded(productID: String)
-    {
-        if productID == COLLECTIONS_IAP_PRODUCT_ID {
-            let view = self.tabBarController as MainViewController
-            view.addCollectionsProduct()
-        }
-    }
-    
-    // InAppPurchaseDelegate
-    func productPurchaseFailed(inAppPurchase: InAppPurchase, withMessage message: String) {
-        let alert = UIAlertView(title: "Message",
-            message:message,
-            delegate:nil,
-            cancelButtonTitle: "Ok")
-        alert.show()
-    }
-    
-    func purchaseRestoreSucceeded(inAppPurchase: InAppPurchase, withMessage message: String) {
-        // Collections
-        let view = self.tabBarController as MainViewController
-        view.addCollectionsProduct()
-    
-        let alert = UIAlertView(title: "Message",
-            message:message,
-            delegate:nil,
-            cancelButtonTitle: "Ok")
-        alert.show()
-    
-#if !DEBUG
-        let tracker = GAI.sharedInstance().defaultTracker
-        tracker.send(GAIDictionaryBuilder.createEventWithCategory("Settings",
-            action:"Restore Purchases",
-            label:"Succeeded",
-            value:nil).build())
-#endif
-    }
-    
-    func purchaseRestoreFailed(inAppPurchase: InAppPurchase, withMessage message: String) {
-        let alert = UIAlertView(title: "Message",
-            message:message,
-            delegate:nil,
-            cancelButtonTitle: "Ok")
-        alert.show()
     }
 }

@@ -158,6 +158,7 @@
 		8CE7F2BE19C0A2D0004FBEA5 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CE7F2BD19C0A2D0004FBEA5 /* StoreKit.framework */; };
 		8CE971C61A126C0000D4386B /* BannerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE971C41A126C0000D4386B /* BannerCollectionViewCell.swift */; };
 		8CE971C71A126C0000D4386B /* BannerCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CE971C51A126C0000D4386B /* BannerCollectionViewCell.xib */; };
+		8CEF2EAB1A6B395E0026D4EF /* CardListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEF2EAA1A6B395E0026D4EF /* CardListViewController.swift */; };
 		8CF14BF41A2E199600BEC434 /* DecktrackerPFLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF14BF31A2E199600BEC434 /* DecktrackerPFLoginViewController.swift */; };
 		8CF3309F1A35B33D00B6301D /* UserAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF3309E1A35B33D00B6301D /* UserAccountViewController.swift */; };
 		8CF418D719C9C6790082E3BC /* Collection.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF418D619C9C6790082E3BC /* Collection.m */; };
@@ -433,6 +434,7 @@
 		8CE7F2C219C0A2F7004FBEA5 /* Decktracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Decktracker.entitlements; sourceTree = "<group>"; };
 		8CE971C41A126C0000D4386B /* BannerCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BannerCollectionViewCell.swift; sourceTree = "<group>"; };
 		8CE971C51A126C0000D4386B /* BannerCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BannerCollectionViewCell.xib; sourceTree = "<group>"; };
+		8CEF2EAA1A6B395E0026D4EF /* CardListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardListViewController.swift; sourceTree = "<group>"; };
 		8CF14BF31A2E199600BEC434 /* DecktrackerPFLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecktrackerPFLoginViewController.swift; sourceTree = "<group>"; };
 		8CF3309E1A35B33D00B6301D /* UserAccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAccountViewController.swift; sourceTree = "<group>"; };
 		8CF418D519C9C6790082E3BC /* Collection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Collection.h; sourceTree = "<group>"; };
@@ -528,13 +530,14 @@
 				8CE971C51A126C0000D4386B /* BannerCollectionViewCell.xib */,
 				8C38C04E1A15F6E500FC3411 /* BannerScrollTableViewCell.swift */,
 				8C38C04F1A15F6E500FC3411 /* BannerScrollTableViewCell.xib */,
+				8CEF2EAA1A6B395E0026D4EF /* CardListViewController.swift */,
 				8C2908A91A11E8E30045394F /* FeaturedViewController.swift */,
 				8CAAA0EB1A15057100DD209D /* HorizontalScrollTableViewCell.swift */,
 				8CAAA0EC1A15057100DD209D /* HorizontalScrollTableViewCell.xib */,
-				8CDEC7941A383784004053CF /* SpecialListsViewController.swift */,
 				8CC5BA6F1A1386A700F3BDD2 /* SetCollectionViewCell.swift */,
 				8CC5BA701A1386A700F3BDD2 /* SetCollectionViewCell.xib */,
 				8C71A0A11A28127A00162CA2 /* SetListViewController.swift */,
+				8CDEC7941A383784004053CF /* SpecialListsViewController.swift */,
 				8CC5BA661A13509600F3BDD2 /* ThumbCollectionViewCell.swift */,
 				8CC5BA671A13509600F3BDD2 /* ThumbCollectionViewCell.xib */,
 				8C1623181A1C816400ABC4DB /* TopListViewController.swift */,
@@ -765,6 +768,7 @@
 				8CF79A5C19A88B4500BE4246 /* Decks */,
 				8CFA451D19E1B49A000B5205 /* Downloads */,
 				8C2908A81A11E8C40045394F /* Featured */,
+				8CCB3BB71A6B7EB900402758 /* Life Counter */,
 				8CCE99541A6A7F4800ECCA1C /* Life Counter */,
 				8CCE99571A6A7F8B00ECCA1C /* Miscellaneous */,
 				8C467CEE19F112F600B27F05 /* More */,
@@ -894,6 +898,13 @@
 				8CA376B71A667B6C0041FDAA /* CardQuizViewController.swift */,
 			);
 			path = "Card Quiz";
+			sourceTree = "<group>";
+		};
+		8CCB3BB71A6B7EB900402758 /* Life Counter */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Life Counter";
 			sourceTree = "<group>";
 		};
 		8CCE99541A6A7F4800ECCA1C /* Life Counter */ = {
@@ -1243,6 +1254,7 @@
 				8C38C0501A15F6E500FC3411 /* BannerScrollTableViewCell.swift in Sources */,
 				8C3857A71A36E6D200E5B38C /* DTBlock.m in Sources */,
 				8C3857981A36E6D200E5B38C /* DTCardType.m in Sources */,
+				8CEF2EAB1A6B395E0026D4EF /* CardListViewController.swift in Sources */,
 				8C2A97A919F5027B0094C97F /* ReaderThumbsView.m in Sources */,
 				8C325F3D1A5A60B200FA58E6 /* DecksTableViewCell.swift in Sources */,
 				8C2A97A219F5027B0094C97F /* ReaderMainPagebar.m in Sources */,
