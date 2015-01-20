@@ -271,9 +271,14 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let view = CardDetailsViewController()
         let card = fetchedResultsController.objectAtIndexPath(indexPath) as DTCard
         
+        let dict = Database.sharedInstance().inAppSettingsForSet(card.set)
+        if dict != nil {
+            return
+        }
+        
+        let view = CardDetailsViewController()
         view.addButtonVisible = true
         view.fetchedResultsController = fetchedResultsController
         view.card = card

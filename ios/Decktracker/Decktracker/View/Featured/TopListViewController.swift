@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TopListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class TopListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, InAppPurchaseViewControllerDelegate {
 
     let kSearchResultsIdentifier = "kSearchResultsIdentifier"
     
@@ -89,12 +89,27 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let view = CardDetailsViewController()
         let card = arrayData![indexPath.row] as DTCard
+        let dict = Database.sharedInstance().inAppSettingsForSet(card.set)
+        var view:UIViewController?
         
-        view.addButtonVisible = true
-        view.card = card
-        self.navigationController?.pushViewController(view, animated:false)
+        if dict != nil {
+            let view2 = InAppPurchaseViewController()
+            
+            view2.productID = dict["In-App Product ID"] as String
+            view2.delegate = self;
+            view2.productDetails = ["name" : dict["In-App Display Name"] as String,
+                "description": dict["In-App Description"] as String]
+            view = view2
+            
+        } else {
+            let view2 = CardDetailsViewController()
+            view2.addButtonVisible = true
+            view2.card = card
+            view = view2
+        }
+        
+        self.navigationController?.pushViewController(view!, animated:false)
     }
     
     // UIScrollViewDelegate
@@ -137,5 +152,12 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
             tblList!.insertRowsAtIndexPaths(paths, withRowAnimation:UITableViewRowAnimation.Automatic)
             tblList!.endUpdates()
         }
+    }
+    
+    // InAppPurchaseViewControllerDelegate
+    func productPurchaseSucceeded(productID: String)
+    {
+        Database.sharedInstance().loadInAppSets()
+        tblList!.reloadData()
     }
 }

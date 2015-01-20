@@ -253,11 +253,24 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         
         if collectionView.tag == 0 || collectionView.tag == 1 || collectionView.tag == 2 {
             let card = dict[indexPath.row] as DTCard
-            let view2 = CardDetailsViewController()
+            let dict = Database.sharedInstance().inAppSettingsForSet(card.set)
             
-            view2.addButtonVisible = true
-            view2.card = card
-            view = view2
+            if dict != nil {
+                let view2 = InAppPurchaseViewController()
+                
+                view2.productID = dict["In-App Product ID"] as String
+                view2.delegate = self
+                view2.productDetails = ["name" : dict["In-App Display Name"] as String,
+                    "description": dict["In-App Description"] as String]
+                view = view2
+                
+            } else {
+                let view2 = CardDetailsViewController()
+            
+                view2.addButtonVisible = true
+                view2.card = card
+                view = view2
+            }
 
         } else if collectionView.tag == 3 { // Sets
             let set = dict[indexPath.row] as DTSet

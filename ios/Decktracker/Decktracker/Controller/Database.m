@@ -461,8 +461,31 @@ static Database *_me;
 {
     NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"name == %@", cardName];
     NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"set.code == %@", setCode];
+    NSPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[pred1, pred2]];
     
-    return [DTCard MR_findFirstWithPredicate:[NSCompoundPredicate andPredicateWithSubpredicates:@[pred1, pred2]]];
+    // to do: exclude In-App Sets
+    NSArray *inAppSetCodes = [self inAppSetCodes];
+    if (inAppSetCodes.count > 0)
+    {
+        NSPredicate *predInAppSets = [NSPredicate predicateWithFormat:@"NOT (set.code IN %@)", inAppSetCodes];
+        predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, predInAppSets]];
+    }
+    return [DTCard MR_findFirstWithPredicate:predicate];
+}
+
+-(DTCard*) findCardByMultiverseID:(NSString*) multiverseID
+{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"multiverseID == %@", multiverseID];
+    
+    // to do: exclude In-App Sets
+    NSArray *inAppSetCodes = [self inAppSetCodes];
+    if (inAppSetCodes.count > 0)
+    {
+        NSPredicate *predInAppSets = [NSPredicate predicateWithFormat:@"NOT (set.code IN %@)", inAppSetCodes];
+        predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, predInAppSets]];
+    }
+    
+    return [DTCard MR_findFirstWithPredicate:predicate];
 }
 
 -(NSString*) cardRarityIndex:(DTCard*) card
@@ -563,12 +586,15 @@ static Database *_me;
             card.tcgPlayerLink = link ? [JJJUtil trim:link] : card.tcgPlayerLink;
             card.tcgPlayerFetchDate = [NSDate date];
             
+            NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_defaultContext];
+            if ([currentContext hasChanges])
+            {
+                [currentContext MR_saveToPersistentStoreAndWait];
+            }
+            
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
             dispatch_async(dispatch_get_main_queue(), ^{
 #endif
-                NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_defaultContext];
-                [currentContext MR_saveToPersistentStoreAndWait];
-                
                 [[NSNotificationCenter defaultCenter] postNotificationName:kPriceUpdateDone
                                                                     object:nil
                                                                   userInfo:@{@"card": card}];
@@ -739,9 +765,9 @@ static Database *_me;
                 NSPredicate *p = [NSPredicate predicateWithFormat:@"(%K = %@ AND %K = %@ AND %K = %@)", @"name", object[@"name"], @"multiverseID", object[@"multiverseID"], @"set.name", object[@"set"][@"name"]];
                 DTCard *card = [DTCard MR_findFirstWithPredicate:p];
                 
-                if (![card.rating isEqualToNumber:object[@"rating"]])
+                card.rating = object[@"rating"];
+                if ([moc hasChanges])
                 {
-                    card.rating = object[@"rating"];
                     [moc MR_saveToPersistentStoreAndWait];
                 }
                 [arrResults addObject:card];

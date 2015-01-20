@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CollectionDetailsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
+#import "InAppPurchaseViewController.h"
+
+@interface CollectionDetailsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, InAppPurchaseViewControllerDelegate>
 
 @property(strong,nonatomic) NSDictionary *dictCollection;
 @property(strong,nonatomic) UITableView *tblCards;

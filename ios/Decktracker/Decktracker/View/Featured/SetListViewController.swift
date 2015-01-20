@@ -339,7 +339,7 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
             let view2 = InAppPurchaseViewController()
             
             view2.productID = dict["In-App Product ID"] as String
-            view2.delegate = self;
+            view2.delegate = self
             view2.productDetails = ["name" : dict["In-App Display Name"] as String,
                                     "description": dict["In-App Description"] as String]
             view = view2

@@ -190,9 +190,15 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CardDetailsViewController *view = [[CardDetailsViewController alloc] init];
     DTCard *card = [self.fetchedResultsController objectAtIndexPath:indexPath];
     
+    NSDictionary *dict = [[Database sharedInstance] inAppSettingsForSet:card.set];
+    if (dict)
+    {
+        return;
+    }
+    
+    CardDetailsViewController *view = [[CardDetailsViewController alloc] init];
     view.addButtonVisible = YES;
     view.fetchedResultsController = self.fetchedResultsController;
     [view setCard:card];

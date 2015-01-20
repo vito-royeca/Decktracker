@@ -47,6 +47,7 @@
 #endif
 
 -(DTCard*) findCard:(NSString*) card inSet:(NSString*) setCode;
+-(DTCard*) findCardByMultiverseID:(NSString*) multiverseID;
 -(NSString*) cardRarityIndex:(DTCard*) card;
 -(void) fetchTcgPlayerPriceForCard:(DTCard*) card;
 -(NSArray*) fetchRandomCards:(int) howMany;
@@ -54,6 +55,7 @@
 -(BOOL) isCardModern:(DTCard*) card;
 -(void) loadInAppSets;
 -(NSDictionary*) inAppSettingsForSet:(DTSet*) set;
+-(NSArray*) inAppSetCodes;
 
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
 -(void) fetchTopRated:(int) limit skip:(int) skip;

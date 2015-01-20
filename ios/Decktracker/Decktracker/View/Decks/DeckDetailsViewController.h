@@ -12,9 +12,9 @@
 
 #import "IASKSettingsReader.h"
 #import "IASKAppSettingsViewController.h"
+#import "InAppPurchaseViewController.h"
 
-
-@interface DeckDetailsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, IASKSettingsDelegate>
+@interface DeckDetailsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, IASKSettingsDelegate, InAppPurchaseViewControllerDelegate>
 
 @property(strong,nonatomic) UIBarButtonItem *btnBack;
 @property(strong,nonatomic) UISegmentedControl *segmentedControl;

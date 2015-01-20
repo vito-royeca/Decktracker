@@ -43,14 +43,21 @@
             }
             if (!card)
             {
-                card = [[Database sharedInstance] findCard:d[@"card"] inSet:d[@"set"]];
+                NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"name == %@", d[@"card"]];
+                NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"set.code == %@", d[@"set"]];
+                NSPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[pred1, pred2]];
+                
+                card = [DTCard MR_findFirstWithPredicate:predicate];
             }
             
-            [self.arrRegulars addObject:@{@"card" : card,
-                                          @"set" : card.set.code,
-                                          @"multiverseID" : card.multiverseID,
-                                          @"qty" : d[@"qty"]}];
-            totalCards += [d[@"qty"] intValue];
+            if (card)
+            {
+                [self.arrRegulars addObject:@{@"card" : card,
+                                              @"set" : card.set.code,
+                                              @"multiverseID" : card.multiverseID,
+                                              @"qty" : d[@"qty"]}];
+                totalCards += [d[@"qty"] intValue];
+            }
         }
         
         for (NSDictionary *d in dict[@"foiled"])
@@ -63,13 +70,20 @@
             }
             if (!card)
             {
-                card = [[Database sharedInstance] findCard:d[@"card"] inSet:d[@"set"]];
+                NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"name == %@", d[@"card"]];
+                NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"set.code == %@", d[@"set"]];
+                NSPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[pred1, pred2]];
+                
+                card = [DTCard MR_findFirstWithPredicate:predicate];
             }
             
-            [self.arrFoils addObject:@{@"card": card,
-                                       @"set" : card.set.code,
-                                       @"multiverseID" : card.multiverseID,
-                                       @"qty" : d[@"qty"]}];
+            if (card)
+            {
+                [self.arrFoils addObject:@{@"card": card,
+                                           @"set" : card.set.code,
+                                           @"multiverseID" : card.multiverseID,
+                                           @"qty" : d[@"qty"]}];
+            }
         }
         
         self.arrRegulars = [[NSMutableArray alloc] initWithArray:[self.arrRegulars sortedArrayUsingDescriptors:sorters]];

@@ -587,7 +587,7 @@
                     }
                     else
                     {
-                        predicate = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", @"type", @"land"];
+                        predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"sectionType", @"Land"];
                     }
                     break;
                 }
@@ -599,7 +599,7 @@
                     }
                     else
                     {
-                        predicate = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@ OR %K CONTAINS[cd] %@", @"type", @"creature", @"type", @"summon"];
+                        predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"sectionType", @"Creature"];
                     }
                     break;
                 }
@@ -611,10 +611,9 @@
                     }
                     else
                     {
-                        NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"NOT(%K CONTAINS[cd] %@)", @"type", @"land"];
-                        NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"NOT(%K CONTAINS[cd] %@)", @"type", @"creature"];
-                        NSPredicate *pred3 = [NSPredicate predicateWithFormat:@"NOT(%K CONTAINS[cd] %@)", @"type", @"summon"];
-                        predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[pred1, pred2, pred3]];
+                        NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"%K != %@", @"sectionType", @"Land"];
+                        NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"%K != %@", @"sectionType", @"Creature"];
+                        predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[pred1, pred2]];
                     }
                     break;
                 }
@@ -630,22 +629,43 @@
             
             if (card)
             {
-                AddCardViewController *view = [[AddCardViewController alloc] init];
+                UIViewController *view;
                 
-                view.arrDecks = [[NSMutableArray alloc] initWithArray:@[self.deck.name]];
-                
-                view.arrCollections = [[NSMutableArray alloc] init];
-                for (NSString *file in [[FileManager sharedInstance] listFilesAtPath:@"/Collections"
-                                                                      fromFileSystem:FileSystemLocal])
+                NSDictionary *dict = [[Database sharedInstance] inAppSettingsForSet:card.set];
+                if (dict)
                 {
-                    [view.arrCollections addObject:[file stringByDeletingPathExtension]];
+                    InAppPurchaseViewController *view2 = [[InAppPurchaseViewController alloc] init];
+                    
+                    view2.productID = dict[@"In-App Product ID"];
+                    view2.delegate = self;
+                    view2.productDetails = @{@"name" : dict[@"In-App Display Name"],
+                                             @"description": dict[@"In-App Description"]};
+                    view = view2;
+                }
+                else
+                {
+                    AddCardViewController *view2 = [[AddCardViewController alloc] init];
+                    
+                    view2.arrDecks = [[NSMutableArray alloc] initWithArray:@[self.deck.name]];
+                    
+                    view2.arrCollections = [[NSMutableArray alloc] init];
+                    for (NSString *file in [[FileManager sharedInstance] listFilesAtPath:@"/Collections"
+                                                                          fromFileSystem:FileSystemLocal])
+                    {
+                        [view2.arrCollections addObject:[file stringByDeletingPathExtension]];
+                    }
+                    
+                    [view2 setCard:card];
+                    view2.createButtonVisible = NO;
+                    view2.showCardButtonVisible = YES;
+                    view2.segmentedControlIndex = 0;
+                    view = view2;
                 }
                 
-                [view setCard:card];
-                view.createButtonVisible = NO;
-                view.showCardButtonVisible = YES;
-                view.segmentedControlIndex = 0;
-                [self.navigationController pushViewController:view animated:YES];
+                if (view)
+                {
+                    [self.navigationController pushViewController:view animated:YES];
+                }
             }
             
             else
@@ -664,20 +684,19 @@
                 }
                 case 1:
                 {
-                    predicate = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", @"type", @"land"];
+                    predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"sectionType", @"Land"];
                     break;
                 }
                 case 2:
                 {
-                    predicate = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@ OR %K CONTAINS[cd] %@", @"type", @"creature", @"type", @"summon"];
+                    predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"sectionType", @"Creature"];
                     break;
                 }
                 case 3:
                 {
-                    NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"NOT(%K CONTAINS[cd] %@)", @"type", @"land"];
-                    NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"NOT(%K CONTAINS[cd] %@)", @"type", @"creature"];
-                    NSPredicate *pred3 = [NSPredicate predicateWithFormat:@"NOT(%K CONTAINS[cd] %@)", @"type", @"summon"];
-                    predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[pred1, pred2, pred3]];
+                    NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"%K != %@", @"sectionType", @"Land"];
+                    NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"%K != %@", @"sectionType", @"Creature"];
+                    predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[pred1, pred2]];
                     break;
                 }
             }
@@ -843,10 +862,17 @@
     }
 }
 
-#pragma mark UITextViewDelegate
+#pragma mark - UITextViewDelegate
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
     [self.cardDetailsViewController.settingsStore setObject:textView.text forKey:@"notes"];
+}
+
+#pragma mark - InAppPurchaseViewControllerDelegate
+-(void) productPurchaseSucceeded:(NSString*) productID
+{
+    [[Database sharedInstance] loadInAppSets];
+    [self.tblCards reloadData];
 }
 
 @end

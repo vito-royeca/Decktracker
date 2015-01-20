@@ -106,7 +106,7 @@
     
     if (self.createButtonVisible)
     {
-        self.btnCreate = [[UIBarButtonItem alloc] initWithTitle:@"Create Deck"
+        self.btnCreate = [[UIBarButtonItem alloc] initWithTitle:@"Create New Deck"
                                                           style:UIBarButtonItemStylePlain
                                                          target:self
                                                          action:@selector(btnCreateTapped:)];

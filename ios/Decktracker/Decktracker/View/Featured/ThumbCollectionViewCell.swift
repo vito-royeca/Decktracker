@@ -46,17 +46,23 @@ class ThumbCollectionViewCell: UICollectionViewCell {
         FileManager.sharedInstance().downloadCardImage(self.card, immediately:false)
         
         // set image
-        path = FileManager.sharedInstance().cardSetPath(card)
-        var setImage = UIImage(contentsOfFile: path)
-        imgSet.image = setImage
-        // resize the image
-        if setImage != nil {
-            let itemSize = CGSizeMake(setImage!.size.width/2, setImage!.size.height/2)
-            UIGraphicsBeginImageContextWithOptions(itemSize, false, UIScreen.mainScreen().scale)
-            let imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height)
-            setImage!.drawInRect(imageRect)
-            imgSet.image = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
+        let dict = Database.sharedInstance().inAppSettingsForSet(card.set)
+        if dict != nil {
+            imgSet.image = UIImage(named: "locked.png")
+            
+        } else {
+            path = FileManager.sharedInstance().cardSetPath(card)
+            var setImage = UIImage(contentsOfFile: path)
+            imgSet.image = setImage
+            // resize the image
+            if setImage != nil {
+                let itemSize = CGSizeMake(setImage!.size.width/2, setImage!.size.height/2)
+                UIGraphicsBeginImageContextWithOptions(itemSize, false, UIScreen.mainScreen().scale)
+                let imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height)
+                setImage!.drawInRect(imageRect)
+                imgSet.image = UIGraphicsGetImageFromCurrentImageContext()
+                UIGraphicsEndImageContext()
+            }
         }
     }
     

@@ -31,15 +31,6 @@
 {
     if (self = [super init])
     {
-//        NSManagedObjectContext *privateContext = [NSManagedObjectContext MR_context];
-//        [privateContext performBlock:^{
-//            
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                
-//                
-//            });
-//        }];
-        
         NSSortDescriptor *sorter1 = [[NSSortDescriptor alloc] initWithKey:@"card.name"  ascending:YES];
         NSSortDescriptor *sorter2 = [[NSSortDescriptor alloc] initWithKey:@"card.set.releaseDate"  ascending:NO];
         NSArray *sorters = @[sorter1, sorter2];
@@ -67,29 +58,35 @@
             }
             if (!card)
             {
-                card = [[Database sharedInstance] findCard:d[@"card"] inSet:d[@"set"]];
+                NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"name == %@", d[@"card"]];
+                NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"set.code == %@", d[@"set"]];
+                NSPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[pred1, pred2]];
+
+                card = [DTCard MR_findFirstWithPredicate:predicate];
             }
             
-            pack = @{@"card" : card,
-                     @"set" : card.set ? card.set.code : @"",
-                     @"multiverseID" : card.multiverseID,
-                     @"qty" : d[@"qty"]};
-            
-            if ([card.type containsString:@"Land"] || [card.type hasPrefix:@"Land"])
+            if (card)
             {
-                [self.arrLands addObject:pack];
-                totalCards += [d[@"qty"] intValue];
-            }
-            else if ([card.type containsString:@"Creature"] || [card.type hasPrefix:@"Creature"] ||
-                     [card.type containsString:@"Summon"] || [card.type hasPrefix:@"Summon"])
-            {
-                [self.arrCreatures addObject:pack];
-                totalCards += [d[@"qty"] intValue];
-            }
-            else
-            {
-                [self.arrOtherSpells addObject:pack];
-                totalCards += [d[@"qty"] intValue];
+                pack = @{@"card" : card,
+                         @"set" : card.set ? card.set.code : @"",
+                         @"multiverseID" : card.multiverseID,
+                         @"qty" : d[@"qty"]};
+                
+                if ([card.sectionType isEqualToString:@"Land"])
+                {
+                    [self.arrLands addObject:pack];
+                    totalCards += [d[@"qty"] intValue];
+                }
+                else if ([card.sectionType isEqualToString:@"Creature"])
+                {
+                    [self.arrCreatures addObject:pack];
+                    totalCards += [d[@"qty"] intValue];
+                }
+                else
+                {
+                    [self.arrOtherSpells addObject:pack];
+                    totalCards += [d[@"qty"] intValue];
+                }
             }
         }
         
@@ -104,15 +101,22 @@
             }
             if (!card)
             {
-                card = [[Database sharedInstance] findCard:d[@"card"] inSet:d[@"set"]];
+                NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"name == %@", d[@"card"]];
+                NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"set.code == %@", d[@"set"]];
+                NSPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[pred1, pred2]];
+                
+                card = [DTCard MR_findFirstWithPredicate:predicate];
             }
             
-            pack = @{@"card" : card,
-                     @"set" : card.set ? card.set.code : @"",
-                     @"multiverseID" : card.multiverseID,
-                     @"qty" : d[@"qty"]};
-            
-            [self.arrSideboard addObject:pack];
+            if (card)
+            {
+                pack = @{@"card" : card,
+                         @"set" : card.set ? card.set.code : @"",
+                         @"multiverseID" : card.multiverseID,
+                         @"qty" : d[@"qty"]};
+                
+                [self.arrSideboard addObject:pack];
+            }
         }
         
         self.arrLands = [[NSMutableArray alloc] initWithArray:[self.arrLands sortedArrayUsingDescriptors:sorters]];
@@ -182,13 +186,11 @@
     {
         case MainBoard:
         {
-            if ([card.type containsString:@"Land"] || [card.type hasPrefix:@"Land"])
-                
+            if ([card.sectionType isEqualToString:@"Land"])
             {
                 arrBoard = self.arrLands;
             }
-            else if ([card.type containsString:@"Creature"] || [card.type hasPrefix:@"Creature"] ||
-                     [card.type containsString:@"Summon"] || [card.type hasPrefix:@"Summon"])
+            else if ([card.sectionType isEqualToString:@"Creature"])
             {
                 arrBoard = self.arrCreatures;
             }
@@ -248,12 +250,11 @@
     {
         case MainBoard:
         {
-            if ([card.type containsString:@"Land"] || [card.type hasPrefix:@"Land"])
+            if ([card.sectionType isEqualToString:@"Land"])
             {
                 arrBoard = self.arrLands;
             }
-            else if ([card.type containsString:@"Creature"] || [card.type hasPrefix:@"Creature"] ||
-                     [card.type containsString:@"Summon"] || [card.type hasPrefix:@"Summon"])
+            else if ([card.sectionType isEqualToString:@"Creature"])
             {
                 arrBoard = self.arrCreatures;
             }
@@ -412,7 +413,7 @@
             
             for (NSString *type in CARD_TYPES)
             {
-                if ([card.type containsString:type] || [card.type hasPrefix:type])
+                if ([card.sectionType isEqualToString:type])
                 {
                     NSDictionary *object;
                     
@@ -722,6 +723,5 @@
     
     return array;
 }
-
 
 @end

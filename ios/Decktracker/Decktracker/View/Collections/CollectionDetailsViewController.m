@@ -244,22 +244,50 @@
     
     if (card)
     {
-        AddCardViewController *view = [[AddCardViewController alloc] init];
+        UIViewController *view;
         
-        view.arrDecks = [[NSMutableArray alloc] init];
-        for (NSString *file in [[FileManager sharedInstance] listFilesAtPath:@"/Decks"
-                                                              fromFileSystem:FileSystemLocal])
+        NSDictionary *dict = [[Database sharedInstance] inAppSettingsForSet:card.set];
+        if (dict)
         {
-            [view.arrDecks addObject:[file stringByDeletingPathExtension]];
+            InAppPurchaseViewController *view2 = [[InAppPurchaseViewController alloc] init];
+            
+            view2.productID = dict[@"In-App Product ID"];
+            view2.delegate = self;
+            view2.productDetails = @{@"name" : dict[@"In-App Display Name"],
+                                     @"description": dict[@"In-App Description"]};
+            view = view2;
         }
-
-        view.arrCollections = [[NSMutableArray alloc] initWithArray:@[self.dictCollection[@"name"]]];
-        [view setCard:card];
-        view.createButtonVisible = NO;
-        view.showCardButtonVisible = YES;
-        view.segmentedControlIndex = 1;
-        [self.navigationController pushViewController:view animated:YES];
+        else
+        {
+            AddCardViewController *view2 = [[AddCardViewController alloc] init];
+            
+            view2.arrDecks = [[NSMutableArray alloc] init];
+            for (NSString *file in [[FileManager sharedInstance] listFilesAtPath:@"/Decks"
+                                                                  fromFileSystem:FileSystemLocal])
+            {
+                [view2.arrDecks addObject:[file stringByDeletingPathExtension]];
+            }
+            
+            view2.arrCollections = [[NSMutableArray alloc] initWithArray:@[self.dictCollection[@"name"]]];
+            [view2 setCard:card];
+            view2.createButtonVisible = NO;
+            view2.showCardButtonVisible = YES;
+            view2.segmentedControlIndex = 1;
+            view = view2;
+        }
+        
+        if (view)
+        {
+            [self.navigationController pushViewController:view animated:YES];
+        }
     }
+}
+
+#pragma mark - InAppPurchaseViewControllerDelegate
+-(void) productPurchaseSucceeded:(NSString*) productID
+{
+    [[Database sharedInstance] loadInAppSets];
+    [self.tblCards reloadData];
 }
 
 @end

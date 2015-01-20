@@ -156,7 +156,6 @@
 		8CD627A61A6BE7E100382143 /* LifeCounterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD627A51A6BE7E100382143 /* LifeCounterViewController.swift */; };
 		8CD627A81A6BEDE000382143 /* In-App Sets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8CD627A71A6BEDE000382143 /* In-App Sets.plist */; };
 		8CD705981A540E3600CF8425 /* BarGraphViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD705971A540E3600CF8425 /* BarGraphViewController.swift */; };
-		8CDEC7951A383784004053CF /* SpecialListsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CDEC7941A383784004053CF /* SpecialListsViewController.swift */; };
 		8CE7F2BE19C0A2D0004FBEA5 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CE7F2BD19C0A2D0004FBEA5 /* StoreKit.framework */; };
 		8CE971C61A126C0000D4386B /* BannerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE971C41A126C0000D4386B /* BannerCollectionViewCell.swift */; };
 		8CE971C71A126C0000D4386B /* BannerCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CE971C51A126C0000D4386B /* BannerCollectionViewCell.xib */; };
@@ -433,7 +432,6 @@
 		8CD627A51A6BE7E100382143 /* LifeCounterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LifeCounterViewController.swift; sourceTree = "<group>"; };
 		8CD627A71A6BEDE000382143 /* In-App Sets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "In-App Sets.plist"; sourceTree = "<group>"; };
 		8CD705971A540E3600CF8425 /* BarGraphViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarGraphViewController.swift; sourceTree = "<group>"; };
-		8CDEC7941A383784004053CF /* SpecialListsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecialListsViewController.swift; sourceTree = "<group>"; };
 		8CE7F2BD19C0A2D0004FBEA5 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		8CE7F2C219C0A2F7004FBEA5 /* Decktracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Decktracker.entitlements; sourceTree = "<group>"; };
 		8CE971C41A126C0000D4386B /* BannerCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BannerCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -541,7 +539,6 @@
 				8CC5BA6F1A1386A700F3BDD2 /* SetCollectionViewCell.swift */,
 				8CC5BA701A1386A700F3BDD2 /* SetCollectionViewCell.xib */,
 				8C71A0A11A28127A00162CA2 /* SetListViewController.swift */,
-				8CDEC7941A383784004053CF /* SpecialListsViewController.swift */,
 				8CC5BA661A13509600F3BDD2 /* ThumbCollectionViewCell.swift */,
 				8CC5BA671A13509600F3BDD2 /* ThumbCollectionViewCell.xib */,
 				8C1623181A1C816400ABC4DB /* TopListViewController.swift */,
@@ -1249,7 +1246,6 @@
 				8C2A97A619F5027B0094C97F /* ReaderThumbQueue.m in Sources */,
 				8C2A97A019F5027B0094C97F /* ReaderDocument.m in Sources */,
 				8C3857AA1A36E6D200E5B38C /* DTFormat.m in Sources */,
-				8CDEC7951A383784004053CF /* SpecialListsViewController.swift in Sources */,
 				8C38C0501A15F6E500FC3411 /* BannerScrollTableViewCell.swift in Sources */,
 				8C3857A71A36E6D200E5B38C /* DTBlock.m in Sources */,
 				8C3857981A36E6D200E5B38C /* DTCardType.m in Sources */,

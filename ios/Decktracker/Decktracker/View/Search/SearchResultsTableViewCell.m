@@ -134,6 +134,7 @@
     self.lblSet.text = [NSString stringWithFormat:@"%@ (%@)", card.set.name, card.rarity.name];
     _ratingControl.rating = [_card.rating doubleValue];
     
+    // crop image
     NSString *path = [[FileManager sharedInstance] cropPath:card];
     if (![[NSFileManager defaultManager] fileExistsAtPath:path])
     {
@@ -167,22 +168,30 @@
     }
     
     // set image
-    path = [[FileManager sharedInstance] cardSetPath:card];
-    if (path)
+    NSDictionary *dict = [[Database sharedInstance] inAppSettingsForSet:card.set];
+    if (dict)
     {
-        UIImage *setImage = [[UIImage alloc] initWithContentsOfFile:path];
-        self.imgSet.image = setImage;
-        // resize the image
-        CGSize itemSize = CGSizeMake(setImage.size.width/2, setImage.size.height/2);
-        UIGraphicsBeginImageContextWithOptions(itemSize, NO, UIScreen.mainScreen.scale);
-        CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
-        [setImage drawInRect:imageRect];
-        self.imgSet.image = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
+        self.imgSet.image = [UIImage imageNamed:@"locked.png"];
     }
     else
     {
-        self.imgSet.image = nil;
+        path = [[FileManager sharedInstance] cardSetPath:card];
+        if (path)
+        {
+            UIImage *setImage = [[UIImage alloc] initWithContentsOfFile:path];
+            self.imgSet.image = setImage;
+            // resize the image
+            CGSize itemSize = CGSizeMake(setImage.size.width/2, setImage.size.height/2);
+            UIGraphicsBeginImageContextWithOptions(itemSize, NO, UIScreen.mainScreen.scale);
+            CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
+            [setImage drawInRect:imageRect];
+            self.imgSet.image = UIGraphicsGetImageFromCurrentImageContext();
+            UIGraphicsEndImageContext();
+        }
+        else
+        {
+            self.imgSet.image = nil;
+        }
     }
     
     // draw the mana cost

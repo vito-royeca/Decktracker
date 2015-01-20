@@ -444,7 +444,7 @@
 
     if ([_arrFilters[indexPath.row] isEqualToString:@"Set"])
     {
-        arrFilterOptions = [DTSet MR_findAllSortedBy:@"name" ascending:YES];
+        arrFilterOptions = [DTSet MR_findAllSortedBy:@"name" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"NOT (code IN %@)", [[Database sharedInstance] inAppSetCodes]]];
     }
     else if ([_arrFilters[indexPath.row] isEqualToString:@"Rarity"])
     {
