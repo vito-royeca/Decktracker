@@ -63,7 +63,7 @@
 
     [[FileManager sharedInstance] downloadCardImage:_card immediately:YES];
     [[FileManager sharedInstance] downloadCropImage:_card immediately:YES];
-    
+
     if (self.fetchedResultsController)
     {
         NSArray *objects = self.fetchedResultsController.fetchedObjects;
@@ -1072,7 +1072,7 @@
 {
     if (buttonIndex == 1)
     {
-        [[Database sharedInstance] rateCard:self.card for:_newRating];
+        [[Database sharedInstance] rateCard:self.card withRating:_newRating];
     }
 }
 

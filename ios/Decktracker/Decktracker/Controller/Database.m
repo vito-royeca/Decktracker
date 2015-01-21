@@ -1003,7 +1003,7 @@ static Database *_me;
     [self processQueue];
 }
 
--(void) rateCard:(DTCard*) card for:(float) rating
+-(void) rateCard:(DTCard*) card withRating:(float) rating
 {
     void (^callbackRateCard)(PFObject *pfCard) = ^void(PFObject *pfCard) {
         PFObject *pfRating = [PFObject objectWithClassName:@"CardRating"];
@@ -1015,11 +1015,17 @@ static Database *_me;
             [query whereKey:@"card" equalTo:pfCard];
             
             [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+                NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
                 double totalRating = 0;
                 double averageRating = 0;
                 
                 for (PFObject *object in objects)
                 {
+                    DTCardRating *rating = [DTCardRating MR_createEntity];
+                    rating.rating = object[@"rating"];
+                    rating.card = card;
+                    [moc MR_saveToPersistentStoreAndWait];
+                    
                     totalRating += [object[@"rating"] doubleValue];
                 }
                 
@@ -1031,6 +1037,9 @@ static Database *_me;
                 
                 pfCard[@"rating"] = [NSNumber numberWithDouble:averageRating];
                 [pfCard saveEventually:^(BOOL success, NSError *error) {
+                    card.rating = [NSNumber numberWithDouble:averageRating];
+                    [moc MR_saveToPersistentStoreAndWait];
+                    
                     [[NSNotificationCenter defaultCenter] postNotificationName:kParseSyncDone
                                                                         object:nil
                                                                       userInfo:@{@"card": card}];
@@ -1042,6 +1051,51 @@ static Database *_me;
     };
     
     [_parseQueue addObject:@[card, callbackRateCard]];
+    [self processQueue];
+}
+
+-(void) parseSynch:(DTCard*) card
+{
+    void (^callbackParseSynchCard)(PFObject *pfCard) = ^void(PFObject *pfCard) {
+        PFQuery *query = [PFQuery queryWithClassName:@"CardRating"];
+        [query whereKey:@"card" equalTo:pfCard];
+        
+        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+//        [[query findObjectsInBackground] continueWithSuccessBlock:^id(BFTask *task) {
+            NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
+            double totalRating = 0;
+            double averageRating = 0;
+            
+            for (PFObject *object in objects)
+            {
+                DTCardRating *rating = [DTCardRating MR_createEntity];
+                rating.rating = object[@"rating"];
+                rating.card = card;
+                [moc MR_saveToPersistentStoreAndWait];
+                
+                totalRating += [object[@"rating"] doubleValue];
+            }
+            averageRating = totalRating/objects.count;
+            if (isnan(averageRating))
+            {
+                averageRating = 0;
+            }
+            
+            pfCard[@"rating"] = [NSNumber numberWithDouble:averageRating];
+            [pfCard saveEventually:^(BOOL success, NSError *error) {
+                card.rating = [NSNumber numberWithDouble:averageRating];
+                [moc MR_saveToPersistentStoreAndWait];
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:kParseSyncDone
+                                                                    object:nil
+                                                                  userInfo:@{@"card": card}];
+                _currentParseQueue = nil;
+                [self processQueue];
+            }];
+        }];
+    };
+    
+    [_parseQueue addObject:@[card, callbackParseSynchCard]];
     [self processQueue];
 }
 
