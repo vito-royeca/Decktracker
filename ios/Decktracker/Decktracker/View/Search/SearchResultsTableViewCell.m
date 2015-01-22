@@ -147,7 +147,6 @@
     [[FileManager sharedInstance] downloadCropImage:card immediately:NO];
     [[FileManager sharedInstance] downloadCardImage:card immediately:NO];
     [[Database sharedInstance] fetchTcgPlayerPriceForCard:card];
-    [[Database sharedInstance] parseSynch:card];
     
     // type image
     path = [[FileManager sharedInstance] cardTypePath:card];

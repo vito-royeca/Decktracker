@@ -854,6 +854,14 @@
     return YES;
 }
 
+//- (void)webViewDidFinishLoad:(UIWebView *)webView
+//{
+//    CGFloat height = webView.scrollView.contentSize.height;
+//    CGRect newFrame = CGRectMake(webView.frame.origin.x, webView.frame.origin.y, webView.frame.size.width, height);
+//    webView.frame = newFrame;
+//    webView.scrollView.scrollEnabled = NO;
+//}
+
 #pragma mark - MBProgressHUDDelegate methods
 - (void)hudWasHidden:(MBProgressHUD *)hud
 {
