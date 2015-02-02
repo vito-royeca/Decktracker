@@ -87,9 +87,9 @@
         self.navigationItem.title = @"1 of 1";
     }
 
-//#ifndef DEBUG
+#ifndef DEBUG
     [[Database sharedInstance] incrementCardView:_card];
-//#endif
+#endif
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil

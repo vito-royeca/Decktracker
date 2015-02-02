@@ -72,16 +72,17 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         NSNotificationCenter.defaultCenter().removeObserver(self, name:kFetchTopViewedDone,  object:nil)
     }
     
-    /*func specialButtonTapped() {
-        let view = SpecialListsViewController()
-        
-        self.navigationController?.pushViewController(view, animated:false)
-    }*/
-    
     func loadData() {
         arrayData = [[String: [AnyObject]]]()
         
-        arrayData!.append(["Random": Database.sharedInstance().fetchRandomCards(6) as [DTCard]])
+        let arrRandom = Database.sharedInstance().fetchRandomCards(6) as [DTCard]
+        var array:[DTCard] = Array()
+        array.append(arrRandom.last!)
+        for card in arrRandom {
+            array.append(card)
+        }
+        array.append(arrRandom.first!)
+        arrayData!.append(["Random": array])
         arrayData!.append(["Top Rated": [DTCard]()])
         arrayData!.append(["Top Viewed": [DTCard]()])
         arrayData!.append(["Sets": Database.sharedInstance().fetchSets(10) as [DTSet]])
@@ -158,9 +159,6 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         var cell:UITableViewCell?
         
         if indexPath.row == 0 {
-            let row = arrayData![indexPath.row]
-            let key = Array(row.keys)[0]
-            
             var cell2 = tableView.dequeueReusableCellWithIdentifier(kBannerCellIdentifier) as BannerScrollTableViewCell?
             
             if cell2 == nil {
@@ -336,5 +334,16 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         arrayData!.removeLast()
         arrayData!.append(["Sets": Database.sharedInstance().fetchSets(10) as [DTSet]])
         tblFeatured!.reloadData()
+    }
+    
+    // UIScrollViewDelegate
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        if scrollView.tag == 0 {
+            let row = arrayData![scrollView.tag]
+            let key = Array(row.keys)[0]
+            let dict = row[key]! as Array<DTCard>
+            bannerCell?.continueScrolling(dict)
+            
+        }
     }
 }
