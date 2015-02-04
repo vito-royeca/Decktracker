@@ -12,22 +12,26 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
 
     let kSearchResultsIdentifier = "kSearchResultsIdentifier"
     
+    var viewButton:UIBarButtonItem?
     var tblList:UITableView?
+    var colList:UICollectionView?
+    var viewMode:CardViewMode?
     var arrayData:[DTCard]?
+    var viewLoadedOnce = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        let height = view.frame.size.height - tabBarController!.tabBar.frame.size.height
-        let frame = CGRect(x:0, y:0, width:view.frame.width, height:height)
-        tblList = UITableView(frame: frame, style: UITableViewStyle.Plain)
-        tblList!.registerNib(UINib(nibName: "SearchResultsTableViewCell", bundle: nil), forCellReuseIdentifier: kSearchResultsIdentifier)
-        tblList!.delegate = self
-        tblList!.dataSource = self
+        viewButton = UIBarButtonItem(image: UIImage(named: "insert_table.png"), style: UIBarButtonItemStyle.Plain, target: self, action: "viewButtonTapped")
         
-        view.addSubview(tblList!)
-        loadData()
+        navigationItem.rightBarButtonItem = viewButton
+        
+        self.viewLoadedOnce = true
+        self.viewMode = CardViewMode.ByList
+        self.showTableView()
+        self.loadData()
+        self.viewLoadedOnce = false
         
 #if !DEBUG
         // send the screen to Google Analytics
@@ -42,6 +46,60 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name:kFetchTopRatedDone,  object:nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name:kFetchTopViewedDone,  object:nil)
+    }
+    
+    func hidesBottomBarWhenPushed() -> Bool {
+        return true
+    }
+    
+    func viewButtonTapped() {
+        let viewOptions = [CardViewMode.ByList.description,
+            CardViewMode.ByGrid2x2.description,
+            CardViewMode.ByGrid3x3.description]
+        var initialSelection = 0
+        
+        switch self.viewMode! {
+        case .ByList:
+            initialSelection = 0
+        case .ByGrid2x2:
+            initialSelection = 1
+        case .ByGrid3x3:
+            initialSelection = 2
+        default:
+            break
+        }
+        
+        let doneBlock = { (picker: ActionSheetStringPicker?, selectedIndex: NSInteger, selectedValue: AnyObject?) -> Void in
+            
+            switch selectedIndex {
+            case 0:
+                self.viewMode = .ByList
+                self.showTableView()
+            case 1:
+                self.viewMode = .ByGrid2x2
+                self.showGridView()
+            case 2:
+                self.viewMode = .ByGrid3x3
+                self.showGridView()
+            default:
+                break
+            }
+            
+            self.loadData()
+        }
+        
+        ActionSheetStringPicker.showPickerWithTitle("View As",
+            rows: viewOptions,
+            initialSelection: initialSelection,
+            doneBlock: doneBlock,
+            cancelBlock: nil,
+            origin: view)
+    }
+    
     func loadData() {
         NSNotificationCenter.defaultCenter().removeObserver(self, name:kFetchTopRatedDone,  object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self,
@@ -52,10 +110,45 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
             selector:"updateData:",  name:kFetchTopViewedDone, object:nil)
     }
     
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name:kFetchTopRatedDone,  object:nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name:kFetchTopViewedDone,  object:nil)
+    func showTableView() {
+        let y = viewLoadedOnce ? 0 : UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height
+        let height = view.frame.size.height - y
+        var frame = CGRect(x:0, y:y, width:view.frame.width, height:height)
+        
+        tblList = UITableView(frame: frame, style: UITableViewStyle.Plain)
+        tblList!.delegate = self
+        tblList!.dataSource = self
+        tblList!.registerNib(UINib(nibName: "SearchResultsTableViewCell", bundle: nil), forCellReuseIdentifier: kSearchResultsIdentifier)
+        
+        if colList != nil {
+            colList!.removeFromSuperview()
+        }
+        view.addSubview(tblList!)
+    }
+    
+    func showGridView() {
+        let y = viewLoadedOnce ? 0 : UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height
+        let height = view.frame.size.height - y
+        let divisor:CGFloat = viewMode == CardViewMode.ByGrid2x2 ? 2 : 3
+        var frame = CGRect(x:0, y:y, width:view.frame.width, height:height)
+        
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+        layout.itemSize = CGSize(width: frame.width/divisor, height: frame.height/divisor)
+        
+        colList = UICollectionView(frame: frame, collectionViewLayout: layout)
+//        colList!.dataSource = self
+//        colList!.delegate = self
+        colList!.registerClass(CardListCollectionViewCell.self, forCellWithReuseIdentifier: "Default")
+        colList!.backgroundColor = UIColor.lightGrayColor()
+        
+        if tblList != nil {
+            tblList!.removeFromSuperview()
+        }
+        view.addSubview(colList!)
     }
     
     // UITableViewDataSource

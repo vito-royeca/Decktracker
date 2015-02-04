@@ -7,6 +7,7 @@
 #import <CoreData/CoreData.h>
 #import "CoreData+MagicalRecord.h"
 #import "CorePlot-CocoaTouch.h"
+#import "CSStickyHeaderFlowLayout.h"
 #import "ReaderViewController.h"
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"

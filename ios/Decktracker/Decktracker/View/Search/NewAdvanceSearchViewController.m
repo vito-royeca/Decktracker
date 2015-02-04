@@ -77,7 +77,7 @@
     CGFloat dX = 0;
     CGFloat dY = 0;
     CGFloat dWidth = self.view.frame.size.width;
-    CGFloat dHeight = self.view.frame.size.height-self.tabBarController.tabBar.frame.size.height;
+    CGFloat dHeight = self.view.frame.size.height;//-self.tabBarController.tabBar.frame.size.height;
     
     self.tblView = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)
                                                 style:UITableViewStylePlain];
@@ -139,6 +139,11 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (BOOL) hidesBottomBarWhenPushed
+{
+    return YES;
 }
 
 -(void) btnPlayTapped:(id) sender

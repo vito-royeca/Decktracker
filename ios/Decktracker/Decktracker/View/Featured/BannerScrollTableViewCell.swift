@@ -78,14 +78,11 @@ class BannerScrollTableViewCell: UITableViewCell {
         var newIndexPath:NSIndexPath?
         
         if (collectionView.contentOffset.x == offset) {
-            
             newIndexPath = NSIndexPath(forItem: 1, inSection: 0)
             
         } else if (collectionView.contentOffset.x == 0)  {
-            
             // user is scrolling to the left from the first item to the fake 'item N'.
             // reposition offset to show the 'real' item N at the right end end of the collection view
-            
             newIndexPath = NSIndexPath(forItem: data.count-2, inSection: 0)
         }
         

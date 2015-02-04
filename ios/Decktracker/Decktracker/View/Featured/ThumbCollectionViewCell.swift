@@ -16,6 +16,7 @@ class ThumbCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var imgSet: UIImageView!
     
     var card:DTCard?
+    var currentCropPath:String?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -36,12 +37,9 @@ class ThumbCollectionViewCell: UICollectionViewCell {
         lblCardName.text = self.card?.name
         lblSetName.text = self.card?.set.name
         
-        var path = FileManager.sharedInstance().cropPath(self.card)
-        if !NSFileManager.defaultManager().fileExistsAtPath(path) {
-            imgCrop.image = UIImage(named:"blank.png")
-        } else {
-            imgCrop.image = UIImage(contentsOfFile: path)
-        }
+        currentCropPath = FileManager.sharedInstance().cropPath(self.card)
+        imgCrop.image = UIImage(contentsOfFile: currentCropPath!)
+        
         FileManager.sharedInstance().downloadCropImage(self.card, immediately:false)
         FileManager.sharedInstance().downloadCardImage(self.card, immediately:false)
         
@@ -51,7 +49,7 @@ class ThumbCollectionViewCell: UICollectionViewCell {
             imgSet.image = UIImage(named: "locked.png")
             
         } else {
-            path = FileManager.sharedInstance().cardSetPath(card)
+            let path = FileManager.sharedInstance().cardSetPath(card)
             var setImage = UIImage(contentsOfFile: path)
             imgSet.image = setImage
             // resize the image
@@ -71,9 +69,20 @@ class ThumbCollectionViewCell: UICollectionViewCell {
         let card = dict?["card"] as DTCard
         
         if (self.card == card) {
-            let hiResImage = UIImage(contentsOfFile:FileManager.sharedInstance().cropPath(card))
+            let path = FileManager.sharedInstance().cropPath(card)
             
-            imgCrop.image = hiResImage
+            if path != currentCropPath {
+                let hiResImage = UIImage(contentsOfFile: path)
+                
+                UIView.transitionWithView(imgCrop!,
+                    duration:2,
+                    options: UIViewAnimationOptions.TransitionFlipFromLeft,
+                    animations: { self.imgCrop!.image = hiResImage },
+                    completion: nil)
+            }
+            
+            NSNotificationCenter.defaultCenter().removeObserver(self,
+                name:kCropDownloadCompleted,  object:nil)
         }
     }
 }

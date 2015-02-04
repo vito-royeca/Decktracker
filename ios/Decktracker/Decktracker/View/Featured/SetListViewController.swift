@@ -39,10 +39,10 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        let height = view.frame.size.height - tabBarController!.tabBar.frame.size.height
+        let height = view.frame.size.height
         var frame = CGRect(x:0, y:0, width:view.frame.width, height:height)
         
-        sortButton = UIBarButtonItem(title: "Sort", style: UIBarButtonItemStyle.Plain, target: self, action: "sortButtonTapped")
+        sortButton = UIBarButtonItem(image: UIImage(named: "generic_sorting.png"), style: UIBarButtonItemStyle.Plain, target: self, action: "sortButtonTapped")
         
         tblSets = UITableView(frame: frame, style: UITableViewStyle.Plain)
         tblSets!.delegate = self
@@ -63,6 +63,10 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
 #endif
     }
     
+    func hidesBottomBarWhenPushed() -> Bool {
+        return true
+    }
+
     func sortButtonTapped() {
         var sortOptions:[String]?
         var initialSelection = 0

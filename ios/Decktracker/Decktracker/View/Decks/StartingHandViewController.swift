@@ -8,7 +8,19 @@
 
 import UIKit
 
-enum ViewMode: Printable  {
+enum StartingHandViewMode: Printable  {
+    case ByList
+    case ByGrid
+    
+    var description : String {
+        switch self {
+        case ByList: return "List"
+        case ByGrid: return "Grid"
+        }
+    }
+}
+
+enum StartingHandShowMode: Printable  {
     case ByHand
     case ByGraveyard
     case ByLibrary
@@ -28,12 +40,14 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
     var initialHand = 7
 
     var viewButton:UIBarButtonItem?
+    var showButton:UIBarButtonItem?
     var newButton:UIBarButtonItem?
     var mulliganButton:UIBarButtonItem?
     var drawButton:UIBarButtonItem?
     var tblHand:UITableView?
     var bottomToolbar:UIToolbar?
-    var viewMode:ViewMode?
+    var viewMode:StartingHandViewMode?
+    var showMode:StartingHandShowMode?
     var deck:Deck?
     var arrayDeck:[DTCard]?
     var arrayHand:[DTCard]?
@@ -51,7 +65,9 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         var dHeight = self.view.frame.size.height-44
         var frame:CGRect?
         
-        viewButton = UIBarButtonItem(title: "View", style: UIBarButtonItemStyle.Plain, target: self, action: "viewButtonTapped")
+        viewButton = UIBarButtonItem(image: UIImage(named: "insert_table.png"), style: UIBarButtonItemStyle.Plain, target: self, action: "viewButtonTapped")
+        showButton = UIBarButtonItem(image: UIImage(named: "view_file.png"), style: UIBarButtonItemStyle.Plain, target: self, action: "showButtonTapped")
+        
         newButton = UIBarButtonItem(title: "New Hand", style: UIBarButtonItemStyle.Plain, target: self, action: "newButtonTapped")
         mulliganButton = UIBarButtonItem(title: "Mulligan", style: UIBarButtonItemStyle.Plain, target: self, action: "mulliganButtonTapped")
         drawButton = UIBarButtonItem(title: "Draw", style: UIBarButtonItemStyle.Plain, target: self, action: "drawButtonTapped")
@@ -76,7 +92,8 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         view.addSubview(bottomToolbar!)
         
         self.navigationItem.title = "Starting Hand"
-        self.navigationItem.rightBarButtonItem = viewButton
+        self.navigationItem.rightBarButtonItems = [showButton!, viewButton!]
+        self.viewMode = StartingHandViewMode.ByList
         self.newButtonTapped()
         
 #if !DEBUG
@@ -98,9 +115,45 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     func viewButtonTapped() {
+        let viewOptions = [StartingHandViewMode.ByList.description, StartingHandViewMode.ByGrid.description]
         var initialSelection = 0
         
         switch self.viewMode! {
+        case .ByList:
+            initialSelection = 0
+        case .ByGrid:
+            initialSelection = 1
+        default:
+            break
+        }
+        
+        let doneBlock = { (picker: ActionSheetStringPicker?, selectedIndex: NSInteger, selectedValue: AnyObject?) -> Void in
+            
+            switch selectedIndex {
+            case 0:
+                self.viewMode = .ByList
+            case 1:
+                self.viewMode = .ByGrid
+            default:
+                break
+            }
+            
+            //            self.loadData()
+            //            self.tblSets!.reloadData()
+        }
+        
+        ActionSheetStringPicker.showPickerWithTitle("View As",
+            rows: viewOptions,
+            initialSelection: initialSelection,
+            doneBlock: doneBlock,
+            cancelBlock: nil,
+            origin: view)
+    }
+    
+    func showButtonTapped() {
+        var initialSelection = 0
+        
+        switch self.showMode! {
             case .ByHand:
                 initialSelection = 0
             case .ByGraveyard:
@@ -115,11 +168,11 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
             
             switch selectedIndex {
             case 0:
-                self.viewMode = .ByHand
+                self.showMode = .ByHand
             case 1:
-                self.viewMode = .ByGraveyard
+                self.showMode = .ByGraveyard
             case 2:
-                self.viewMode = .ByLibrary
+                self.showMode = .ByLibrary
             default:
                 break
             }
@@ -128,8 +181,8 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
             self.tblHand!.reloadData()
         }
         
-        ActionSheetStringPicker.showPickerWithTitle("View Cards In",
-            rows: [ViewMode.ByHand.description, ViewMode.ByGraveyard.description, ViewMode.ByLibrary.description],
+        ActionSheetStringPicker.showPickerWithTitle("Show Cards In",
+            rows: [StartingHandShowMode.ByHand.description, StartingHandShowMode.ByGraveyard.description, StartingHandShowMode.ByLibrary.description],
             initialSelection: initialSelection,
             doneBlock: doneBlock,
             cancelBlock: nil,
@@ -148,7 +201,7 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         self.shuffleLibrary()
         self.drawCards(initialHand)
 
-        self.viewMode = ViewMode.ByHand
+        self.showMode = StartingHandShowMode.ByHand
         self.tblHand!.reloadData()
     }
     
@@ -173,7 +226,7 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         self.shuffleLibrary()
         self.drawCards(initialHand)
         
-        self.viewMode = ViewMode.ByHand
+        self.showMode = StartingHandShowMode.ByHand
         self.tblHand!.reloadData()
     }
     
@@ -182,7 +235,7 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
             self.drawButton!.enabled = false
         }
         self.drawCards(1)
-        self.viewMode = ViewMode.ByHand
+        self.showMode = StartingHandShowMode.ByHand
         self.tblHand!.reloadData()
     }
     
@@ -262,7 +315,7 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         var count = 0
         
-        switch self.viewMode! {
+        switch self.showMode! {
             case .ByHand:
                 count = self.arrayHand!.count
             
@@ -273,7 +326,7 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
                 count = self.arrayLibrary!.count
         }
         
-        return "Cards In \(self.viewMode!.description): \(count)"
+        return "Cards In \(self.showMode!.description): \(count)"
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -281,7 +334,7 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch self.viewMode! {
+        switch self.showMode! {
             case .ByHand:
                 return self.arrayHand!.count
             
@@ -297,7 +350,7 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         var cell:UITableViewCell?
         var card:DTCard?
         
-        switch self.viewMode! {
+        switch self.showMode! {
             case .ByHand:
                 if (self.arrayHand!.count > 0) {
                     card = self.arrayHand![indexPath.row]
@@ -328,7 +381,7 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool{
-        return self.viewMode == .ByHand
+        return self.showMode == .ByHand
     }
     
     func tableView(tableView: UITableView, titleForDeleteConfirmationButtonForRowAtIndexPath indexPath: NSIndexPath) -> String! {

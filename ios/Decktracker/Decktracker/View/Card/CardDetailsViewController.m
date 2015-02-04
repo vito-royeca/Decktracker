@@ -41,6 +41,7 @@
     MHFacebookImageViewer *_fbImageViewer;
     UIView *_viewSegmented;
     float _newRating;
+    NSString *_currentCardImage;
 }
 
 @synthesize card = _card;
@@ -60,7 +61,8 @@
 -(void) setCard:(DTCard *)card
 {
     _card = card;
-
+    _currentCardImage = [[FileManager sharedInstance] cardPath:card];
+    
     [[FileManager sharedInstance] downloadCardImage:_card immediately:YES];
     [[FileManager sharedInstance] downloadCropImage:_card immediately:YES];
 
@@ -369,10 +371,24 @@
     if (self.card == card)
     {
         NSString *path = [[FileManager sharedInstance] cardPath:card];
-        UIImage *hiResImage = [UIImage imageWithContentsOfFile:path];
         
-        self.cardImage.image = hiResImage;
-        [[_fbImageViewer tableView] reloadData];
+        if (![path isEqualToString:_currentCardImage])
+        {
+            UIImage *hiResImage = [UIImage imageWithContentsOfFile:path];
+        
+            [UIView transitionWithView:self.cardImage
+                              duration:2.0f
+                               options:UIViewAnimationOptionTransitionFlipFromLeft
+                            animations:^{
+                                self.cardImage.image = hiResImage;
+                            } completion:nil];
+            
+            [[_fbImageViewer tableView] reloadData];
+        }
+        
+//        [[NSNotificationCenter defaultCenter] removeObserver:self
+//                                                        name:kCardDownloadCompleted
+//                                                      object:nil];
     }
 }
 

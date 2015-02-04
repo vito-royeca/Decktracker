@@ -14,9 +14,16 @@
 #import "IASKAppSettingsViewController.h"
 #import "InAppPurchaseViewController.h"
 
+typedef NS_ENUM(NSInteger, DeckDetailsViewMode)
+{
+    DeckDetailsViewModeList,
+    DeckDetailsViewModeGrid
+};
+
 @interface DeckDetailsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, IASKSettingsDelegate, InAppPurchaseViewControllerDelegate>
 
 @property(strong,nonatomic) UIBarButtonItem *btnBack;
+@property(strong,nonatomic) UIBarButtonItem *btnView;
 @property(strong,nonatomic) UISegmentedControl *segmentedControl;
 @property(strong,nonatomic) UITableView *tblCards;
 @property(strong,nonatomic) IASKAppSettingsViewController *cardDetailsViewController;

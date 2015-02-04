@@ -18,6 +18,7 @@ class BannerCollectionViewCell: UICollectionViewCell {
     var planeswalkerType:DTCardType?
     var _pre8thEditionFont:UIFont?
     var _8thEditionFont:UIFont?
+    var _currentCropPath:String?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -47,16 +48,16 @@ class BannerCollectionViewCell: UICollectionViewCell {
         }
         lblCardName.text = self.card?.name
         
-        var path = FileManager.sharedInstance().cropPath(self.card)
+        _currentCropPath = FileManager.sharedInstance().cropPath(self.card)
         var cropImage:UIImage?
         var averageColor:UIColor?
 
-        if path.hasSuffix("cropback.hq.jpg") {
+        if _currentCropPath!.hasSuffix("cropback.hq.jpg") {
             let cropBackPath = "\(NSBundle.mainBundle().bundlePath)/images/cardback-crop.hq.jpg"
             cropImage = UIImage(contentsOfFile: cropBackPath)
             imgCrop.contentMode = UIViewContentMode.ScaleToFill
         } else {
-            cropImage = UIImage(contentsOfFile: path)
+            cropImage = UIImage(contentsOfFile: _currentCropPath!)
             imgCrop.contentMode = UIViewContentMode.ScaleAspectFill
         }
         
@@ -68,7 +69,7 @@ class BannerCollectionViewCell: UICollectionViewCell {
         FileManager.sharedInstance().downloadCardImage(self.card, immediately:false)
         
         // set image
-        path = FileManager.sharedInstance().cardSetPath(card)
+        let path = FileManager.sharedInstance().cardSetPath(card)
         var setImage = UIImage(contentsOfFile: path)
         imgSet.image = setImage
         // resize the image
@@ -87,13 +88,28 @@ class BannerCollectionViewCell: UICollectionViewCell {
         let card = dict?["card"] as DTCard
     
         if (self.card == card) {
-            let hiResImage = UIImage(contentsOfFile:FileManager.sharedInstance().cropPath(card))
-    
-            imgCrop.contentMode = UIViewContentMode.ScaleAspectFill
-            imgCrop.image = hiResImage
-            let average = hiResImage!.averageColor()
-            lblCardName.shadowColor = hiResImage!.patternColor(average)
-            lblCardName.textColor = average
+            let path = FileManager.sharedInstance().cropPath(card)
+            
+
+            if path != _currentCropPath {
+                let hiResImage = UIImage(contentsOfFile: path)
+                
+                UIView.transitionWithView(imgCrop!,
+                    duration:2,
+                    options: UIViewAnimationOptions.TransitionFlipFromLeft,
+                    animations: {
+                        self.imgCrop.contentMode = UIViewContentMode.ScaleAspectFill
+                        self.imgCrop!.image = hiResImage
+                        
+                        let average = hiResImage!.averageColor()
+                        self.lblCardName.shadowColor = hiResImage!.patternColor(average)
+                        self.lblCardName.textColor = average
+                    },
+                    completion: nil)
+            }
+            
+            NSNotificationCenter.defaultCenter().removeObserver(self,
+                name:kCropDownloadCompleted,  object:nil)
         }
     }
 }

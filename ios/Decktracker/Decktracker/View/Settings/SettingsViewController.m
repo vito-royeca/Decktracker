@@ -41,7 +41,7 @@
     CGFloat dX = 0;
     CGFloat dY = [UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height;
     CGFloat dWidth = self.view.frame.size.width;
-    CGFloat dHeight = self.view.frame.size.height - dY - self.tabBarController.tabBar.frame.size.height;
+    CGFloat dHeight = self.view.frame.size.height - dY/* - self.tabBarController.tabBar.frame.size.height*/;
     
     self.appSettingsViewController = [[IASKAppSettingsViewController alloc] init];
     self.appSettingsViewController.delegate = self;
@@ -84,6 +84,11 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(BOOL)hidesBottomBarWhenPushed
+{
+    return YES;
 }
 
 -(NSSet*) hiddenKeys

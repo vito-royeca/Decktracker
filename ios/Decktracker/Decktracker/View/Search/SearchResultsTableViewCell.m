@@ -19,6 +19,7 @@
     UIFont *_pre8thEditionFont;
     UIFont *_8thEditionFont;
     EDStarRating *_ratingControl;
+    NSString *_currentCropPath;
 }
 
 @synthesize lblRank = _lblRank;
@@ -135,21 +136,15 @@
     _ratingControl.rating = [_card.rating doubleValue];
     
     // crop image
-    NSString *path = [[FileManager sharedInstance] cropPath:card];
-    if (![[NSFileManager defaultManager] fileExistsAtPath:path])
-    {
-        self.imgCrop.image = [UIImage imageNamed:@"blank.png"];
-    }
-    else
-    {
-        self.imgCrop.image = [[UIImage alloc] initWithContentsOfFile:path];
-    }
+    _currentCropPath = [[FileManager sharedInstance] cropPath:card];
+    self.imgCrop.image = [[UIImage alloc] initWithContentsOfFile:_currentCropPath];
+    
     [[FileManager sharedInstance] downloadCropImage:card immediately:NO];
     [[FileManager sharedInstance] downloadCardImage:card immediately:NO];
     [[Database sharedInstance] fetchTcgPlayerPriceForCard:card];
     
     // type image
-    path = [[FileManager sharedInstance] cardTypePath:card];
+    NSString *path = [[FileManager sharedInstance] cardTypePath:card];
     if (path)
     {
         UIImage *typeImage = [[UIImage alloc] initWithContentsOfFile:path];
@@ -347,7 +342,7 @@
 {
     self.lblRank.text = [NSString stringWithFormat:@"%d", rankValue];
     self.lblRank.layer.backgroundColor = [UIColor whiteColor].CGColor;
-    self.lblRank.layer.cornerRadius = self.lblBadge.bounds.size.height / 2;
+    self.lblRank.layer.cornerRadius = self.lblRank.bounds.size.height / 2;
 }
 
 -(void) updatePricing:(id) sender
@@ -357,6 +352,10 @@
     if (_card == card)
     {
         [self showCardPricing];
+        
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:kPriceUpdateDone
+                                                      object:nil];
     }
 }
 
@@ -395,9 +394,23 @@
     
     if (_card == card)
     {
-        UIImage *hiResImage = [UIImage imageWithContentsOfFile:[[FileManager sharedInstance] cropPath:card]];
+        NSString *path = [[FileManager sharedInstance] cropPath:card];
         
-        self.imgCrop.image = hiResImage;
+        if (![path isEqualToString:_currentCropPath])
+        {
+            UIImage *hiResImage = [UIImage imageWithContentsOfFile: path];
+            
+            [UIView transitionWithView:self.imgCrop
+                              duration:2.0f
+                               options:UIViewAnimationOptionTransitionFlipFromLeft
+                            animations:^{
+                                self.imgCrop.image = hiResImage;
+                            } completion:nil];
+        }
+        
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:kCropDownloadCompleted
+                                                      object:nil];
     }
 }
 
@@ -408,6 +421,10 @@
     if (_card == card)
     {
         _ratingControl.rating = [card.rating doubleValue];
+        
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:kParseSyncDone
+                                                      object:nil];
     }
 }
 

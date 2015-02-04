@@ -20,6 +20,7 @@
 #import "Decktracker-Swift.h"
 
 #import "IASKSpecifierValuesViewController.h"
+#import "ActionSheetStringPicker.h"
 
 #ifndef DEBUG
 #import "GAI.h"
@@ -32,9 +33,11 @@
     NSArray *_arrCardSections;
     NSArray *_arrToolSections;
     UIView *_viewSegmented;
+    DeckDetailsViewMode _viewMode;
 }
 
 @synthesize btnBack = _btnBack;
+@synthesize btnView = _btnView;
 @synthesize segmentedControl = _segmentedControl;
 @synthesize tblCards = _tblCards;
 @synthesize cardDetailsViewController = _cardDetailsViewController;
@@ -60,6 +63,7 @@
                          @{@"Statistics" : @[/*@"Mana Curve",*/ @"Card Type Distribution", @"Color Distribution"/*, @"Mana Source Distribution"*/]},
                          @{@"Draws" :@[@"Starting Hand"]},
                          /*@{@"Print" :@[@"Proxies", @"Deck Sheet"]}*/];
+    _viewMode = DeckDetailsViewModeList;
 
     CGFloat dX = 0;
     CGFloat dY = [UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height;
@@ -70,6 +74,10 @@
                                                     style:UIBarButtonItemStylePlain
                                                    target:self
                                                    action:@selector(backButtonTapped)];
+    self.btnView = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"insert_table.png"]
+                                                    style:UIBarButtonItemStylePlain
+                                                   target:self
+                                                   action:@selector(viewButtonTapped)];
     
     self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Cards", @"Details", @"Tools"]];
     self.segmentedControl.frame = CGRectMake(10, 7, dWidth-20, 30);
@@ -93,6 +101,7 @@
           forCellReuseIdentifier:@"Cell1"];
     
     self.navigationItem.leftBarButtonItem = self.btnBack;
+    self.navigationItem.rightBarButtonItem = self.btnView;
     [self.view addSubview:_viewSegmented];
     [self.view addSubview:self.tblCards];
 
@@ -141,6 +150,46 @@
     [self.navigationController popToRootViewControllerAnimated:NO];
 }
 
+-(void) viewButtonTapped
+{
+    NSArray *statusOptions = @[@"List", @"Grid"];
+    int initialSelection = 0;
+    
+    switch (_viewMode) {
+        case DeckDetailsViewModeList:
+        {
+            initialSelection = 0;
+            break;
+        }
+        case DeckDetailsViewModeGrid:
+        {
+            initialSelection = 1;
+            break;
+        }
+    }
+    
+    [ActionSheetStringPicker showPickerWithTitle:@"View As"
+                                            rows:statusOptions
+                                initialSelection:initialSelection
+                                       doneBlock:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
+                                           
+                                           
+                                           
+                                           switch (selectedIndex) {
+                                               case 0: {
+                                                   
+                                                   break;
+                                               }
+                                               case 1: {
+                                                   
+                                                   break;
+                                               }
+                                           }
+                                       }
+                                     cancelBlock:nil
+                                          origin:self.view];
+}
+
 -(void) segmentedControlChangedValue:(id) sender
 {
     CGFloat dX = 0;
@@ -161,6 +210,7 @@
             forCellReuseIdentifier:@"Cell1"];
         
         [self.view addSubview:self.tblCards];
+        self.navigationItem.rightBarButtonItem = self.btnView;
     }
     
     else if (self.segmentedControl.selectedSegmentIndex == 1)
@@ -178,6 +228,7 @@
         self.cardDetailsViewController.showCreditsFooter = NO;
         self.cardDetailsViewController.showDoneButton = NO;
         [self.view addSubview:self.cardDetailsViewController.view];
+        self.navigationItem.rightBarButtonItem = nil;
     }
     
     else if (self.segmentedControl.selectedSegmentIndex == 2)
@@ -190,6 +241,7 @@
         self.tblCards.delegate = self;
         self.tblCards.dataSource = self;
         [self.view addSubview:self.tblCards];
+        self.navigationItem.rightBarButtonItem = nil;
     }
 }
 

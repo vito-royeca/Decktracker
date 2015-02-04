@@ -8,6 +8,20 @@
 
 import UIKit
 
+enum CardViewMode: Printable  {
+    case ByList
+    case ByGrid2x2
+    case ByGrid3x3
+    
+    var description : String {
+        switch self {
+        case ByList: return "List"
+        case ByGrid2x2: return "Grid 2x2"
+        case ByGrid3x3: return "Grid 3x3"
+        }
+    }
+}
+
 enum CardSortMode: Printable  {
     case ByName
     case ByColor
@@ -26,19 +40,23 @@ enum CardSortMode: Printable  {
     }
 }
 
-class CardListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
+class CardListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, NSFetchedResultsControllerDelegate {
 
     let kSearchResultsIdentifier = "kSearchResultsIdentifier"
     
+    var viewButton:UIBarButtonItem?
     var sortButton:UIBarButtonItem?
     var tblSets:UITableView?
+    var colSets:UICollectionView?
     var sections:[String: [AnyObject]]?
     var sectionIndexTitles:[String]?
     var arrayData:[AnyObject]?
     var predicate:NSPredicate?
     var sorters:[NSSortDescriptor]?
+    var viewMode:CardViewMode?
     var sortMode:CardSortMode?
     var sectionName:String?
+    var viewLoadedOnce = false
     
     lazy var fetchedResultsController: NSFetchedResultsController = {
         var nsfrc = Database.sharedInstance().search(nil, withPredicate:self.predicate, withSortDescriptors: self.sorters, withSectionName:self.sectionName)
@@ -52,22 +70,18 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        let height = view.frame.size.height - tabBarController!.tabBar.frame.size.height
-        var frame = CGRect(x:0, y:0, width:view.frame.width, height:height)
+        viewButton = UIBarButtonItem(image: UIImage(named: "insert_table.png"), style: UIBarButtonItemStyle.Plain, target: self, action: "viewButtonTapped")
+        sortButton = UIBarButtonItem(image: UIImage(named: "generic_sorting.png"), style: UIBarButtonItemStyle.Plain, target: self, action: "sortButtonTapped")
         
-        sortButton = UIBarButtonItem(title: "Sort", style: UIBarButtonItemStyle.Plain, target: self, action: "sortButtonTapped")
+        navigationItem.rightBarButtonItems = [sortButton!, viewButton!]
         
-        tblSets = UITableView(frame: frame, style: UITableViewStyle.Plain)
-        tblSets!.delegate = self
-        tblSets!.dataSource = self
-        tblSets!.registerNib(UINib(nibName: "SearchResultsTableViewCell", bundle: nil), forCellReuseIdentifier: kSearchResultsIdentifier)
-        
-        navigationItem.rightBarButtonItem = sortButton
-        view.addSubview(tblSets!)
-        
+        self.viewLoadedOnce = true
+        self.viewMode = CardViewMode.ByList
         self.sortMode = CardSortMode.ByName
         self.sectionName = "sectionNameInitial"
+        self.showTableView()
         self.loadData()
+        self.viewLoadedOnce = false
         
 #if !DEBUG
         // send the screen to Google Analytics
@@ -75,6 +89,54 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
         tracker.set(kGAIScreenName, value: "Set: \(self.navigationItem.title!)")
         tracker.send(GAIDictionaryBuilder.createScreenView().build())
 #endif
+    }
+    
+    func hidesBottomBarWhenPushed() -> Bool {
+        return true
+    }
+
+    func viewButtonTapped() {
+        let viewOptions = [CardViewMode.ByList.description,
+                           CardViewMode.ByGrid2x2.description,
+                           CardViewMode.ByGrid3x3.description]
+        var initialSelection = 0
+        
+        switch self.viewMode! {
+        case .ByList:
+            initialSelection = 0
+        case .ByGrid2x2:
+            initialSelection = 1
+        case .ByGrid3x3:
+            initialSelection = 2
+        default:
+            break
+        }
+        
+        let doneBlock = { (picker: ActionSheetStringPicker?, selectedIndex: NSInteger, selectedValue: AnyObject?) -> Void in
+            
+            switch selectedIndex {
+            case 0:
+                self.viewMode = .ByList
+                self.showTableView()
+            case 1:
+                self.viewMode = .ByGrid2x2
+                self.showGridView()
+            case 2:
+                self.viewMode = .ByGrid3x3
+                self.showGridView()
+            default:
+                break
+            }
+            
+            self.loadData()
+        }
+        
+        ActionSheetStringPicker.showPickerWithTitle("View As",
+            rows: viewOptions,
+            initialSelection: initialSelection,
+            doneBlock: doneBlock,
+            cancelBlock: nil,
+            origin: view)
     }
     
     func sortButtonTapped() {
@@ -194,6 +256,53 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
         if tblSets != nil {
             tblSets!.reloadData()
         }
+        
+        if (colSets != nil) {
+            colSets!.reloadData()
+        }
+    }
+    
+    func showTableView() {
+        let y = viewLoadedOnce ? 0 : UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height
+        let height = view.frame.size.height - y
+        var frame = CGRect(x:0, y:y, width:view.frame.width, height:height)
+        
+        tblSets = UITableView(frame: frame, style: UITableViewStyle.Plain)
+        tblSets!.delegate = self
+        tblSets!.dataSource = self
+        tblSets!.registerNib(UINib(nibName: "SearchResultsTableViewCell", bundle: nil), forCellReuseIdentifier: kSearchResultsIdentifier)
+
+        if colSets != nil {
+            colSets!.removeFromSuperview()
+        }
+        view.addSubview(tblSets!)
+    }
+    
+    func showGridView() {
+        let y = viewLoadedOnce ? 0 : UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height
+        let height = view.frame.size.height - y
+        let divisor:CGFloat = viewMode == CardViewMode.ByGrid2x2 ? 2 : 3
+        var frame = CGRect(x:0, y:y, width:view.frame.width, height:height)
+        
+        
+        let layout = CSStickyHeaderFlowLayout()
+        layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+        layout.headerReferenceSize = CGSize(width:view.frame.width, height: 22)
+        layout.itemSize = CGSize(width: frame.width/divisor, height: frame.height/divisor)
+        
+        colSets = UICollectionView(frame: frame, collectionViewLayout: layout)
+        colSets!.dataSource = self
+        colSets!.delegate = self
+        colSets!.registerClass(CardListCollectionViewCell.self, forCellWithReuseIdentifier: "Card")
+        colSets!.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier:"Header")
+        colSets!.backgroundColor = UIColor.lightGrayColor()
+        
+        if tblSets != nil {
+            tblSets!.removeFromSuperview()
+        }
+        view.addSubview(colSets!)
     }
     
     override func didReceiveMemoryWarning() {
@@ -283,9 +392,77 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
         view.fetchedResultsController = fetchedResultsController
         view.card = card
         
-        self.navigationController?.pushViewController(view, animated:false)
+        self.navigationController?.pushViewController(view, animated:true)
     }
     
+    // UICollectionViewDataSource
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        let sectionInfos = fetchedResultsController.sections as [NSFetchedResultsSectionInfo]?
+        return sectionInfos!.count
+    }
+    
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        let sectionInfos = fetchedResultsController.sections as [NSFetchedResultsSectionInfo]?
+        let sectionInfo = sectionInfos![section]
+        return sectionInfo.numberOfObjects
+    }
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let card = fetchedResultsController.objectAtIndexPath(indexPath) as DTCard
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Card", forIndexPath: indexPath) as CardListCollectionViewCell
+
+        cell.displayCard(card)
+        return cell
+    }
+    
+    func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+        
+        var view:UICollectionReusableView?
+        
+        if kind == UICollectionElementKindSectionHeader {
+            if (self.sortMode == CardSortMode.ByPrice) {
+                
+            } else {
+                let sectionInfos = fetchedResultsController.sections as [NSFetchedResultsSectionInfo]
+                let sectionInfo = sectionInfos[indexPath.section]
+                let cardsString = sectionInfo.numberOfObjects > 1 ? "cards" : "card"
+                let name = sectionInfo.name
+                let text = "  \(name!) (\(sectionInfo.numberOfObjects) \(cardsString))"
+                
+                let label = UILabel(frame: CGRect(x:0, y:0, width:self.view.frame.size.width, height:22))
+                label.text = text
+                label.backgroundColor = UIColor.whiteColor()
+                label.font = UIFont.boldSystemFontOfSize(18)
+                
+                view = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier:"Header", forIndexPath:indexPath) as? UICollectionReusableView
+                
+                if view == nil {
+                    view = UICollectionReusableView(frame: CGRect(x:0, y:0, width:self.view.frame.size.width, height:22))
+                }
+                view!.addSubview(label)
+            }
+        }
+        
+        return view!
+    }
+
+    // UICollectionViewDelegate
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        let card = fetchedResultsController.objectAtIndexPath(indexPath) as DTCard
+        
+        let dict = Database.sharedInstance().inAppSettingsForSet(card.set)
+        if dict != nil {
+            return
+        }
+        
+        let view = CardDetailsViewController()
+        view.addButtonVisible = true
+        view.fetchedResultsController = fetchedResultsController
+        view.card = card
+        
+        self.navigationController?.pushViewController(view, animated:true)
+    }
+
     // NSFetchedResultsControllerDelegate
     func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
         //        println("\(__LINE__) \(__PRETTY_FUNCTION__) \(__FUNCTION__)")
