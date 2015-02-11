@@ -1059,7 +1059,7 @@
             }
         }
         
-        NSString *text = [NSString stringWithFormat:@"%@: %tu", _arrCardSections[indexPath.section+1], count];
+        NSString *text = [NSString stringWithFormat:@"  %@: %tu", _arrCardSections[indexPath.section+1], count];
         
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 22)];
         label.text = text;

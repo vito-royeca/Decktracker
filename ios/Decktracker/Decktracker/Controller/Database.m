@@ -284,7 +284,8 @@ static Database *_me;
 
 -(NSFetchedResultsController*) advanceSearch:(NSDictionary*)query withSorter:(NSDictionary*) sorter
 {
-    NSPredicate *predicate;
+    NSMutableString *sql = [[NSMutableString alloc] init];
+    NSMutableArray *arrParams = [[NSMutableArray alloc] init];
     
     for (NSString *key in [query allKeys])
     {
@@ -299,26 +300,22 @@ static Database *_me;
         else if ([key isEqualToString:@"Set"])
         {
             fieldName = @"set.name";
-//            bToMany = YES;
-            bExact = YES;
+            bToMany = YES;
         }
         else if ([key isEqualToString:@"Rarity"])
         {
             fieldName = @"rarity.name";
-//            bToMany = YES;
-            bExact = YES;
+            bToMany = YES;
         }
         else if ([key isEqualToString:@"Type"])
         {
             fieldName = @"types.name";
-//            bToMany = YES;
-            bExact = YES;
+            bToMany = YES;
         }
         else if ([key isEqualToString:@"Subtype"])
         {
             fieldName = @"subTypes.name";
-//            bToMany = YES;
-            bExact = YES;
+            bToMany = YES;
         }
         else if ([key isEqualToString:@"Color"])
         {
@@ -339,7 +336,7 @@ static Database *_me;
         else if ([key isEqualToString:@"Artist"])
         {
             fieldName = @"artist.name";
-//            bToMany = YES;
+            bToMany = YES;
             bExact = YES;
         }
         else if ([key isEqualToString:@"Will Be Reprinted?"])
@@ -347,88 +344,117 @@ static Database *_me;
             fieldName = @"reserved";
         }
         
-        for (NSDictionary *dict in query[key])
+        NSArray *arrQuery = query[key];
+        if (arrQuery.count > 1)
         {
-            NSPredicate *pred;
+            NSDictionary *dict = [arrQuery firstObject];
             NSString *condition = [[dict allKeys] firstObject];
-            NSString *stringValue = [[dict allValues] firstObject];
             
-            if ([key isEqualToString:@"Color"])
+            BOOL bMoreKey = sql.length > 0;
+            if (bMoreKey)
             {
-                pred = [NSPredicate predicateWithFormat:@"%K == %@", fieldName, stringValue];
+                [sql appendFormat:@" %@ (", condition];
+            }
+            else
+            {
+                [sql appendFormat:@"("];
             }
             
-            else if ([key isEqualToString:@"Will Be Reprinted?"])
+            for (NSDictionary *dict2 in arrQuery)
             {
-                NSNumber *reserved;
+                condition = [[dict2 allKeys] firstObject];
+                id value = dict2[condition];
                 
-                if ([stringValue isEqualToString:@"Yes"])
+                if ([value isEqualToString:@"Yes"])
                 {
-                    reserved = [NSNumber numberWithBool:NO];
+                    value = [NSNumber numberWithBool:NO];
+                }
+                else if ([value isEqualToString:@"No"])
+                {
+                    value = [NSNumber numberWithBool:YES];
+                }
+                
+                if ([arrQuery indexOfObject:dict2] != 0)
+                {
+                    [sql appendFormat:@" %@ ", condition];
+                    
+                }
+                
+                if (bToMany)
+                {
+                    [sql appendFormat:@"ANY %@ == %%@", fieldName];
                 }
                 else
                 {
-                    reserved = [NSNumber numberWithBool:YES];
-                }
-                
-                pred = [NSPredicate predicateWithFormat:@"%K == %@", fieldName, reserved];
-            }
-            
-            if (!pred)
-            {
-                if (stringValue)
-                {
-                    if (bToMany)
+                    if ([value isKindOfClass:[NSNumber class]])
                     {
-                        pred = [NSPredicate predicateWithFormat:@"ANY %K == [cd] %@", fieldName, stringValue];
+                        [sql appendFormat:@"%@ == %%@", fieldName];
                     }
                     else
                     {
-                        if (bExact)
+                        if (((NSString*)value).length == 1)
                         {
-                            pred = [NSPredicate predicateWithFormat:@"ANY %K == [cd] %@", fieldName, stringValue];
+                            [sql appendFormat:@"%@ BEGINSWITH[cd] %%@", fieldName];
                         }
                         else
                         {
-                            if (stringValue.length == 1)
-                            {
-                                pred = [NSPredicate predicateWithFormat:@"%K BEGINSWITH[cd] %@", fieldName, stringValue];
-                            }
-                            else
-                            {
-                                pred = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", fieldName, stringValue];
-                            }
+                            [sql appendFormat:@"%@ CONTAINS[cd] %%@", fieldName];
                         }
                     }
                 }
+                [arrParams addObject:value];
+            }
+            [sql appendString:@")"];
+        }
+        
+        else
+        {
+            NSDictionary *dict = [arrQuery firstObject];
+            NSString *condition = [[dict allKeys] firstObject];
+            id value = dict[condition];
+            
+            if ([value isEqualToString:@"Yes"])
+            {
+                value = [NSNumber numberWithBool:NO];
+            }
+            else if ([value isEqualToString:@"No"])
+            {
+                value = [NSNumber numberWithBool:YES];
+            }
+            
+            if (sql.length > 0)
+            {
+                [sql appendFormat:@" %@ ", condition];
+            }
+            
+            if (bToMany)
+            {
+                [sql appendFormat:@"ANY %@ == %%@", fieldName];
+            }
+            else
+            {
+                if ([value isKindOfClass:[NSNumber class]])
+                {
+                    [sql appendFormat:@"%@ == %%@", fieldName];
+                }
                 else
                 {
-                    if (bToMany)
+                    if (((NSString*)value).length == 1)
                     {
-                        pred = [NSPredicate predicateWithFormat:@"ANY %K = nil", fieldName];
+                        [sql appendFormat:@"%@ BEGINSWITH[cd] %%@", fieldName];
                     }
                     else
                     {
-                        pred = [NSPredicate predicateWithFormat:@"%K = nil", fieldName];
+                        [sql appendFormat:@"%@ CONTAINS[cd] %%@", fieldName];
                     }
                 }
+                
             }
-            
-            if ([condition isEqualToString:@"And"])
-            {
-                predicate = predicate ? [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, pred]] : pred;
-            }
-            else if ([condition isEqualToString:@"Or"])
-            {
-                predicate = predicate ? [NSCompoundPredicate orPredicateWithSubpredicates:@[predicate, pred]] : pred;
-            }
-            else if ([condition isEqualToString:@"Not"])
-            {
-                predicate = predicate ? [NSCompoundPredicate notPredicateWithSubpredicate:pred] : pred;
-            }
+            [arrParams addObject:value];
         }
     }
     
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:sql argumentArray:arrParams];
     NSManagedObjectContext *moc = [NSManagedObjectContext MR_defaultContext];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:@"name"
