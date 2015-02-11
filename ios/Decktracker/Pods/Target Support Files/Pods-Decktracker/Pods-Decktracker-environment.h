@@ -52,7 +52,7 @@
 #define COCOAPODS_POD_AVAILABLE_ActionSheetPicker_3_0
 #define COCOAPODS_VERSION_MAJOR_ActionSheetPicker_3_0 1
 #define COCOAPODS_VERSION_MINOR_ActionSheetPicker_3_0 3
-#define COCOAPODS_VERSION_PATCH_ActionSheetPicker_3_0 11
+#define COCOAPODS_VERSION_PATCH_ActionSheetPicker_3_0 12
 
 // Bolts
 #define COCOAPODS_POD_AVAILABLE_Bolts
@@ -105,7 +105,7 @@
 // Facebook-iOS-SDK
 #define COCOAPODS_POD_AVAILABLE_Facebook_iOS_SDK
 #define COCOAPODS_VERSION_MAJOR_Facebook_iOS_SDK 3
-#define COCOAPODS_VERSION_MINOR_Facebook_iOS_SDK 22
+#define COCOAPODS_VERSION_MINOR_Facebook_iOS_SDK 23
 #define COCOAPODS_VERSION_PATCH_Facebook_iOS_SDK 0
 
 // GoogleAnalytics-iOS-SDK
@@ -124,7 +124,7 @@
 #define COCOAPODS_POD_AVAILABLE_InAppSettingsKit
 #define COCOAPODS_VERSION_MAJOR_InAppSettingsKit 2
 #define COCOAPODS_VERSION_MINOR_InAppSettingsKit 4
-#define COCOAPODS_VERSION_PATCH_InAppSettingsKit 1
+#define COCOAPODS_VERSION_PATCH_InAppSettingsKit 3
 
 // LMAlertView
 #define COCOAPODS_POD_AVAILABLE_LMAlertView
