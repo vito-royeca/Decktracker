@@ -8,18 +8,6 @@
 
 import UIKit
 
-enum StartingHandViewMode: Printable  {
-    case ByList
-    case ByGrid
-    
-    var description : String {
-        switch self {
-        case ByList: return "List"
-        case ByGrid: return "Grid"
-        }
-    }
-}
-
 enum StartingHandShowMode: Printable  {
     case ByHand
     case ByGraveyard
@@ -34,7 +22,7 @@ enum StartingHandShowMode: Printable  {
     }
 }
 
-class StartingHandViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class StartingHandViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
 
     let kSearchResultsIdentifier = "kSearchResultsIdentifier"
     var initialHand = 7
@@ -45,14 +33,16 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
     var mulliganButton:UIBarButtonItem?
     var drawButton:UIBarButtonItem?
     var tblHand:UITableView?
+    var colHand:UICollectionView?
     var bottomToolbar:UIToolbar?
-    var viewMode:StartingHandViewMode?
+    var viewMode:CardViewMode?
     var showMode:StartingHandShowMode?
     var deck:Deck?
     var arrayDeck:[DTCard]?
     var arrayHand:[DTCard]?
     var arrayGraveyard:[DTCard]?
     var arrayLibrary:[DTCard]?
+    var viewLoadedOnce = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,12 +62,6 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         mulliganButton = UIBarButtonItem(title: "Mulligan", style: UIBarButtonItemStyle.Plain, target: self, action: "mulliganButtonTapped")
         drawButton = UIBarButtonItem(title: "Draw", style: UIBarButtonItemStyle.Plain, target: self, action: "drawButtonTapped")
         
-        frame = CGRect(x:dX, y:dY, width:dWidth, height:dHeight)
-        tblHand = UITableView(frame: frame!, style: UITableViewStyle.Plain)
-        tblHand!.delegate = self
-        tblHand!.dataSource = self
-        tblHand!.registerNib(UINib(nibName: "SearchResultsTableViewCell", bundle: nil), forCellReuseIdentifier: kSearchResultsIdentifier)
-        
         dY = dHeight
         dHeight = 44
         frame = CGRect(x:dX, y:dY, width:dWidth, height:dHeight)
@@ -87,14 +71,14 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
                                 mulliganButton!,
                                 UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil),
                                 drawButton!]
-        
-        view.addSubview(tblHand!)
-        view.addSubview(bottomToolbar!)
+
         
         self.navigationItem.title = "Starting Hand"
-//        self.navigationItem.rightBarButtonItems = [showButton!, viewButton!]
-        self.navigationItem.rightBarButtonItem = showButton
-        self.viewMode = StartingHandViewMode.ByList
+        self.navigationItem.rightBarButtonItems = [showButton!, viewButton!]
+        self.viewMode = CardViewMode.ByList
+        self.showTableView()
+        view.addSubview(bottomToolbar!)
+        self.viewLoadedOnce = false
         self.newButtonTapped()
         
 #if !DEBUG
@@ -116,14 +100,18 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     func viewButtonTapped() {
-        let viewOptions = [StartingHandViewMode.ByList.description, StartingHandViewMode.ByGrid.description]
+        let viewOptions = [CardViewMode.ByList.description,
+            CardViewMode.ByGrid2x2.description,
+            CardViewMode.ByGrid3x3.description]
         var initialSelection = 0
         
         switch self.viewMode! {
         case .ByList:
             initialSelection = 0
-        case .ByGrid:
+        case .ByGrid2x2:
             initialSelection = 1
+        case .ByGrid3x3:
+            initialSelection = 2
         default:
             break
         }
@@ -133,14 +121,16 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
             switch selectedIndex {
             case 0:
                 self.viewMode = .ByList
+                self.showTableView()
             case 1:
-                self.viewMode = .ByGrid
+                self.viewMode = .ByGrid2x2
+                self.showGridView()
+            case 2:
+                self.viewMode = .ByGrid3x3
+                self.showGridView()
             default:
                 break
             }
-            
-            //            self.loadData()
-            //            self.tblSets!.reloadData()
         }
         
         ActionSheetStringPicker.showPickerWithTitle("View As",
@@ -178,8 +168,12 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
                 break
             }
             
-            
-            self.tblHand!.reloadData()
+            switch self.viewMode! {
+            case .ByList:
+                self.tblHand!.reloadData()
+            case .ByGrid2x2, .ByGrid3x3:
+                self.colHand!.reloadData()
+            }
         }
         
         ActionSheetStringPicker.showPickerWithTitle("Show Cards In",
@@ -203,7 +197,13 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         self.drawCards(initialHand)
 
         self.showMode = StartingHandShowMode.ByHand
-        self.tblHand!.reloadData()
+        
+        switch viewMode! {
+        case .ByList:
+            tblHand!.reloadData()
+        case .ByGrid2x2, .ByGrid3x3:
+            colHand!.reloadData()
+        }
     }
     
     func mulliganButtonTapped() {
@@ -226,9 +226,14 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         
         self.shuffleLibrary()
         self.drawCards(initialHand)
-        
         self.showMode = StartingHandShowMode.ByHand
-        self.tblHand!.reloadData()
+        
+        switch viewMode! {
+        case .ByList:
+            tblHand!.reloadData()
+        case .ByGrid2x2, .ByGrid3x3:
+            colHand!.reloadData()
+        }
     }
     
     func drawButtonTapped() {
@@ -237,7 +242,59 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         }
         self.drawCards(1)
         self.showMode = StartingHandShowMode.ByHand
-        self.tblHand!.reloadData()
+        
+        switch viewMode! {
+        case .ByList:
+            tblHand!.reloadData()
+        case .ByGrid2x2, .ByGrid3x3:
+            colHand!.reloadData()
+        }
+    }
+    
+    func showTableView() {
+        let dX:CGFloat = 0
+        let dY = viewLoadedOnce ? 0 : UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height
+        let dWidth = self.view.frame.size.width
+        let dHeight = self.view.frame.size.height-dY-44
+        let frame = CGRect(x:dX, y:dY, width:dWidth, height:dHeight)
+        
+        tblHand = UITableView(frame: frame, style: UITableViewStyle.Plain)
+        tblHand!.delegate = self
+        tblHand!.dataSource = self
+        tblHand!.registerNib(UINib(nibName: "SearchResultsTableViewCell", bundle: nil), forCellReuseIdentifier: kSearchResultsIdentifier)
+        
+        if colHand != nil {
+            colHand!.removeFromSuperview()
+        }
+        view.addSubview(tblHand!)
+    }
+    
+    func showGridView() {
+        let dX:CGFloat = 0
+        let dY = viewLoadedOnce ? 0 : UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height
+        let dWidth = self.view.frame.size.width
+        let dHeight = self.view.frame.size.height-dY-44
+        let frame = CGRect(x:dX, y:dY, width:dWidth, height:dHeight)
+        let divisor:CGFloat = viewMode == CardViewMode.ByGrid2x2 ? 2 : 3
+        
+        let layout = CSStickyHeaderFlowLayout()
+        layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+        layout.headerReferenceSize = CGSize(width:view.frame.width, height: 22)
+        layout.itemSize = CGSize(width: frame.width/divisor, height: frame.height/divisor)
+        
+        colHand = UICollectionView(frame: frame, collectionViewLayout: layout)
+        colHand!.dataSource = self
+        colHand!.delegate = self
+        colHand!.registerClass(CardListCollectionViewCell.self, forCellWithReuseIdentifier: "Card")
+        colHand!.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier:"Header")
+        colHand!.backgroundColor = UIColor.lightGrayColor()
+        
+        if tblHand != nil {
+            tblHand!.removeFromSuperview()
+        }
+        view.addSubview(colHand!)
     }
     
     func initDeck() {
@@ -309,7 +366,13 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
     func discardCard(index: Int) {
         let card = arrayHand!.removeAtIndex(index)
         arrayGraveyard!.append(card)
-        self.tblHand!.reloadData()
+        
+        switch viewMode! {
+        case .ByList:
+            tblHand!.reloadData()
+        case .ByGrid2x2, .ByGrid3x3:
+            colHand!.reloadData()
+        }
     }
     
     // UITableViewDataSource
@@ -336,8 +399,8 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch self.showMode! {
-            case .ByHand:
-                return self.arrayHand!.count
+        case .ByHand:
+            return self.arrayHand!.count
             
         case .ByGraveyard:
             return self.arrayGraveyard!.count
@@ -391,5 +454,80 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         self.discardCard(indexPath.row)
+    }
+    
+    // UICollectionViewDataSource
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        switch self.showMode! {
+        case .ByHand:
+            return self.arrayHand!.count
+            
+        case .ByGraveyard:
+            return self.arrayGraveyard!.count
+            
+        case .ByLibrary:
+            return self.arrayLibrary!.count
+        }
+    }
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        var card:DTCard?
+        
+        switch self.showMode! {
+        case .ByHand:
+            if (self.arrayHand!.count > 0) {
+                card = self.arrayHand![indexPath.row]
+            }
+            
+        case .ByGraveyard:
+            if (self.arrayGraveyard!.count > 0) {
+                card = self.arrayGraveyard![indexPath.row]
+            }
+            
+        case .ByLibrary:
+            if (self.arrayLibrary!.count > 0) {
+                card = self.arrayLibrary![indexPath.row]
+            }
+        }
+        
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Card", forIndexPath: indexPath) as CardListCollectionViewCell
+        
+        cell.displayCard(card!)
+        return cell
+    }
+    
+    func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+        
+        var view:UICollectionReusableView?
+        
+        if kind == UICollectionElementKindSectionHeader {
+            var count = 0
+            
+            switch self.showMode! {
+            case .ByHand:
+                count = self.arrayHand!.count
+                
+            case .ByGraveyard:
+                count = self.arrayGraveyard!.count
+                
+            case .ByLibrary:
+                count = self.arrayLibrary!.count
+            }
+            
+            let text = "  Cards In \(self.showMode!.description): \(count)"
+            let label = UILabel(frame: CGRect(x:0, y:0, width:self.view.frame.size.width, height:22))
+            label.text = text
+            label.backgroundColor = UIColor.whiteColor()
+            label.font = UIFont.boldSystemFontOfSize(18)
+            
+            view = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier:"Header", forIndexPath:indexPath) as? UICollectionReusableView
+            
+            if view == nil {
+                view = UICollectionReusableView(frame: CGRect(x:0, y:0, width:self.view.frame.size.width, height:22))
+            }
+            view!.addSubview(label)
+        }
+        
+        return view!
     }
 }

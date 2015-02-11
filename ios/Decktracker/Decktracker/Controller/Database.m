@@ -290,6 +290,7 @@ static Database *_me;
     for (NSString *key in [query allKeys])
     {
         NSString *fieldName;
+        NSArray *defaultFieldValues;
         BOOL bToMany = NO;
         BOOL bExact = NO;
         
@@ -300,6 +301,12 @@ static Database *_me;
         else if ([key isEqualToString:@"Set"])
         {
             fieldName = @"set.name";
+            bToMany = YES;
+        }
+        else if ([key isEqualToString:@"Format"])
+        {
+            fieldName = @"legalities.name";
+            defaultFieldValues = @[@"Legal", @"Restricted"];
             bToMany = YES;
         }
         else if ([key isEqualToString:@"Rarity"])

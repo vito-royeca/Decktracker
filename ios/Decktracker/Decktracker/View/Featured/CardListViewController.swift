@@ -182,7 +182,6 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
             }
             
             self.loadData()
-            self.tblSets!.reloadData()
         }
         
         ActionSheetStringPicker.showPickerWithTitle("Sort By",
@@ -252,11 +251,10 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
             }
         }
         
-        if tblSets != nil {
+        switch viewMode! {
+        case .ByList:
             tblSets!.reloadData()
-        }
-        
-        if (colSets != nil) {
+        case .ByGrid2x2, .ByGrid3x3:
             colSets!.reloadData()
         }
     }

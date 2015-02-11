@@ -69,8 +69,18 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    _arrFilters = @[@"Name", @"Set", @"Rarity", @"Type", @"Subtype", @"Color", @"Keyword", @"Text", @"Flavor Text",
-                    @"Artist", @"Will Be Reprinted?"];
+    _arrFilters = @[@"Name",
+                    @"Set",
+                    @"Format",
+                    @"Rarity",
+                    @"Type",
+                    @"Subtype",
+                    @"Color",
+                    @"Keyword",
+                    @"Text",
+                    @"Flavor Text",
+                    @"Artist",
+                    @"Will Be Reprinted?"];
     
     _arrSorters = @[@"Name"];
     
@@ -450,6 +460,10 @@
     if ([_arrFilters[indexPath.row] isEqualToString:@"Set"])
     {
         arrFilterOptions = [DTSet MR_findAllSortedBy:@"name" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"NOT (code IN %@)", [[Database sharedInstance] inAppSetCodes]]];
+    }
+    else if ([_arrFilters[indexPath.row] isEqualToString:@"Format"])
+    {
+        arrFilterOptions = [DTFormat MR_findAllSortedBy:@"name" ascending:YES];
     }
     else if ([_arrFilters[indexPath.row] isEqualToString:@"Rarity"])
     {
