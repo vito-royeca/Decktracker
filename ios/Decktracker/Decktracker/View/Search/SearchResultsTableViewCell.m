@@ -401,8 +401,8 @@
             UIImage *hiResImage = [UIImage imageWithContentsOfFile: path];
             
             [UIView transitionWithView:self.imgCrop
-                              duration:2.0f
-                               options:UIViewAnimationOptionTransitionFlipFromLeft
+                              duration:1
+                               options:UIViewAnimationOptionTransitionCrossDissolve
                             animations:^{
                                 self.imgCrop.image = hiResImage;
                             } completion:nil];

@@ -18,6 +18,10 @@
 #import "FileManager.h"
 #import "NewAdvanceSearchViewController.h"
 #import "SearchResultsTableViewCell.h"
+#import "Decktracker-Swift.h"
+
+#import "ActionSheetStringPicker.h"
+#import "CSStickyHeaderFlowLayout.h"
 
 #ifndef DEBUG
 #import "GAI.h"
@@ -26,9 +30,16 @@
 #endif
 
 @implementation AdvanceSearchResultsViewController
+{
+    AdvanceSearchResultsViewMode _viewMode;
+    BOOL _viewLoadedOnce;
+}
 
 @synthesize fetchedResultsController = _fetchedResultsController;
+@synthesize btnView = _btnView;
+@synthesize btnAction = _btnAction;
 @synthesize tblResults = _tblResults;
+@synthesize colResults = _colResults;
 @synthesize queryToSave = _queryToSave;
 @synthesize sorterToSave = _sorterToSave;
 @synthesize mode = _mode;
@@ -48,34 +59,28 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    CGFloat dX = 0;
-    CGFloat dY = 0;
-    CGFloat dWidth = self.view.frame.size.width;
-    CGFloat dHeight = self.view.frame.size.height - dY;
-    
-    self.tblResults = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight) style:UITableViewStylePlain];
-    self.tblResults.delegate = self;
-    self.tblResults.dataSource = self;
-    [self.tblResults registerNib:[UINib nibWithNibName:@"SearchResultsTableViewCell" bundle:nil]
-          forCellReuseIdentifier:@"Cell"];
-    [self.view addSubview:self.tblResults];
-    
-    
-    UIBarButtonItem *btnAction;
-    
+    self.btnView = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"insert_table.png"]
+                                                    style:UIBarButtonItemStylePlain
+                                                   target:self
+                                                   action:@selector(btnViewTapped:)];
     if (self.mode == EditModeEdit)
     {
-        btnAction = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
-                                                                  target:self
-                                                                  action:@selector(btnActionTapped:)];
+        self.btnAction = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
+                                                                       target:self
+                                                                       action:@selector(btnActionTapped:)];
     }
     else if (self.mode == EditModeNew)
     {
-        btnAction = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
-                                                                  target:self
-                                                                  action:@selector(btnActionTapped:)];
+        self.btnAction = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
+                                                                       target:self
+                                                                       action:@selector(btnActionTapped:)];
     }
-    self.navigationItem.rightBarButtonItem = btnAction;
+    
+    self.navigationItem.rightBarButtonItems = @[self.btnAction, self.btnView];;
+    _viewMode = AdvanceSearchResultsViewModeByList;
+    _viewLoadedOnce = YES;
+    [self showTableView];
+    _viewLoadedOnce = NO;
 
 #ifndef DEBUG
     // send the screen to Google Analytics
@@ -95,6 +100,58 @@
 - (BOOL) hidesBottomBarWhenPushed
 {
     return YES;
+}
+
+-(void) btnViewTapped:(id) sender
+{
+    NSArray *statusOptions = @[@"List", @"Grid 2x2", @"Grid 3x3"];
+    int initialSelection = 0;
+    
+    switch (_viewMode) {
+        case AdvanceSearchResultsViewModeByList:
+        {
+            initialSelection = 0;
+            break;
+        }
+        case AdvanceSearchResultsViewModeByGrid2x2:
+        {
+            initialSelection = 1;
+            break;
+        }
+        case AdvanceSearchResultsViewModeByGrid3x3:
+        {
+            initialSelection = 2;
+            break;
+        }
+    }
+    
+    [ActionSheetStringPicker showPickerWithTitle:@"View As"
+                                            rows:statusOptions
+                                initialSelection:initialSelection
+                                       doneBlock:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
+                                           
+                                           
+                                           
+                                           switch (selectedIndex) {
+                                               case 0: {
+                                                   _viewMode = AdvanceSearchResultsViewModeByList;
+                                                   [self showTableView];
+                                                   break;
+                                               }
+                                               case 1: {
+                                                   _viewMode = AdvanceSearchResultsViewModeByGrid2x2;
+                                                   [self showGridView];
+                                                   break;
+                                               }
+                                               case 2: {
+                                                   _viewMode = AdvanceSearchResultsViewModeByGrid3x3;
+                                                   [self showGridView];
+                                                   break;
+                                               }
+                                           }
+                                       }
+                                     cancelBlock:nil
+                                          origin:self.view];
 }
 
 -(void) btnActionTapped:(id) sender
@@ -121,6 +178,57 @@
         [self.navigationController pushViewController:view animated:NO];
     }
 }
+
+-(void) showTableView
+{
+    CGFloat dX = 0;
+    CGFloat dY = _viewLoadedOnce ? 0 : [UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height;
+    CGFloat dWidth = self.view.frame.size.width;
+    CGFloat dHeight = self.view.frame.size.height - dY;
+    
+    self.tblResults = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight) style:UITableViewStylePlain];
+    self.tblResults.delegate = self;
+    self.tblResults.dataSource = self;
+    [self.tblResults registerNib:[UINib nibWithNibName:@"SearchResultsTableViewCell" bundle:nil]
+          forCellReuseIdentifier:@"Cell"];
+    
+    if (self.colResults) {
+        [self.colResults removeFromSuperview];
+    }
+    [self.view addSubview:self.tblResults];
+}
+
+-(void) showGridView
+{
+    CGFloat dX = 0;
+    CGFloat dY = _viewLoadedOnce ? 0 : [UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height;
+    CGFloat dWidth = self.view.frame.size.width;
+    CGFloat dHeight = self.view.frame.size.height - dY;
+    CGFloat divisor = _viewMode == AdvanceSearchResultsViewModeByGrid2x2 ? 2 : 3;
+    CGRect frame = CGRectMake(dX, dY, dWidth, dHeight);
+    
+    CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc] init];
+    layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    layout.minimumInteritemSpacing = 0;
+    layout.minimumLineSpacing = 0;
+    layout.headerReferenceSize = CGSizeMake(dWidth, 22);
+    layout.itemSize = CGSizeMake(frame.size.width/divisor, frame.size.height/divisor);
+    
+    self.colResults = [[UICollectionView alloc] initWithFrame:frame collectionViewLayout:layout];
+    self.colResults.dataSource = self;
+    self.colResults.delegate = self;
+    [self.colResults registerClass:[CardListCollectionViewCell class] forCellWithReuseIdentifier:@"Card"];
+//    [self.colResults registerClass:[UICollectionReusableView class]
+//        forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+//               withReuseIdentifier:@"Header"];
+    self.colResults.backgroundColor = [UIColor lightGrayColor];
+    
+    if (self.tblResults) {
+        [self.tblResults removeFromSuperview];
+    }
+    [self.view addSubview:self.colResults];
+}
+
 
 #pragma mark - UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -197,6 +305,53 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    DTCard *card = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    
+    NSDictionary *dict = [[Database sharedInstance] inAppSettingsForSet:card.set];
+    if (dict)
+    {
+        return;
+    }
+    
+    CardDetailsViewController *view = [[CardDetailsViewController alloc] init];
+    view.fetchedResultsController = self.fetchedResultsController;
+    view.addButtonVisible = YES;
+    [view setCard:card];
+    
+    [self.navigationController pushViewController:view animated:YES];
+}
+
+#pragma mark - UICollectionViewDataSource
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+{
+    NSInteger count = [[self.fetchedResultsController sections] count];
+    return count;
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
+    
+    return [sectionInfo numberOfObjects];
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    DTCard *card = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    CardListCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"Card" forIndexPath:indexPath];
+    
+    [cell displayCard:card];
+    return cell;
+}
+
+//- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+//{
+//    return nil;
+//}
+
+#pragma mark - UICollectionViewDelegate
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     DTCard *card = [self.fetchedResultsController objectAtIndexPath:indexPath];
     

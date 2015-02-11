@@ -16,16 +16,18 @@
 
 typedef NS_ENUM(NSInteger, DeckDetailsViewMode)
 {
-    DeckDetailsViewModeList,
-    DeckDetailsViewModeGrid
+    DeckDetailsViewModeByList,
+    DeckDetailsViewModeByGrid2x2,
+    DeckDetailsViewModeByGrid3x3
 };
 
-@interface DeckDetailsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, IASKSettingsDelegate, InAppPurchaseViewControllerDelegate>
+@interface DeckDetailsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UITextViewDelegate, IASKSettingsDelegate, InAppPurchaseViewControllerDelegate>
 
 @property(strong,nonatomic) UIBarButtonItem *btnBack;
 @property(strong,nonatomic) UIBarButtonItem *btnView;
 @property(strong,nonatomic) UISegmentedControl *segmentedControl;
 @property(strong,nonatomic) UITableView *tblCards;
+@property(strong,nonatomic) UICollectionView *colCards;
 @property(strong,nonatomic) IASKAppSettingsViewController *cardDetailsViewController;
 
 @property(strong,nonatomic) Deck *deck;

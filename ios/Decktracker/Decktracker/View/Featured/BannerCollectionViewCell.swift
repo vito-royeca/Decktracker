@@ -95,8 +95,8 @@ class BannerCollectionViewCell: UICollectionViewCell {
                 let hiResImage = UIImage(contentsOfFile: path)
                 
                 UIView.transitionWithView(imgCrop!,
-                    duration:2,
-                    options: UIViewAnimationOptions.TransitionFlipFromLeft,
+                    duration:1,
+                    options: UIViewAnimationOptions.TransitionNone,
                     animations: {
                         self.imgCrop.contentMode = UIViewContentMode.ScaleAspectFill
                         self.imgCrop!.image = hiResImage

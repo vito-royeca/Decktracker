@@ -10,10 +10,20 @@
 
 #import "Magic.h"
 
-@interface AdvanceSearchResultsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate, UIAlertViewDelegate>
+typedef NS_ENUM(NSInteger, AdvanceSearchResultsViewMode)
+{
+    AdvanceSearchResultsViewModeByList,
+    AdvanceSearchResultsViewModeByGrid2x2,
+    AdvanceSearchResultsViewModeByGrid3x3
+};
+
+@interface AdvanceSearchResultsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, NSFetchedResultsControllerDelegate, UIAlertViewDelegate>
 
 @property(strong,nonatomic) NSFetchedResultsController *fetchedResultsController;
+@property(strong,nonatomic) UIBarButtonItem *btnView;
+@property(strong,nonatomic) UIBarButtonItem *btnAction;
 @property(strong,nonatomic) UITableView *tblResults;
+@property(strong,nonatomic) UICollectionView *colResults;
 @property(strong,nonatomic) NSDictionary *queryToSave;
 @property(strong,nonatomic) NSDictionary *sorterToSave;
 @property(nonatomic) EditMode mode;

@@ -324,6 +324,7 @@
         card.types = [self findTypes:dict[@"types"]];
         card.superTypes = [self findTypes:dict[@"supertypes"]];
         card.subTypes = [self findTypes:dict[@"subtypes"]];
+        card.starter = [NSNumber numberWithBool:[dict[@"starter"] boolValue]];
         card.colors = [self findColors:dict[@"colors"]];
         card.set = set;
 

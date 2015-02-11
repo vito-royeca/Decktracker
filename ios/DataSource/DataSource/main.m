@@ -17,9 +17,9 @@ int main(int argc, const char * argv[])
         /* Step 1 */
         JSONLoader *jsonLoader = [[JSONLoader alloc] init];
 //        [jsonLoader parseCards1stPass];
-//        [jsonLoader parseCards2ndPass];
+        [jsonLoader parseCards2ndPass];
 //        [jsonLoader updateTCGSetNames];
-        [jsonLoader fetchTcgPrices];
+//        [jsonLoader fetchTcgPrices];
         
 
         /* Step 2 */
@@ -28,7 +28,7 @@ int main(int argc, const char * argv[])
 
         /* Optional */
 //        ImageLoader *imageLoader = [[ImageLoader alloc] init];
-//        [imageLoader downloadSetIcons:@[@"FRF"]];
+//        [imageLoader downloadSetIcons:@[@"DD3_DVD",@"DD3_EVG",@"DD3_GVL",@"DD3_JVC"]];
 //        [imageLoader downloadSymbols];
 //        [imageLoader downloadOtherSymbols];
     }

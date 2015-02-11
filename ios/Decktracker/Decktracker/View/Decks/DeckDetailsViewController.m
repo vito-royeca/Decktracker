@@ -19,8 +19,9 @@
 #import "SearchResultsTableViewCell.h"
 #import "Decktracker-Swift.h"
 
-#import "IASKSpecifierValuesViewController.h"
 #import "ActionSheetStringPicker.h"
+#import "CSStickyHeaderFlowLayout.h"
+#import "IASKSpecifierValuesViewController.h"
 
 #ifndef DEBUG
 #import "GAI.h"
@@ -34,12 +35,14 @@
     NSArray *_arrToolSections;
     UIView *_viewSegmented;
     DeckDetailsViewMode _viewMode;
+    BOOL _viewLoadedOnce;
 }
 
 @synthesize btnBack = _btnBack;
 @synthesize btnView = _btnView;
 @synthesize segmentedControl = _segmentedControl;
 @synthesize tblCards = _tblCards;
+@synthesize colCards = _colCards;
 @synthesize cardDetailsViewController = _cardDetailsViewController;
 @synthesize deck = _deck;
 
@@ -63,7 +66,6 @@
                          @{@"Statistics" : @[/*@"Mana Curve",*/ @"Card Type Distribution", @"Color Distribution"/*, @"Mana Source Distribution"*/]},
                          @{@"Draws" :@[@"Starting Hand"]},
                          /*@{@"Print" :@[@"Proxies", @"Deck Sheet"]}*/];
-    _viewMode = DeckDetailsViewModeList;
 
     CGFloat dX = 0;
     CGFloat dY = [UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height;
@@ -103,7 +105,11 @@
     self.navigationItem.leftBarButtonItem = self.btnBack;
     self.navigationItem.rightBarButtonItem = self.btnView;
     [self.view addSubview:_viewSegmented];
-    [self.view addSubview:self.tblCards];
+    _viewMode = DeckDetailsViewModeByList;
+    _viewLoadedOnce = YES;
+    [self showTableView];
+    _viewLoadedOnce = NO;
+
 
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:kIASKAppSettingChanged
@@ -131,7 +137,18 @@
     
     self.deck = deck;
     self.navigationItem.title = self.deck.name;
-    [self.tblCards reloadData];
+    
+    switch (_viewMode) {
+        case DeckDetailsViewModeByList: {
+            [self showTableView];
+            break;
+        }
+        case DeckDetailsViewModeByGrid2x2:
+        case DeckDetailsViewModeByGrid3x3: {
+            [self showGridView];
+            break;
+        }
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -152,18 +169,23 @@
 
 -(void) viewButtonTapped
 {
-    NSArray *statusOptions = @[@"List", @"Grid"];
+    NSArray *statusOptions = @[@"List", @"Grid 2x2", @"Grid 3x3"];
     int initialSelection = 0;
     
     switch (_viewMode) {
-        case DeckDetailsViewModeList:
+        case DeckDetailsViewModeByList:
         {
             initialSelection = 0;
             break;
         }
-        case DeckDetailsViewModeGrid:
+        case DeckDetailsViewModeByGrid2x2:
         {
             initialSelection = 1;
+            break;
+        }
+        case DeckDetailsViewModeByGrid3x3:
+        {
+            initialSelection = 2;
             break;
         }
     }
@@ -177,11 +199,18 @@
                                            
                                            switch (selectedIndex) {
                                                case 0: {
-                                                   
+                                                   _viewMode = DeckDetailsViewModeByList;
+                                                   [self showTableView];
                                                    break;
                                                }
                                                case 1: {
-                                                   
+                                                   _viewMode = DeckDetailsViewModeByGrid2x2;
+                                                   [self showGridView];
+                                                   break;
+                                               }
+                                               case 2: {
+                                                   _viewMode = DeckDetailsViewModeByGrid3x3;
+                                                   [self showGridView];
                                                    break;
                                                }
                                            }
@@ -202,20 +231,33 @@
         [self.cardDetailsViewController.settingsStore synchronize];
         [self.cardDetailsViewController.view removeFromSuperview];
 
-        self.tblCards = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)
-                                                     style:UITableViewStylePlain];
-        self.tblCards.delegate = self;
-        self.tblCards.dataSource = self;
-        [self.tblCards registerNib:[UINib nibWithNibName:@"SearchResultsTableViewCell" bundle:nil]
-            forCellReuseIdentifier:@"Cell1"];
-        
-        [self.view addSubview:self.tblCards];
+        switch (_viewMode) {
+            case DeckDetailsViewModeByList: {
+                [self showTableView];
+                break;
+            }
+            case DeckDetailsViewModeByGrid2x2:
+            case DeckDetailsViewModeByGrid3x3: {
+                [self showGridView];
+                break;
+            }
+        }
         self.navigationItem.rightBarButtonItem = self.btnView;
     }
     
     else if (self.segmentedControl.selectedSegmentIndex == 1)
     {
-        [self.tblCards removeFromSuperview];
+        switch (_viewMode) {
+            case DeckDetailsViewModeByList: {
+                [self.tblCards removeFromSuperview];
+                break;
+            }
+            case DeckDetailsViewModeByGrid2x2:
+            case DeckDetailsViewModeByGrid3x3: {
+                [self.colCards removeFromSuperview];
+                break;
+            }
+        }
         
         DeckIASKSettingsStore *deckSettingsStore = [[DeckIASKSettingsStore alloc] init];
         deckSettingsStore.deck = self.deck;
@@ -243,6 +285,58 @@
         [self.view addSubview:self.tblCards];
         self.navigationItem.rightBarButtonItem = nil;
     }
+}
+
+-(void) showTableView
+{
+    CGFloat dX = 0;
+    CGFloat dY = _viewSegmented.frame.origin.y + _viewSegmented.frame.size.height;
+    CGFloat dWidth = self.view.frame.size.width;
+    CGFloat dHeight = self.view.frame.size.height - dY;
+    
+    
+    self.tblCards = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)
+                                                 style:UITableViewStylePlain];
+    self.tblCards.delegate = self;
+    self.tblCards.dataSource = self;
+    [self.tblCards registerNib:[UINib nibWithNibName:@"SearchResultsTableViewCell" bundle:nil]
+        forCellReuseIdentifier:@"Cell1"];
+    
+    if (self.colCards) {
+        [self.colCards removeFromSuperview];
+    }
+    [self.view addSubview:self.tblCards];
+}
+
+-(void) showGridView
+{
+    CGFloat dX = 0;
+    CGFloat dY = _viewSegmented.frame.origin.y + _viewSegmented.frame.size.height;
+    CGFloat dWidth = self.view.frame.size.width;
+    CGFloat dHeight = self.view.frame.size.height - dY;
+    CGFloat divisor = _viewMode == DeckDetailsViewModeByGrid2x2 ? 2 : 3;
+    CGRect frame = CGRectMake(dX, dY, dWidth, dHeight);
+    
+    CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc] init];
+    layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    layout.minimumInteritemSpacing = 0;
+    layout.minimumLineSpacing = 0;
+    layout.headerReferenceSize = CGSizeMake(dWidth, 22);
+    layout.itemSize = CGSizeMake(frame.size.width/divisor, frame.size.height/divisor);
+    
+    self.colCards = [[UICollectionView alloc] initWithFrame:frame collectionViewLayout:layout];
+    self.colCards.dataSource = self;
+    self.colCards.delegate = self;
+    [self.colCards registerClass:[CardListCollectionViewCell class] forCellWithReuseIdentifier:@"Card"];
+    [self.colCards registerClass:[UICollectionReusableView class]
+        forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+               withReuseIdentifier:@"Header"];
+    self.colCards.backgroundColor = [UIColor lightGrayColor];
+    
+    if (self.tblCards) {
+        [self.tblCards removeFromSuperview];
+    }
+    [self.view addSubview:self.colCards];
 }
 
 -(UITableViewCell*) createSearchResultsTableCell:(NSDictionary*) dict
@@ -833,6 +927,220 @@
             {
                 break;
             }
+        }
+        
+        if (view)
+        {
+            [self.navigationController pushViewController:view animated:YES];
+        }
+    }
+}
+
+#pragma mark - UICollectionViewDataSource
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+{
+    return _arrCardSections.count-1;
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    switch (section)
+    {
+        case 0:
+        {
+            return self.deck.arrLands.count;
+        }
+        case 1:
+        {
+            return self.deck.arrCreatures.count;
+        }
+        case 2:
+        {
+            return self.deck.arrOtherSpells.count;
+        }
+        case 3:
+        {
+            return self.deck.arrSideboard.count;
+        }
+        default:
+        {
+            return 0;
+        }
+    }
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    DTCard *card;
+    int badge = 0;
+    
+    switch (indexPath.section)
+    {
+        case 0:
+        {
+            card = self.deck.arrLands[indexPath.row][@"card"];
+            badge = [self.deck.arrLands[indexPath.row][@"qty"] intValue];
+            break;
+        }
+        case 1:
+        {
+            card = self.deck.arrCreatures[indexPath.row][@"card"];
+            badge = [self.deck.arrCreatures[indexPath.row][@"qty"] intValue];
+            break;
+        }
+        case 2:
+        {
+            card = self.deck.arrOtherSpells[indexPath.row][@"card"];
+            badge = [self.deck.arrOtherSpells[indexPath.row][@"qty"] intValue];
+            break;
+        }
+        case 3:
+        {
+            card = self.deck.arrSideboard[indexPath.row][@"card"];
+            badge = [self.deck.arrSideboard[indexPath.row][@"qty"] intValue];
+            break;
+        }
+    }
+    
+    CardListCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"Card" forIndexPath:indexPath];
+    
+    [cell displayCard:card];
+    [cell addBadge:badge];
+    
+    return cell;
+}
+
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+{
+
+    UICollectionReusableView *view;
+    
+    if ([kind isEqualToString:UICollectionElementKindSectionHeader])
+    {
+        int count = 0;
+        
+        switch (indexPath.section)
+        {
+            case 0:
+            {
+                for (NSDictionary *dict in self.deck.arrLands)
+                {
+                    count += [dict[@"qty"] intValue];
+                }
+                break;
+            }
+            case 1:
+            {
+                for (NSDictionary *dict in self.deck.arrCreatures)
+                {
+                    count += [dict[@"qty"] intValue];
+                }
+                break;
+            }
+            case 2:
+            {
+                for (NSDictionary *dict in self.deck.arrOtherSpells)
+                {
+                    count += [dict[@"qty"] intValue];
+                }
+                break;
+            }
+            case 3:
+            {
+                for (NSDictionary *dict in self.deck.arrSideboard)
+                {
+                    count += [dict[@"qty"] intValue];
+                }
+                break;
+            }
+            default:
+            {
+                return nil;
+            }
+        }
+        
+        NSString *text = [NSString stringWithFormat:@"%@: %tu", _arrCardSections[indexPath.section+1], count];
+        
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 22)];
+        label.text = text;
+        label.backgroundColor = [UIColor whiteColor];
+        label.font = [UIFont boldSystemFontOfSize:18];
+     
+        view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                                  withReuseIdentifier:@"Header"
+                                                         forIndexPath:indexPath];
+        if (!view)
+        {
+            view = [[UICollectionReusableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 22)];
+        }
+        [view addSubview:label];
+    }
+     
+    return view;
+}
+
+#pragma mark - UICollectionViewDelegate
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    DTCard *card;
+    
+    switch (indexPath.section)
+    {
+        case 0:
+        {
+            card = self.deck.arrLands[indexPath.row][@"card"];
+            break;
+        }
+        case 1:
+        {
+            card = self.deck.arrCreatures[indexPath.row][@"card"];
+            break;
+        }
+        case 2:
+        {
+            card = self.deck.arrOtherSpells[indexPath.row][@"card"];
+            break;
+        }
+        case 3:
+        {
+            card = self.deck.arrSideboard[indexPath.row][@"card"];
+            break;
+        }
+    }
+    
+    if (card)
+    {
+        UIViewController *view;
+        
+        NSDictionary *dict = [[Database sharedInstance] inAppSettingsForSet:card.set];
+        if (dict)
+        {
+            InAppPurchaseViewController *view2 = [[InAppPurchaseViewController alloc] init];
+            
+            view2.productID = dict[@"In-App Product ID"];
+            view2.delegate = self;
+            view2.productDetails = @{@"name" : dict[@"In-App Display Name"],
+                                     @"description": dict[@"In-App Description"]};
+            view = view2;
+        }
+        else
+        {
+            AddCardViewController *view2 = [[AddCardViewController alloc] init];
+            
+            view2.arrDecks = [[NSMutableArray alloc] initWithArray:@[self.deck.name]];
+            
+            view2.arrCollections = [[NSMutableArray alloc] init];
+            for (NSString *file in [[FileManager sharedInstance] listFilesAtPath:@"/Collections"
+                                                                  fromFileSystem:FileSystemLocal])
+            {
+                [view2.arrCollections addObject:[file stringByDeletingPathExtension]];
+            }
+            
+            [view2 setCard:card];
+            view2.createButtonVisible = NO;
+            view2.showCardButtonVisible = YES;
+            view2.segmentedControlIndex = 0;
+            view = view2;
         }
         
         if (view)

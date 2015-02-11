@@ -75,8 +75,8 @@ class ThumbCollectionViewCell: UICollectionViewCell {
                 let hiResImage = UIImage(contentsOfFile: path)
                 
                 UIView.transitionWithView(imgCrop!,
-                    duration:2,
-                    options: UIViewAnimationOptions.TransitionFlipFromLeft,
+                    duration:1,
+                    options: UIViewAnimationOptions.TransitionCrossDissolve,
                     animations: { self.imgCrop!.image = hiResImage },
                     completion: nil)
             }

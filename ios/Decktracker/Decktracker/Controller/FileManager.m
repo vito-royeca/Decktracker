@@ -11,7 +11,7 @@
 #import "InAppPurchase.h"
 #import "Magic.h"
 
-
+#import "AFHTTPRequestOperationManager.h"
 #import <Dropbox/Dropbox.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 
@@ -24,7 +24,7 @@
 @implementation FileManager
 {
     NSMutableArray *_downloadQueue;
-    NSDictionary *_currentQueue;
+    int _cuncurrentDownloads;
 }
 
 static FileManager *_me;
@@ -44,6 +44,7 @@ static FileManager *_me;
     if (self = [super init])
     {
         _downloadQueue = [[NSMutableArray alloc] init];
+        _cuncurrentDownloads = 0;
     }
     
     return self;
@@ -152,16 +153,20 @@ static FileManager *_me;
         bFound = NO;
     }
     
-    DTCard *oldCardInQueue;
+    NSDictionary *oldQueue;
     for (NSDictionary *dict in _downloadQueue)
     {
         if (dict[@"card"] == card)
         {
-            oldCardInQueue = dict[@"card"];
+            oldQueue = dict;
             break;
         }
     }
-    [_downloadQueue removeObject:oldCardInQueue];
+    if (oldQueue)
+    {
+        [_downloadQueue removeObject:oldQueue];
+//        _cuncurrentDownloads--;
+    }
     
     if (!bFound)
     {
@@ -223,16 +228,20 @@ static FileManager *_me;
         bFound = NO;
     }
     
-    DTCard *oldCardInQueue;
+    NSDictionary *oldQueue;
     for (NSDictionary *dict in _downloadQueue)
     {
-        if (dict[@"crop"] == card)
+        if (dict[@"card"] == card)
         {
-            oldCardInQueue = dict[@"crop"];
+            oldQueue = dict;
             break;
         }
     }
-    [_downloadQueue removeObject:oldCardInQueue];
+    if (oldQueue)
+    {
+        [_downloadQueue removeObject:oldQueue];
+//        _cuncurrentDownloads--;
+    }
     
     if (!bFound)
     {
@@ -258,6 +267,7 @@ static FileManager *_me;
         {
             [_downloadQueue addObject:dict];
         }
+
         [self processDownloadQueue];
     }
     else
@@ -270,46 +280,66 @@ static FileManager *_me;
 
 -(void) processDownloadQueue
 {
-    if (_downloadQueue.count == 0 || _currentQueue)
+    if (_downloadQueue.count == 0 || _cuncurrentDownloads > kMaxCuncurrentDownloads)
     {
         return;
     }
     
-    _currentQueue = [_downloadQueue firstObject];
-    [_downloadQueue removeObject:_currentQueue];
+    NSDictionary *currentQueue = [_downloadQueue firstObject];
+    [_downloadQueue removeObject:currentQueue];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
+    NSURL *url = currentQueue[@"url"];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    NSString *path = currentQueue[@"path"];
+    
+    NSLog(@"Downloading %@", url);
+
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    operation.responseSerializer = [AFImageResponseSerializer serializer];
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        NSURL *url = _currentQueue[@"url"];
-        NSString *path = _currentQueue[@"path"];
+        UIImage *image = responseObject;
+        NSData *data;
         
-        if (![[NSFileManager defaultManager] fileExistsAtPath:path])
-        {
-            NSLog(@"Downloading %@", url);
-            [JJJUtil downloadResource:url toPath:path];
+        if ([path hasSuffix:@"jpg"]) {
+            data = UIImageJPEGRepresentation(image, 1);
+        } else if ([path hasSuffix:@"png"]) {
+            data = UIImagePNGRepresentation(image);
         }
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            DTCard *card = _currentQueue[@"card"];
-            if (card)
-            {
-                [[NSNotificationCenter defaultCenter] postNotificationName:kCardDownloadCompleted
-                                                                    object:nil
-                                                                  userInfo:@{@"card":card}];
-            }
-            
-            card = _currentQueue[@"crop"];
-            if (card)
-            {
-                [[NSNotificationCenter defaultCenter] postNotificationName:kCropDownloadCompleted
-                                                                    object:nil
-                                                                  userInfo:@{@"card":card}];
-            }
-            
-            _currentQueue = nil;
-            [self processDownloadQueue];
-        });
-    });
+        if (data) {
+            [data writeToFile:path atomically:YES];
+        }
+        
+        
+        DTCard *card = currentQueue[@"card"];
+        if (card)
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:kCardDownloadCompleted
+                                                                object:nil
+                                                              userInfo:@{@"card":card}];
+        }
+        
+        card = currentQueue[@"crop"];
+        if (card)
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:kCropDownloadCompleted
+                                                                object:nil
+                                                              userInfo:@{@"card":card}];
+        }
+        
+        _cuncurrentDownloads--;
+        [self processDownloadQueue];
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        NSLog(@"Error: %@", error);
+        _cuncurrentDownloads--;
+        [self processDownloadQueue];
+    }];
+    
+    _cuncurrentDownloads++;
+    [operation start];
 }
 
 -(NSArray*) loadKeywords

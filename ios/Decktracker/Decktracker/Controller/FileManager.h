@@ -19,6 +19,8 @@
 #define kHasAdvanceSearchSamples         @"HasAdvanceSearchSamples"
 #define kHasDeckSamples                  @"HasDeckSamples"
 
+#define kMaxCuncurrentDownloads          6
+
 typedef NS_ENUM(NSInteger, FileSystem)
 {
     FileSystemLocal,

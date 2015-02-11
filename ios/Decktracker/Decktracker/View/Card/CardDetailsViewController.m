@@ -377,8 +377,8 @@
             UIImage *hiResImage = [UIImage imageWithContentsOfFile:path];
         
             [UIView transitionWithView:self.cardImage
-                              duration:2.0f
-                               options:UIViewAnimationOptionTransitionFlipFromLeft
+                              duration:1
+                               options:UIViewAnimationOptionTransitionCrossDissolve
                             animations:^{
                                 self.cardImage.image = hiResImage;
                             } completion:nil];
@@ -401,8 +401,9 @@
         selectedRow = [objects indexOfObject:self.card];
     }
 
+
     UIImage *image = [UIImage imageWithContentsOfFile:[[FileManager sharedInstance] cardPath:self.card]];
-    [self.cardImage setImage:image];
+    self.cardImage.image = image;
     self.cardImage.contentMode = UIViewContentModeScaleAspectFit;
     self.cardImage.clipsToBounds = YES;
     

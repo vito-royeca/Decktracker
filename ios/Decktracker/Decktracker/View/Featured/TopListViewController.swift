@@ -8,16 +8,16 @@
 
 import UIKit
 
-class TopListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, InAppPurchaseViewControllerDelegate {
+class TopListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, InAppPurchaseViewControllerDelegate {
 
     let kSearchResultsIdentifier = "kSearchResultsIdentifier"
     
     var viewButton:UIBarButtonItem?
     var tblList:UITableView?
     var colList:UICollectionView?
-    var viewMode:CardViewMode?
     var arrayData:[DTCard]?
-    var viewLoadedOnce = false
+    var viewMode:CardViewMode?
+    var viewLoadedOnce = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,7 +27,6 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
         
         navigationItem.rightBarButtonItem = viewButton
         
-        self.viewLoadedOnce = true
         self.viewMode = CardViewMode.ByList
         self.showTableView()
         self.loadData()
@@ -133,16 +132,17 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
         var frame = CGRect(x:0, y:y, width:view.frame.width, height:height)
         
         
-        let layout = UICollectionViewFlowLayout()
+        let layout = CSStickyHeaderFlowLayout()
         layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
+        layout.headerReferenceSize = CGSize(width:view.frame.width, height: 22)
         layout.itemSize = CGSize(width: frame.width/divisor, height: frame.height/divisor)
         
         colList = UICollectionView(frame: frame, collectionViewLayout: layout)
-//        colList!.dataSource = self
-//        colList!.delegate = self
-        colList!.registerClass(CardListCollectionViewCell.self, forCellWithReuseIdentifier: "Default")
+        colList!.dataSource = self
+        colList!.delegate = self
+        colList!.registerClass(CardListCollectionViewCell.self, forCellWithReuseIdentifier: "Card")
         colList!.backgroundColor = UIColor.lightGrayColor()
         
         if tblList != nil {
@@ -205,10 +205,50 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
         self.navigationController?.pushViewController(view!, animated:false)
     }
     
+    // UICollectionViewDataSource
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return arrayData!.count
+    }
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let card = arrayData![indexPath.row] as DTCard
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Card", forIndexPath: indexPath) as CardListCollectionViewCell
+        
+        cell.displayCard(card)
+        cell.addRank(indexPath.row+1)
+        return cell
+    }
+    
+    // UICollectionViewDelegate
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        let card = arrayData![indexPath.row] as DTCard
+        let dict = Database.sharedInstance().inAppSettingsForSet(card.set)
+        var view:UIViewController?
+        
+        if dict != nil {
+            let view2 = InAppPurchaseViewController()
+            
+            view2.productID = dict["In-App Product ID"] as String
+            view2.delegate = self;
+            view2.productDetails = ["name" : dict["In-App Display Name"] as String,
+                "description": dict["In-App Description"] as String]
+            view = view2
+            
+        } else {
+            let view2 = CardDetailsViewController()
+            view2.addButtonVisible = true
+            view2.card = card
+            view = view2
+        }
+        
+        self.navigationController?.pushViewController(view!, animated:false)
+    }
+    
     // UIScrollViewDelegate
     func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         
-        if scrollView.isKindOfClass(UITableView.classForCoder()) {
+        if scrollView.isKindOfClass(UITableView.classForCoder()) ||
+           scrollView.isKindOfClass(UICollectionView.classForCoder()) {
             if navigationItem.title == "Top Rated" {
                 if arrayData!.count >= 100 {
                     return

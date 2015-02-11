@@ -56,7 +56,7 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
     var viewMode:CardViewMode?
     var sortMode:CardSortMode?
     var sectionName:String?
-    var viewLoadedOnce = false
+    var viewLoadedOnce = true
     
     lazy var fetchedResultsController: NSFetchedResultsController = {
         var nsfrc = Database.sharedInstance().search(nil, withPredicate:self.predicate, withSortDescriptors: self.sorters, withSectionName:self.sectionName)
@@ -75,7 +75,6 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
         
         navigationItem.rightBarButtonItems = [sortButton!, viewButton!]
         
-        self.viewLoadedOnce = true
         self.viewMode = CardViewMode.ByList
         self.sortMode = CardSortMode.ByName
         self.sectionName = "sectionNameInitial"

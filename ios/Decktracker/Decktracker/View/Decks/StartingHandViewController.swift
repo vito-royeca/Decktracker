@@ -92,7 +92,8 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         view.addSubview(bottomToolbar!)
         
         self.navigationItem.title = "Starting Hand"
-        self.navigationItem.rightBarButtonItems = [showButton!, viewButton!]
+//        self.navigationItem.rightBarButtonItems = [showButton!, viewButton!]
+        self.navigationItem.rightBarButtonItem = showButton
         self.viewMode = StartingHandViewMode.ByList
         self.newButtonTapped()
         

@@ -3,11 +3,24 @@
 <plist version="1.0">
 <dict>
 	<key>JSON Version</key>
-	<string>2.13.14</string>
+	<string>2.15.0</string>
 	<key>Images Version</key>
-	<string>5.9.0</string>
+	<string>5.10.0</string>
 	<key>Card Updates</key>
 	<dict>
+		<key>5.10.0</key>
+		<array>
+			<string>DD3_JVC</string>
+			<string>DD3_GVL</string>
+			<string>DD3_EVG</string>
+			<string>DD3_DVD</string>
+		</array>
+		<key>5.9.1</key>
+		<array>
+			<string>VMA</string>
+			<string>9BS</string>
+			<string>8BS</string>
+		</array>
 		<key>5.8.7</key>
 		<array>
 			<string>pFNM</string>

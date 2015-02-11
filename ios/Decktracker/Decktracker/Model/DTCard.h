@@ -36,6 +36,7 @@
 @property (nonatomic, retain) NSString * sectionNameInitial;
 @property (nonatomic, retain) NSString * sectionType;
 @property (nonatomic, retain) NSString * source;
+@property (nonatomic, retain) NSNumber * starter;
 @property (nonatomic, retain) NSDate * tcgPlayerFetchDate;
 @property (nonatomic, retain) NSNumber * tcgPlayerFoilPrice;
 @property (nonatomic, retain) NSNumber * tcgPlayerHighPrice;

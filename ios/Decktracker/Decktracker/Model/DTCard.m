@@ -44,6 +44,7 @@
 @dynamic sectionNameInitial;
 @dynamic sectionType;
 @dynamic source;
+@dynamic starter;
 @dynamic tcgPlayerFetchDate;
 @dynamic tcgPlayerFoilPrice;
 @dynamic tcgPlayerHighPrice;
