@@ -17,9 +17,9 @@ int main(int argc, const char * argv[])
         /* Step 1 */
         JSONLoader *jsonLoader = [[JSONLoader alloc] init];
 //        [jsonLoader parseCards1stPass];
-        [jsonLoader parseCards2ndPass];
+//        [jsonLoader parseCards2ndPass];
 //        [jsonLoader updateTCGSetNames];
-//        [jsonLoader fetchTcgPrices];
+        [jsonLoader fetchTcgPrices];
         
 
         /* Step 2 */
