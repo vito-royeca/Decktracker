@@ -21,6 +21,7 @@ PODS:
   - AFNetworking/UIKit (2.5.0):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
+  - Appirater (2.0.4)
   - Bolts (1.1.3)
   - CAAnimation-EasingEquations (1.0.3)
   - CAAnimationBlocks (0.0.1)
@@ -58,6 +59,7 @@ PODS:
 DEPENDENCIES:
   - ActionSheetPicker-3.0
   - AFNetworking
+  - Appirater
   - CAAnimation-EasingEquations
   - CAAnimationBlocks
   - CorePlot
@@ -81,6 +83,7 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   ActionSheetPicker-3.0: e49127271ec833864f3235ba7261b1f0d093a503
   AFNetworking: 0f54cb5d16ce38c1b76948faffb8d5fb705021c7
+  Appirater: cbdb7f305562cfde585300bfff86da01ae559deb
   Bolts: 3db0a875235e0c9042b013af13af0f00f79b102c
   CAAnimation-EasingEquations: 36bf39151d4423d4946b62373f2ea8ec3d40c478
   CAAnimationBlocks: 981bfca79ac481f07957aa8357885e620637f926

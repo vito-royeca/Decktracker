@@ -54,6 +54,12 @@
 #define COCOAPODS_VERSION_MINOR_ActionSheetPicker_3_0 3
 #define COCOAPODS_VERSION_PATCH_ActionSheetPicker_3_0 12
 
+// Appirater
+#define COCOAPODS_POD_AVAILABLE_Appirater
+#define COCOAPODS_VERSION_MAJOR_Appirater 2
+#define COCOAPODS_VERSION_MINOR_Appirater 0
+#define COCOAPODS_VERSION_PATCH_Appirater 4
+
 // Bolts
 #define COCOAPODS_POD_AVAILABLE_Bolts
 #define COCOAPODS_VERSION_MAJOR_Bolts 1
