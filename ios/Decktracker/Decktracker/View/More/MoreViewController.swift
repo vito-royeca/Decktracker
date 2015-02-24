@@ -12,7 +12,7 @@ class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     var tblMore:UITableView!
     let arrayData = [["Rules": ["Basic Rulebook", "Comprehensive Rules"]],
-//                     ["Tools": ["Card Quiz", "Life Counter"]],
+//                     ["Tools": ["Card Quiz"/*, "Life Counter"*/]],
                      ["": ["Settings"]]]
     
     override func viewDidLoad() {
@@ -76,7 +76,10 @@ class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDe
         cell!.textLabel.text = value
         cell!.imageView.image = nil
         
-        if indexPath.section == 1 {
+        if value == "Card Quiz" {
+            cell!.imageView.image = UIImage(named: "questions.png")
+        }
+        else if value == "Settings" {
             cell!.imageView.image = UIImage(named: "settings.png")
         }
         return cell!
@@ -85,48 +88,39 @@ class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDe
     // UITableViewDelegate
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
     {
-        var newView:UIViewController!;
+        var newView:UIViewController?
         
         let row = arrayData[indexPath.section]
         let key = Array(row.keys)[0]
         let dict = row[key]!
         let value = dict[indexPath.row]
         
-        switch (indexPath.section) {
-        case 0:
-            if indexPath.row == 0 {
-                let pdfs = NSBundle.mainBundle().pathsForResourcesOfType("pdf", inDirectory:"rules")
-                let file = pdfs[indexPath.row] as NSString
-                let document = ReaderDocument.withDocumentFilePath(file, password: nil)
-                let readerView = ReaderViewController(readerDocument:document)
-                readerView.delegate = self
-                newView = readerView
-                newView.hidesBottomBarWhenPushed = true
-                navigationController?.setNavigationBarHidden(true, animated:true)
-                
-            } else if indexPath.row == 1 {
-                let compView = ComprehensiveRulesViewController()
-                newView = compView
-                newView.hidesBottomBarWhenPushed = true
-            }
-
-//        case 1:
-//            if indexPath.row == 0 {
-//                newView = CardQuizViewController()
-//                
-//            } else if indexPath.row == 1 {
-//                newView = LifeCounterViewController()
-//            }
+        if value == "Basic Rulebook" {
+            let pdfs = NSBundle.mainBundle().pathsForResourcesOfType("pdf", inDirectory:"rules")
+            let file = pdfs[indexPath.row] as NSString
+            let document = ReaderDocument.withDocumentFilePath(file, password: nil)
+            let readerView = ReaderViewController(readerDocument:document)
+            readerView.delegate = self
+            newView = readerView
+            newView!.hidesBottomBarWhenPushed = true
+            navigationController?.setNavigationBarHidden(true, animated:true)
             
-        case 1:
+        } else if value == "Comprehensive Rules" {
+            let compView = ComprehensiveRulesViewController()
+            newView = compView
+            newView!.hidesBottomBarWhenPushed = true
+            
+        } else if value == "Card Quiz" {
+            newView = CardQuizViewController()
+            
+        } else if value == "Life Counter" {
+            
+        } else if value == "Settings" {
             newView = SettingsViewController()
-        
-        default:
-            newView = nil
         }
         
         if newView != nil {
-            navigationController?.pushViewController(newView, animated:true)
+            navigationController?.pushViewController(newView!, animated:true)
         }
     }
     

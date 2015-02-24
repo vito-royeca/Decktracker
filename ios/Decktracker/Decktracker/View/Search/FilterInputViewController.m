@@ -364,6 +364,11 @@
                 cell.textLabel.text = set.name;
                 cell.detailTextLabel.text = [NSString stringWithFormat:@"Released: %@ (%@ cards)", [JJJUtil formatDate:set.releaseDate withFormat:@"YYYY-MM-dd"], set.numberOfCards];
             }
+            else if ([[self.filterOptions firstObject] isKindOfClass:[DTFormat class]])
+            {
+                DTFormat *format = arrFilter[indexPath.row];
+                cell.textLabel.text = format.name;
+            }
             else if ([[self.filterOptions firstObject] isKindOfClass:[DTCardRarity class]])
             {
                 DTCardRarity *rarity = arrFilter[indexPath.row];

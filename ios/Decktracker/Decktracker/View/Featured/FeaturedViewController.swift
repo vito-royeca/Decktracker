@@ -75,7 +75,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
     func loadData() {
         arrayData = [[String: [AnyObject]]]()
         
-        let arrRandom = Database.sharedInstance().fetchRandomCards(6) as [DTCard]
+        let arrRandom = Database.sharedInstance().fetchRandomCards(6, withPredicate: nil) as [DTCard]
         var array:[DTCard] = Array()
         array.append(arrRandom.last!)
         for card in arrRandom {

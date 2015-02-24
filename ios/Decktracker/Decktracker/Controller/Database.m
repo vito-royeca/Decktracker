@@ -292,7 +292,6 @@ static Database *_me;
         NSString *fieldName;
         NSArray *defaultFieldValues;
         BOOL bToMany = NO;
-        BOOL bExact = NO;
         
         if ([key isEqualToString:@"Name"])
         {
@@ -301,7 +300,7 @@ static Database *_me;
         else if ([key isEqualToString:@"Set"])
         {
             fieldName = @"set.name";
-            bToMany = YES;
+//            bToMany = YES;
         }
         else if ([key isEqualToString:@"Format"])
         {
@@ -312,7 +311,7 @@ static Database *_me;
         else if ([key isEqualToString:@"Rarity"])
         {
             fieldName = @"rarity.name";
-            bToMany = YES;
+//            bToMany = YES;
         }
         else if ([key isEqualToString:@"Type"])
         {
@@ -343,8 +342,7 @@ static Database *_me;
         else if ([key isEqualToString:@"Artist"])
         {
             fieldName = @"artist.name";
-            bToMany = YES;
-            bExact = YES;
+//            bToMany = YES;
         }
         else if ([key isEqualToString:@"Will Be Reprinted?"])
         {
@@ -357,8 +355,7 @@ static Database *_me;
             NSDictionary *dict = [arrQuery firstObject];
             NSString *condition = [[dict allKeys] firstObject];
             
-            BOOL bMoreKey = sql.length > 0;
-            if (bMoreKey)
+            if (sql.length > 0)
             {
                 [sql appendFormat:@" %@ (", condition];
             }
@@ -638,7 +635,7 @@ static Database *_me;
     }
 }
 
--(NSArray*) fetchRandomCards:(int) howMany
+-(NSArray*) fetchRandomCards:(int) howMany withPredicate:(NSPredicate*) predicate
 {
     NSManagedObjectContext *moc = [NSManagedObjectContext MR_defaultContext];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -649,7 +646,9 @@ static Database *_me;
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"DTCard"
                                               inManagedObjectContext:moc];
     
-    [fetchRequest setEntity:entity];
+    fetchRequest.entity = entity;
+    fetchRequest.predicate = predicate;
+    
     NSUInteger count = [moc countForFetchRequest:fetchRequest error:NULL];
     NSMutableArray *arrIDs = [[NSMutableArray alloc] initWithCapacity:howMany];
     NSArray *array = [[NSMutableArray alloc] init];

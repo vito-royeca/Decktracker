@@ -50,7 +50,7 @@
 -(DTCard*) findCardByMultiverseID:(NSString*) multiverseID;
 -(NSString*) cardRarityIndex:(DTCard*) card;
 -(void) fetchTcgPlayerPriceForCard:(DTCard*) card;
--(NSArray*) fetchRandomCards:(int) howMany;
+-(NSArray*) fetchRandomCards:(int) howMany withPredicate:(NSPredicate*) predicate;
 -(NSArray*) fetchSets:(int) howMany;
 -(BOOL) isCardModern:(DTCard*) card;
 -(void) loadInAppSets;

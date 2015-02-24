@@ -30,7 +30,6 @@ class CardListCollectionViewCell: UICollectionViewCell {
         imgCard!.contentMode = UIViewContentMode.ScaleAspectFit
         imgCard!.clipsToBounds = true
         
-        
         dX = 0
         dY = 0
         dWidth = 25

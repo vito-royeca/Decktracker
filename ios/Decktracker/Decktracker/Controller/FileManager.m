@@ -29,7 +29,7 @@
 
 static FileManager *_me;
 
-+(id) sharedInstance
++ (id) sharedInstance
 {
     if (!_me)
     {
@@ -39,7 +39,7 @@ static FileManager *_me;
     return _me;
 }
 
--(id) init
+- (id) init
 {
     if (self = [super init])
     {
@@ -50,7 +50,7 @@ static FileManager *_me;
     return self;
 }
 
--(NSString*) tempPath
+- (NSString*) tempPath
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *cacheDirectory = [paths firstObject];
@@ -67,7 +67,7 @@ static FileManager *_me;
     return tmp;
 }
 
--(NSString*) cardPath:(DTCard*) card
+- (NSString*) cardPath:(DTCard*) card
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *cacheDirectory = [paths firstObject];
@@ -79,7 +79,7 @@ static FileManager *_me;
     return [[NSFileManager defaultManager] fileExistsAtPath:cardHQPath] ? cardHQPath : ([[NSFileManager defaultManager] fileExistsAtPath:cardPath] ? cardPath : cardBackPath);
 }
 
--(NSString*) cropPath:(DTCard*) card
+- (NSString*) cropPath:(DTCard*) card
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *cacheDirectory = [paths firstObject];
@@ -91,12 +91,12 @@ static FileManager *_me;
     return [[NSFileManager defaultManager] fileExistsAtPath:cropHQPath] ? cropHQPath : ([[NSFileManager defaultManager] fileExistsAtPath:cropPath] ? cropPath : cropBackPath);
 }
 
--(NSString*) cardSetPath:(DTCard*) card
+- (NSString*) cardSetPath:(DTCard*) card
 {
     return [NSString stringWithFormat:@"%@/images/set/%@/%@/48.png", [[NSBundle mainBundle] bundlePath], card.set.code, [[Database sharedInstance] cardRarityIndex:card]];
 }
 
--(NSString*) cardTypePath:(DTCard*) card
+- (NSString*) cardTypePath:(DTCard*) card
 {
     NSString *typePath;
     
@@ -110,7 +110,7 @@ static FileManager *_me;
     return [NSString stringWithFormat:@"%@/images/other/%@/48.png", [[NSBundle mainBundle] bundlePath], typePath];
 }
 
--(NSString*) setPath:(DTSet*) set small:(BOOL) small
+- (NSString*) setPath:(DTSet*) set small:(BOOL) small
 {
     NSArray *rarities = @[@"C", @"R", @"U", @"M", @"S"];
     
@@ -127,7 +127,7 @@ static FileManager *_me;
     return nil;
 }
 
--(void) downloadCardImage:(DTCard*) card immediately:(BOOL) immediately
+- (void) downloadCardImage:(DTCard*) card immediately:(BOOL) immediately
 {
     if (!card)
     {
@@ -202,7 +202,7 @@ static FileManager *_me;
     }
 }
 
--(void) downloadCropImage:(DTCard*) card immediately:(BOOL) immediately
+- (void) downloadCropImage:(DTCard*) card immediately:(BOOL) immediately
 {
     if (!card)
     {
@@ -278,7 +278,7 @@ static FileManager *_me;
     }
 }
 
--(void) processDownloadQueue
+- (void) processDownloadQueue
 {
     if (_downloadQueue.count == 0 || _cuncurrentDownloads > kMaxCuncurrentDownloads)
     {
@@ -342,7 +342,7 @@ static FileManager *_me;
     [operation start];
 }
 
--(NSArray*) loadKeywords
+- (NSArray*) loadKeywords
 {
     NSString *path = [NSString stringWithFormat:@"%@/keywords.plist", [[NSBundle mainBundle] bundlePath]];
     
@@ -350,7 +350,7 @@ static FileManager *_me;
 }
 
 #pragma mark - Files
--(void) moveFilesInDocumentsToCaches
+- (void) moveFilesInDocumentsToCaches
 {
     NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
     NSString *cachePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject];
@@ -373,7 +373,7 @@ static FileManager *_me;
     
 }
 
--(void) setupFilesystem:(FileSystem) fileSystem
+- (void) setupFilesystem:(FileSystem) fileSystem
 {
     if (![self isFileSystemEnabled:fileSystem])
     {
@@ -403,7 +403,7 @@ static FileManager *_me;
     }
 }
 
--(BOOL) isFileSystemEnabled:(FileSystem) fileSystem
+- (BOOL) isFileSystemEnabled:(FileSystem) fileSystem
 {
     switch (fileSystem)
     {
@@ -422,7 +422,7 @@ static FileManager *_me;
     }
 }
 
--(BOOL) isFileSystemAvailable:(FileSystem) fileSystem
+- (BOOL) isFileSystemAvailable:(FileSystem) fileSystem
 {
     switch (fileSystem)
     {
@@ -441,7 +441,7 @@ static FileManager *_me;
     }
 }
 
--(void) connectToFileSystem:(FileSystem) fileSystem
+- (void) connectToFileSystem:(FileSystem) fileSystem
          withViewController:(UIViewController*) viewController
 {
     switch (fileSystem)
@@ -463,7 +463,7 @@ static FileManager *_me;
     }
 }
 
--(void) disconnectFromFileSystem:(FileSystem) fileSystem
+- (void) disconnectFromFileSystem:(FileSystem) fileSystem
 {
     switch (fileSystem)
     {
@@ -485,9 +485,9 @@ static FileManager *_me;
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
--(void) uploadLocalFile:(NSString*) localPath
-           toFileSystem:(FileSystem) fileSystem
-                 atPath:(NSString*) filePath
+- (void) uploadLocalFile:(NSString*) localPath
+            toFileSystem:(FileSystem) fileSystem
+                  atPath:(NSString*) filePath
 {
     if (![self isFileSystemEnabled:fileSystem] ||
         ![self isFileSystemAvailable:fileSystem])
@@ -521,9 +521,9 @@ static FileManager *_me;
     });
 }
 
--(void) downloadFile:(NSString*) filePath
-      fromFileSystem:(FileSystem) fileSystem
-      toLocalPath:(NSString*) localPath
+- (void) downloadFile:(NSString*) filePath
+       fromFileSystem:(FileSystem) fileSystem
+          toLocalPath:(NSString*) localPath
 {
     if (![self isFileSystemEnabled:fileSystem] ||
         ![self isFileSystemAvailable:fileSystem])
@@ -556,7 +556,7 @@ static FileManager *_me;
     });
 }
 
--(NSArray*) listFilesAtPath:(NSString*) path fromFileSystem:(FileSystem) fileSystem
+- (NSArray*) listFilesAtPath:(NSString*) path fromFileSystem:(FileSystem) fileSystem
 {
     NSMutableArray *arrFiles = [[NSMutableArray alloc] init];
 
@@ -610,7 +610,7 @@ static FileManager *_me;
     return arrFiles;
 }
 
--(void) initFilesystem:(FileSystem) fileSystem
+- (void) initFilesystem:(FileSystem) fileSystem
 {
     if (![self isFileSystemEnabled:fileSystem] ||
         ![self isFileSystemAvailable:fileSystem])
@@ -703,7 +703,7 @@ static FileManager *_me;
     }
 }
 
--(void) syncFiles
+- (void) syncFiles
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths firstObject];
@@ -739,7 +739,7 @@ static FileManager *_me;
     }
 }
 
--(void) deleteFileAtPath:(NSString*) path
+- (void) deleteFileAtPath:(NSString*) path
 {
     for (FileSystem i=FileSystemLocal; i<=FileSystemOneDrive; i++)
     {
@@ -773,7 +773,7 @@ static FileManager *_me;
     }
 }
 
--(id) loadFileAtPath:(NSString*) path
+- (id) loadFileAtPath:(NSString*) path
 {
     NSData *data;
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -784,7 +784,7 @@ static FileManager *_me;
     return data ? [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil] : nil;
 }
 
--(void) saveData:(id) data atPath:(NSString*) path
+- (void) saveData:(id) data atPath:(NSString*) path
 {
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -814,6 +814,110 @@ static FileManager *_me;
             [self uploadLocalFile:fileName toFileSystem:i atPath:path];
         }
     }
+}
+
+- (NSArray*) manaImagesForCard:(DTCard *)card
+{
+    NSMutableArray *arrManaImages = [[NSMutableArray alloc] init];
+    NSMutableArray *arrSymbols = [[NSMutableArray alloc] init];
+    int curlyOpen = -1;
+    int curlyClose = -1;
+    
+    for (int i=0; i<card.manaCost.length; i++)
+    {
+        if ([card.manaCost characterAtIndex:i] == '{')
+        {
+            curlyOpen = i;
+        }
+        if ([card.manaCost characterAtIndex:i] == '}')
+        {
+            curlyClose = i;
+        }
+        if (curlyOpen != -1 && curlyClose != -1)
+        {
+            NSString *symbol = [card.manaCost substringWithRange:NSMakeRange(curlyOpen, (curlyClose-curlyOpen)+1)];
+            
+            [arrSymbols addObject:symbol];
+            
+            curlyOpen = -1;
+            curlyClose = -1;
+        }
+    }
+    
+    for (NSString *symbol in arrSymbols)
+    {
+        BOOL bFound = NO;
+        NSString *noCurlies = [[symbol substringWithRange:NSMakeRange(1, symbol.length-2)] stringByReplacingOccurrencesOfString:@"/" withString:@""];
+        NSString *noCurliesReverse = [JJJUtil reverseString:noCurlies];
+        CGFloat width, height;
+        int pngSize;
+        
+        if ([noCurlies isEqualToString:@"100"])
+        {
+            width = 24;
+            height = 13;
+            pngSize = 48;
+        }
+        else if ([noCurlies isEqualToString:@"1000000"])
+        {
+            width = 64;
+            height = 13;
+            pngSize = 96;
+        }
+        else
+        {
+            width = 16;
+            height = 16;
+            pngSize = 32;
+        }
+        
+        for (NSString *mana in kManaSymbols)
+        {
+            if ([mana isEqualToString:noCurlies])
+            {
+                NSString *path = [NSString stringWithFormat:@"%@/images/mana/%@/%d.png", [[NSBundle mainBundle] bundlePath], noCurlies, pngSize];
+                
+                [arrManaImages addObject:@{@"width"  : [NSNumber numberWithFloat:width],
+                                           @"height" : [NSNumber numberWithFloat:height],
+                                           @"path"   : path}];
+                bFound = YES;
+            }
+            else if ([mana isEqualToString:noCurliesReverse])
+            {
+               NSString *path = [NSString stringWithFormat:@"%@/images/mana/%@/%D.png", [[NSBundle mainBundle] bundlePath], noCurliesReverse, pngSize];
+                
+                [arrManaImages addObject:@{@"width"  : [NSNumber numberWithFloat:width],
+                                           @"height" : [NSNumber numberWithFloat:height],
+                                           @"path"   : path}];
+                bFound = YES;
+            }
+        }
+        
+        if (!bFound)
+        {
+            for (NSString *mana in kOtherSymbols)
+            {
+                if ([mana isEqualToString:noCurlies])
+                {
+                    NSString *path = [NSString stringWithFormat:@"%@/images/other/%@/%d.png", [[NSBundle mainBundle] bundlePath], noCurlies, pngSize];
+                    
+                    [arrManaImages addObject:@{@"width"  : [NSNumber numberWithFloat:width],
+                                               @"height" : [NSNumber numberWithFloat:height],
+                                               @"path"   : path}];
+                }
+                else if ([mana isEqualToString:noCurlies])
+                {
+                    NSString *path = [NSString stringWithFormat:@"%@/images/other/%@/%d.png", [[NSBundle mainBundle] bundlePath], noCurliesReverse, pngSize];
+                    
+                    [arrManaImages addObject:@{@"width"  : [NSNumber numberWithFloat:width],
+                                               @"height" : [NSNumber numberWithFloat:height],
+                                               @"path"   : path}];
+                }
+            }
+        }
+    }
+    
+    return arrManaImages;
 }
 
 @end

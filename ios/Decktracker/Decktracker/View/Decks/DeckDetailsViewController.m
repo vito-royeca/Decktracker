@@ -138,15 +138,18 @@
     self.deck = deck;
     self.navigationItem.title = self.deck.name;
     
-    switch (_viewMode) {
-        case DeckDetailsViewModeByList: {
-            [self showTableView];
-            break;
-        }
-        case DeckDetailsViewModeByGrid2x2:
-        case DeckDetailsViewModeByGrid3x3: {
-            [self showGridView];
-            break;
+    if (self.segmentedControl.selectedSegmentIndex == 0)
+    {
+        switch (_viewMode) {
+            case DeckDetailsViewModeByList: {
+                [self showTableView];
+                break;
+            }
+            case DeckDetailsViewModeByGrid2x2:
+            case DeckDetailsViewModeByGrid3x3: {
+                [self showGridView];
+                break;
+            }
         }
     }
 }

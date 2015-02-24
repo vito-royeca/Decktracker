@@ -35,27 +35,28 @@ typedef NS_ENUM(NSInteger, FileSystem)
 
 +(id) sharedInstance;
 
--(NSString*) tempPath;
--(NSString*) cardPath:(DTCard*) card;
--(NSString*) cropPath:(DTCard*) card;
--(NSString*) cardSetPath:(DTCard*) card;
--(NSString*) cardTypePath:(DTCard*) card;
--(NSString*) setPath:(DTSet*) set small:(BOOL) small;
--(void) downloadCardImage:(DTCard*) card immediately:(BOOL) immediately;
--(void) downloadCropImage:(DTCard*) card immediately:(BOOL) immediately;
--(NSArray*) loadKeywords;
+- (NSString*) tempPath;
+- (NSString*) cardPath:(DTCard*) card;
+- (NSString*) cropPath:(DTCard*) card;
+- (NSString*) cardSetPath:(DTCard*) card;
+- (NSString*) cardTypePath:(DTCard*) card;
+- (NSString*) setPath:(DTSet*) set small:(BOOL) small;
+- (void) downloadCardImage:(DTCard*) card immediately:(BOOL) immediately;
+- (void) downloadCropImage:(DTCard*) card immediately:(BOOL) immediately;
+- (NSArray*) loadKeywords;
 
--(void) connectToFileSystem:(FileSystem) fileSystem
+- (void) connectToFileSystem:(FileSystem) fileSystem
          withViewController:(UIViewController*) viewController;
--(void) disconnectFromFileSystem:(FileSystem) fileSystem;
+- (void) disconnectFromFileSystem:(FileSystem) fileSystem;
 
--(void) moveFilesInDocumentsToCaches;
--(void) initFilesystem:(FileSystem) fileSystem;
--(void) setupFilesystem:(FileSystem) fileSystem;
--(void) syncFiles;
--(NSArray*) listFilesAtPath:(NSString*) path fromFileSystem:(FileSystem) fileSystem;
--(void) deleteFileAtPath:(NSString*) path;
--(id) loadFileAtPath:(NSString*) path;
--(void) saveData:(id) data atPath:(NSString*) path;
+- (void) moveFilesInDocumentsToCaches;
+- (void) initFilesystem:(FileSystem) fileSystem;
+- (void) setupFilesystem:(FileSystem) fileSystem;
+- (void) syncFiles;
+- (NSArray*) listFilesAtPath:(NSString*) path fromFileSystem:(FileSystem) fileSystem;
+- (void) deleteFileAtPath:(NSString*) path;
+- (id) loadFileAtPath:(NSString*) path;
+- (void) saveData:(id) data atPath:(NSString*) path;
+- (NSArray*) manaImagesForCard:(DTCard *)card;
 
 @end

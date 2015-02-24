@@ -3,11 +3,15 @@
 <plist version="1.0">
 <dict>
 	<key>JSON Version</key>
-	<string>2.15.1</string>
+	<string>2.15.2</string>
 	<key>Images Version</key>
-	<string>5.10.1</string>
+	<string>5.10.2</string>
 	<key>Card Updates</key>
 	<dict>
+		<key>5.10.2</key>
+		<array>
+			<string>C14</string>
+		</array>
 		<key>5.10.1</key>
 		<array>
 			<string>DD3_EVG</string>
