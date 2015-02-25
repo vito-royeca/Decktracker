@@ -265,6 +265,7 @@ class CardQuizViewController: UIViewController {
         let manaImages = FileManager.sharedInstance().manaImagesForCard(card) as [NSDictionary]
         var dX = CGFloat(0)
         var dY = CGFloat(0)
+        var index = 0
         var dWidth = viewCastingCost!.frame.size.width - CGFloat(manaImages.count * 16)
         var dHeight = CGFloat(20)
         var dFrame:CGRect?
@@ -277,13 +278,14 @@ class CardQuizViewController: UIViewController {
             dWidth = CGFloat((dict["width"] as NSNumber).floatValue)
             dHeight = CGFloat((dict["height"] as NSNumber).floatValue)
             let path = dict["path"] as String
-            dX = viewCastingCost!.frame.size.width - (CGFloat(manaImages.count-find(manaImages, dict)!) * dWidth)
+            dX = viewCastingCost!.frame.size.width - (CGFloat(manaImages.count-index) * dWidth)
             
             dFrame = CGRect(x: dX, y: dY, width: dWidth, height: dHeight)
             let imgMana = UIImageView(frame: dFrame!)
             
             imgMana.image = UIImage(contentsOfFile: path)
             viewCastingCost!.addSubview(imgMana)
+            index++
         }
         
         // load the image
@@ -312,7 +314,7 @@ class CardQuizViewController: UIViewController {
         }
         
         // draw the answer view
-        var index = 0
+        index = 0
         dY = self.viewImage!.frame.origin.y + self.viewImage!.frame.size.height + 5
         for line in lines {
             var arr = Array<UILabel>()

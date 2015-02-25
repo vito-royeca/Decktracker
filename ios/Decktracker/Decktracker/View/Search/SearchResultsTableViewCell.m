@@ -214,13 +214,14 @@
     // then re-add
     CGFloat dY = 0;
     CGFloat dX = 0;
+    int index = 0;
     [self addSubview:self.lblCardName];
     [self addSubview:self.viewManaCost];
     for (NSDictionary *dict in arrManaImages)
     {
         CGFloat dWidth = [dict[@"width"] floatValue];
         CGFloat dHeight = [dict[@"height"] floatValue];
-        dX = self.viewManaCost.frame.size.width - ((arrManaImages.count-[arrManaImages indexOfObject:dict]) * dWidth);
+        dX = self.viewManaCost.frame.size.width - ((arrManaImages.count-index) * dWidth);
         UIImage *image = [[UIImage alloc] initWithContentsOfFile:dict[@"path"]];
 
         UIImageView *imgMana = [[UIImageView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
@@ -228,6 +229,7 @@
         imgMana.image = image;
         
         [self.viewManaCost addSubview:imgMana];
+        index++;
     }
     
     [self showCardPricing];
