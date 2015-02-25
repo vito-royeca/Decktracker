@@ -12,6 +12,7 @@
 #import "Magic.h"
 #import "MainViewController.h"
 
+#import "Appirater.h"
 #import <Crashlytics/Crashlytics.h>
 #import <Dropbox/Dropbox.h>
 #import <FacebookSDK/FacebookSDK.h>
@@ -78,6 +79,13 @@
     
     self.window.rootViewController = viewController;
     [self.window makeKeyAndVisible];
+    
+    [Appirater setAppId:@"913992761"];
+    [Appirater setDaysUntilPrompt:7];
+    [Appirater setUsesUntilPrompt:5];
+    [Appirater setSignificantEventsUntilPrompt:-1];
+    [Appirater setTimeBeforeReminding:2];
+    [Appirater setDebug:NO];
     
     return YES;
 }
