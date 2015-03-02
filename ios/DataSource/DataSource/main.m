@@ -28,7 +28,7 @@ int main(int argc, const char * argv[])
 
         /* Optional */
 //        ImageLoader *imageLoader = [[ImageLoader alloc] init];
-//        [imageLoader downloadSetIcons:@[@"DD3_DVD",@"DD3_EVG",@"DD3_GVL",@"DD3_JVC"]];
+//        [imageLoader downloadSetIcons:@[@"DDO"]];
 //        [imageLoader downloadSymbols];
 //        [imageLoader downloadOtherSymbols];
     }
