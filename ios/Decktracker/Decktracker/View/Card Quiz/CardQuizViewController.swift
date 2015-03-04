@@ -17,18 +17,27 @@ class CardQuizViewController: UIViewController {
     var lblWhite:UILabel?
     var lblColorless:UILabel?
     
+    var manaBlack     = 0
+    var manaBlue      = 0
+    var manaGreen     = 0
+    var manaRed       = 0
+    var manaWhite     = 0
+    var manaColorless = 0
+    
+    var lblCastingCost:UILabel?
     var viewCastingCost:UIView?
     var viewImage:UIImageView?
     var btnAsk:UILabel?
     var btnBuy:UILabel?
     var btnCast:UILabel?
+    var btnNextCard:UILabel?
     var arrAnswers:Array<Array<UILabel>>?
     var arrQuizzes:[UILabel]?
-//    var answerLines:[String]?
-//    var quizLines:[String]?
     var card:DTCard?
     var currentCropPath:String?
-    
+    var currentCardPath:String?
+    var bCardAnswered = false
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -36,8 +45,7 @@ class CardQuizViewController: UIViewController {
         setupManaPoints()
         setupImageView()
         setupFunctionButtons()
-        
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "New Card", style: UIBarButtonItemStyle.Plain, target: self, action: "newCardTapped:")
+        displayCard(generateRandomCard())
         
         self.navigationItem.title = "Card Quiz"
         self.view.backgroundColor = UIColor.whiteColor()
@@ -80,7 +88,7 @@ class CardQuizViewController: UIViewController {
         frame = CGRect(x:dX, y:dY, width:manaLabelWidth, height:manaImageHeight)
         lblBlack = UILabel(frame: frame)
         lblBlack!.text = "x0"
-        lblBlack!.font = UIFont(name: "Magic:the Gathering", size:18)
+        lblBlack!.font = UIFont(name: "Matrix-Bold", size:18)
         lblBlack!.adjustsFontSizeToFitWidth = true
         view.addSubview(lblBlack!)
         
@@ -94,7 +102,7 @@ class CardQuizViewController: UIViewController {
         frame = CGRect(x:dX, y:dY, width:manaLabelWidth, height:manaImageHeight)
         lblBlue = UILabel(frame: frame)
         lblBlue!.text = "x0"
-        lblBlue!.font = UIFont(name: "Magic:the Gathering", size:18)
+        lblBlue!.font = UIFont(name: "Matrix-Bold", size:18)
         lblBlue!.adjustsFontSizeToFitWidth = true
         view.addSubview(lblBlue!)
         
@@ -108,7 +116,7 @@ class CardQuizViewController: UIViewController {
         frame = CGRect(x:dX, y:dY, width:manaLabelWidth, height:manaImageHeight)
         lblGreen = UILabel(frame: frame)
         lblGreen!.text = "x0"
-        lblGreen!.font = UIFont(name: "Magic:the Gathering", size:18)
+        lblGreen!.font = UIFont(name: "Matrix-Bold", size:18)
         lblGreen!.adjustsFontSizeToFitWidth = true
         view.addSubview(lblGreen!)
         
@@ -122,7 +130,7 @@ class CardQuizViewController: UIViewController {
         frame = CGRect(x:dX, y:dY, width:manaLabelWidth, height:manaImageHeight)
         lblRed = UILabel(frame: frame)
         lblRed!.text = "x0"
-        lblRed!.font = UIFont(name: "Magic:the Gathering", size:18)
+        lblRed!.font = UIFont(name: "Matrix-Bold", size:18)
         lblRed!.adjustsFontSizeToFitWidth = true
         view.addSubview(lblRed!)
         
@@ -136,7 +144,7 @@ class CardQuizViewController: UIViewController {
         frame = CGRect(x:dX, y:dY, width:manaLabelWidth, height:manaImageHeight)
         lblWhite = UILabel(frame: frame)
         lblWhite!.text = "x0"
-        lblWhite!.font = UIFont(name: "Magic:the Gathering", size:18)
+        lblWhite!.font = UIFont(name: "Matrix-Bold", size:18)
         lblWhite!.adjustsFontSizeToFitWidth = true
         view.addSubview(lblWhite!)
         
@@ -150,7 +158,7 @@ class CardQuizViewController: UIViewController {
         frame = CGRect(x:dX, y:dY, width:manaLabelWidth, height:manaImageHeight)
         lblColorless = UILabel(frame: frame)
         lblColorless!.text = "x0"
-        lblColorless!.font = UIFont(name: "Magic:the Gathering", size:18)
+        lblColorless!.font = UIFont(name: "Matrix-Bold", size:18)
         lblColorless!.adjustsFontSizeToFitWidth = true
         view.addSubview(lblColorless!)
         
@@ -226,40 +234,41 @@ class CardQuizViewController: UIViewController {
         self.view.addSubview(btnCast!)
     }
 
-    func newCardTapped(sender: AnyObject) {
-        let predicate = NSPredicate(format: "manaCost != nil AND name MATCHES %@", "^.{0,20}") // CMC != nil and name.length <= kMaxQuizCount
-        
+    func generateRandomCard() -> DTCard {
+        // CMC != 0 and name.length <= kMaxQuizCount
+        let predicate = NSPredicate(format: "%K != %@ AND name MATCHES %@", "cmc", NSNumber(integer: 0), "^.{0,20}")
         let cards = Database.sharedInstance().fetchRandomCards(1, withPredicate: predicate)
-
-        if cards.count >= 1 {
-            self.displayCard(cards.first as DTCard)
+        
+        return cards.first as DTCard
+    }
+    
+    func nextCardTapped(sender: UITapGestureRecognizer) {
+        // clean
+        lblCastingCost!.removeFromSuperview()
+        for view in viewCastingCost!.subviews {
+            view.removeFromSuperview()
         }
+        viewCastingCost!.removeFromSuperview()
+        viewImage!.removeFromSuperview()
+        btnNextCard!.removeFromSuperview()
+        bCardAnswered = false
+        
+        setupImageView()
+        setupFunctionButtons()
+        displayCard(generateRandomCard())
     }
     
     func displayCard(card: DTCard) {
         self.card = card
         
         NSNotificationCenter.defaultCenter().removeObserver(self,
+            name:kCardDownloadCompleted,  object:nil)
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector:"loadCardImage:",  name:kCardDownloadCompleted, object:nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self,
             name:kCropDownloadCompleted,  object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self,
             selector:"loadCropImage:",  name:kCropDownloadCompleted, object:nil)
-        
-        // clean
-        for view in viewCastingCost!.subviews {
-            view.removeFromSuperview()
-        }
-        if arrAnswers != nil {
-            for arr in arrAnswers! {
-                for label in arr {
-                    label.removeFromSuperview()
-                }
-            }
-        }
-        if arrQuizzes != nil {
-            for label in arrQuizzes! {
-                label.removeFromSuperview()
-            }
-        }
         
         // draw the mana cost
         let manaImages = FileManager.sharedInstance().manaImagesForCard(card) as [NSDictionary]
@@ -269,11 +278,11 @@ class CardQuizViewController: UIViewController {
         var dWidth = viewCastingCost!.frame.size.width - CGFloat(manaImages.count * 16)
         var dHeight = CGFloat(20)
         var dFrame:CGRect?
-        let lblCastingCost = UILabel(frame: CGRect(x: dX, y: dY, width: dWidth, height: dHeight))
-        lblCastingCost.text = "CASTING COST:"
-        lblCastingCost.font = UIFont(name: "Magic:the Gathering", size:20)
-        lblCastingCost.adjustsFontSizeToFitWidth = true
-        viewCastingCost!.addSubview(lblCastingCost)
+        lblCastingCost = UILabel(frame: CGRect(x: dX, y: dY, width: dWidth, height: dHeight))
+        lblCastingCost!.text = "CASTING COST: "
+        lblCastingCost!.font = UIFont(name: "Magic:the Gathering", size:20)
+        lblCastingCost!.adjustsFontSizeToFitWidth = true
+        viewCastingCost!.addSubview(lblCastingCost!)
         for dict in manaImages {
             dWidth = CGFloat((dict["width"] as NSNumber).floatValue)
             dHeight = CGFloat((dict["height"] as NSNumber).floatValue)
@@ -290,7 +299,8 @@ class CardQuizViewController: UIViewController {
         
         // load the image
         currentCropPath = FileManager.sharedInstance().cropPath(card)
-        self.viewImage!.image = UIImage(contentsOfFile: currentCropPath!)
+        viewImage!.image = UIImage(contentsOfFile: currentCropPath!)
+        FileManager.sharedInstance().downloadCardImage(card, immediately:true)
         FileManager.sharedInstance().downloadCropImage(card, immediately:true)
         
         // tokenize the answer
@@ -340,6 +350,8 @@ class CardQuizViewController: UIViewController {
 //                    label.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: "answerActivated:"))
 //                    label.addGestureRecognizer(UISwipeGestureRecognizer(target: self, action: "quizActivated:"))
                     label.tag = index
+                } else {
+                    label.text = " "
                 }
                 index++
                 
@@ -347,7 +359,7 @@ class CardQuizViewController: UIViewController {
                 self.view.addSubview(label)
                 dX += dWidth
             }
-            arrAnswers?.append(arr)
+            arrAnswers!.append(arr)
             dY += dHeight
             index++
         }
@@ -373,7 +385,7 @@ class CardQuizViewController: UIViewController {
             }
             
             let label = UILabel(frame: dFrame!)
-            label.text = text != nil ? text : ""
+            label.text = text != nil ? text : " "
             label.textAlignment = NSTextAlignment.Center
             label.font = UIFont(name: "Magic:the Gathering", size:20)
             label.textColor = UIColor.whiteColor()
@@ -393,6 +405,122 @@ class CardQuizViewController: UIViewController {
         }
     }
     
+    func displayReward() {
+        var dWidth = self.view.frame.size.width * 0.80
+        var dX = (self.view.frame.size.width - dWidth) / 2
+        var dY = UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height + 40
+        var dHeight = self.view.frame.height - 120
+        
+        var viewImageFrame = CGRect(x: dX, y: dY, width: dWidth, height: dHeight)
+        var btnNextCardFrame = CGRect(x: btnBuy!.frame.origin.x, y: btnBuy!.frame.origin.y+80, width: btnBuy!.frame.size.width, height: btnBuy!.frame.size.height)
+        
+        // clean up
+        viewImage!.removeFromSuperview()
+        if arrAnswers != nil {
+            for arr in arrAnswers! {
+                for label in arr {
+                    label.removeFromSuperview()
+                }
+            }
+        }
+        btnAsk!.removeFromSuperview()
+        btnBuy!.removeFromSuperview()
+        btnCast!.removeFromSuperview()
+        if arrQuizzes != nil {
+            for label in arrQuizzes! {
+                label.removeFromSuperview()
+            }
+        }
+        lblCastingCost!.text = "Added To Your Mana Pool: "
+
+        // load the full card image
+        viewImage = UIImageView(frame: viewImageFrame)
+        viewImage!.contentMode = UIViewContentMode.ScaleAspectFit
+        self.view.addSubview(viewImage!)
+        currentCardPath = FileManager.sharedInstance().cardPath(card)
+        viewImage!.image = UIImage(contentsOfFile: currentCardPath!)
+        FileManager.sharedInstance().downloadCardImage(card, immediately:true)
+        
+        // draw the next card button
+        btnNextCard = UILabel(frame: btnNextCardFrame)
+        btnNextCard!.text = "NEXT CARD"
+        btnNextCard!.textAlignment = NSTextAlignment.Center
+        btnNextCard!.font = UIFont(name: "Magic:the Gathering", size:14)
+        btnNextCard!.textColor = UIColor.whiteColor()
+        btnNextCard!.backgroundColor = UIColorFromRGB(0x691F01)
+        btnNextCard!.layer.borderColor = UIColor.whiteColor().CGColor
+        btnNextCard!.layer.borderWidth = 1
+        btnNextCard!.userInteractionEnabled = true
+        btnNextCard!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "nextCardTapped:"))
+        self.view.addSubview(btnNextCard!)
+        
+        // update the mana pool
+        for dict in FileManager.sharedInstance().manaImagesForCard(card) as [NSDictionary] {
+            let symbol = dict["symbol"] as String
+            
+            if symbol == "B" {
+                manaBlack++
+            } else if symbol == "U" {
+                manaBlue++
+            } else if symbol == "G" {
+                manaGreen++
+            } else if symbol == "R" {
+                manaRed++
+            } else if symbol == "W" {
+                manaWhite++
+            } else if symbol == "1" {
+                manaColorless += 1
+            } else if symbol == "2" {
+                manaColorless += 2
+            } else if symbol == "3" {
+                manaColorless += 3
+            } else if symbol == "4" {
+                manaColorless += 4
+            } else if symbol == "5" {
+                manaColorless += 5
+            } else if symbol == "6" {
+                manaColorless += 6
+            } else if symbol == "7" {
+                manaColorless += 7
+            } else if symbol == "8" {
+                manaColorless += 8
+            } else if symbol == "9" {
+                manaColorless += 9
+            } else if symbol == "10" {
+                manaColorless += 10
+            } else if symbol == "11" {
+                manaColorless += 11
+            } else if symbol == "12" {
+                manaColorless += 12
+            } else if symbol == "13" {
+                manaColorless += 13
+            } else if symbol == "14" {
+                manaColorless += 14
+            } else if symbol == "15" {
+                manaColorless += 15
+            } else if symbol == "16" {
+                manaColorless += 16
+            } else if symbol == "17" {
+                manaColorless += 17
+            } else if symbol == "18" {
+                manaColorless += 18
+            } else if symbol == "19" {
+                manaColorless += 19
+            } else if symbol == "20" {
+                manaColorless += 20
+            } else if symbol == "100" { // should not allow this
+                manaColorless += 100
+            }
+        }
+
+        lblBlack!.text = "x\(manaBlack)"
+        lblBlue!.text = "x\(manaBlue)"
+        lblGreen!.text = "x\(manaGreen)"
+        lblRed!.text = "x\(manaRed)"
+        lblWhite!.text = "x\(manaWhite)"
+        lblColorless!.text = "x\(manaColorless)"
+    }
+    
     func loadCropImage(sender: AnyObject) {
         let dict = sender.userInfo as Dictionary?
         let card = dict?["card"] as DTCard
@@ -406,6 +534,32 @@ class CardQuizViewController: UIViewController {
                 UIView.transitionWithView(viewImage!,
                     duration:1,
                     options: UIViewAnimationOptions.TransitionCrossDissolve,
+                    animations: { self.viewImage!.image = hiResImage },
+                    completion: nil)
+            }
+            
+            NSNotificationCenter.defaultCenter().removeObserver(self,
+                name:kCropDownloadCompleted,  object:nil)
+        }
+    }
+    
+    func loadCardImage(sender: AnyObject) {
+        if !bCardAnswered {
+            return
+        }
+
+        let dict = sender.userInfo as Dictionary?
+        let card = dict?["card"] as DTCard
+        
+        if (self.card == card) {
+            let path = FileManager.sharedInstance().cardPath(card)
+            
+            if path != currentCardPath {
+                let hiResImage = UIImage(contentsOfFile: path)
+                
+                UIView.transitionWithView(viewImage!,
+                    duration:1,
+                    options: UIViewAnimationOptions.TransitionFlipFromLeft,
                     animations: { self.viewImage!.image = hiResImage },
                     completion: nil)
             }
@@ -446,8 +600,16 @@ class CardQuizViewController: UIViewController {
             return
         }
         
+        for arr in arrAnswers! {
+            for lblAnswer in arr {
+                if lblAnswer.textColor == UIColor.redColor() {
+                    lblAnswer.textColor = UIColor.whiteColor()
+                }
+            }
+        }
+        
         for lblQuiz in arrQuizzes! {
-            if lblQuiz.text == "" {
+            if lblQuiz.text == " " {
                 lblQuiz.text = label.text
                 label.text = "*"
                 return
@@ -458,7 +620,7 @@ class CardQuizViewController: UIViewController {
     func quizActivated(sender: UITapGestureRecognizer) {
         let label = sender.view as UILabel
         
-        if label.text == "" {
+        if label.text == " " {
             return
         }
         
@@ -468,7 +630,7 @@ class CardQuizViewController: UIViewController {
             for lblAnswer in arr {
                 if lblAnswer.text == "*" {
                     lblAnswer.text = label.text
-                    label.text = ""
+                    label.text = " "
                     bBreak = true
                     break
                 }
@@ -486,21 +648,24 @@ class CardQuizViewController: UIViewController {
             }
             answer += " "
         }
-        answer.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
-        if answer.lowercaseString == self.card!.name.lowercaseString {
-            println("Bingo")
-            let predicate = NSPredicate(format: "manaCost != nil AND name MATCHES %@", "^.{0,20}") // CMC != nil and name.length <= kMaxQuizCount
-            
-            let cards = Database.sharedInstance().fetchRandomCards(1, withPredicate: predicate)
-            
-            if cards.count >= 1 {
-                self.displayCard(cards.first as DTCard)
+        answer = answer.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+        
+        if answer.rangeOfString("*") == nil {
+            if answer.lowercaseString == self.card!.name.lowercaseString {
+                bCardAnswered = true
+                displayReward()
+                
+            } else {
+                for arr in arrAnswers! {
+                    for lblAnswer in arr {
+                        lblAnswer.textColor = UIColor.redColor()
+                    }
+                }
             }
         }
     }
     
     func quizForCard(card: DTCard) -> String {
-//        let alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         let count = countElements(card.name)
         var quiz = String()
         var name = Array(card.name)
@@ -514,24 +679,45 @@ class CardQuizViewController: UIViewController {
             name.removeAtIndex(random)
         }
         
-//        for i in 0...19-count-1 {
-//            switch i%2 {
-//            case 0:
-//                if name.count-1 <= 19 {
-//                    quiz += ""
-//                }
-//            case 1:
-//                let random = Int(arc4random_uniform(UInt32(name.count-1)))
-//                let letter = String(name[random])
-//                if letter != " " {
-//                    quiz += letter.capitalizedString
-//                }
-//                name.removeAtIndex(random)
-//            default:
-//                break
-//            }
-//        }
-        
-        return quiz
+        // add random spaces
+        var jumble = String()
+        var countQuiz = countElements(quiz)
+        var countSpaces = 20 - countQuiz
+        var iQuiz = 0
+        var iSpaces = 0
+        for i in 0...19 {
+            switch Int(arc4random_uniform(UInt32(2))) {
+            case 0:
+                if iQuiz <= countQuiz-1 {
+                    let index = advance(quiz.startIndex, iQuiz)
+                    let letter = String(quiz[index])
+                    jumble += letter
+                    iQuiz++
+                    
+                } else if iSpaces <= countSpaces-1 {
+                    jumble += " "
+                    iSpaces++
+                    
+                }
+                
+            case 1:
+                if iSpaces <= countSpaces-1 {
+                    jumble += " "
+                    iSpaces++
+
+                } else if iQuiz <= countQuiz-1 {
+                    let index = advance(quiz.startIndex, iQuiz)
+                    let letter = String(quiz[index])
+                    jumble += letter
+                    iQuiz++
+                    
+                }
+
+            default:
+                break
+            }
+        }
+        println("\(card.name)")
+        return jumble
     }
 }

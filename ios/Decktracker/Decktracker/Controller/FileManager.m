@@ -879,7 +879,8 @@ static FileManager *_me;
                 
                 [arrManaImages addObject:@{@"width"  : [NSNumber numberWithFloat:width],
                                            @"height" : [NSNumber numberWithFloat:height],
-                                           @"path"   : path}];
+                                           @"path"   : path,
+                                           @"symbol" : mana}];
                 bFound = YES;
             }
             else if ([mana isEqualToString:noCurliesReverse])
@@ -888,7 +889,8 @@ static FileManager *_me;
                 
                 [arrManaImages addObject:@{@"width"  : [NSNumber numberWithFloat:width],
                                            @"height" : [NSNumber numberWithFloat:height],
-                                           @"path"   : path}];
+                                           @"path"   : path,
+                                           @"symbol" : mana}];
                 bFound = YES;
             }
         }
@@ -903,7 +905,8 @@ static FileManager *_me;
                     
                     [arrManaImages addObject:@{@"width"  : [NSNumber numberWithFloat:width],
                                                @"height" : [NSNumber numberWithFloat:height],
-                                               @"path"   : path}];
+                                               @"path"   : path,
+                                               @"symbol" : mana}];
                 }
                 else if ([mana isEqualToString:noCurlies])
                 {
@@ -911,7 +914,8 @@ static FileManager *_me;
                     
                     [arrManaImages addObject:@{@"width"  : [NSNumber numberWithFloat:width],
                                                @"height" : [NSNumber numberWithFloat:height],
-                                               @"path"   : path}];
+                                               @"path"   : path,
+                                               @"symbol" : mana}];
                 }
             }
         }
