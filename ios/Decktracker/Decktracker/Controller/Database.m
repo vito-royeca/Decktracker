@@ -637,6 +637,8 @@ static Database *_me;
 
 -(NSArray*) fetchRandomCards:(int) howMany withPredicate:(NSPredicate*) predicate
 {
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    
     NSManagedObjectContext *moc = [NSManagedObjectContext MR_defaultContext];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:@"name"
@@ -646,37 +648,46 @@ static Database *_me;
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"DTCard"
                                               inManagedObjectContext:moc];
     
+    // to do: exclude In-App Sets
+    NSArray *inAppSetCodes = [self inAppSetCodes];
+    if (inAppSetCodes.count > 0)
+    {
+        NSPredicate *predInAppSets = [NSPredicate predicateWithFormat:@"NOT (set.code IN %@)", inAppSetCodes];
+        
+        predicate = predicate ? [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, predInAppSets]] : predInAppSets;
+    }
+    
     fetchRequest.entity = entity;
     fetchRequest.predicate = predicate;
+    fetchRequest.sortDescriptors = @[sortDescriptor1, sortDescriptor2];
+
+//    NSUInteger count = [moc countForFetchRequest:fetchRequest error:nil];
+//    if (count > 0)
+//    {
+//        [fetchRequest setFetchLimit:1];
+//        
+//        for (int i=0; i<howMany; i++)
+//        {
+//            int random = arc4random() % (count - 1) + 1;
+//            NSError *error = nil;
+//            
+//            [fetchRequest setFetchOffset:random];
+//            [array addObject:[[moc executeFetchRequest:fetchRequest error:&error] firstObject]];
+//        }
+//    }
     
-    NSUInteger count = [moc countForFetchRequest:fetchRequest error:NULL];
-    NSMutableArray *arrIDs = [[NSMutableArray alloc] initWithCapacity:howMany];
-    NSArray *array = [[NSMutableArray alloc] init];
+    fetchRequest.resultType = NSManagedObjectIDResultType;
+    NSError *error = nil;
+    NSArray *arrIDs = [moc executeFetchRequest:fetchRequest error:&error];
     
-    if (count > 0)
+    if (arrIDs.count > 0)
     {
         for (int i=0; i<howMany; i++)
         {
-            [arrIDs addObject:[NSNumber numberWithInt:arc4random()%count]];
+            int random = arc4random() % (arrIDs.count - 1) + 1;
+            [array addObject:[moc objectWithID:arrIDs[random]]];
         }
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"cardID IN(%@)", arrIDs];
-        
-        // to do: exclude In-App Sets
-        NSArray *inAppSetCodes = [self inAppSetCodes];
-        if (inAppSetCodes.count > 0)
-        {
-            NSPredicate *predInAppSets = [NSPredicate predicateWithFormat:@"NOT (set.code IN %@)", inAppSetCodes];
-            predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, predInAppSets]];
-        }
-        
-        [fetchRequest setPredicate:predicate];
-        [fetchRequest setSortDescriptors:@[sortDescriptor1, sortDescriptor2]];
-        [fetchRequest setFetchLimit:howMany];
-        
-        NSError *error = nil;
-        array = [moc executeFetchRequest:fetchRequest error:&error];
     }
-    
     return array;
 }
 

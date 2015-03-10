@@ -23,6 +23,8 @@
 #import "GAI.h"
 #endif
 
+#import "Decktracker-Swift.h"
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -86,6 +88,16 @@
     [Appirater setSignificantEventsUntilPrompt:-1];
     [Appirater setTimeBeforeReminding:2];
     [Appirater setDebug:NO];
+    
+//    CardQuizViewController *quiz = [[CardQuizViewController alloc] init];
+//    for (int i=0; i<20; i++)
+//    {
+//        NSDate *dateStart = [NSDate date];
+//        DTCard *card = [quiz generateRandomCard];
+//        NSDate *dateEnd = [NSDate date];
+//        NSTimeInterval timeDifference = [dateEnd timeIntervalSinceDate:dateStart];
+//        NSLog(@"%@ (%@) / Time Elapsed: %@",  card.name, card.cmc, [JJJUtil formatInterval:timeDifference]);
+//    }
     
     return YES;
 }

@@ -8,8 +8,20 @@
 
 import UIKit
 
-class CardQuizViewController: UIViewController {
+class CardQuizViewController: UIViewController, MBProgressHUDDelegate {
 
+    let kManaLabelColor  = UIColor.whiteColor()
+    let kLabelColor      = UIColor.whiteColor()
+    let kTileTextColor   = UIColor.whiteColor()
+    let kTileColor       = UInt(0x434343) // silver
+    let kTileBorderColor = UInt(0x191919) // black
+    
+    let kManaLabelFont  = UIFont(name: "Magic:the Gathering", size:18)
+    let kLabelFont      = UIFont(name: "Magic:the Gathering", size:20)
+    let kTileAnswerFont = UIFont(name: "Magic:the Gathering", size:18)
+    let kTileQuizFont   = UIFont(name: "Magic:the Gathering", size:20)
+    let kTileButtonFont = UIFont(name: "Magic:the Gathering", size:14)
+    
     var lblBlack:UILabel?
     var lblBlue:UILabel?
     var lblGreen:UILabel?
@@ -27,6 +39,7 @@ class CardQuizViewController: UIViewController {
     var lblCastingCost:UILabel?
     var viewCastingCost:UIView?
     var viewImage:UIImageView?
+//    var circleImage:UIImageView?
     var btnAsk:UILabel?
     var btnBuy:UILabel?
     var btnCast:UILabel?
@@ -42,13 +55,14 @@ class CardQuizViewController: UIViewController {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
+        self.card = self.generateRandomCard()
         setupManaPoints()
         setupImageView()
         setupFunctionButtons()
-        displayCard(generateRandomCard())
+        displayCard()
         
         self.navigationItem.title = "Card Quiz"
-        self.view.backgroundColor = UIColor.whiteColor()
+        self.view.backgroundColor = UIColor(patternImage: UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/Gray_Patterned_BG.jpg")!)
         
 #if !DEBUG
         // send the screen to Google Analytics
@@ -69,117 +83,128 @@ class CardQuizViewController: UIViewController {
     }
 
     func setupManaPoints() {
-        let view = UIView(frame: CGRect(x:10, y:UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height, width:self.view.frame.size.width+5, height:20))
-        view.backgroundColor = UIColor.whiteColor()
-        
         let manaWidth = (self.view.frame.size.width-10)/6
         let manaImageWidth = CGFloat(16)
         let manaImageHeight = CGFloat(16)
         let manaLabelWidth = manaWidth-manaImageWidth
+        let manaLabelHeight = manaImageHeight+2
         
-        var dX:CGFloat = 0
-        var dY:CGFloat = 5
+        var dX:CGFloat = 10
+        var dY:CGFloat = UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height+5
         var frame = CGRect(x:dX, y:dY, width:manaImageWidth, height:manaImageHeight)
         var imageView = UIImageView(frame: frame)
         imageView.image = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/mana/B/32.png")
-        view.addSubview(imageView)
+        self.view.addSubview(imageView)
         
         dX = frame.origin.x + frame.size.width
-        frame = CGRect(x:dX, y:dY, width:manaLabelWidth, height:manaImageHeight)
+        frame = CGRect(x:dX, y:dY, width:manaLabelWidth, height:manaLabelHeight)
         lblBlack = UILabel(frame: frame)
-        lblBlack!.text = "x0"
-        lblBlack!.font = UIFont(name: "Matrix-Bold", size:18)
+        lblBlack!.text = " 0"
+        lblBlack!.font = kManaLabelFont
         lblBlack!.adjustsFontSizeToFitWidth = true
-        view.addSubview(lblBlack!)
+        lblBlack!.textColor = kManaLabelColor
+        self.view.addSubview(lblBlack!)
         
         dX = frame.origin.x + frame.size.width
         frame = CGRect(x:dX, y:dY, width:manaImageWidth, height:manaImageHeight)
         imageView = UIImageView(frame: frame)
         imageView.image = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/mana/U/32.png")
-        view.addSubview(imageView)
+        self.view.addSubview(imageView)
         
         dX = frame.origin.x + frame.size.width
-        frame = CGRect(x:dX, y:dY, width:manaLabelWidth, height:manaImageHeight)
+        frame = CGRect(x:dX, y:dY, width:manaLabelWidth, height:manaLabelHeight)
         lblBlue = UILabel(frame: frame)
-        lblBlue!.text = "x0"
-        lblBlue!.font = UIFont(name: "Matrix-Bold", size:18)
+        lblBlue!.text = " 0"
+        lblBlue!.font = kManaLabelFont
         lblBlue!.adjustsFontSizeToFitWidth = true
-        view.addSubview(lblBlue!)
+        lblBlue!.textColor = kManaLabelColor
+        self.view.addSubview(lblBlue!)
         
         dX = frame.origin.x + frame.size.width
         frame = CGRect(x:dX, y:dY, width:manaImageWidth, height:manaImageHeight)
         imageView = UIImageView(frame: frame)
         imageView.image = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/mana/G/32.png")
-        view.addSubview(imageView)
+        self.view.addSubview(imageView)
         
         dX = frame.origin.x + frame.size.width
-        frame = CGRect(x:dX, y:dY, width:manaLabelWidth, height:manaImageHeight)
+        frame = CGRect(x:dX, y:dY, width:manaLabelWidth, height:manaLabelHeight)
         lblGreen = UILabel(frame: frame)
-        lblGreen!.text = "x0"
-        lblGreen!.font = UIFont(name: "Matrix-Bold", size:18)
+        lblGreen!.text = " 0"
+        lblGreen!.font = kManaLabelFont
         lblGreen!.adjustsFontSizeToFitWidth = true
-        view.addSubview(lblGreen!)
+        lblGreen!.textColor = kManaLabelColor
+        self.view.addSubview(lblGreen!)
         
         dX = frame.origin.x + frame.size.width
         frame = CGRect(x:dX, y:dY, width:manaImageWidth, height:manaImageHeight)
         imageView = UIImageView(frame: frame)
         imageView.image = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/mana/R/32.png")
-        view.addSubview(imageView)
+        self.view.addSubview(imageView)
         
         dX = frame.origin.x + frame.size.width
-        frame = CGRect(x:dX, y:dY, width:manaLabelWidth, height:manaImageHeight)
+        frame = CGRect(x:dX, y:dY, width:manaLabelWidth, height:manaLabelHeight)
         lblRed = UILabel(frame: frame)
-        lblRed!.text = "x0"
-        lblRed!.font = UIFont(name: "Matrix-Bold", size:18)
+        lblRed!.text = " 0"
+        lblRed!.font = kManaLabelFont
         lblRed!.adjustsFontSizeToFitWidth = true
-        view.addSubview(lblRed!)
+        lblRed!.textColor = kManaLabelColor
+        self.view.addSubview(lblRed!)
         
         dX = frame.origin.x + frame.size.width
         frame = CGRect(x:dX, y:dY, width:manaImageWidth, height:manaImageHeight)
         imageView = UIImageView(frame: frame)
         imageView.image = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/mana/W/32.png")
-        view.addSubview(imageView)
+        self.view.addSubview(imageView)
         
         dX = frame.origin.x + frame.size.width
-        frame = CGRect(x:dX, y:dY, width:manaLabelWidth, height:manaImageHeight)
+        frame = CGRect(x:dX, y:dY, width:manaLabelWidth, height:manaLabelHeight)
         lblWhite = UILabel(frame: frame)
-        lblWhite!.text = "x0"
-        lblWhite!.font = UIFont(name: "Matrix-Bold", size:18)
+        lblWhite!.text = " 0"
+        lblWhite!.font = kManaLabelFont
         lblWhite!.adjustsFontSizeToFitWidth = true
-        view.addSubview(lblWhite!)
+        lblWhite!.textColor = kManaLabelColor
+        self.view.addSubview(lblWhite!)
         
         dX = frame.origin.x + frame.size.width
         frame = CGRect(x:dX, y:dY, width:manaImageWidth, height:manaImageHeight)
         imageView = UIImageView(frame: frame)
         imageView.image = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/mana/Colorless/32.png")
-        view.addSubview(imageView)
+        self.view.addSubview(imageView)
         
         dX = frame.origin.x + frame.size.width
-        frame = CGRect(x:dX, y:dY, width:manaLabelWidth, height:manaImageHeight)
+        frame = CGRect(x:dX, y:dY, width:manaLabelWidth, height:manaLabelHeight)
         lblColorless = UILabel(frame: frame)
-        lblColorless!.text = "x0"
-        lblColorless!.font = UIFont(name: "Matrix-Bold", size:18)
+        lblColorless!.text = " 0"
+        lblColorless!.font = kManaLabelFont
         lblColorless!.adjustsFontSizeToFitWidth = true
-        view.addSubview(lblColorless!)
-        
-        self.view.addSubview(view)
+        lblColorless!.textColor = kManaLabelColor
+        self.view.addSubview(lblColorless!)
     }
     
     func setupImageView() {
-        var dWidth = self.view.frame.size.width * 0.70
-        var dX = (self.view.frame.size.width - dWidth) / 2
-        var dY = UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height + 40
-        var dHeight = CGFloat(16)
-        
+        var dWidth = self.view.frame.size.width
+        var dX = CGFloat(0)
+        var dY = UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height
+        var dHeight = self.view.frame.height - dY - 120
         var frame = CGRect(x:dX, y:dY, width:dWidth, height:dHeight)
+        let circleImage = UIImageView(frame: frame)
+        circleImage.contentMode = UIViewContentMode.ScaleAspectFill
+        circleImage.image = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/Card_Circles.png")
+        self.view.addSubview(circleImage)
+        
+        dWidth = self.view.frame.size.width * 0.70
+        dX = (self.view.frame.size.width - dWidth) / 2
+        dY += 40
+        dHeight = CGFloat(16)
+        frame = CGRect(x:dX, y:dY, width:dWidth, height:dHeight)
         viewCastingCost = UIView(frame: frame)
         self.view.addSubview(viewCastingCost!)
         
-        dY = frame.origin.y + frame.size.height
-        dHeight = dWidth
+        dY = frame.origin.y + frame.size.height + 10
+        dHeight = dWidth - 20
         frame = CGRect(x:dX, y:dY, width:dWidth, height:dHeight)
         viewImage = UIImageView(frame: frame)
-        viewImage!.contentMode = UIViewContentMode.ScaleAspectFit
+        viewImage!.contentMode = UIViewContentMode.ScaleAspectFill//Fit
         self.view.addSubview(viewImage!)
     }
     
@@ -192,75 +217,92 @@ class CardQuizViewController: UIViewController {
         
         // draw the ask button
         btnAsk = UILabel(frame: dFrame)
+        btnAsk!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "askTapped:"))
+        btnAsk!.userInteractionEnabled = true
         btnAsk!.text = "ASK FACEBOOK"
         btnAsk!.textAlignment = NSTextAlignment.Center
-        btnAsk!.font = UIFont(name: "Magic:the Gathering", size:14)
-        btnAsk!.textColor = UIColor.whiteColor()
-        btnAsk!.backgroundColor = UIColorFromRGB(0x691F01)
-        btnAsk!.layer.borderColor = UIColor.whiteColor().CGColor
+        btnAsk!.font = kTileButtonFont
+        btnAsk!.textColor = kTileTextColor
+        btnAsk!.backgroundColor = UIColorFromRGB(kTileColor)
+        btnAsk!.layer.borderColor = UIColorFromRGB(kTileBorderColor).CGColor
         btnAsk!.layer.borderWidth = 1
-        btnAsk!.userInteractionEnabled = true
-        btnAsk!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "askTapped:"))
         self.view.addSubview(btnAsk!)
         
         // draw the buy button
         dX = dFrame.origin.x + dFrame.size.width
         dFrame = CGRect(x: dX, y: dY, width: dWidth, height: dHeight)
         btnBuy = UILabel(frame: dFrame)
+        btnBuy!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "buyTapped:"))
+        btnBuy!.userInteractionEnabled = true
         btnBuy!.text = "BUY MANA"
         btnBuy!.textAlignment = NSTextAlignment.Center
-        btnBuy!.font = UIFont(name: "Magic:the Gathering", size:14)
-        btnBuy!.textColor = UIColor.whiteColor()
-        btnBuy!.backgroundColor = UIColorFromRGB(0x691F01)
-        btnBuy!.layer.borderColor = UIColor.whiteColor().CGColor
+        btnBuy!.font = kTileButtonFont
+        btnBuy!.textColor = kTileTextColor
+        btnBuy!.backgroundColor = UIColorFromRGB(kTileColor)
+        btnBuy!.layer.borderColor = UIColorFromRGB(kTileBorderColor).CGColor
         btnBuy!.layer.borderWidth = 1
-        btnBuy!.userInteractionEnabled = true
-        btnBuy!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "buyTapped:"))
+        
         self.view.addSubview(btnBuy!)
         
         // draw the cast button
         dX = dFrame.origin.x + dFrame.size.width
         dFrame = CGRect(x: dX, y: dY, width: dWidth, height: dHeight)
         btnCast = UILabel(frame: dFrame)
-        btnCast!.text = "CAST"
+        if canCastCard() {
+            btnCast!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "castTapped:"))
+            btnCast!.userInteractionEnabled = true
+            btnCast!.text = "CAST"
+        } else {
+            btnCast!.userInteractionEnabled = false
+            btnCast!.text = " "
+        }
         btnCast!.textAlignment = NSTextAlignment.Center
-        btnCast!.font = UIFont(name: "Magic:the Gathering", size:14)
-        btnCast!.textColor = UIColor.whiteColor()
-        btnCast!.backgroundColor = UIColorFromRGB(0x691F01)
-        btnCast!.layer.borderColor = UIColor.whiteColor().CGColor
+        btnCast!.font = kTileButtonFont
+        btnCast!.textColor = kTileTextColor
+        btnCast!.backgroundColor = UIColorFromRGB(kTileColor)
+        btnCast!.layer.borderColor = UIColorFromRGB(kTileBorderColor).CGColor
         btnCast!.layer.borderWidth = 1
-        btnCast!.userInteractionEnabled = true
-        btnCast!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "castTapped:"))
+        
         self.view.addSubview(btnCast!)
     }
 
     func generateRandomCard() -> DTCard {
         // CMC != 0 and name.length <= kMaxQuizCount
-        let predicate = NSPredicate(format: "%K != %@ AND name MATCHES %@", "cmc", NSNumber(integer: 0), "^.{0,20}")
+        let predicate = NSPredicate(format: "cmc >= 1 AND cmc <= 15 AND name MATCHES %@", "^.{0,20}")
         let cards = Database.sharedInstance().fetchRandomCards(1, withPredicate: predicate)
         
         return cards.first as DTCard
     }
     
     func nextCardTapped(sender: UITapGestureRecognizer) {
-        // clean
-        lblCastingCost!.removeFromSuperview()
-        for view in viewCastingCost!.subviews {
-            view.removeFromSuperview()
+        let hud = MBProgressHUD(view: self.view)
+        hud.delegate = self
+        self.view.addSubview(hud)
+
+        let executingBlock = { () -> Void in
+            // clean
+            self.lblCastingCost!.removeFromSuperview()
+            for view in self.viewCastingCost!.subviews {
+                view.removeFromSuperview()
+            }
+            self.viewCastingCost!.removeFromSuperview()
+            self.viewImage!.removeFromSuperview()
+            self.btnNextCard!.removeFromSuperview()
+            
+            self.card = self.generateRandomCard()
         }
-        viewCastingCost!.removeFromSuperview()
-        viewImage!.removeFromSuperview()
-        btnNextCard!.removeFromSuperview()
-        bCardAnswered = false
         
-        setupImageView()
-        setupFunctionButtons()
-        displayCard(generateRandomCard())
+        let completionBlock = {  () -> Void in
+            self.bCardAnswered = false
+            self.setupImageView()
+            self.setupFunctionButtons()
+            self.displayCard()
+        }
+        
+        hud.showAnimated(true, whileExecutingBlock:executingBlock, completionBlock:completionBlock)
     }
     
-    func displayCard(card: DTCard) {
-        self.card = card
-        
+    func displayCard() {
         NSNotificationCenter.defaultCenter().removeObserver(self,
             name:kCardDownloadCompleted,  object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self,
@@ -279,9 +321,10 @@ class CardQuizViewController: UIViewController {
         var dHeight = CGFloat(20)
         var dFrame:CGRect?
         lblCastingCost = UILabel(frame: CGRect(x: dX, y: dY, width: dWidth, height: dHeight))
-        lblCastingCost!.text = "CASTING COST: "
-        lblCastingCost!.font = UIFont(name: "Magic:the Gathering", size:20)
+        lblCastingCost!.text = "Casting Cost: "
+        lblCastingCost!.font = kLabelFont
         lblCastingCost!.adjustsFontSizeToFitWidth = true
+        lblCastingCost!.textColor = kLabelColor
         viewCastingCost!.addSubview(lblCastingCost!)
         for dict in manaImages {
             dWidth = CGFloat((dict["width"] as NSNumber).floatValue)
@@ -306,7 +349,7 @@ class CardQuizViewController: UIViewController {
         // tokenize the answer
         arrAnswers = Array<Array<UILabel>>()
         var lines = [String]()
-        for word in card.name.componentsSeparatedByString(" ") {
+        for word in self.card!.name.componentsSeparatedByString(" ") {
             var line = lines.last != nil ? lines.last : word
             
             if word == line {
@@ -325,7 +368,7 @@ class CardQuizViewController: UIViewController {
         
         // draw the answer view
         index = 0
-        dY = self.viewImage!.frame.origin.y + self.viewImage!.frame.size.height + 5
+        dY = self.viewImage!.frame.origin.y + self.viewImage!.frame.size.height + 10
         for line in lines {
             var arr = Array<UILabel>()
             
@@ -337,18 +380,15 @@ class CardQuizViewController: UIViewController {
                 let label = UILabel(frame: dFrame!)
                 
                 if character != " " {
-                    label.text = "*"
-                    
-                    label.textAlignment = NSTextAlignment.Center
-                    label.font = UIFont(name: "Magic:the Gathering", size:18)
-                    label.textColor = UIColor.whiteColor()
-                    label.backgroundColor = UIColorFromRGB(0x691F01)
-                    label.layer.borderColor = UIColor.whiteColor().CGColor
-                    label.layer.borderWidth = 1
-                    label.userInteractionEnabled = true
                     label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "answerActivated:"))
-//                    label.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: "answerActivated:"))
-//                    label.addGestureRecognizer(UISwipeGestureRecognizer(target: self, action: "quizActivated:"))
+                    label.userInteractionEnabled = true
+                    label.text = "*"
+                    label.textAlignment = NSTextAlignment.Center
+                    label.font = kTileAnswerFont
+                    label.textColor = kTileTextColor
+                    label.backgroundColor = UIColorFromRGB(kTileColor)
+                    label.layer.borderColor = UIColorFromRGB(kTileBorderColor).CGColor
+                    label.layer.borderWidth = 1
                     label.tag = index
                 } else {
                     label.text = " "
@@ -365,7 +405,7 @@ class CardQuizViewController: UIViewController {
         }
         
         // draw the quiz
-        let quiz = self.quizForCard(card)
+        let quiz = self.quizForCard(self.card!)
         index = 0
         arrQuizzes = Array()
         dWidth = self.view.frame.size.width/10
@@ -385,17 +425,15 @@ class CardQuizViewController: UIViewController {
             }
             
             let label = UILabel(frame: dFrame!)
+            label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "quizActivated:"))
+            label.userInteractionEnabled = true
             label.text = text != nil ? text : " "
             label.textAlignment = NSTextAlignment.Center
-            label.font = UIFont(name: "Magic:the Gathering", size:20)
-            label.textColor = UIColor.whiteColor()
-            label.backgroundColor = UIColorFromRGB(0x691F01)
-            label.layer.borderColor = UIColor.whiteColor().CGColor
+            label.font = kTileQuizFont
+            label.textColor = kTileTextColor
+            label.backgroundColor = UIColorFromRGB(kTileColor)
+            label.layer.borderColor = UIColorFromRGB(kTileBorderColor).CGColor
             label.layer.borderWidth = 1
-            label.userInteractionEnabled = true
-            label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "quizActivated:"))
-//            label.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: "quizActivated:"))
-//            label.addGestureRecognizer(UISwipeGestureRecognizer(target: self, action: "quizActivated:"))
             label.tag = index
             index++
             arrQuizzes!.append(label)
@@ -443,15 +481,15 @@ class CardQuizViewController: UIViewController {
         
         // draw the next card button
         btnNextCard = UILabel(frame: btnNextCardFrame)
+        btnNextCard!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "nextCardTapped:"))
+        btnNextCard!.userInteractionEnabled = true
         btnNextCard!.text = "NEXT CARD"
         btnNextCard!.textAlignment = NSTextAlignment.Center
-        btnNextCard!.font = UIFont(name: "Magic:the Gathering", size:14)
-        btnNextCard!.textColor = UIColor.whiteColor()
-        btnNextCard!.backgroundColor = UIColorFromRGB(0x691F01)
-        btnNextCard!.layer.borderColor = UIColor.whiteColor().CGColor
+        btnNextCard!.font = kTileButtonFont
+        btnNextCard!.textColor = kTileTextColor
+        btnNextCard!.backgroundColor = UIColorFromRGB(kTileColor)
+        btnNextCard!.layer.borderColor = UIColorFromRGB(kTileBorderColor).CGColor
         btnNextCard!.layer.borderWidth = 1
-        btnNextCard!.userInteractionEnabled = true
-        btnNextCard!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "nextCardTapped:"))
         self.view.addSubview(btnNextCard!)
         
         // update the mana pool
@@ -498,27 +536,15 @@ class CardQuizViewController: UIViewController {
                 manaColorless += 14
             } else if symbol == "15" {
                 manaColorless += 15
-            } else if symbol == "16" {
-                manaColorless += 16
-            } else if symbol == "17" {
-                manaColorless += 17
-            } else if symbol == "18" {
-                manaColorless += 18
-            } else if symbol == "19" {
-                manaColorless += 19
-            } else if symbol == "20" {
-                manaColorless += 20
-            } else if symbol == "100" { // should not allow this
-                manaColorless += 100
             }
         }
 
-        lblBlack!.text = "x\(manaBlack)"
-        lblBlue!.text = "x\(manaBlue)"
-        lblGreen!.text = "x\(manaGreen)"
-        lblRed!.text = "x\(manaRed)"
-        lblWhite!.text = "x\(manaWhite)"
-        lblColorless!.text = "x\(manaColorless)"
+        lblBlack!.text     = " \(manaBlack)"
+        lblBlue!.text      = " \(manaBlue)"
+        lblGreen!.text     = " \(manaGreen)"
+        lblRed!.text       = " \(manaRed)"
+        lblWhite!.text     = " \(manaWhite)"
+        lblColorless!.text = " \(manaColorless)"
     }
     
     func loadCropImage(sender: AnyObject) {
@@ -567,15 +593,6 @@ class CardQuizViewController: UIViewController {
             NSNotificationCenter.defaultCenter().removeObserver(self,
                 name:kCropDownloadCompleted,  object:nil)
         }
-    }
-    
-    func UIColorFromRGB(rgbValue: UInt) -> UIColor {
-        return UIColor(
-            red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
-            green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
-            blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
-            alpha: CGFloat(1.0)
-        )
     }
     
     func askTapped(sender: UITapGestureRecognizer) {
@@ -719,5 +736,84 @@ class CardQuizViewController: UIViewController {
         }
         println("\(card.name)")
         return jumble
+    }
+    
+    func canCastCard() -> Bool {
+        var ccBlack     = 0
+        var ccBlue      = 0
+        var ccGreen     = 0
+        var ccRed       = 0
+        var ccWhite     = 0
+        var ccColorless = 0
+        
+        for dict in FileManager.sharedInstance().manaImagesForCard(card) as [NSDictionary] {
+            let symbol = dict["symbol"] as String
+            
+            if symbol == "B" {
+                ccBlack++
+            } else if symbol == "U" {
+                ccBlue++
+            } else if symbol == "G" {
+                ccGreen++
+            } else if symbol == "R" {
+                ccRed++
+            } else if symbol == "W" {
+                ccWhite++
+            } else if symbol == "1" {
+                ccColorless += 1
+            } else if symbol == "2" {
+                ccColorless += 2
+            } else if symbol == "3" {
+                ccColorless += 3
+            } else if symbol == "4" {
+                ccColorless += 4
+            } else if symbol == "5" {
+                ccColorless += 5
+            } else if symbol == "6" {
+                ccColorless += 6
+            } else if symbol == "7" {
+                ccColorless += 7
+            } else if symbol == "8" {
+                ccColorless += 8
+            } else if symbol == "9" {
+                ccColorless += 9
+            } else if symbol == "10" {
+                ccColorless += 10
+            } else if symbol == "11" {
+                ccColorless += 11
+            } else if symbol == "12" {
+                ccColorless += 12
+            } else if symbol == "13" {
+                ccColorless += 13
+            } else if symbol == "14" {
+                ccColorless += 14
+            } else if symbol == "15" {
+                ccColorless += 15
+            }
+        }
+        
+        return
+            (manaBlack  + manaBlue + manaGreen + manaRed  + manaWhite  + manaColorless) > 0 &&
+            manaBlack >= ccBlack &&
+            manaBlue >= ccBlue &&
+            manaGreen >= ccGreen &&
+            manaRed >= ccRed &&
+            manaWhite >= ccWhite &&
+            manaColorless >= ccColorless
+    }
+    
+    
+    func UIColorFromRGB(rgbValue: UInt) -> UIColor {
+        return UIColor(
+            red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
+            green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
+            blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
+            alpha: CGFloat(1.0)
+        )
+    }
+
+//    Mark - MBProgressHUDDelegate methods
+    func hudWasHidden(hud: MBProgressHUD) {
+        hud.removeFromSuperview()
     }
 }

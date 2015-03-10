@@ -12,6 +12,7 @@
 		8C0CF16B1A01E102009137C5 /* Decks in Resources */ = {isa = PBXBuildFile; fileRef = 8C0CF16A1A01E101009137C5 /* Decks */; };
 		8C13467819A9B17B00E0B3C3 /* SearchResultsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C13467619A9B17B00E0B3C3 /* SearchResultsTableViewCell.m */; };
 		8C13467919A9B17B00E0B3C3 /* SearchResultsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C13467719A9B17B00E0B3C3 /* SearchResultsTableViewCell.xib */; };
+		8C14F73D1AAEC589008450DA /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = 8C14F73C1AAEC589008450DA /* fonts */; };
 		8C1623191A1C816400ABC4DB /* TopListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1623181A1C816400ABC4DB /* TopListViewController.swift */; };
 		8C2094E11A5D1611008878D6 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2094E01A5D1611008878D6 /* Accelerate.framework */; };
 		8C26A67919A63FAC00FE00E7 /* AdvanceSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C26A67019A63FAC00FE00E7 /* AdvanceSearchResultsViewController.m */; };
@@ -108,7 +109,6 @@
 		8C3E948419E4207200C7EF21 /* AcknowledgementTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C3E948219E4207200C7EF21 /* AcknowledgementTableViewCell.xib */; };
 		8C467CF019F1132600B27F05 /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C467CEF19F1132600B27F05 /* MoreViewController.swift */; };
 		8C48669E1A69FF200059F2A4 /* database.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8C4866961A69FF200059F2A4 /* database.xcdatamodeld */; };
-		8C49655D19B0692A001C7935 /* Goudy Medieval.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8C49655C19B06929001C7935 /* Goudy Medieval.ttf */; };
 		8C49656719B0A01F001C7935 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C49656619B0A01E001C7935 /* Crashlytics.framework */; };
 		8C5246E119A5137300B10147 /* FileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5246E019A5137300B10147 /* FileManager.m */; };
 		8C524A6519B81E9E005E697B /* DeckDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C524A6419B81E9E005E697B /* DeckDetailsViewController.m */; };
@@ -167,8 +167,6 @@
 		8CF79A6519A8BFA300BE4246 /* DecksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF79A6419A8BFA300BE4246 /* DecksViewController.m */; };
 		8CF79A6B19A8BFB400BE4246 /* CollectionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF79A6A19A8BFB400BE4246 /* CollectionsViewController.m */; };
 		8CFA21D31A64F8CC00E5409B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CFA21D21A64F8CC00E5409B /* Main.storyboard */; };
-		8CFA451219E17817000B5205 /* Matrix Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8CFA451019E17817000B5205 /* Matrix Bold.ttf */; };
-		8CFA451319E17817000B5205 /* MPlantin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8CFA451119E17817000B5205 /* MPlantin.ttf */; };
 		8CFA452019E1B4C0000B5205 /* DownloadSetImagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CFA451F19E1B4C0000B5205 /* DownloadSetImagesViewController.m */; };
 		8CFA452419E1B69A000B5205 /* FCCircularProgressView.license in Resources */ = {isa = PBXBuildFile; fileRef = 8CFA452219E1B69A000B5205 /* FCCircularProgressView.license */; };
 		8CFA452A19E1C580000B5205 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CFA452919E1C580000B5205 /* QuartzCore.framework */; };
@@ -219,6 +217,7 @@
 		8C13467519A9B17B00E0B3C3 /* SearchResultsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultsTableViewCell.h; sourceTree = "<group>"; };
 		8C13467619A9B17B00E0B3C3 /* SearchResultsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultsTableViewCell.m; sourceTree = "<group>"; };
 		8C13467719A9B17B00E0B3C3 /* SearchResultsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultsTableViewCell.xib; sourceTree = "<group>"; };
+		8C14F73C1AAEC589008450DA /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
 		8C1623181A1C816400ABC4DB /* TopListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopListViewController.swift; sourceTree = "<group>"; };
 		8C2094E01A5D1611008878D6 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		8C26A66F19A63FAC00FE00E7 /* AdvanceSearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvanceSearchResultsViewController.h; sourceTree = "<group>"; };
@@ -372,7 +371,6 @@
 		8C48669B1A69FF200059F2A4 /* Nov-15-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Nov-15-2014.xcdatamodel"; sourceTree = "<group>"; };
 		8C48669C1A69FF200059F2A4 /* Nov-4-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Nov-4-2014.xcdatamodel"; sourceTree = "<group>"; };
 		8C48669D1A69FF200059F2A4 /* Oct-5-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Oct-5-2014.xcdatamodel"; sourceTree = "<group>"; };
-		8C49655C19B06929001C7935 /* Goudy Medieval.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Goudy Medieval.ttf"; sourceTree = "<group>"; };
 		8C49656619B0A01E001C7935 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		8C5246DF19A5137300B10147 /* FileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileManager.h; sourceTree = "<group>"; };
 		8C5246E019A5137300B10147 /* FileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileManager.m; sourceTree = "<group>"; };
@@ -448,8 +446,6 @@
 		8CF79A6919A8BFB400BE4246 /* CollectionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionsViewController.h; sourceTree = "<group>"; };
 		8CF79A6A19A8BFB400BE4246 /* CollectionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionsViewController.m; sourceTree = "<group>"; };
 		8CFA21D21A64F8CC00E5409B /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		8CFA451019E17817000B5205 /* Matrix Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Matrix Bold.ttf"; sourceTree = "<group>"; };
-		8CFA451119E17817000B5205 /* MPlantin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MPlantin.ttf; sourceTree = "<group>"; };
 		8CFA451E19E1B4C0000B5205 /* DownloadSetImagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadSetImagesViewController.h; sourceTree = "<group>"; };
 		8CFA451F19E1B4C0000B5205 /* DownloadSetImagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadSetImagesViewController.m; sourceTree = "<group>"; };
 		8CFA452219E1B69A000B5205 /* FCCircularProgressView.license */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = FCCircularProgressView.license; sourceTree = "<group>"; };
@@ -799,12 +795,10 @@
 				8C0CF16A1A01E101009137C5 /* Decks */,
 				8CCFC02D1A3E7C2C004B1853 /* decktracker.plist */,
 				8C019A9F1998A10F00FB22D7 /* decktracker.sqlite */,
-				8C49655C19B06929001C7935 /* Goudy Medieval.ttf */,
+				8C14F73C1AAEC589008450DA /* fonts */,
 				8CADEF1619923DDE004D7658 /* images */,
-				8C5FF9E719AE2EE3003CE54C /* keywords.plist */,
 				8CD627A71A6BEDE000382143 /* In-App Sets.plist */,
-				8CFA451019E17817000B5205 /* Matrix Bold.ttf */,
-				8CFA451119E17817000B5205 /* MPlantin.ttf */,
+				8C5FF9E719AE2EE3003CE54C /* keywords.plist */,
 				8C2A96D119F4D8D00094C97F /* rules */,
 				8C3277FC199A464D00899790 /* style.css */,
 			);
@@ -1115,7 +1109,6 @@
 				8C38C0511A15F6E500FC3411 /* BannerScrollTableViewCell.xib in Resources */,
 				8C2A979919F5027B0094C97F /* Reader-Thumbs.png in Resources */,
 				8C2A979619F5027B0094C97F /* Reader-Mark-Y@2x.png in Resources */,
-				8C49655D19B0692A001C7935 /* Goudy Medieval.ttf in Resources */,
 				8C89BD4319DD33870070E4F5 /* script.pl in Resources */,
 				8C2A978B19F5027B0094C97F /* Reader-Button-H.png in Resources */,
 				8C325F3E1A5A60B200FA58E6 /* DecksTableViewCell.xib in Resources */,
@@ -1132,7 +1125,6 @@
 				8C26A68019A6418900FE00E7 /* Advance Search in Resources */,
 				8CCE99651A6A80D400ECCA1C /* CustomViewCell.xib in Resources */,
 				8C2A978E19F5027B0094C97F /* Reader-Button-N@2x.png in Resources */,
-				8CFA451319E17817000B5205 /* MPlantin.ttf in Resources */,
 				8C89BD5719DD50340070E4F5 /* MBProgressHUD.license in Resources */,
 				8CE971C71A126C0000D4386B /* BannerCollectionViewCell.xib in Resources */,
 				8C89BD4B19DD3D110070E4F5 /* CorePlot.license in Resources */,
@@ -1141,11 +1133,11 @@
 				8C2A978D19F5027B0094C97F /* Reader-Button-N.png in Resources */,
 				8CC5BA691A13509600F3BDD2 /* ThumbCollectionViewCell.xib in Resources */,
 				8C2A979519F5027B0094C97F /* Reader-Mark-Y.png in Resources */,
+				8C14F73D1AAEC589008450DA /* fonts in Resources */,
 				8CAAA0EE1A15057100DD209D /* HorizontalScrollTableViewCell.xib in Resources */,
 				8C89BD4D19DD4F800070E4F5 /* Dropbox.license in Resources */,
 				8C66751119D30B8E00A90C03 /* Settings.bundle in Resources */,
 				8C2E14081990741100023BAA /* Images.xcassets in Resources */,
-				8CFA451219E17817000B5205 /* Matrix Bold.ttf in Resources */,
 				8C89BD4719DD39F60070E4F5 /* AFNetworking.license in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
