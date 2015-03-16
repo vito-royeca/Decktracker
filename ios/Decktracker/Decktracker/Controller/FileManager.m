@@ -69,11 +69,18 @@ static FileManager *_me;
 
 - (NSString*) cardPath:(DTCard*) card
 {
+    return [self cardPath:card forLanguage:nil];
+}
+
+- (NSString*) cardPath:(DTCard*) card forLanguage:(NSString*) languageName
+{
+    NSString *languageInitials = [self languageInitialsForLanguage:languageName];
+
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *cacheDirectory = [paths firstObject];
-    NSString *path = [cacheDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/card/%@/", card.set.code]];
-    NSString *cardHQPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.hq.jpg", card.imageName]];
-    NSString *cardPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.jpg", card.imageName]];
+    NSString *path = [cacheDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/card/%@/%@/", languageInitials, card.set.code]];
+    NSString *cardHQPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.hq.jpg", card.number]];
+    NSString *cardPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.jpg", card.number]];
     NSString *cardBackPath = [NSString stringWithFormat:@"%@/images/cardback.hq.jpg", [[NSBundle mainBundle] bundlePath]];
     
     return [[NSFileManager defaultManager] fileExistsAtPath:cardHQPath] ? cardHQPath : ([[NSFileManager defaultManager] fileExistsAtPath:cardPath] ? cardPath : cardBackPath);
@@ -84,8 +91,8 @@ static FileManager *_me;
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *cacheDirectory = [paths firstObject];
     NSString *path = [cacheDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/crop/%@/", card.set.code]];
-    NSString *cropHQPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.crop.hq.jpg", card.imageName]];
-    NSString *cropPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.crop.jpg", card.imageName]];
+    NSString *cropHQPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.crop.hq.jpg", card.number]];
+    NSString *cropPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.crop.jpg", card.number]];
     NSString *cropBackPath = [NSString stringWithFormat:@"%@/images/cropback.hq.jpg", [[NSBundle mainBundle] bundlePath]];
     
     return [[NSFileManager defaultManager] fileExistsAtPath:cropHQPath] ? cropHQPath : ([[NSFileManager defaultManager] fileExistsAtPath:cropPath] ? cropPath : cropBackPath);
@@ -127,17 +134,26 @@ static FileManager *_me;
     return nil;
 }
 
-- (void) downloadCardImage:(DTCard*) card immediately:(BOOL) immediately
+- (void) downloadCardImage:(DTCard*) card
+               immediately:(BOOL) immediately
+{
+    [self downloadCardImage:card forLanguage:nil immediately:immediately];
+}
+
+- (void) downloadCardImage:(DTCard*) card
+               forLanguage:(NSString*) languageName
+               immediately:(BOOL) immediately
 {
     if (!card)
     {
         return;
     }
 
+    NSString *languageInitials = [self languageInitialsForLanguage:languageName];
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *cacheDirectory = [paths firstObject];
-    NSString *path = [cacheDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/card/%@/", card.set.code]];
-    NSString *cardPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.jpg", card.imageName]];
+    NSString *path = [cacheDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/card/%@/%@/", languageInitials, card.set.code]];
+    NSString *cardPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.jpg", card.number]];
     BOOL bFound = YES;
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:path])
@@ -170,17 +186,8 @@ static FileManager *_me;
     
     if (!bFound)
     {
-        NSURL *url;
+        NSURL *url = [NSURL URLWithString:[[NSString stringWithFormat:@"http://magiccards.info/scans/%@/%@/%@.jpg", languageInitials, card.set.magicCardsCode, card.number] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         
-        if (card.multiverseID && [card.multiverseID intValue] > 0)
-        {
-            url = [NSURL URLWithString:[[NSString stringWithFormat:@"http://mtgimage.com/multiverseid/%@.jpg", card.multiverseID] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-        }
-        else
-        {
-            url = [NSURL URLWithString:[[NSString stringWithFormat:@"http://mtgimage.com/set/%@/%@.jpg", card.set.code, card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-        }
-
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithObjects:@[card, cardPath, url]
                                                                          forKeys:@[@"card", @"path", @"url"]];
         
@@ -212,7 +219,7 @@ static FileManager *_me;
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *cacheDirectory = [paths firstObject];
     NSString *path = [cacheDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/crop/%@/", card.set.code]];
-    NSString *cropPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.crop.jpg", card.imageName]];
+    NSString *cropPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.crop.jpg", card.number]];
     BOOL bFound = YES;
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:path])
@@ -245,16 +252,7 @@ static FileManager *_me;
     
     if (!bFound)
     {
-        NSURL *url;
-        
-        if (card.multiverseID && [card.multiverseID intValue] > 0)
-        {
-            url = [NSURL URLWithString:[[NSString stringWithFormat:@"http://mtgimage.com/multiverseid/%@.crop.jpg", card.multiverseID] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-        }
-        else
-        {
-            url = [NSURL URLWithString:[[NSString stringWithFormat:@"http://mtgimage.com/set/%@/%@.crop.jpg", card.set.code, card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-        }
+        NSURL *url = [NSURL URLWithString:[[NSString stringWithFormat:@"http://magiccards.info/crop/en/%@/%@.jpg", card.set.magicCardsCode, card.number] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithObjects:@[card, cropPath, url]
                                                                          forKeys:@[@"crop", @"path", @"url"]];
@@ -922,6 +920,62 @@ static FileManager *_me;
     }
     
     return arrManaImages;
+}
+
+-(NSString*) languageInitialsForLanguage:(NSString*) languageName
+{
+    NSString *languageInitials;
+    
+    if ([languageName isEqualToString:@"Chinese Simplified"])
+    {
+        languageInitials = @"cn";
+    }
+    else if ([languageName isEqualToString:@"Chinese Traditional"])
+    {
+        languageInitials = @"tw";
+    }
+    else if ([languageName isEqualToString:@"French"])
+    {
+        languageInitials = @"fr";
+    }
+    else if ([languageName isEqualToString:@"German"])
+    {
+        languageInitials = @"de";
+    }
+    else if ([languageName isEqualToString:@"Italian"])
+    {
+        languageInitials = @"it";
+    }
+    else if ([languageName isEqualToString:@"Japanese"])
+    {
+        languageInitials = @"jp";
+    }
+    else if ([languageName isEqualToString:@"Korean"])
+    {
+        languageInitials = @"ko";
+    }
+    else if ([languageName isEqualToString:@"Portuguese"])
+    {
+        languageInitials = @"pt";
+    }
+    else if ([languageName isEqualToString:@"Portuguese (Brazil)"])
+    {
+        languageInitials = @"pt";
+    }
+    else if ([languageName isEqualToString:@"Russian"])
+    {
+        languageInitials = @"ru";
+    }
+    else if ([languageName isEqualToString:@"Spanish"])
+    {
+        languageInitials = @"es";
+    }
+    else
+    {
+        languageInitials = @"en";
+    }
+    
+    return languageInitials;
 }
 
 @end

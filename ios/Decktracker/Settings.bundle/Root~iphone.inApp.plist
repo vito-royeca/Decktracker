@@ -70,7 +70,7 @@
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
-			<string>1.4.9</string>
+			<string>1.4.10</string>
 			<key>Key</key>
 			<string>version</string>
 			<key>Title</key>

@@ -288,13 +288,13 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
         
         cell!.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         cell!.selectionStyle = UITableViewCellSelectionStyle.None
-        cell!.textLabel.text = set.name
+        cell!.textLabel!.text = set.name
         cell!.detailTextLabel?.text = "Released: \(date) (\(set.numberOfCards) cards)"
         
         let dict = Database.sharedInstance().inAppSettingsForSet(set)
         
         if dict != nil {
-            cell!.imageView.image = UIImage(named: "locked.png")
+            cell!.imageView!.image = UIImage(named: "locked.png")
 
         } else {
             let path = FileManager.sharedInstance().setPath(set, small: true)
@@ -302,18 +302,18 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
             if path != nil && NSFileManager.defaultManager().fileExistsAtPath(path) {
                 let setImage = UIImage(contentsOfFile: path)
                 
-                cell!.imageView.image = setImage
+                cell!.imageView!.image = setImage
                 
                 // resize the image
                 let itemSize = CGSizeMake(setImage!.size.width/2, setImage!.size.height/2)
                 UIGraphicsBeginImageContextWithOptions(itemSize, false, UIScreen.mainScreen().scale)
                 let imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height)
                 setImage!.drawInRect(imageRect)
-                cell!.imageView.image = UIGraphicsGetImageFromCurrentImageContext()
+                cell!.imageView!.image = UIGraphicsGetImageFromCurrentImageContext()
                 UIGraphicsEndImageContext()
                 
             } else {
-                cell!.imageView.image = UIImage(named: "blank.png")
+                cell!.imageView!.image = UIImage(named: "blank.png")
             }
         }
         

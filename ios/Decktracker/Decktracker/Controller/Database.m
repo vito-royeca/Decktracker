@@ -57,40 +57,58 @@ static Database *_me;
     NSString *cachePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject];
     NSString *storePath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", kDatabaseStore]];
     
-    NSDictionary *arrCardUpdates = [dict objectForKey:@"Card Updates"];
-    NSArray *sortedKeys = [[arrCardUpdates allKeys] sortedArrayUsingSelector: @selector(compare:)];
-    for (NSString *ver in sortedKeys)
+//    NSDictionary *arrCardUpdates = [dict objectForKey:@"Card Updates"];
+//    NSArray *sortedKeys = [[arrCardUpdates allKeys] sortedArrayUsingSelector: @selector(compare:)];
+//    for (NSString *ver in sortedKeys)
+//    {
+//        for (NSString *setCode in arrCardUpdates[ver])
+//        {
+//            NSString *key = [NSString stringWithFormat:@"%@-%@", ver, setCode];
+//            
+//            if (![[NSUserDefaults standardUserDefaults] boolForKey:key])
+//            {
+//                NSString *path = [cachePath stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/card/%@/", setCode]];
+//                
+//                if ([[NSFileManager defaultManager] fileExistsAtPath:path])
+//                {
+//                    for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil])
+//                    {
+//                        [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@", path, file] error:nil];
+//                    }
+//                }
+//                
+//                path = [cachePath stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/crop/%@/", setCode]];
+//                
+//                if ([[NSFileManager defaultManager] fileExistsAtPath:path])
+//                {
+//                    for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil])
+//                    {
+//                        [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@", path, file] error:nil];
+//                    }
+//                }
+//            }
+//            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:key];
+//        }
+//        [[NSUserDefaults standardUserDefaults] synchronize];
+//    }
+    
+    // delete all cards from mtgimage.com
+    NSString *mtgImageKey = @"mtgimage.com images";
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:mtgImageKey])
     {
-        for (NSString *setCode in arrCardUpdates[ver])
+        NSString *path = [cachePath stringByAppendingPathComponent:@"/images/card"];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:path])
         {
-            NSString *key = [NSString stringWithFormat:@"%@-%@", ver, setCode];
-            
-            if (![[NSUserDefaults standardUserDefaults] boolForKey:key])
-            {
-                NSString *path = [cachePath stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/card/%@/", setCode]];
-                
-                if ([[NSFileManager defaultManager] fileExistsAtPath:path])
-                {
-                    for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil])
-                    {
-                        [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@", path, file] error:nil];
-                    }
-                }
-                
-                path = [cachePath stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/crop/%@/", setCode]];
-                
-                if ([[NSFileManager defaultManager] fileExistsAtPath:path])
-                {
-                    for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil])
-                    {
-                        [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@", path, file] error:nil];
-                    }
-                }
-            }
-            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:key];
+            [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
         }
-        [[NSUserDefaults standardUserDefaults] synchronize];
+
+        path = [cachePath stringByAppendingPathComponent:@"/images/crop"];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:path])
+        {
+            [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
+        }
     }
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:mtgImageKey];
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:storePath])
     {
@@ -657,6 +675,10 @@ static Database *_me;
         predicate = predicate ? [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, predInAppSets]] : predInAppSets;
     }
     
+    // do not include cards without images
+    NSPredicate *predWithoutImages = [NSPredicate predicateWithFormat:@"set.magicCardsCode != nil"];
+    predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, predWithoutImages]];
+
     fetchRequest.entity = entity;
     fetchRequest.predicate = predicate;
     fetchRequest.sortDescriptors = @[sortDescriptor1, sortDescriptor2];

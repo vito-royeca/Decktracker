@@ -16,6 +16,7 @@
 @property (nonatomic, retain) NSString * border;
 @property (nonatomic, retain) NSString * code;
 @property (nonatomic, retain) NSString * gathererCode;
+@property (nonatomic, retain) NSString * magicCardsCode;
 @property (nonatomic, retain) NSNumber * imagesDownloaded;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSNumber * numberOfCards;

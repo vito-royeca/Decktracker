@@ -36,12 +36,16 @@ typedef NS_ENUM(NSInteger, FileSystem)
 +(id) sharedInstance;
 
 - (NSString*) tempPath;
+- (NSString*) cardPath:(DTCard*) card forLanguage:(NSString*) languageName;
 - (NSString*) cardPath:(DTCard*) card;
 - (NSString*) cropPath:(DTCard*) card;
 - (NSString*) cardSetPath:(DTCard*) card;
 - (NSString*) cardTypePath:(DTCard*) card;
 - (NSString*) setPath:(DTSet*) set small:(BOOL) small;
 - (void) downloadCardImage:(DTCard*) card immediately:(BOOL) immediately;
+- (void) downloadCardImage:(DTCard*) card
+               forLanguage:(NSString*) languageName
+               immediately:(BOOL) immediately;
 - (void) downloadCropImage:(DTCard*) card immediately:(BOOL) immediately;
 - (NSArray*) loadKeywords;
 

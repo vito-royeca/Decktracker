@@ -42,6 +42,7 @@
     UIView *_viewSegmented;
     float _newRating;
     NSString *_currentCardImage;
+    NSString *_currentLanguage;
 }
 
 @synthesize card = _card;
@@ -61,9 +62,9 @@
 -(void) setCard:(DTCard *)card
 {
     _card = card;
-    _currentCardImage = [[FileManager sharedInstance] cardPath:card];
+    _currentCardImage = [[FileManager sharedInstance] cardPath:card forLanguage:_currentLanguage];
     
-    [[FileManager sharedInstance] downloadCardImage:_card immediately:YES];
+    [[FileManager sharedInstance] downloadCardImage:_card forLanguage:_currentLanguage immediately:YES];
     [[FileManager sharedInstance] downloadCropImage:_card immediately:YES];
 
     if (self.fetchedResultsController)
@@ -79,7 +80,7 @@
             {
                 DTCard *kard = objects[index+i];
                 
-                [[FileManager sharedInstance] downloadCardImage:kard immediately:NO];
+                [[FileManager sharedInstance] downloadCardImage:kard forLanguage:_currentLanguage immediately:NO];
                 [[FileManager sharedInstance] downloadCropImage:kard immediately:NO];
             }
         }
@@ -240,7 +241,7 @@
         NSMutableArray *sharingItems = [NSMutableArray new];
         
         [sharingItems addObject:[NSString stringWithFormat:@"%@ - via #Decktracker", self.card.name]];
-        [sharingItems addObject:[UIImage imageWithContentsOfFile:[[FileManager sharedInstance] cardPath:self.card]]];
+        [sharingItems addObject:[UIImage imageWithContentsOfFile:[[FileManager sharedInstance] cardPath:self.card forLanguage:_currentLanguage]]];
     
         UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:sharingItems
                                                                                          applicationActivities:nil];
@@ -370,7 +371,7 @@
     
     if (self.card == card)
     {
-        NSString *path = [[FileManager sharedInstance] cardPath:card];
+        NSString *path = [[FileManager sharedInstance] cardPath:card forLanguage:_currentLanguage];
         
         if (![path isEqualToString:_currentCardImage])
         {
@@ -402,7 +403,7 @@
     }
 
 
-    UIImage *image = [UIImage imageWithContentsOfFile:[[FileManager sharedInstance] cardPath:self.card]];
+    UIImage *image = [UIImage imageWithContentsOfFile:[[FileManager sharedInstance] cardPath:self.card forLanguage:_currentLanguage]];
     self.cardImage.image = image;
     self.cardImage.contentMode = UIViewContentModeScaleAspectFit;
     self.cardImage.clipsToBounds = YES;
@@ -413,7 +414,7 @@
                                             onOpen:^{ }
                                            onClose:^{ }];
     
-    [[FileManager sharedInstance] downloadCardImage:self.card immediately:YES];
+    [[FileManager sharedInstance] downloadCardImage:self.card forLanguage:_currentLanguage immediately:YES];
     [self updateNavigationButtons];
 }
 
@@ -605,7 +606,7 @@
     
     if (self.card.artist)
     {
-        NSString *link = [[NSString stringWithFormat:@"card?Artist=%@", self.card.artist.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString *link = [[NSString stringWithFormat:@"artist?name=%@", self.card.artist.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         
         [html appendFormat:@"<tr><td width='50%%' align='right'><div class='detailHeaderSmall'>Artist&nbsp;&nbsp;</div></td>"];
         [html appendFormat:@"<td><div class='detailTextSmall'><a href='%@'>%@</a></div></td></tr>", link, self.card.artist.name];
@@ -636,7 +637,7 @@
     {
         DTCard *card = [[Database sharedInstance] findCard:self.card.name inSet:set.code];
         
-        NSString *link = [[NSString stringWithFormat:@"card?name=%@&set=%@", card.name, card.set.code] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString *link = [[NSString stringWithFormat:@"printings?set=%@&number=%@", card.set.code, card.number] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 
         [html appendFormat:@"<tr><td><a href='%@'>%@</a></td>", link, [self composeSetImage:card]];
         [html appendFormat:@"<td><a href='%@'>%@</a></td></tr>", link, set.name];
@@ -652,7 +653,7 @@
         [html appendFormat:@"<tr><td colspan='2'><table>"];
         for (DTCard *card in [[self.card.names allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]])
         {
-            NSString *link = [[NSString stringWithFormat:@"card?name=%@&set=%@", card.name, card.set.code] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            NSString *link = [[NSString stringWithFormat:@"names?set=%@&number=%@", card.set.code, card.number] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             
             [html appendFormat:@"<tr><td><a href='%@'>%@</a></td>", link, [self composeSetImage:card]];
             [html appendFormat:@"<td><a href='%@'>%@</a></td></tr>", link, card.name];
@@ -667,7 +668,7 @@
         [html appendFormat:@"<tr><td colspan='2'><table>"];
         for (DTCard *card in [[self.card.variations allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]])
         {
-            NSString *link = [[NSString stringWithFormat:@"card?name=%@&set=%@", card.name, card.set.code] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            NSString *link = [[NSString stringWithFormat:@"variations?set=%@&number=%@", card.set.code, card.number] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             
             [html appendFormat:@"<tr><td><a href='%@'>%@</a></td>", link, [self composeSetImage:card]];
             [html appendFormat:@"<td><a href='%@'>%@</a></td></tr>", link, card.name];
@@ -706,6 +707,8 @@
         [html appendFormat:@"<tr><td colspan='2'><table width='100%%'>"];
         for (DTCardForeignName *foreignName in [[self.card.foreignNames allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"language" ascending:YES]]])
         {
+//            NSString *link = [[NSString stringWithFormat:@"foreign?set=%@&language=%@&number=%@", self.card.set.code, foreignName.language, self.card.number] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            
             [html appendFormat:@"<tr><td width='50%%'><div class='detailTextSmall'>%@</div></td>", foreignName.language];
             [html appendFormat:@"<td><div class='detailTextSmall'>%@</div></td></tr>", foreignName.name];
         }
@@ -826,6 +829,7 @@
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
     NSURL *url = [request URL];
+    NSString *path = [[url path] lastPathComponent];
     NSString * q = [url query];
     NSArray * pairs = [q componentsSeparatedByString:@"&"];
     NSMutableDictionary * kvPairs = [NSMutableDictionary dictionary];
@@ -837,37 +841,56 @@
         [kvPairs setObject:value forKey:key];
     }
     
-    if (kvPairs[@"name"] && kvPairs[@"set"])
-    {
+    _currentLanguage = nil;
     
-        self.fetchedResultsController = nil;
-        
-        DTCard *card = [[Database sharedInstance] findCard:kvPairs[@"name"]
-                                                   inSet:kvPairs[@"set"]];
-    
-        [self setCard:card];
-        self.segmentedControl.selectedSegmentIndex = 0;
-        [self switchView];
-    }
-    
-    else if (kvPairs[@"partner"] && [[url host] isEqualToString:@"store.tcgplayer.com"])
-    {
-        [[UIApplication sharedApplication] openURL:[request URL]];
-
-        return NO;
-    }
-    
-    else if (kvPairs[@"Artist"])
+    if ([path isEqualToString:@"artist"])
     {
         SimpleSearchViewController *view = [[SimpleSearchViewController alloc] init];
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"artist.name CONTAINS[cd] %@", kvPairs[@"Artist"]];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"artist.name CONTAINS[cd] %@", kvPairs[@"name"]];
         view.predicate = predicate;
-        view.titleString = kvPairs[@"Artist"];
+        view.titleString = kvPairs[@"name"];
         view.showTabBar = NO;
         [view doSearch];
         
         [self.navigationController pushViewController:view animated:YES];
     }
+    
+    else if ([path isEqualToString:@"printings"] ||
+             [path isEqualToString:@"names"] ||
+             [path isEqualToString:@"variations"])
+    {
+        self.fetchedResultsController = nil;
+        
+
+//        DTCard *card = [[Database sharedInstance] findCard:kvPairs[@"name"]
+//                                                   inSet:kvPairs[@"set"]];
+        DTCard *card = [DTCard MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"set.code = %@ AND number = %@", kvPairs[@"set"], kvPairs[@"number"]]];
+        
+        [self setCard:card];
+        self.segmentedControl.selectedSegmentIndex = 0;
+        [self switchView];
+    }
+    else if ([path isEqualToString:@"foreign"])
+    {
+        _currentLanguage = kvPairs[@"language"];
+        
+        DTCard *card = [DTCard MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"set.code = %@ AND number = %@", kvPairs[@"set"], kvPairs[@"number"]]];
+        
+        [self setCard:card];
+        self.segmentedControl.selectedSegmentIndex = 0;
+        [self switchView];
+    }
+    
+    else
+    {
+        if ([[url host] isEqualToString:@"store.tcgplayer.com"])
+        {
+            [[UIApplication sharedApplication] openURL:[request URL]];
+
+            return NO;
+        }
+    }
+
     return YES;
 }
 
@@ -916,7 +939,7 @@
         }
     }
 
-    return [NSURL fileURLWithPath:[[FileManager sharedInstance] cardPath:self.card]];
+    return [NSURL fileURLWithPath:[[FileManager sharedInstance] cardPath:self.card forLanguage:_currentLanguage]];
 }
 
 - (UIImage*) imageDefaultAtIndex:(NSInteger)index imageViewer:(MHFacebookImageViewer*) imageViewer
@@ -935,7 +958,7 @@
         }
     }
 
-    return [UIImage imageWithContentsOfFile:[[FileManager sharedInstance] cardPath:self.card]];
+    return [UIImage imageWithContentsOfFile:[[FileManager sharedInstance] cardPath:self.card forLanguage:_currentLanguage]];
 }
 
 #pragma mark - UITableView

@@ -12,7 +12,7 @@ class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     var tblMore:UITableView!
     let arrayData = [["Rules": ["Basic Rulebook", "Comprehensive Rules"]],
-                     ["Tools": ["Card Quiz"/*, "Life Counter"*/]],
+//                     ["Tools": ["Card Quiz"/*, "Life Counter"*/]],
                      ["": ["Settings"]]]
     
     override func viewDidLoad() {
@@ -73,14 +73,14 @@ class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let dict = row[key]!
         let value = dict[indexPath.row]
         
-        cell!.textLabel.text = value
-        cell!.imageView.image = nil
+        cell!.textLabel!.text = value
+        cell!.imageView!.image = nil
         
         if value == "Card Quiz" {
-            cell!.imageView.image = UIImage(named: "questions.png")
+            cell!.imageView!.image = UIImage(named: "questions.png")
         }
         else if value == "Settings" {
-            cell!.imageView.image = UIImage(named: "settings.png")
+            cell!.imageView!.image = UIImage(named: "settings.png")
         }
         return cell!
     }

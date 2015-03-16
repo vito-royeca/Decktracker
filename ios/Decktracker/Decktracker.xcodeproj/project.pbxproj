@@ -108,7 +108,6 @@
 		8C3E948319E4207200C7EF21 /* AcknowledgementTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3E948119E4207200C7EF21 /* AcknowledgementTableViewCell.m */; };
 		8C3E948419E4207200C7EF21 /* AcknowledgementTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C3E948219E4207200C7EF21 /* AcknowledgementTableViewCell.xib */; };
 		8C467CF019F1132600B27F05 /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C467CEF19F1132600B27F05 /* MoreViewController.swift */; };
-		8C48669E1A69FF200059F2A4 /* database.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8C4866961A69FF200059F2A4 /* database.xcdatamodeld */; };
 		8C49656719B0A01F001C7935 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C49656619B0A01E001C7935 /* Crashlytics.framework */; };
 		8C5246E119A5137300B10147 /* FileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5246E019A5137300B10147 /* FileManager.m */; };
 		8C524A6519B81E9E005E697B /* DeckDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C524A6419B81E9E005E697B /* DeckDetailsViewController.m */; };
@@ -157,6 +156,7 @@
 		8CD627A61A6BE7E100382143 /* LifeCounterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD627A51A6BE7E100382143 /* LifeCounterViewController.swift */; };
 		8CD627A81A6BEDE000382143 /* In-App Sets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8CD627A71A6BEDE000382143 /* In-App Sets.plist */; };
 		8CD705981A540E3600CF8425 /* BarGraphViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD705971A540E3600CF8425 /* BarGraphViewController.swift */; };
+		8CE2634D1AB0320D00D30826 /* database.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8CE263431AB0320D00D30826 /* database.xcdatamodeld */; };
 		8CE7F2BE19C0A2D0004FBEA5 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CE7F2BD19C0A2D0004FBEA5 /* StoreKit.framework */; };
 		8CE971C61A126C0000D4386B /* BannerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE971C41A126C0000D4386B /* BannerCollectionViewCell.swift */; };
 		8CE971C71A126C0000D4386B /* BannerCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CE971C51A126C0000D4386B /* BannerCollectionViewCell.xib */; };
@@ -364,13 +364,6 @@
 		8C3E948119E4207200C7EF21 /* AcknowledgementTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AcknowledgementTableViewCell.m; sourceTree = "<group>"; };
 		8C3E948219E4207200C7EF21 /* AcknowledgementTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AcknowledgementTableViewCell.xib; sourceTree = "<group>"; };
 		8C467CEF19F1132600B27F05 /* MoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
-		8C4866971A69FF200059F2A4 /* database.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = database.xcdatamodel; sourceTree = "<group>"; };
-		8C4866981A69FF200059F2A4 /* Dec-9-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Dec-9-2014.xcdatamodel"; sourceTree = "<group>"; };
-		8C4866991A69FF200059F2A4 /* Jan-16-2015.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Jan-16-2015.xcdatamodel"; sourceTree = "<group>"; };
-		8C48669A1A69FF200059F2A4 /* Nov-12-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Nov-12-2014.xcdatamodel"; sourceTree = "<group>"; };
-		8C48669B1A69FF200059F2A4 /* Nov-15-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Nov-15-2014.xcdatamodel"; sourceTree = "<group>"; };
-		8C48669C1A69FF200059F2A4 /* Nov-4-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Nov-4-2014.xcdatamodel"; sourceTree = "<group>"; };
-		8C48669D1A69FF200059F2A4 /* Oct-5-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Oct-5-2014.xcdatamodel"; sourceTree = "<group>"; };
 		8C49656619B0A01E001C7935 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		8C5246DF19A5137300B10147 /* FileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileManager.h; sourceTree = "<group>"; };
 		8C5246E019A5137300B10147 /* FileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileManager.m; sourceTree = "<group>"; };
@@ -432,6 +425,15 @@
 		8CD627A51A6BE7E100382143 /* LifeCounterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LifeCounterViewController.swift; sourceTree = "<group>"; };
 		8CD627A71A6BEDE000382143 /* In-App Sets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "In-App Sets.plist"; sourceTree = "<group>"; };
 		8CD705971A540E3600CF8425 /* BarGraphViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarGraphViewController.swift; sourceTree = "<group>"; };
+		8CE263441AB0320D00D30826 /* database.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = database.xcdatamodel; sourceTree = "<group>"; };
+		8CE263451AB0320D00D30826 /* Dec-9-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Dec-9-2014.xcdatamodel"; sourceTree = "<group>"; };
+		8CE263461AB0320D00D30826 /* Jan-16-2015.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Jan-16-2015.xcdatamodel"; sourceTree = "<group>"; };
+		8CE263471AB0320D00D30826 /* Mar-11-2015 B.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Mar-11-2015 B.xcdatamodel"; sourceTree = "<group>"; };
+		8CE263481AB0320D00D30826 /* Mar-11-2015.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Mar-11-2015.xcdatamodel"; sourceTree = "<group>"; };
+		8CE263491AB0320D00D30826 /* Nov-12-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Nov-12-2014.xcdatamodel"; sourceTree = "<group>"; };
+		8CE2634A1AB0320D00D30826 /* Nov-15-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Nov-15-2014.xcdatamodel"; sourceTree = "<group>"; };
+		8CE2634B1AB0320D00D30826 /* Nov-4-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Nov-4-2014.xcdatamodel"; sourceTree = "<group>"; };
+		8CE2634C1AB0320D00D30826 /* Oct-5-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Oct-5-2014.xcdatamodel"; sourceTree = "<group>"; };
 		8CE7F2BD19C0A2D0004FBEA5 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		8CE7F2C219C0A2F7004FBEA5 /* Decktracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Decktracker.entitlements; sourceTree = "<group>"; };
 		8CE971C41A126C0000D4386B /* BannerCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BannerCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -724,7 +726,7 @@
 		8C2E14251990744E00023BAA /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				8C4866961A69FF200059F2A4 /* database.xcdatamodeld */,
+				8CE263431AB0320D00D30826 /* database.xcdatamodeld */,
 				8C3857991A36E6D200E5B38C /* DTArtist.h */,
 				8C38579A1A36E6D200E5B38C /* DTArtist.m */,
 				8C3857A51A36E6D200E5B38C /* DTBlock.h */,
@@ -1284,7 +1286,6 @@
 				8C2CFCF519BB1F8B00F5348B /* LimitedSearchViewController.m in Sources */,
 				8C2A979B19F5027B0094C97F /* CGPDFDocument.m in Sources */,
 				8C2A979D19F5027B0094C97F /* ReaderContentPage.m in Sources */,
-				8C48669E1A69FF200059F2A4 /* database.xcdatamodeld in Sources */,
 				8C3857AD1A36E6D200E5B38C /* DTSetType.m in Sources */,
 				8C524A6519B81E9E005E697B /* DeckDetailsViewController.m in Sources */,
 				8CD705981A540E3600CF8425 /* BarGraphViewController.swift in Sources */,
@@ -1296,6 +1297,7 @@
 				8C2E14031990741100023BAA /* AppDelegate.m in Sources */,
 				8C2A97AE19F5027B0094C97F /* UIXToolbarView.m in Sources */,
 				8C3857B31A36E6D200E5B38C /* DTCardForeignName.m in Sources */,
+				8CE2634D1AB0320D00D30826 /* database.xcdatamodeld in Sources */,
 				8C2A979F19F5027B0094C97F /* ReaderContentView.m in Sources */,
 				8C911E1C1A526D5D006210B5 /* StartingHandViewController.swift in Sources */,
 				8CC5BA681A13509600F3BDD2 /* ThumbCollectionViewCell.swift in Sources */,
@@ -1567,18 +1569,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		8C4866961A69FF200059F2A4 /* database.xcdatamodeld */ = {
+		8CE263431AB0320D00D30826 /* database.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				8C4866971A69FF200059F2A4 /* database.xcdatamodel */,
-				8C4866981A69FF200059F2A4 /* Dec-9-2014.xcdatamodel */,
-				8C4866991A69FF200059F2A4 /* Jan-16-2015.xcdatamodel */,
-				8C48669A1A69FF200059F2A4 /* Nov-12-2014.xcdatamodel */,
-				8C48669B1A69FF200059F2A4 /* Nov-15-2014.xcdatamodel */,
-				8C48669C1A69FF200059F2A4 /* Nov-4-2014.xcdatamodel */,
-				8C48669D1A69FF200059F2A4 /* Oct-5-2014.xcdatamodel */,
+				8CE263441AB0320D00D30826 /* database.xcdatamodel */,
+				8CE263451AB0320D00D30826 /* Dec-9-2014.xcdatamodel */,
+				8CE263461AB0320D00D30826 /* Jan-16-2015.xcdatamodel */,
+				8CE263471AB0320D00D30826 /* Mar-11-2015 B.xcdatamodel */,
+				8CE263481AB0320D00D30826 /* Mar-11-2015.xcdatamodel */,
+				8CE263491AB0320D00D30826 /* Nov-12-2014.xcdatamodel */,
+				8CE2634A1AB0320D00D30826 /* Nov-15-2014.xcdatamodel */,
+				8CE2634B1AB0320D00D30826 /* Nov-4-2014.xcdatamodel */,
+				8CE2634C1AB0320D00D30826 /* Oct-5-2014.xcdatamodel */,
 			);
-			currentVersion = 8C4866991A69FF200059F2A4 /* Jan-16-2015.xcdatamodel */;
+			currentVersion = 8CE263471AB0320D00D30826 /* Mar-11-2015 B.xcdatamodel */;
 			path = database.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

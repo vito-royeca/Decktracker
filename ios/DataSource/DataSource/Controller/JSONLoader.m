@@ -23,6 +23,8 @@
 #import "DTSetType.h"
 #import "Magic.h"
 
+#import "TFHpple.h"
+
 @implementation JSONLoader
 {
     int _cardID;
@@ -150,23 +152,134 @@
     NSLog(@"Time Elapsed: %@",  [JJJUtil formatInterval:timeDifference]);
 }
 
--(void) updateTCGSetNames
+-(void) updateSets
 {
     [[Database sharedInstance] setupDb];
     
     NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
-    NSString *filePath = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] resourcePath], @"Data/tcgplayer_sets.plist"];
-    NSDictionary *tcgNames = [[NSDictionary alloc] initWithContentsOfFile:filePath];
     
+    NSString *filePath = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] resourcePath], @"Data/tcgplayer_sets.plist"];
+    NSDictionary *dict = [[NSDictionary alloc] initWithContentsOfFile:filePath];
     for (DTSet *set in [DTSet MR_findAll])
     {
-        NSString *tcgName = [tcgNames objectForKey:set.name];
+        NSString *tcgName = [dict objectForKey:set.name];
         
         set.tcgPlayerName = tcgName.length > 0 ? tcgName : nil;
         [currentContext MR_save];
     }
     
+    filePath = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] resourcePath], @"Data/magiccards_sets.plist"];
+    dict = [[NSDictionary alloc] initWithContentsOfFile:filePath];
+    
+    for (DTSet *set in [DTSet MR_findAll])
+    {
+        NSString *magicCardsCode = [dict objectForKey:set.name];
+        
+        set.magicCardsCode = magicCardsCode;
+        [currentContext MR_save];
+    }
+    
+    for (DTSet *set in [DTSet MR_findAllSortedBy:@"releaseDate" ascending:YES])
+    {
+//        NSEntityDescription *entity = [NSEntityDescription entityForName:@"DTCard"
+//                                                  inManagedObjectContext:currentContext];
+//        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+//        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"set.name == %@", set.name];
+//        NSArray *sorters = @[[[NSSortDescriptor alloc] initWithKey:@"sectionColor"
+//                                                         ascending:YES],
+//                             [[NSSortDescriptor alloc] initWithKey:@"name"
+//                                                         ascending:YES]];
+//        NSError *error = nil;
+//        int i = 1;
+//        
+//        fetchRequest.entity = entity;
+//        fetchRequest.predicate = predicate;
+//        fetchRequest.sortDescriptors = sorters;
+//        
+//        for (DTCard *card in [currentContext executeFetchRequest:fetchRequest error:&error])
+//        {
+//            card.magicCardsNumber = card.number ? [NSNumber numberWithInt:[card.number intValue]] : nil;
+//            [currentContext MR_save];
+//        }
+
+        NSArray *cards = [DTCard MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"set.name == %@", set.name]];
+        BOOL hasNumber = YES;
+        for (DTCard *card in cards)
+        {
+            hasNumber = card.number ? YES : NO;
+            
+            if (!hasNumber)
+            {
+                break;
+            }
+        }
+
+        if (!hasNumber && set.magicCardsCode)
+        {
+            NSString *url = [[NSString stringWithFormat:@"http://magiccards.info/%@/en.html", set.magicCardsCode] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
+            TFHpple *parser = [TFHpple hppleWithHTMLData:data];
+            
+            NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+            [dict addEntriesFromDictionary:[self parseCardNumber:[parser searchWithXPathQuery:@"//tr[@class='even']"]]];
+            [dict addEntriesFromDictionary:[self parseCardNumber:[parser searchWithXPathQuery:@"//tr[@class='odd']"]]];
+            
+            for (NSString *key in [dict allKeys])
+            {
+                for (DTCard *card in cards)
+                {
+                    if ([[card.name lowercaseString] isEqualToString:[key lowercaseString]])
+                    {
+                        card.number = dict[key];
+                        [currentContext MR_save];
+                    }
+                }
+            }
+        }
+    }
+    
     [[Database sharedInstance] closeDb];
+}
+
+-(NSDictionary*) parseCardNumber:(NSArray*) nodes
+{
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    
+    for (TFHppleElement *tr in nodes)
+    {
+        NSString *number;
+        NSString *name;
+        
+        for (TFHppleElement *td in tr.children)
+        {
+            if ([[td tagName] isEqualToString:@"td"])
+            {
+//                for (TFHppleElement *elem in td.children)
+//                {
+                    if (!number)
+                    {
+                        number = [[td firstChild] content];
+                    }
+                    if (!name)
+                    {
+                        for (TFHppleElement *elem in td.children)
+                        {
+                            name = [[elem firstChild] content];
+                        }
+                    }
+                    
+//                }
+                
+                if (number && name)
+                {
+                    [dict setObject:number forKey:name];
+                    break;
+                }
+            }
+        }
+    }
+    
+    return dict;
 }
 
 -(void) fetchTcgPrices

@@ -12,7 +12,7 @@
 
 -(void) parseCards1stPass;
 -(void) parseCards2ndPass;
--(void) updateTCGSetNames;
+-(void) updateSets;
 -(void) fetchTcgPrices;
 
 @end

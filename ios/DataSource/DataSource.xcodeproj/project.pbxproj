@@ -31,6 +31,7 @@
 		8C4B9D0E1A515D0B00F727E7 /* tcgplayer_sets.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C4B9D091A51384400F727E7 /* tcgplayer_sets.plist */; };
 		8C80A0C2198D01D600BADA6C /* JSONLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C80A0C1198D01D600BADA6C /* JSONLoader.m */; };
 		8C80A0CC198D040500BADA6C /* Database.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C80A0CB198D040500BADA6C /* Database.m */; };
+		8CE263371AB00B5D00D30826 /* magiccards_sets.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CE263321AB007D700D30826 /* magiccards_sets.plist */; };
 		8CF0C9DC1991CDB900349F35 /* libJJJ.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF0C9CD1991CD5500349F35 /* libJJJ.a */; };
 		8CF9CE52199F9A22008127E5 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF9CE51199F9A22008127E5 /* AppKit.framework */; };
 		8CFC1B091A6D738C005BD8E3 /* InAppPurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CFC1B081A6D738C005BD8E3 /* InAppPurchase.m */; };
@@ -68,6 +69,7 @@
 			dstPath = Data;
 			dstSubfolderSpec = 16;
 			files = (
+				8CE263371AB00B5D00D30826 /* magiccards_sets.plist in CopyFiles */,
 				8C4B9D0E1A515D0B00F727E7 /* tcgplayer_sets.plist in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -126,6 +128,9 @@
 		8C80A0CB198D040500BADA6C /* Database.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Database.m; path = ../../../DeckTracker/DeckTracker/Controller/Database.m; sourceTree = "<group>"; };
 		8C87AB311A7F1F6C00E901DE /* AllSets-x.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "AllSets-x.json"; path = "../../../../data/AllSets-x.json"; sourceTree = "<group>"; };
 		8C87AB321A7F1F6C00E901DE /* MagicCompRules_20140926.htm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = MagicCompRules_20140926.htm; path = ../../../../data/MagicCompRules_20140926.htm; sourceTree = "<group>"; };
+		8CE263321AB007D700D30826 /* magiccards_sets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = magiccards_sets.plist; sourceTree = "<group>"; };
+		8CE263361AB00ACD00D30826 /* Mar-11-2015.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Mar-11-2015.xcdatamodel"; sourceTree = "<group>"; };
+		8CE2633B1AB01A3000D30826 /* Mar-11-2015 B.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Mar-11-2015 B.xcdatamodel"; sourceTree = "<group>"; };
 		8CE5E9771A68F56D0001852A /* Jan-16-2015.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Jan-16-2015.xcdatamodel"; sourceTree = "<group>"; };
 		8CE731571A552249007B51B2 /* Magic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Magic.h; path = ../../Decktracker/Decktracker/Magic.h; sourceTree = "<group>"; };
 		8CF0C9C61991CD5400349F35 /* JJJ.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JJJ.xcodeproj; path = ../jjj/JJJ/JJJ.xcodeproj; sourceTree = "<group>"; };
@@ -252,6 +257,7 @@
 			isa = PBXGroup;
 			children = (
 				8C87AB311A7F1F6C00E901DE /* AllSets-x.json */,
+				8CE263321AB007D700D30826 /* magiccards_sets.plist */,
 				8C87AB321A7F1F6C00E901DE /* MagicCompRules_20140926.htm */,
 				8C4B9D091A51384400F727E7 /* tcgplayer_sets.plist */,
 				8C4B9D0D1A51562F00F727E7 /* tcgplayer_sets.txt */,
@@ -554,6 +560,8 @@
 		8C3857C11A36FCE600E5B38C /* database.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				8CE2633B1AB01A3000D30826 /* Mar-11-2015 B.xcdatamodel */,
+				8CE263361AB00ACD00D30826 /* Mar-11-2015.xcdatamodel */,
 				8CE5E9771A68F56D0001852A /* Jan-16-2015.xcdatamodel */,
 				8C3857C21A36FCE600E5B38C /* database.xcdatamodel */,
 				8C3857C31A36FCE600E5B38C /* Dec-9-2014.xcdatamodel */,
@@ -562,7 +570,7 @@
 				8C3857C61A36FCE600E5B38C /* Nov-4-2014.xcdatamodel */,
 				8C3857C71A36FCE600E5B38C /* Oct-5-2014.xcdatamodel */,
 			);
-			currentVersion = 8CE5E9771A68F56D0001852A /* Jan-16-2015.xcdatamodel */;
+			currentVersion = 8CE2633B1AB01A3000D30826 /* Mar-11-2015 B.xcdatamodel */;
 			name = database.xcdatamodeld;
 			path = ../../Decktracker/Decktracker/Model/database.xcdatamodeld;
 			sourceTree = "<group>";

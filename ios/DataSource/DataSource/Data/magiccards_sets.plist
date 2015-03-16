@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    	<key>Fate Reforged</key>
+    	<string>frf</string>
+    	<key>Khans of Tarkir</key>
+    	<string>ktk</string>
+    	<key>Journey into Nyx</key>
+    	<string>jou</string>
+    	<key>Born of the Gods</key>
+    	<string>bng</string>
+    	<key>Theros</key>
+    	<string>ths</string>
+    	<key>Dragon's Maze</key>
+    	<string>dgm</string>
+    	<key>Gatecrash</key>
+    	<string>gtc</string>
+    	<key>Return to Ravnica</key>
+    	<string>rtr</string>
+    	<key>Avacyn Restored</key>
+    	<string>avr</string>
+    	<key>Dark Ascension</key>
+    	<string>dka</string>
+    	<key>Innistrad</key>
+    	<string>isd</string>
+    	<key>New Phyrexia</key>
+    	<string>nph</string>
+    	<key>Mirrodin Besieged</key>
+    	<string>mbs</string>
+    	<key>Scars of Mirrodin</key>
+    	<string>som</string>
+    	<key>Rise of the Eldrazi</key>
+    	<string>roe</string>
+    	<key>Worldwake</key>
+    	<string>wwk</string>
+    	<key>Zendikar</key>
+    	<string>zen</string>
+    	<key>Alara Reborn</key>
+    	<string>arb</string>
+    	<key>Conflux</key>
+    	<string>cfx</string>
+    	<key>Shards of Alara</key>
+    	<string>ala</string>
+    	<key>Eventide</key>
+    	<string>eve</string>
+    	<key>Shadowmoor</key>
+    	<string>shm</string>
+    	<key>Morningtide</key>
+    	<string>mt</string>
+    	<key>Lorwyn</key>
+    	<string>lw</string>
+    	<key>Future Sight</key>
+    	<string>fut</string>
+    	<key>Planar Chaos</key>
+    	<string>pc</string>
+    	<key>Time Spiral</key>
+    	<string>ts</string>
+    	<key>Time Spiral "Timeshifted"</key>
+    	<string>tsts</string>
+    	<key>Coldsnap</key>
+    	<string>cs</string>
+    	<key>Alliances</key>
+    	<string>ai</string>
+    	<key>Ice Age</key>
+    	<string>ia</string>
+    	<key>Dissension</key>
+    	<string>di</string>
+    	<key>Guildpact</key>
+    	<string>gp</string>
+    	<key>Ravnica: City of Guilds</key>
+    	<string>rav</string>
+    	<key>Saviors of Kamigawa</key>
+    	<string>sok</string>
+    	<key>Betrayers of Kamigawa</key>
+    	<string>bok</string>
+    	<key>Champions of Kamigawa</key>
+    	<string>chk</string>
+    	<key>Fifth Dawn</key>
+    	<string>5dn</string>
+    	<key>Darksteel</key>
+    	<string>ds</string>
+    	<key>Mirrodin</key>
+    	<string>mi</string>
+    	<key>Scourge</key>
+    	<string>sc</string>
+    	<key>Legions</key>
+    	<string>le</string>
+    	<key>Onslaught</key>
+    	<string>on</string>
+    	<key>Judgment</key>
+    	<string>ju</string>
+    	<key>Torment</key>
+    	<string>tr</string>
+    	<key>Odyssey</key>
+    	<string>od</string>
+    	<key>Apocalypse</key>
+    	<string>ap</string>
+    	<key>Planeshift</key>
+    	<string>ps</string>
+    	<key>Invasion</key>
+    	<string>in</string>
+    	<key>Prophecy</key>
+    	<string>pr</string>
+    	<key>Nemesis</key>
+    	<string>ne</string>
+    	<key>Mercadian Masques</key>
+    	<string>mm</string>
+    	<key>Urza's Destiny</key>
+    	<string>ud</string>
+    	<key>Urza's Legacy</key>
+    	<string>ul</string>
+    	<key>Urza's Saga</key>
+    	<string>us</string>
+    	<key>Exodus</key>
+    	<string>ex</string>
+    	<key>Stronghold</key>
+    	<string>sh</string>
+    	<key>Tempest</key>
+    	<string>tp</string>
+    	<key>Weatherlight</key>
+    	<string>wl</string>
+    	<key>Visions</key>
+    	<string>vi</string>
+    	<key>Mirage</key>
+    	<string>mr</string>
+    	<key>Homelands</key>
+    	<string>hl</string>
+    	<key>Fallen Empires</key>
+    	<string>fe</string>
+    	<key>The Dark</key>
+    	<string>dk</string>
+    	<key>Legends</key>
+    	<string>lg</string>
+    	<key>Antiquities</key>
+    	<string>aq</string>
+    	<key>Arabian Nights</key>
+    	<string>an</string>
+    	<key>Magic 2015 Core Set</key>
+    	<string>m15</string>
+    	<key>Magic 2014 Core Set</key>
+    	<string>m14</string>
+    	<key>Magic 2013</key>
+    	<string>m13</string>
+    	<key>Magic 2012</key>
+    	<string>m12</string>
+    	<key>Magic 2011</key>
+    	<string>m11</string>
+    	<key>Magic 2010</key>
+    	<string>m10</string>
+    	<key>Tenth Edition</key>
+    	<string>10e</string>
+    	<key>Ninth Edition</key>
+    	<string>9e</string>
+    	<key>Eighth Edition</key>
+    	<string>8e</string>
+    	<key>Seventh Edition</key>
+    	<string>7e</string>
+    	<key>Classic Sixth Edition</key>
+    	<string>6e</string>
+    	<key>Fifth Edition</key>
+    	<string>5e</string>
+    	<key>Fourth Edition</key>
+    	<string>4e</string>
+    	<key>Revised Edition</key>
+    	<string>rv</string>
+    	<key>Unlimited Edition</key>
+    	<string>un</string>
+    	<key>Limited Edition Beta</key>
+    	<string>be</string>
+    	<key>Limited Edition Alpha</key>
+    	<string>al</string>
+    	<key>Vintage Masters</key>
+    	<string>vma</string>
+    	<key>Masters Edition IV</key>
+    	<string>me4</string>
+    	<key>Masters Edition III</key>
+    	<string>me3</string>
+    	<key>Masters Edition II</key>
+    	<string>me2</string>
+    	<key>Masters Edition</key>
+    	<string>med</string>
+    	<key>Magic: The Gathering—Conspiracy</key>
+    	<string>cns</string>
+    	<key>Premium Deck Series: Graveborn</key>
+    	<string>pd3</string>
+    	<key>Premium Deck Series: Fire and Lightning</key>
+    	<string>pd2</string>
+    	<key>Premium Deck Series: Slivers</key>
+    	<string>pds</string>
+    	<key>Modern Event Deck 2014</key>
+    	<string>md1</string>
+    	<key>Modern Masters</key>
+    	<string>mma</string>
+    	<key>Duels of the Planeswalkers</key>
+    	<string>dpa</string>
+    	<key>Chronicles</key>
+    	<string>ch</string>
+    	<key>Commander 2014</key>
+    	<string>c14</string>
+    	<key>Commander 2013 Edition</key>
+    	<string>c13</string>
+    	<key>Commander's Arsenal</key>
+    	<string>cma</string>
+    	<key>Planechase 2012 Edition</key>
+    	<string>pc2</string>
+    	<key>Magic: The Gathering-Commander</key>
+    	<string>cmd</string>
+    	<key>Archenemy</key>
+    	<string>arc</string>
+    	<key>Planechase</key>
+    	<string>pch</string>
+    	<key>From the Vault: Annihilation (2014)</key>
+    	<string>v14</string>
+    	<key>From the Vault: Twenty</key>
+    	<string>v13</string>
+    	<key>From the Vault: Realms</key>
+    	<string>v12</string>
+    	<key>From the Vault: Legends</key>
+    	<string>fvl</string>
+    	<key>From the Vault: Relics</key>
+    	<string>fvr</string>
+    	<key>From the Vault: Exiled</key>
+    	<string>fve</string>
+    	<key>From the Vault: Dragons</key>
+    	<string>fvd</string>
+    	<key>Duel Decks: Kiora vs. Elspeth</key>
+    	<string>ddo</string>
+    	<key>Duel Decks: Speed vs. Cunning</key>
+    	<string>ddn</string>
+    	<key>Duel Decks: Jace vs. Vraska</key>
+    	<string>ddm</string>
+    	<key>Duel Decks: Heroes vs. Monsters</key>
+    	<string>ddl</string>
+    	<key>Duel Decks: Sorin vs. Tibalt</key>
+    	<string>ddk</string>
+    	<key>Duel Decks: Izzet vs. Golgari</key>
+    	<string>ddj</string>
+    	<key>Duel Decks: Venser vs. Koth</key>
+    	<string>ddi</string>
+    	<key>Duel Decks: Ajani vs. Nicol Bolas</key>
+    	<string>ddh</string>
+    	<key>Duel Decks: Knights vs. Dragons</key>
+    	<string>ddg</string>
+    	<key>Duel Decks: Elspeth vs. Tezzeret</key>
+    	<string>ddf</string>
+    	<key>Duel Decks: Phyrexia vs. the Coalition</key>
+    	<string>pvc</string>
+    	<key>Duel Decks: Garruk vs. Liliana</key>
+    	<string>gvl</string>
+    	<key>Duel Decks: Divine vs. Demonic</key>
+    	<string>dvd</string>
+    	<key>Duel Decks: Jace vs. Chandra</key>
+    	<string>jvc</string>
+    	<key>Duel Decks: Elves vs. Goblins</key>
+    	<string>evg</string>
+    	<key>Coldsnap Theme Decks</key>
+    	<string>cstd</string>
+    	<key>Ninth Edition Box Set</key>
+    	<string>9eb</string>
+    	<key>Eighth Edition Box Set</key>
+    	<string>8eb</string>
+    	<key>Deckmasters</key>
+    	<string>dm</string>
+    	<key>Beatdown Box Set</key>
+    	<string>bd</string>
+    	<key>Battle Royale Box Set</key>
+    	<string>br</string>
+    	<key>Anthologies</key>
+    	<string>at</string>
+    	<key>Multiverse Gift Box</key>
+    	<string>mgbc</string>
+    	<key>Unhinged</key>
+    	<string>uh</string>
+    	<key>Unglued</key>
+    	<string>ug</string>
+    	<key>Unhinged Alternate Foils</key>
+    	<string>uhaa</string>
+    	<key>Starter 2000</key>
+    	<string>st2k</string>
+    	<key>Starter 1999</key>
+    	<string>st</string>
+    	<key>Portal Three Kingdoms</key>
+    	<string>p3k</string>
+    	<key>Portal Second Age</key>
+    	<string>po2</string>
+    	<key>Portal</key>
+    	<string>po</string>
+    	<key>Introductory Two-Player Set</key>
+    	<string>itp</string>
+    	<key>Collector's Edition</key>
+    	<string>ced</string>
+    	<key>International Collectors' Edition</key>
+    	<string>cedi</string>
+    	<key>15th Anniversary</key>
+    	<string>15ann</string>
+    	<key>Grand Prix</key>
+    	<string>gpx</string>
+    	<key>Pro Tour</key>
+    	<string>pro</string>
+    	<key>Magic Game Day</key>
+    	<string>mgdc</string>
+    	<key>Worlds</key>
+    	<string>wrl</string>
+    	<key>World Magic Cup Qualifiers</key>
+    	<string>wmcq</string>
+    	<key>Dragon Con</key>
+    	<string>drc</string>
+    	<key>Prerelease Events</key>
+    	<string>ptc</string>
+    	<key>Release Events</key>
+    	<string>rep</string>
+    	<key>Launch Parties</key>
+    	<string>mlp</string>
+    	<key>Summer of Magic</key>
+    	<string>sum</string>
+    	<key>WPN and Gateway</key>
+    	<string>grc</string>
+    	<key>Champs and States</key>
+    	<string>cp</string>
+    	<key>Two-Headed Giant Tournament</key>
+    	<string>thgt</string>
+    	<key>Arena League</key>
+    	<string>arena</string>
+    	<key>Friday Night Magic</key>
+    	<string>fnmp</string>
+    	<key>Magic Player Rewards</key>
+    	<string>mprp</string>
+    	<key>Super Series</key>
+    	<string>sus</string>
+    	<key>Happy Holidays</key>
+    	<string>hho</string>
+    	<key>Judge Gift Program</key>
+    	<string>jr</string>
+    	<key>Portal Demo Game</key>
+    	<string>pot</string>
+    	<key>European Land Program</key>
+    	<string>euro</string>
+    	<key>Guru</key>
+    	<string>guru</string>
+    	<key>Asia Pacific Land Program</key>
+    	<string>apac</string>
+    	<key>Wizards of the Coast Online Store</key>
+    	<string>wotc</string>
+    	<key>Celebration</key>
+    	<string>uqc</string>
+    	<key>Media Inserts</key>
+    	<string>mbp</string>
+    	<key>Legend Membership</key>
+    	<string>dcilm</string>
+</dict>
+</plist>
+
