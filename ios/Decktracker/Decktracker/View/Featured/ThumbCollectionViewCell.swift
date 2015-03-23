@@ -30,9 +30,9 @@ class ThumbCollectionViewCell: UICollectionViewCell {
         self.card = card
         
         NSNotificationCenter.defaultCenter().removeObserver(self,
-            name:kCropDownloadCompleted,  object:nil)
+            name:kCardDownloadCompleted,  object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self,
-            selector:"loadCropImage:",  name:kCropDownloadCompleted, object:nil)
+            selector:"loadCropImage:",  name:kCardDownloadCompleted, object:nil)
         
         lblCardName.text = self.card?.name
         lblSetName.text = self.card?.set.name
@@ -40,7 +40,6 @@ class ThumbCollectionViewCell: UICollectionViewCell {
         currentCropPath = FileManager.sharedInstance().cropPath(self.card)
         imgCrop.image = UIImage(contentsOfFile: currentCropPath!)
         
-        FileManager.sharedInstance().downloadCropImage(self.card, immediately:false)
         FileManager.sharedInstance().downloadCardImage(self.card, immediately:false)
         
         // set image
@@ -82,7 +81,7 @@ class ThumbCollectionViewCell: UICollectionViewCell {
             }
             
             NSNotificationCenter.defaultCenter().removeObserver(self,
-                name:kCropDownloadCompleted,  object:nil)
+                name:kCardDownloadCompleted,  object:nil)
         }
     }
 }

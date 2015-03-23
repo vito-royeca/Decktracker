@@ -723,8 +723,10 @@ static Database *_me;
                                                                     ascending:YES];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"DTSet"
                                               inManagedObjectContext:moc];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"magicCardsCode != nil"];
     
     [fetchRequest setEntity:entity];
+    [fetchRequest setPredicate:predicate];
     [fetchRequest setSortDescriptors:@[sortDescriptor1, sortDescriptor2]];
     [fetchRequest setFetchLimit:howMany];
     

@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.4.10</string>
+	<string>1.4.11</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -33,7 +33,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1802</string>
+	<string>1836</string>
 	<key>FacebookAppID</key>
 	<string>341320496039341</string>
 	<key>FacebookDisplayName</key>
@@ -42,9 +42,9 @@
 	<true/>
 	<key>UIAppFonts</key>
 	<array>
-		<string>MPlantin.ttf</string>
-		<string>Matrix Bold.ttf</string>
-		<string>Goudy Medieval.ttf</string>
+		<string>fonts/MPlantin.ttf</string>
+		<string>fonts/Matrix Bold.ttf</string>
+		<string>fonts/Goudy Medieval.ttf</string>
 	</array>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>

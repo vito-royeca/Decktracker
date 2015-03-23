@@ -275,7 +275,6 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
             if !contains(arrayData! as [DTCard], card) {
                 arrayData!.append(card)
                 paths.append(NSIndexPath(forRow: arrayData!.count-1, inSection: 0))
-                FileManager.sharedInstance().downloadCropImage(card, immediately:false)
                 FileManager.sharedInstance().downloadCardImage(card, immediately:false)
             }
         }

@@ -209,18 +209,28 @@ static FileManager *_me;
     }
 }
 
-- (void) downloadCropImage:(DTCard*) card immediately:(BOOL) immediately
+- (void) createCropForCard:(DTCard*) card
 {
-    if (!card)
-    {
-        return;
-    }
+    UIImage *image = [[UIImage alloc] initWithContentsOfFile:[self cardPath:card]];
+
+    CGFloat width = image.size.width*3/4;
+    CGRect rect = CGRectMake((image.size.width-width)/2,
+                             40,
+                             width,
+                             width-60);
     
+    CGImageRef imageRef = CGImageCreateWithImageInRect(image.CGImage, rect);
+    UIImage *croppedImage = [UIImage imageWithCGImage:imageRef
+                                                scale:image.scale
+                                          orientation:image.imageOrientation];
+    CGImageRelease(imageRef);
+    
+    
+    // write to file
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *cacheDirectory = [paths firstObject];
     NSString *path = [cacheDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/crop/%@/", card.set.code]];
     NSString *cropPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@.crop.jpg", card.number]];
-    BOOL bFound = YES;
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:path])
     {
@@ -228,52 +238,9 @@ static FileManager *_me;
                                   withIntermediateDirectories:YES
                                                    attributes:nil
                                                         error:nil];
-        bFound = NO;
     }
-    if (![[NSFileManager defaultManager] fileExistsAtPath:cropPath])
-    {
-        bFound = NO;
-    }
+    [UIImageJPEGRepresentation(croppedImage, 1.0) writeToFile:cropPath atomically:YES];
     
-    NSDictionary *oldQueue;
-    for (NSDictionary *dict in _downloadQueue)
-    {
-        if (dict[@"card"] == card)
-        {
-            oldQueue = dict;
-            break;
-        }
-    }
-    if (oldQueue)
-    {
-        [_downloadQueue removeObject:oldQueue];
-//        _cuncurrentDownloads--;
-    }
-    
-    if (!bFound)
-    {
-        NSURL *url = [NSURL URLWithString:[[NSString stringWithFormat:@"http://magiccards.info/crop/en/%@/%@.jpg", card.set.magicCardsCode, card.number] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-        
-        NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithObjects:@[card, cropPath, url]
-                                                                         forKeys:@[@"crop", @"path", @"url"]];
-        
-        if (immediately)
-        {
-            [_downloadQueue insertObject:dict atIndex:0];
-        }
-        else
-        {
-            [_downloadQueue addObject:dict];
-        }
-
-        [self processDownloadQueue];
-    }
-    else
-    {
-        [[NSNotificationCenter defaultCenter] postNotificationName:kCropDownloadCompleted
-                                                            object:nil
-                                                          userInfo:@{@"card": card}];
-    }
 }
 
 - (void) processDownloadQueue
@@ -313,15 +280,8 @@ static FileManager *_me;
         DTCard *card = currentQueue[@"card"];
         if (card)
         {
+            [self createCropForCard:card];
             [[NSNotificationCenter defaultCenter] postNotificationName:kCardDownloadCompleted
-                                                                object:nil
-                                                              userInfo:@{@"card":card}];
-        }
-        
-        card = currentQueue[@"crop"];
-        if (card)
-        {
-            [[NSNotificationCenter defaultCenter] postNotificationName:kCropDownloadCompleted
                                                                 object:nil
                                                               userInfo:@{@"card":card}];
         }
@@ -330,8 +290,8 @@ static FileManager *_me;
         [self processDownloadQueue];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"File not found: %@", [error userInfo][@"NSErrorFailingURLKey"]);
         
-        NSLog(@"Error: %@", error);
         _cuncurrentDownloads--;
         [self processDownloadQueue];
     }];

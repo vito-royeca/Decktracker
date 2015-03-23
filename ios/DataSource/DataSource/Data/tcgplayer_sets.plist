@@ -66,24 +66,34 @@
 	<string></string>
 	<key>Dragon&apos;s Maze</key>
 	<string>Dragon&apos;s Maze</string>
+	<key>Dragons of Tarkir</key>
+	<string>Dragons of Tarkir</string>
 	<key>Duel Decks: Ajani vs. Nicol Bolas</key>
 	<string>Duel Decks: Ajani vs. Nicol Bolas</string>
+	<key>Duel Decks Anthology, Divine vs. Demonic</key>
+	<string>Duel Decks: Divine vs. Demonic</string>
 	<key>Duel Decks: Divine vs. Demonic</key>
-	<string>Duel Decks: Divine vs Demonic</string>
+	<string>Duel Decks: Divine vs. Demonic</string>
 	<key>Duel Decks: Elspeth vs. Kiora</key>
 	<string>Duel Decks: Elspeth vs. Kiora</string>
 	<key>Duel Decks: Elspeth vs. Tezzeret</key>
 	<string>Duel Decks: Elspeth vs Tezzeret</string>
+	<key>Duel Decks Anthology, Elves vs. Goblins</key>
+	<string>Duel Decks: Elves vs. Goblins</string>
 	<key>Duel Decks: Elves vs. Goblins</key>
-	<string>Duel Decks: Elves vs Goblins</string>
+	<string>Duel Decks: Elves vs. Goblins</string>
+	<key>Duel Decks Anthology, Garruk vs. Liliana</key>
+	<string>Duel Decks: Garruk vs. Liliana</string>
 	<key>Duel Decks: Garruk vs. Liliana</key>
-	<string>Duel Decks: Garruk vs Liliana</string>
+	<string>Duel Decks: Garruk vs. Liliana</string>
 	<key>Duel Decks: Heroes vs. Monsters</key>
 	<string>Duel Decks: Heroes vs Monsters</string>
 	<key>Duel Decks: Izzet vs. Golgari</key>
 	<string>Duel Decks: Izzet vs Golgari</string>
+	<key>Duel Decks Anthology, Jace vs. Chandra</key>
+	<string>Duel Decks: Jace vs. Chandra</string>
 	<key>Duel Decks: Jace vs. Chandra</key>
-	<string>Duel Decks: Jace vs Chandra</string>
+	<string>Duel Decks: Jace vs. Chandra</string>
 	<key>Duel Decks: Jace vs. Vraska</key>
 	<string>Duel Decks: Jace vs Vraska</string>
 	<key>Duel Decks: Knights vs. Dragons</key>
@@ -310,6 +320,8 @@
 	<string>Torment</string>
 	<key>Two-Headed Giant Tournament</key>
 	<string></string>
+	<key>Ugin&apos;s Fate promos</key>
+	<string>Ugin&apos;s Fate Promos</string>
 	<key>Unglued</key>
 	<string>Unglued</string>
 	<key>Unhinged</key>

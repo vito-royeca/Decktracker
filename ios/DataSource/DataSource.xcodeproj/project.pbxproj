@@ -32,6 +32,8 @@
 		8C80A0C2198D01D600BADA6C /* JSONLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C80A0C1198D01D600BADA6C /* JSONLoader.m */; };
 		8C80A0CC198D040500BADA6C /* Database.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C80A0CB198D040500BADA6C /* Database.m */; };
 		8CE263371AB00B5D00D30826 /* magiccards_sets.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CE263321AB007D700D30826 /* magiccards_sets.plist */; };
+		8CE75CB01AB96D40001EB70E /* AllSets-x.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C87AB311A7F1F6C00E901DE /* AllSets-x.json */; };
+		8CE75CB41AB96DBB001EB70E /* MagicCompRules_20140926.htm in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C87AB321A7F1F6C00E901DE /* MagicCompRules_20140926.htm */; };
 		8CF0C9DC1991CDB900349F35 /* libJJJ.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF0C9CD1991CD5500349F35 /* libJJJ.a */; };
 		8CF9CE52199F9A22008127E5 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF9CE51199F9A22008127E5 /* AppKit.framework */; };
 		8CFC1B091A6D738C005BD8E3 /* InAppPurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CFC1B081A6D738C005BD8E3 /* InAppPurchase.m */; };
@@ -69,6 +71,8 @@
 			dstPath = Data;
 			dstSubfolderSpec = 16;
 			files = (
+				8CE75CB41AB96DBB001EB70E /* MagicCompRules_20140926.htm in CopyFiles */,
+				8CE75CB01AB96D40001EB70E /* AllSets-x.json in CopyFiles */,
 				8CE263371AB00B5D00D30826 /* magiccards_sets.plist in CopyFiles */,
 				8C4B9D0E1A515D0B00F727E7 /* tcgplayer_sets.plist in CopyFiles */,
 			);

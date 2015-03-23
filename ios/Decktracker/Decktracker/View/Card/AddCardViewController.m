@@ -52,7 +52,6 @@
     _card = card;
     
     [[FileManager sharedInstance] downloadCardImage:_card immediately:YES];
-    [[FileManager sharedInstance] downloadCropImage:_card immediately:YES];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil

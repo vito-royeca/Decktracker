@@ -179,30 +179,9 @@
         [currentContext MR_save];
     }
     
-    for (DTSet *set in [DTSet MR_findAllSortedBy:@"releaseDate" ascending:YES])
+    for (DTSet *set in [DTSet MR_findAllSortedBy:@"releaseDate" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"magicCardsCode != nil"]])
     {
-//        NSEntityDescription *entity = [NSEntityDescription entityForName:@"DTCard"
-//                                                  inManagedObjectContext:currentContext];
-//        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-//        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"set.name == %@", set.name];
-//        NSArray *sorters = @[[[NSSortDescriptor alloc] initWithKey:@"sectionColor"
-//                                                         ascending:YES],
-//                             [[NSSortDescriptor alloc] initWithKey:@"name"
-//                                                         ascending:YES]];
-//        NSError *error = nil;
-//        int i = 1;
-//        
-//        fetchRequest.entity = entity;
-//        fetchRequest.predicate = predicate;
-//        fetchRequest.sortDescriptors = sorters;
-//        
-//        for (DTCard *card in [currentContext executeFetchRequest:fetchRequest error:&error])
-//        {
-//            card.magicCardsNumber = card.number ? [NSNumber numberWithInt:[card.number intValue]] : nil;
-//            [currentContext MR_save];
-//        }
-
-        NSArray *cards = [DTCard MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"set.name == %@", set.name]];
+        NSArray *cards = [DTCard MR_findAllSortedBy:@"name" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"set.name == %@", set.name]];
         BOOL hasNumber = YES;
         for (DTCard *card in cards)
         {
@@ -214,7 +193,7 @@
             }
         }
 
-        if (!hasNumber && set.magicCardsCode)
+        if (!hasNumber)
         {
             NSString *url = [[NSString stringWithFormat:@"http://magiccards.info/%@/en.html", set.magicCardsCode] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
@@ -226,13 +205,13 @@
             
             for (NSString *key in [dict allKeys])
             {
-                for (DTCard *card in cards)
+                DTCard *card = [DTCard MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"ANY name LIKE[c] %@ AND number = nil AND set.name = %@", dict[key], set.name]];
+                
+                if (card)
                 {
-                    if ([[card.name lowercaseString] isEqualToString:[key lowercaseString]])
-                    {
-                        card.number = dict[key];
-                        [currentContext MR_save];
-                    }
+                    NSLog(@"#%@ %@ (%@)", key, card.name, set.name);
+                    card.number = key;
+                    [currentContext MR_save];
                 }
             }
         }
@@ -272,7 +251,8 @@
                 
                 if (number && name)
                 {
-                    [dict setObject:number forKey:name];
+//                    [dict setObject:number forKey:name];
+                    [dict setObject:name forKey:number];
                     break;
                 }
             }

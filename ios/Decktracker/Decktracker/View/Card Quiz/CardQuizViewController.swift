@@ -308,9 +308,9 @@ class CardQuizViewController: UIViewController, MBProgressHUDDelegate {
         NSNotificationCenter.defaultCenter().addObserver(self,
             selector:"loadCardImage:",  name:kCardDownloadCompleted, object:nil)
         NSNotificationCenter.defaultCenter().removeObserver(self,
-            name:kCropDownloadCompleted,  object:nil)
+            name:kCardDownloadCompleted,  object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self,
-            selector:"loadCropImage:",  name:kCropDownloadCompleted, object:nil)
+            selector:"loadCropImage:",  name:kCardDownloadCompleted, object:nil)
         
         // draw the mana cost
         let manaImages = FileManager.sharedInstance().manaImagesForCard(card) as [NSDictionary]
@@ -344,7 +344,6 @@ class CardQuizViewController: UIViewController, MBProgressHUDDelegate {
         currentCropPath = FileManager.sharedInstance().cropPath(card)
         viewImage!.image = UIImage(contentsOfFile: currentCropPath!)
         FileManager.sharedInstance().downloadCardImage(card, immediately:true)
-        FileManager.sharedInstance().downloadCropImage(card, immediately:true)
         
         // tokenize the answer
         arrAnswers = Array<Array<UILabel>>()
@@ -565,7 +564,7 @@ class CardQuizViewController: UIViewController, MBProgressHUDDelegate {
             }
             
             NSNotificationCenter.defaultCenter().removeObserver(self,
-                name:kCropDownloadCompleted,  object:nil)
+                name:kCardDownloadCompleted,  object:nil)
         }
     }
     
@@ -591,7 +590,7 @@ class CardQuizViewController: UIViewController, MBProgressHUDDelegate {
             }
             
             NSNotificationCenter.defaultCenter().removeObserver(self,
-                name:kCropDownloadCompleted,  object:nil)
+                name:kCardDownloadCompleted,  object:nil)
         }
     }
     

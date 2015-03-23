@@ -36,9 +36,9 @@ class BannerCollectionViewCell: UICollectionViewCell {
         self.card = card
         
         NSNotificationCenter.defaultCenter().removeObserver(self,
-            name:kCropDownloadCompleted,  object:nil)
+            name:kCardDownloadCompleted,  object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self,
-            selector:"loadCropImage:",  name:kCropDownloadCompleted, object:nil)
+            selector:"loadCropImage:",  name:kCardDownloadCompleted, object:nil)
         
         if Database.sharedInstance().isCardModern(card) {
             lblCardName.font = _8thEditionFont;
@@ -65,7 +65,6 @@ class BannerCollectionViewCell: UICollectionViewCell {
         imgCrop.image = cropImage
         lblCardName.shadowColor = cropImage?.patternColor(averageColor)
         lblCardName.textColor = averageColor
-        FileManager.sharedInstance().downloadCropImage(self.card, immediately:false)
         FileManager.sharedInstance().downloadCardImage(self.card, immediately:false)
         
         // set image
@@ -109,7 +108,7 @@ class BannerCollectionViewCell: UICollectionViewCell {
             }
             
             NSNotificationCenter.defaultCenter().removeObserver(self,
-                name:kCropDownloadCompleted,  object:nil)
+                name:kCardDownloadCompleted,  object:nil)
         }
     }
 }

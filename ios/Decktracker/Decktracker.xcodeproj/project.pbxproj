@@ -156,7 +156,7 @@
 		8CD627A61A6BE7E100382143 /* LifeCounterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD627A51A6BE7E100382143 /* LifeCounterViewController.swift */; };
 		8CD627A81A6BEDE000382143 /* In-App Sets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8CD627A71A6BEDE000382143 /* In-App Sets.plist */; };
 		8CD705981A540E3600CF8425 /* BarGraphViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD705971A540E3600CF8425 /* BarGraphViewController.swift */; };
-		8CE2634D1AB0320D00D30826 /* database.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8CE263431AB0320D00D30826 /* database.xcdatamodeld */; };
+		8CD8C0AD1AB7C96C001CE77A /* database.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8CD8C0A31AB7C96C001CE77A /* database.xcdatamodeld */; };
 		8CE7F2BE19C0A2D0004FBEA5 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CE7F2BD19C0A2D0004FBEA5 /* StoreKit.framework */; };
 		8CE971C61A126C0000D4386B /* BannerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE971C41A126C0000D4386B /* BannerCollectionViewCell.swift */; };
 		8CE971C71A126C0000D4386B /* BannerCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CE971C51A126C0000D4386B /* BannerCollectionViewCell.xib */; };
@@ -425,15 +425,15 @@
 		8CD627A51A6BE7E100382143 /* LifeCounterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LifeCounterViewController.swift; sourceTree = "<group>"; };
 		8CD627A71A6BEDE000382143 /* In-App Sets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "In-App Sets.plist"; sourceTree = "<group>"; };
 		8CD705971A540E3600CF8425 /* BarGraphViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarGraphViewController.swift; sourceTree = "<group>"; };
-		8CE263441AB0320D00D30826 /* database.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = database.xcdatamodel; sourceTree = "<group>"; };
-		8CE263451AB0320D00D30826 /* Dec-9-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Dec-9-2014.xcdatamodel"; sourceTree = "<group>"; };
-		8CE263461AB0320D00D30826 /* Jan-16-2015.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Jan-16-2015.xcdatamodel"; sourceTree = "<group>"; };
-		8CE263471AB0320D00D30826 /* Mar-11-2015 B.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Mar-11-2015 B.xcdatamodel"; sourceTree = "<group>"; };
-		8CE263481AB0320D00D30826 /* Mar-11-2015.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Mar-11-2015.xcdatamodel"; sourceTree = "<group>"; };
-		8CE263491AB0320D00D30826 /* Nov-12-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Nov-12-2014.xcdatamodel"; sourceTree = "<group>"; };
-		8CE2634A1AB0320D00D30826 /* Nov-15-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Nov-15-2014.xcdatamodel"; sourceTree = "<group>"; };
-		8CE2634B1AB0320D00D30826 /* Nov-4-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Nov-4-2014.xcdatamodel"; sourceTree = "<group>"; };
-		8CE2634C1AB0320D00D30826 /* Oct-5-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Oct-5-2014.xcdatamodel"; sourceTree = "<group>"; };
+		8CD8C0A41AB7C96C001CE77A /* database.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = database.xcdatamodel; sourceTree = "<group>"; };
+		8CD8C0A51AB7C96C001CE77A /* Dec-9-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Dec-9-2014.xcdatamodel"; sourceTree = "<group>"; };
+		8CD8C0A61AB7C96C001CE77A /* Jan-16-2015.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Jan-16-2015.xcdatamodel"; sourceTree = "<group>"; };
+		8CD8C0A71AB7C96C001CE77A /* Mar-11-2015 B.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Mar-11-2015 B.xcdatamodel"; sourceTree = "<group>"; };
+		8CD8C0A81AB7C96C001CE77A /* Mar-11-2015.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Mar-11-2015.xcdatamodel"; sourceTree = "<group>"; };
+		8CD8C0A91AB7C96C001CE77A /* Nov-12-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Nov-12-2014.xcdatamodel"; sourceTree = "<group>"; };
+		8CD8C0AA1AB7C96C001CE77A /* Nov-15-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Nov-15-2014.xcdatamodel"; sourceTree = "<group>"; };
+		8CD8C0AB1AB7C96C001CE77A /* Nov-4-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Nov-4-2014.xcdatamodel"; sourceTree = "<group>"; };
+		8CD8C0AC1AB7C96C001CE77A /* Oct-5-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Oct-5-2014.xcdatamodel"; sourceTree = "<group>"; };
 		8CE7F2BD19C0A2D0004FBEA5 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		8CE7F2C219C0A2F7004FBEA5 /* Decktracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Decktracker.entitlements; sourceTree = "<group>"; };
 		8CE971C41A126C0000D4386B /* BannerCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BannerCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -726,7 +726,7 @@
 		8C2E14251990744E00023BAA /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				8CE263431AB0320D00D30826 /* database.xcdatamodeld */,
+				8CD8C0A31AB7C96C001CE77A /* database.xcdatamodeld */,
 				8C3857991A36E6D200E5B38C /* DTArtist.h */,
 				8C38579A1A36E6D200E5B38C /* DTArtist.m */,
 				8C3857A51A36E6D200E5B38C /* DTBlock.h */,
@@ -1297,7 +1297,7 @@
 				8C2E14031990741100023BAA /* AppDelegate.m in Sources */,
 				8C2A97AE19F5027B0094C97F /* UIXToolbarView.m in Sources */,
 				8C3857B31A36E6D200E5B38C /* DTCardForeignName.m in Sources */,
-				8CE2634D1AB0320D00D30826 /* database.xcdatamodeld in Sources */,
+				8CD8C0AD1AB7C96C001CE77A /* database.xcdatamodeld in Sources */,
 				8C2A979F19F5027B0094C97F /* ReaderContentView.m in Sources */,
 				8C911E1C1A526D5D006210B5 /* StartingHandViewController.swift in Sources */,
 				8CC5BA681A13509600F3BDD2 /* ThumbCollectionViewCell.swift in Sources */,
@@ -1569,20 +1569,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		8CE263431AB0320D00D30826 /* database.xcdatamodeld */ = {
+		8CD8C0A31AB7C96C001CE77A /* database.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				8CE263441AB0320D00D30826 /* database.xcdatamodel */,
-				8CE263451AB0320D00D30826 /* Dec-9-2014.xcdatamodel */,
-				8CE263461AB0320D00D30826 /* Jan-16-2015.xcdatamodel */,
-				8CE263471AB0320D00D30826 /* Mar-11-2015 B.xcdatamodel */,
-				8CE263481AB0320D00D30826 /* Mar-11-2015.xcdatamodel */,
-				8CE263491AB0320D00D30826 /* Nov-12-2014.xcdatamodel */,
-				8CE2634A1AB0320D00D30826 /* Nov-15-2014.xcdatamodel */,
-				8CE2634B1AB0320D00D30826 /* Nov-4-2014.xcdatamodel */,
-				8CE2634C1AB0320D00D30826 /* Oct-5-2014.xcdatamodel */,
+				8CD8C0A41AB7C96C001CE77A /* database.xcdatamodel */,
+				8CD8C0A51AB7C96C001CE77A /* Dec-9-2014.xcdatamodel */,
+				8CD8C0A61AB7C96C001CE77A /* Jan-16-2015.xcdatamodel */,
+				8CD8C0A71AB7C96C001CE77A /* Mar-11-2015 B.xcdatamodel */,
+				8CD8C0A81AB7C96C001CE77A /* Mar-11-2015.xcdatamodel */,
+				8CD8C0A91AB7C96C001CE77A /* Nov-12-2014.xcdatamodel */,
+				8CD8C0AA1AB7C96C001CE77A /* Nov-15-2014.xcdatamodel */,
+				8CD8C0AB1AB7C96C001CE77A /* Nov-4-2014.xcdatamodel */,
+				8CD8C0AC1AB7C96C001CE77A /* Oct-5-2014.xcdatamodel */,
 			);
-			currentVersion = 8CE263471AB0320D00D30826 /* Mar-11-2015 B.xcdatamodel */;
+			currentVersion = 8CD8C0A71AB7C96C001CE77A /* Mar-11-2015 B.xcdatamodel */;
 			path = database.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

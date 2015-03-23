@@ -91,7 +91,6 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
             for (key,value) in dict {
                 for x in value {
                     if x.isKindOfClass(DTCard.classForCoder()) {
-                        FileManager.sharedInstance().downloadCropImage(x as DTCard, immediately:false)
                         FileManager.sharedInstance().downloadCardImage(x as DTCard, immediately:false)
                     }
                 }
@@ -115,7 +114,6 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         let newRow = [key: cards]
         
         for x in cards {
-            FileManager.sharedInstance().downloadCropImage(x as? DTCard, immediately:false)
             FileManager.sharedInstance().downloadCardImage(x as? DTCard, immediately:false)
         }
         
@@ -317,7 +315,9 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
             view = view2;
         case 3:
             let view2 = SetListViewController()
-            view2.arrayData = DTSet.MR_findAllSortedBy("releaseDate", ascending: false)
+//            view2.arrayData = DTSet.MR_findAllSortedBy("releaseDate", ascending: false)
+            let predicate = NSPredicate(format: "magicCardsCode != nil")
+            view2.arrayData = DTSet.MR_findAllSortedBy("releaseDate", ascending: false, withPredicate: predicate)
             view = view2;
         default:
             println("tag = \(tag)")

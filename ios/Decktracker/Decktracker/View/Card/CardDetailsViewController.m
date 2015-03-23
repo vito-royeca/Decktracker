@@ -65,7 +65,6 @@
     _currentCardImage = [[FileManager sharedInstance] cardPath:card forLanguage:_currentLanguage];
     
     [[FileManager sharedInstance] downloadCardImage:_card forLanguage:_currentLanguage immediately:YES];
-    [[FileManager sharedInstance] downloadCropImage:_card immediately:YES];
 
     if (self.fetchedResultsController)
     {
@@ -81,7 +80,6 @@
                 DTCard *kard = objects[index+i];
                 
                 [[FileManager sharedInstance] downloadCardImage:kard forLanguage:_currentLanguage immediately:NO];
-                [[FileManager sharedInstance] downloadCropImage:kard immediately:NO];
             }
         }
     }

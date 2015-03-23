@@ -14,7 +14,6 @@
 #import "JJJ/JJJ.h"
 
 #define kCardDownloadCompleted           @"kCardDownloadCompleted"
-#define kCropDownloadCompleted           @"kCropDownloadCompleted"
 #define kFolders                         @[@"Advance Search", @"Decks", @"Collections"]
 #define kHasAdvanceSearchSamples         @"HasAdvanceSearchSamples"
 #define kHasDeckSamples                  @"HasDeckSamples"
@@ -46,7 +45,8 @@ typedef NS_ENUM(NSInteger, FileSystem)
 - (void) downloadCardImage:(DTCard*) card
                forLanguage:(NSString*) languageName
                immediately:(BOOL) immediately;
-- (void) downloadCropImage:(DTCard*) card immediately:(BOOL) immediately;
+//- (void) downloadCropImage:(DTCard*) card immediately:(BOOL) immediately;
+- (void) createCropForCard:(DTCard*) card;
 - (NSArray*) loadKeywords;
 
 - (void) connectToFileSystem:(FileSystem) fileSystem

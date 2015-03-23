@@ -89,11 +89,11 @@
     _card = card;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:kCropDownloadCompleted
+                                                    name:kCardDownloadCompleted
                                                   object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(loadCropImage:)
-                                                 name:kCropDownloadCompleted
+                                                 name:kCardDownloadCompleted
                                                object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:kParseSyncDone
@@ -139,7 +139,6 @@
     _currentCropPath = [[FileManager sharedInstance] cropPath:card];
     self.imgCrop.image = [[UIImage alloc] initWithContentsOfFile:_currentCropPath];
     
-    [[FileManager sharedInstance] downloadCropImage:card immediately:NO];
     [[FileManager sharedInstance] downloadCardImage:card immediately:NO];
     [[Database sharedInstance] fetchTcgPlayerPriceForCard:card];
     
@@ -313,7 +312,7 @@
         }
         
         [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:kCropDownloadCompleted
+                                                        name:kCardDownloadCompleted
                                                       object:nil];
     }
 }

@@ -22,19 +22,19 @@ html, body
 @font-face
 {
     font-family: Magic;
-    src: url('Goudy Medieval.ttf');
+    src: url('fonts/Goudy Medieval.ttf');
 }
 
 @font-face
 {
     font-family: Matrix;
-    src: url('Matrix Bold.ttf');
+    src: url('fonts/Matrix Bold.ttf');
 }
 
 @font-face
 {
     font-family: MPlantin;
-    src: url('MPlantin.ttf');
+    src: url('fonts/MPlantin.ttf');
 }
 
 .cardNamePreEightEdition

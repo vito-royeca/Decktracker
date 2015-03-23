@@ -16,5 +16,19 @@
 		<key>In-App Description</key>
 		<string>Cards from the Fate Reforged set.</string>
 	</dict>
+	<dict>
+		<key>Name</key>
+		<string>Dragons of Tarkir</string>
+		<key>Code</key>
+		<string>DTK</string>
+		<key>In-App Reference Name</key>
+		<string>com.jjj.decktracker.DragonsOfTarkir_Ref</string>
+		<key>In-App Product ID</key>
+		<string>DragonsOfTarkir_ID</string>
+		<key>In-App Display Name</key>
+		<string>Dragons of Tarkir</string>
+		<key>In-App Description</key>
+		<string>Cards from the Dragons of Tarkir set.</string>
+	</dict>
 </array>
 </plist>
