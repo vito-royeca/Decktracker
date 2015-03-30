@@ -304,11 +304,12 @@ static Database *_me;
 {
     NSMutableString *sql = [[NSMutableString alloc] init];
     NSMutableArray *arrParams = [[NSMutableArray alloc] init];
+    NSString *defaultFieldName;
+    NSArray *defaultFieldValues;
     
     for (NSString *key in [query allKeys])
     {
         NSString *fieldName;
-        NSArray *defaultFieldValues;
         BOOL bToMany = NO;
         
         if ([key isEqualToString:@"Name"])
@@ -322,7 +323,8 @@ static Database *_me;
         }
         else if ([key isEqualToString:@"Format"])
         {
-            fieldName = @"legalities.name";
+            fieldName = @"legalities.format.name";
+            defaultFieldName = @"legalities.name";
             defaultFieldValues = @[@"Legal", @"Restricted"];
             bToMany = YES;
         }
@@ -410,7 +412,7 @@ static Database *_me;
                 {
                     if ([value isKindOfClass:[NSNumber class]])
                     {
-                        [sql appendFormat:@"%@ == %%@", fieldName];
+                        [sql appendFormat:@"ANY %@ CONTAINS[cd] %%@", fieldName];
                     }
                     else
                     {
@@ -451,7 +453,7 @@ static Database *_me;
             
             if (bToMany)
             {
-                [sql appendFormat:@"ANY %@ == %%@", fieldName];
+                [sql appendFormat:@"ANY %@ CONTAINS[cd] %%@", fieldName];
             }
             else
             {
@@ -477,6 +479,12 @@ static Database *_me;
     }
     
     NSPredicate *predicate = [NSPredicate predicateWithFormat:sql argumentArray:arrParams];
+    if (defaultFieldName && defaultFieldValues)
+    {
+        NSPredicate *predDefault = [NSPredicate predicateWithFormat:@"ANY %K IN %@", defaultFieldName, defaultFieldValues];
+        predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, predDefault]];
+    }
+    
     NSManagedObjectContext *moc = [NSManagedObjectContext MR_defaultContext];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:@"name"
@@ -799,6 +807,24 @@ static Database *_me;
     }
     
     return arrSetCodes;
+}
+
+-(BOOL) isSetPurchased:(DTSet*) set
+{
+    NSArray *inAppSetCodes = [self inAppSetCodes];
+    
+    if (inAppSetCodes.count > 0)
+    {
+        for (NSString *code in inAppSetCodes)
+        {
+            if ([set.code isEqualToString:code])
+            {
+                return NO;
+            }
+        }
+    }
+    
+    return YES;
 }
 
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)

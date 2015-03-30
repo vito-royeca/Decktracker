@@ -631,8 +631,12 @@
     [html appendFormat:@"<tr><td colspan='2'><table>"];
     for (DTSet *set in [[self.card.printings allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"releaseDate" ascending:NO]]])
     {
-        DTCard *card = [[Database sharedInstance] findCard:self.card.name inSet:set.code];
+        if (![[Database sharedInstance] isSetPurchased:set])
+        {
+            continue;
+        }
         
+        DTCard *card = [[Database sharedInstance] findCard:self.card.name inSet:set.code];
         NSString *link = [[NSString stringWithFormat:@"printings?set=%@&number=%@", card.set.code, card.number] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 
         [html appendFormat:@"<tr><td><a href='%@'>%@</a></td>", link, [self composeSetImage:card]];
@@ -649,6 +653,11 @@
         [html appendFormat:@"<tr><td colspan='2'><table>"];
         for (DTCard *card in [[self.card.names allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]])
         {
+            if (![[Database sharedInstance] isSetPurchased:card.set])
+            {
+                continue;
+            }
+            
             NSString *link = [[NSString stringWithFormat:@"names?set=%@&number=%@", card.set.code, card.number] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             
             [html appendFormat:@"<tr><td><a href='%@'>%@</a></td>", link, [self composeSetImage:card]];
@@ -664,6 +673,11 @@
         [html appendFormat:@"<tr><td colspan='2'><table>"];
         for (DTCard *card in [[self.card.variations allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]])
         {
+            if (![[Database sharedInstance] isSetPurchased:card.set])
+            {
+                continue;
+            }
+            
             NSString *link = [[NSString stringWithFormat:@"variations?set=%@&number=%@", card.set.code, card.number] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             
             [html appendFormat:@"<tr><td><a href='%@'>%@</a></td>", link, [self composeSetImage:card]];

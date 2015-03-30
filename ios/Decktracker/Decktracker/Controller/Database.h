@@ -56,6 +56,7 @@
 -(void) loadInAppSets;
 -(NSDictionary*) inAppSettingsForSet:(DTSet*) set;
 -(NSArray*) inAppSetCodes;
+-(BOOL) isSetPurchased:(DTSet*) set;
 
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
 -(void) fetchTopRated:(int) limit skip:(int) skip;

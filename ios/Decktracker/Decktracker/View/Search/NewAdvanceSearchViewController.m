@@ -71,7 +71,7 @@
     
     _arrFilters = @[@"Name",
                     @"Set",
-//                    @"Format",
+                    @"Format",
                     @"Rarity",
                     @"Type",
                     @"Subtype",
