@@ -9,7 +9,7 @@ DEPENDENCIES:
   - MagicalRecord
 
 SPEC CHECKSUMS:
-  hpple: f4eb7c21a8db83ec264e5d614ec7509e10e5adec
-  MagicalRecord: 2b471584fc9e3137f3d0a56967917baa4979e224
+  hpple: 3b765f96fc2cd56ad1a49aef6f7be5cb2aa64b57
+  MagicalRecord: f8a56bb87ab6552f20c4bb8681a1958a197ea3cd
 
-COCOAPODS: 0.35.0
+COCOAPODS: 0.36.1

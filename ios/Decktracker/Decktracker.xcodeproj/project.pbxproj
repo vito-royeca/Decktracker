@@ -161,7 +161,7 @@
 		8CE971C61A126C0000D4386B /* BannerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE971C41A126C0000D4386B /* BannerCollectionViewCell.swift */; };
 		8CE971C71A126C0000D4386B /* BannerCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CE971C51A126C0000D4386B /* BannerCollectionViewCell.xib */; };
 		8CEF2EAB1A6B395E0026D4EF /* CardListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEF2EAA1A6B395E0026D4EF /* CardListViewController.swift */; };
-		8CF14BF41A2E199600BEC434 /* DecktrackerPFLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF14BF31A2E199600BEC434 /* DecktrackerPFLoginViewController.swift */; };
+		8CF14BF41A2E199600BEC434 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF14BF31A2E199600BEC434 /* LoginViewController.swift */; };
 		8CF3309F1A35B33D00B6301D /* UserAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF3309E1A35B33D00B6301D /* UserAccountViewController.swift */; };
 		8CF418D719C9C6790082E3BC /* Collection.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF418D619C9C6790082E3BC /* Collection.m */; };
 		8CF79A6519A8BFA300BE4246 /* DecksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF79A6419A8BFA300BE4246 /* DecksViewController.m */; };
@@ -439,7 +439,7 @@
 		8CE971C41A126C0000D4386B /* BannerCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BannerCollectionViewCell.swift; sourceTree = "<group>"; };
 		8CE971C51A126C0000D4386B /* BannerCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BannerCollectionViewCell.xib; sourceTree = "<group>"; };
 		8CEF2EAA1A6B395E0026D4EF /* CardListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardListViewController.swift; sourceTree = "<group>"; };
-		8CF14BF31A2E199600BEC434 /* DecktrackerPFLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecktrackerPFLoginViewController.swift; sourceTree = "<group>"; };
+		8CF14BF31A2E199600BEC434 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		8CF3309E1A35B33D00B6301D /* UserAccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAccountViewController.swift; sourceTree = "<group>"; };
 		8CF418D519C9C6790082E3BC /* Collection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Collection.h; sourceTree = "<group>"; };
 		8CF418D619C9C6790082E3BC /* Collection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Collection.m; sourceTree = "<group>"; };
@@ -840,7 +840,7 @@
 				8C3E948019E4207200C7EF21 /* AcknowledgementTableViewCell.h */,
 				8C3E948119E4207200C7EF21 /* AcknowledgementTableViewCell.m */,
 				8C3E948219E4207200C7EF21 /* AcknowledgementTableViewCell.xib */,
-				8CF14BF31A2E199600BEC434 /* DecktrackerPFLoginViewController.swift */,
+				8CF14BF31A2E199600BEC434 /* LoginViewController.swift */,
 				8CD2E1EA19DACE1A00503ACC /* InAppPurchase.h */,
 				8CD2E1EB19DACE1A00503ACC /* InAppPurchase.m */,
 				8C33E9BC19D73AAB000892D9 /* InAppPurchaseViewController.h */,
@@ -1306,7 +1306,7 @@
 				8C38579E1A36E6D200E5B38C /* DTSet.m in Sources */,
 				8C2E13FF1990741100023BAA /* main.m in Sources */,
 				8C26A67B19A63FAC00FE00E7 /* FilterInputViewController.m in Sources */,
-				8CF14BF41A2E199600BEC434 /* DecktrackerPFLoginViewController.swift in Sources */,
+				8CF14BF41A2E199600BEC434 /* LoginViewController.swift in Sources */,
 				8C5246E119A5137300B10147 /* FileManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

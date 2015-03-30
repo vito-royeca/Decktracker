@@ -16,7 +16,7 @@
 {
     IMP getterMethod = [boundObject methodForSelector:boundGetter];
 
-    CPTPlotRange *current; //= getterMethod(boundObject, boundGetter);
+    CPTPlotRange *current;// = getterMethod(boundObject, boundGetter);
     CPTPlotRange *start   = (CPTPlotRange *)self.startValue;
     CPTPlotRange *end     = (CPTPlotRange *)self.endValue;
 

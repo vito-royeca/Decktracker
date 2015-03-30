@@ -1,55 +1,55 @@
 PODS:
-  - ActionSheetPicker-3.0 (1.3.12)
-  - AFNetworking (2.5.1):
-    - AFNetworking/NSURLConnection (= 2.5.1)
-    - AFNetworking/NSURLSession (= 2.5.1)
-    - AFNetworking/Reachability (= 2.5.1)
-    - AFNetworking/Security (= 2.5.1)
-    - AFNetworking/Serialization (= 2.5.1)
-    - AFNetworking/UIKit (= 2.5.1)
-  - AFNetworking/NSURLConnection (2.5.1):
+  - ActionSheetPicker-3.0 (1.5.1)
+  - AFNetworking (2.5.2):
+    - AFNetworking/NSURLConnection (= 2.5.2)
+    - AFNetworking/NSURLSession (= 2.5.2)
+    - AFNetworking/Reachability (= 2.5.2)
+    - AFNetworking/Security (= 2.5.2)
+    - AFNetworking/Serialization (= 2.5.2)
+    - AFNetworking/UIKit (= 2.5.2)
+  - AFNetworking/NSURLConnection (2.5.2):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.5.1):
+  - AFNetworking/NSURLSession (2.5.2):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (2.5.1)
-  - AFNetworking/Security (2.5.1)
-  - AFNetworking/Serialization (2.5.1)
-  - AFNetworking/UIKit (2.5.1):
+  - AFNetworking/Reachability (2.5.2)
+  - AFNetworking/Security (2.5.2)
+  - AFNetworking/Serialization (2.5.2)
+  - AFNetworking/UIKit (2.5.2):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - Appirater (2.0.4)
-  - Bolts (1.1.3)
+  - Bolts (1.1.4)
   - CAAnimation-EasingEquations (1.0.3)
   - CAAnimationBlocks (0.0.1)
   - CorePlot (1.5.1)
-  - CSStickyHeaderFlowLayout (0.2.3)
+  - CSStickyHeaderFlowLayout (0.2.4)
   - Dropbox-Sync-API-SDK (3.1.2)
   - EDStarRating (1.1)
-  - Facebook-iOS-SDK (3.23.0):
+  - Facebook-iOS-SDK (3.23.2):
     - Bolts (~> 1.0)
   - FFCircularProgressView (0.5)
   - GoogleAnalytics-iOS-SDK (3.10):
     - GoogleAnalytics-iOS-SDK/Core (= 3.10)
   - GoogleAnalytics-iOS-SDK/Core (3.10)
   - hpple (0.2.0)
-  - InAppSettingsKit (2.4.3)
+  - InAppSettingsKit (2.4.4)
   - LMAlertView (1.1.0):
     - CAAnimationBlocks (~> 0.0.1)
     - RBBAnimation (~> 0.3.0)
   - MagicalRecord (2.2):
     - MagicalRecord/Core (= 2.2)
   - MagicalRecord/Core (2.2)
-  - MBProgressHUD (0.9)
-  - Parse (1.6.3):
+  - MBProgressHUD (0.9.1)
+  - Parse (1.7.0):
     - Bolts (~> 1.1)
-  - ParseFacebookUtils (1.6.3):
-    - Facebook-iOS-SDK (~> 3.20)
-    - Parse (~> 1.6.3)
-  - ParseUI (1.1.0):
+  - ParseFacebookUtils (1.7.0):
+    - Facebook-iOS-SDK (~> 3.23)
+    - Parse (~> 1.7.0)
+  - ParseUI (1.1.1):
     - Parse (~> 1.6)
     - ParseFacebookUtils (~> 1.6)
   - PureLayout (2.0.5)
@@ -81,29 +81,29 @@ DEPENDENCIES:
   - XLForm
 
 SPEC CHECKSUMS:
-  ActionSheetPicker-3.0: e49127271ec833864f3235ba7261b1f0d093a503
-  AFNetworking: 8bee59492a6ff15d69130efa4d0dc67e0094a52a
-  Appirater: cbdb7f305562cfde585300bfff86da01ae559deb
-  Bolts: 3db0a875235e0c9042b013af13af0f00f79b102c
-  CAAnimation-EasingEquations: 36bf39151d4423d4946b62373f2ea8ec3d40c478
-  CAAnimationBlocks: 981bfca79ac481f07957aa8357885e620637f926
-  CorePlot: b15cb1a9a687b9576545104248d6e22033e678bb
-  CSStickyHeaderFlowLayout: c5595da1cf91cce22aca70c44ab80b59247c723c
-  Dropbox-Sync-API-SDK: 16aef545267acf60efdbecbfd1fbdf04d3ee5a7c
-  EDStarRating: c7b87f9866be0ea29bb054964023b8eb3f18286c
-  Facebook-iOS-SDK: 3d65f685348b789e46a9aacf92bfa85b60b63755
-  FFCircularProgressView: 723b7a84c412b5d9d2a5531bc716b99965ad7192
-  GoogleAnalytics-iOS-SDK: f422062075d9ccb1ea8d783fc5ba3829461e9502
-  hpple: f4eb7c21a8db83ec264e5d614ec7509e10e5adec
-  InAppSettingsKit: 315e2a196a06921f8f83de01a855ed98dc69851e
-  LMAlertView: 1d7c0624323b6bde13c90b57b1d0f5605980f068
-  MagicalRecord: 2b471584fc9e3137f3d0a56967917baa4979e224
-  MBProgressHUD: 2038dbcf3dce73215abed6001657043d53aa79a8
-  Parse: f725f76ef200c5127420690fc6882e57c3813923
-  ParseFacebookUtils: bb14e63862f920cc3f3864b0e373d6771b765255
-  ParseUI: 00c4c39aab3944d88758b55416581650caa37f89
-  PureLayout: 63a3257320223e8edddcd3afb407445f85a6bf74
-  RBBAnimation: 243d73be1a526f1b51d266b182e4aa0cfe9cbf64
-  XLForm: 7d6855fe88df37b44ea00da80cc0cf3a945cfb1b
+  ActionSheetPicker-3.0: de0f71e30495ed0192f7d16d0fddcab6882a0ca3
+  AFNetworking: fefbce9660acb17f48ae0011292d4da0f457bf36
+  Appirater: 8783318c36414e8de3ea023443028df94c1b784b
+  Bolts: f8e2f94edbf9fec7bb8de5ecaaa3aa6b7de6f64e
+  CAAnimation-EasingEquations: f4aff126148a5511243b1c99f69a4379039b64cb
+  CAAnimationBlocks: 1aaca5fb6447a95d83b20cc786992956ef46e4ee
+  CorePlot: 53d823a4de5e4e662311cae4cdcb230e146c5c90
+  CSStickyHeaderFlowLayout: a04d4bc7d6f6668073d19d22d42c27a682dd71da
+  Dropbox-Sync-API-SDK: 92652bd663984740f963ba228864542711eda148
+  EDStarRating: a41a6440a945020745d0e9ff8ada7d1afa952114
+  Facebook-iOS-SDK: cd87f0b2f0c1d9574b44e8fa2baacc275524bac3
+  FFCircularProgressView: 683a4ab1e1bd613246a3dffa61503ffdebcde8d8
+  GoogleAnalytics-iOS-SDK: 4f98a376c1d61e6ac4ca47951655820314856eef
+  hpple: 3b765f96fc2cd56ad1a49aef6f7be5cb2aa64b57
+  InAppSettingsKit: df2c0b0cafd5c6f375f4d792eef8cbcdf63ae5ed
+  LMAlertView: fa4589ea2cb540b888636ff6739fc39b16ac1e4b
+  MagicalRecord: f8a56bb87ab6552f20c4bb8681a1958a197ea3cd
+  MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
+  Parse: 3c2d4e6ade7b59d31c0bc8106340c6b81b31bc0f
+  ParseFacebookUtils: f0c954253a65e945d7cb73400c33bc661f516b85
+  ParseUI: e38bbbc3784006ab4ffaa6ef292e23c5fa9119dc
+  PureLayout: a0fe75f1cf485801e7e00b723b8a3c32dca558e2
+  RBBAnimation: cb6cb419f511434ce932f7d0fabf369612fafb4e
+  XLForm: ba9e657a360a810ab1f64cc2cd6307fd99a86866
 
-COCOAPODS: 0.35.0
+COCOAPODS: 0.36.1

@@ -17,6 +17,18 @@ NSString *const CSStickyHeaderParallaxHeader = @"CSStickyHeaderParallexHeader";
     [super prepareLayout];
 }
 
+- (UICollectionViewLayoutAttributes *)initialLayoutAttributesForAppearingSupplementaryElementOfKind:(NSString *)elementKind
+                                                                                        atIndexPath:(NSIndexPath *)elementIndexPath {
+
+    UICollectionViewLayoutAttributes *attributes = [super initialLayoutAttributesForAppearingSupplementaryElementOfKind:elementKind
+                                                                                                        atIndexPath:elementIndexPath];
+    CGRect frame = attributes.frame;
+    frame.origin.y += self.parallaxHeaderReferenceSize.height;
+    attributes.frame = frame;
+
+    return attributes;
+}
+
 - (UICollectionViewLayoutAttributes *)layoutAttributesForSupplementaryViewOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
     UICollectionViewLayoutAttributes *attributes = [super layoutAttributesForSupplementaryViewOfKind:kind atIndexPath:indexPath];
@@ -88,8 +100,8 @@ NSString *const CSStickyHeaderParallaxHeader = @"CSStickyHeaderParallexHeader";
                                 : 1;
 
     // Create the attributes for the Parallex header
-    if (visibleParallexHeader && ! CGSizeEqualToSize(CGSizeZero, self.parallaxHeaderReferenceSize) && numberOfSections > 0) {
-        CSStickyHeaderFlowLayoutAttributes *currentAttribute = [CSStickyHeaderFlowLayoutAttributes layoutAttributesForSupplementaryViewOfKind:CSStickyHeaderParallaxHeader withIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+    if (visibleParallexHeader && ! CGSizeEqualToSize(CGSizeZero, self.parallaxHeaderReferenceSize)) {
+        CSStickyHeaderFlowLayoutAttributes *currentAttribute = [CSStickyHeaderFlowLayoutAttributes layoutAttributesForSupplementaryViewOfKind:CSStickyHeaderParallaxHeader withIndexPath:[NSIndexPath indexPathWithIndex:0]];
         CGRect frame = currentAttribute.frame;
         frame.size.width = self.parallaxHeaderReferenceSize.width;
         frame.size.height = self.parallaxHeaderReferenceSize.height;
@@ -174,6 +186,12 @@ NSString *const CSStickyHeaderParallaxHeader = @"CSStickyHeaderParallexHeader";
 
 + (Class)layoutAttributesClass {
     return [CSStickyHeaderFlowLayoutAttributes class];
+}
+
+- (void)setParallaxHeaderReferenceSize:(CGSize)parallaxHeaderReferenceSize {
+    _parallaxHeaderReferenceSize = parallaxHeaderReferenceSize;
+    // Make sure we update the layout
+    [self invalidateLayout];
 }
 
 #pragma mark Helper

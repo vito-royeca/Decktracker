@@ -25,7 +25,6 @@
 #import "SearchResultsTableViewCell.h"
 #import "SimpleSearchViewController.h"
 
-
 #import "EDStarRating.h"
 #import "LMAlertView.h"
 
@@ -399,7 +398,6 @@
         NSArray *objects = self.fetchedResultsController.fetchedObjects;
         selectedRow = [objects indexOfObject:self.card];
     }
-
 
     UIImage *image = [UIImage imageWithContentsOfFile:[[FileManager sharedInstance] cardPath:self.card forLanguage:_currentLanguage]];
     self.cardImage.image = image;
@@ -859,9 +857,6 @@
     {
         self.fetchedResultsController = nil;
         
-
-//        DTCard *card = [[Database sharedInstance] findCard:kvPairs[@"name"]
-//                                                   inSet:kvPairs[@"set"]];
         DTCard *card = [DTCard MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"set.code = %@ AND number = %@", kvPairs[@"set"], kvPairs[@"number"]]];
         
         [self setCard:card];
@@ -1082,7 +1077,8 @@
                 tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
                 self.cardImage = [[UIImageView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
-                self.cardImage.backgroundColor = [UIColor lightGrayColor];
+                UIImage *bgImage = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/images/Gray_Patterned_BG.jpg", [[NSBundle mainBundle] bundlePath]]];
+                self.cardImage.backgroundColor = [UIColor colorWithPatternImage:bgImage];
                 [self.cardImage setUserInteractionEnabled:YES];
                 UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
                 UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];

@@ -220,7 +220,7 @@
         }
         else
         {
-            DecktrackerPFLoginViewController *view = [[DecktrackerPFLoginViewController alloc] init];
+            LoginViewController *view = [[LoginViewController alloc] init];
             
             view.fields = PFLogInFieldsDismissButton |
             PFLogInFieldsUsernameAndPassword |
