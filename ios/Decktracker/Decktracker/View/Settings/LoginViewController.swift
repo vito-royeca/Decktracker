@@ -33,7 +33,7 @@ public class LoginViewController: PFLogInViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        self.view.backgroundColor = JJJUtil.UIColorFromRGB(0x691F01)
+        self.view.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(0x691F01)
         
         let image = UIImage(named: "\(NSBundle.mainBundle().bundlePath)/images/AppIcon57x57.png")
         var imageView = UIImageView(frame: CGRectMake(0, 0, 57, 57))

@@ -244,12 +244,12 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
         btnAsk = UILabel(frame: dFrame)
         btnAsk!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "askTapped:"))
         btnAsk!.userInteractionEnabled = true
-        btnAsk!.text = "ASK FACEBOOK"
+        btnAsk!.text = "Ask Facebook"
         btnAsk!.textAlignment = NSTextAlignment.Center
-        btnAsk!.font = CardQuiz.kTileButtonFont
+        btnAsk!.font = CardQuiz.kManaLabelFont
         btnAsk!.textColor = CardQuiz.kTileTextColor
-        btnAsk!.backgroundColor = JJJUtil.UIColorFromRGB(CardQuiz.kTileColor)
-        btnAsk!.layer.borderColor = JJJUtil.UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
+        btnAsk!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileColor)
+        btnAsk!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
         btnAsk!.layer.borderWidth = 1
         self.view.addSubview(btnAsk!)
         
@@ -259,12 +259,12 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
         btnBuy = UILabel(frame: dFrame)
         btnBuy!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "buyTapped:"))
         btnBuy!.userInteractionEnabled = true
-        btnBuy!.text = "BUY MANA"
+        btnBuy!.text = "Buy Mana"
         btnBuy!.textAlignment = NSTextAlignment.Center
-        btnBuy!.font = CardQuiz.kTileButtonFont
+        btnBuy!.font = CardQuiz.kManaLabelFont
         btnBuy!.textColor = CardQuiz.kTileTextColor
-        btnBuy!.backgroundColor = JJJUtil.UIColorFromRGB(CardQuiz.kTileColor)
-        btnBuy!.layer.borderColor = JJJUtil.UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
+        btnBuy!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileColor)
+        btnBuy!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
         btnBuy!.layer.borderWidth = 1
         
         self.view.addSubview(btnBuy!)
@@ -276,16 +276,16 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
         if canCastCard() {
             btnCast!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "castTapped:"))
             btnCast!.userInteractionEnabled = true
-            btnCast!.text = "CAST"
+            btnCast!.text = "Cast"
         } else {
             btnCast!.userInteractionEnabled = false
             btnCast!.text = " "
         }
         btnCast!.textAlignment = NSTextAlignment.Center
-        btnCast!.font = CardQuiz.kTileButtonFont
+        btnCast!.font = CardQuiz.kManaLabelFont
         btnCast!.textColor = CardQuiz.kTileTextColor
-        btnCast!.backgroundColor = JJJUtil.UIColorFromRGB(CardQuiz.kTileColor)
-        btnCast!.layer.borderColor = JJJUtil.UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
+        btnCast!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileColor)
+        btnCast!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
         btnCast!.layer.borderWidth = 1
         
         self.view.addSubview(btnCast!)
@@ -410,8 +410,8 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
                     label.textAlignment = NSTextAlignment.Center
                     label.font = CardQuiz.kTileAnswerFont
                     label.textColor = CardQuiz.kTileTextColor
-                    label.backgroundColor = JJJUtil.UIColorFromRGB(CardQuiz.kTileColor)
-                    label.layer.borderColor = JJJUtil.UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
+                    label.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileColor)
+                    label.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
                     label.layer.borderWidth = 1
                     label.tag = index
                 } else {
@@ -455,8 +455,8 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
             label.textAlignment = NSTextAlignment.Center
             label.font = CardQuiz.kTileQuizFont
             label.textColor = CardQuiz.kTileTextColor
-            label.backgroundColor = JJJUtil.UIColorFromRGB(CardQuiz.kTileColor)
-            label.layer.borderColor = JJJUtil.UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
+            label.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileColor)
+            label.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
             label.layer.borderWidth = 1
             label.tag = index
             index++
@@ -507,12 +507,12 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
         btnNextCard = UILabel(frame: btnNextCardFrame)
         btnNextCard!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "nextCardTapped:"))
         btnNextCard!.userInteractionEnabled = true
-        btnNextCard!.text = "NEXT CARD"
+        btnNextCard!.text = "Next Card"
         btnNextCard!.textAlignment = NSTextAlignment.Center
-        btnNextCard!.font = CardQuiz.kTileButtonFont
+        btnNextCard!.font = CardQuiz.kManaLabelFont
         btnNextCard!.textColor = CardQuiz.kTileTextColor
-        btnNextCard!.backgroundColor = JJJUtil.UIColorFromRGB(CardQuiz.kTileColor)
-        btnNextCard!.layer.borderColor = JJJUtil.UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
+        btnNextCard!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileColor)
+        btnNextCard!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
         btnNextCard!.layer.borderWidth = 1
         self.view.addSubview(btnNextCard!)
         
@@ -571,6 +571,10 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
         lblColorless!.text = " \(manaColorless)"
         
         // save the mana in the cloud
+        self.saveMana()
+    }
+    
+    func saveMana() {
         if userMana != nil {
             let totalCMC = self.manaBlack +
                 self.manaBlue +

@@ -63,4 +63,6 @@ typedef NS_ENUM(NSInteger, FileSystem)
 - (void) saveData:(id) data atPath:(NSString*) path;
 - (NSArray*) manaImagesForCard:(DTCard *)card;
 
+- (UIColor*) UIColorFromRGB:(NSUInteger) rgbValue;
+
 @end

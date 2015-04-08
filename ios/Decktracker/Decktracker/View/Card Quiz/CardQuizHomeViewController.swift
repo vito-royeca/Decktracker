@@ -80,12 +80,12 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
             btnLogin = UILabel(frame: dFrame)
             btnLogin!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "loginTapped:"))
             btnLogin!.userInteractionEnabled = true
-            btnLogin!.text = "LOGIN / SIGNUP"
+            btnLogin!.text = "Login / Sign Up"
             btnLogin!.textAlignment = NSTextAlignment.Center
             btnLogin!.font = CardQuiz.kManaLabelFont
             btnLogin!.textColor = CardQuiz.kTileTextColor
-            btnLogin!.backgroundColor = JJJUtil.UIColorFromRGB(CardQuiz.kTileColor)
-            btnLogin!.layer.borderColor = JJJUtil.UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
+            btnLogin!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileColor)
+            btnLogin!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
             btnLogin!.layer.borderWidth = 1
             self.view.addSubview(btnLogin!)
 
@@ -102,25 +102,15 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
                 
                 if PFFacebookUtils.isLinkedWithUser(currentUser) {
                     let request = FBRequest.requestForMe()
-                    
-                    [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                        if (!error) {
-                        // result is a dictionary with the user's Facebook data
-                        NSDictionary *userData = (NSDictionary *)result;
-                        
-                        NSString *facebookID = userData[@"id"];
-                        NSString *name = userData[@"name"];
-                        NSString *location = userData[@"location"][@"name"];
-                        NSString *gender = userData[@"gender"];
-                        NSString *birthday = userData[@"birthday"];
-                        NSString *relationship = userData[@"relationship_status"];
-                        
-                        NSURL *pictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large&return_ssl_resources=1", facebookID]];
-                        
-                        // Now add the data to the UI elements
-                        // ...
+
+                    request.startWithCompletionHandler({ (connection: FBRequestConnection?, result: AnyObject?, error: NSError?) -> Void in
+                        if error == nil {
+                            let userData = result as NSDictionary
+
+                            self.lblAccount!.text = userData["name"] as? String
                         }
-                        }];
+                    })
+                    
                 } else if PFTwitterUtils.isLinkedWithUser(currentUser) {
                     
                 } else {
@@ -132,12 +122,12 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
                 btnLogin = UILabel(frame: dFrame)
                 btnLogin!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "loginTapped:"))
                 btnLogin!.userInteractionEnabled = true
-                btnLogin!.text = "LOGOUT"
+                btnLogin!.text = "Logout"
                 btnLogin!.textAlignment = NSTextAlignment.Center
                 btnLogin!.font = CardQuiz.kManaLabelFont
                 btnLogin!.textColor = CardQuiz.kTileTextColor
-                btnLogin!.backgroundColor = JJJUtil.UIColorFromRGB(CardQuiz.kTileColor)
-                btnLogin!.layer.borderColor = JJJUtil.UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
+                btnLogin!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileColor)
+                btnLogin!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
                 btnLogin!.layer.borderWidth = 1
                 self.view.addSubview(btnLogin!)
                 
@@ -145,12 +135,12 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
                 btnLogin = UILabel(frame: dFrame)
                 btnLogin!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "loginTapped:"))
                 btnLogin!.userInteractionEnabled = true
-                btnLogin!.text = "LOGIN / SIGNUP"
+                btnLogin!.text = "Login / Sign Up"
                 btnLogin!.textAlignment = NSTextAlignment.Center
                 btnLogin!.font = CardQuiz.kManaLabelFont
                 btnLogin!.textColor = CardQuiz.kTileTextColor
-                btnLogin!.backgroundColor = JJJUtil.UIColorFromRGB(CardQuiz.kTileColor)
-                btnLogin!.layer.borderColor = JJJUtil.UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
+                btnLogin!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileColor)
+                btnLogin!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
                 btnLogin!.layer.borderWidth = 1
                 self.view.addSubview(btnLogin!)
             }
@@ -161,12 +151,12 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         btnEasy = UILabel(frame: dFrame)
         btnEasy!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "startGame:"))
         btnEasy!.userInteractionEnabled = true
-        btnEasy!.text = "EASY (STANDARD)"
+        btnEasy!.text = "Easy: Standard"
         btnEasy!.textAlignment = NSTextAlignment.Center
         btnEasy!.font = CardQuiz.kManaLabelFont
         btnEasy!.textColor = CardQuiz.kTileTextColor
-        btnEasy!.backgroundColor = JJJUtil.UIColorFromRGB(CardQuiz.kTileColor)
-        btnEasy!.layer.borderColor = JJJUtil.UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
+        btnEasy!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileColor)
+        btnEasy!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
         btnEasy!.layer.borderWidth = 1
         self.view.addSubview(btnEasy!)
 
@@ -175,12 +165,12 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         btnModerate = UILabel(frame: dFrame)
         btnModerate!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "startGame:"))
         btnModerate!.userInteractionEnabled = true
-        btnModerate!.text = "MODERATE (MODERN)"
+        btnModerate!.text = "Moderate: Modern"
         btnModerate!.textAlignment = NSTextAlignment.Center
         btnModerate!.font = CardQuiz.kManaLabelFont
         btnModerate!.textColor = CardQuiz.kTileTextColor
-        btnModerate!.backgroundColor = JJJUtil.UIColorFromRGB(CardQuiz.kTileColor)
-        btnModerate!.layer.borderColor = JJJUtil.UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
+        btnModerate!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileColor)
+        btnModerate!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
         btnModerate!.layer.borderWidth = 1
         self.view.addSubview(btnModerate!)
 
@@ -189,12 +179,12 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         btnHard = UILabel(frame: dFrame)
         btnHard!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "startGame:"))
         btnHard!.userInteractionEnabled = true
-        btnHard!.text = "HARD (VINTAGE)"
+        btnHard!.text = "Hard: Vintage"
         btnHard!.textAlignment = NSTextAlignment.Center
         btnHard!.font = CardQuiz.kManaLabelFont
         btnHard!.textColor = CardQuiz.kTileTextColor
-        btnHard!.backgroundColor = JJJUtil.UIColorFromRGB(CardQuiz.kTileColor)
-        btnHard!.layer.borderColor = JJJUtil.UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
+        btnHard!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileColor)
+        btnHard!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
         btnHard!.layer.borderWidth = 1
         self.view.addSubview(btnHard!)
 
@@ -203,12 +193,12 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         btnLeaderboard = UILabel(frame: dFrame)
         btnLeaderboard!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "startGame:"))
         btnLeaderboard!.userInteractionEnabled = true
-        btnLeaderboard!.text = "LEADERBOARD"
+        btnLeaderboard!.text = "Leaderboard"
         btnLeaderboard!.textAlignment = NSTextAlignment.Center
         btnLeaderboard!.font = CardQuiz.kManaLabelFont
         btnLeaderboard!.textColor = CardQuiz.kTileTextColor
-        btnLeaderboard!.backgroundColor = JJJUtil.UIColorFromRGB(CardQuiz.kTileColor)
-        btnLeaderboard!.layer.borderColor = JJJUtil.UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
+        btnLeaderboard!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileColor)
+        btnLeaderboard!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
         btnLeaderboard!.layer.borderWidth = 1
         self.view.addSubview(btnLeaderboard!)
 
@@ -217,12 +207,12 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         btnSettings = UILabel(frame: dFrame)
         btnSettings!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "startGame:"))
         btnSettings!.userInteractionEnabled = true
-        btnSettings!.text = "SETTINGS"
+        btnSettings!.text = "Settings"
         btnSettings!.textAlignment = NSTextAlignment.Center
         btnSettings!.font = CardQuiz.kManaLabelFont
         btnSettings!.textColor = CardQuiz.kTileTextColor
-        btnSettings!.backgroundColor = JJJUtil.UIColorFromRGB(CardQuiz.kTileColor)
-        btnSettings!.layer.borderColor = JJJUtil.UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
+        btnSettings!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileColor)
+        btnSettings!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
         btnSettings!.layer.borderWidth = 1
         self.view.addSubview(btnSettings!)
     }
