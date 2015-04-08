@@ -14,22 +14,25 @@ class SignupViewController: PFSignUpViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        self.view.backgroundColor = JJJUtil.UIColorFromRGB(0x691F01)
+        
+        let image = UIImage(named: "\(NSBundle.mainBundle().bundlePath)/images/AppIcon57x57.png")
+        var imageView = UIImageView(frame: CGRectMake(0, 0, 57, 57))
+        imageView.image = image
+        self.signUpView.logo = imageView
+        
+        self.navigationItem.title = "Signup"
+        
+        #if !DEBUG
+            // send the screen to Google Analytics
+            let tracker = GAI.sharedInstance().defaultTracker
+            tracker.set(kGAIScreenName, value: "Signup")
+            tracker.send(GAIDictionaryBuilder.createScreenView().build())
+        #endif
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
