@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		3B4C647F452847188AFC81E6 /* libPods-Decktracker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63356387201A4E73BA1685FC /* libPods-Decktracker.a */; };
+		77D56A16A583FB0A4C860216 /* CardQuizHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D564E8D46C17B81D56F614 /* CardQuizHomeViewController.swift */; };
+		77D56A818E39E63A1D4A8453 /* CardQuizConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D560F3C5D2147D03F3F0C5 /* CardQuizConstants.swift */; };
 		8C019AA01998A10F00FB22D7 /* decktracker.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 8C019A9F1998A10F00FB22D7 /* decktracker.sqlite */; };
 		8C0CF16B1A01E102009137C5 /* Decks in Resources */ = {isa = PBXBuildFile; fileRef = 8C0CF16A1A01E101009137C5 /* Decks */; };
 		8C13467819A9B17B00E0B3C3 /* SearchResultsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C13467619A9B17B00E0B3C3 /* SearchResultsTableViewCell.m */; };
@@ -109,6 +111,7 @@
 		8C3E948419E4207200C7EF21 /* AcknowledgementTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C3E948219E4207200C7EF21 /* AcknowledgementTableViewCell.xib */; };
 		8C467CF019F1132600B27F05 /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C467CEF19F1132600B27F05 /* MoreViewController.swift */; };
 		8C49656719B0A01F001C7935 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C49656619B0A01E001C7935 /* Crashlytics.framework */; };
+		8C4A0BC21AD53985004754CB /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4A0BC11AD53985004754CB /* SignupViewController.swift */; };
 		8C5246E119A5137300B10147 /* FileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5246E019A5137300B10147 /* FileManager.m */; };
 		8C524A6519B81E9E005E697B /* DeckDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C524A6419B81E9E005E697B /* DeckDetailsViewController.m */; };
 		8C524A7019B82C01005E697B /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C524A6F19B82C01005E697B /* SettingsViewController.m */; };
@@ -134,7 +137,7 @@
 		8C911E1C1A526D5D006210B5 /* StartingHandViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C911E1B1A526D5D006210B5 /* StartingHandViewController.swift */; };
 		8C911E2D1A52DF89006210B5 /* PieChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C911E2C1A52DF89006210B5 /* PieChartViewController.swift */; };
 		8C930AA31A090B380061C082 /* ComprehensiveRulesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C930AA21A090B380061C082 /* ComprehensiveRulesViewController.swift */; };
-		8CA376B81A667B6C0041FDAA /* CardQuizViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA376B71A667B6C0041FDAA /* CardQuizViewController.swift */; };
+		8CA376B81A667B6C0041FDAA /* CardQuizGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA376B71A667B6C0041FDAA /* CardQuizGameViewController.swift */; };
 		8CAAA0ED1A15057100DD209D /* HorizontalScrollTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAAA0EB1A15057100DD209D /* HorizontalScrollTableViewCell.swift */; };
 		8CAAA0EE1A15057100DD209D /* HorizontalScrollTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CAAA0EC1A15057100DD209D /* HorizontalScrollTableViewCell.xib */; };
 		8CADEF1719923DDE004D7658 /* images in Resources */ = {isa = PBXBuildFile; fileRef = 8CADEF1619923DDE004D7658 /* images */; };
@@ -212,6 +215,8 @@
 
 /* Begin PBXFileReference section */
 		63356387201A4E73BA1685FC /* libPods-Decktracker.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Decktracker.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		77D560F3C5D2147D03F3F0C5 /* CardQuizConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardQuizConstants.swift; sourceTree = "<group>"; };
+		77D564E8D46C17B81D56F614 /* CardQuizHomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardQuizHomeViewController.swift; sourceTree = "<group>"; };
 		8C019A9F1998A10F00FB22D7 /* decktracker.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = decktracker.sqlite; sourceTree = "<group>"; };
 		8C0CF16A1A01E101009137C5 /* Decks */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Decks; sourceTree = "<group>"; };
 		8C13467519A9B17B00E0B3C3 /* SearchResultsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultsTableViewCell.h; sourceTree = "<group>"; };
@@ -365,6 +370,7 @@
 		8C3E948219E4207200C7EF21 /* AcknowledgementTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AcknowledgementTableViewCell.xib; sourceTree = "<group>"; };
 		8C467CEF19F1132600B27F05 /* MoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
 		8C49656619B0A01E001C7935 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
+		8C4A0BC11AD53985004754CB /* SignupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
 		8C5246DF19A5137300B10147 /* FileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileManager.h; sourceTree = "<group>"; };
 		8C5246E019A5137300B10147 /* FileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileManager.m; sourceTree = "<group>"; };
 		8C524A6319B81E9E005E697B /* DeckDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeckDetailsViewController.h; sourceTree = "<group>"; };
@@ -398,7 +404,7 @@
 		8C911E2C1A52DF89006210B5 /* PieChartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieChartViewController.swift; sourceTree = "<group>"; };
 		8C930AA21A090B380061C082 /* ComprehensiveRulesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComprehensiveRulesViewController.swift; sourceTree = "<group>"; };
 		8CA317C719C56B73001F94F5 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
-		8CA376B71A667B6C0041FDAA /* CardQuizViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardQuizViewController.swift; sourceTree = "<group>"; };
+		8CA376B71A667B6C0041FDAA /* CardQuizGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardQuizGameViewController.swift; sourceTree = "<group>"; };
 		8CAAA0EB1A15057100DD209D /* HorizontalScrollTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HorizontalScrollTableViewCell.swift; sourceTree = "<group>"; };
 		8CAAA0EC1A15057100DD209D /* HorizontalScrollTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HorizontalScrollTableViewCell.xib; sourceTree = "<group>"; };
 		8CADEF1619923DDE004D7658 /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
@@ -840,13 +846,14 @@
 				8C3E948019E4207200C7EF21 /* AcknowledgementTableViewCell.h */,
 				8C3E948119E4207200C7EF21 /* AcknowledgementTableViewCell.m */,
 				8C3E948219E4207200C7EF21 /* AcknowledgementTableViewCell.xib */,
-				8CF14BF31A2E199600BEC434 /* LoginViewController.swift */,
 				8CD2E1EA19DACE1A00503ACC /* InAppPurchase.h */,
 				8CD2E1EB19DACE1A00503ACC /* InAppPurchase.m */,
 				8C33E9BC19D73AAB000892D9 /* InAppPurchaseViewController.h */,
 				8C33E9BD19D73AAB000892D9 /* InAppPurchaseViewController.m */,
+				8CF14BF31A2E199600BEC434 /* LoginViewController.swift */,
 				8C524A6E19B82C01005E697B /* SettingsViewController.h */,
 				8C524A6F19B82C01005E697B /* SettingsViewController.m */,
+				8C4A0BC11AD53985004754CB /* SignupViewController.swift */,
 				8CF3309E1A35B33D00B6301D /* UserAccountViewController.swift */,
 			);
 			path = Settings;
@@ -895,7 +902,9 @@
 		8CA376B61A667B290041FDAA /* Card Quiz */ = {
 			isa = PBXGroup;
 			children = (
-				8CA376B71A667B6C0041FDAA /* CardQuizViewController.swift */,
+				8CA376B71A667B6C0041FDAA /* CardQuizGameViewController.swift */,
+				77D564E8D46C17B81D56F614 /* CardQuizHomeViewController.swift */,
+				77D560F3C5D2147D03F3F0C5 /* CardQuizConstants.swift */,
 			);
 			path = "Card Quiz";
 			sourceTree = "<group>";
@@ -1235,7 +1244,7 @@
 				8C2908AA1A11E8E30045394F /* FeaturedViewController.swift in Sources */,
 				8C74B82B1A10A2F3004A350F /* DeckIASKSettingsStore.m in Sources */,
 				8C378E0019A7434B00B9367F /* MHFacebookImageViewer.m in Sources */,
-				8CA376B81A667B6C0041FDAA /* CardQuizViewController.swift in Sources */,
+				8CA376B81A667B6C0041FDAA /* CardQuizGameViewController.swift in Sources */,
 				8CF79A6B19A8BFB400BE4246 /* CollectionsViewController.m in Sources */,
 				8C3857B91A36E6D300E5B38C /* DTCard.m in Sources */,
 				8C1623191A1C816400ABC4DB /* TopListViewController.swift in Sources */,
@@ -1308,6 +1317,9 @@
 				8C26A67B19A63FAC00FE00E7 /* FilterInputViewController.m in Sources */,
 				8CF14BF41A2E199600BEC434 /* LoginViewController.swift in Sources */,
 				8C5246E119A5137300B10147 /* FileManager.m in Sources */,
+				77D56A16A583FB0A4C860216 /* CardQuizHomeViewController.swift in Sources */,
+				8C4A0BC21AD53985004754CB /* SignupViewController.swift in Sources */,
+				77D56A818E39E63A1D4A8453 /* CardQuizConstants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

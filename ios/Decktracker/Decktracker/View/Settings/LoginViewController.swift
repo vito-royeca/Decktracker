@@ -9,30 +9,38 @@
 import UIKit
 
 public class LoginViewController: PFLogInViewController {
-
+    
+    override init() {
+        super.init(nibName:nil,bundle:nil)
+        
+        self.fields = (PFLogInFields.DismissButton |
+                    PFLogInFields.UsernameAndPassword |
+                    PFLogInFields.LogInButton |
+                    PFLogInFields.SignUpButton |
+                    PFLogInFields.PasswordForgotten |
+                    PFLogInFields.Facebook |
+                    PFLogInFields.Twitter)
+        
+        self.signUpController = SignupViewController()
+    }
+    
+    // the following is also required if implementing an initializer
+    required public init(coder:NSCoder) {
+        super.init(coder:coder)
+    }
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        self.view.backgroundColor = UIColorFromRGB(0x691F01)
+        self.view.backgroundColor = JJJUtil.UIColorFromRGB(0x691F01)
         
-        var label = UILabel()
-        label.font = UIFont(name: "Magic:the Gathering", size:40)
-        label.textColor = UIColor.whiteColor()
-        label.text = "Decktracker"
-        label.sizeToFit()
-        self.logInView.logo = label
-        
-//        let image = UIImage(named: "\(NSBundle.mainBundle().bundlePath)/images/AppIcon57x57.png")
-//        var imageView = UIImageView()
-//        let frame = CGRectMake(self.logInView.logo.frame.origin.x, self.logInView.logo.frame.origin.y, 57, 57)
-//        println("\(frame)")
-//        println("\(self.logInView.logo.frame)")
-//        imageView.frame = frame
-//        imageView.image = image
-//        self.view.addSubview(imageView)
+        let image = UIImage(named: "\(NSBundle.mainBundle().bundlePath)/images/AppIcon57x57.png")
+        var imageView = UIImageView(frame: CGRectMake(0, 0, 57, 57))
+        imageView.image = image
+        self.logInView.logo = imageView
 
-//        self.navigationItem.title = "Login or Signup"
+        self.navigationItem.title = "Login or Signup"
 
 #if !DEBUG
         // send the screen to Google Analytics
@@ -47,12 +55,7 @@ public class LoginViewController: PFLogInViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func UIColorFromRGB(rgbValue: UInt) -> UIColor {
-        return UIColor(
-            red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
-            green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
-            blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
-            alpha: CGFloat(1.0)
-        )
+    func hidesBottomBarWhenPushed() -> Bool {
+        return true
     }
 }

@@ -111,7 +111,7 @@ class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDe
             newView!.hidesBottomBarWhenPushed = true
             
         } else if value == "Card Quiz" {
-            newView = CardQuizViewController()
+            newView = CardQuizHomeViewController()
             
         } else if value == "Life Counter" {
             

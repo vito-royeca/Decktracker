@@ -59,13 +59,13 @@
     [[Database sharedInstance ] setupDb];
 
     // custom colors
-    [[UINavigationBar appearance] setBarTintColor:UIColorFromRGB(0x691F01)];
+    [[UINavigationBar appearance] setBarTintColor:[JJJUtil UIColorFromRGB:0x691F01]];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
     [[UINavigationBar appearance] setTitleTextAttributes:@{
         NSForegroundColorAttributeName : [UIColor whiteColor]}];
-    [[UITabBar appearance] setBarTintColor:UIColorFromRGB(0x691F01)];
+    [[UITabBar appearance] setBarTintColor:[JJJUtil UIColorFromRGB:0x691F01]];
     [[UITabBar appearance] setTintColor:[UIColor whiteColor]];
-    [[UISearchBar appearance] setTintColor:UIColorFromRGB(0x691F01)];
+    [[UISearchBar appearance] setTintColor:[JJJUtil UIColorFromRGB:0x691F01]];
     [[UISegmentedControl appearance] setTintColor:[UIColor grayColor]];
     
     // remove the "Back" title in  back buttons
@@ -82,22 +82,12 @@
     self.window.rootViewController = viewController;
     [self.window makeKeyAndVisible];
     
-    [Appirater setAppId:@"913992761"];
+    [Appirater setAppId:kAppID];
     [Appirater setDaysUntilPrompt:7];
     [Appirater setUsesUntilPrompt:5];
     [Appirater setSignificantEventsUntilPrompt:-1];
     [Appirater setTimeBeforeReminding:2];
     [Appirater setDebug:NO];
-    
-//    CardQuizViewController *quiz = [[CardQuizViewController alloc] init];
-//    for (int i=0; i<20; i++)
-//    {
-//        NSDate *dateStart = [NSDate date];
-//        DTCard *card = [quiz generateRandomCard];
-//        NSDate *dateEnd = [NSDate date];
-//        NSTimeInterval timeDifference = [dateEnd timeIntervalSinceDate:dateStart];
-//        NSLog(@"%@ (%@) / Time Elapsed: %@",  card.name, card.cmc, [JJJUtil formatInterval:timeDifference]);
-//    }
     
     return YES;
 }
@@ -175,6 +165,7 @@
     [PFTwitterUtils initializeWithConsumerKey:kTwitterKey
                                consumerSecret:kTwitterSecret];
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+    [PFUser enableAutomaticUser];
     
 //    [PFPurchase addObserverForProduct:COLLECTIONS_IAP_PRODUCT_ID block:^(SKPaymentTransaction *transaction) {
 //        

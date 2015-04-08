@@ -1284,6 +1284,77 @@ static Database *_me;
     }
 }
 
+-(void) fetchUserMana
+{
+    __block PFQuery *query = [PFQuery queryWithClassName:@"UserMana"];
+    [query whereKey:@"user" equalTo:[PFUser currentUser]];
+    [query fromLocalDatastore];
+    
+    [[query findObjectsInBackground] continueWithBlock:^id(BFTask *task)
+     {
+         __block PFObject *pfUserMana;
+         
+         if (task.error)
+         {
+             return task;
+         }
+         
+         for (PFObject *object in task.result)
+         {
+             pfUserMana = object;
+         }
+         
+         if (pfUserMana)
+         {
+             [[NSNotificationCenter defaultCenter] postNotificationName:kParseUserManaDone
+                                                                 object:nil
+                                                               userInfo:@{@"userMana": pfUserMana}];
+         }
+         else
+         {
+             // not found in local datastore, find remotely
+             query = [PFQuery queryWithClassName:@"UserMana"];
+             [query whereKey:@"user" equalTo:[PFUser currentUser]];
+             
+             [[query findObjectsInBackground] continueWithSuccessBlock:^id(BFTask *task)
+              {
+                  return [[PFObject unpinAllObjectsInBackgroundWithName:@"UserMana"] continueWithSuccessBlock:^id(BFTask *ignored)
+                          {
+                              NSArray *results = task.result;
+                              
+                              if (results.count > 0)
+                              {
+                                  pfUserMana = task.result[0];
+                              }
+                              else
+                              {
+                                  // not found remotely
+                                  pfUserMana = [PFObject objectWithClassName:@"UserMana"];
+                                  pfUserMana[@"user"]      = [PFUser currentUser];
+                                  pfUserMana[@"black"]     = @0;
+                                  pfUserMana[@"blue"]      = @0;
+                                  pfUserMana[@"green"]     = @0;
+                                  pfUserMana[@"red"]       = @0;
+                                  pfUserMana[@"white"]     = @0;
+                                  pfUserMana[@"colorless"] = @0;
+                                  pfUserMana[@"totalCMC"]  = @0;
+                              }
+                              
+                              [pfUserMana pinInBackgroundWithBlock:^(BOOL success, NSError *error)
+                               {
+                                   [[NSNotificationCenter defaultCenter] postNotificationName:kParseUserManaDone
+                                                                                       object:nil
+                                                                                     userInfo:@{@"userMana": pfUserMana}];
+                               }];
+                              return nil;
+                          }];
+              }];
+         }
+         
+         return task;
+     }];
+}
+
 #endif
 
 @end

@@ -25,6 +25,7 @@
 #define kFetchTopViewedDone     @"kFetchTopViewedDone"
 #define kParseSyncDone          @"kParseSyncDone"
 #define kPriceUpdateDone        @"kPriceUpdateDone"
+#define kParseUserManaDone      @"kParseUserManaDone"
 
 @interface Database : NSObject
 
@@ -66,6 +67,8 @@
 //-(void) parseSynch:(DTCard*) card;
 -(void) uploadAllSetsToParse;
 -(void) prefetchAllSetObjects;
+-(void) fetchUserMana;
+
 #endif
 
 @end
