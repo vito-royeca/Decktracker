@@ -12,7 +12,7 @@
 #import "DTCard.h"
 #import "DTCardRarity.h"
 #import "DTSet.h"
-#import "Magic.h"
+#import "Constants.h"
 
 @implementation ImageLoader
 

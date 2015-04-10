@@ -105,12 +105,11 @@
     self.navigationItem.leftBarButtonItem = self.btnBack;
     self.navigationItem.rightBarButtonItem = self.btnView;
     [self.view addSubview:_viewSegmented];
-    _viewMode = DeckDetailsViewModeByList;
+    
     _viewLoadedOnce = YES;
-    [self showTableView];
+    [self loadCards];
     _viewLoadedOnce = NO;
-
-
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:kIASKAppSettingChanged
                                                   object:nil];
@@ -140,17 +139,7 @@
     
     if (self.segmentedControl.selectedSegmentIndex == 0)
     {
-        switch (_viewMode) {
-            case DeckDetailsViewModeByList: {
-                [self showTableView];
-                break;
-            }
-            case DeckDetailsViewModeByGrid2x2:
-            case DeckDetailsViewModeByGrid3x3: {
-                [self showGridView];
-                break;
-            }
-        }
+        [self loadCards];
     }
 }
 
@@ -158,6 +147,40 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void) loadCards
+{
+    NSString *value = [[NSUserDefaults standardUserDefaults] stringForKey:kCardViewMode];
+    if (value)
+    {
+        if ([value isEqualToString:@"List"])
+        {
+            _viewMode = DeckDetailsViewModeByList;
+            [self showTableView];
+        }
+        else if ([value isEqualToString:@"Grid 2x2"])
+        {
+            _viewMode = DeckDetailsViewModeByGrid2x2;
+            [self showGridView];
+            
+        }
+        else if ([value isEqualToString:@"Grid 3x3"])
+        {
+            _viewMode = DeckDetailsViewModeByGrid3x3;
+            [self showGridView];
+        }
+        else
+        {
+            _viewMode = DeckDetailsViewModeByList;
+            [self showTableView];
+        }
+    }
+    else
+    {
+        _viewMode = DeckDetailsViewModeByList;
+        [self showTableView];
+    }
 }
 
 -(void) backButtonTapped
@@ -204,19 +227,24 @@
                                                case 0: {
                                                    _viewMode = DeckDetailsViewModeByList;
                                                    [self showTableView];
+                                                   [[NSUserDefaults standardUserDefaults] setObject:@"List" forKey: kCardViewMode];
                                                    break;
                                                }
                                                case 1: {
                                                    _viewMode = DeckDetailsViewModeByGrid2x2;
                                                    [self showGridView];
+                                                   [[NSUserDefaults standardUserDefaults] setObject:@"Grid 2x2" forKey: kCardViewMode];
                                                    break;
                                                }
                                                case 2: {
                                                    _viewMode = DeckDetailsViewModeByGrid3x3;
                                                    [self showGridView];
+                                                   [[NSUserDefaults standardUserDefaults] setObject:@"Grid 3x3" forKey: kCardViewMode];
                                                    break;
                                                }
                                            }
+                                           
+                                           [[NSUserDefaults standardUserDefaults] synchronize];
                                        }
                                      cancelBlock:nil
                                           origin:self.view];
@@ -233,18 +261,7 @@
     {
         [self.cardDetailsViewController.settingsStore synchronize];
         [self.cardDetailsViewController.view removeFromSuperview];
-
-        switch (_viewMode) {
-            case DeckDetailsViewModeByList: {
-                [self showTableView];
-                break;
-            }
-            case DeckDetailsViewModeByGrid2x2:
-            case DeckDetailsViewModeByGrid3x3: {
-                [self showGridView];
-                break;
-            }
-        }
+        [self loadCards];
         self.navigationItem.rightBarButtonItem = self.btnView;
     }
     

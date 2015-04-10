@@ -7,10 +7,10 @@
 //
 
 #import "Deck.h"
+#import "Constants.h"
 #import "Database.h"
 #import "DTCardColor.h"
 #import "FileManager.h"
-#import "Magic.h"
 
 @implementation Deck
 {

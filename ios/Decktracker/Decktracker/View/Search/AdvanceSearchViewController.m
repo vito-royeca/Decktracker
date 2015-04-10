@@ -8,9 +8,9 @@
 
 #import "AdvanceSearchViewController.h"
 #import "AdvanceSearchResultsViewController.h"
+#import "Constants.h"
 #import "Database.h"
 #import "FileManager.h"
-#import "Magic.h"
 #import "NewAdvanceSearchViewController.h"
 #import "SimpleSearchViewController.h"
 

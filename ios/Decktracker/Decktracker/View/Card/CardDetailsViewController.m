@@ -10,6 +10,7 @@
 
 #import "AddCardViewController.h"
 #import "AdvanceSearchResultsViewController.h"
+#import "Constants.h"
 #import "DTArtist.h"
 #import "DTCardColor.h"
 #import "DTCardForeignName.h"
@@ -21,7 +22,6 @@
 #import "DTSet.h"
 #import "Database.h"
 #import "FileManager.h"
-#import "Magic.h"
 #import "SearchResultsTableViewCell.h"
 #import "SimpleSearchViewController.h"
 

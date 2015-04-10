@@ -7,8 +7,8 @@
 //
 
 #import "InAppPurchaseViewController.h"
+#import "Constants.h"
 #import "FileManager.h"
-#import "Magic.h"
 #import "MainViewController.h"
 
 #ifndef DEBUG

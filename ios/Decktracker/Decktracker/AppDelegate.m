@@ -7,9 +7,9 @@
 //
 
 #import "AppDelegate.h"
+#import "Constants.h"
 #import "Database.h"
 #import "FileManager.h"
-#import "Magic.h"
 #import "MainViewController.h"
 
 #import "Appirater.h"

@@ -8,8 +8,8 @@
 
 #import "MainViewController.h"
 #import "CollectionsViewController.h"
+#import "Constants.h"
 #import "DecksViewController.h"
-#import "Magic.h"
 #import "SimpleSearchViewController.h"
 
 #import "Decktracker-Swift.h"

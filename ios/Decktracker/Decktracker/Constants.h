@@ -1,5 +1,5 @@
 //
-//  Magic.h
+//  Constants.h
 //  Decktracker
 //
 //  Created by Jovit Royeca on 8/2/14.
@@ -69,5 +69,7 @@ typedef NS_ENUM(NSInteger, EditMode)
 
 #define kTwitterKey                      @"M9SYMK8TAvUxFVpa6qVOAH8Bb"
 #define kTwitterSecret                   @"xOlE7XZgtTeM8LVmXYZ5xtxvOZXBrupYNYLOzHtkIuZpCzEWBf"
+
+#define kCardViewMode                    @"kCardViewMode"
 
 #endif

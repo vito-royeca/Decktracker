@@ -7,9 +7,9 @@
 //
 
 #import "FileManager.h"
+#import "Constants.h"
 #import "Database.h"
 #import "InAppPurchase.h"
-#import "Magic.h"
 
 #import "AFHTTPRequestOperationManager.h"
 #import <Dropbox/Dropbox.h>

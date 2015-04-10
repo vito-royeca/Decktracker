@@ -8,6 +8,7 @@
 
 #import "JSONLoader.h"
 #import "JJJ/JJJUtil.h"
+#import "Constants.h"
 #import "Database.h"
 #import "DTArtist.h"
 #import "DTBlock.h"
@@ -21,7 +22,6 @@
 #import "DTFormat.h"
 #import "DTSet.h"
 #import "DTSetType.h"
-#import "Magic.h"
 
 #import "TFHpple.h"
 

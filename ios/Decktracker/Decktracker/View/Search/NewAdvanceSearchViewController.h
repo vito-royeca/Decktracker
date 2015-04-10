@@ -7,9 +7,8 @@
 //
 
 @import UIKit;
-
+#import "Constants.h"
 #import "FilterInputViewController.h"
-#import "Magic.h"
 #import "MBProgressHUD.h"
 
 @interface NewAdvanceSearchViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, FilterInputViewControllerDelegate, MBProgressHUDDelegate>

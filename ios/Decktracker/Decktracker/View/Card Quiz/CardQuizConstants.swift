@@ -5,7 +5,11 @@
 
 import Foundation
 
-struct CardQuiz {
+let kCQEasyCurrentCard     = "kCQEasyCurrentCard"
+let kCQModerateCurrentCard = "kCQModerateCurrentCard"
+let kCQHardCurrentCard     = "kCQHardCurrentCard"
+
+struct CQTheme {
     static let kManaLabelColor  = UIColor.whiteColor()
     static let kLabelColor      = UIColor.whiteColor()
     static let kTileTextColor   = UIColor.whiteColor()
@@ -18,3 +22,10 @@ struct CardQuiz {
     static let kTileQuizFont   = UIFont(name: "Magic:the Gathering", size:20)
     static let kTileButtonFont = UIFont(name: "Magic:the Gathering", size:14)
 }
+
+enum CQGameType {
+    case Easy
+    case Moderate
+    case Hard
+}
+

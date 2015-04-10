@@ -7,6 +7,7 @@
 //
 
 #import "FilterInputViewController.h"
+#import "Constants.h"
 #import "DTArtist.h"
 #import "DTCardColor.h"
 #import "DTCardRarity.h"
@@ -14,7 +15,6 @@
 #import "DTFormat.h"
 #import "DTSet.h"
 #import "FileManager.h"
-#import "Magic.h"
 
 #ifndef DEBUG
 #import "GAI.h"

@@ -8,7 +8,7 @@
 
 @import UIKit;
 
-#import "Magic.h"
+#import "Constants.h"
 
 typedef NS_ENUM(NSInteger, AdvanceSearchResultsViewMode)
 {

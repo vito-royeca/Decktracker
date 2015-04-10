@@ -10,7 +10,7 @@
 #import "DTCardRating.h"
 #import "DTSet.h"
 #import "InAppPurchase.h"
-#import "Magic.h"
+#import "Constants.h"
 
 #import "TFHpple.h"
 
@@ -661,7 +661,7 @@ static Database *_me;
     }
 }
 
--(NSArray*) fetchRandomCards:(int) howMany withPredicate:(NSPredicate*) predicate
+-(NSArray*) fetchRandomCards:(int) howMany withPredicate:(NSPredicate*) predicate includeInAppPurchase:(BOOL) inAppPurchase
 {
     NSMutableArray *array = [[NSMutableArray alloc] init];
     
@@ -674,15 +674,17 @@ static Database *_me;
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"DTCard"
                                               inManagedObjectContext:moc];
     
-    // to do: exclude In-App Sets
-    NSArray *inAppSetCodes = [self inAppSetCodes];
-    if (inAppSetCodes.count > 0)
+    if (!inAppPurchase)
     {
-        NSPredicate *predInAppSets = [NSPredicate predicateWithFormat:@"NOT (set.code IN %@)", inAppSetCodes];
-        
-        predicate = predicate ? [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, predInAppSets]] : predInAppSets;
+        NSArray *inAppSetCodes = [self inAppSetCodes];
+        if (inAppSetCodes.count > 0)
+        {
+            NSPredicate *predInAppSets = [NSPredicate predicateWithFormat:@"NOT (set.code IN %@)", inAppSetCodes];
+            
+            predicate = predicate ? [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, predInAppSets]] : predInAppSets;
+        }
     }
-    
+
     // do not include cards without images
     NSPredicate *predWithoutImages = [NSPredicate predicateWithFormat:@"set.magicCardsCode != nil"];
     predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, predWithoutImages]];
@@ -690,23 +692,8 @@ static Database *_me;
     fetchRequest.entity = entity;
     fetchRequest.predicate = predicate;
     fetchRequest.sortDescriptors = @[sortDescriptor1, sortDescriptor2];
-
-//    NSUInteger count = [moc countForFetchRequest:fetchRequest error:nil];
-//    if (count > 0)
-//    {
-//        [fetchRequest setFetchLimit:1];
-//        
-//        for (int i=0; i<howMany; i++)
-//        {
-//            int random = arc4random() % (count - 1) + 1;
-//            NSError *error = nil;
-//            
-//            [fetchRequest setFetchOffset:random];
-//            [array addObject:[[moc executeFetchRequest:fetchRequest error:&error] firstObject]];
-//        }
-//    }
-    
     fetchRequest.resultType = NSManagedObjectIDResultType;
+    
     NSError *error = nil;
     NSArray *arrIDs = [moc executeFetchRequest:fetchRequest error:&error];
     

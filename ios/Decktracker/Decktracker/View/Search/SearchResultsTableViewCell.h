@@ -9,10 +9,10 @@
 @import UIKit;
 
 #import "DTCard.h"
+#import "Constants.h"
 #import "DTCardType.h"
 #import "DTSet.h"
 #import "Database.h"
-#import "Magic.h"
 
 #import "JJJ/JJJ.h"
 

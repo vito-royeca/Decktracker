@@ -27,8 +27,30 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
         
         navigationItem.rightBarButtonItem = viewButton
         
-        self.viewMode = CardViewMode.ByList
-        self.showTableView()
+        
+        if let value = NSUserDefaults.standardUserDefaults().stringForKey(kCardViewMode) {
+            if value == CardViewMode.ByList.description {
+                self.viewMode = CardViewMode.ByList
+                self.showTableView()
+            
+            } else if value == CardViewMode.ByGrid2x2.description {
+                self.viewMode = CardViewMode.ByGrid2x2
+                self.showGridView()
+            
+            } else if value == CardViewMode.ByGrid3x3.description {
+                self.viewMode = CardViewMode.ByGrid3x3
+                self.showGridView()
+            
+            } else {
+                self.viewMode = CardViewMode.ByList
+                self.showTableView()
+            }
+            
+        } else {
+            self.viewMode = CardViewMode.ByList
+            self.showTableView()
+        }
+        
         self.loadData()
         self.viewLoadedOnce = false
         
@@ -88,6 +110,8 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
                 break
             }
             
+            NSUserDefaults.standardUserDefaults().setObject(self.viewMode!.description, forKey: kCardViewMode)
+            NSUserDefaults.standardUserDefaults().synchronize()
             self.loadData()
         }
         
@@ -279,7 +303,7 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
             }
         }
 
-        if (paths.count > 0) {
+        if paths.count > 0 && tblList != nil {
             tblList!.beginUpdates()
             tblList!.insertRowsAtIndexPaths(paths, withRowAnimation:UITableViewRowAnimation.Automatic)
             tblList!.endUpdates()

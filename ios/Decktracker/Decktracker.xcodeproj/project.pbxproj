@@ -315,7 +315,7 @@
 		8C2E14171990741200023BAA /* DecktrackerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DecktrackerTests-Info.plist"; sourceTree = "<group>"; };
 		8C2E14191990741200023BAA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8C2E141B1990741200023BAA /* DecktrackerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DecktrackerTests.m; sourceTree = "<group>"; };
-		8C2E142B199074A900023BAA /* Magic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Magic.h; sourceTree = "<group>"; };
+		8C2E142B199074A900023BAA /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		8C2E142F199085C700023BAA /* Database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Database.h; sourceTree = "<group>"; };
 		8C2E1430199085C700023BAA /* Database.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Database.m; sourceTree = "<group>"; };
 		8C2EC95D1A1670900011BAA2 /* UIImage+AverageColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+AverageColor.h"; sourceTree = "<group>"; };
@@ -685,13 +685,13 @@
 			children = (
 				8C2E14011990741100023BAA /* AppDelegate.h */,
 				8C2E14021990741100023BAA /* AppDelegate.m */,
+				8C2E142B199074A900023BAA /* Constants.h */,
 				8C2E14271990747300023BAA /* Controller */,
 				8C2E14321990862900023BAA /* Data */,
 				8C36A21519ECF6D400F09F78 /* Decktracker-Bridging-Header.h */,
 				8CE7F2C219C0A2F7004FBEA5 /* Decktracker.entitlements */,
 				8C2E14071990741100023BAA /* Images.xcassets */,
 				8C378DF919A742D800B9367F /* Libs */,
-				8C2E142B199074A900023BAA /* Magic.h */,
 				8CFA21D21A64F8CC00E5409B /* Main.storyboard */,
 				8C2E14251990744E00023BAA /* Model */,
 				8C2E13F91990741100023BAA /* Supporting Files */,

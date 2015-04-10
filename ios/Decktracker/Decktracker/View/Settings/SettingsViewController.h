@@ -9,8 +9,8 @@
 @import UIKit;
 
 #import "InAppPurchase.h"
+#import "Constants.h"
 #import "InAppPurchaseViewController.h"
-#import "Magic.h"
 
 #import "IASKSettingsReader.h"
 #import "IASKAppSettingsViewController.h"

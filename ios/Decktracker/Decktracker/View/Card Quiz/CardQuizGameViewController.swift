@@ -27,7 +27,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
     var lblCastingCost:UILabel?
     var viewCastingCost:UIView?
     var viewImage:UIImageView?
-    var btnAsk:UILabel?
+    var btnHelp:UILabel?
     var btnBuy:UILabel?
     var btnCast:UILabel?
     var btnNextCard:UILabel?
@@ -38,12 +38,41 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
     var currentCardPath:String?
     var bCardAnswered = false
     
+    var predicate:NSPredicate?
     var userMana:PFObject?
-
-    override init() {
-        super.init(nibName:nil,bundle:nil)
+    var gameType:CQGameType?
+    
+     init(gameType: CQGameType) {
+        super.init()
         
+        self.gameType = gameType
+        var format:String?
+        var formatEx1:String?
+        var formatEx2:String?
+        
+        switch gameType {
+        case .Easy:
+            format = "Standard"
+            formatEx1 = "Modern"
+            formatEx2 = "Vintage"
+        case .Moderate:
+            format = "Modern"
+            formatEx1 = "Standard"
+            formatEx2 = "Vintage"
+        case .Hard:
+            format = "Vintage"
+            formatEx1 = "Standard"
+            formatEx2 = "Modern"
+        }
+
+        let predicate1 = NSPredicate(format: "ANY legalities.format.name IN %@ AND NOT (ANY legalities.format.name IN %@)", [format!], [formatEx1!, formatEx2!])
+        let predicate2 = NSPredicate(format: "cmc >= 1 AND cmc <= 15 AND name MATCHES %@", "^.{0,20}")
+        self.predicate = NSCompoundPredicate.andPredicateWithSubpredicates([predicate1!, predicate2!])
         self.card = self.generateRandomCard()
+    }
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
     // the following is also required if implementing an initializer
@@ -99,9 +128,9 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
         frame = CGRect(x:dX, y:dY, width:manaLabelWidth, height:manaLabelHeight)
         lblBlack = UILabel(frame: frame)
         lblBlack!.text = " 0"
-        lblBlack!.font = CardQuiz.kManaLabelFont
+        lblBlack!.font = CQTheme.kManaLabelFont
         lblBlack!.adjustsFontSizeToFitWidth = true
-        lblBlack!.textColor = CardQuiz.kManaLabelColor
+        lblBlack!.textColor = CQTheme.kManaLabelColor
         self.view.addSubview(lblBlack!)
         
         dX = frame.origin.x + frame.size.width
@@ -114,9 +143,9 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
         frame = CGRect(x:dX, y:dY, width:manaLabelWidth, height:manaLabelHeight)
         lblBlue = UILabel(frame: frame)
         lblBlue!.text = " 0"
-        lblBlue!.font = CardQuiz.kManaLabelFont
+        lblBlue!.font = CQTheme.kManaLabelFont
         lblBlue!.adjustsFontSizeToFitWidth = true
-        lblBlue!.textColor = CardQuiz.kManaLabelColor
+        lblBlue!.textColor = CQTheme.kManaLabelColor
         self.view.addSubview(lblBlue!)
         
         dX = frame.origin.x + frame.size.width
@@ -129,9 +158,9 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
         frame = CGRect(x:dX, y:dY, width:manaLabelWidth, height:manaLabelHeight)
         lblGreen = UILabel(frame: frame)
         lblGreen!.text = " 0"
-        lblGreen!.font = CardQuiz.kManaLabelFont
+        lblGreen!.font = CQTheme.kManaLabelFont
         lblGreen!.adjustsFontSizeToFitWidth = true
-        lblGreen!.textColor = CardQuiz.kManaLabelColor
+        lblGreen!.textColor = CQTheme.kManaLabelColor
         self.view.addSubview(lblGreen!)
         
         dX = frame.origin.x + frame.size.width
@@ -144,9 +173,9 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
         frame = CGRect(x:dX, y:dY, width:manaLabelWidth, height:manaLabelHeight)
         lblRed = UILabel(frame: frame)
         lblRed!.text = " 0"
-        lblRed!.font = CardQuiz.kManaLabelFont
+        lblRed!.font = CQTheme.kManaLabelFont
         lblRed!.adjustsFontSizeToFitWidth = true
-        lblRed!.textColor = CardQuiz.kManaLabelColor
+        lblRed!.textColor = CQTheme.kManaLabelColor
         self.view.addSubview(lblRed!)
         
         dX = frame.origin.x + frame.size.width
@@ -159,9 +188,9 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
         frame = CGRect(x:dX, y:dY, width:manaLabelWidth, height:manaLabelHeight)
         lblWhite = UILabel(frame: frame)
         lblWhite!.text = " 0"
-        lblWhite!.font = CardQuiz.kManaLabelFont
+        lblWhite!.font = CQTheme.kManaLabelFont
         lblWhite!.adjustsFontSizeToFitWidth = true
-        lblWhite!.textColor = CardQuiz.kManaLabelColor
+        lblWhite!.textColor = CQTheme.kManaLabelColor
         self.view.addSubview(lblWhite!)
         
         dX = frame.origin.x + frame.size.width
@@ -174,9 +203,9 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
         frame = CGRect(x:dX, y:dY, width:manaLabelWidth, height:manaLabelHeight)
         lblColorless = UILabel(frame: frame)
         lblColorless!.text = " 0"
-        lblColorless!.font = CardQuiz.kManaLabelFont
+        lblColorless!.font = CQTheme.kManaLabelFont
         lblColorless!.adjustsFontSizeToFitWidth = true
-        lblColorless!.textColor = CardQuiz.kManaLabelColor
+        lblColorless!.textColor = CQTheme.kManaLabelColor
         self.view.addSubview(lblColorless!)
         
         NSNotificationCenter.defaultCenter().removeObserver(self,
@@ -241,17 +270,17 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
         var dFrame = CGRect(x: dX, y: dY, width: dWidth, height: dHeight)
         
         // draw the ask button
-        btnAsk = UILabel(frame: dFrame)
-        btnAsk!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "askTapped:"))
-        btnAsk!.userInteractionEnabled = true
-        btnAsk!.text = "Ask Facebook"
-        btnAsk!.textAlignment = NSTextAlignment.Center
-        btnAsk!.font = CardQuiz.kManaLabelFont
-        btnAsk!.textColor = CardQuiz.kTileTextColor
-        btnAsk!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileColor)
-        btnAsk!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
-        btnAsk!.layer.borderWidth = 1
-        self.view.addSubview(btnAsk!)
+        btnHelp = UILabel(frame: dFrame)
+        btnHelp!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "helpTapped:"))
+        btnHelp!.userInteractionEnabled = true
+        btnHelp!.text = "Help"
+        btnHelp!.textAlignment = NSTextAlignment.Center
+        btnHelp!.font = CQTheme.kManaLabelFont
+        btnHelp!.textColor = CQTheme.kTileTextColor
+        btnHelp!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileColor)
+        btnHelp!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+        btnHelp!.layer.borderWidth = 1
+        self.view.addSubview(btnHelp!)
         
         // draw the buy button
         dX = dFrame.origin.x + dFrame.size.width
@@ -261,10 +290,10 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
         btnBuy!.userInteractionEnabled = true
         btnBuy!.text = "Buy Mana"
         btnBuy!.textAlignment = NSTextAlignment.Center
-        btnBuy!.font = CardQuiz.kManaLabelFont
-        btnBuy!.textColor = CardQuiz.kTileTextColor
-        btnBuy!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileColor)
-        btnBuy!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
+        btnBuy!.font = CQTheme.kManaLabelFont
+        btnBuy!.textColor = CQTheme.kTileTextColor
+        btnBuy!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileColor)
+        btnBuy!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
         btnBuy!.layer.borderWidth = 1
         
         self.view.addSubview(btnBuy!)
@@ -282,21 +311,59 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
             btnCast!.text = " "
         }
         btnCast!.textAlignment = NSTextAlignment.Center
-        btnCast!.font = CardQuiz.kManaLabelFont
-        btnCast!.textColor = CardQuiz.kTileTextColor
-        btnCast!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileColor)
-        btnCast!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
+        btnCast!.font = CQTheme.kManaLabelFont
+        btnCast!.textColor = CQTheme.kTileTextColor
+        btnCast!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileColor)
+        btnCast!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
         btnCast!.layer.borderWidth = 1
         
         self.view.addSubview(btnCast!)
     }
 
     func generateRandomCard() -> DTCard {
-        // CMC != 0 and name.length <= kMaxQuizCount
-        let predicate = NSPredicate(format: "cmc >= 1 AND cmc <= 15 AND name MATCHES %@", "^.{0,20}")
-        let cards = Database.sharedInstance().fetchRandomCards(1, withPredicate: predicate)
+        var key:String?
+        var value:String?
         
-        return cards.first as DTCard
+        switch gameType! {
+        case .Easy:
+            if let v = NSUserDefaults.standardUserDefaults().stringForKey(kCQEasyCurrentCard) {
+                value = v
+            } else {
+                key = kCQEasyCurrentCard
+            }
+            
+        case .Moderate:
+            if let v = NSUserDefaults.standardUserDefaults().stringForKey(kCQModerateCurrentCard) {
+                value = v
+            } else {
+                key = kCQModerateCurrentCard
+            }
+            
+        case .Hard:
+            if let v = NSUserDefaults.standardUserDefaults().stringForKey(kCQHardCurrentCard) {
+                value = v
+            } else {
+                key = kCQHardCurrentCard
+            }
+        }
+        
+        if value != nil {
+            let array = split(value!) {$0 == "_"}
+            let code = array[0]
+            let number = array[1]
+            let card = DTCard.MR_findFirstWithPredicate(NSPredicate(format: "set.code = %@ AND number = %@", code, number)) as DTCard
+            
+            return card
+            
+        } else {
+            let cards = Database.sharedInstance().fetchRandomCards(1, withPredicate: self.predicate, includeInAppPurchase: true)
+            let card = cards.first as DTCard
+            let value = card.set.code + "_" + card.number
+            
+            NSUserDefaults.standardUserDefaults().setObject(value, forKey: key!)
+            NSUserDefaults.standardUserDefaults().synchronize()
+            return card
+        }
     }
     
     func nextCardTapped(sender: UITapGestureRecognizer) {
@@ -347,9 +414,9 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
         var dFrame:CGRect?
         lblCastingCost = UILabel(frame: CGRect(x: dX, y: dY, width: dWidth, height: dHeight))
         lblCastingCost!.text = "Casting Cost: "
-        lblCastingCost!.font = CardQuiz.kLabelFont
+        lblCastingCost!.font = CQTheme.kLabelFont
         lblCastingCost!.adjustsFontSizeToFitWidth = true
-        lblCastingCost!.textColor = CardQuiz.kLabelColor
+        lblCastingCost!.textColor = CQTheme.kLabelColor
         viewCastingCost!.addSubview(lblCastingCost!)
         for dict in manaImages {
             dWidth = CGFloat((dict["width"] as NSNumber).floatValue)
@@ -408,10 +475,10 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
                     label.userInteractionEnabled = true
                     label.text = "*"
                     label.textAlignment = NSTextAlignment.Center
-                    label.font = CardQuiz.kTileAnswerFont
-                    label.textColor = CardQuiz.kTileTextColor
-                    label.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileColor)
-                    label.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
+                    label.font = CQTheme.kTileAnswerFont
+                    label.textColor = CQTheme.kTileTextColor
+                    label.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileColor)
+                    label.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
                     label.layer.borderWidth = 1
                     label.tag = index
                 } else {
@@ -453,10 +520,10 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
             label.userInteractionEnabled = true
             label.text = text != nil ? text : " "
             label.textAlignment = NSTextAlignment.Center
-            label.font = CardQuiz.kTileQuizFont
-            label.textColor = CardQuiz.kTileTextColor
-            label.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileColor)
-            label.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
+            label.font = CQTheme.kTileQuizFont
+            label.textColor = CQTheme.kTileTextColor
+            label.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileColor)
+            label.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
             label.layer.borderWidth = 1
             label.tag = index
             index++
@@ -485,7 +552,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
                 }
             }
         }
-        btnAsk!.removeFromSuperview()
+        btnHelp!.removeFromSuperview()
         btnBuy!.removeFromSuperview()
         btnCast!.removeFromSuperview()
         if arrQuizzes != nil {
@@ -509,10 +576,10 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
         btnNextCard!.userInteractionEnabled = true
         btnNextCard!.text = "Next Card"
         btnNextCard!.textAlignment = NSTextAlignment.Center
-        btnNextCard!.font = CardQuiz.kManaLabelFont
-        btnNextCard!.textColor = CardQuiz.kTileTextColor
-        btnNextCard!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileColor)
-        btnNextCard!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
+        btnNextCard!.font = CQTheme.kManaLabelFont
+        btnNextCard!.textColor = CQTheme.kTileTextColor
+        btnNextCard!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileColor)
+        btnNextCard!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
         btnNextCard!.layer.borderWidth = 1
         self.view.addSubview(btnNextCard!)
         
@@ -650,7 +717,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
         }
     }
     
-    func askTapped(sender: UITapGestureRecognizer) {
+    func helpTapped(sender: UITapGestureRecognizer) {
         let label = sender.view as UILabel
         println("\(label.text!)")
     }
@@ -725,6 +792,17 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
         if answer.rangeOfString("*") == nil {
             if answer.lowercaseString == self.card!.name.lowercaseString {
                 bCardAnswered = true
+                
+                // clean up the last card
+                switch gameType! {
+                case .Easy:
+                    NSUserDefaults.standardUserDefaults().removeObjectForKey(kCQEasyCurrentCard)
+                case .Moderate:
+                    NSUserDefaults.standardUserDefaults().removeObjectForKey(kCQModerateCurrentCard)
+                case .Hard:
+                    NSUserDefaults.standardUserDefaults().removeObjectForKey(kCQHardCurrentCard)
+                }
+                
                 displayReward()
                 
             } else {
@@ -789,7 +867,10 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
                 break
             }
         }
+        
+#if DEBUG
         println("\(card.name)")
+#endif
         return jumble
     }
     

@@ -82,10 +82,10 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
             btnLogin!.userInteractionEnabled = true
             btnLogin!.text = "Login / Sign Up"
             btnLogin!.textAlignment = NSTextAlignment.Center
-            btnLogin!.font = CardQuiz.kManaLabelFont
-            btnLogin!.textColor = CardQuiz.kTileTextColor
-            btnLogin!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileColor)
-            btnLogin!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
+            btnLogin!.font = CQTheme.kManaLabelFont
+            btnLogin!.textColor = CQTheme.kTileTextColor
+            btnLogin!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileColor)
+            btnLogin!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
             btnLogin!.layer.borderWidth = 1
             self.view.addSubview(btnLogin!)
 
@@ -94,9 +94,9 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
             
             if currentUser.username != nil {
                 lblAccount = UILabel(frame: dFrame)
-                lblAccount!.font = CardQuiz.kManaLabelFont
+                lblAccount!.font = CQTheme.kManaLabelFont
                 lblAccount!.adjustsFontSizeToFitWidth = true
-                lblAccount!.textColor = CardQuiz.kManaLabelColor
+                lblAccount!.textColor = CQTheme.kManaLabelColor
                 lblAccount!.textAlignment = NSTextAlignment.Center
                 self.view.addSubview(lblAccount!)
                 
@@ -124,10 +124,10 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
                 btnLogin!.userInteractionEnabled = true
                 btnLogin!.text = "Logout"
                 btnLogin!.textAlignment = NSTextAlignment.Center
-                btnLogin!.font = CardQuiz.kManaLabelFont
-                btnLogin!.textColor = CardQuiz.kTileTextColor
-                btnLogin!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileColor)
-                btnLogin!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
+                btnLogin!.font = CQTheme.kManaLabelFont
+                btnLogin!.textColor = CQTheme.kTileTextColor
+                btnLogin!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileColor)
+                btnLogin!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
                 btnLogin!.layer.borderWidth = 1
                 self.view.addSubview(btnLogin!)
                 
@@ -137,10 +137,10 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
                 btnLogin!.userInteractionEnabled = true
                 btnLogin!.text = "Login / Sign Up"
                 btnLogin!.textAlignment = NSTextAlignment.Center
-                btnLogin!.font = CardQuiz.kManaLabelFont
-                btnLogin!.textColor = CardQuiz.kTileTextColor
-                btnLogin!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileColor)
-                btnLogin!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
+                btnLogin!.font = CQTheme.kManaLabelFont
+                btnLogin!.textColor = CQTheme.kTileTextColor
+                btnLogin!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileColor)
+                btnLogin!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
                 btnLogin!.layer.borderWidth = 1
                 self.view.addSubview(btnLogin!)
             }
@@ -153,10 +153,10 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         btnEasy!.userInteractionEnabled = true
         btnEasy!.text = "Easy: Standard"
         btnEasy!.textAlignment = NSTextAlignment.Center
-        btnEasy!.font = CardQuiz.kManaLabelFont
-        btnEasy!.textColor = CardQuiz.kTileTextColor
-        btnEasy!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileColor)
-        btnEasy!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
+        btnEasy!.font = CQTheme.kManaLabelFont
+        btnEasy!.textColor = CQTheme.kTileTextColor
+        btnEasy!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileColor)
+        btnEasy!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
         btnEasy!.layer.borderWidth = 1
         self.view.addSubview(btnEasy!)
 
@@ -167,10 +167,10 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         btnModerate!.userInteractionEnabled = true
         btnModerate!.text = "Moderate: Modern"
         btnModerate!.textAlignment = NSTextAlignment.Center
-        btnModerate!.font = CardQuiz.kManaLabelFont
-        btnModerate!.textColor = CardQuiz.kTileTextColor
-        btnModerate!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileColor)
-        btnModerate!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
+        btnModerate!.font = CQTheme.kManaLabelFont
+        btnModerate!.textColor = CQTheme.kTileTextColor
+        btnModerate!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileColor)
+        btnModerate!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
         btnModerate!.layer.borderWidth = 1
         self.view.addSubview(btnModerate!)
 
@@ -181,10 +181,10 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         btnHard!.userInteractionEnabled = true
         btnHard!.text = "Hard: Vintage"
         btnHard!.textAlignment = NSTextAlignment.Center
-        btnHard!.font = CardQuiz.kManaLabelFont
-        btnHard!.textColor = CardQuiz.kTileTextColor
-        btnHard!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileColor)
-        btnHard!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
+        btnHard!.font = CQTheme.kManaLabelFont
+        btnHard!.textColor = CQTheme.kTileTextColor
+        btnHard!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileColor)
+        btnHard!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
         btnHard!.layer.borderWidth = 1
         self.view.addSubview(btnHard!)
 
@@ -195,10 +195,10 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         btnLeaderboard!.userInteractionEnabled = true
         btnLeaderboard!.text = "Leaderboard"
         btnLeaderboard!.textAlignment = NSTextAlignment.Center
-        btnLeaderboard!.font = CardQuiz.kManaLabelFont
-        btnLeaderboard!.textColor = CardQuiz.kTileTextColor
-        btnLeaderboard!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileColor)
-        btnLeaderboard!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
+        btnLeaderboard!.font = CQTheme.kManaLabelFont
+        btnLeaderboard!.textColor = CQTheme.kTileTextColor
+        btnLeaderboard!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileColor)
+        btnLeaderboard!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
         btnLeaderboard!.layer.borderWidth = 1
         self.view.addSubview(btnLeaderboard!)
 
@@ -209,10 +209,10 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         btnSettings!.userInteractionEnabled = true
         btnSettings!.text = "Settings"
         btnSettings!.textAlignment = NSTextAlignment.Center
-        btnSettings!.font = CardQuiz.kManaLabelFont
-        btnSettings!.textColor = CardQuiz.kTileTextColor
-        btnSettings!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileColor)
-        btnSettings!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CardQuiz.kTileBorderColor).CGColor
+        btnSettings!.font = CQTheme.kManaLabelFont
+        btnSettings!.textColor = CQTheme.kTileTextColor
+        btnSettings!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileColor)
+        btnSettings!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
         btnSettings!.layer.borderWidth = 1
         self.view.addSubview(btnSettings!)
     }
@@ -248,7 +248,22 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         self.view.addSubview(hud)
         
         let executingBlock = { () -> Void in
-            self.cardQuizGame = CardQuizGameViewController()
+            let tap = sender as UITapGestureRecognizer
+            let button = tap.view as UILabel
+            let title = button.text
+            var gameType:CQGameType?
+            
+            if title == "Easy: Standard" {
+                gameType = .Easy
+                
+            } else if title == "Moderate: Modern" {
+                gameType = .Moderate
+                
+            } else if title == "Hard: Vintage" {
+                gameType = .Hard
+            }
+            
+            self.cardQuizGame = CardQuizGameViewController(gameType: gameType!)
         }
         
         let completionBlock = {  () -> Void in
