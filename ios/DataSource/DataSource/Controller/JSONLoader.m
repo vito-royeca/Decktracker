@@ -168,18 +168,19 @@
         [currentContext MR_save];
     }
     
+    /* magiccard.info set codes are handled by MTGJSON since of v2.19.2
     filePath = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] resourcePath], @"Data/magiccards_sets.plist"];
     dict = [[NSDictionary alloc] initWithContentsOfFile:filePath];
     
     for (DTSet *set in [DTSet MR_findAll])
     {
-        NSString *magicCardsCode = [dict objectForKey:set.name];
+        NSString *magicCardsInfoCode = [dict objectForKey:set.name];
         
-        set.magicCardsCode = magicCardsCode;
+        set.magicCardsInfoCode = magicCardsInfoCode;
         [currentContext MR_save];
-    }
+    }*/
     
-    for (DTSet *set in [DTSet MR_findAllSortedBy:@"releaseDate" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"magicCardsCode != nil"]])
+    for (DTSet *set in [DTSet MR_findAllSortedBy:@"releaseDate" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"magicCardsInfoCode != nil"]])
     {
         NSArray *cards = [DTCard MR_findAllSortedBy:@"name" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"set.name == %@", set.name]];
         BOOL hasNumber = YES;
@@ -195,7 +196,7 @@
 
         if (!hasNumber)
         {
-            NSString *url = [[NSString stringWithFormat:@"http://magiccards.info/%@/en.html", set.magicCardsCode] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            NSString *url = [[NSString stringWithFormat:@"http://magiccards.info/%@/en.html", set.magicCardsInfoCode] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
             TFHpple *parser = [TFHpple hppleWithHTMLData:data];
             
@@ -312,7 +313,8 @@
         set.type = [self findSetType:dict[@"type"]];
         set.block = [self findBlock:dict[@"block"]];
         set.onlineOnly = [NSNumber numberWithBool:[dict[@"onlineOnly"] boolValue]];
-
+        set.magicCardsInfoCode = dict[@"magicCardsInfoCode"];
+        
         set.sectionNameInitial = [JJJUtil isAlphaStart:set.name] ?  [set.name substringToIndex:1] : @"#";
         set.sectionYear = [formatter stringFromDate:set.releaseDate];
         

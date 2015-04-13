@@ -18,8 +18,8 @@ int main(int argc, const char * argv[])
         JSONLoader *jsonLoader = [[JSONLoader alloc] init];
 //        [jsonLoader parseCards1stPass];
 //        [jsonLoader updateSets];
-        [jsonLoader parseCards2ndPass];
-//        [jsonLoader fetchTcgPrices];
+//        [jsonLoader parseCards2ndPass];
+        [jsonLoader fetchTcgPrices]; //??
         
 
         /* Step 2 */

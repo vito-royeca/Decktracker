@@ -17,7 +17,7 @@
 @dynamic border;
 @dynamic code;
 @dynamic gathererCode;
-@dynamic magicCardsCode;
+@dynamic magicCardsInfoCode;
 @dynamic imagesDownloaded;
 @dynamic name;
 @dynamic numberOfCards;
