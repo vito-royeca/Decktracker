@@ -186,7 +186,7 @@ static FileManager *_me;
     
     if (!bFound)
     {
-        NSURL *url = [NSURL URLWithString:[[NSString stringWithFormat:@"http://magiccards.info/scans/%@/%@/%@.jpg", languageInitials, card.set.magicCardsCode, card.number] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        NSURL *url = [NSURL URLWithString:[[NSString stringWithFormat:@"http://magiccards.info/scans/%@/%@/%@.jpg", languageInitials, card.set.magicCardsInfoCode, card.number] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithObjects:@[card, cardPath, url]
                                                                          forKeys:@[@"card", @"path", @"url"]];
@@ -936,14 +936,6 @@ static FileManager *_me;
     }
     
     return languageInitials;
-}
-
-- (UIColor*) UIColorFromRGB:(NSUInteger) rgbValue
-{
-    return [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0
-                           green:((float)((rgbValue & 0xFF00) >> 8))/255.0
-                            blue:((float)(rgbValue & 0xFF))/255.0
-                           alpha:1.0];
 }
 
 @end

@@ -134,7 +134,7 @@ class PieChartViewController: UIViewController, CPTPlotDataSource {
         graph.legendDisplacement = CGPoint(x: 0, y: 0)
     }
 
-    // CPTPlotDataSource methods
+//    MARK: CPTPlotDataSource
     func numberOfRecordsForPlot(plot: CPTPlot) -> UInt {
         
         return detailsEnabled ? UInt(detailedData!.count) : UInt(conciseData!.count)
@@ -186,7 +186,7 @@ class PieChartViewController: UIViewController, CPTPlotDataSource {
         return CPTTextLayer(text: label, style: labelText)
     }
     
-    // CPTPieChartDataSource
+//    MARK: CPTPieChartDataSource
     func legendTitleForPieChart(pieChart: CPTPieChart, recordIndex index: UInt) -> String {
         let dict = detailsEnabled ? detailedData![Int(index)] : conciseData![Int(index)]
         let keys = dict.keys

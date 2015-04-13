@@ -686,7 +686,7 @@ static Database *_me;
     }
 
     // do not include cards without images
-    NSPredicate *predWithoutImages = [NSPredicate predicateWithFormat:@"set.magicCardsCode != nil"];
+    NSPredicate *predWithoutImages = [NSPredicate predicateWithFormat:@"set.magicCardsInfoCode != nil"];
     predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, predWithoutImages]];
 
     fetchRequest.entity = entity;
@@ -718,7 +718,7 @@ static Database *_me;
                                                                     ascending:YES];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"DTSet"
                                               inManagedObjectContext:moc];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"magicCardsCode != nil"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"magicCardsInfoCode != nil"];
     
     [fetchRequest setEntity:entity];
     [fetchRequest setPredicate:predicate];
@@ -1293,9 +1293,12 @@ static Database *_me;
          
          if (pfUserMana)
          {
-             [[NSNotificationCenter defaultCenter] postNotificationName:kParseUserManaDone
-                                                                 object:nil
-                                                               userInfo:@{@"userMana": pfUserMana}];
+             [pfUserMana pinInBackgroundWithBlock:^(BOOL success, NSError *error)
+              {
+                  [[NSNotificationCenter defaultCenter] postNotificationName:kParseUserManaDone
+                                                                      object:nil
+                                                                    userInfo:@{@"userMana": pfUserMana}];
+              }];
          }
          else
          {

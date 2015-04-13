@@ -194,7 +194,7 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
         // Dispose of any resources that can be recreated.
     }
     
-    // UITableViewDataSource
+//    MARK: UITableViewDataSource
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
@@ -358,7 +358,7 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
         self.navigationController?.pushViewController(view!, animated:false)
     }
     
-    // InAppPurchaseViewControllerDelegate
+//    MARK: InAppPurchaseViewControllerDelegate
     func productPurchaseSucceeded(productID: String)
     {
         Database.sharedInstance().loadInAppSets()

@@ -459,7 +459,7 @@
 
     if ([_arrFilters[indexPath.row] isEqualToString:@"Set"])
     {
-        arrFilterOptions = [DTSet MR_findAllSortedBy:@"name" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"magicCardsCode != nil AND NOT (code IN %@)", [[Database sharedInstance] inAppSetCodes]]];
+        arrFilterOptions = [DTSet MR_findAllSortedBy:@"name" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"magicCardsInfoCode != nil AND NOT (code IN %@)", [[Database sharedInstance] inAppSetCodes]]];
     }
     else if ([_arrFilters[indexPath.row] isEqualToString:@"Format"])
     {

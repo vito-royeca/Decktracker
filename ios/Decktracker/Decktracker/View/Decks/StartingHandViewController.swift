@@ -55,7 +55,7 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         var dHeight = self.view.frame.size.height-44
         var frame:CGRect?
         
-        viewButton = UIBarButtonItem(image: UIImage(named: "insert_table.png"), style: UIBarButtonItemStyle.Plain, target: self, action: "viewButtonTapped")
+        viewButton = UIBarButtonItem(title: "List", style: UIBarButtonItemStyle.Plain, target: self, action: "viewButtonTapped")
         showButton = UIBarButtonItem(image: UIImage(named: "view_file.png"), style: UIBarButtonItemStyle.Plain, target: self, action: "showButtonTapped")
         
         newButton = UIBarButtonItem(title: "New Hand", style: UIBarButtonItemStyle.Plain, target: self, action: "newButtonTapped")
@@ -76,9 +76,6 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         self.navigationItem.title = "Starting Hand"
         self.navigationItem.rightBarButtonItems = [showButton!, viewButton!]
         
-//        self.viewMode = CardViewMode.ByList
-//        self.showTableView()
-
         if let value = NSUserDefaults.standardUserDefaults().stringForKey(kCardViewMode) {
             if value == CardViewMode.ByList.description {
                 self.viewMode = CardViewMode.ByList
@@ -295,6 +292,7 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
             colHand!.removeFromSuperview()
         }
         view.addSubview(tblHand!)
+        viewButton!.title = self.viewMode!.description
     }
     
     func showGridView() {
@@ -317,12 +315,13 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         colHand!.delegate = self
         colHand!.registerClass(CardListCollectionViewCell.self, forCellWithReuseIdentifier: "Card")
         colHand!.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier:"Header")
-        colHand!.backgroundColor = UIColor.lightGrayColor()
+        colHand!.backgroundColor = UIColor(patternImage: UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/Gray_Patterned_BG.jpg")!)
         
         if tblHand != nil {
             tblHand!.removeFromSuperview()
         }
         view.addSubview(colHand!)
+        viewButton!.title = self.viewMode!.description
     }
     
     func initDeck() {
@@ -403,7 +402,7 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         }
     }
     
-    // UITableViewDataSource
+//    MARK: UITableViewDataSource
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         var count = 0
         
@@ -484,7 +483,7 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         self.discardCard(indexPath.row)
     }
     
-    // UICollectionViewDataSource
+//    MARK: UICollectionViewDataSource
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch self.showMode! {
         case .ByHand:

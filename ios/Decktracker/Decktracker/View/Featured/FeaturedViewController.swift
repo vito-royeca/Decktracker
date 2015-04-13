@@ -131,7 +131,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         tblFeatured!.reloadData()
     }
     
-    // UITableViewDelegate
+//    MARK: UITableViewDelegate
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.row == 0 {
             return 132
@@ -144,7 +144,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
 
-    // UITableViewDataSource
+//    MARK: UITableViewDataSource
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
@@ -199,7 +199,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
     
-    // UICollectionViewDataSource
+//    MARK: UICollectionViewDataSource
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -240,7 +240,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         return cell!
     }
     
-    // UICollectionViewDelegate
+//    MARK: UICollectionViewDelegate
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let row = arrayData![collectionView.tag]
         let key = Array(row.keys)[0]
@@ -296,7 +296,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
     
-    // HorizontalScrollTableViewCellDelegate
+//    MARK: HorizontalScrollTableViewCellDelegate
     func seeAll(tag: NSInteger) {
         let row = arrayData![tag]
         let key = Array(row.keys)[0]
@@ -315,8 +315,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
             view = view2;
         case 3:
             let view2 = SetListViewController()
-//            view2.arrayData = DTSet.MR_findAllSortedBy("releaseDate", ascending: false)
-            let predicate = NSPredicate(format: "magicCardsCode != nil")
+            let predicate = NSPredicate(format: "magicCardsInfoCode != nil")
             view2.arrayData = DTSet.MR_findAllSortedBy("releaseDate", ascending: false, withPredicate: predicate)
             view = view2;
         default:
@@ -327,7 +326,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         navigationController?.pushViewController(view!, animated:true)
     }
     
-    // InAppPurchaseViewControllerDelegate
+//    MARK: InAppPurchaseViewControllerDelegate
     func productPurchaseSucceeded(productID: String)
     {
         Database.sharedInstance().loadInAppSets()
@@ -336,7 +335,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         tblFeatured!.reloadData()
     }
     
-    // UIScrollViewDelegate
+//    MARK: UIScrollViewDelegate
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         if scrollView.tag == 0 {
             let row = arrayData![scrollView.tag]

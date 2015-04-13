@@ -23,10 +23,9 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        viewButton = UIBarButtonItem(image: UIImage(named: "insert_table.png"), style: UIBarButtonItemStyle.Plain, target: self, action: "viewButtonTapped")
+        viewButton = UIBarButtonItem(title: "List", style: UIBarButtonItemStyle.Plain, target: self, action: "viewButtonTapped")
         
         navigationItem.rightBarButtonItem = viewButton
-        
         
         if let value = NSUserDefaults.standardUserDefaults().stringForKey(kCardViewMode) {
             if value == CardViewMode.ByList.description {
@@ -147,6 +146,7 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
             colList!.removeFromSuperview()
         }
         view.addSubview(tblList!)
+        viewButton!.title = self.viewMode!.description
     }
     
     func showGridView() {
@@ -167,15 +167,16 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
         colList!.dataSource = self
         colList!.delegate = self
         colList!.registerClass(CardListCollectionViewCell.self, forCellWithReuseIdentifier: "Card")
-        colList!.backgroundColor = UIColor.lightGrayColor()
+        colList!.backgroundColor = UIColor(patternImage: UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/Gray_Patterned_BG.jpg")!)
         
         if tblList != nil {
             tblList!.removeFromSuperview()
         }
         view.addSubview(colList!)
+        viewButton!.title = self.viewMode!.description
     }
     
-    // UITableViewDataSource
+//    MARK: UITableViewDataSource
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return CGFloat(SEARCH_RESULTS_CELL_HEIGHT)
     }
@@ -229,7 +230,7 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
         self.navigationController?.pushViewController(view!, animated:false)
     }
     
-    // UICollectionViewDataSource
+//    MARK: UICollectionViewDataSource
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return arrayData!.count
     }
@@ -243,7 +244,7 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
         return cell
     }
     
-    // UICollectionViewDelegate
+//    MARK: UICollectionViewDelegate
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let card = arrayData![indexPath.row] as DTCard
         let dict = Database.sharedInstance().inAppSettingsForSet(card.set)
@@ -268,7 +269,7 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
         self.navigationController?.pushViewController(view!, animated:false)
     }
     
-    // UIScrollViewDelegate
+//    MARK: UIScrollViewDelegate
     func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         
         if scrollView.isKindOfClass(UITableView.classForCoder()) ||
@@ -303,14 +304,22 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
             }
         }
 
-        if paths.count > 0 && tblList != nil {
-            tblList!.beginUpdates()
-            tblList!.insertRowsAtIndexPaths(paths, withRowAnimation:UITableViewRowAnimation.Automatic)
-            tblList!.endUpdates()
+        if paths.count > 0 {
+            if tblList != nil {
+                tblList!.beginUpdates()
+                tblList!.insertRowsAtIndexPaths(paths, withRowAnimation:UITableViewRowAnimation.Automatic)
+                tblList!.endUpdates()
+            }
+            
+            if colList != nil {
+                colList!.performBatchUpdates({ () -> Void in
+                    self.colList!.insertItemsAtIndexPaths(paths)
+                }, completion: nil)
+            }
         }
     }
     
-    // InAppPurchaseViewControllerDelegate
+//    MARK: InAppPurchaseViewControllerDelegate
     func productPurchaseSucceeded(productID: String)
     {
         Database.sharedInstance().loadInAppSets()

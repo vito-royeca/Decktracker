@@ -146,7 +146,7 @@ class BarGraphViewController: UIViewController, CPTBarPlotDataSource {
         axisSet.yAxis.axisLineStyle = axisLineStyle
     }
     
-    // CPTPlotDataSource
+//    MARK: CPTPlotDataSource
     func numberOfRecordsForPlot(plot: CPTPlot) -> UInt {
         return 2
     }

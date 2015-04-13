@@ -76,7 +76,7 @@
                                                     style:UIBarButtonItemStylePlain
                                                    target:self
                                                    action:@selector(backButtonTapped)];
-    self.btnView = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"insert_table.png"]
+    self.btnView = [[UIBarButtonItem alloc] initWithTitle:@"List"
                                                     style:UIBarButtonItemStylePlain
                                                    target:self
                                                    action:@selector(viewButtonTapped)];
@@ -326,6 +326,25 @@
         [self.colCards removeFromSuperview];
     }
     [self.view addSubview:self.tblCards];
+    
+    switch (_viewMode)
+    {
+        case DeckDetailsViewModeByList:
+        {
+            self.btnView.title = @"List";
+            break;
+        }
+        case DeckDetailsViewModeByGrid2x2:
+        {
+            self.btnView.title = @"Grid 2x2";
+            break;
+        }
+        case DeckDetailsViewModeByGrid3x3:
+        {
+            self.btnView.title = @"Grid 3x3";
+            break;
+        }
+    }
 }
 
 -(void) showGridView
@@ -351,12 +370,32 @@
     [self.colCards registerClass:[UICollectionReusableView class]
         forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
                withReuseIdentifier:@"Header"];
-    self.colCards.backgroundColor = [UIColor lightGrayColor];
+    UIImage *bgImage = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/images/Gray_Patterned_BG.jpg", [[NSBundle mainBundle] bundlePath]]];
+    self.colCards.backgroundColor = [UIColor colorWithPatternImage:bgImage];
     
     if (self.tblCards) {
         [self.tblCards removeFromSuperview];
     }
     [self.view addSubview:self.colCards];
+    
+    switch (_viewMode)
+    {
+        case DeckDetailsViewModeByList:
+        {
+            self.btnView.title = @"List";
+            break;
+        }
+        case DeckDetailsViewModeByGrid2x2:
+        {
+            self.btnView.title = @"Grid 2x2";
+            break;
+        }
+        case DeckDetailsViewModeByGrid3x3:
+        {
+            self.btnView.title = @"Grid 3x3";
+            break;
+        }
+    }
 }
 
 -(UITableViewCell*) createSearchResultsTableCell:(NSDictionary*) dict

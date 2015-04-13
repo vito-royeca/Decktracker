@@ -84,6 +84,9 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
+        NSNotificationCenter.defaultCenter().removeObserver(self, name:kParseUserManaDone,  object:nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector:"userManaDone:",  name:kParseUserManaDone, object:nil)
+        
         setupManaPoints()
         setupImageView()
         setupFunctionButtons()
@@ -207,12 +210,6 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
         lblColorless!.adjustsFontSizeToFitWidth = true
         lblColorless!.textColor = CQTheme.kManaLabelColor
         self.view.addSubview(lblColorless!)
-        
-        NSNotificationCenter.defaultCenter().removeObserver(self,
-            name:kParseUserManaDone,  object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self,
-            selector:"userManaDone:",  name:kParseUserManaDone, object:nil)
-        Database.sharedInstance().fetchUserMana()
     }
     
     func userManaDone(sender: AnyObject) {
@@ -232,6 +229,12 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
         lblRed!.text       = " \(manaRed)"
         lblWhite!.text     = " \(manaWhite)"
         lblColorless!.text = " \(manaColorless)"
+        
+        if canCastCard() && btnCast != nil {
+            btnCast!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "castTapped:"))
+            btnCast!.userInteractionEnabled = true
+            btnCast!.text = "Cast"
+        }
     }
     
     func setupImageView() {
@@ -277,8 +280,8 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
         btnHelp!.textAlignment = NSTextAlignment.Center
         btnHelp!.font = CQTheme.kManaLabelFont
         btnHelp!.textColor = CQTheme.kTileTextColor
-        btnHelp!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileColor)
-        btnHelp!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+        btnHelp!.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
+        btnHelp!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
         btnHelp!.layer.borderWidth = 1
         self.view.addSubview(btnHelp!)
         
@@ -292,8 +295,8 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
         btnBuy!.textAlignment = NSTextAlignment.Center
         btnBuy!.font = CQTheme.kManaLabelFont
         btnBuy!.textColor = CQTheme.kTileTextColor
-        btnBuy!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileColor)
-        btnBuy!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+        btnBuy!.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
+        btnBuy!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
         btnBuy!.layer.borderWidth = 1
         
         self.view.addSubview(btnBuy!)
@@ -302,22 +305,17 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
         dX = dFrame.origin.x + dFrame.size.width
         dFrame = CGRect(x: dX, y: dY, width: dWidth, height: dHeight)
         btnCast = UILabel(frame: dFrame)
-        if canCastCard() {
-            btnCast!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "castTapped:"))
-            btnCast!.userInteractionEnabled = true
-            btnCast!.text = "Cast"
-        } else {
-            btnCast!.userInteractionEnabled = false
-            btnCast!.text = " "
-        }
+        btnCast!.userInteractionEnabled = false
+        btnCast!.text = " "
         btnCast!.textAlignment = NSTextAlignment.Center
         btnCast!.font = CQTheme.kManaLabelFont
         btnCast!.textColor = CQTheme.kTileTextColor
-        btnCast!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileColor)
-        btnCast!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+        btnCast!.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
+        btnCast!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
         btnCast!.layer.borderWidth = 1
         
         self.view.addSubview(btnCast!)
+        Database.sharedInstance().fetchUserMana()
     }
 
     func generateRandomCard() -> DTCard {
@@ -477,8 +475,8 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
                     label.textAlignment = NSTextAlignment.Center
                     label.font = CQTheme.kTileAnswerFont
                     label.textColor = CQTheme.kTileTextColor
-                    label.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileColor)
-                    label.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+                    label.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
+                    label.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
                     label.layer.borderWidth = 1
                     label.tag = index
                 } else {
@@ -522,8 +520,8 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
             label.textAlignment = NSTextAlignment.Center
             label.font = CQTheme.kTileQuizFont
             label.textColor = CQTheme.kTileTextColor
-            label.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileColor)
-            label.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+            label.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
+            label.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
             label.layer.borderWidth = 1
             label.tag = index
             index++
@@ -578,8 +576,8 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
         btnNextCard!.textAlignment = NSTextAlignment.Center
         btnNextCard!.font = CQTheme.kManaLabelFont
         btnNextCard!.textColor = CQTheme.kTileTextColor
-        btnNextCard!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileColor)
-        btnNextCard!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+        btnNextCard!.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
+        btnNextCard!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
         btnNextCard!.layer.borderWidth = 1
         self.view.addSubview(btnNextCard!)
         
@@ -660,7 +658,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
             userMana!.saveInBackgroundWithBlock {
                 (success: Bool, error: NSError!) -> Void in
                 if (success) {
-                    // The object has been saved.
+
                 } else {
                     // There was a problem, check error.description
                 }
@@ -718,8 +716,36 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
     }
     
     func helpTapped(sender: UITapGestureRecognizer) {
-        let label = sender.view as UILabel
-        println("\(label.text!)")
+        var sharingItems = Array<AnyObject>()
+        
+        // get screenshot
+        UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, self.view.opaque, 0.0)
+        self.view.layer.renderInContext(UIGraphicsGetCurrentContext())
+        let screenshot = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext();
+        
+        /*
+        // crop the screenshot, excluding mana points
+        let height = self.view.bounds.size.height-(UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height)-120
+        let rect = CGRect(x: 0, y: 200, width: screenshot.size.width, height: screenshot.size.height)
+        let imageRef = CGImageCreateWithImageInRect(screenshot.CGImage, rect);
+//        let imgCrop = UIImage(CGImage: imageRef!)
+        let imgCrop = UIImage(CGImage: imageRef, scale: screenshot.scale, orientation: screenshot.imageOrientation)
+        */
+        
+        sharingItems.append("Help, what is the name of this card? -Decktracker Card Quiz")
+        sharingItems.append(screenshot!)
+        
+        let activityController = UIActivityViewController(activityItems:sharingItems, applicationActivities:nil)
+        activityController.excludedActivityTypes = [UIActivityTypeAddToReadingList, UIActivityTypeAssignToContact, UIActivityTypeCopyToPasteboard, UIActivityTypePrint]
+        activityController.completionWithItemsHandler = {(activityType: String!, completed: Bool, returnedItems: [AnyObject]!, activityError: NSError!) -> Void in
+            
+            if (completed) {
+                JJJUtil.alertWithTitle("Help", andMessage:"Help sent.")
+            }
+        }
+        
+        self.presentViewController(activityController, animated:true, completion:nil)
     }
     
     func buyTapped(sender: UITapGestureRecognizer) {
@@ -927,7 +953,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
                 ccColorless += 15
             }
         }
-        
+
         return
             (manaBlack  + manaBlue + manaGreen + manaRed  + manaWhite  + manaColorless) > 0 &&
             manaBlack >= ccBlack &&

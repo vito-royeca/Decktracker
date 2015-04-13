@@ -70,15 +70,37 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        viewButton = UIBarButtonItem(image: UIImage(named: "insert_table.png"), style: UIBarButtonItemStyle.Plain, target: self, action: "viewButtonTapped")
+        viewButton = UIBarButtonItem(title: "List", style: UIBarButtonItemStyle.Plain, target: self, action: "viewButtonTapped")
         sortButton = UIBarButtonItem(image: UIImage(named: "generic_sorting.png"), style: UIBarButtonItemStyle.Plain, target: self, action: "sortButtonTapped")
         
         navigationItem.rightBarButtonItems = [sortButton!, viewButton!]
         
-        self.viewMode = CardViewMode.ByList
+        if let value = NSUserDefaults.standardUserDefaults().stringForKey(kCardViewMode) {
+            if value == CardViewMode.ByList.description {
+                self.viewMode = CardViewMode.ByList
+                self.showTableView()
+                
+            } else if value == CardViewMode.ByGrid2x2.description {
+                self.viewMode = CardViewMode.ByGrid2x2
+                self.showGridView()
+                
+            } else if value == CardViewMode.ByGrid3x3.description {
+                self.viewMode = CardViewMode.ByGrid3x3
+                self.showGridView()
+                
+            } else {
+                self.viewMode = CardViewMode.ByList
+                self.showTableView()
+            }
+            
+        } else {
+            self.viewMode = CardViewMode.ByList
+            self.showTableView()
+        }
+        
         self.sortMode = CardSortMode.ByName
         self.sectionName = "sectionNameInitial"
-        self.showTableView()
+
         self.loadData()
         self.viewLoadedOnce = false
         
@@ -127,6 +149,8 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
                 break
             }
             
+            NSUserDefaults.standardUserDefaults().setObject(self.viewMode!.description, forKey: kCardViewMode)
+            NSUserDefaults.standardUserDefaults().synchronize()
             self.loadData()
         }
         
@@ -273,6 +297,7 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
             colSets!.removeFromSuperview()
         }
         view.addSubview(tblSets!)
+        viewButton!.title = self.viewMode!.description
     }
     
     func showGridView() {
@@ -294,12 +319,13 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
         colSets!.delegate = self
         colSets!.registerClass(CardListCollectionViewCell.self, forCellWithReuseIdentifier: "Card")
         colSets!.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier:"Header")
-        colSets!.backgroundColor = UIColor.lightGrayColor()
+        colSets!.backgroundColor = UIColor(patternImage: UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/Gray_Patterned_BG.jpg")!)
         
         if tblSets != nil {
             tblSets!.removeFromSuperview()
         }
         view.addSubview(colSets!)
+        viewButton!.title = self.viewMode!.description
     }
     
     override func didReceiveMemoryWarning() {
@@ -307,7 +333,7 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
         // Dispose of any resources that can be recreated.
     }
     
-    // UITableViewDataSource
+//    MARK: UITableViewDataSource
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return CGFloat(SEARCH_RESULTS_CELL_HEIGHT)
     }
@@ -392,7 +418,7 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
         self.navigationController?.pushViewController(view, animated:true)
     }
     
-    // UICollectionViewDataSource
+//    MARK: UICollectionViewDataSource
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         let sectionInfos = fetchedResultsController.sections as [NSFetchedResultsSectionInfo]?
         return sectionInfos!.count
@@ -443,7 +469,7 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
         return view!
     }
 
-    // UICollectionViewDelegate
+//    MARK: UICollectionViewDelegate
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let card = fetchedResultsController.objectAtIndexPath(indexPath) as DTCard
         
@@ -460,7 +486,7 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
         self.navigationController?.pushViewController(view, animated:true)
     }
 
-    // NSFetchedResultsControllerDelegate
+//    MARK: NSFetchedResultsControllerDelegate
     func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
         //        println("\(__LINE__) \(__PRETTY_FUNCTION__) \(__FUNCTION__)")
         

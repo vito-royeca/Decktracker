@@ -41,7 +41,7 @@ class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDe
         // Dispose of any resources that can be recreated.
     }
     
-    // UITableViewDataSource
+//    MARK: UITableViewDataSource
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
         let row = arrayData[section]
@@ -85,7 +85,7 @@ class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDe
         return cell!
     }
     
-    // UITableViewDelegate
+//    MARK: UITableViewDelegate
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
     {
         var newView:UIViewController?
@@ -124,7 +124,7 @@ class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
-    // ReaderViewControllerDelegate
+//    MARK: ReaderViewControllerDelegate
     func dismissReaderViewController(viewController:ReaderViewController)
     {
         navigationController?.popViewControllerAnimated(true);

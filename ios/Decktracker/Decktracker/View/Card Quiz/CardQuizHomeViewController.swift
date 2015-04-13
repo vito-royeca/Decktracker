@@ -84,8 +84,8 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
             btnLogin!.textAlignment = NSTextAlignment.Center
             btnLogin!.font = CQTheme.kManaLabelFont
             btnLogin!.textColor = CQTheme.kTileTextColor
-            btnLogin!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileColor)
-            btnLogin!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+            btnLogin!.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
+            btnLogin!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
             btnLogin!.layer.borderWidth = 1
             self.view.addSubview(btnLogin!)
 
@@ -126,8 +126,8 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
                 btnLogin!.textAlignment = NSTextAlignment.Center
                 btnLogin!.font = CQTheme.kManaLabelFont
                 btnLogin!.textColor = CQTheme.kTileTextColor
-                btnLogin!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileColor)
-                btnLogin!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+                btnLogin!.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
+                btnLogin!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
                 btnLogin!.layer.borderWidth = 1
                 self.view.addSubview(btnLogin!)
                 
@@ -139,8 +139,8 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
                 btnLogin!.textAlignment = NSTextAlignment.Center
                 btnLogin!.font = CQTheme.kManaLabelFont
                 btnLogin!.textColor = CQTheme.kTileTextColor
-                btnLogin!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileColor)
-                btnLogin!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+                btnLogin!.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
+                btnLogin!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
                 btnLogin!.layer.borderWidth = 1
                 self.view.addSubview(btnLogin!)
             }
@@ -155,8 +155,8 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         btnEasy!.textAlignment = NSTextAlignment.Center
         btnEasy!.font = CQTheme.kManaLabelFont
         btnEasy!.textColor = CQTheme.kTileTextColor
-        btnEasy!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileColor)
-        btnEasy!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+        btnEasy!.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
+        btnEasy!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
         btnEasy!.layer.borderWidth = 1
         self.view.addSubview(btnEasy!)
 
@@ -169,8 +169,8 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         btnModerate!.textAlignment = NSTextAlignment.Center
         btnModerate!.font = CQTheme.kManaLabelFont
         btnModerate!.textColor = CQTheme.kTileTextColor
-        btnModerate!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileColor)
-        btnModerate!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+        btnModerate!.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
+        btnModerate!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
         btnModerate!.layer.borderWidth = 1
         self.view.addSubview(btnModerate!)
 
@@ -183,8 +183,8 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         btnHard!.textAlignment = NSTextAlignment.Center
         btnHard!.font = CQTheme.kManaLabelFont
         btnHard!.textColor = CQTheme.kTileTextColor
-        btnHard!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileColor)
-        btnHard!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+        btnHard!.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
+        btnHard!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
         btnHard!.layer.borderWidth = 1
         self.view.addSubview(btnHard!)
 
@@ -197,8 +197,8 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         btnLeaderboard!.textAlignment = NSTextAlignment.Center
         btnLeaderboard!.font = CQTheme.kManaLabelFont
         btnLeaderboard!.textColor = CQTheme.kTileTextColor
-        btnLeaderboard!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileColor)
-        btnLeaderboard!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+        btnLeaderboard!.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
+        btnLeaderboard!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
         btnLeaderboard!.layer.borderWidth = 1
         self.view.addSubview(btnLeaderboard!)
 
@@ -211,8 +211,8 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         btnSettings!.textAlignment = NSTextAlignment.Center
         btnSettings!.font = CQTheme.kManaLabelFont
         btnSettings!.textColor = CQTheme.kTileTextColor
-        btnSettings!.backgroundColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileColor)
-        btnSettings!.layer.borderColor = FileManager.sharedInstance().UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+        btnSettings!.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
+        btnSettings!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
         btnSettings!.layer.borderWidth = 1
         self.view.addSubview(btnSettings!)
     }

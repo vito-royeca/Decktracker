@@ -117,7 +117,7 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
         data = ["Table Of Contents": array]
     }
 
-    // UITableViewDataSource
+//    MARK: UITableViewDataSource
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if showSections {
             let keys = Array(sections!.keys).sorted(<)
@@ -293,7 +293,7 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
 //        return UITableViewAutomaticDimension
 //    }
 
-    // UIWebViewDelegate
+//    MARK: UIWebViewDelegate
     func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         if navigationType == UIWebViewNavigationType.LinkClicked {
             UIApplication.sharedApplication().openURL(request.URL)

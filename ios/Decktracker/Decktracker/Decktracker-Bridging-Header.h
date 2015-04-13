@@ -17,6 +17,8 @@
 #import <ParseUI/ParseUI.h>
 #import "PureLayout.h"
 
+#import <JJJ/JJJUtil.h>
+
 #import "DTArtist.h"
 #import "DTBlock.h"
 #import "DTCard.h"
@@ -30,7 +32,6 @@
 #import "DTComprehensiveGlossary.h"
 #import "DTComprehensiveRule.h"
 #import "DTFormat.h"
-
 #import "DTSet.h"
 #import "DTSetType.h"
 
