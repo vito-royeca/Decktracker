@@ -159,13 +159,13 @@
             _viewMode = DeckDetailsViewModeByList;
             [self showTableView];
         }
-        else if ([value isEqualToString:@"Grid 2x2"])
+        else if ([value isEqualToString:@"2x2"])
         {
             _viewMode = DeckDetailsViewModeByGrid2x2;
             [self showGridView];
             
         }
-        else if ([value isEqualToString:@"Grid 3x3"])
+        else if ([value isEqualToString:@"3x3"])
         {
             _viewMode = DeckDetailsViewModeByGrid3x3;
             [self showGridView];
@@ -195,7 +195,7 @@
 
 -(void) viewButtonTapped
 {
-    NSArray *statusOptions = @[@"List", @"Grid 2x2", @"Grid 3x3"];
+    NSArray *statusOptions = @[@"List", @"2x2", @"3x3"];
     int initialSelection = 0;
     
     switch (_viewMode) {
@@ -233,13 +233,13 @@
                                                case 1: {
                                                    _viewMode = DeckDetailsViewModeByGrid2x2;
                                                    [self showGridView];
-                                                   [[NSUserDefaults standardUserDefaults] setObject:@"Grid 2x2" forKey: kCardViewMode];
+                                                   [[NSUserDefaults standardUserDefaults] setObject:@"2x2" forKey: kCardViewMode];
                                                    break;
                                                }
                                                case 2: {
                                                    _viewMode = DeckDetailsViewModeByGrid3x3;
                                                    [self showGridView];
-                                                   [[NSUserDefaults standardUserDefaults] setObject:@"Grid 3x3" forKey: kCardViewMode];
+                                                   [[NSUserDefaults standardUserDefaults] setObject:@"3x3" forKey: kCardViewMode];
                                                    break;
                                                }
                                            }
@@ -336,12 +336,12 @@
         }
         case DeckDetailsViewModeByGrid2x2:
         {
-            self.btnView.title = @"Grid 2x2";
+            self.btnView.title = @"2x2";
             break;
         }
         case DeckDetailsViewModeByGrid3x3:
         {
-            self.btnView.title = @"Grid 3x3";
+            self.btnView.title = @"3x3";
             break;
         }
     }
@@ -387,12 +387,12 @@
         }
         case DeckDetailsViewModeByGrid2x2:
         {
-            self.btnView.title = @"Grid 2x2";
+            self.btnView.title = @"2x2";
             break;
         }
         case DeckDetailsViewModeByGrid3x3:
         {
-            self.btnView.title = @"Grid 3x3";
+            self.btnView.title = @"3x3";
             break;
         }
     }

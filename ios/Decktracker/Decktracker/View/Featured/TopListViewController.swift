@@ -320,8 +320,7 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
 //    MARK: InAppPurchaseViewControllerDelegate
-    func productPurchaseSucceeded(productID: String)
-    {
+    func productPurchaseSucceeded(productID: String) {
         Database.sharedInstance().loadInAppSets()
         tblList!.reloadData()
     }

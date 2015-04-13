@@ -13,6 +13,7 @@ struct CQTheme {
     static let kManaLabelColor  = UIColor.whiteColor()
     static let kLabelColor      = UIColor.whiteColor()
     static let kTileTextColor   = UIColor.whiteColor()
+    static let kTileTextColorX  = UIColor.grayColor()
     static let kTileColor       = UInt(0x434343) // silver
     static let kTileBorderColor = UInt(0x191919) // black
 

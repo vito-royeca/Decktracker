@@ -68,6 +68,8 @@
 -(void) uploadAllSetsToParse;
 -(void) prefetchAllSetObjects;
 -(void) fetchUserMana;
+-(void) saveUserMana:(PFObject*) userMana;
+-(void) deleteUserManaLocally;
 
 #endif
 

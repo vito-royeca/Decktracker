@@ -1273,13 +1273,50 @@ static Database *_me;
 
 -(void) fetchUserMana
 {
+    PFUser *currentUser = [PFUser currentUser];
+    
+    if (!currentUser)
+    {
+        [self mergeLocalUserManaWithRemote:nil];
+    }
+    else
+    {
+        // find remotely first
+        __block PFQuery *query = [PFQuery queryWithClassName:@"UserMana"];
+        [query whereKey:@"user" equalTo:currentUser];
+        
+        [[query findObjectsInBackground] continueWithSuccessBlock:^id(BFTask *task)
+        {
+            return [[PFObject unpinAllObjectsInBackgroundWithName:@"UserMana"] continueWithSuccessBlock:^id(BFTask *ignored)
+            {
+                NSArray *results = task.result;
+                         
+                if (results.count > 0)
+                {
+                    // found remotely
+                    PFObject *remoteUserMana = task.result[0];
+                    [self mergeLocalUserManaWithRemote:remoteUserMana];
+                }
+                else
+                {
+                    // not found remotely
+                    [self mergeLocalUserManaWithRemote:nil];
+                }
+                 
+                return task;
+             }];
+        }];
+    }
+}
+
+-(void) mergeLocalUserManaWithRemote:(PFObject*) remoteUserMana
+{
     __block PFQuery *query = [PFQuery queryWithClassName:@"UserMana"];
-    [query whereKey:@"user" equalTo:[PFUser currentUser]];
     [query fromLocalDatastore];
     
     [[query findObjectsInBackground] continueWithBlock:^id(BFTask *task)
      {
-         __block PFObject *pfUserMana;
+         PFObject *localUserMana;
          
          if (task.error)
          {
@@ -1288,60 +1325,112 @@ static Database *_me;
          
          for (PFObject *object in task.result)
          {
-             pfUserMana = object;
+             localUserMana = object;
          }
          
-         if (pfUserMana)
+         if (localUserMana)
          {
-             [pfUserMana pinInBackgroundWithBlock:^(BOOL success, NSError *error)
-              {
-                  [[NSNotificationCenter defaultCenter] postNotificationName:kParseUserManaDone
-                                                                      object:nil
-                                                                    userInfo:@{@"userMana": pfUserMana}];
-              }];
+             if (remoteUserMana)
+             {
+                 remoteUserMana[@"black"] = @([remoteUserMana[@"black"] integerValue] + [localUserMana[@"black"] integerValue]);
+                 remoteUserMana[@"blue"] = @([remoteUserMana[@"blue"] integerValue] + [localUserMana[@"blue"] integerValue]);
+                 remoteUserMana[@"green"] = @([remoteUserMana[@"green"] integerValue] + [localUserMana[@"green"] integerValue]);
+                 remoteUserMana[@"red"] = @([remoteUserMana[@"red"] integerValue] + [localUserMana[@"red"] integerValue]);
+                 remoteUserMana[@"white"] = @([remoteUserMana[@"white"] integerValue] + [localUserMana[@"white"] integerValue]);
+                 remoteUserMana[@"colorless"] = @([remoteUserMana[@"colorless"] integerValue] + [localUserMana[@"colorless"] integerValue]);
+                 remoteUserMana[@"totalCMC"] = @([remoteUserMana[@"black"] integerValue] +
+                    [remoteUserMana[@"blue"] integerValue] +
+                    [remoteUserMana[@"green"] integerValue] +
+                    [remoteUserMana[@"red"] integerValue] +
+                    [remoteUserMana[@"white"] integerValue] +
+                    [remoteUserMana[@"colorless"] integerValue]);
+                 [self saveUserMana:remoteUserMana];
+             }
+             else
+             {
+                 [self saveUserMana:localUserMana];
+             }
          }
          else
          {
-             // not found in local datastore, find remotely
-             query = [PFQuery queryWithClassName:@"UserMana"];
-             [query whereKey:@"user" equalTo:[PFUser currentUser]];
+             if (remoteUserMana)
+             {
+                 [[NSNotificationCenter defaultCenter] postNotificationName:kParseUserManaDone
+                                                                     object:nil
+                                                                   userInfo:@{@"userMana": remoteUserMana}];
+             }
+             else
+             {
+                 // not found in local store, create new one
+                 localUserMana = [PFObject objectWithClassName:@"UserMana"];
+                 localUserMana[@"black"]     = @0;
+                 localUserMana[@"blue"]      = @0;
+                 localUserMana[@"green"]     = @0;
+                 localUserMana[@"red"]       = @0;
+                 localUserMana[@"white"]     = @0;
+                 localUserMana[@"colorless"] = @0;
+                 localUserMana[@"totalCMC"]  = @0;
+                 
+                 [localUserMana pinInBackgroundWithBlock:^void(BOOL succeeded, NSError *error) {
+                     [[NSNotificationCenter defaultCenter] postNotificationName:kParseUserManaDone
+                                                                         object:nil
+                                                                       userInfo:@{@"userMana": localUserMana}];
+                 }];
+             }
              
-             [[query findObjectsInBackground] continueWithSuccessBlock:^id(BFTask *task)
-              {
-                  return [[PFObject unpinAllObjectsInBackgroundWithName:@"UserMana"] continueWithSuccessBlock:^id(BFTask *ignored)
-                          {
-                              NSArray *results = task.result;
-                              
-                              if (results.count > 0)
-                              {
-                                  pfUserMana = task.result[0];
-                              }
-                              else
-                              {
-                                  // not found remotely
-                                  pfUserMana = [PFObject objectWithClassName:@"UserMana"];
-                                  pfUserMana[@"user"]      = [PFUser currentUser];
-                                  pfUserMana[@"black"]     = @0;
-                                  pfUserMana[@"blue"]      = @0;
-                                  pfUserMana[@"green"]     = @0;
-                                  pfUserMana[@"red"]       = @0;
-                                  pfUserMana[@"white"]     = @0;
-                                  pfUserMana[@"colorless"] = @0;
-                                  pfUserMana[@"totalCMC"]  = @0;
-                              }
-                              
-                              [pfUserMana pinInBackgroundWithBlock:^(BOOL success, NSError *error)
-                               {
-                                   [[NSNotificationCenter defaultCenter] postNotificationName:kParseUserManaDone
-                                                                                       object:nil
-                                                                                     userInfo:@{@"userMana": pfUserMana}];
-                               }];
-                              return nil;
-                          }];
-              }];
          }
          
          return task;
+     }];
+}
+
+-(void) saveUserMana:(PFObject*) userMana
+{
+    PFUser *currentUser = [PFUser currentUser];
+    
+    if (!currentUser)
+    {
+        [userMana pinInBackgroundWithBlock:^void(BOOL succeeded, NSError *error) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:kParseUserManaDone
+                                                                object:nil
+                                                              userInfo:@{@"userMana": userMana}];
+        }];
+    }
+    else
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kParseUserManaDone
+                                                            object:nil
+                                                          userInfo:@{@"userMana": userMana}];
+        
+        if (userMana)
+        {
+            userMana[@"user"] = currentUser;
+            [userMana saveEventually];
+        }
+        [self deleteUserManaLocally];
+    }
+}
+
+-(void) deleteUserManaLocally
+{
+    __block PFQuery *query = [PFQuery queryWithClassName:@"UserMana"];
+    [query fromLocalDatastore];
+    
+    [[query findObjectsInBackground] continueWithBlock:^id(BFTask *task)
+    {
+        PFObject *pfUserMana;
+         
+        if (task.error)
+        {
+            return task;
+        }
+         
+        for (PFObject *object in task.result)
+        {
+            pfUserMana = object;
+            [pfUserMana unpinInBackground];
+        }
+        return task;
      }];
 }
 

@@ -16,8 +16,8 @@ enum CardViewMode: Printable  {
     var description : String {
         switch self {
         case ByList: return "List"
-        case ByGrid2x2: return "Grid 2x2"
-        case ByGrid3x3: return "Grid 3x3"
+        case ByGrid2x2: return "2x2"
+        case ByGrid3x3: return "3x3"
         }
     }
 }

@@ -104,7 +104,7 @@
 
 -(void) btnViewTapped:(id) sender
 {
-    NSArray *statusOptions = @[@"List", @"Grid 2x2", @"Grid 3x3"];
+    NSArray *statusOptions = @[@"List", @"2x2", @"3x3"];
     int initialSelection = 0;
     
     switch (_viewMode) {

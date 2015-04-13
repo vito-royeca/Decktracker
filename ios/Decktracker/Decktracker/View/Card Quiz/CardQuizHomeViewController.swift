@@ -7,7 +7,6 @@ import Foundation
 
 class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate {
 
-    var cardQuizGame:CardQuizGameViewController?
     var loginViewController:LoginViewController?
     var lblAccount:UILabel?
     var btnLogin:UILabel?
@@ -16,11 +15,16 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
     var btnHard:UILabel?
     var btnLeaderboard:UILabel?
     var btnSettings:UILabel?
+    var userMana:PFObject?
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        NSNotificationCenter.defaultCenter().removeObserver(self, name:kParseUserManaDone,  object:nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector:"fetchUserManaDone:",  name:kParseUserManaDone, object:nil)
+        
+        Database.sharedInstance().fetchUserMana()
         setupBackground()
         self.navigationItem.title = "Card Quiz"
         
@@ -46,6 +50,11 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         return true
     }
 
+    func fetchUserManaDone(sender: AnyObject) {
+        let dict = sender.userInfo as Dictionary?
+        userMana = dict?["userMana"] as? PFObject
+    }
+    
     func setupBackground() {
         var dWidth = self.view.frame.size.width
         var dX = CGFloat(0)
@@ -76,7 +85,9 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         var dHeight = CGFloat(40)
         var dFrame = CGRect(x: dX, y: dY, width: dWidth, height: dHeight)
 
-        if PFAnonymousUtils.isLinkedWithUser(PFUser.currentUser()) {
+        let currentUser = PFUser.currentUser()
+        
+        if currentUser == nil {
             btnLogin = UILabel(frame: dFrame)
             btnLogin!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "loginTapped:"))
             btnLogin!.userInteractionEnabled = true
@@ -90,60 +101,43 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
             self.view.addSubview(btnLogin!)
 
         } else {
-            let currentUser = PFUser.currentUser()
+            lblAccount = UILabel(frame: dFrame)
+            lblAccount!.font = CQTheme.kManaLabelFont
+            lblAccount!.adjustsFontSizeToFitWidth = true
+            lblAccount!.textColor = CQTheme.kManaLabelColor
+            lblAccount!.textAlignment = NSTextAlignment.Center
+            self.view.addSubview(lblAccount!)
             
-            if currentUser.username != nil {
-                lblAccount = UILabel(frame: dFrame)
-                lblAccount!.font = CQTheme.kManaLabelFont
-                lblAccount!.adjustsFontSizeToFitWidth = true
-                lblAccount!.textColor = CQTheme.kManaLabelColor
-                lblAccount!.textAlignment = NSTextAlignment.Center
-                self.view.addSubview(lblAccount!)
+            if PFFacebookUtils.isLinkedWithUser(currentUser) {
+                let request = FBRequest.requestForMe()
                 
-                if PFFacebookUtils.isLinkedWithUser(currentUser) {
-                    let request = FBRequest.requestForMe()
-
-                    request.startWithCompletionHandler({ (connection: FBRequestConnection?, result: AnyObject?, error: NSError?) -> Void in
-                        if error == nil {
-                            let userData = result as NSDictionary
-
-                            self.lblAccount!.text = userData["name"] as? String
-                        }
-                    })
-                    
-                } else if PFTwitterUtils.isLinkedWithUser(currentUser) {
-                    
-                } else {
-                    lblAccount!.text = currentUser.username
-                }
+                request.startWithCompletionHandler({ (connection: FBRequestConnection?, result: AnyObject?, error: NSError?) -> Void in
+                    if error == nil {
+                        let userData = result as NSDictionary
+                        
+                        self.lblAccount!.text = userData["name"] as? String
+                    }
+                })
                 
-                dY = self.lblAccount!.frame.origin.y + dHeight + 20
-                dFrame = CGRect(x: dX, y: dY, width: dWidth, height: dHeight)
-                btnLogin = UILabel(frame: dFrame)
-                btnLogin!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "loginTapped:"))
-                btnLogin!.userInteractionEnabled = true
-                btnLogin!.text = "Logout"
-                btnLogin!.textAlignment = NSTextAlignment.Center
-                btnLogin!.font = CQTheme.kManaLabelFont
-                btnLogin!.textColor = CQTheme.kTileTextColor
-                btnLogin!.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
-                btnLogin!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
-                btnLogin!.layer.borderWidth = 1
-                self.view.addSubview(btnLogin!)
+            } else if PFTwitterUtils.isLinkedWithUser(currentUser) {
                 
             } else {
-                btnLogin = UILabel(frame: dFrame)
-                btnLogin!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "loginTapped:"))
-                btnLogin!.userInteractionEnabled = true
-                btnLogin!.text = "Login / Sign Up"
-                btnLogin!.textAlignment = NSTextAlignment.Center
-                btnLogin!.font = CQTheme.kManaLabelFont
-                btnLogin!.textColor = CQTheme.kTileTextColor
-                btnLogin!.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
-                btnLogin!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
-                btnLogin!.layer.borderWidth = 1
-                self.view.addSubview(btnLogin!)
+                lblAccount!.text = currentUser.username
             }
+            
+            dY = self.lblAccount!.frame.origin.y + dHeight + 20
+            dFrame = CGRect(x: dX, y: dY, width: dWidth, height: dHeight)
+            btnLogin = UILabel(frame: dFrame)
+            btnLogin!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "loginTapped:"))
+            btnLogin!.userInteractionEnabled = true
+            btnLogin!.text = "Logout"
+            btnLogin!.textAlignment = NSTextAlignment.Center
+            btnLogin!.font = CQTheme.kManaLabelFont
+            btnLogin!.textColor = CQTheme.kTileTextColor
+            btnLogin!.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
+            btnLogin!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+            btnLogin!.layer.borderWidth = 1
+            self.view.addSubview(btnLogin!)
         }
 
         dY = self.btnLogin!.frame.origin.y + dHeight + 20
@@ -220,38 +214,30 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
     func loginTapped(sender: AnyObject) {
         let currentUser = PFUser.currentUser()
         
-        if PFAnonymousUtils.isLinkedWithUser(PFUser.currentUser()) {
+        if currentUser == nil {
             self.loginViewController = LoginViewController()
             self.loginViewController!.delegate = self
             self.loginViewController!.signUpController.delegate = self
             
             self.navigationController?.presentViewController(self.loginViewController!, animated:true, completion: nil)
-            
+
         } else {
-            if currentUser.username != nil {
-                PFUser.logOut()
-                self.setupMenu()
-                
-            } else {
-                self.loginViewController = LoginViewController()
-                self.loginViewController!.delegate = self
-                self.loginViewController!.signUpController.delegate = self
-                
-                self.navigationController?.presentViewController(self.loginViewController!, animated:true, completion: nil)
-            }
+            PFUser.logOut()
+            Database.sharedInstance().deleteUserManaLocally()
+            userMana = nil
+            self.setupMenu()
         }
     }
     
     func startGame(sender: AnyObject) {
         let hud = MBProgressHUD(view: self.view)
-        hud.delegate = self
-        self.view.addSubview(hud)
+        var gameType:CQGameType?
+        var game:CardQuizGameViewController?
         
         let executingBlock = { () -> Void in
             let tap = sender as UITapGestureRecognizer
             let button = tap.view as UILabel
             let title = button.text
-            var gameType:CQGameType?
             
             if title == "Easy: Standard" {
                 gameType = .Easy
@@ -262,15 +248,16 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
             } else if title == "Hard: Vintage" {
                 gameType = .Hard
             }
-            
-            self.cardQuizGame = CardQuizGameViewController(gameType: gameType!)
         }
         
         let completionBlock = {  () -> Void in
-            let game = self.cardQuizGame
+            game = CardQuizGameViewController(gameType: gameType!)
+            game!.userMana = self.userMana
             self.navigationController?.pushViewController(game!, animated:true)
         }
         
+        hud.delegate = self
+        self.view.addSubview(hud)
         hud.showAnimated(true, whileExecutingBlock:executingBlock, completionBlock:completionBlock)
     }
     
@@ -282,6 +269,7 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
 //    MARK: PFLoginViewControllerDlegate
     func logInViewController(controller: PFLogInViewController, didLogInUser user: PFUser!) -> Void {
         controller.dismissViewControllerAnimated(true, completion: nil)
+        Database.sharedInstance().fetchUserMana()
     }
     
 //    MARK: PFSignUpViewControllerDelegate

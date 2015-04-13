@@ -103,13 +103,25 @@
             }
             case SKPaymentTransactionStatePurchased:
             {
-                if ([transaction.originalTransaction.payment.productIdentifier isEqualToString:self.productID])
+                if (transaction.originalTransaction)
                 {
-                    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:YES]
-                                                             forKey:self.productID];
-                    [[NSUserDefaults standardUserDefaults] synchronize];
-                    [self.delegate productPurchaseSucceeded:self withMessage:@"In-App Purchase succeeded."];
+                    if ([transaction.originalTransaction.payment.productIdentifier isEqualToString:self.productID])
+                    {
+                        [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:YES]
+                                                                 forKey:self.productID];
+                        [[NSUserDefaults standardUserDefaults] synchronize];
+                        [self.delegate productPurchaseSucceeded:self withMessage:@"In-App Purchase succeeded."];
+                    }
                 }
+                else
+                {
+                    if ([transaction.payment.productIdentifier isEqualToString:self.productID])
+                    {
+                        [[NSUserDefaults standardUserDefaults] synchronize];
+                        [self.delegate productPurchaseSucceeded:self withMessage:@"In-App Purchase succeeded."];
+                    }
+                }
+                
                 [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
                 break;
             }

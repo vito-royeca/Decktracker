@@ -54,7 +54,6 @@
     _ratingControl.backgroundColor = [UIColor clearColor];
     _ratingControl.displayMode=EDStarRatingDisplayHalf;
     
-    
     self.lblCardName.adjustsFontSizeToFitWidth = YES;
     self.lblDetail.adjustsFontSizeToFitWidth = YES;
     self.lblSet.adjustsFontSizeToFitWidth = YES;

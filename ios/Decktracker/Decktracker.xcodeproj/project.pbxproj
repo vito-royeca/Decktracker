@@ -11,6 +11,7 @@
 		77D56A16A583FB0A4C860216 /* CardQuizHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D564E8D46C17B81D56F614 /* CardQuizHomeViewController.swift */; };
 		77D56A818E39E63A1D4A8453 /* CardQuizConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D560F3C5D2147D03F3F0C5 /* CardQuizConstants.swift */; };
 		8C019AA01998A10F00FB22D7 /* decktracker.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 8C019A9F1998A10F00FB22D7 /* decktracker.sqlite */; };
+		8C01E0FD1ADB9A8800509DDB /* In-App Mana.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C01E0FC1ADB9A8800509DDB /* In-App Mana.plist */; };
 		8C0CF16B1A01E102009137C5 /* Decks in Resources */ = {isa = PBXBuildFile; fileRef = 8C0CF16A1A01E101009137C5 /* Decks */; };
 		8C13467819A9B17B00E0B3C3 /* SearchResultsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C13467619A9B17B00E0B3C3 /* SearchResultsTableViewCell.m */; };
 		8C13467919A9B17B00E0B3C3 /* SearchResultsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C13467719A9B17B00E0B3C3 /* SearchResultsTableViewCell.xib */; };
@@ -218,6 +219,7 @@
 		77D560F3C5D2147D03F3F0C5 /* CardQuizConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardQuizConstants.swift; sourceTree = "<group>"; };
 		77D564E8D46C17B81D56F614 /* CardQuizHomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardQuizHomeViewController.swift; sourceTree = "<group>"; };
 		8C019A9F1998A10F00FB22D7 /* decktracker.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = decktracker.sqlite; sourceTree = "<group>"; };
+		8C01E0FC1ADB9A8800509DDB /* In-App Mana.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "In-App Mana.plist"; sourceTree = "<group>"; };
 		8C0CF16A1A01E101009137C5 /* Decks */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Decks; sourceTree = "<group>"; };
 		8C13467519A9B17B00E0B3C3 /* SearchResultsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultsTableViewCell.h; sourceTree = "<group>"; };
 		8C13467619A9B17B00E0B3C3 /* SearchResultsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultsTableViewCell.m; sourceTree = "<group>"; };
@@ -806,6 +808,7 @@
 				8C019A9F1998A10F00FB22D7 /* decktracker.sqlite */,
 				8C14F73C1AAEC589008450DA /* fonts */,
 				8CADEF1619923DDE004D7658 /* images */,
+				8C01E0FC1ADB9A8800509DDB /* In-App Mana.plist */,
 				8CD627A71A6BEDE000382143 /* In-App Sets.plist */,
 				8C5FF9E719AE2EE3003CE54C /* keywords.plist */,
 				8C2A96D119F4D8D00094C97F /* rules */,
@@ -1133,6 +1136,7 @@
 				8CD627A81A6BEDE000382143 /* In-App Sets.plist in Resources */,
 				8C2A978C19F5027B0094C97F /* Reader-Button-H@2x.png in Resources */,
 				8CCE996A1A6A80D400ECCA1C /* QuantityTableViewCell.xib in Resources */,
+				8C01E0FD1ADB9A8800509DDB /* In-App Mana.plist in Resources */,
 				8C2A979019F5027B0094C97F /* Reader-Email@2x.png in Resources */,
 				8C26A68019A6418900FE00E7 /* Advance Search in Resources */,
 				8CCE99651A6A80D400ECCA1C /* CustomViewCell.xib in Resources */,

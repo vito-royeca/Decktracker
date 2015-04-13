@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
+class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InAppPurchaseViewControllerDelegate {
 
     var lblBlack:UILabel?
     var lblBlue:UILabel?
@@ -85,12 +85,13 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
         
         // Do any additional setup after loading the view.
         NSNotificationCenter.defaultCenter().removeObserver(self, name:kParseUserManaDone,  object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector:"userManaDone:",  name:kParseUserManaDone, object:nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector:"fetchUserManaDone:",  name:kParseUserManaDone, object:nil)
         
         setupManaPoints()
         setupImageView()
         setupFunctionButtons()
         displayCard()
+        updateManaPool()
         
         self.navigationItem.title = "Card Quiz"
         self.view.backgroundColor = UIColor(patternImage: UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/Gray_Patterned_BG.jpg")!)
@@ -113,6 +114,41 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
         return true
     }
 
+    func fetchUserManaDone(sender: AnyObject) {
+        let dict = sender.userInfo as Dictionary?
+        userMana = dict?["userMana"] as? PFObject
+        self.updateManaPool()
+    }
+
+    func updateManaPool() {
+        if userMana != nil {
+            manaBlack     = userMana!["black"].integerValue
+            manaBlue      = userMana!["blue"].integerValue
+            manaGreen     = userMana!["green"].integerValue
+            manaRed       = userMana!["red"].integerValue
+            manaWhite     = userMana!["white"].integerValue
+            manaColorless = userMana!["colorless"].integerValue
+        }
+        
+        lblBlack!.text     = " \(manaBlack)"
+        lblBlue!.text      = " \(manaBlue)"
+        lblGreen!.text     = " \(manaGreen)"
+        lblRed!.text       = " \(manaRed)"
+        lblWhite!.text     = " \(manaWhite)"
+        lblColorless!.text = " \(manaColorless)"
+        
+        if canCastCard() && btnCast != nil {
+            if let recognizers = btnCast!.gestureRecognizers {
+                for recognizer in recognizers {
+                    btnCast!.removeGestureRecognizer(recognizer as UIGestureRecognizer)
+                }
+            }
+            btnCast!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "castTapped:"))
+            btnCast!.userInteractionEnabled = true
+            btnCast!.textColor = CQTheme.kTileTextColor
+        }
+    }
+    
     func setupManaPoints() {
         let manaWidth = (self.view.frame.size.width-10)/6
         let manaImageWidth = CGFloat(16)
@@ -212,31 +248,6 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
         self.view.addSubview(lblColorless!)
     }
     
-    func userManaDone(sender: AnyObject) {
-        let dict = sender.userInfo as Dictionary?
-        userMana = dict?["userMana"] as? PFObject
-
-        manaBlack     = userMana!["black"].integerValue
-        manaBlue      = userMana!["blue"].integerValue
-        manaGreen     = userMana!["green"].integerValue
-        manaRed       = userMana!["red"].integerValue
-        manaWhite     = userMana!["white"].integerValue
-        manaColorless = userMana!["colorless"].integerValue
-        
-        lblBlack!.text     = " \(manaBlack)"
-        lblBlue!.text      = " \(manaBlue)"
-        lblGreen!.text     = " \(manaGreen)"
-        lblRed!.text       = " \(manaRed)"
-        lblWhite!.text     = " \(manaWhite)"
-        lblColorless!.text = " \(manaColorless)"
-        
-        if canCastCard() && btnCast != nil {
-            btnCast!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "castTapped:"))
-            btnCast!.userInteractionEnabled = true
-            btnCast!.text = "Cast"
-        }
-    }
-    
     func setupImageView() {
         var dWidth = self.view.frame.size.width
         var dX = CGFloat(0)
@@ -298,7 +309,6 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
         btnBuy!.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
         btnBuy!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
         btnBuy!.layer.borderWidth = 1
-        
         self.view.addSubview(btnBuy!)
         
         // draw the cast button
@@ -306,16 +316,16 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
         dFrame = CGRect(x: dX, y: dY, width: dWidth, height: dHeight)
         btnCast = UILabel(frame: dFrame)
         btnCast!.userInteractionEnabled = false
-        btnCast!.text = " "
+        btnCast!.text = "Cast"
         btnCast!.textAlignment = NSTextAlignment.Center
         btnCast!.font = CQTheme.kManaLabelFont
-        btnCast!.textColor = CQTheme.kTileTextColor
+        btnCast!.textColor = CQTheme.kTileTextColorX
         btnCast!.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
         btnCast!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
         btnCast!.layer.borderWidth = 1
-        
         self.view.addSubview(btnCast!)
-        Database.sharedInstance().fetchUserMana()
+        
+        updateManaPool()
     }
 
     func generateRandomCard() -> DTCard {
@@ -635,36 +645,26 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
         lblWhite!.text     = " \(manaWhite)"
         lblColorless!.text = " \(manaColorless)"
         
-        // save the mana in the cloud
         self.saveMana()
     }
     
     func saveMana() {
-        if userMana != nil {
-            let totalCMC = self.manaBlack +
-                self.manaBlue +
-                self.manaGreen +
-                self.manaRed +
-                self.manaWhite +
-                self.manaColorless;
-            userMana!["black"]     = NSNumber(integer: self.manaBlack)
-            userMana!["blue"]      = NSNumber(integer: self.manaBlue)
-            userMana!["green"]     = NSNumber(integer: self.manaGreen)
-            userMana!["red"]       = NSNumber(integer: self.manaRed)
-            userMana!["white"]     = NSNumber(integer: self.manaWhite)
-            userMana!["colorless"] = NSNumber(integer: self.manaColorless)
-            userMana!["totalCMC"]  = NSNumber(integer: totalCMC)
-            
-            userMana!.saveInBackgroundWithBlock {
-                (success: Bool, error: NSError!) -> Void in
-                if (success) {
-
-                } else {
-                    // There was a problem, check error.description
-                }
-            }
-            
-        }
+        let totalCMC = manaBlack +
+            manaBlue +
+            manaGreen +
+            manaRed +
+            manaWhite +
+        manaColorless;
+        
+        userMana!["black"]     = NSNumber(integer: manaBlack)
+        userMana!["blue"]      = NSNumber(integer: manaBlue)
+        userMana!["green"]     = NSNumber(integer: manaGreen)
+        userMana!["red"]       = NSNumber(integer: manaRed)
+        userMana!["white"]     = NSNumber(integer: manaWhite)
+        userMana!["colorless"] = NSNumber(integer: manaColorless)
+        userMana!["totalCMC"]  = NSNumber(integer: totalCMC)
+        
+        Database.sharedInstance().saveUserMana(userMana!)
     }
     
     func loadCropImage(sender: AnyObject) {
@@ -749,8 +749,38 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
     }
     
     func buyTapped(sender: UITapGestureRecognizer) {
-        let label = sender.view as UILabel
-        println("\(label.text!)")
+        let doneBlock = { (picker: ActionSheetStringPicker?, selectedIndex: NSInteger, selectedValue: AnyObject?) -> Void in
+            let filePath = "\(NSBundle.mainBundle().bundlePath)/In-App Mana.plist"
+            let arrMana = NSArray(contentsOfFile: filePath)
+            var dict:Dictionary<String, String>?
+            
+            switch selectedIndex {
+            case 0:
+                dict = arrMana![0] as? Dictionary<String, String>
+            case 1:
+                dict = arrMana![1] as? Dictionary<String, String>
+            case 2:
+                dict = arrMana![2] as? Dictionary<String, String>
+            default:
+                break
+            }
+            
+            let view2 = InAppPurchaseViewController()
+            
+            view2.delegate = self
+            view2.productID = dict!["In-App Product ID"]
+            view2.productDetails = ["name": dict!["In-App Display Name"] as String!,
+                "description": dict!["In-App Description"] as String!]
+            
+            self.navigationController?.pushViewController(view2, animated:false)
+        }
+        
+        ActionSheetStringPicker.showPickerWithTitle("Buy Mana",
+            rows: ["18 Mana for $0.99", "60 Mana for $2.99", "100 Mana for $4.99"],
+            initialSelection: 0,
+            doneBlock: doneBlock,
+            cancelBlock: nil,
+            origin: view)
     }
     
     func castTapped(sender: UITapGestureRecognizer) {
@@ -967,5 +997,38 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate {
 //    MARK:  MBProgressHUDDelegate methods
     func hudWasHidden(hud: MBProgressHUD) {
         hud.removeFromSuperview()
+    }
+    
+//    MARK: InAppPurchaseViewControllerDelegate
+    func productPurchaseSucceeded(productID: String) {
+        
+        if productID == "18Mana_ID" {
+            manaBlack     += 3
+            manaBlue      += 3
+            manaGreen     += 3
+            manaRed       += 3
+            manaWhite     += 3
+            manaColorless += 3
+        } else if productID == "60Mana_ID" {
+            manaBlack     += 11
+            manaBlue      += 11
+            manaGreen     += 11
+            manaRed       += 11
+            manaWhite     += 11
+            manaColorless += 5
+        } else if productID == "100BMana_ID" {
+            manaBlack     += 18
+            manaBlue      += 18
+            manaGreen     += 18
+            manaRed       += 18
+            manaWhite     += 18
+            manaColorless += 10
+        }
+        
+        // save the mana in the cloud
+        self.saveMana()
+        
+        // update mana pool display
+        Database.sharedInstance().fetchUserMana()
     }
 }

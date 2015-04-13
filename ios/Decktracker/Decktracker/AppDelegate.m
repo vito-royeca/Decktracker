@@ -165,7 +165,8 @@
     [PFTwitterUtils initializeWithConsumerKey:kTwitterKey
                                consumerSecret:kTwitterSecret];
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
-    [PFUser enableAutomaticUser];
+//    [PFUser enableAutomaticUser];
+//    [[PFUser currentUser] saveInBackground];
     
 //    [PFPurchase addObserverForProduct:COLLECTIONS_IAP_PRODUCT_ID block:^(SKPaymentTransaction *transaction) {
 //        
