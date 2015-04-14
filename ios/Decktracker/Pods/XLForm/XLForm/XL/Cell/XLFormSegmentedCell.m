@@ -2,7 +2,7 @@
 //  XLFormSegmentedCell.m
 //  XLForm ( https://github.com/xmartlabs/XLForm )
 //
-//  Copyright (c) 2014 Xmartlabs ( http://xmartlabs.com )
+//  Copyright (c) 2015 Xmartlabs ( http://xmartlabs.com )
 //
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -36,8 +36,6 @@
 
 @implementation XLFormSegmentedCell
 
-NSString * const kText = @"text";
-
 @synthesize textLabel = _textLabel;
 @synthesize segmentedControl = _segmentedControl;
 
@@ -49,24 +47,24 @@ NSString * const kText = @"text";
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     [self.contentView addSubview:self.segmentedControl];
     [self.contentView addSubview:self.textLabel];
-    [self.textLabel addObserver:self forKeyPath:kText options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew context:0];
+    [self.textLabel addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew context:0];
     [self.segmentedControl addTarget:self action:@selector(valueChanged) forControlEvents:UIControlEventValueChanged];
 }
 
 -(void)update
 {
     [super update];
-    self.textLabel.text = self.rowDescriptor.title;
+    self.textLabel.text = [NSString stringWithFormat:@"%@%@", self.rowDescriptor.title, self.rowDescriptor.required && self.rowDescriptor.sectionDescriptor.formDescriptor.addAsteriskToRequiredRowsTitle ? @"*" : @""];
     [self updateSegmentedControl];
     self.segmentedControl.selectedSegmentIndex = [self selectedIndex];
-    self.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    self.segmentedControl.enabled = !self.rowDescriptor.isDisabled;
 }
 
 #pragma mark - KVO
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if (object == self.textLabel && [keyPath isEqualToString:kText]){
+    if (object == self.textLabel && [keyPath isEqualToString:@"text"]){
         if ([[change objectForKey:NSKeyValueChangeKindKey] isEqualToNumber:@(NSKeyValueChangeSetting)]){
             [self.contentView setNeedsUpdateConstraints];
         }
@@ -88,7 +86,6 @@ NSString * const kText = @"text";
 {
     if (_textLabel) return _textLabel;
     _textLabel = [UILabel autolayoutView];
-    [_textLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
     [_textLabel setContentCompressionResistancePriority:500
                                             forAxis:UILayoutConstraintAxisHorizontal];
     return _textLabel;
@@ -170,7 +167,7 @@ NSString * const kText = @"text";
 
 -(void)dealloc
 {
-    [self.textLabel removeObserver:self forKeyPath:kText];
+    [self.textLabel removeObserver:self forKeyPath:@"text"];
 }
 
 @end

@@ -2,7 +2,7 @@
 //  XLFormRegexValidator.m
 //  XLForm ( https://github.com/xmartlabs/XLForm )
 //
-//  Copyright (c) 2014 Xmartlabs ( http://xmartlabs.com )
+//  Copyright (c) 2015 Xmartlabs ( http://xmartlabs.com )
 //
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -38,17 +38,19 @@
 }
 
 -(XLFormValidationStatus *)isValid: (XLFormRowDescriptor *)row {
-    if (row != nil && row.value != nil &&  [row.value isKindOfClass:[NSString class]]) {
+    if (row != nil && row.value != nil) {
         // we only validate if there is a value
         // assumption: required validation is already triggered
         // if this field is optional, we only validate if there is a value
-        if (row.value != nil && [row.value length] > 0) {
-            BOOL isValid = [[NSPredicate predicateWithFormat:@"SELF MATCHES %@",self.regex] evaluateWithObject:[row.value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
-            
-            return [XLFormValidationStatus formValidationStatusWithMsg:self.msg status:isValid];
+        id value = row.value;
+        if ([value isKindOfClass:[NSNumber class]]){
+            value = [value stringValue];
+        }
+        if ([value isKindOfClass:[NSString class]] && [value length] > 0) {
+            BOOL isValid = [[NSPredicate predicateWithFormat:@"SELF MATCHES %@", self.regex] evaluateWithObject:[value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
+            return [XLFormValidationStatus formValidationStatusWithMsg:self.msg status:isValid rowDescriptor:row];
         }
     }
-    
     return nil;
 };
 

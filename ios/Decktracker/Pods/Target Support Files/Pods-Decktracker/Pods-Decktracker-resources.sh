@@ -51,11 +51,13 @@ install_resource()
   esac
 }
 if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_resource "ParseUI/ParseUI/Resources/Localization/en.lproj"
   install_resource "XLForm/XLForm/XLForm.bundle"
   install_resource "${BUILT_PRODUCTS_DIR}/Appirater.bundle"
   install_resource "${BUILT_PRODUCTS_DIR}/InAppSettingsKit.bundle"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_resource "ParseUI/ParseUI/Resources/Localization/en.lproj"
   install_resource "XLForm/XLForm/XLForm.bundle"
   install_resource "${BUILT_PRODUCTS_DIR}/Appirater.bundle"
   install_resource "${BUILT_PRODUCTS_DIR}/InAppSettingsKit.bundle"

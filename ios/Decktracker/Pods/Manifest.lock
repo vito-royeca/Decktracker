@@ -36,7 +36,7 @@ PODS:
     - GoogleAnalytics-iOS-SDK/Core (= 3.10)
   - GoogleAnalytics-iOS-SDK/Core (3.10)
   - hpple (0.2.0)
-  - InAppSettingsKit (2.4.4)
+  - InAppSettingsKit (2.5.2)
   - LMAlertView (1.1.0):
     - CAAnimationBlocks (~> 0.0.1)
     - RBBAnimation (~> 0.3.0)
@@ -44,17 +44,16 @@ PODS:
     - MagicalRecord/Core (= 2.2)
   - MagicalRecord/Core (2.2)
   - MBProgressHUD (0.9.1)
-  - Parse (1.7.0):
+  - Parse (1.7.1):
     - Bolts (~> 1.1)
-  - ParseFacebookUtils (1.7.0):
+  - ParseFacebookUtils (1.7.1):
     - Facebook-iOS-SDK (~> 3.23)
-    - Parse (~> 1.7.0)
-  - ParseUI (1.1.1):
-    - Parse (~> 1.6)
-    - ParseFacebookUtils (~> 1.6)
+    - Parse (~> 1.7.1)
+  - ParseUI (1.1.3):
+    - Parse (~> 1.7)
   - PureLayout (2.0.5)
   - RBBAnimation (0.3.0)
-  - XLForm (2.1.0)
+  - XLForm (2.2.0)
 
 DEPENDENCIES:
   - ActionSheetPicker-3.0
@@ -95,15 +94,15 @@ SPEC CHECKSUMS:
   FFCircularProgressView: 683a4ab1e1bd613246a3dffa61503ffdebcde8d8
   GoogleAnalytics-iOS-SDK: 4f98a376c1d61e6ac4ca47951655820314856eef
   hpple: 3b765f96fc2cd56ad1a49aef6f7be5cb2aa64b57
-  InAppSettingsKit: df2c0b0cafd5c6f375f4d792eef8cbcdf63ae5ed
+  InAppSettingsKit: 90b3f9b99d857f95fd1422467d857de143cac099
   LMAlertView: fa4589ea2cb540b888636ff6739fc39b16ac1e4b
   MagicalRecord: f8a56bb87ab6552f20c4bb8681a1958a197ea3cd
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
-  Parse: 3c2d4e6ade7b59d31c0bc8106340c6b81b31bc0f
-  ParseFacebookUtils: f0c954253a65e945d7cb73400c33bc661f516b85
-  ParseUI: e38bbbc3784006ab4ffaa6ef292e23c5fa9119dc
+  Parse: fa8ec29de6d82035635986c11946299fb1b38316
+  ParseFacebookUtils: fa09adf78372b589163b5a71a34d6ebc7eb83395
+  ParseUI: 1a68e9cebc3bd458eed9605ce7b33d7cc082f473
   PureLayout: a0fe75f1cf485801e7e00b723b8a3c32dca558e2
   RBBAnimation: cb6cb419f511434ce932f7d0fabf369612fafb4e
-  XLForm: ba9e657a360a810ab1f64cc2cd6307fd99a86866
+  XLForm: 799e61ef230f519914e722bf032b19a597223c19
 
 COCOAPODS: 0.36.1

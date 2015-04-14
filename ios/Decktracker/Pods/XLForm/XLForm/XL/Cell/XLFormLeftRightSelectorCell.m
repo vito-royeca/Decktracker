@@ -2,7 +2,7 @@
 //  XLFormLeftRightSelectorCell.m
 //  XLForm ( https://github.com/xmartlabs/XLForm )
 //
-//  Copyright (c) 2014 Xmartlabs ( http://xmartlabs.com )
+//  Copyright (c) 2015 Xmartlabs ( http://xmartlabs.com )
 //
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -109,15 +109,16 @@
 {
     [super configure];
     UIView * separatorView = [UIView autolayoutView];
-    [separatorView setBackgroundColor:[UIColor colorWithWhite:0.85 alpha:1.0]];
     _constraintTextField = [UITextField autolayoutView];
     [_constraintTextField setText:@"Option"];
-    [_constraintTextField setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
+    _constraintTextField.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    [separatorView setBackgroundColor:[UIColor colorWithWhite:0.85 alpha:1.0]];
     [self.contentView addSubview:_constraintTextField];
     [_constraintTextField setHidden:YES];
     [self.contentView addSubview:self.leftButton];
     [self.contentView addSubview:self.rightLabel];
     [self.contentView addSubview:separatorView];
+    [self.leftButton addTarget:self action:@selector(leftButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     
     NSDictionary * views = @{@"leftButton" : self.leftButton, @"rightLabel": self.rightLabel, @"separatorView": separatorView, @"constraintTextField": _constraintTextField };
     [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.leftButton attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterY multiplier:1.0f constant:0.0f]];
@@ -130,15 +131,14 @@
 -(void)update
 {
     [super update];
-    [self.leftButton addTarget:self action:@selector(leftButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [self.leftButton setTitle:[NSString stringWithFormat:@"%@%@", [self.rowDescriptor.leftRightSelectorLeftOptionSelected displayText], self.rowDescriptor.required && self.rowDescriptor.sectionDescriptor.formDescriptor.addAsteriskToRequiredRowsTitle ? @"*" : @""] forState:UIControlStateNormal];
-    self.rightLabel.text = [self rightTextLabel];
-    [self.leftButton setEnabled:(!self.rowDescriptor.disabled)];
-    self.accessoryView = self.rowDescriptor.disabled ? nil : [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"XLForm.bundle/forwardarrow.png"]];
-    self.selectionStyle = self.rowDescriptor.disabled ? UITableViewCellSelectionStyleNone : UITableViewCellSelectionStyleDefault;    
     self.leftButton.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     self.rightLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-    _constraintTextField.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    [self.leftButton setTitle:[NSString stringWithFormat:@"%@%@", [self.rowDescriptor.leftRightSelectorLeftOptionSelected displayText], self.rowDescriptor.required && self.rowDescriptor.sectionDescriptor.formDescriptor.addAsteriskToRequiredRowsTitle ? @"*" : @""] forState:UIControlStateNormal];
+    [self.rowDescriptor setTitle:[self.rowDescriptor.leftRightSelectorLeftOptionSelected displayText]];
+    self.rightLabel.text = [self rightTextLabel];
+    [self.leftButton setEnabled:(!self.rowDescriptor.isDisabled)];
+    self.accessoryView = self.rowDescriptor.isDisabled ? nil : [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"XLForm.bundle/forwardarrow.png"]];
+    self.selectionStyle = self.rowDescriptor.isDisabled ? UITableViewCellSelectionStyleNone : UITableViewCellSelectionStyleDefault;
 }
 
 
@@ -153,7 +153,7 @@
     if (self.rowDescriptor.leftRightSelectorLeftOptionSelected){
         XLFormLeftRightSelectorOption * option = [self leftOptionForOption:self.rowDescriptor.leftRightSelectorLeftOptionSelected];
         if (option.rightOptions){
-            XLFormOptionsViewController * optionsViewController = [[XLFormOptionsViewController alloc]  initWithOptions:option.rightOptions style:UITableViewStyleGrouped];
+            XLFormOptionsViewController * optionsViewController = [[XLFormOptionsViewController alloc]  initWithStyle:UITableViewStyleGrouped];
             optionsViewController.title = option.selectorTitle;
             optionsViewController.rowDescriptor = self.rowDescriptor;
             [controller.navigationController pushViewController:optionsViewController animated:YES];
@@ -196,11 +196,10 @@
 {
     if ([actionSheet cancelButtonIndex] != buttonIndex){
         NSString * title = [actionSheet buttonTitleAtIndex:buttonIndex];
-        if (![self.rowDescriptor.leftRightSelectorLeftOptionSelected isEqual:[self leftOptionForDescription:title].leftValue]){
-            self.rowDescriptor.leftRightSelectorLeftOptionSelected = [self leftOptionForDescription:title].leftValue;
-            [self.leftButton setTitle:[NSString stringWithFormat:@"%@%@", [self.rowDescriptor.leftRightSelectorLeftOptionSelected displayText], self.rowDescriptor.required && self.rowDescriptor.sectionDescriptor.formDescriptor.addAsteriskToRequiredRowsTitle ? @"*" : @""] forState:UIControlStateNormal];
+        if (![self.rowDescriptor.leftRightSelectorLeftOptionSelected isEqual:[self leftOptionForDescription:title].leftValue]){            
             self.rowDescriptor.value = nil;
-            self.rightLabel.text = [self rightTextLabel];
+            self.rowDescriptor.leftRightSelectorLeftOptionSelected = [self leftOptionForDescription:title].leftValue;
+            [self.formViewController updateFormRow:self.rowDescriptor];
         }
     }
 }

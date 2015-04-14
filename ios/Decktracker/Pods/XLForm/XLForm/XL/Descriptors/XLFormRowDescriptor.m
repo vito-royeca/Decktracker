@@ -2,7 +2,7 @@
 //  XLFormRowDescriptor.m
 //  XLForm ( https://github.com/xmartlabs/XLForm )
 //
-//  Copyright (c) 2014 Xmartlabs ( http://xmartlabs.com )
+//  Copyright (c) 2015 Xmartlabs ( http://xmartlabs.com )
 //
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -29,7 +29,7 @@
 
 @interface XLFormRowDescriptor() <NSCopying>
 
-@property UITableViewCell<XLFormDescriptorCell> * cell;
+@property XLFormBaseCell * cell;
 @property (nonatomic) NSMutableArray *validators;
 
 @end
@@ -37,6 +37,7 @@
 @implementation XLFormRowDescriptor
 
 @synthesize action = _action;
+@synthesize disabled = _disabled;
 
 -(id)initWithTag:(NSString *)tag rowType:(NSString *)rowType title:(NSString *)title;
 {
@@ -47,51 +48,48 @@
         _disabled = NO;
         _rowType = rowType;
         _title = title;
-        _buttonViewControllerPresentationMode = XLFormPresentationModeDefault;
-        _cellStype = UITableViewCellStyleValue1;
+        _cellStyle = UITableViewCellStyleValue1;
         _validators = [NSMutableArray new];
-        
+        _cellConfig = [NSMutableDictionary dictionary];
+        _cellConfigIfDisabled = [NSMutableDictionary dictionary];
+        _cellConfigAtConfigure = [NSMutableDictionary dictionary];
     }
     return self;
 }
 
-+(XLFormRowDescriptor *)formRowDescriptorWithTag:(NSString *)tag rowType:(NSString *)rowType
++(id)formRowDescriptorWithTag:(NSString *)tag rowType:(NSString *)rowType
 {
     return [XLFormRowDescriptor formRowDescriptorWithTag:tag rowType:rowType title:nil];
-    
 }
 
-+(XLFormRowDescriptor *)formRowDescriptorWithTag:(NSString *)tag rowType:(NSString *)rowType title:(NSString *)title
++(id)formRowDescriptorWithTag:(NSString *)tag rowType:(NSString *)rowType title:(NSString *)title
 {
     return [[XLFormRowDescriptor alloc] initWithTag:tag rowType:rowType title:title];
 }
 
--(UITableViewCell<XLFormDescriptorCell> *)cellForFormController:(XLFormViewController *)formController
+-(XLFormBaseCell *)cellForFormController:(XLFormViewController *)formController
 {
     id cellClass = self.cellClass ?: [XLFormViewController cellClassesForRowDescriptorTypes][self.rowType];
     NSAssert(cellClass, @"Not defined XLFormRowDescriptorType");
-    if ([cellClass isKindOfClass:[NSString class]]) {
-        UITableViewCell<XLFormDescriptorCell> * reuseCell = [formController.tableView dequeueReusableCellWithIdentifier:cellClass];
-        if (reuseCell){
-            _cell  = reuseCell;
+    if (!_cell){
+        if ([cellClass isKindOfClass:[NSString class]]) {
+            if ([[NSBundle mainBundle] pathForResource:cellClass ofType:@"nib"]){
+                _cell = [[[NSBundle mainBundle] loadNibNamed:cellClass owner:nil options:nil] firstObject];
+                [self configureCellAtCreationTime];
+            }
+        } else if (!_cell) {
+            _cell = [[cellClass alloc] initWithStyle:self.cellStyle reuseIdentifier:nil];
             [self configureCellAtCreationTime];
         }
-        else if (!_cell && [[NSBundle mainBundle] pathForResource:cellClass ofType:@"nib"]){
-            _cell = [[[NSBundle mainBundle] loadNibNamed:cellClass owner:nil options:nil] firstObject];
-            [self configureCellAtCreationTime];
-        }
-    } else if (!_cell) {
-        _cell = [[cellClass alloc] initWithStyle:self.cellStype reuseIdentifier:nil];
-        [self configureCellAtCreationTime];
+        NSAssert([_cell isKindOfClass:[XLFormBaseCell class]], @"Can not get a XLFormBaseCell");
     }
-    NSAssert([_cell isKindOfClass:[UITableViewCell class]] && [_cell conformsToProtocol:@protocol(XLFormDescriptorCell)], @"Can not get a UITableViewCell form cellClass");
     return _cell;
 }
 
-- (void) configureCellAtCreationTime
+- (void)configureCellAtCreationTime
 {
     [self.cellConfigAtConfigure enumerateKeysAndObjectsUsingBlock:^(NSString *keyPath, id value, __unused BOOL *stop) {
-        [_cell setValue:value forKeyPath:keyPath];
+        [_cell setValue:(value == [NSNull null]) ? nil : value forKeyPath:keyPath];
     }];
 }
 
@@ -100,6 +98,13 @@
     if (_cellConfig) return _cellConfig;
     _cellConfig = [NSMutableDictionary dictionary];
     return _cellConfig;
+}
+
+-(NSMutableDictionary *)cellConfigIfDisabled
+{
+    if (_cellConfigIfDisabled) return _cellConfigIfDisabled;
+    _cellConfigIfDisabled = [NSMutableDictionary dictionary];
+    return _cellConfigIfDisabled;
 }
 
 -(NSMutableDictionary *)cellConfigAtConfigure
@@ -122,6 +127,21 @@
     return _action;
 }
 
+-(void)setAction:(XLFormAction *)action
+{
+    _action = action;
+}
+
+-(BOOL)isDisabled
+{
+    return _disabled || self.sectionDescriptor.formDescriptor.isDisabled;
+}
+
+-(void)setDisabled:(BOOL)disabled
+{
+    _disabled = disabled;
+}
+
 // In the implementation
 -(id)copyWithZone:(NSZone *)zone
 {
@@ -129,14 +149,14 @@
     rowDescriptorCopy.cellClass = [self.cellClass copy];
     rowDescriptorCopy.cellConfig = [self.cellConfig mutableCopy];
     rowDescriptorCopy.cellConfigAtConfigure = [self.cellConfigAtConfigure mutableCopy];
-    rowDescriptorCopy.disabled = self.disabled;
-    rowDescriptorCopy.required = self.required;
+    rowDescriptorCopy.disabled = self.isDisabled;
+    rowDescriptorCopy.required = self.isRequired;
     
     // =====================
     // properties for Button
     // =====================
-    rowDescriptorCopy.buttonViewController = [self.buttonViewController copy];
-    rowDescriptorCopy.buttonViewControllerPresentationMode = self.buttonViewControllerPresentationMode;
+    rowDescriptorCopy.action = [self.action copy];
+
     
     // ===========================
     // property used for Selectors
@@ -146,10 +166,6 @@
     rowDescriptorCopy.selectorTitle = [self.selectorTitle copy];
     rowDescriptorCopy.selectorOptions = [self.selectorOptions copy];
     rowDescriptorCopy.leftRightSelectorLeftOptionSelected = [self.leftRightSelectorLeftOptionSelected copy];
-    // =====================================
-    // properties used for dynamic selectors
-    // =====================================
-    rowDescriptorCopy.selectorControllerClass = [self.selectorControllerClass copy];
     
     return rowDescriptorCopy;
 }
@@ -157,7 +173,8 @@
 
 #pragma mark - validation
 
--(void) addValidator: (id<XLFormValidatorProtocol>) validator {
+-(void)addValidator:(id<XLFormValidatorProtocol>)validator
+{
     if (validator == nil || ![validator conformsToProtocol:@protocol(XLFormValidatorProtocol)])
         return;
     
@@ -166,7 +183,8 @@
     }
 }
 
--(void) removeValidator: (id<XLFormValidatorProtocol>) validator {
+-(void)removeValidator:(id<XLFormValidatorProtocol>)validator
+{
     if (validator == nil|| ![validator conformsToProtocol:@protocol(XLFormValidatorProtocol)])
         return;
     
@@ -175,13 +193,19 @@
     }
 }
 
--(XLFormValidationStatus *) doValidation {
-    XLFormValidationStatus *valStatus = [XLFormValidationStatus formValidationStatusWithMsg:@"" status:YES];
+- (BOOL)valueIsEmpty
+{
+    return self.value == nil || [self.value isKindOfClass:[NSNull class]] || ([self.value respondsToSelector:@selector(length)] && [self.value length]==0);
+}
+
+-(XLFormValidationStatus *)doValidation
+{
+    XLFormValidationStatus *valStatus = nil;
     
     if (self.required) {
         // do required validation here
-        if (self.value == nil) { // || value.length() == 0
-            valStatus.isValid = NO;
+        if ([self valueIsEmpty]) {
+            valStatus = [XLFormValidationStatus formValidationStatusWithMsg:@"" status:NO rowDescriptor:self];
             NSString *msg = nil;
             if (self.requireMsg != nil) {
                 msg = self.requireMsg;
@@ -189,17 +213,16 @@
                 // default message for required msg
                 msg = NSLocalizedString(@"%@ can't be empty", nil);
             }
-            valStatus.msg = [NSString stringWithFormat:msg, self.title];
             
+            if (self.title != nil) {
+                valStatus.msg = [NSString stringWithFormat:msg, self.title];
+            } else {
+                valStatus.msg = [NSString stringWithFormat:msg, self.tag];
+            }
+
             return valStatus;
         }
-    } else {
-        // if user has not enter anything, we dun display the valid icon
-        if (self.value == nil) {// || value.length() == 0
-            valStatus = nil; // optional field, we will mark this validation as optional by passing null
-        }
     }
-    
     // custom validator
     for(id<XLFormValidatorProtocol> v in self.validators) {
         if ([v conformsToProtocol:@protocol(XLFormValidatorProtocol)]) {
@@ -213,8 +236,40 @@
             valStatus = nil;
         }
     }
-    
     return valStatus;
+}
+
+
+#pragma mark - Deprecations
+
+-(void)setButtonViewController:(Class)buttonViewController
+{
+    self.action.viewControllerClass = buttonViewController;
+}
+
+-(Class)buttonViewController
+{
+    return self.action.viewControllerClass;
+}
+
+-(void)setSelectorControllerClass:(Class)selectorControllerClass
+{
+    self.action.viewControllerClass = selectorControllerClass;
+}
+
+-(Class)selectorControllerClass
+{
+    return self.action.viewControllerClass;
+}
+
+-(void)setButtonViewControllerPresentationMode:(XLFormPresentationMode)buttonViewControllerPresentationMode
+{
+    self.action.viewControllerPresentationMode = buttonViewControllerPresentationMode;
+}
+
+-(XLFormPresentationMode)buttonViewControllerPresentationMode
+{
+    return self.action.viewControllerPresentationMode;
 }
 
 @end
@@ -249,20 +304,99 @@
 
 @end
 
-
 @implementation XLFormAction
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        _viewControllerPresentationMode = XLFormPresentationModeDefault;
+    }
+    return self;
+}
+
+// In the implementation
+-(id)copyWithZone:(NSZone *)zone
+{
+    XLFormAction * actionCopy = [[XLFormAction alloc] init];
+    actionCopy.viewControllerPresentationMode = self.viewControllerPresentationMode;
+    if (self.viewControllerClass){
+        actionCopy.viewControllerClass = [self.viewControllerClass copy];
+    }
+    else if ([self.viewControllerStoryboardId length]  != 0){
+        actionCopy.viewControllerStoryboardId = [self.viewControllerStoryboardId copy];
+    }
+    else if ([self.viewControllerNibName length] != 0){
+        actionCopy.viewControllerNibName = [self.viewControllerNibName copy];
+    }
+    if (self.formBlock){
+        actionCopy.formBlock = [self.formBlock copy];
+    }
+    else if (self.formSelector){
+        actionCopy.formSelector = self.formSelector;
+    }
+    else if (self.formSegueIdenfifier){
+        actionCopy.formSegueIdenfifier = [self.formSegueIdenfifier copy];
+    }
+    else if (self.formSegueClass){
+        actionCopy.formSegueClass = [self.formSegueClass copy];
+    }
+    return actionCopy;
+}
+
+-(void)setViewControllerClass:(Class)viewControllerClass
+{
+    _viewControllerClass = viewControllerClass;
+    _viewControllerNibName = nil;
+    _viewControllerStoryboardId = nil;
+}
+
+-(void)setViewControllerNibName:(NSString *)viewControllerNibName
+{
+    _viewControllerClass = nil;
+    _viewControllerNibName = viewControllerNibName;
+    _viewControllerStoryboardId = nil;
+}
+
+-(void)setViewControllerStoryboardId:(NSString *)viewControllerStoryboardId
+{
+    _viewControllerClass = nil;
+    _viewControllerNibName = nil;
+    _viewControllerStoryboardId = viewControllerStoryboardId;
+}
+
 
 -(void)setFormSelector:(SEL)formSelector
 {
     _formBlock = nil;
+    _formSegueClass = nil;
+    _formSegueIdenfifier = nil;
     _formSelector = formSelector;
 }
 
 
 -(void)setFormBlock:(void (^)(XLFormRowDescriptor *))formBlock
 {
+    _formSegueClass = nil;
+    _formSegueIdenfifier = nil;
     _formSelector = nil;
     _formBlock = formBlock;
+}
+
+-(void)setFormSegueClass:(Class)formSegueClass
+{
+    _formSelector = nil;
+    _formBlock = nil;
+    _formSegueIdenfifier = nil;
+    _formSegueClass = formSegueClass;
+}
+
+-(void)setFormSegueIdenfifier:(NSString *)formSegueIdenfifier
+{
+    _formSelector = nil;
+    _formBlock = nil;
+    _formSegueClass = nil;
+    _formSegueIdenfifier = formSegueIdenfifier;
 }
 
 @end

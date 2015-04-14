@@ -26,6 +26,7 @@
 #import "PFActivityIndicatorTableViewCell.h"
 #import "PFImageView.h"
 #import "PFLoadingView.h"
+#import "PFLocalization.h"
 #import "PFTableViewCell.h"
 
 // Add headers to kill any warnings.
@@ -113,11 +114,6 @@
 - (void)loadView {
     [super loadView];
 
-    if (self.loadingViewEnabled) {
-        self.loadingView = [[PFLoadingView alloc] initWithFrame:CGRectZero];
-        [self.tableView addSubview:self.loadingView];
-    }
-
     // Setup the Pull to Refresh UI if needed
     if (self.pullToRefreshEnabled) {
         UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
@@ -148,6 +144,7 @@
         _savedSeparatorStyle = self.tableView.separatorStyle;
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }
+    [self _refreshLoadingView];
 }
 
 - (void)objectsDidLoad:(NSError *)error {
@@ -155,8 +152,7 @@
         _firstLoad = NO;
         self.tableView.separatorStyle = _savedSeparatorStyle;
     }
-    [self.loadingView removeFromSuperview];
-    self.loadingView = nil;
+    [self _refreshLoadingView];
 }
 
 - (PFQuery *)queryForTable {
@@ -235,8 +231,8 @@
 
 - (void)loadNextPage {
     if (!self.loading) {
-      [self loadObjects:(_currentPage + 1) clear:NO];
-      [self _refreshPaginationCell];
+        [self loadObjects:(_currentPage + 1) clear:NO];
+        [self _refreshPaginationCell];
     }
 }
 
@@ -422,6 +418,31 @@
 
 - (NSArray *)objects {
     return _mutableObjects;
+}
+
+#pragma mark -
+#pragma mark Loading View
+
+- (void)_refreshLoadingView {
+    BOOL showLoadingView = self.loadingViewEnabled && self.loading && _firstLoad;
+
+    if (showLoadingView) {
+        [self.tableView addSubview:self.loadingView];
+        [self.view setNeedsLayout];
+    } else {
+        // Avoid loading `loadingView` - just use an ivar.
+        if (_loadingView) {
+            [self.loadingView removeFromSuperview];
+            self.loadingView = nil;
+        }
+    }
+}
+
+- (PFLoadingView *)loadingView {
+    if (!_loadingView) {
+        _loadingView = [[PFLoadingView alloc] initWithFrame:CGRectZero];
+    }
+    return _loadingView;
 }
 
 @end
