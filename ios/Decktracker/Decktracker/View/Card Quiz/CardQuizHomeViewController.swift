@@ -14,7 +14,6 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
     var btnModerate:UILabel?
     var btnHard:UILabel?
     var btnLeaderboard:UILabel?
-    var btnSettings:UILabel?
     var userMana:PFObject?
     
     override func viewDidLoad() {
@@ -24,9 +23,9 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         NSNotificationCenter.defaultCenter().removeObserver(self, name:kParseUserManaDone,  object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector:"fetchUserManaDone:",  name:kParseUserManaDone, object:nil)
         
-        Database.sharedInstance().fetchUserMana()
         setupBackground()
         self.navigationItem.title = "Card Quiz"
+        Database.sharedInstance().fetchUserMana()
         
 #if !DEBUG
         // send the screen to Google Analytics
@@ -77,7 +76,6 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         btnModerate?.removeFromSuperview()
         btnHard?.removeFromSuperview()
         btnLeaderboard?.removeFromSuperview()
-        btnSettings?.removeFromSuperview()
         
         var dX = self.view.frame.size.width/8
         var dY = UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height + 40
@@ -185,7 +183,7 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         dY = self.btnHard!.frame.origin.y + dHeight + 20
         dFrame = CGRect(x: dX, y: dY, width: dWidth, height: dHeight)
         btnLeaderboard = UILabel(frame: dFrame)
-        btnLeaderboard!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "startGame:"))
+        btnLeaderboard!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "leaderboardTapped:"))
         btnLeaderboard!.userInteractionEnabled = true
         btnLeaderboard!.text = "Leaderboard"
         btnLeaderboard!.textAlignment = NSTextAlignment.Center
@@ -195,20 +193,6 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         btnLeaderboard!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
         btnLeaderboard!.layer.borderWidth = 1
         self.view.addSubview(btnLeaderboard!)
-
-        dY = self.btnLeaderboard!.frame.origin.y + dHeight + 20
-        dFrame = CGRect(x: dX, y: dY, width: dWidth, height: dHeight)
-        btnSettings = UILabel(frame: dFrame)
-        btnSettings!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "startGame:"))
-        btnSettings!.userInteractionEnabled = true
-        btnSettings!.text = "Settings"
-        btnSettings!.textAlignment = NSTextAlignment.Center
-        btnSettings!.font = CQTheme.kManaLabelFont
-        btnSettings!.textColor = CQTheme.kTileTextColor
-        btnSettings!.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
-        btnSettings!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
-        btnSettings!.layer.borderWidth = 1
-        self.view.addSubview(btnSettings!)
     }
 
     func loginTapped(sender: AnyObject) {
@@ -231,13 +215,13 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
     
     func startGame(sender: AnyObject) {
         let hud = MBProgressHUD(view: self.view)
-        var gameType:CQGameType?
         var game:CardQuizGameViewController?
         
         let executingBlock = { () -> Void in
             let tap = sender as UITapGestureRecognizer
             let button = tap.view as UILabel
             let title = button.text
+            var gameType:CQGameType?
             
             if title == "Easy: Standard" {
                 gameType = .Easy
@@ -248,17 +232,23 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
             } else if title == "Hard: Vintage" {
                 gameType = .Hard
             }
+            
+            game = CardQuizGameViewController(gameType: gameType!)
+            game!.userMana = self.userMana
         }
         
         let completionBlock = {  () -> Void in
-            game = CardQuizGameViewController(gameType: gameType!)
-            game!.userMana = self.userMana
-            self.navigationController?.pushViewController(game!, animated:true)
+            self.navigationController!.pushViewController(game!, animated:true)
         }
         
         hud.delegate = self
         self.view.addSubview(hud)
         hud.showAnimated(true, whileExecutingBlock:executingBlock, completionBlock:completionBlock)
+    }
+    
+    func leaderboardTapped(sender: AnyObject) {
+        var leaderboard = CardQuizLeaderboardViewController()
+        self.navigationController!.pushViewController(leaderboard, animated:true)
     }
     
 //    MARK: MBProgressHUDDelegate methods

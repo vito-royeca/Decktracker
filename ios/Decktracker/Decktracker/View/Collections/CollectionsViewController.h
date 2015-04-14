@@ -8,7 +8,7 @@
 
 @import UIKit;
 
-@interface CollectionsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
+@interface CollectionsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
 
 @property(strong,nonatomic) UITableView *tblCollections;
 

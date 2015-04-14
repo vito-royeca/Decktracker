@@ -16,7 +16,7 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
     var tblList:UITableView?
     var colList:UICollectionView?
     var arrayData:[DTCard]?
-    var viewMode:CardViewMode?
+    var viewMode:String?
     var viewLoadedOnce = true
 
     override func viewDidLoad() {
@@ -28,25 +28,25 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
         navigationItem.rightBarButtonItem = viewButton
         
         if let value = NSUserDefaults.standardUserDefaults().stringForKey(kCardViewMode) {
-            if value == CardViewMode.ByList.description {
-                self.viewMode = CardViewMode.ByList
+            if value == kCardViewModeList {
+                self.viewMode = kCardViewModeList
                 self.showTableView()
             
-            } else if value == CardViewMode.ByGrid2x2.description {
-                self.viewMode = CardViewMode.ByGrid2x2
+            } else if value == kCardViewModeGrid2x2 {
+                self.viewMode = kCardViewModeGrid2x2
                 self.showGridView()
             
-            } else if value == CardViewMode.ByGrid3x3.description {
-                self.viewMode = CardViewMode.ByGrid3x3
+            } else if value == kCardViewModeGrid3x3 {
+                self.viewMode = kCardViewModeGrid3x3
                 self.showGridView()
             
             } else {
-                self.viewMode = CardViewMode.ByList
+                self.viewMode = kCardViewModeList
                 self.showTableView()
             }
             
         } else {
-            self.viewMode = CardViewMode.ByList
+            self.viewMode = kCardViewModeList
             self.showTableView()
         }
         
@@ -77,45 +77,39 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func viewButtonTapped() {
-        let viewOptions = [CardViewMode.ByList.description,
-            CardViewMode.ByGrid2x2.description,
-            CardViewMode.ByGrid3x3.description]
         var initialSelection = 0
-        
-        switch self.viewMode! {
-        case .ByList:
+
+        if self.viewMode == kCardViewModeList {
             initialSelection = 0
-        case .ByGrid2x2:
+        } else if self.viewMode == kCardViewModeGrid2x2 {
             initialSelection = 1
-        case .ByGrid3x3:
+        } else if self.viewMode == kCardViewModeGrid3x3 {
             initialSelection = 2
-        default:
-            break
         }
         
         let doneBlock = { (picker: ActionSheetStringPicker?, selectedIndex: NSInteger, selectedValue: AnyObject?) -> Void in
             
             switch selectedIndex {
             case 0:
-                self.viewMode = .ByList
+                self.viewMode = kCardViewModeList
                 self.showTableView()
             case 1:
-                self.viewMode = .ByGrid2x2
+                self.viewMode = kCardViewModeGrid2x2
                 self.showGridView()
             case 2:
-                self.viewMode = .ByGrid3x3
+                self.viewMode = kCardViewModeGrid3x3
                 self.showGridView()
             default:
                 break
             }
             
-            NSUserDefaults.standardUserDefaults().setObject(self.viewMode!.description, forKey: kCardViewMode)
+            NSUserDefaults.standardUserDefaults().setObject(self.viewMode, forKey: kCardViewMode)
             NSUserDefaults.standardUserDefaults().synchronize()
             self.loadData()
         }
         
         ActionSheetStringPicker.showPickerWithTitle("View As",
-            rows: viewOptions,
+            rows: [kCardViewModeList, kCardViewModeGrid2x2, kCardViewModeGrid3x3],
             initialSelection: initialSelection,
             doneBlock: doneBlock,
             cancelBlock: nil,
@@ -146,13 +140,13 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
             colList!.removeFromSuperview()
         }
         view.addSubview(tblList!)
-        viewButton!.title = self.viewMode!.description
+        viewButton!.title = self.viewMode
     }
     
     func showGridView() {
         let y = viewLoadedOnce ? 0 : UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height
         let height = view.frame.size.height - y
-        let divisor:CGFloat = viewMode == CardViewMode.ByGrid2x2 ? 2 : 3
+        let divisor:CGFloat = viewMode == kCardViewModeGrid2x2 ? 2 : 3
         var frame = CGRect(x:0, y:y, width:view.frame.width, height:height)
         
         
@@ -173,7 +167,7 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
             tblList!.removeFromSuperview()
         }
         view.addSubview(colList!)
-        viewButton!.title = self.viewMode!.description
+        viewButton!.title = self.viewMode
     }
     
 //    MARK: UITableViewDataSource

@@ -10,6 +10,8 @@
 		3B4C647F452847188AFC81E6 /* libPods-Decktracker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63356387201A4E73BA1685FC /* libPods-Decktracker.a */; };
 		77D56A16A583FB0A4C860216 /* CardQuizHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D564E8D46C17B81D56F614 /* CardQuizHomeViewController.swift */; };
 		77D56A818E39E63A1D4A8453 /* CardQuizConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D560F3C5D2147D03F3F0C5 /* CardQuizConstants.swift */; };
+		8C0117131ADCAD170075A933 /* web in Resources */ = {isa = PBXBuildFile; fileRef = 8C0117121ADCAD170075A933 /* web */; };
+		8C0117171ADCAF230075A933 /* CardQuizLeaderboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0117161ADCAF230075A933 /* CardQuizLeaderboardViewController.swift */; };
 		8C019AA01998A10F00FB22D7 /* decktracker.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 8C019A9F1998A10F00FB22D7 /* decktracker.sqlite */; };
 		8C01E0FD1ADB9A8800509DDB /* In-App Mana.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C01E0FC1ADB9A8800509DDB /* In-App Mana.plist */; };
 		8C0CF16B1A01E102009137C5 /* Decks in Resources */ = {isa = PBXBuildFile; fileRef = 8C0CF16A1A01E101009137C5 /* Decks */; };
@@ -84,7 +86,6 @@
 		8C325F3D1A5A60B200FA58E6 /* DecksTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C325F3B1A5A60B200FA58E6 /* DecksTableViewCell.swift */; };
 		8C325F3E1A5A60B200FA58E6 /* DecksTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C325F3C1A5A60B200FA58E6 /* DecksTableViewCell.xib */; };
 		8C325F401A5A778100FA58E6 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C325F3F1A5A778100FA58E6 /* libsqlite3.dylib */; };
-		8C3277FD199A464D00899790 /* style.css in Resources */ = {isa = PBXBuildFile; fileRef = 8C3277FC199A464D00899790 /* style.css */; };
 		8C33E9BE19D73AAB000892D9 /* InAppPurchaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C33E9BD19D73AAB000892D9 /* InAppPurchaseViewController.m */; };
 		8C372C771A2DD900001D7EF3 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C372C761A2DD900001D7EF3 /* Accounts.framework */; };
 		8C372C7B1A2DD908001D7EF3 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C372C7A1A2DD908001D7EF3 /* Social.framework */; };
@@ -218,6 +219,8 @@
 		63356387201A4E73BA1685FC /* libPods-Decktracker.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Decktracker.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		77D560F3C5D2147D03F3F0C5 /* CardQuizConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardQuizConstants.swift; sourceTree = "<group>"; };
 		77D564E8D46C17B81D56F614 /* CardQuizHomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardQuizHomeViewController.swift; sourceTree = "<group>"; };
+		8C0117121ADCAD170075A933 /* web */ = {isa = PBXFileReference; lastKnownFileType = folder; path = web; sourceTree = "<group>"; };
+		8C0117161ADCAF230075A933 /* CardQuizLeaderboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardQuizLeaderboardViewController.swift; sourceTree = "<group>"; };
 		8C019A9F1998A10F00FB22D7 /* decktracker.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = decktracker.sqlite; sourceTree = "<group>"; };
 		8C01E0FC1ADB9A8800509DDB /* In-App Mana.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "In-App Mana.plist"; sourceTree = "<group>"; };
 		8C0CF16A1A01E101009137C5 /* Decks */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Decks; sourceTree = "<group>"; };
@@ -325,7 +328,6 @@
 		8C325F3B1A5A60B200FA58E6 /* DecksTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecksTableViewCell.swift; sourceTree = "<group>"; };
 		8C325F3C1A5A60B200FA58E6 /* DecksTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DecksTableViewCell.xib; sourceTree = "<group>"; };
 		8C325F3F1A5A778100FA58E6 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
-		8C3277FC199A464D00899790 /* style.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = style.css; sourceTree = "<group>"; };
 		8C33E9BC19D73AAB000892D9 /* InAppPurchaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InAppPurchaseViewController.h; sourceTree = "<group>"; };
 		8C33E9BD19D73AAB000892D9 /* InAppPurchaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InAppPurchaseViewController.m; sourceTree = "<group>"; };
 		8C36A21519ECF6D400F09F78 /* Decktracker-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Decktracker-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -812,7 +814,7 @@
 				8CD627A71A6BEDE000382143 /* In-App Sets.plist */,
 				8C5FF9E719AE2EE3003CE54C /* keywords.plist */,
 				8C2A96D119F4D8D00094C97F /* rules */,
-				8C3277FC199A464D00899790 /* style.css */,
+				8C0117121ADCAD170075A933 /* web */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -906,9 +908,10 @@
 		8CA376B61A667B290041FDAA /* Card Quiz */ = {
 			isa = PBXGroup;
 			children = (
+				77D560F3C5D2147D03F3F0C5 /* CardQuizConstants.swift */,
 				8CA376B71A667B6C0041FDAA /* CardQuizGameViewController.swift */,
 				77D564E8D46C17B81D56F614 /* CardQuizHomeViewController.swift */,
-				77D560F3C5D2147D03F3F0C5 /* CardQuizConstants.swift */,
+				8C0117161ADCAF230075A933 /* CardQuizLeaderboardViewController.swift */,
 			);
 			path = "Card Quiz";
 			sourceTree = "<group>";
@@ -1105,13 +1108,13 @@
 			files = (
 				8C2A979719F5027B0094C97F /* Reader-Print.png in Resources */,
 				8C89BD5119DD4FD70070E4F5 /* hpple.license in Resources */,
+				8C0117131ADCAD170075A933 /* web in Resources */,
 				8C2A979119F5027B0094C97F /* Reader-Export.png in Resources */,
 				8C5FF9E819AE2EE3003CE54C /* keywords.plist in Resources */,
 				8C2A96D219F4D8D00094C97F /* rules in Resources */,
 				8C019AA01998A10F00FB22D7 /* decktracker.sqlite in Resources */,
 				8CFA21D31A64F8CC00E5409B /* Main.storyboard in Resources */,
 				8CADEF1719923DDE004D7658 /* images in Resources */,
-				8C3277FD199A464D00899790 /* style.css in Resources */,
 				8C89BD5319DD4FFE0070E4F5 /* InAppSettingsKit.license in Resources */,
 				8CCFC02E1A3E7C2C004B1853 /* decktracker.plist in Resources */,
 				8C3C7D6E19DE41EE0030B6E9 /* MTG-Image.license in Resources */,
@@ -1257,6 +1260,7 @@
 				8C26A67A19A63FAC00FE00E7 /* AdvanceSearchViewController.m in Sources */,
 				8C524A7019B82C01005E697B /* SettingsViewController.m in Sources */,
 				8C2A97A619F5027B0094C97F /* ReaderThumbQueue.m in Sources */,
+				8C0117171ADCAF230075A933 /* CardQuizLeaderboardViewController.swift in Sources */,
 				8C2A97A019F5027B0094C97F /* ReaderDocument.m in Sources */,
 				8C3857AA1A36E6D200E5B38C /* DTFormat.m in Sources */,
 				8C38C0501A15F6E500FC3411 /* BannerScrollTableViewCell.swift in Sources */,

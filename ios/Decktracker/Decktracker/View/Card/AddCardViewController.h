@@ -13,7 +13,7 @@
 #import "MBProgressHUD.h"
 #import "QuantityTableViewCell.h"
 
-@interface AddCardViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, QuantityTableViewCellDelegate, MBProgressHUDDelegate, InAppPurchaseViewControllerDelegate>
+@interface AddCardViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, QuantityTableViewCellDelegate, MBProgressHUDDelegate, InAppPurchaseViewControllerDelegate>
 
 @property(strong,nonatomic) UISegmentedControl *segmentedControl;
 @property(strong,nonatomic) UITableView *tblAddTo;

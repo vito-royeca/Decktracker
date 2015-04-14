@@ -21,6 +21,7 @@
 {
     InAppPurchase *_inAppPurchase;
     NSArray *_arrSections;
+    MBProgressHUD *_hud;
 }
 
 @synthesize productID;
@@ -61,6 +62,10 @@
     self.navigationItem.rightBarButtonItem = btnBuy;
     self.navigationItem.title = @"Product Details";
     
+    _hud = [[MBProgressHUD alloc] initWithView:self.view];
+    _hud.delegate = self;
+    [self.view addSubview:_hud];
+    [_hud show:YES];
     _inAppPurchase = [[InAppPurchase alloc] init];
     _inAppPurchase.delegate = self;
     [_inAppPurchase inquireProduct:self.productID];
@@ -179,16 +184,13 @@
 {
     [self.tblProducDetails reloadData];
     self.btnBuy.enabled = YES;
+    [_hud hide:YES];
 }
 
 -(void) productInquiryFailed:(InAppPurchase*) inAppPurchase withMessage:(NSString*) message
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message"
-                                                    message:message
-                                                   delegate:nil
-                                          cancelButtonTitle:@"Ok"
-                                          otherButtonTitles:nil];
-    [alert show];
+    [_hud hide:YES];
+    [JJJUtil alertWithTitle:@"Message" andMessage:message];
 }
 
 -(void) productPurchaseSucceeded:(InAppPurchase*) inAppPurchase withMessage:(NSString*) message
@@ -208,12 +210,7 @@
 
 -(void) productPurchaseFailed:(InAppPurchase*) inAppPurchase withMessage:(NSString*) message
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message"
-                                                    message:message
-                                                   delegate:nil
-                                          cancelButtonTitle:@"Ok"
-                                          otherButtonTitles:nil];
-    [alert show];
+    [JJJUtil alertWithTitle:@"Message" andMessage:message];
     [self.navigationController popViewControllerAnimated:NO];
 }
 
@@ -224,13 +221,14 @@
 
 -(void) purchaseRestoreFailed:(InAppPurchase*) inAppPurchase withMessage:(NSString*) message
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message"
-                                                    message:message
-                                                   delegate:nil
-                                          cancelButtonTitle:@"Ok"
-                                          otherButtonTitles:nil];
-    [alert show];
+    [JJJUtil alertWithTitle:@"Message" andMessage:message];
     [self.navigationController popViewControllerAnimated:NO];
+}
+
+#pragma mark -MBProgressHUDDelegate
+- (void)hudWasHidden:(MBProgressHUD *)hud
+{
+    [hud removeFromSuperview];
 }
 
 @end

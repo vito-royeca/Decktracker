@@ -776,7 +776,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         }
         
         ActionSheetStringPicker.showPickerWithTitle("Buy Mana",
-            rows: ["18 Mana for $0.99", "60 Mana for $2.99", "100 Mana for $4.99"],
+            rows: ["18 Mana", "60 Mana", "100 Mana"],
             initialSelection: 0,
             doneBlock: doneBlock,
             cancelBlock: nil,

@@ -52,6 +52,11 @@ typedef NS_ENUM(NSInteger, EditMode)
     EditModeEdit
 };
 
+#define kCardViewMode                    @"kCardViewMode"
+#define kCardViewModeList                @"List"
+#define kCardViewModeGrid2x2            @"2x2"
+#define kCardViewModeGrid3x3            @"3x3"
+
 #define kAppID                           @"913992761"
 
 #define kCrashlyticsAPIKey               @"114b3dd82452ec2f4024140ec862698d331b8f3f"
@@ -69,7 +74,5 @@ typedef NS_ENUM(NSInteger, EditMode)
 
 #define kTwitterKey                      @"M9SYMK8TAvUxFVpa6qVOAH8Bb"
 #define kTwitterSecret                   @"xOlE7XZgtTeM8LVmXYZ5xtxvOZXBrupYNYLOzHtkIuZpCzEWBf"
-
-#define kCardViewMode                    @"kCardViewMode"
 
 #endif

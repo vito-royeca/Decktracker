@@ -1434,6 +1434,23 @@ static Database *_me;
      }];
 }
 
+-(void) fetchLeaderboard
+{
+    NSMutableArray *arrResults = [[NSMutableArray alloc] init];
+    PFQuery *query = [PFQuery queryWithClassName:@"UserMana"];
+    
+    [query orderByAscending:@"totalCMC"];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error) {
+            [arrResults addObjectsFromArray:objects];
+        }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kParseLeaderboardDone
+                                                            object:nil
+                                                          userInfo:@{@"leaderboard": arrResults}];
+    }];
+}
+
 #endif
 
 @end

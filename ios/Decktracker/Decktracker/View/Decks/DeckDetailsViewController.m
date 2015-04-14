@@ -34,7 +34,7 @@
     NSArray *_arrCardSections;
     NSArray *_arrToolSections;
     UIView *_viewSegmented;
-    DeckDetailsViewMode _viewMode;
+    NSString *_viewMode;
     BOOL _viewLoadedOnce;
 }
 
@@ -152,33 +152,34 @@
 -(void) loadCards
 {
     NSString *value = [[NSUserDefaults standardUserDefaults] stringForKey:kCardViewMode];
+    
     if (value)
     {
-        if ([value isEqualToString:@"List"])
+        if ([value isEqualToString:kCardViewModeList])
         {
-            _viewMode = DeckDetailsViewModeByList;
+            _viewMode = kCardViewModeList;
             [self showTableView];
         }
-        else if ([value isEqualToString:@"2x2"])
+        else if ([value isEqualToString:kCardViewModeGrid2x2])
         {
-            _viewMode = DeckDetailsViewModeByGrid2x2;
+            _viewMode = kCardViewModeGrid2x2;
             [self showGridView];
             
         }
-        else if ([value isEqualToString:@"3x3"])
+        else if ([value isEqualToString:kCardViewModeGrid3x3])
         {
-            _viewMode = DeckDetailsViewModeByGrid3x3;
+            _viewMode = kCardViewModeGrid3x3;
             [self showGridView];
         }
         else
         {
-            _viewMode = DeckDetailsViewModeByList;
+            _viewMode = kCardViewModeList;
             [self showTableView];
         }
     }
     else
     {
-        _viewMode = DeckDetailsViewModeByList;
+        _viewMode = kCardViewModeList;
         [self showTableView];
     }
 }
@@ -195,29 +196,23 @@
 
 -(void) viewButtonTapped
 {
-    NSArray *statusOptions = @[@"List", @"2x2", @"3x3"];
     int initialSelection = 0;
     
-    switch (_viewMode) {
-        case DeckDetailsViewModeByList:
-        {
-            initialSelection = 0;
-            break;
-        }
-        case DeckDetailsViewModeByGrid2x2:
-        {
-            initialSelection = 1;
-            break;
-        }
-        case DeckDetailsViewModeByGrid3x3:
-        {
-            initialSelection = 2;
-            break;
-        }
+    if ([_viewMode isEqualToString:kCardViewModeList])
+    {
+        initialSelection = 0;
+    }
+    else if ([_viewMode isEqualToString:kCardViewModeGrid2x2])
+    {
+        initialSelection = 1;
+    }
+    else if ([_viewMode isEqualToString:kCardViewModeGrid3x3])
+    {
+        initialSelection = 2;
     }
     
     [ActionSheetStringPicker showPickerWithTitle:@"View As"
-                                            rows:statusOptions
+                                            rows:@[kCardViewModeList, kCardViewModeGrid2x2, kCardViewModeGrid3x3]
                                 initialSelection:initialSelection
                                        doneBlock:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
                                            
@@ -225,25 +220,24 @@
                                            
                                            switch (selectedIndex) {
                                                case 0: {
-                                                   _viewMode = DeckDetailsViewModeByList;
+                                                   _viewMode = kCardViewModeList;
                                                    [self showTableView];
-                                                   [[NSUserDefaults standardUserDefaults] setObject:@"List" forKey: kCardViewMode];
                                                    break;
                                                }
                                                case 1: {
-                                                   _viewMode = DeckDetailsViewModeByGrid2x2;
+                                                   _viewMode = kCardViewModeGrid2x2;
                                                    [self showGridView];
-                                                   [[NSUserDefaults standardUserDefaults] setObject:@"2x2" forKey: kCardViewMode];
                                                    break;
                                                }
                                                case 2: {
-                                                   _viewMode = DeckDetailsViewModeByGrid3x3;
+                                                   _viewMode = kCardViewModeGrid3x3;
                                                    [self showGridView];
-                                                   [[NSUserDefaults standardUserDefaults] setObject:@"3x3" forKey: kCardViewMode];
                                                    break;
                                                }
                                            }
                                            
+                                           [[NSUserDefaults standardUserDefaults] setObject:_viewMode
+                                                                                     forKey: kCardViewMode];
                                            [[NSUserDefaults standardUserDefaults] synchronize];
                                        }
                                      cancelBlock:nil
@@ -267,16 +261,14 @@
     
     else if (self.segmentedControl.selectedSegmentIndex == 1)
     {
-        switch (_viewMode) {
-            case DeckDetailsViewModeByList: {
-                [self.tblCards removeFromSuperview];
-                break;
-            }
-            case DeckDetailsViewModeByGrid2x2:
-            case DeckDetailsViewModeByGrid3x3: {
-                [self.colCards removeFromSuperview];
-                break;
-            }
+        if ([_viewMode isEqualToString:kCardViewModeList])
+        {
+            [self.tblCards removeFromSuperview];
+        }
+        else if ([_viewMode isEqualToString:kCardViewModeGrid2x2] ||
+                 [_viewMode isEqualToString:kCardViewModeGrid3x3])
+        {
+            [self.colCards removeFromSuperview];
         }
         
         DeckIASKSettingsStore *deckSettingsStore = [[DeckIASKSettingsStore alloc] init];
@@ -326,25 +318,7 @@
         [self.colCards removeFromSuperview];
     }
     [self.view addSubview:self.tblCards];
-    
-    switch (_viewMode)
-    {
-        case DeckDetailsViewModeByList:
-        {
-            self.btnView.title = @"List";
-            break;
-        }
-        case DeckDetailsViewModeByGrid2x2:
-        {
-            self.btnView.title = @"2x2";
-            break;
-        }
-        case DeckDetailsViewModeByGrid3x3:
-        {
-            self.btnView.title = @"3x3";
-            break;
-        }
-    }
+    self.btnView.title = _viewMode;
 }
 
 -(void) showGridView
@@ -353,7 +327,7 @@
     CGFloat dY = _viewSegmented.frame.origin.y + _viewSegmented.frame.size.height;
     CGFloat dWidth = self.view.frame.size.width;
     CGFloat dHeight = self.view.frame.size.height - dY;
-    CGFloat divisor = _viewMode == DeckDetailsViewModeByGrid2x2 ? 2 : 3;
+    CGFloat divisor = [_viewMode isEqual:kCardViewModeGrid2x2] ? 2 : 3;
     CGRect frame = CGRectMake(dX, dY, dWidth, dHeight);
     
     CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc] init];
@@ -377,25 +351,7 @@
         [self.tblCards removeFromSuperview];
     }
     [self.view addSubview:self.colCards];
-    
-    switch (_viewMode)
-    {
-        case DeckDetailsViewModeByList:
-        {
-            self.btnView.title = @"List";
-            break;
-        }
-        case DeckDetailsViewModeByGrid2x2:
-        {
-            self.btnView.title = @"2x2";
-            break;
-        }
-        case DeckDetailsViewModeByGrid3x3:
-        {
-            self.btnView.title = @"3x3";
-            break;
-        }
-    }
+    self.btnView.title = _viewMode;
 }
 
 -(UITableViewCell*) createSearchResultsTableCell:(NSDictionary*) dict

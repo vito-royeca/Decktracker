@@ -26,6 +26,7 @@
 #define kParseSyncDone          @"kParseSyncDone"
 #define kPriceUpdateDone        @"kPriceUpdateDone"
 #define kParseUserManaDone      @"kParseUserManaDone"
+#define kParseLeaderboardDone   @"kParseLeaderboardDone"
 
 @interface Database : NSObject
 
@@ -70,6 +71,7 @@
 -(void) fetchUserMana;
 -(void) saveUserMana:(PFObject*) userMana;
 -(void) deleteUserManaLocally;
+-(void) fetchLeaderboard;
 
 #endif
 

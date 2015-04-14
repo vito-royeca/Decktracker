@@ -44,20 +44,6 @@
     NSString *_currentLanguage;
 }
 
-@synthesize card = _card;
-@synthesize fetchedResultsController = _fetchedResultsController;
-@synthesize segmentedControl = _segmentedControl;
-@synthesize cardImage = cardImage;
-@synthesize tblDetails = _tblDetails;
-@synthesize webView = _webView;
-@synthesize bottomToolbar = _bottomToolbar;
-@synthesize btnPrevious = _btnPrevious;
-@synthesize btnNext = _btnNext;
-@synthesize btnAction = _btnAction;
-@synthesize btnRate = _btnRate;
-@synthesize btnAdd = _btnAdd;
-@synthesize addButtonVisible = _addButtonVisible;
-
 -(void) setCard:(DTCard *)card
 {
     _card = card;
@@ -461,7 +447,7 @@
 {
     NSMutableString *html = [[NSMutableString alloc] init];
     
-    [html appendFormat:@"<html><head><link rel='stylesheet' type='text/css' href='%@/style.css'></head><body>", [[NSBundle mainBundle] bundlePath]];
+    [html appendFormat:@"<html><head><link rel='stylesheet' type='text/css' href='%@/web/style.css'></head><body>", [[NSBundle mainBundle] bundlePath]];
     [html appendFormat:@"<table width='100%%'>"];
     
     NSString *cardNameFont;

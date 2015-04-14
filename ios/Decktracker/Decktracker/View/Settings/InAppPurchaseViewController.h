@@ -9,13 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "InAppPurchase.h"
 
+#import "MBProgressHUD.h"
+
 @protocol InAppPurchaseViewControllerDelegate
 
 -(void) productPurchaseSucceeded:(NSString*) productID;
 
 @end
 
-@interface InAppPurchaseViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, InAppPurchaseDelegate>
+@interface InAppPurchaseViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, InAppPurchaseDelegate, MBProgressHUDDelegate>
 
 @property(strong,nonatomic) id<InAppPurchaseViewControllerDelegate> delegate;
 

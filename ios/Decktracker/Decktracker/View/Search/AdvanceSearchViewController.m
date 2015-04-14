@@ -168,36 +168,30 @@
     
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Delete Advance Search"
-                                                        message:[NSString stringWithFormat:@"Are you sure you want to delete %@?", self.arrAdvanceSearches[_selectedRow]]
-                                                       delegate:self
-                                              cancelButtonTitle:@"No"
-                                              otherButtonTitles:@"Yes", nil];
-        [alert show];
-    }
-}
-
-#pragma mark - UIAlertViewDelegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 1)
-    {
-        NSString *name = self.arrAdvanceSearches[_selectedRow];
-        NSString *path = [NSString stringWithFormat:@"/Advance Search/%@.json", name];
-        [[FileManager sharedInstance] deleteFileAtPath:path];
-        [self.arrAdvanceSearches removeObject:name];
-
+        void (^handler)(UIAlertController*) = ^void(UIAlertController *alert) {
+            NSString *name = self.arrAdvanceSearches[_selectedRow];
+            NSString *path = [NSString stringWithFormat:@"/Advance Search/%@.json", name];
+            [[FileManager sharedInstance] deleteFileAtPath:path];
+            [self.arrAdvanceSearches removeObject:name];
+            
 #ifndef DEBUG
-        // send to Google Analytics
-        id tracker = [[GAI sharedInstance] defaultTracker];
-        [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Advance Search"
-                                                              action:nil
-                                                               label:@"Delete"
-                                                               value:nil] build]];
+            // send to Google Analytics
+            id tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Advance Search"
+                                                                  action:nil
+                                                                   label:@"Delete"
+                                                                   value:nil] build]];
 #endif
+        };
+        
+        [JJJUtil alertWithTitle:@"Delete Advance Search"
+                       message:[NSString stringWithFormat:@"Are you sure you want to delete %@?", self.arrAdvanceSearches[_selectedRow]]
+             cancelButtonTitle:@"No"
+             otherButtonTitles:@{@"Yes": handler}
+             textFieldHandlers:nil];
+        
+        [self.tblView reloadData];
     }
-
-    [self.tblView reloadData];
 }
 
 #pragma mark - MBProgressHUDDelegate methods

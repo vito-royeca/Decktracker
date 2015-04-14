@@ -35,7 +35,7 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
     var tblHand:UITableView?
     var colHand:UICollectionView?
     var bottomToolbar:UIToolbar?
-    var viewMode:CardViewMode?
+    var viewMode:String?
     var showMode:StartingHandShowMode?
     var deck:Deck?
     var arrayDeck:[DTCard]?
@@ -77,25 +77,25 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         self.navigationItem.rightBarButtonItems = [showButton!, viewButton!]
         
         if let value = NSUserDefaults.standardUserDefaults().stringForKey(kCardViewMode) {
-            if value == CardViewMode.ByList.description {
-                self.viewMode = CardViewMode.ByList
+            if value == kCardViewModeList {
+                self.viewMode = kCardViewModeList
                 self.showTableView()
                 
-            } else if value == CardViewMode.ByGrid2x2.description {
-                self.viewMode = CardViewMode.ByGrid2x2
+            } else if value == kCardViewModeGrid2x2 {
+                self.viewMode = kCardViewModeGrid2x2
                 self.showGridView()
                 
-            } else if value == CardViewMode.ByGrid3x3.description {
-                self.viewMode = CardViewMode.ByGrid3x3
+            } else if value == kCardViewModeGrid3x3 {
+                self.viewMode = kCardViewModeGrid3x3
                 self.showGridView()
                 
             } else {
-                self.viewMode = CardViewMode.ByList
+                self.viewMode = kCardViewModeList
                 self.showTableView()
             }
             
         } else {
-            self.viewMode = CardViewMode.ByList
+            self.viewMode = kCardViewModeList
             self.showTableView()
         }
         
@@ -122,44 +122,38 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     func viewButtonTapped() {
-        let viewOptions = [CardViewMode.ByList.description,
-            CardViewMode.ByGrid2x2.description,
-            CardViewMode.ByGrid3x3.description]
         var initialSelection = 0
         
-        switch self.viewMode! {
-        case .ByList:
+        if self.viewMode == kCardViewModeList {
             initialSelection = 0
-        case .ByGrid2x2:
+        } else if self.viewMode == kCardViewModeGrid2x2 {
             initialSelection = 1
-        case .ByGrid3x3:
+        } else if self.viewMode == kCardViewModeGrid3x3 {
             initialSelection = 2
-        default:
-            break
         }
         
         let doneBlock = { (picker: ActionSheetStringPicker?, selectedIndex: NSInteger, selectedValue: AnyObject?) -> Void in
             
             switch selectedIndex {
             case 0:
-                self.viewMode = .ByList
+                self.viewMode = kCardViewModeList
                 self.showTableView()
             case 1:
-                self.viewMode = .ByGrid2x2
+                self.viewMode = kCardViewModeGrid2x2
                 self.showGridView()
             case 2:
-                self.viewMode = .ByGrid3x3
+                self.viewMode = kCardViewModeGrid3x3
                 self.showGridView()
             default:
                 break
             }
             
-            NSUserDefaults.standardUserDefaults().setObject(self.viewMode!.description, forKey: kCardViewMode)
+            NSUserDefaults.standardUserDefaults().setObject(self.viewMode, forKey: kCardViewMode)
             NSUserDefaults.standardUserDefaults().synchronize()
         }
         
         ActionSheetStringPicker.showPickerWithTitle("View As",
-            rows: viewOptions,
+            rows: [kCardViewModeList, kCardViewModeGrid2x2, kCardViewModeGrid3x3],
             initialSelection: initialSelection,
             doneBlock: doneBlock,
             cancelBlock: nil,
@@ -193,11 +187,13 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
                 break
             }
             
-            switch self.viewMode! {
-            case .ByList:
+            if self.viewMode == kCardViewModeList {
                 self.tblHand!.reloadData()
-            case .ByGrid2x2, .ByGrid3x3:
+            } else if self.viewMode == kCardViewModeGrid2x2 ||
+                self.viewMode == kCardViewModeGrid3x3 {
                 self.colHand!.reloadData()
+            } else if self.viewMode == kCardViewModeGrid3x3 {
+                initialSelection = 2
             }
         }
         
@@ -223,11 +219,11 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
 
         self.showMode = StartingHandShowMode.ByHand
         
-        switch viewMode! {
-        case .ByList:
+        if self.viewMode == kCardViewModeList {
             tblHand!.reloadData()
-        case .ByGrid2x2, .ByGrid3x3:
-            colHand!.reloadData()
+        } else if self.viewMode == kCardViewModeGrid2x2 ||
+            self.view == kCardViewModeGrid3x3 {
+                colHand!.reloadData()
         }
     }
     
@@ -253,11 +249,11 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         self.drawCards(initialHand)
         self.showMode = StartingHandShowMode.ByHand
         
-        switch viewMode! {
-        case .ByList:
+        if self.viewMode == kCardViewModeList {
             tblHand!.reloadData()
-        case .ByGrid2x2, .ByGrid3x3:
-            colHand!.reloadData()
+        } else if self.viewMode == kCardViewModeGrid2x2 ||
+            self.view == kCardViewModeGrid3x3 {
+                colHand!.reloadData()
         }
     }
     
@@ -268,11 +264,11 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         self.drawCards(1)
         self.showMode = StartingHandShowMode.ByHand
         
-        switch viewMode! {
-        case .ByList:
+        if self.viewMode == kCardViewModeList {
             tblHand!.reloadData()
-        case .ByGrid2x2, .ByGrid3x3:
-            colHand!.reloadData()
+        } else if self.viewMode == kCardViewModeGrid2x2 ||
+            self.view == kCardViewModeGrid3x3{
+                colHand!.reloadData()
         }
     }
     
@@ -292,7 +288,7 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
             colHand!.removeFromSuperview()
         }
         view.addSubview(tblHand!)
-        viewButton!.title = self.viewMode!.description
+        viewButton!.title = self.viewMode
     }
     
     func showGridView() {
@@ -301,7 +297,7 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         let dWidth = self.view.frame.size.width
         let dHeight = self.view.frame.size.height-dY-44
         let frame = CGRect(x:dX, y:dY, width:dWidth, height:dHeight)
-        let divisor:CGFloat = viewMode == CardViewMode.ByGrid2x2 ? 2 : 3
+        let divisor:CGFloat = viewMode == kCardViewModeGrid2x2 ? 2 : 3
         
         let layout = CSStickyHeaderFlowLayout()
         layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
@@ -321,7 +317,7 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
             tblHand!.removeFromSuperview()
         }
         view.addSubview(colHand!)
-        viewButton!.title = self.viewMode!.description
+        viewButton!.title = self.viewMode
     }
     
     func initDeck() {
@@ -394,11 +390,11 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         let card = arrayHand!.removeAtIndex(index)
         arrayGraveyard!.append(card)
         
-        switch viewMode! {
-        case .ByList:
+        if self.viewMode == kCardViewModeList {
             tblHand!.reloadData()
-        case .ByGrid2x2, .ByGrid3x3:
-            colHand!.reloadData()
+        } else if self.viewMode == kCardViewModeGrid2x2 ||
+            self.view == kCardViewModeGrid3x3{
+                colHand!.reloadData()
         }
     }
     

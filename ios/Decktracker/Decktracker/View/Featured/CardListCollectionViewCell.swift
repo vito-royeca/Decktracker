@@ -74,8 +74,8 @@ class CardListCollectionViewCell: UICollectionViewCell {
     }
     
     func loadCardImage(sender: AnyObject) {
-        let dict = sender.userInfo as Dictionary?
-        let card = dict?["card"] as DTCard
+        let dict = sender.userInfo as! Dictionary
+        let card = dict["card"] as! DTCard
         
         if (self.card == card) {
             let path = FileManager.sharedInstance().cardPath(card)

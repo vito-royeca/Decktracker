@@ -8,19 +8,19 @@
 
 import UIKit
 
-enum CardViewMode: Printable  {
-    case ByList
-    case ByGrid2x2
-    case ByGrid3x3
-    
-    var description : String {
-        switch self {
-        case ByList: return "List"
-        case ByGrid2x2: return "2x2"
-        case ByGrid3x3: return "3x3"
-        }
-    }
-}
+//enum CardViewMode: Printable  {
+//    case ByList
+//    case ByGrid2x2
+//    case ByGrid3x3
+//    
+//    var description : String {
+//        switch self {
+//        case ByList: return "List"
+//        case ByGrid2x2: return "2x2"
+//        case ByGrid3x3: return "3x3"
+//        }
+//    }
+//}
 
 enum CardSortMode: Printable  {
     case ByName
@@ -53,7 +53,7 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
     var arrayData:[AnyObject]?
     var predicate:NSPredicate?
     var sorters:[NSSortDescriptor]?
-    var viewMode:CardViewMode?
+    var viewMode:String?
     var sortMode:CardSortMode?
     var sectionName:String?
     var viewLoadedOnce = true
@@ -76,25 +76,25 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
         navigationItem.rightBarButtonItems = [sortButton!, viewButton!]
         
         if let value = NSUserDefaults.standardUserDefaults().stringForKey(kCardViewMode) {
-            if value == CardViewMode.ByList.description {
-                self.viewMode = CardViewMode.ByList
+            if value == kCardViewModeList {
+                self.viewMode = kCardViewModeList
                 self.showTableView()
                 
-            } else if value == CardViewMode.ByGrid2x2.description {
-                self.viewMode = CardViewMode.ByGrid2x2
+            } else if value == kCardViewModeGrid2x2 {
+                self.viewMode = kCardViewModeGrid2x2
                 self.showGridView()
                 
-            } else if value == CardViewMode.ByGrid3x3.description {
-                self.viewMode = CardViewMode.ByGrid3x3
+            } else if value == kCardViewModeGrid3x3 {
+                self.viewMode = kCardViewModeGrid3x3
                 self.showGridView()
                 
             } else {
-                self.viewMode = CardViewMode.ByList
+                self.viewMode = kCardViewModeList
                 self.showTableView()
             }
             
         } else {
-            self.viewMode = CardViewMode.ByList
+            self.viewMode = kCardViewModeList
             self.showTableView()
         }
         
@@ -117,45 +117,39 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
     }
 
     func viewButtonTapped() {
-        let viewOptions = [CardViewMode.ByList.description,
-                           CardViewMode.ByGrid2x2.description,
-                           CardViewMode.ByGrid3x3.description]
         var initialSelection = 0
         
-        switch self.viewMode! {
-        case .ByList:
+        if self.viewMode == kCardViewModeList {
             initialSelection = 0
-        case .ByGrid2x2:
+        } else if self.viewMode == kCardViewModeGrid2x2 {
             initialSelection = 1
-        case .ByGrid3x3:
+        } else if self.viewMode == kCardViewModeGrid3x3 {
             initialSelection = 2
-        default:
-            break
         }
         
         let doneBlock = { (picker: ActionSheetStringPicker?, selectedIndex: NSInteger, selectedValue: AnyObject?) -> Void in
             
             switch selectedIndex {
             case 0:
-                self.viewMode = .ByList
+                self.viewMode = kCardViewModeList
                 self.showTableView()
             case 1:
-                self.viewMode = .ByGrid2x2
+                self.viewMode = kCardViewModeGrid2x2
                 self.showGridView()
             case 2:
-                self.viewMode = .ByGrid3x3
+                self.viewMode = kCardViewModeGrid3x3
                 self.showGridView()
             default:
                 break
             }
             
-            NSUserDefaults.standardUserDefaults().setObject(self.viewMode!.description, forKey: kCardViewMode)
+            NSUserDefaults.standardUserDefaults().setObject(self.viewMode, forKey: kCardViewMode)
             NSUserDefaults.standardUserDefaults().synchronize()
             self.loadData()
         }
         
         ActionSheetStringPicker.showPickerWithTitle("View As",
-            rows: viewOptions,
+            rows: [kCardViewModeList, kCardViewModeGrid2x2, kCardViewModeGrid3x3],
             initialSelection: initialSelection,
             doneBlock: doneBlock,
             cancelBlock: nil,
@@ -275,10 +269,10 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
             }
         }
         
-        switch viewMode! {
-        case .ByList:
+        if self.viewMode == kCardViewModeList {
             tblSets!.reloadData()
-        case .ByGrid2x2, .ByGrid3x3:
+        } else if self.viewMode == kCardViewModeGrid2x2 ||
+            self.viewMode == kCardViewModeGrid3x3 {
             colSets!.reloadData()
         }
     }
@@ -297,13 +291,13 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
             colSets!.removeFromSuperview()
         }
         view.addSubview(tblSets!)
-        viewButton!.title = self.viewMode!.description
+        viewButton!.title = self.viewMode
     }
     
     func showGridView() {
         let y = viewLoadedOnce ? 0 : UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height
         let height = view.frame.size.height - y
-        let divisor:CGFloat = viewMode == CardViewMode.ByGrid2x2 ? 2 : 3
+        let divisor:CGFloat = viewMode == kCardViewModeGrid2x2 ? 2 : 3
         var frame = CGRect(x:0, y:y, width:view.frame.width, height:height)
         
         
@@ -325,7 +319,7 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
             tblSets!.removeFromSuperview()
         }
         view.addSubview(colSets!)
-        viewButton!.title = self.viewMode!.description
+        viewButton!.title = self.viewMode
     }
     
     override func didReceiveMemoryWarning() {

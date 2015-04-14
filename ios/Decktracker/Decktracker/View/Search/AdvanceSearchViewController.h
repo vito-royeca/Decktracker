@@ -10,7 +10,7 @@
 
 #import "MBProgressHUD.h"
 
-@interface AdvanceSearchViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, MBProgressHUDDelegate>
+@interface AdvanceSearchViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, MBProgressHUDDelegate>
 
 @property(strong,nonatomic) NSMutableArray *arrAdvanceSearches;
 @property(strong,nonatomic) NSFetchedResultsController *fetchedResultsController;

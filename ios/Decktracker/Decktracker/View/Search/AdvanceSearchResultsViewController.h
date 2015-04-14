@@ -10,14 +10,7 @@
 
 #import "Constants.h"
 
-typedef NS_ENUM(NSInteger, AdvanceSearchResultsViewMode)
-{
-    AdvanceSearchResultsViewModeByList,
-    AdvanceSearchResultsViewModeByGrid2x2,
-    AdvanceSearchResultsViewModeByGrid3x3
-};
-
-@interface AdvanceSearchResultsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, NSFetchedResultsControllerDelegate, UIAlertViewDelegate>
+@interface AdvanceSearchResultsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, NSFetchedResultsControllerDelegate>
 
 @property(strong,nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property(strong,nonatomic) UIBarButtonItem *btnView;

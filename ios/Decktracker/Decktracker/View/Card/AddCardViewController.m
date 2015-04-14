@@ -29,24 +29,6 @@
     Collection *_currentCollection;
 }
 
-@synthesize segmentedControl = _segmentedControl;
-@synthesize tblAddTo = _tblAddTo;
-@synthesize btnCancel = _btnCancel;
-@synthesize btnDone = _btnDone;
-@synthesize btnShowCard = _btnShowCard;
-@synthesize btnCreate = _btnCreate;
-@synthesize bottomToolbar = _bottomToolbar;
-
-@synthesize card = _card;
-@synthesize arrDecks = _arrDecks;
-@synthesize arrCollections = _arrCollections;
-
-@synthesize segmentedControlIndex = _segmentedControlIndex;
-@synthesize selectedDeckIndex = _selectedDeckIndex;
-@synthesize selectedCollectionIndex = _selectedCollectionIndex;
-@synthesize createButtonVisible = _createButtonVisible;
-@synthesize showCardButtonVisible = _showCardButtonVisible;
-
 -(void) setCard:(DTCard *)card
 {
     _card = card;
@@ -234,28 +216,80 @@
     {
         case 0:
         {
-            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Create New Deck"
-                                                             message:nil
-                                                            delegate:self
-                                                   cancelButtonTitle:@"Cancel"
-                                                   otherButtonTitles:@"OK", nil];
-            alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-            [alert textFieldAtIndex:0].text = @"New Deck Name";
-            alert.tag = 0;
-            [alert show];
+            void (^handler)(UIAlertController*) = ^void(UIAlertController *alert) {
+                NSDictionary *dict = @{@"name" : [((UITextField*)[alert.textFields firstObject]) text],
+                                       @"format" : @"Standard",
+                                       @"mainBoard" : @[],
+                                       @"sideBoard" : @[]};
+                [[FileManager sharedInstance] saveData:dict
+                                                atPath:[NSString stringWithFormat:@"/Decks/%@.json", dict[@"name"]]];
+                self.arrDecks = [[NSMutableArray alloc] init];
+                for (NSString *file in [[FileManager sharedInstance] listFilesAtPath:@"/Decks"
+                                                                      fromFileSystem:FileSystemLocal])
+                {
+                    [self.arrDecks addObject:[file stringByDeletingPathExtension]];
+                }
+                self.selectedDeckIndex = (int)[self.arrDecks indexOfObject:dict[@"name"]];
+                [self loadCurrentDeck];
+                
+#ifndef DEBUG
+                // send to Google Analytics
+                id tracker = [[GAI sharedInstance] defaultTracker];
+                [tracker send:[[GAIDictionaryBuilder createEventWithCategory:self.navigationItem.title
+                                                                      action:nil
+                                                                       label:@"New Deck"
+                                                                       value:nil] build]];
+#endif
+            };
+            
+            void (^textFieldHandler)(UITextField*) = ^void(UITextField *textField) {
+                textField.text = @"New Deck Name";
+            };
+            
+            [JJJUtil alertWithTitle:@"Create New Deck"
+                           message:nil
+                 cancelButtonTitle:@"Cancel"
+                 otherButtonTitles:@{@"Ok": handler}
+                 textFieldHandlers:@[textFieldHandler]];
+            
             break;
         }
         case 1:
         {
-            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Create New Collections"
-                                                             message:nil
-                                                            delegate:self
-                                                   cancelButtonTitle:@"Cancel"
-                                                   otherButtonTitles:@"OK", nil];
-            alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-            [alert textFieldAtIndex:0].text = @"New Collection Name";
-            alert.tag = 1;
-            [alert show];
+            void (^handler)(UIAlertController*) = ^void(UIAlertController *alert) {
+                NSDictionary *dict = @{@"name" : [((UITextField*)[alert.textFields firstObject]) text],
+                                       @"regular" : @[],
+                                       @"foiled" : @[]};
+                [[FileManager sharedInstance] saveData:dict atPath:[NSString stringWithFormat:@"/Collections/%@.json", dict[@"name"]]];
+                self.arrCollections = [[NSMutableArray alloc] init];
+                for (NSString *file in [[FileManager sharedInstance] listFilesAtPath:@"/Collections"
+                                                                      fromFileSystem:FileSystemLocal])
+                {
+                    [self.arrCollections addObject:[file stringByDeletingPathExtension]];
+                }
+                self.selectedCollectionIndex = (int)[self.arrCollections indexOfObject:dict[@"name"]];
+                [self loadCurrentCollection];
+                
+#ifndef DEBUG
+                // send to Google Analytics
+                id tracker = [[GAI sharedInstance] defaultTracker];
+                [tracker send:[[GAIDictionaryBuilder createEventWithCategory:self.navigationItem.title
+                                                                      action:nil
+                                                                       label:@"New Collections"
+                                                                       value:nil] build]];
+#endif
+            };
+            
+            void (^textFieldHandler)(UITextField*) = ^void(UITextField *textField) {
+                textField.text = @"New Collection Name";
+            };
+            
+            [JJJUtil alertWithTitle:@"Create New Collections"
+                            message:nil
+                  cancelButtonTitle:@"Cancel"
+                  otherButtonTitles:@{@"Ok": handler}
+                  textFieldHandlers:@[textFieldHandler]];
+            
             break;
         }
     }
@@ -634,12 +668,8 @@
         {
             if (!_currentDeck || self.selectedDeckIndex < 0)
             {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                message:@"You may need to create one Deck or select a Deck from the list."
-                                                               delegate:nil
-                                                      cancelButtonTitle:@"Ok"
-                                                      otherButtonTitles:nil];
-                [alert show];
+                [JJJUtil alertWithTitle:@"Error"
+                             andMessage:@"You may need to create one Deck or select a Deck from the list."];
             }
             else
             {
@@ -671,12 +701,8 @@
         {
             if (!_currentCollection || self.selectedCollectionIndex < 0)
             {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                message:@"You may need to create one Collection or select a Collection from the list."
-                                                               delegate:nil
-                                                      cancelButtonTitle:@"Ok"
-                                                      otherButtonTitles:nil];
-                [alert show];
+                [JJJUtil alertWithTitle:@"Error"
+                             andMessage:@"You may need to create one Collection or select a Collection from the list."];
             }
             else
             {
@@ -716,65 +742,6 @@
     self.segmentedControlIndex = 1;
     self.btnCreate.title = @"Create Collections";
     [self loadCurrentCollection];
-}
-
-#pragma mark - UIAlertViewDelegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 1)
-    {
-        if (alertView.tag == 0)
-        {
-            NSDictionary *dict = @{@"name" : [[alertView textFieldAtIndex:0] text],
-                                   @"format" : @"Standard",
-                                   @"mainBoard" : @[],
-                                   @"sideBoard" : @[]};
-            [[FileManager sharedInstance] saveData:dict
-                                            atPath:[NSString stringWithFormat:@"/Decks/%@.json", dict[@"name"]]];
-            self.arrDecks = [[NSMutableArray alloc] init];
-            for (NSString *file in [[FileManager sharedInstance] listFilesAtPath:@"/Decks"
-                                                                  fromFileSystem:FileSystemLocal])
-            {
-                [self.arrDecks addObject:[file stringByDeletingPathExtension]];
-            }
-            self.selectedDeckIndex = (int)[self.arrDecks indexOfObject:dict[@"name"]];
-            [self loadCurrentDeck];
-            
-#ifndef DEBUG
-            // send to Google Analytics
-            id tracker = [[GAI sharedInstance] defaultTracker];
-            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:self.navigationItem.title
-                                                                  action:nil
-                                                                   label:@"New Deck"
-                                                                   value:nil] build]];
-#endif
-        }
-        
-        else if (alertView.tag == 1)
-        {
-            NSDictionary *dict = @{@"name" : [[alertView textFieldAtIndex:0] text],
-                                   @"regular" : @[],
-                                   @"foiled" : @[]};
-            [[FileManager sharedInstance] saveData:dict atPath:[NSString stringWithFormat:@"/Collections/%@.json", dict[@"name"]]];
-            self.arrCollections = [[NSMutableArray alloc] init];
-            for (NSString *file in [[FileManager sharedInstance] listFilesAtPath:@"/Collections"
-                                                                  fromFileSystem:FileSystemLocal])
-            {
-                [self.arrCollections addObject:[file stringByDeletingPathExtension]];
-            }
-            self.selectedCollectionIndex = (int)[self.arrCollections indexOfObject:dict[@"name"]];
-            [self loadCurrentCollection];
-            
-#ifndef DEBUG
-            // send to Google Analytics
-            id tracker = [[GAI sharedInstance] defaultTracker];
-            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:self.navigationItem.title
-                                                                  action:nil
-                                                                   label:@"New Collections"
-                                                                   value:nil] build]];
-#endif
-        }
-    }
 }
 
 @end

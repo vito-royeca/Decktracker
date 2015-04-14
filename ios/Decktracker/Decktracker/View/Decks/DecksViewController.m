@@ -138,60 +138,48 @@
 
 -(void) btnAddTapped:(id) sender
 {
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Create New Deck"
-                                                     message:nil
-                                                    delegate:self
-                                           cancelButtonTitle:@"Cancel"
-                                           otherButtonTitles:@"OK", nil];
-    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-    [alert textFieldAtIndex:0].text = @"New Deck Name";
-    alert.tag = 0;
-    [alert show];
+    void (^handler)(UIAlertController*) = ^void(UIAlertController *alert) {
+        
+        NSDictionary *dict = @{@"name" : [((UITextField*)[[alert textFields] firstObject]) text],
+                               @"mainBoard" : @[],
+                               @"sideBoard" : @[]};
+        Deck *deck = [[Deck alloc] initWithDictionary:dict];
+        [deck save:[NSString stringWithFormat:@"/Decks/%@.json", dict[@"name"]]];
+        [self.arrDecks addObject:deck];
+        NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"name"  ascending:YES];
+        NSArray *arrSorted = [self.arrDecks sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
+        self.arrDecks = [[NSMutableArray alloc] initWithArray:arrSorted];
+        _selectedRow = [self.arrDecks indexOfObject:deck];
+        
+        DeckDetailsViewController *view = [[DeckDetailsViewController alloc] init];
+        view.deck = deck;
+        
+#ifndef DEBUG
+        // send to Google Analytics
+        id tracker = [[GAI sharedInstance] defaultTracker];
+        [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Decks"
+                                                              action:nil
+                                                               label:@"New Deck"
+                                                               value:nil] build]];
+#endif
+        [self.navigationController pushViewController:view animated:YES];
+    };
+    
+    void (^textFieldHandler)(UITextField*) = ^void(UITextField *textField) {
+        textField.text = @"New Deck Name";
+    };
+    
+    [JJJUtil alertWithTitle:@"Create New Deck"
+                    message:nil
+          cancelButtonTitle:@"Cancel"
+          otherButtonTitles:@{@"Ok": handler}
+          textFieldHandlers:@[textFieldHandler]];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-#pragma mark - UIAlertViewDelegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 1)
-    {
-        if (alertView.tag == 0)
-        {
-            NSDictionary *dict = @{@"name" : [[alertView textFieldAtIndex:0] text],
-                                   @"mainBoard" : @[],
-                                   @"sideBoard" : @[]};
-            Deck *deck = [[Deck alloc] initWithDictionary:dict];
-            [deck save:[NSString stringWithFormat:@"/Decks/%@.json", dict[@"name"]]];
-            [self.arrDecks addObject:deck];
-            NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"name"  ascending:YES];
-            NSArray *arrSorted = [self.arrDecks sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
-            self.arrDecks = [[NSMutableArray alloc] initWithArray:arrSorted];
-            _selectedRow = [self.arrDecks indexOfObject:deck];
-            
-            DeckDetailsViewController *view = [[DeckDetailsViewController alloc] init];
-            view.deck = deck;
-            
-#ifndef DEBUG
-            // send to Google Analytics
-            id tracker = [[GAI sharedInstance] defaultTracker];
-            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Decks"
-                                                                  action:nil
-                                                                   label:@"New Deck"
-                                                                   value:nil] build]];
-#endif
-            [self.navigationController pushViewController:view animated:YES];
-        }
-        
-        else if (alertView.tag == 1)
-        {
-            [self deleteDeck];
-        }
-    }
 }
 
 #pragma - mark UITableViewDataSource
@@ -248,13 +236,17 @@
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
         Deck *deck = self.arrDecks[_selectedRow];
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Delete Deck"
-                                                        message:[NSString stringWithFormat:@"Are you sure you want to delete %@?", deck.name]
-                                                       delegate:self
-                                              cancelButtonTitle:@"No"
-                                              otherButtonTitles:@"Yes", nil];
-        alert.tag = 1;
-        [alert show];
+        
+        void (^handler)(UIAlertController*) = ^void(UIAlertController *alert) {
+            
+            [self deleteDeck];
+        };
+        
+        [JJJUtil alertWithTitle:@"Delete Deck"
+                        message:[NSString stringWithFormat:@"Are you sure you want to delete %@?", deck.name]
+              cancelButtonTitle:@"No"
+              otherButtonTitles:@{@"Yes": handler}
+              textFieldHandlers:nil];
     }
 }
 

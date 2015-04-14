@@ -72,6 +72,6 @@ class UserAccountViewController: UIViewController {
     }
     
     func loadUser() {
-        self.nameLabel!.text = NSUserDefaults.standardUserDefaults().valueForKey("User_FullName") as String?
+//        self.nameLabel!.text = NSUserDefaults.standardUserDefaults().stringForKey("User_FullName") as String!
     }
 }

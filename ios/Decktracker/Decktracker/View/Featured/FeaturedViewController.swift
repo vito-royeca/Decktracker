@@ -75,7 +75,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
     func loadData() {
         arrayData = [[String: [AnyObject]]]()
         
-        let arrRandom = Database.sharedInstance().fetchRandomCards(6, withPredicate: nil, includeInAppPurchase: false) as [DTCard]
+        let arrRandom = Database.sharedInstance().fetchRandomCards(6, withPredicate: nil, includeInAppPurchase: false) as [DTCard]!
         var array:[DTCard] = Array()
         array.append(arrRandom.last!)
         for card in arrRandom {
@@ -85,13 +85,13 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         arrayData!.append(["Random": array])
         arrayData!.append(["Top Rated": [DTCard]()])
         arrayData!.append(["Top Viewed": [DTCard]()])
-        arrayData!.append(["Sets": Database.sharedInstance().fetchSets(10) as [DTSet]])
+        arrayData!.append(["Sets": Database.sharedInstance().fetchSets(10) as [DTSet]!])
         
         for dict in arrayData! {
             for (key,value) in dict {
                 for x in value {
                     if x.isKindOfClass(DTCard.classForCoder()) {
-                        FileManager.sharedInstance().downloadCardImage(x as DTCard, immediately:false)
+                        FileManager.sharedInstance().downloadCardImage(x as DTCard!, immediately:false)
                     }
                 }
             }
@@ -108,7 +108,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func reloadTable(sender: AnyObject, key: String) {
-        let notif = sender as NSNotification
+        let notif = sender as! NSNotification
         let dict = notif.userInfo as [String: [AnyObject]]
         let cards = dict["data"]! as [AnyObject]
         let newRow = [key: cards]

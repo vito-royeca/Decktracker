@@ -307,12 +307,7 @@
 #pragma mark - InAppPurchaseDelegate
 -(void) productPurchaseFailed:(InAppPurchase*) inAppPurchase withMessage:(NSString*) message
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message"
-                                                    message:message
-                                                   delegate:nil
-                                          cancelButtonTitle:@"Ok"
-                                          otherButtonTitles:nil];
-    [alert show];
+    [JJJUtil alertWithTitle:@"Message" andMessage:message];
 }
 
 -(void) purchaseRestoreSucceeded:(InAppPurchase*) inAppPurchase withMessage:(NSString*) message
@@ -327,12 +322,7 @@
     self.appSettingsViewController.hiddenKeys = [self hiddenKeys];
     [self.appSettingsViewController.tableView reloadData];
     
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message"
-                                                    message:message
-                                                   delegate:nil
-                                          cancelButtonTitle:@"Ok"
-                                          otherButtonTitles:nil];
-    [alert show];
+    [JJJUtil alertWithTitle:@"Message" andMessage:message];
     
 #ifndef DEBUG
     id tracker = [[GAI sharedInstance] defaultTracker];
@@ -345,12 +335,7 @@
 
 -(void) purchaseRestoreFailed:(InAppPurchase*) inAppPurchase withMessage:(NSString*) message
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message"
-                                                    message:message
-                                                   delegate:nil
-                                          cancelButtonTitle:@"Ok"
-                                          otherButtonTitles:nil];
-    [alert show];
+    [JJJUtil alertWithTitle:@"Message" andMessage:message];
 }
 
 #pragma mark - PFLogInViewControllerDelegate

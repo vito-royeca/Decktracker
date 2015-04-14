@@ -160,12 +160,7 @@
 {
     if (self.dictCurrentQuery.count == 0)
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"Select at least one filter."
-                                                       delegate:nil
-                                              cancelButtonTitle:@"Ok"
-                                              otherButtonTitles:nil];
-        [alert show];
+        [JJJUtil alertWithTitle:@"Error" andMessage:@"Select at least one filter"];
     }
     else
     {

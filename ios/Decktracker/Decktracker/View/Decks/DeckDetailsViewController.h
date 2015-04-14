@@ -14,13 +14,6 @@
 #import "IASKAppSettingsViewController.h"
 #import "InAppPurchaseViewController.h"
 
-typedef NS_ENUM(NSInteger, DeckDetailsViewMode)
-{
-    DeckDetailsViewModeByList,
-    DeckDetailsViewModeByGrid2x2,
-    DeckDetailsViewModeByGrid3x3
-};
-
 @interface DeckDetailsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UITextViewDelegate, IASKSettingsDelegate, InAppPurchaseViewControllerDelegate>
 
 @property(strong,nonatomic) UIBarButtonItem *btnBack;
