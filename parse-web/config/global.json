@@ -1,0 +1,14 @@
+{
+  "global": {
+    "parseVersion": "1.4.2"
+  },
+  "applications": {
+    "Decktracker": {
+      "applicationId": "gWQ4zjHnoXHJK15ipFVgWLUSA979mqHaZ7sOlPU9",
+      "masterKey": "DqvzigSDFcu4Di6M2A4wZsn6vxOkDczROc7HJP73"
+    },
+    "_default": {
+      "link": "Decktracker"
+    }
+  }
+}

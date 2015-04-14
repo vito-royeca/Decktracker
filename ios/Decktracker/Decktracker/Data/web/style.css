@@ -19,6 +19,15 @@ html, body
     bottom: 0;
 }
 
+.td_circle
+{
+    width:393px;
+    height:400px;
+    background-image: url('../images/Card_Circles.png');
+    background-repeat:no-repeat;
+    background-size:393px 400px;
+}
+
 @font-face
 {
     font-family: Magic;
