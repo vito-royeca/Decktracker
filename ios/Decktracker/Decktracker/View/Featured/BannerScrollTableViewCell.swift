@@ -41,7 +41,7 @@ class BannerScrollTableViewCell: UITableViewCell {
     func showSlide() {
         if (collectionView.indexPathsForVisibleItems().count > 0)
         {
-            let indexPath = collectionView.indexPathsForVisibleItems()[0] as NSIndexPath
+            let indexPath = collectionView.indexPathsForVisibleItems()[0] as! NSIndexPath
             let rows = collectionView.dataSource?.collectionView(collectionView, numberOfItemsInSection: 0)
             var row = indexPath.row
             var newIndexPath:NSIndexPath?

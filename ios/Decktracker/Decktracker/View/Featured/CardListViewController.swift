@@ -70,6 +70,8 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
+        hidesBottomBarWhenPushed = true
+        
         viewButton = UIBarButtonItem(title: "List", style: UIBarButtonItemStyle.Plain, target: self, action: "viewButtonTapped")
         sortButton = UIBarButtonItem(image: UIImage(named: "generic_sorting.png"), style: UIBarButtonItemStyle.Plain, target: self, action: "sortButtonTapped")
         
@@ -103,7 +105,6 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
 
         self.loadData()
         self.viewLoadedOnce = false
-        
 #if !DEBUG
         // send the screen to Google Analytics
         let tracker = GAI.sharedInstance().defaultTracker
@@ -112,10 +113,6 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
 #endif
     }
     
-    func hidesBottomBarWhenPushed() -> Bool {
-        return true
-    }
-
     func viewButtonTapped() {
         var initialSelection = 0
         
@@ -250,7 +247,7 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
         sections = [String: [AnyObject]]()
         sectionIndexTitles = [String]()
         
-        for sectionInfo in fetchedResultsController.sections as [NSFetchedResultsSectionInfo]! {
+        for sectionInfo in fetchedResultsController.sections as! [NSFetchedResultsSectionInfo]! {
             if self.sortMode != .ByPrice {
                 let name = sectionInfo.name
                 
@@ -333,14 +330,14 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let sectionInfos = fetchedResultsController.sections as [NSFetchedResultsSectionInfo]?
-        let sectionInfo = sectionInfos![section]
+        let sectionInfos = fetchedResultsController.sections as! [NSFetchedResultsSectionInfo]
+        let sectionInfo = sectionInfos[section]
         return sectionInfo.numberOfObjects
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        let sectionInfos = fetchedResultsController.sections as [NSFetchedResultsSectionInfo]?
-        return sectionInfos!.count
+        let sectionInfos = fetchedResultsController.sections as! [NSFetchedResultsSectionInfo]
+        return sectionInfos.count
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -348,7 +345,7 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
             return nil
             
         } else {
-            let sectionInfos = fetchedResultsController.sections as [NSFetchedResultsSectionInfo]
+            let sectionInfos = fetchedResultsController.sections as! [NSFetchedResultsSectionInfo]
             let sectionInfo = sectionInfos[section]
             let cardsString = sectionInfo.numberOfObjects > 1 ? "cards" : "card"
             let name = sectionInfo.name
@@ -382,10 +379,12 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let card = fetchedResultsController.objectAtIndexPath(indexPath) as DTCard
-        var cell = tableView.dequeueReusableCellWithIdentifier(kSearchResultsIdentifier) as SearchResultsTableViewCell?
-
-        if cell == nil {
+        let card = fetchedResultsController.objectAtIndexPath(indexPath) as! DTCard
+        let cell:SearchResultsTableViewCell?
+        
+        if let x = tableView.dequeueReusableCellWithIdentifier(kSearchResultsIdentifier) as? SearchResultsTableViewCell {
+            cell = x
+        } else {
             cell = SearchResultsTableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: kSearchResultsIdentifier)
         }
         
@@ -397,7 +396,7 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let card = fetchedResultsController.objectAtIndexPath(indexPath) as DTCard
+        let card = fetchedResultsController.objectAtIndexPath(indexPath) as! DTCard
         
         let dict = Database.sharedInstance().inAppSettingsForSet(card.set)
         if dict != nil {
@@ -414,19 +413,19 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
     
 //    MARK: UICollectionViewDataSource
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        let sectionInfos = fetchedResultsController.sections as [NSFetchedResultsSectionInfo]?
-        return sectionInfos!.count
+        let sectionInfos = fetchedResultsController.sections as! [NSFetchedResultsSectionInfo]
+        return sectionInfos.count
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let sectionInfos = fetchedResultsController.sections as [NSFetchedResultsSectionInfo]?
-        let sectionInfo = sectionInfos![section]
+        let sectionInfos = fetchedResultsController.sections as! [NSFetchedResultsSectionInfo]
+        let sectionInfo = sectionInfos[section]
         return sectionInfo.numberOfObjects
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let card = fetchedResultsController.objectAtIndexPath(indexPath) as DTCard
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Card", forIndexPath: indexPath) as CardListCollectionViewCell
+        let card = fetchedResultsController.objectAtIndexPath(indexPath) as! DTCard
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Card", forIndexPath: indexPath) as! CardListCollectionViewCell
 
         cell.displayCard(card)
         return cell
@@ -440,7 +439,7 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
             if (self.sortMode == CardSortMode.ByPrice) {
                 
             } else {
-                let sectionInfos = fetchedResultsController.sections as [NSFetchedResultsSectionInfo]
+                let sectionInfos = fetchedResultsController.sections as! [NSFetchedResultsSectionInfo]
                 let sectionInfo = sectionInfos[indexPath.section]
                 let cardsString = sectionInfo.numberOfObjects > 1 ? "cards" : "card"
                 let name = sectionInfo.name
@@ -465,7 +464,7 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
 
 //    MARK: UICollectionViewDelegate
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let card = fetchedResultsController.objectAtIndexPath(indexPath) as DTCard
+        let card = fetchedResultsController.objectAtIndexPath(indexPath) as! DTCard
         
         let dict = Database.sharedInstance().inAppSettingsForSet(card.set)
         if dict != nil {
@@ -497,8 +496,8 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
             tblSets!.deleteRowsAtIndexPaths(paths, withRowAnimation:UITableViewRowAnimation.Fade)
             
         case NSFetchedResultsChangeType.Update:
-            let card = fetchedResultsController.objectAtIndexPath(indexPath!) as DTCard
-            let cell = tblSets!.cellForRowAtIndexPath(indexPath!) as SearchResultsTableViewCell?
+            let card = fetchedResultsController.objectAtIndexPath(indexPath!) as! DTCard
+            let cell = tblSets!.cellForRowAtIndexPath(indexPath!) as! SearchResultsTableViewCell?
             cell?.displayCard(card)
         case NSFetchedResultsChangeType.Move:
             paths.append(indexPath!)

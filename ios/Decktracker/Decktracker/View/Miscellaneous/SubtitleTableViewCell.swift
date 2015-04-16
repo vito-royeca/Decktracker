@@ -92,7 +92,7 @@ class SubtitleTableViewCell: UITableViewCell {
     
     func updateFonts()
     {
-        if bodyLabel.text?.utf16Count > 0 {
+        if count(bodyLabel.text!) > 0 {
             titleLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
         }
         bodyLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption2)

@@ -19,7 +19,7 @@ class SignupViewController: PFSignUpViewController {
         let image = UIImage(named: "\(NSBundle.mainBundle().bundlePath)/images/AppIcon57x57.png")
         var imageView = UIImageView(frame: CGRectMake(0, 0, 57, 57))
         imageView.image = image
-        self.signUpView.logo = imageView
+        self.signUpView!.logo = imageView
         
         self.navigationItem.title = "Signup"
         

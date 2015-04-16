@@ -23,14 +23,14 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
 
-    override init() {
-        super.init()
+    init() {
+        super.init(nibName:nil,bundle:nil)
         
         self.loadTableOfContents()
     }
     
     init(data: [String: [String]], showSections: Bool) {
-        super.init()
+        super.init(nibName:nil,bundle:nil)
         
         self.data = data
         self.showSections = showSections
@@ -55,7 +55,7 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
     }
     
     init(path: String) {
-        super.init()
+        super.init(nibName:nil,bundle:nil)
         
         self.path = path
     }
@@ -133,7 +133,7 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
         }
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView!) -> Int  {
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int  {
         if showSections {
             return Array(sections!.keys).count
         }
@@ -264,7 +264,7 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
                 var number:NSString = value!
                 var range:NSRange = number.rangeOfString(" ")
                 number = number.substringToIndex(range.location-1)
-                let rule = DTComprehensiveRule.MR_findFirstByAttribute("number", withValue:number) as DTComprehensiveRule
+                let rule = DTComprehensiveRule.MR_findFirstByAttribute("number", withValue:number) as! DTComprehensiveRule
                 
                 if rule.children.count == 0 {
                     bWillPush = false
@@ -296,7 +296,7 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
 //    MARK: UIWebViewDelegate
     func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         if navigationType == UIWebViewNavigationType.LinkClicked {
-            UIApplication.sharedApplication().openURL(request.URL)
+            UIApplication.sharedApplication().openURL(request.URL!)
             return false
         
         } else {

@@ -39,6 +39,8 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        hidesBottomBarWhenPushed = true
+        
         let height = view.frame.size.height
         var frame = CGRect(x:0, y:0, width:view.frame.width, height:height)
         
@@ -63,10 +65,6 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
 #endif
     }
     
-    func hidesBottomBarWhenPushed() -> Bool {
-        return true
-    }
-
     func sortButtonTapped() {
         var sortOptions:[String]?
         var initialSelection = 0
@@ -119,7 +117,7 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
             let formatter = NSDateFormatter()
             formatter.dateFormat = "yyyy"
             
-            for set in arrayData! as [DTSet] {
+            for set in arrayData! as! [DTSet] {
                 let keys = Array(sections!.keys)
                 var sets:[DTSet]?
                 
@@ -137,7 +135,7 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
         case .ByName:
             arrayData!.sort{ $0.name < $1.name }
             
-            for set in arrayData! as [DTSet] {
+            for set in arrayData! as! [DTSet] {
                 let keys = Array(sections!.keys)
                 var sets:[DTSet]?
                 
@@ -162,8 +160,8 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
         case .ByType:
             arrayData!.sort{ $0.name < $1.name }
             
-            for setType in DTSetType.MR_findAllSortedBy("name", ascending: true) as [DTSetType] {
-                for set in arrayData! as [DTSet] {
+            for setType in DTSetType.MR_findAllSortedBy("name", ascending: true) as! [DTSetType] {
+                for set in arrayData! as! [DTSet] {
                     if set.type == setType {
                         let keys = Array(sections!.keys)
                         var sets:[DTSet]?
@@ -262,7 +260,7 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("Default") as UITableViewCell?
+        var cell = tableView.dequeueReusableCellWithIdentifier("Default") as! UITableViewCell?
         
         var keys:[String]?
         
@@ -279,7 +277,7 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
         
         let key = keys![indexPath.section]
         let sets = sections![key]
-        let set = sets![indexPath.row] as DTSet
+        let set = sets![indexPath.row] as! DTSet
         let date = JJJUtil.formatDate(set.releaseDate, withFormat:"YYYY-MM-dd")
         
         if cell == nil {
@@ -342,10 +340,10 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
         if dict != nil {
             let view2 = InAppPurchaseViewController()
             
-            view2.productID = dict["In-App Product ID"] as String
+            view2.productID = dict["In-App Product ID"] as! String
             view2.delegate = self
-            view2.productDetails = ["name" : dict["In-App Display Name"] as String,
-                                    "description": dict["In-App Description"] as String]
+            view2.productDetails = ["name" : dict["In-App Display Name"] as! String,
+                                    "description": dict["In-App Description"] as! String]
             view = view2
 
         } else {

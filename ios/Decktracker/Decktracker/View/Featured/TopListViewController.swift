@@ -23,6 +23,8 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        hidesBottomBarWhenPushed = true
+        
         viewButton = UIBarButtonItem(title: "List", style: UIBarButtonItemStyle.Plain, target: self, action: "viewButtonTapped")
         
         navigationItem.rightBarButtonItem = viewButton
@@ -52,7 +54,6 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
         
         self.loadData()
         self.viewLoadedOnce = false
-        
 #if !DEBUG
         // send the screen to Google Analytics
         let tracker = GAI.sharedInstance().defaultTracker
@@ -70,10 +71,6 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self, name:kFetchTopRatedDone,  object:nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name:kFetchTopViewedDone,  object:nil)
-    }
-    
-    func hidesBottomBarWhenPushed() -> Bool {
-        return true
     }
     
     func viewButtonTapped() {
@@ -187,7 +184,7 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
     {
         let card = arrayData![indexPath.row] as DTCard
         
-        var cell = tableView.dequeueReusableCellWithIdentifier(kSearchResultsIdentifier) as SearchResultsTableViewCell?
+        var cell = tableView.dequeueReusableCellWithIdentifier(kSearchResultsIdentifier) as! SearchResultsTableViewCell?
         if cell == nil {
             cell = SearchResultsTableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: kSearchResultsIdentifier)
         }
@@ -208,10 +205,10 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
         if dict != nil {
             let view2 = InAppPurchaseViewController()
             
-            view2.productID = dict["In-App Product ID"] as String
+            view2.productID = dict["In-App Product ID"] as! String
             view2.delegate = self;
-            view2.productDetails = ["name" : dict["In-App Display Name"] as String,
-                "description": dict["In-App Description"] as String]
+            view2.productDetails = ["name" : dict["In-App Display Name"] as! String,
+                "description": dict["In-App Description"] as! String]
             view = view2
             
         } else {
@@ -231,7 +228,7 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let card = arrayData![indexPath.row] as DTCard
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Card", forIndexPath: indexPath) as CardListCollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Card", forIndexPath: indexPath) as! CardListCollectionViewCell
         
         cell.displayCard(card)
         cell.addRank(indexPath.row+1)
@@ -247,10 +244,10 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
         if dict != nil {
             let view2 = InAppPurchaseViewController()
             
-            view2.productID = dict["In-App Product ID"] as String
+            view2.productID = dict["In-App Product ID"] as! String
             view2.delegate = self;
-            view2.productDetails = ["name" : dict["In-App Display Name"] as String,
-                "description": dict["In-App Description"] as String]
+            view2.productDetails = ["name" : dict["In-App Display Name"] as! String,
+                "description": dict["In-App Description"] as! String]
             view = view2
             
         } else {
@@ -285,8 +282,8 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func updateData(sender: AnyObject) {
-        let notif = sender as NSNotification
-        let dict = notif.userInfo as [String: [DTCard]]
+        let notif = sender as! NSNotification
+        let dict = notif.userInfo as! [String: [DTCard]]
         let cards = dict["data"]!
         var paths = [NSIndexPath]()
 

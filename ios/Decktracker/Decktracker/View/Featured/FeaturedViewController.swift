@@ -37,6 +37,8 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         
         self.navigationItem.title = "Featured"
         self.loadData()
+        
+//        Database.sharedInstance().updateParseCards()
     }
 
     override func didReceiveMemoryWarning() {
@@ -75,7 +77,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
     func loadData() {
         arrayData = [[String: [AnyObject]]]()
         
-        let arrRandom = Database.sharedInstance().fetchRandomCards(6, withPredicate: nil, includeInAppPurchase: false) as [DTCard]!
+        let arrRandom = Database.sharedInstance().fetchRandomCards(6, withPredicate: nil, includeInAppPurchase: false) as! [DTCard]
         var array:[DTCard] = Array()
         array.append(arrRandom.last!)
         for card in arrRandom {
@@ -85,13 +87,13 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         arrayData!.append(["Random": array])
         arrayData!.append(["Top Rated": [DTCard]()])
         arrayData!.append(["Top Viewed": [DTCard]()])
-        arrayData!.append(["Sets": Database.sharedInstance().fetchSets(10) as [DTSet]!])
+        arrayData!.append(["Sets": Database.sharedInstance().fetchSets(10) as! [DTSet]!])
         
         for dict in arrayData! {
             for (key,value) in dict {
                 for x in value {
                     if x.isKindOfClass(DTCard.classForCoder()) {
-                        FileManager.sharedInstance().downloadCardImage(x as DTCard!, immediately:false)
+                        FileManager.sharedInstance().downloadCardImage(x as! DTCard, immediately:false)
                     }
                 }
             }
@@ -109,7 +111,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func reloadTable(sender: AnyObject, key: String) {
         let notif = sender as! NSNotification
-        let dict = notif.userInfo as [String: [AnyObject]]
+        let dict = notif.userInfo as! [String: [AnyObject]]
         let cards = dict["data"]! as [AnyObject]
         let newRow = [key: cards]
         
@@ -157,9 +159,11 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         var cell:UITableViewCell?
         
         if indexPath.row == 0 {
-            var cell2 = tableView.dequeueReusableCellWithIdentifier(kBannerCellIdentifier) as BannerScrollTableViewCell?
+            var cell2:BannerScrollTableViewCell?
             
-            if cell2 == nil {
+            if let x =  tableView.dequeueReusableCellWithIdentifier(kBannerCellIdentifier) as? BannerScrollTableViewCell {
+                cell2 = x
+            } else {
                 cell2 = BannerScrollTableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: kBannerCellIdentifier)
             }
             cell = cell2
@@ -167,10 +171,11 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         } else if indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 3 {
             let row = arrayData![indexPath.row]
             let key = Array(row.keys)[0]
+            var cell2:HorizontalScrollTableViewCell?
             
-            var cell2 = tableView.dequeueReusableCellWithIdentifier(kHorizontalCellIdentifier) as HorizontalScrollTableViewCell?
-            
-            if cell2 == nil {
+            if let x = tableView.dequeueReusableCellWithIdentifier(kHorizontalCellIdentifier) as? HorizontalScrollTableViewCell {
+                cell2 = x
+            } else {
                 cell2 = HorizontalScrollTableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: kHorizontalCellIdentifier)
             }
             cell2!.lblTitle?.text = key
@@ -184,7 +189,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         
         if indexPath.row == 0  {
-            let cell2 = cell as BannerScrollTableViewCell
+            let cell2 = cell as! BannerScrollTableViewCell
             cell2.setCollectionViewDataSourceDelegate(self, index: indexPath.row)
             
             if bannerCell == nil {
@@ -193,7 +198,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
             }
             
         } else if indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 3 {
-            let cell2 = cell as HorizontalScrollTableViewCell
+            let cell2 = cell as! HorizontalScrollTableViewCell
             cell2.setCollectionViewDataSourceDelegate(self, index: indexPath.row)
             cell2.delegate = self
         }
@@ -219,20 +224,20 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         var cell:UICollectionViewCell?
         
         if collectionView.tag == 0 {
-            let card = dict[indexPath.row] as DTCard
-            var cell2 = collectionView.dequeueReusableCellWithReuseIdentifier(kBannerCellIdentifier, forIndexPath:indexPath) as BannerCollectionViewCell
+            let card = dict[indexPath.row] as! DTCard
+            var cell2 = collectionView.dequeueReusableCellWithReuseIdentifier(kBannerCellIdentifier, forIndexPath:indexPath) as! BannerCollectionViewCell
             cell2.displayCard(card)
             cell = cell2
             
         } else if collectionView.tag == 1 || collectionView.tag == 2 {
-            let card = dict[indexPath.row] as DTCard
-            var cell2 = collectionView.dequeueReusableCellWithReuseIdentifier("kThumbCellIdentifier", forIndexPath:indexPath) as ThumbCollectionViewCell
+            let card = dict[indexPath.row] as! DTCard
+            var cell2 = collectionView.dequeueReusableCellWithReuseIdentifier("kThumbCellIdentifier", forIndexPath:indexPath) as! ThumbCollectionViewCell
             cell2.displayCard(card)
             cell = cell2
             
         }  else if collectionView.tag == 3 {
-            let set = dict[indexPath.row] as DTSet
-            var cell2 = collectionView.dequeueReusableCellWithReuseIdentifier("kSetCellIdentifier", forIndexPath:indexPath) as SetCollectionViewCell
+            let set = dict[indexPath.row] as! DTSet
+            var cell2 = collectionView.dequeueReusableCellWithReuseIdentifier("kSetCellIdentifier", forIndexPath:indexPath) as! SetCollectionViewCell
             cell2.displaySet(set)
             cell = cell2
         }
@@ -248,16 +253,16 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         var view:UIViewController?
         
         if collectionView.tag == 0 || collectionView.tag == 1 || collectionView.tag == 2 {
-            let card = dict[indexPath.row] as DTCard
+            let card = dict[indexPath.row] as! DTCard
             let dict = Database.sharedInstance().inAppSettingsForSet(card.set)
             
             if dict != nil {
                 let view2 = InAppPurchaseViewController()
                 
-                view2.productID = dict["In-App Product ID"] as String
+                view2.productID = dict["In-App Product ID"] as! String
                 view2.delegate = self
-                view2.productDetails = ["name" : dict["In-App Display Name"] as String,
-                    "description": dict["In-App Description"] as String]
+                view2.productDetails = ["name" : dict["In-App Display Name"] as! String,
+                    "description": dict["In-App Description"] as! String]
                 view = view2
                 
             } else {
@@ -269,16 +274,16 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
             }
 
         } else if collectionView.tag == 3 { // Sets
-            let set = dict[indexPath.row] as DTSet
+            let set = dict[indexPath.row] as! DTSet
             let dict = Database.sharedInstance().inAppSettingsForSet(set)
             
             if dict != nil {
                 let view2 = InAppPurchaseViewController()
                 
-                view2.productID = dict["In-App Product ID"] as String
+                view2.productID = dict["In-App Product ID"] as! String
                 view2.delegate = self
-                view2.productDetails = ["name" : dict["In-App Display Name"] as String,
-                                        "description": dict["In-App Description"] as String]
+                view2.productDetails = ["name" : dict["In-App Display Name"] as! String,
+                                        "description": dict["In-App Description"] as! String]
                 view = view2
                 
             } else {
@@ -331,7 +336,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
     {
         Database.sharedInstance().loadInAppSets()
         arrayData!.removeLast()
-        arrayData!.append(["Sets": Database.sharedInstance().fetchSets(10) as [DTSet]])
+        arrayData!.append(["Sets": Database.sharedInstance().fetchSets(10) as! [DTSet]])
         tblFeatured!.reloadData()
     }
     
@@ -340,7 +345,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         if scrollView.tag == 0 {
             let row = arrayData![scrollView.tag]
             let key = Array(row.keys)[0]
-            let dict = row[key]! as Array<DTCard>
+            let dict = row[key]! as! Array<DTCard>
             bannerCell?.continueScrolling(dict)
             
         }

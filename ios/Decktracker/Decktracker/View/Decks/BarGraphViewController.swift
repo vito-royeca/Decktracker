@@ -59,7 +59,7 @@ class BarGraphViewController: UIViewController, CPTBarPlotDataSource {
         graph.paddingRight  = -5.0
         
         // 3 - Set up styles
-        let titleStyle = CPTMutableTextStyle.textStyle() as CPTMutableTextStyle
+        let titleStyle = CPTMutableTextStyle.textStyle() as! CPTMutableTextStyle
         titleStyle.color = CPTColor.grayColor()
         titleStyle.fontName = "Helvetica-Bold"
         titleStyle.fontSize = 16.0
@@ -75,7 +75,7 @@ class BarGraphViewController: UIViewController, CPTBarPlotDataSource {
         let xMax = 10
         let yMin = 0
         let yMax = 20
-        let plotSpace = graph.defaultPlotSpace as CPTXYPlotSpace
+        let plotSpace = graph.defaultPlotSpace as! CPTXYPlotSpace
 //        var xRange = plotSpace.xRange.mutableCopy() as CPTMutablePlotRange
 //        var yRange = plotSpace.yRange.mutableCopy() as CPTMutablePlotRange
 //        xRange.setLengthFloat(10)
@@ -120,16 +120,16 @@ class BarGraphViewController: UIViewController, CPTBarPlotDataSource {
     
     func configureAxes() {
         // 1 - Configure styles
-        let axisTitleStyle = CPTMutableTextStyle.textStyle() as CPTMutableTextStyle
+        let axisTitleStyle = CPTMutableTextStyle.textStyle() as! CPTMutableTextStyle
         axisTitleStyle.color = CPTColor.blackColor()
         axisTitleStyle.fontName = "Helvetica-Bold"
         axisTitleStyle.fontSize = 12
-        let axisLineStyle = CPTMutableLineStyle.lineStyle() as CPTMutableLineStyle
+        let axisLineStyle = CPTMutableLineStyle.lineStyle() as! CPTMutableLineStyle
         axisLineStyle.lineWidth = 2
         axisLineStyle.lineColor = CPTColor.blackColor().colorWithAlphaComponent(1)
         
         // 2 - Get the graph's axis set
-        let axisSet = self.hostView!.hostedGraph.axisSet as CPTXYAxisSet
+        let axisSet = self.hostView!.hostedGraph.axisSet as! CPTXYAxisSet
         
         // 3 - Configure the x-axis
 //        axisSet.xAxis.labelingPolicy = CPTAxisLabelingPolicyFixedInterval
@@ -151,7 +151,7 @@ class BarGraphViewController: UIViewController, CPTBarPlotDataSource {
         return 2
     }
     
-    func numberForPlot(plot: CPTPlot, field fieldEnum:UInt, recordIndex index: UInt32) -> NSNumber {
+    func numberForPlot(plot: CPTPlot, field fieldEnum:UInt, recordIndex index: UInt) -> NSNumber {
 //        if fieldEnum == CPTBarPlotFieldBarTip &&
 //        (index < [[[CPDStockPriceStore sharedInstance] datesInWeek] count])) {
 //            if ([plot.identifier isEqual:CPDTickerSymbolAAPL]) {

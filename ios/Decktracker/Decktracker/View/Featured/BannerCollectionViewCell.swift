@@ -24,7 +24,7 @@ class BannerCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
         // Initialization code
         
-        planeswalkerType = DTCardType.MR_findFirstByAttribute("name", withValue:"Planeswalker") as DTCardType?
+        planeswalkerType = DTCardType.MR_findFirstByAttribute("name", withValue:"Planeswalker") as! DTCardType?
         _pre8thEditionFont = UIFont(name: "Magic:the Gathering", size:25)
         _8thEditionFont = UIFont(name: "Matrix-Bold", size:25)
         
@@ -84,7 +84,7 @@ class BannerCollectionViewCell: UICollectionViewCell {
     
     func loadCropImage(sender: AnyObject) {
         let dict = sender.userInfo as Dictionary?
-        let card = dict?["card"] as DTCard
+        let card = dict?["card"] as! DTCard
     
         if (self.card == card) {
             let path = FileManager.sharedInstance().cropPath(card)

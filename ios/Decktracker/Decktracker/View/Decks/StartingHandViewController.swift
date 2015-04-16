@@ -48,6 +48,7 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        hidesBottomBarWhenPushed = true
 
         var dX:CGFloat = 0
         var dY:CGFloat = 0
@@ -114,11 +115,6 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-    
-
-    func hidesBottomBarWhenPushed() -> Bool {
-        return true
     }
     
     func viewButtonTapped() {
@@ -324,8 +320,8 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         arrayDeck = Array()
 
         for dict in self.deck!.arrLands {
-            let card = dict["card"] as DTCard
-            let qty = dict["qty"] as NSNumber
+            let card = dict["card"] as! DTCard
+            let qty = dict["qty"] as! NSNumber
             
             for var i=0; i<qty.integerValue; i++ {
                 arrayDeck!.append(card)
@@ -333,8 +329,8 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         }
         
         for dict in self.deck!.arrCreatures {
-            let card = dict["card"] as DTCard
-            let qty = dict["qty"] as NSNumber
+            let card = dict["card"] as! DTCard
+            let qty = dict["qty"] as! NSNumber
             
             for var i=0; i<qty.integerValue; i++ {
                 arrayDeck!.append(card)
@@ -342,8 +338,8 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         }
         
         for dict in self.deck!.arrOtherSpells {
-            let card = dict["card"] as DTCard
-            let qty = dict["qty"] as NSNumber
+            let card = dict["card"] as! DTCard
+            let qty = dict["qty"] as! NSNumber
             
             for var i=0; i<qty.integerValue; i++ {
                 arrayDeck!.append(card)
@@ -454,8 +450,11 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
             }
         }
         
-        var cell1 = tableView.dequeueReusableCellWithIdentifier(kSearchResultsIdentifier) as SearchResultsTableViewCell?
-        if cell1 == nil {
+        var cell1:SearchResultsTableViewCell?
+        
+        if let x = tableView.dequeueReusableCellWithIdentifier(kSearchResultsIdentifier) as? SearchResultsTableViewCell {
+            cell1 = x
+        } else {
             cell1 = SearchResultsTableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: kSearchResultsIdentifier)
         }
             
@@ -513,7 +512,7 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
             }
         }
         
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Card", forIndexPath: indexPath) as CardListCollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Card", forIndexPath: indexPath) as! CardListCollectionViewCell
         
         cell.displayCard(card!)
         return cell

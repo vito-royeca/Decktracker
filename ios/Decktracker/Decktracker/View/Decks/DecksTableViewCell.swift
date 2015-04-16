@@ -39,7 +39,7 @@ class DecksTableViewCell: UITableViewCell, CPTPlotDataSource {
         self.conciseColors = self.deck!.cardColors(false) as? Array<String>
         
         lblName.text = deck.name
-        lblCreator.text = deck.originalDesigner != nil && countElements(deck.originalDesigner) > 0 ? "by \(deck.originalDesigner)" : ""
+        lblCreator.text = deck.originalDesigner != nil && count(deck.originalDesigner) > 0 ? "by \(deck.originalDesigner)" : ""
         lblFormat.text = deck.format
         lblPrice.text = deck.averagePrice()
         

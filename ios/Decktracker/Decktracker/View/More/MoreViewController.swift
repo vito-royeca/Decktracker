@@ -63,8 +63,11 @@ class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     {
-        var cell = tableView.dequeueReusableCellWithIdentifier("DefaultCell") as UITableViewCell?
-        if cell == nil {
+        var cell:UITableViewCell?
+        
+        if let x = tableView.dequeueReusableCellWithIdentifier("DefaultCell") as? UITableViewCell {
+            cell = x
+        } else  {
             cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "DefaultCell")
             cell!.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         }
@@ -97,7 +100,7 @@ class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         if value == "Basic Rulebook" {
             let pdfs = NSBundle.mainBundle().pathsForResourcesOfType("pdf", inDirectory:"rules")
-            let file = pdfs[indexPath.row] as NSString
+            let file = pdfs[indexPath.row] as! String
             let document = ReaderDocument.withDocumentFilePath(file, password: nil)
             let readerView = ReaderViewController(readerDocument:document)
             readerView.delegate = self

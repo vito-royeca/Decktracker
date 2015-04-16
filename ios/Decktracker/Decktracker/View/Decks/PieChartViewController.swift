@@ -75,7 +75,7 @@ class PieChartViewController: UIViewController, CPTPlotDataSource {
         graph.axisSet = nil
         
         // 2 - Set up text style
-        let textStyle = CPTMutableTextStyle.textStyle() as CPTMutableTextStyle
+        let textStyle = CPTMutableTextStyle.textStyle() as! CPTMutableTextStyle
         textStyle.color = CPTColor.grayColor()
         textStyle.fontName = "Helvetica-Bold"
         textStyle.fontSize = 16.0

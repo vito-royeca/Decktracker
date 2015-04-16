@@ -65,8 +65,7 @@
 -(void) fetchTopViewed:(int) limit skip:(int) skip;
 -(void) incrementCardView:(DTCard*) card;
 -(void) rateCard:(DTCard*) card withRating:(float) rating;
-//-(void) parseSynch:(DTCard*) card;
--(void) uploadAllSetsToParse;
+-(void) updateParseCards;
 -(void) prefetchAllSetObjects;
 -(void) fetchUserMana;
 -(void) saveUserMana:(PFObject*) userMana;

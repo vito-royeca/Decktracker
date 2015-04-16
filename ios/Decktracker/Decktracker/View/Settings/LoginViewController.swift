@@ -10,7 +10,7 @@ import UIKit
 
 public class LoginViewController: PFLogInViewController {
     
-    override init() {
+    init() {
         super.init(nibName:nil,bundle:nil)
         
         self.fields = (PFLogInFields.DismissButton |
@@ -33,12 +33,14 @@ public class LoginViewController: PFLogInViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        hidesBottomBarWhenPushed = true
+        
         self.view.backgroundColor = JJJUtil.UIColorFromRGB(0x691F01)
         
         let image = UIImage(named: "\(NSBundle.mainBundle().bundlePath)/images/AppIcon57x57.png")
         var imageView = UIImageView(frame: CGRectMake(0, 0, 57, 57))
         imageView.image = image
-        self.logInView.logo = imageView
+        self.logInView!.logo = imageView
 
         self.navigationItem.title = "Login or Signup"
 
@@ -53,9 +55,5 @@ public class LoginViewController: PFLogInViewController {
     public override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-    
-    func hidesBottomBarWhenPushed() -> Bool {
-        return true
     }
 }

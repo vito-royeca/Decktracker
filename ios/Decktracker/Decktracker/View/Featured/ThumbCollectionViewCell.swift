@@ -65,7 +65,7 @@ class ThumbCollectionViewCell: UICollectionViewCell {
     
     func loadCropImage(sender: AnyObject) {
         let dict = sender.userInfo as Dictionary?
-        let card = dict?["card"] as DTCard
+        let card = dict?["card"] as! DTCard
         
         if (self.card == card) {
             let path = FileManager.sharedInstance().cropPath(card)

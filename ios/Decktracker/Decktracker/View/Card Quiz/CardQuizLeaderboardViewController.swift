@@ -17,6 +17,8 @@ class CardQuizLeaderboardViewController: UIViewController, MBProgressHUDDelegate
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        hidesBottomBarWhenPushed = true
+        
         NSNotificationCenter.defaultCenter().removeObserver(self, name:kParseLeaderboardDone,  object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector:"fetchLeaderboardDone:",  name:kParseLeaderboardDone, object:nil)
         
@@ -30,8 +32,6 @@ class CardQuizLeaderboardViewController: UIViewController, MBProgressHUDDelegate
         self.view.addSubview(webView!)
         self.navigationItem.title = "Leaderboard"
         fetchLeaderboard(nil)
-        
-        
 #if !DEBUG
         // send the screen to Google Analytics
         let tracker = GAI.sharedInstance().defaultTracker
@@ -43,10 +43,6 @@ class CardQuizLeaderboardViewController: UIViewController, MBProgressHUDDelegate
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-
-    func hidesBottomBarWhenPushed() -> Bool {
-        return true
     }
 
     func fetchLeaderboard(sender: AnyObject?) {
@@ -61,21 +57,33 @@ class CardQuizLeaderboardViewController: UIViewController, MBProgressHUDDelegate
     func fetchLeaderboardDone(sender: AnyObject) {
         let dict = sender.userInfo as Dictionary?
         let leaderboard = dict?["leaderboard"] as? Array<PFObject>
-        let base = "\(NSBundle.mainBundle().bundlePath)/web"
-        var html = NSString(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/web/leaderboard.html", encoding: 0, error: nil)
+        let baseURL = NSURL(fileURLWithPath: "\(NSBundle.mainBundle().bundlePath)/web")
+        var html = NSString(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/web/leaderboard.html", encoding: NSUTF8StringEncoding, error: nil)
         var frag = String()
         var i = 1
         
         for leader in leaderboard! {
-            let name = leader["user"]["username"] as! String
-            let totalCMC = leader["totalCMC"] as NSNumber
-            
-            frag += "<tr><td>\(i)</td><td>\(name)</td><td>\(totalCMC)</td></tr>"
+            let user = leader["user"] as! PFUser
+            let totalCMC = leader["totalCMC"] as! NSNumber
+//            var name:String?
+//            
+//            if PFFacebookUtils.isLinkedWithUser(user) {
+//                let request = FBRequest.requestForMe()
+//                
+//                request.startWithCompletionHandler({ (connection: FBRequestConnection?, result: AnyObject?, error: NSError?) -> Void in
+//                    if error == nil {
+//                        let userData = result as! NSDictionary
+//                        
+//                        self.lblAccount!.text = userData["name"] as? String
+//                    }
+//                })
+//            }
+            frag += "<tr><td>\(i)</td><td>\(user.username)</td><td>\(totalCMC)</td></tr>"
             i++
         }
         html = html!.stringByReplacingOccurrencesOfString("#_PLACEHOLDER_#", withString: frag)
         
-        webView!.loadHTMLString(html, baseURL: NSURL(string: base))
+        webView!.loadHTMLString(html as! String, baseURL: baseURL)
         hud!.hide(true)
     }
     
