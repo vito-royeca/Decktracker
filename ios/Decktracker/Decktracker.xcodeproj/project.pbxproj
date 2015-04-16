@@ -14,6 +14,8 @@
 		8C0117171ADCAF230075A933 /* CardQuizLeaderboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0117161ADCAF230075A933 /* CardQuizLeaderboardViewController.swift */; };
 		8C019AA01998A10F00FB22D7 /* decktracker.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 8C019A9F1998A10F00FB22D7 /* decktracker.sqlite */; };
 		8C01E0FD1ADB9A8800509DDB /* In-App Mana.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C01E0FC1ADB9A8800509DDB /* In-App Mana.plist */; };
+		8C057CEA1AE017F00016E0F5 /* audio in Resources */ = {isa = PBXBuildFile; fileRef = 8C057CE91AE017F00016E0F5 /* audio */; };
+		8C057CED1AE01BAF0016E0F5 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C057CEC1AE01BAF0016E0F5 /* AVFoundation.framework */; };
 		8C0CF16B1A01E102009137C5 /* Decks in Resources */ = {isa = PBXBuildFile; fileRef = 8C0CF16A1A01E101009137C5 /* Decks */; };
 		8C13467819A9B17B00E0B3C3 /* SearchResultsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C13467619A9B17B00E0B3C3 /* SearchResultsTableViewCell.m */; };
 		8C13467919A9B17B00E0B3C3 /* SearchResultsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C13467719A9B17B00E0B3C3 /* SearchResultsTableViewCell.xib */; };
@@ -223,6 +225,8 @@
 		8C0117161ADCAF230075A933 /* CardQuizLeaderboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardQuizLeaderboardViewController.swift; sourceTree = "<group>"; };
 		8C019A9F1998A10F00FB22D7 /* decktracker.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = decktracker.sqlite; sourceTree = "<group>"; };
 		8C01E0FC1ADB9A8800509DDB /* In-App Mana.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "In-App Mana.plist"; sourceTree = "<group>"; };
+		8C057CE91AE017F00016E0F5 /* audio */ = {isa = PBXFileReference; lastKnownFileType = folder; path = audio; sourceTree = "<group>"; };
+		8C057CEC1AE01BAF0016E0F5 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		8C0CF16A1A01E101009137C5 /* Decks */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Decks; sourceTree = "<group>"; };
 		8C13467519A9B17B00E0B3C3 /* SearchResultsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultsTableViewCell.h; sourceTree = "<group>"; };
 		8C13467619A9B17B00E0B3C3 /* SearchResultsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultsTableViewCell.m; sourceTree = "<group>"; };
@@ -472,6 +476,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C057CED1AE01BAF0016E0F5 /* AVFoundation.framework in Frameworks */,
 				8C2094E11A5D1611008878D6 /* Accelerate.framework in Frameworks */,
 				8C325F401A5A778100FA58E6 /* libsqlite3.dylib in Frameworks */,
 				8C372C7B1A2DD908001D7EF3 /* Social.framework in Frameworks */,
@@ -665,6 +670,7 @@
 		8C2E13EF1990741100023BAA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8C057CEC1AE01BAF0016E0F5 /* AVFoundation.framework */,
 				8C2094E01A5D1611008878D6 /* Accelerate.framework */,
 				8C325F3F1A5A778100FA58E6 /* libsqlite3.dylib */,
 				8C372C7A1A2DD908001D7EF3 /* Social.framework */,
@@ -805,6 +811,7 @@
 			isa = PBXGroup;
 			children = (
 				8C26A67F19A6418800FE00E7 /* Advance Search */,
+				8C057CE91AE017F00016E0F5 /* audio */,
 				8C0CF16A1A01E101009137C5 /* Decks */,
 				8CCFC02D1A3E7C2C004B1853 /* decktracker.plist */,
 				8C019A9F1998A10F00FB22D7 /* decktracker.sqlite */,
@@ -1142,6 +1149,7 @@
 				8C01E0FD1ADB9A8800509DDB /* In-App Mana.plist in Resources */,
 				8C2A979019F5027B0094C97F /* Reader-Email@2x.png in Resources */,
 				8C26A68019A6418900FE00E7 /* Advance Search in Resources */,
+				8C057CEA1AE017F00016E0F5 /* audio in Resources */,
 				8CCE99651A6A80D400ECCA1C /* CustomViewCell.xib in Resources */,
 				8C2A978E19F5027B0094C97F /* Reader-Button-N@2x.png in Resources */,
 				8C89BD5719DD50340070E4F5 /* MBProgressHUD.license in Resources */,

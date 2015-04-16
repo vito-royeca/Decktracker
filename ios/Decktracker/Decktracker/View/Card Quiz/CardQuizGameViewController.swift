@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InAppPurchaseViewControllerDelegate {
 
@@ -42,6 +43,11 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
     var predicate:NSPredicate?
     var userMana:PFObject?
     var gameType:CQGameType?
+
+    // sounds
+    var successSoundPlayer:AVAudioPlayer?
+    var failSoundPlayer:AVAudioPlayer?
+    
     
 //  MARK: Boilerplate
     override func viewDidLoad() {
@@ -52,10 +58,6 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         
         NSNotificationCenter.defaultCenter().removeObserver(self, name:kParseUserManaDone,  object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector:"fetchUserManaDone:",  name:kParseUserManaDone, object:nil)
-//        NSNotificationCenter.defaultCenter().removeObserver(self, name:kCardDownloadCompleted,  object:nil)
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector:"loadCardImage:",  name:kCardDownloadCompleted, object:nil)
-//        NSNotificationCenter.defaultCenter().removeObserver(self, name:kCardDownloadCompleted,  object:nil)
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector:"loadCropImage:",  name:kCardDownloadCompleted, object:nil)
         
         var format:String?
         var formatEx1:String?
@@ -81,10 +83,13 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         self.predicate = NSCompoundPredicate.andPredicateWithSubpredicates([predicate1, predicate2])
         
         cards = Array()
-        for i in 0...kCQMaxCurrentCards {
-            cards!.append(self.generateRandomCard())
-        }
+        cards!.append(self.generateRandomCard())
         
+        // load the sounds
+        successSoundPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: "\(NSBundle.mainBundle().bundlePath)/audio/resb_upO.caf"), error: nil)
+        failSoundPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: "\(NSBundle.mainBundle().bundlePath)/audio/damageO.caf"), error: nil)
+        
+        setupBackground()
         setupManaPoints()
         setupImageView()
         setupFunctionButtons()
@@ -92,7 +97,6 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         updateManaPool()
         
         self.navigationItem.title = "Card Quiz"
-        self.view.backgroundColor = UIColor(patternImage: UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/Gray_Patterned_BG.jpg")!)
 #if !DEBUG
         // send the screen to Google Analytics
         let tracker = GAI.sharedInstance().defaultTracker
@@ -107,7 +111,28 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         
     }
     
+    override func viewDidAppear(animated: Bool) {
+        for i in 1...kCQMaxCurrentCards {
+            cards!.append(self.generateRandomCard())
+        }
+    }
+    
 //  MARK: UI Setup Code
+    func setupBackground() {
+        var dWidth = self.view.frame.size.width
+        var dX = CGFloat(0)
+        var dY = UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height
+        var dHeight = self.view.frame.height - dY - 120
+        var frame = CGRect(x:dX, y:dY, width:dWidth, height:dHeight)
+        
+        self.view.backgroundColor = UIColor(patternImage: UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/Gray_Patterned_BG.jpg")!)
+        
+        let circleImage = UIImageView(frame: frame)
+        circleImage.contentMode = UIViewContentMode.ScaleAspectFill
+        circleImage.image = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/Card_Circles.png")
+        self.view.addSubview(circleImage)
+    }
+    
     func setupManaPoints() {
         let manaWidth = (self.view.frame.size.width-10)/6
         let manaImageWidth = CGFloat(16)
@@ -208,22 +233,23 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
     }
     
     func setupImageView() {
-        var dWidth = self.view.frame.size.width
-        var dX = CGFloat(0)
-        var dY = UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height
-        var dHeight = self.view.frame.height - dY - 120
+//        var dWidth = self.view.frame.size.width
+//        var dX = CGFloat(0)
+//        var dY = UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height
+//        var dHeight = self.view.frame.height - dY - 120
+//        var frame = CGRect(x:dX, y:dY, width:dWidth, height:dHeight)
+        
+//        let circleImage = UIImageView(frame: frame)
+//        circleImage.contentMode = UIViewContentMode.ScaleAspectFill
+//        circleImage.image = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/Card_Circles.png")
+//        self.view.addSubview(circleImage)
+        
+        var dWidth = self.view.frame.size.width * 0.70
+        var dX = (self.view.frame.size.width - dWidth) / 2
+        var dY = UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height + 40
+        var dHeight = CGFloat(16)
         var frame = CGRect(x:dX, y:dY, width:dWidth, height:dHeight)
         
-        let circleImage = UIImageView(frame: frame)
-        circleImage.contentMode = UIViewContentMode.ScaleAspectFill
-        circleImage.image = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/Card_Circles.png")
-        self.view.addSubview(circleImage)
-        
-        dWidth = self.view.frame.size.width * 0.70
-        dX = (self.view.frame.size.width - dWidth) / 2
-        dY += 40
-        dHeight = CGFloat(16)
-        frame = CGRect(x:dX, y:dY, width:dWidth, height:dHeight)
         viewCastingCost = UIView(frame: frame)
         self.view.addSubview(viewCastingCost!)
         
@@ -350,7 +376,6 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         
         // load the image
         currentCropPath = FileManager.sharedInstance().cropPath(cards!.first)
-        println("\(cards!.first!.name)")
         viewImage!.image = UIImage(contentsOfFile: currentCropPath!)
         FileManager.sharedInstance().downloadCardImage(cards!.first, immediately:true)
         
@@ -574,12 +599,15 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         let value = cards!.first!.set.code + "_" + cards!.first!.number
         NSUserDefaults.standardUserDefaults().setObject(value, forKey: key!)
         NSUserDefaults.standardUserDefaults().synchronize()
+        
+        successSoundPlayer!.play()
     }
 
 //  MARK: Logic Code
     func generateRandomCard() -> DTCard {
         var key:String?
         var value:String?
+        var card:DTCard?
         
         switch gameType! {
         case .Easy:
@@ -608,23 +636,21 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
             let array = split(value!) {$0 == "_"}
             let code = array[0]
             let number = array[1]
-            let card = DTCard.MR_findFirstWithPredicate(NSPredicate(format: "set.code = %@ AND number = %@", code, number)) as! DTCard
-            FileManager.sharedInstance().downloadCardImage(card, immediately:false)
-            
-            return card
+            card = DTCard.MR_findFirstWithPredicate(NSPredicate(format: "set.code = %@ AND number = %@", code, number)) as? DTCard
             
         } else {
             let xcards = Database.sharedInstance().fetchRandomCards(1, withPredicate: self.predicate, includeInAppPurchase: true)
-            let card = xcards.first as! DTCard
-            let value = card.set.code + "_" + card.number
+            card = xcards.first as? DTCard
             
             if cards!.count == 0 {
+                let value = card!.set.code + "_" + card!.number
                 NSUserDefaults.standardUserDefaults().setObject(value, forKey: key!)
                 NSUserDefaults.standardUserDefaults().synchronize()
             }
-            
-            return card
         }
+        
+        FileManager.sharedInstance().downloadCardImage(card, immediately:false)
+        return card!
     }
 
     func saveMana() {
@@ -937,6 +963,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
                         lblAnswer.textColor = UIColor.redColor()
                     }
                 }
+                failSoundPlayer!.play()
             }
         }
     }
