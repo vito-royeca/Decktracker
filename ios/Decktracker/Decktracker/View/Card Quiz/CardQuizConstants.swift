@@ -9,6 +9,8 @@ let kCQEasyCurrentCard     = "kCQEasyCurrentCard"
 let kCQModerateCurrentCard = "kCQModerateCurrentCard"
 let kCQHardCurrentCard     = "kCQHardCurrentCard"
 
+let kCQMaxCurrentCards     = 5
+
 struct CQTheme {
     static let kManaLabelColor  = UIColor.whiteColor()
     static let kLabelColor      = UIColor.whiteColor()

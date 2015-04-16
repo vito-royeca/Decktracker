@@ -10,6 +10,7 @@ import UIKit
 
 class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InAppPurchaseViewControllerDelegate {
 
+//  MARK: Variables
     var lblBlack:UILabel?
     var lblBlue:UILabel?
     var lblGreen:UILabel?
@@ -33,7 +34,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
     var btnNextCard:UILabel?
     var arrAnswers:Array<Array<UILabel>>?
     var arrQuizzes:[UILabel]?
-    var card:DTCard?
+    var cards:Array<DTCard>?
     var currentCropPath:String?
     var currentCardPath:String?
     var bCardAnswered = false
@@ -42,6 +43,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
     var userMana:PFObject?
     var gameType:CQGameType?
     
+//  MARK: Boilerplate
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -50,6 +52,10 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         
         NSNotificationCenter.defaultCenter().removeObserver(self, name:kParseUserManaDone,  object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector:"fetchUserManaDone:",  name:kParseUserManaDone, object:nil)
+//        NSNotificationCenter.defaultCenter().removeObserver(self, name:kCardDownloadCompleted,  object:nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector:"loadCardImage:",  name:kCardDownloadCompleted, object:nil)
+//        NSNotificationCenter.defaultCenter().removeObserver(self, name:kCardDownloadCompleted,  object:nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector:"loadCropImage:",  name:kCardDownloadCompleted, object:nil)
         
         var format:String?
         var formatEx1:String?
@@ -73,12 +79,16 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         let predicate1 = NSPredicate(format: "ANY legalities.format.name IN %@ AND NOT (ANY legalities.format.name IN %@)", [format!], [formatEx1!, formatEx2!])
         let predicate2 = NSPredicate(format: "cmc >= 1 AND cmc <= 15 AND name MATCHES %@", "^.{0,20}")
         self.predicate = NSCompoundPredicate.andPredicateWithSubpredicates([predicate1, predicate2])
-        self.card = self.generateRandomCard()
+        
+        cards = Array()
+        for i in 0...kCQMaxCurrentCards {
+            cards!.append(self.generateRandomCard())
+        }
         
         setupManaPoints()
         setupImageView()
         setupFunctionButtons()
-        displayCard()
+        displayQuiz()
         updateManaPool()
         
         self.navigationItem.title = "Card Quiz"
@@ -97,41 +107,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         
     }
     
-    func fetchUserManaDone(sender: AnyObject) {
-        let dict = sender.userInfo as Dictionary?
-        userMana = dict?["userMana"] as? PFObject
-        self.updateManaPool()
-    }
-
-    func updateManaPool() {
-        if let mana = userMana {
-            manaBlack     = mana["black"]!.integerValue
-            manaBlue      = mana["blue"]!.integerValue
-            manaGreen     = mana["green"]!.integerValue
-            manaRed       = mana["red"]!.integerValue
-            manaWhite     = mana["white"]!.integerValue
-            manaColorless = mana["colorless"]!.integerValue
-        }
-        
-        lblBlack!.text     = " \(manaBlack)"
-        lblBlue!.text      = " \(manaBlue)"
-        lblGreen!.text     = " \(manaGreen)"
-        lblRed!.text       = " \(manaRed)"
-        lblWhite!.text     = " \(manaWhite)"
-        lblColorless!.text = " \(manaColorless)"
-        
-        if canCastCard() && btnCast != nil {
-            if let recognizers = btnCast!.gestureRecognizers {
-                for recognizer in recognizers {
-                    btnCast!.removeGestureRecognizer(recognizer as! UIGestureRecognizer)
-                }
-            }
-            btnCast!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "castTapped:"))
-            btnCast!.userInteractionEnabled = true
-            btnCast!.textColor = CQTheme.kTileTextColor
-        }
-    }
-    
+//  MARK: UI Setup Code
     func setupManaPoints() {
         let manaWidth = (self.view.frame.size.width-10)/6
         let manaImageWidth = CGFloat(16)
@@ -311,92 +287,41 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         updateManaPool()
     }
 
-    func generateRandomCard() -> DTCard {
-        var key:String?
-        var value:String?
-        
-        switch gameType! {
-        case .Easy:
-            if let v = NSUserDefaults.standardUserDefaults().stringForKey(kCQEasyCurrentCard) {
-                value = v
-            } else {
-                key = kCQEasyCurrentCard
-            }
-            
-        case .Moderate:
-            if let v = NSUserDefaults.standardUserDefaults().stringForKey(kCQModerateCurrentCard) {
-                value = v
-            } else {
-                key = kCQModerateCurrentCard
-            }
-            
-        case .Hard:
-            if let v = NSUserDefaults.standardUserDefaults().stringForKey(kCQHardCurrentCard) {
-                value = v
-            } else {
-                key = kCQHardCurrentCard
-            }
+    func updateManaPool() {
+        if let mana = userMana {
+            manaBlack     = mana["black"]!.integerValue
+            manaBlue      = mana["blue"]!.integerValue
+            manaGreen     = mana["green"]!.integerValue
+            manaRed       = mana["red"]!.integerValue
+            manaWhite     = mana["white"]!.integerValue
+            manaColorless = mana["colorless"]!.integerValue
         }
         
-        if value != nil {
-            let array = split(value!) {$0 == "_"}
-            let code = array[0]
-            let number = array[1]
-            let card = DTCard.MR_findFirstWithPredicate(NSPredicate(format: "set.code = %@ AND number = %@", code, number)) as! DTCard
-            
-            return card
-            
-        } else {
-            let cards = Database.sharedInstance().fetchRandomCards(1, withPredicate: self.predicate, includeInAppPurchase: true)
-            let card = cards.first as! DTCard
-            let value = card.set.code + "_" + card.number
-            
-            NSUserDefaults.standardUserDefaults().setObject(value, forKey: key!)
-            NSUserDefaults.standardUserDefaults().synchronize()
-            return card
+        lblBlack!.text     = " \(manaBlack)"
+        lblBlue!.text      = " \(manaBlue)"
+        lblGreen!.text     = " \(manaGreen)"
+        lblRed!.text       = " \(manaRed)"
+        lblWhite!.text     = " \(manaWhite)"
+        lblColorless!.text = " \(manaColorless)"
+        
+        if canCastCard() && btnCast != nil {
+            if let recognizers = btnCast!.gestureRecognizers {
+                for recognizer in recognizers {
+                    btnCast!.removeGestureRecognizer(recognizer as! UIGestureRecognizer)
+                }
+            }
+            btnCast!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "castTapped:"))
+            btnCast!.userInteractionEnabled = true
+            btnCast!.textColor = CQTheme.kTileTextColor
         }
     }
-    
-    func nextCardTapped(sender: UITapGestureRecognizer) {
-        let hud = MBProgressHUD(view: self.view)
-        hud.delegate = self
-        self.view.addSubview(hud)
 
-        let executingBlock = { () -> Void in
-            // clean
-            self.lblCastingCost!.removeFromSuperview()
-            for view in self.viewCastingCost!.subviews {
-                view.removeFromSuperview()
-            }
-            self.viewCastingCost!.removeFromSuperview()
-            self.viewImage!.removeFromSuperview()
-            self.btnNextCard!.removeFromSuperview()
-            
-            self.card = self.generateRandomCard()
-        }
-        
-        let completionBlock = {  () -> Void in
-            self.bCardAnswered = false
-            self.setupImageView()
-            self.setupFunctionButtons()
-            self.displayCard()
-        }
-        
-        hud.showAnimated(true, whileExecutingBlock:executingBlock, completionBlock:completionBlock)
-    }
-    
-    func displayCard() {
-        NSNotificationCenter.defaultCenter().removeObserver(self,
-            name:kCardDownloadCompleted,  object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self,
-            selector:"loadCardImage:",  name:kCardDownloadCompleted, object:nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self,
-            name:kCardDownloadCompleted,  object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self,
-            selector:"loadCropImage:",  name:kCardDownloadCompleted, object:nil)
+    func displayQuiz() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name:kCardDownloadCompleted,  object:nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector:"loadCropImage:",  name:kCardDownloadCompleted, object:nil)
         
         // draw the mana cost
-        let manaImages = FileManager.sharedInstance().manaImagesForCard(card) as! [NSDictionary]
+        let manaImages = FileManager.sharedInstance().manaImagesForCard(cards!.first) as! [NSDictionary]
         var dX = CGFloat(0)
         var dY = CGFloat(0)
         var index = 0
@@ -424,14 +349,15 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         }
         
         // load the image
-        currentCropPath = FileManager.sharedInstance().cropPath(card)
+        currentCropPath = FileManager.sharedInstance().cropPath(cards!.first)
+        println("\(cards!.first!.name)")
         viewImage!.image = UIImage(contentsOfFile: currentCropPath!)
-        FileManager.sharedInstance().downloadCardImage(card, immediately:true)
+        FileManager.sharedInstance().downloadCardImage(cards!.first, immediately:true)
         
         // tokenize the answer
         arrAnswers = Array<Array<UILabel>>()
         var lines = [String]()
-        for word in self.card!.name.componentsSeparatedByString(" ") {
+        for word in cards!.first!.name.componentsSeparatedByString(" ") {
             var line = lines.last != nil ? lines.last : word
             
             if word == line {
@@ -487,7 +413,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         }
         
         // draw the quiz
-        let quiz = self.quizForCard(self.card!)
+        let quiz = self.quizForCard(cards!.first!)
         index = 0
         arrQuizzes = Array()
         dWidth = self.view.frame.size.width/10
@@ -525,7 +451,10 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         }
     }
     
-    func displayReward() {
+    func displayAnswer() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name:kCardDownloadCompleted,  object:nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector:"loadCardImage:",  name:kCardDownloadCompleted, object:nil)
+        
         var dWidth = self.view.frame.size.width * 0.80
         var dX = (self.view.frame.size.width - dWidth) / 2
         var dY = UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height + 40
@@ -557,9 +486,9 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         viewImage = UIImageView(frame: viewImageFrame)
         viewImage!.contentMode = UIViewContentMode.ScaleAspectFit
         self.view.addSubview(viewImage!)
-        currentCardPath = FileManager.sharedInstance().cardPath(card)
+        currentCardPath = FileManager.sharedInstance().cardPath(cards!.first)
         viewImage!.image = UIImage(contentsOfFile: currentCardPath!)
-        FileManager.sharedInstance().downloadCardImage(card, immediately:true)
+        FileManager.sharedInstance().downloadCardImage(cards!.first, immediately:true)
         
         // draw the next card button
         btnNextCard = UILabel(frame: btnNextCardFrame)
@@ -575,7 +504,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         self.view.addSubview(btnNextCard!)
         
         // update the mana pool
-        for dict in FileManager.sharedInstance().manaImagesForCard(card) as! [NSDictionary] {
+        for dict in FileManager.sharedInstance().manaImagesForCard(cards!.first) as! [NSDictionary] {
             let symbol = dict["symbol"] as! String
             
             if symbol == "B" {
@@ -629,8 +558,75 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         lblColorless!.text = " \(manaColorless)"
         
         self.saveMana()
+
+        // remove first and and append new one
+        var key:String?
+        switch gameType! {
+        case .Easy:
+            key = kCQEasyCurrentCard
+        case .Moderate:
+            key = kCQModerateCurrentCard
+        case .Hard:
+            key = kCQHardCurrentCard
+        }
+        cards!.removeAtIndex(0)
+        cards!.append(self.generateRandomCard())
+        let value = cards!.first!.set.code + "_" + cards!.first!.number
+        NSUserDefaults.standardUserDefaults().setObject(value, forKey: key!)
+        NSUserDefaults.standardUserDefaults().synchronize()
     }
-    
+
+//  MARK: Logic Code
+    func generateRandomCard() -> DTCard {
+        var key:String?
+        var value:String?
+        
+        switch gameType! {
+        case .Easy:
+            if let v = NSUserDefaults.standardUserDefaults().stringForKey(kCQEasyCurrentCard) {
+                value = v
+            } else {
+                key = kCQEasyCurrentCard
+            }
+            
+        case .Moderate:
+            if let v = NSUserDefaults.standardUserDefaults().stringForKey(kCQModerateCurrentCard) {
+                value = v
+            } else {
+                key = kCQModerateCurrentCard
+            }
+            
+        case .Hard:
+            if let v = NSUserDefaults.standardUserDefaults().stringForKey(kCQHardCurrentCard) {
+                value = v
+            } else {
+                key = kCQHardCurrentCard
+            }
+        }
+        
+        if value != nil && cards!.count == 0 {
+            let array = split(value!) {$0 == "_"}
+            let code = array[0]
+            let number = array[1]
+            let card = DTCard.MR_findFirstWithPredicate(NSPredicate(format: "set.code = %@ AND number = %@", code, number)) as! DTCard
+            FileManager.sharedInstance().downloadCardImage(card, immediately:false)
+            
+            return card
+            
+        } else {
+            let xcards = Database.sharedInstance().fetchRandomCards(1, withPredicate: self.predicate, includeInAppPurchase: true)
+            let card = xcards.first as! DTCard
+            let value = card.set.code + "_" + card.number
+            
+            if cards!.count == 0 {
+                NSUserDefaults.standardUserDefaults().setObject(value, forKey: key!)
+                NSUserDefaults.standardUserDefaults().synchronize()
+            }
+            
+            return card
+        }
+    }
+
     func saveMana() {
         let totalCMC = manaBlack +
             manaBlue +
@@ -654,7 +650,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         let dict = sender.userInfo as Dictionary?
         let card = dict?["card"] as! DTCard
         
-        if (self.card == card) {
+        if (cards!.first == card) {
             let path = FileManager.sharedInstance().cropPath(card)
             
             if path != currentCropPath {
@@ -680,7 +676,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         let dict = sender.userInfo as Dictionary?
         let card = dict?["card"] as! DTCard
         
-        if (self.card == card) {
+        if (cards!.first == card) {
             let path = FileManager.sharedInstance().cardPath(card)
             
             if path != currentCardPath {
@@ -697,7 +693,81 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
                 name:kCardDownloadCompleted,  object:nil)
         }
     }
+
+    func canCastCard() -> Bool {
+        var ccBlack     = 0
+        var ccBlue      = 0
+        var ccGreen     = 0
+        var ccRed       = 0
+        var ccWhite     = 0
+        var ccColorless = 0
+        
+        for dict in FileManager.sharedInstance().manaImagesForCard(cards!.first) as! [NSDictionary] {
+            let symbol = dict["symbol"] as! String
+            
+            if symbol == "B" {
+                ccBlack++
+            } else if symbol == "U" {
+                ccBlue++
+            } else if symbol == "G" {
+                ccGreen++
+            } else if symbol == "R" {
+                ccRed++
+            } else if symbol == "W" {
+                ccWhite++
+            } else if symbol == "1" {
+                ccColorless += 1
+            } else if symbol == "2" {
+                ccColorless += 2
+            } else if symbol == "3" {
+                ccColorless += 3
+            } else if symbol == "4" {
+                ccColorless += 4
+            } else if symbol == "5" {
+                ccColorless += 5
+            } else if symbol == "6" {
+                ccColorless += 6
+            } else if symbol == "7" {
+                ccColorless += 7
+            } else if symbol == "8" {
+                ccColorless += 8
+            } else if symbol == "9" {
+                ccColorless += 9
+            } else if symbol == "10" {
+                ccColorless += 10
+            } else if symbol == "11" {
+                ccColorless += 11
+            } else if symbol == "12" {
+                ccColorless += 12
+            } else if symbol == "13" {
+                ccColorless += 13
+            } else if symbol == "14" {
+                ccColorless += 14
+            } else if symbol == "15" {
+                ccColorless += 15
+            }
+        }
+        
+        var result = false
+        
+        result = (manaBlack  + manaBlue + manaGreen + manaRed  + manaWhite  + manaColorless) > 0
+        result = result &&
+            manaBlack >= ccBlack &&
+            manaBlue >= ccBlue &&
+            manaGreen >= ccGreen &&
+            manaRed >= ccRed &&
+            manaWhite >= ccWhite &&
+            manaColorless >= ccColorless
+        return result
+    }
     
+    func fetchUserManaDone(sender: AnyObject) {
+        let dict = sender.userInfo as Dictionary?
+        userMana = dict?["userMana"] as? PFObject
+        self.updateManaPool()
+    }
+
+//  MARK: Event Handlers
     func helpTapped(sender: UITapGestureRecognizer) {
         var sharingItems = Array<AnyObject>()
         
@@ -711,7 +781,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         sharingItems.append(screenshot!)
         
         let activityController = UIActivityViewController(activityItems:sharingItems, applicationActivities:nil)
-        activityController.excludedActivityTypes = [UIActivityTypeAddToReadingList, UIActivityTypeAssignToContact, UIActivityTypeCopyToPasteboard, UIActivityTypePrint]
+        activityController.excludedActivityTypes = [UIActivityTypeAirDrop, UIActivityTypeAddToReadingList, UIActivityTypeAssignToContact, UIActivityTypeCopyToPasteboard, UIActivityTypePrint]
         activityController.completionWithItemsHandler = {(activityType: String!, completed: Bool, returnedItems: [AnyObject]!, activityError: NSError!) -> Void in
             
             if (completed) {
@@ -755,6 +825,32 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
             doneBlock: doneBlock,
             cancelBlock: nil,
             origin: view)
+    }
+    
+    func nextCardTapped(sender: UITapGestureRecognizer) {
+        let hud = MBProgressHUD(view: self.view)
+        hud.delegate = self
+        self.view.addSubview(hud)
+        
+        let executingBlock = { () -> Void in
+            // clean
+            self.lblCastingCost!.removeFromSuperview()
+            for view in self.viewCastingCost!.subviews {
+                view.removeFromSuperview()
+            }
+            self.viewCastingCost!.removeFromSuperview()
+            self.viewImage!.removeFromSuperview()
+            self.btnNextCard!.removeFromSuperview()
+        }
+        
+        let completionBlock = {  () -> Void in
+            self.bCardAnswered = false
+            self.setupImageView()
+            self.setupFunctionButtons()
+            self.displayQuiz()
+        }
+        
+        hud.showAnimated(true, whileExecutingBlock:executingBlock, completionBlock:completionBlock)
     }
     
     func castTapped(sender: UITapGestureRecognizer) {
@@ -820,7 +916,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         answer = answer.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
         
         if answer.rangeOfString("*") == nil {
-            if answer.lowercaseString == self.card!.name.lowercaseString {
+            if answer.lowercaseString == cards!.first!.name.lowercaseString {
                 bCardAnswered = true
                 
                 // clean up the last card
@@ -833,7 +929,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
                     NSUserDefaults.standardUserDefaults().removeObjectForKey(kCQHardCurrentCard)
                 }
                 
-                displayReward()
+                displayAnswer()
                 
             } else {
                 for arr in arrAnswers! {
@@ -904,74 +1000,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         return jumble
     }
     
-    func canCastCard() -> Bool {
-        var ccBlack     = 0
-        var ccBlue      = 0
-        var ccGreen     = 0
-        var ccRed       = 0
-        var ccWhite     = 0
-        var ccColorless = 0
-        
-        for dict in FileManager.sharedInstance().manaImagesForCard(card) as! [NSDictionary] {
-            let symbol = dict["symbol"] as! String
-            
-            if symbol == "B" {
-                ccBlack++
-            } else if symbol == "U" {
-                ccBlue++
-            } else if symbol == "G" {
-                ccGreen++
-            } else if symbol == "R" {
-                ccRed++
-            } else if symbol == "W" {
-                ccWhite++
-            } else if symbol == "1" {
-                ccColorless += 1
-            } else if symbol == "2" {
-                ccColorless += 2
-            } else if symbol == "3" {
-                ccColorless += 3
-            } else if symbol == "4" {
-                ccColorless += 4
-            } else if symbol == "5" {
-                ccColorless += 5
-            } else if symbol == "6" {
-                ccColorless += 6
-            } else if symbol == "7" {
-                ccColorless += 7
-            } else if symbol == "8" {
-                ccColorless += 8
-            } else if symbol == "9" {
-                ccColorless += 9
-            } else if symbol == "10" {
-                ccColorless += 10
-            } else if symbol == "11" {
-                ccColorless += 11
-            } else if symbol == "12" {
-                ccColorless += 12
-            } else if symbol == "13" {
-                ccColorless += 13
-            } else if symbol == "14" {
-                ccColorless += 14
-            } else if symbol == "15" {
-                ccColorless += 15
-            }
-        }
-
-        var result = false
-
-        result = (manaBlack  + manaBlue + manaGreen + manaRed  + manaWhite  + manaColorless) > 0
-        result = result &&
-            manaBlack >= ccBlack &&
-            manaBlue >= ccBlue &&
-            manaGreen >= ccGreen &&
-            manaRed >= ccRed &&
-            manaWhite >= ccWhite &&
-            manaColorless >= ccColorless
-        return result
-    }
-    
-//    MARK:  MBProgressHUDDelegate methods
+//    MARK:  MBProgressHUDDelegate
     func hudWasHidden(hud: MBProgressHUD) {
         hud.removeFromSuperview()
     }
