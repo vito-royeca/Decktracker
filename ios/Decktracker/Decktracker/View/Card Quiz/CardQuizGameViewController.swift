@@ -47,6 +47,8 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
     // sounds
     var successSoundPlayer:AVAudioPlayer?
     var failSoundPlayer:AVAudioPlayer?
+    var answerDeleteSoundPlayer:AVAudioPlayer?
+    var castSoundPlayer:AVAudioPlayer?
     
     
 //  MARK: Boilerplate
@@ -86,8 +88,10 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         cards!.append(self.generateRandomCard())
         
         // load the sounds
-        successSoundPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: "\(NSBundle.mainBundle().bundlePath)/audio/resb_upO.caf"), error: nil)
-        failSoundPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: "\(NSBundle.mainBundle().bundlePath)/audio/damageO.caf"), error: nil)
+        successSoundPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: "\(NSBundle.mainBundle().bundlePath)/audio/cardquiz_success.caf"), error: nil)
+        failSoundPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: "\(NSBundle.mainBundle().bundlePath)/audio/cardquiz_fail.caf"), error: nil)
+        answerDeleteSoundPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: "\(NSBundle.mainBundle().bundlePath)/audio/cardquiz_answer_delete.caf"), error: nil)
+        castSoundPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: "\(NSBundle.mainBundle().bundlePath)/audio/cardquiz_cast.caf"), error: nil)
         
         setupBackground()
         setupManaPoints()
@@ -898,6 +902,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
                 }
             }
         }
+        answerDeleteSoundPlayer!.play()
         
         for lblQuiz in arrQuizzes! {
             if lblQuiz.text == " " {
