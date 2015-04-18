@@ -87,6 +87,7 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
             lblAccount!.adjustsFontSizeToFitWidth = true
             lblAccount!.textColor = CQTheme.kManaLabelColor
             lblAccount!.textAlignment = NSTextAlignment.Center
+            lblAccount!.text = currentUser["name"] as? String
             self.view.addSubview(lblAccount!)
             
             if PFFacebookUtils.isLinkedWithUser(currentUser) {
@@ -96,14 +97,44 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
                     if error == nil {
                         let userData = result as! NSDictionary
                         
-                        self.lblAccount!.text = userData["name"] as? String
+                        let name = userData["name"] as? String
+                        self.lblAccount!.text = name
+                        
+                        if name != currentUser["name"] as? String {
+                            currentUser["name"] = name
+                            currentUser.saveInBackgroundWithBlock({ (success: Bool, error: NSError?) -> Void in
+                                
+                            })
+                        }
                     }
                 })
                 
             } else if PFTwitterUtils.isLinkedWithUser(currentUser) {
+                let requestString = "https://api.twitter.com/1.1/users/show.json?screen_name=\(PFTwitterUtils.twitter()!.screenName!)"
+                let verify = NSURL(string: requestString)
+                let request = NSMutableURLRequest(URL: verify!)
+                PFTwitterUtils.twitter()!.signRequest(request)
+                var response:NSURLResponse?
+                var error:NSError?
+                let data = NSURLConnection.sendSynchronousRequest(request, returningResponse: &response, error: &error)
                 
+                
+                if error == nil {
+                    let result = NSJSONSerialization.JSONObjectWithData(data!, options:NSJSONReadingOptions.AllowFragments, error:&error) as! NSDictionary
+                    let name = result["name"] as! String
+                    
+                    self.lblAccount!.text = name
+                    
+                    if name != currentUser["name"] as? String {
+                        currentUser["name"] = name
+                        currentUser.saveInBackgroundWithBlock({ (success: Bool, error: NSError?) -> Void in
+                            
+                        })
+                    }
+                }
+
             } else {
-                lblAccount!.text = currentUser.username
+                lblAccount!.text = currentUser.username!
             }
             
             dY = self.lblAccount!.frame.origin.y + dHeight + 20
@@ -209,6 +240,15 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
     }
     
     func startGame(sender: AnyObject) {
+        if let currentUser = PFUser.currentUser() {
+            if !PFFacebookUtils.isLinkedWithUser(currentUser) &&
+               !PFTwitterUtils.isLinkedWithUser(currentUser) &&
+               currentUser["emailVerified"] == nil {
+                
+                JJJUtil.alertWithTitle("Email Verification", andMessage: "You may need to verify your email address. We have sent you a verification email. Logout first and then login again after verifying your email.")
+            }
+        }
+        
         let hud = MBProgressHUD(view: self.view)
         var game:CardQuizGameViewController?
         
@@ -216,21 +256,20 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
             let tap = sender as! UITapGestureRecognizer
             let button = tap.view as! UILabel
             let title = button.text
-            var gameType:CQGameType?
+            var gameType:String?
             
             if title == "Easy: Standard" {
-                gameType = .Easy
-                
+                gameType = kCQEasyCurrentCard
             } else if title == "Moderate: Modern" {
-                gameType = .Moderate
-                
+                gameType = kCQModerateCurrentCard
             } else if title == "Hard: Vintage" {
-                gameType = .Hard
+                gameType = kCQHardCurrentCard
             }
             
             game = CardQuizGameViewController()
-            game!.gameType = gameType
             game!.userMana = self.userMana
+            game!.gameType = gameType
+            game!.preloadRandomCards()
         }
         
         let completionBlock = {  () -> Void in

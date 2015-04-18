@@ -38,11 +38,10 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
     var cards:Array<DTCard>?
     var currentCropPath:String?
     var currentCardPath:String?
-    var bCardAnswered = false
     
     var predicate:NSPredicate?
     var userMana:PFObject?
-    var gameType:CQGameType?
+    var gameType:String?
 
     // sounds
     var successSoundPlayer:AVAudioPlayer?
@@ -61,37 +60,11 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         NSNotificationCenter.defaultCenter().removeObserver(self, name:kParseUserManaDone,  object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector:"fetchUserManaDone:",  name:kParseUserManaDone, object:nil)
         
-        var format:String?
-        var formatEx1:String?
-        var formatEx2:String?
-        
-        switch gameType! {
-        case .Easy:
-            format = "Standard"
-            formatEx1 = "Modern"
-            formatEx2 = "Vintage"
-        case .Moderate:
-            format = "Modern"
-            formatEx1 = "Standard"
-            formatEx2 = "Vintage"
-        case .Hard:
-            format = "Vintage"
-            formatEx1 = "Standard"
-            formatEx2 = "Modern"
-        }
-        
-        let predicate1 = NSPredicate(format: "ANY legalities.format.name IN %@ AND NOT (ANY legalities.format.name IN %@)", [format!], [formatEx1!, formatEx2!])
-        let predicate2 = NSPredicate(format: "cmc >= 1 AND cmc <= 15 AND name MATCHES %@", "^.{0,20}")
-        self.predicate = NSCompoundPredicate.andPredicateWithSubpredicates([predicate1, predicate2])
-        
-        cards = Array()
-        cards!.append(self.generateRandomCard())
-        
         // load the sounds
-        successSoundPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: "\(NSBundle.mainBundle().bundlePath)/audio/cardquiz_success.caf"), error: nil)
-        failSoundPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: "\(NSBundle.mainBundle().bundlePath)/audio/cardquiz_fail.caf"), error: nil)
-        answerDeleteSoundPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: "\(NSBundle.mainBundle().bundlePath)/audio/cardquiz_answer_delete.caf"), error: nil)
-        castSoundPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: "\(NSBundle.mainBundle().bundlePath)/audio/cardquiz_cast.caf"), error: nil)
+        successSoundPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("/audio/cardquiz_success", ofType: "caf")!), error: nil)
+        failSoundPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("/audio/cardquiz_fail", ofType: "caf")!), error: nil)
+        answerDeleteSoundPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("/audio/cardquiz_answer_delete", ofType: "caf")!), error: nil)
+        castSoundPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("/audio/cardquiz_cast", ofType: "caf")!), error: nil)
         
         setupBackground()
         setupManaPoints()
@@ -113,12 +86,6 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
         
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        for i in 1...kCQMaxCurrentCards {
-            cards!.append(self.generateRandomCard())
-        }
     }
     
 //  MARK: UI Setup Code
@@ -237,17 +204,6 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
     }
     
     func setupImageView() {
-//        var dWidth = self.view.frame.size.width
-//        var dX = CGFloat(0)
-//        var dY = UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height
-//        var dHeight = self.view.frame.height - dY - 120
-//        var frame = CGRect(x:dX, y:dY, width:dWidth, height:dHeight)
-        
-//        let circleImage = UIImageView(frame: frame)
-//        circleImage.contentMode = UIViewContentMode.ScaleAspectFill
-//        circleImage.image = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/Card_Circles.png")
-//        self.view.addSubview(circleImage)
-        
         var dWidth = self.view.frame.size.width * 0.70
         var dX = (self.view.frame.size.width - dWidth) / 2
         var dY = UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height + 40
@@ -587,76 +543,111 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         lblColorless!.text = " \(manaColorless)"
         
         self.saveMana()
-
-        // remove first and and append new one
-        var key:String?
-        switch gameType! {
-        case .Easy:
-            key = kCQEasyCurrentCard
-        case .Moderate:
-            key = kCQModerateCurrentCard
-        case .Hard:
-            key = kCQHardCurrentCard
-        }
-        cards!.removeAtIndex(0)
-        cards!.append(self.generateRandomCard())
-        let value = cards!.first!.set.code + "_" + cards!.first!.number
-        NSUserDefaults.standardUserDefaults().setObject(value, forKey: key!)
-        NSUserDefaults.standardUserDefaults().synchronize()
-        
         successSoundPlayer!.play()
+        
+        // remove the first card and then add more cards. exec in GCD
+        dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_USER_INITIATED.value), 0)) {
+            self.cards!.removeAtIndex(0)
+            
+            if self.cards!.count == 0 {
+                self.preloadRandomCards()
+            }
+            
+            let value = self.cards!.first!.set.code + "_" + self.cards!.first!.number
+            NSUserDefaults.standardUserDefaults().setObject(value, forKey: self.gameType!)
+            NSUserDefaults.standardUserDefaults().synchronize()
+            
+//            dispatch_async(dispatch_get_main_queue()) {
+//                
+//            }
+        }
     }
 
 //  MARK: Logic Code
-    func generateRandomCard() -> DTCard {
+    func preloadRandomCards() {
         var key:String?
         var value:String?
-        var card:DTCard?
+        var format:String?
+        var formatEx1:String?
+        var formatEx2:String?
         
-        switch gameType! {
-        case .Easy:
+        if gameType == kCQEasyCurrentCard ||
+           gameType == nil {
             if let v = NSUserDefaults.standardUserDefaults().stringForKey(kCQEasyCurrentCard) {
                 value = v
             } else {
                 key = kCQEasyCurrentCard
             }
+            format = "Standard"
+            formatEx1 = "Modern"
+            formatEx2 = "Vintage"
             
-        case .Moderate:
+        } else if gameType == kCQModerateCurrentCard {
             if let v = NSUserDefaults.standardUserDefaults().stringForKey(kCQModerateCurrentCard) {
                 value = v
             } else {
                 key = kCQModerateCurrentCard
             }
+            format = "Modern"
+            formatEx1 = "Standard"
+            formatEx2 = "Vintage"
             
-        case .Hard:
+        } else if gameType == kCQHardCurrentCard {
             if let v = NSUserDefaults.standardUserDefaults().stringForKey(kCQHardCurrentCard) {
                 value = v
             } else {
                 key = kCQHardCurrentCard
             }
+            format = "Vintage"
+            formatEx1 = "Standard"
+            formatEx2 = "Modern"
         }
         
-        if value != nil && cards!.count == 0 {
+        let predicate1 = NSPredicate(format: "ANY legalities.format.name IN %@ AND NOT (ANY legalities.format.name IN %@)", [format!], [formatEx1!, formatEx2!])
+        let predicate2 = NSPredicate(format: "cmc >= 1 AND cmc <= 15 AND name MATCHES %@", "^.{0,20}")
+        predicate = NSCompoundPredicate.andPredicateWithSubpredicates([predicate1, predicate2])
+        
+        cards = Array()
+        
+        if value != nil {
             let array = split(value!) {$0 == "_"}
             let code = array[0]
             let number = array[1]
-            card = DTCard.MR_findFirstWithPredicate(NSPredicate(format: "set.code = %@ AND number = %@", code, number)) as? DTCard
+            let card = DTCard.MR_findFirstWithPredicate(NSPredicate(format: "set.code = %@ AND number = %@", code, number)) as? DTCard
             
-        } else {
-            let xcards = Database.sharedInstance().fetchRandomCards(1, withPredicate: self.predicate, includeInAppPurchase: true)
-            card = xcards.first as? DTCard
-            
-            if cards!.count == 0 {
-                let value = card!.set.code + "_" + card!.number
-                NSUserDefaults.standardUserDefaults().setObject(value, forKey: key!)
-                NSUserDefaults.standardUserDefaults().synchronize()
+            if self.checkValidCard(card!) {
+                FileManager.sharedInstance().downloadCardImage(card, immediately:false)
+                cards!.append(card!)
             }
         }
         
-        FileManager.sharedInstance().downloadCardImage(card, immediately:false)
-        return card!
+        for card in Database.sharedInstance().fetchRandomCards(kCQMaxCurrentCards-cards!.count, withPredicate: self.predicate, includeInAppPurchase: true) {
+            if self.checkValidCard(card as! DTCard) {
+                FileManager.sharedInstance().downloadCardImage(card as! DTCard, immediately:false)
+                cards!.append(card as! DTCard)
+            }
+        }
     }
-
+    
+    func checkValidCard(card: DTCard) -> Bool {
+        var nameOk = true
+        
+        // exclude cards with more than 12 characters in it's name
+        for word in card.name.componentsSeparatedByString(" ") {
+            if count(word) > 12 {
+                nameOk = false
+                break
+            }
+        }
+        
+        // exclude cards with more than 20 characters in it's name
+        if count(card.name) > 20 {
+            nameOk = false
+        }
+        
+        return nameOk
+    }
+    
     func saveMana() {
         let totalCMC = manaBlack +
             manaBlue +
@@ -699,7 +690,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
     }
     
     func loadCardImage(sender: AnyObject) {
-        if !bCardAnswered {
+        if btnNextCard == nil {
             return
         }
 
@@ -874,7 +865,6 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         }
         
         let completionBlock = {  () -> Void in
-            self.bCardAnswered = false
             self.setupImageView()
             self.setupFunctionButtons()
             self.displayQuiz()
@@ -886,6 +876,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
     func castTapped(sender: UITapGestureRecognizer) {
         let label = sender.view as! UILabel
         println("\(label.text!)")
+        castSoundPlayer!.play()
     }
     
     func answerActivated(sender: UITapGestureRecognizer) {
@@ -948,15 +939,13 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         
         if answer.rangeOfString("*") == nil {
             if answer.lowercaseString == cards!.first!.name.lowercaseString {
-                bCardAnswered = true
                 
                 // clean up the last card
-                switch gameType! {
-                case .Easy:
+                if gameType == kCQEasyCurrentCard {
                     NSUserDefaults.standardUserDefaults().removeObjectForKey(kCQEasyCurrentCard)
-                case .Moderate:
+                } else if gameType == kCQModerateCurrentCard {
                     NSUserDefaults.standardUserDefaults().removeObjectForKey(kCQModerateCurrentCard)
-                case .Hard:
+                } else if gameType == kCQHardCurrentCard {
                     NSUserDefaults.standardUserDefaults().removeObjectForKey(kCQHardCurrentCard)
                 }
                 

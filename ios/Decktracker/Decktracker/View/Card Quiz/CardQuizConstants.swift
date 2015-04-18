@@ -5,11 +5,11 @@
 
 import Foundation
 
-let kCQEasyCurrentCard     = "kCQEasyCurrentCard"
-let kCQModerateCurrentCard = "kCQModerateCurrentCard"
-let kCQHardCurrentCard     = "kCQHardCurrentCard"
+let kCQEasyCurrentCard          = "kCQEasyCurrentCard"
+let kCQModerateCurrentCard      = "kCQModerateCurrentCard"
+let kCQHardCurrentCard          = "kCQHardCurrentCard"
 
-let kCQMaxCurrentCards     = 5
+let kCQMaxCurrentCards:Int32    = 10
 
 struct CQTheme {
     static let kManaLabelColor  = UIColor.whiteColor()
@@ -25,10 +25,3 @@ struct CQTheme {
     static let kTileQuizFont   = UIFont(name: "Magic:the Gathering", size:20)
     static let kTileButtonFont = UIFont(name: "Magic:the Gathering", size:14)
 }
-
-enum CQGameType {
-    case Easy
-    case Moderate
-    case Hard
-}
-

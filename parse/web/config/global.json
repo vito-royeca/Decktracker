@@ -7,8 +7,15 @@
       "applicationId": "gWQ4zjHnoXHJK15ipFVgWLUSA979mqHaZ7sOlPU9",
       "masterKey": "DqvzigSDFcu4Di6M2A4wZsn6vxOkDczROc7HJP73"
     },
+    "DecktrackerDev": {
+      "applicationId": "mKMQ9Hl7eGJJIwWb77WYyLfr7GpvsmuNKgGRRZyR",
+      "masterKey": "kIweaZYqiuqKESvHIkmcFbth16xBfltNd0WsPRk9"
+    },
     "_default": {
       "link": "Decktracker"
+    },
+    "dev": {
+      "link": "DecktrackerDev"
     }
   }
 }

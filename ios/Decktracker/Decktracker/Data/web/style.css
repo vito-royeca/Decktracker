@@ -1,3 +1,21 @@
+@font-face
+{
+    font-family: Magic;
+    src: url('fonts/Goudy Medieval.ttf');
+}
+
+@font-face
+{
+    font-family: Matrix;
+    src: url('fonts/Matrix Bold.ttf');
+}
+
+@font-face
+{
+    font-family: MPlantin;
+    src: url('fonts/MPlantin.ttf');
+}
+
 body, td
 {
     font-family: Helvetica;
@@ -28,22 +46,33 @@ html, body
     background-size:393px 400px;
 }
 
-@font-face
+.th_player, .th_rank
 {
-    font-family: Magic;
-    src: url('fonts/Goudy Medieval.ttf');
+	font-family: Magic;
+    font-size: 16pt;
+    color: #ffffff;
 }
 
-@font-face
+.td_player, .td_rank
 {
-    font-family: Matrix;
-    src: url('fonts/Matrix Bold.ttf');
+	font-family: Magic;
+    font-size: 12pt;
+    color: #ffffff;
 }
 
-@font-face
+.th_totalCMC
 {
-    font-family: MPlantin;
-    src: url('fonts/MPlantin.ttf');
+	font-family: Magic;
+    font-size: 16pt;
+    color: #ffffff;
+}
+
+.td_totalCMC
+{
+	font-family: Magic;
+    font-size: 12pt;
+    color: #ffffff;
+    text-align: right;
 }
 
 .cardNamePreEightEdition

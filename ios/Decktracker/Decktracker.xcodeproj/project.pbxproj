@@ -19,7 +19,6 @@
 		8C0CF16B1A01E102009137C5 /* Decks in Resources */ = {isa = PBXBuildFile; fileRef = 8C0CF16A1A01E101009137C5 /* Decks */; };
 		8C13467819A9B17B00E0B3C3 /* SearchResultsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C13467619A9B17B00E0B3C3 /* SearchResultsTableViewCell.m */; };
 		8C13467919A9B17B00E0B3C3 /* SearchResultsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C13467719A9B17B00E0B3C3 /* SearchResultsTableViewCell.xib */; };
-		8C14F73D1AAEC589008450DA /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = 8C14F73C1AAEC589008450DA /* fonts */; };
 		8C1623191A1C816400ABC4DB /* TopListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1623181A1C816400ABC4DB /* TopListViewController.swift */; };
 		8C2094E11A5D1611008878D6 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2094E01A5D1611008878D6 /* Accelerate.framework */; };
 		8C26A67919A63FAC00FE00E7 /* AdvanceSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C26A67019A63FAC00FE00E7 /* AdvanceSearchResultsViewController.m */; };
@@ -231,7 +230,6 @@
 		8C13467519A9B17B00E0B3C3 /* SearchResultsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultsTableViewCell.h; sourceTree = "<group>"; };
 		8C13467619A9B17B00E0B3C3 /* SearchResultsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultsTableViewCell.m; sourceTree = "<group>"; };
 		8C13467719A9B17B00E0B3C3 /* SearchResultsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultsTableViewCell.xib; sourceTree = "<group>"; };
-		8C14F73C1AAEC589008450DA /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
 		8C1623181A1C816400ABC4DB /* TopListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopListViewController.swift; sourceTree = "<group>"; };
 		8C2094E01A5D1611008878D6 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		8C26A66F19A63FAC00FE00E7 /* AdvanceSearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvanceSearchResultsViewController.h; sourceTree = "<group>"; };
@@ -815,7 +813,6 @@
 				8C0CF16A1A01E101009137C5 /* Decks */,
 				8CCFC02D1A3E7C2C004B1853 /* decktracker.plist */,
 				8C019A9F1998A10F00FB22D7 /* decktracker.sqlite */,
-				8C14F73C1AAEC589008450DA /* fonts */,
 				8CADEF1619923DDE004D7658 /* images */,
 				8C01E0FC1ADB9A8800509DDB /* In-App Mana.plist */,
 				8CD627A71A6BEDE000382143 /* In-App Sets.plist */,
@@ -1160,7 +1157,6 @@
 				8C2A978D19F5027B0094C97F /* Reader-Button-N.png in Resources */,
 				8CC5BA691A13509600F3BDD2 /* ThumbCollectionViewCell.xib in Resources */,
 				8C2A979519F5027B0094C97F /* Reader-Mark-Y.png in Resources */,
-				8C14F73D1AAEC589008450DA /* fonts in Resources */,
 				8CAAA0EE1A15057100DD209D /* HorizontalScrollTableViewCell.xib in Resources */,
 				8C89BD4D19DD4F800070E4F5 /* Dropbox.license in Resources */,
 				8C66751119D30B8E00A90C03 /* Settings.bundle in Resources */,

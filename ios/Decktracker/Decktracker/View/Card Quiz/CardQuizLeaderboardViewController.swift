@@ -65,20 +65,15 @@ class CardQuizLeaderboardViewController: UIViewController, MBProgressHUDDelegate
         for leader in leaderboard! {
             let user = leader["user"] as! PFUser
             let totalCMC = leader["totalCMC"] as! NSNumber
-//            var name:String?
-//            
-//            if PFFacebookUtils.isLinkedWithUser(user) {
-//                let request = FBRequest.requestForMe()
-//                
-//                request.startWithCompletionHandler({ (connection: FBRequestConnection?, result: AnyObject?, error: NSError?) -> Void in
-//                    if error == nil {
-//                        let userData = result as! NSDictionary
-//                        
-//                        self.lblAccount!.text = userData["name"] as? String
-//                    }
-//                })
-//            }
-            frag += "<tr><td>\(i)</td><td>\(user.username)</td><td>\(totalCMC)</td></tr>"
+            var name:String?
+            
+            if let x = user["name"] as? String {
+                name = x
+            } else {
+                name = user["username"] as? String
+            }
+            
+            frag += "<tr><td class='td_rank'>\(i)</td><td class='td_player'>\(name!)</td><td class='td_totalCMC'>\(totalCMC)</td></tr>"
             i++
         }
         html = html!.stringByReplacingOccurrencesOfString("#_PLACEHOLDER_#", withString: frag)

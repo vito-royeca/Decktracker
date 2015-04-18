@@ -33,7 +33,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>19A0</string>
+	<string>19E2</string>
 	<key>FacebookAppID</key>
 	<string>341320496039341</string>
 	<key>FacebookDisplayName</key>
@@ -42,9 +42,9 @@
 	<true/>
 	<key>UIAppFonts</key>
 	<array>
-		<string>fonts/MPlantin.ttf</string>
-		<string>fonts/Matrix Bold.ttf</string>
-		<string>fonts/Goudy Medieval.ttf</string>
+		<string>web/fonts/MPlantin.ttf</string>
+		<string>web/fonts/Matrix Bold.ttf</string>
+		<string>web/fonts/Goudy Medieval.ttf</string>
 	</array>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>

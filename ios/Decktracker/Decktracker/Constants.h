@@ -54,8 +54,8 @@ typedef NS_ENUM(NSInteger, EditMode)
 
 #define kCardViewMode                    @"kCardViewMode"
 #define kCardViewModeList                @"List"
-#define kCardViewModeGrid2x2            @"2x2"
-#define kCardViewModeGrid3x3            @"3x3"
+#define kCardViewModeGrid2x2             @"2x2"
+#define kCardViewModeGrid3x3             @"3x3"
 
 #define kAppID                           @"913992761"
 

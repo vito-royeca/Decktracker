@@ -1371,7 +1371,7 @@ static Database *_me;
     query.limit = 15;
     
     [query includeKey:@"user"];
-    [query orderByAscending:@"totalCMC"];
+    [query orderByDescending:@"totalCMC"];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error)
         {
