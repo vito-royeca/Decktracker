@@ -218,7 +218,7 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         if self.viewMode == kCardViewModeList {
             tblHand!.reloadData()
         } else if self.viewMode == kCardViewModeGrid2x2 ||
-            self.view == kCardViewModeGrid3x3 {
+            self.viewMode == kCardViewModeGrid3x3 {
                 colHand!.reloadData()
         }
     }
@@ -248,7 +248,7 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         if self.viewMode == kCardViewModeList {
             tblHand!.reloadData()
         } else if self.viewMode == kCardViewModeGrid2x2 ||
-            self.view == kCardViewModeGrid3x3 {
+            self.viewMode == kCardViewModeGrid3x3 {
                 colHand!.reloadData()
         }
     }
@@ -263,7 +263,7 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         if self.viewMode == kCardViewModeList {
             tblHand!.reloadData()
         } else if self.viewMode == kCardViewModeGrid2x2 ||
-            self.view == kCardViewModeGrid3x3{
+            self.viewMode == kCardViewModeGrid3x3{
                 colHand!.reloadData()
         }
     }

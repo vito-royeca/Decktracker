@@ -770,15 +770,14 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         }
         
         var result = false
-        
-        result = (manaBlack  + manaBlue + manaGreen + manaRed  + manaWhite  + manaColorless) > 0
-        result = result &&
+        let totalMana = manaBlack  + manaBlue + manaGreen + manaRed  + manaWhite + manaColorless
+        result = totalMana > 0 &&
             manaBlack >= ccBlack &&
-            manaBlue >= ccBlue &&
+            manaBlue  >= ccBlue &&
             manaGreen >= ccGreen &&
-            manaRed >= ccRed &&
+            manaRed   >= ccRed &&
             manaWhite >= ccWhite &&
-            manaColorless >= ccColorless
+            totalMana >= ccColorless
         return result
     }
     
@@ -1056,6 +1055,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         self.saveMana()
         
         // update mana pool display
-        Database.sharedInstance().fetchUserMana()
+        self.updateManaPool()
+//        Database.sharedInstance().fetchUserMana()
     }
 }
