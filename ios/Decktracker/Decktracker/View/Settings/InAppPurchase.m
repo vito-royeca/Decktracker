@@ -16,7 +16,7 @@
 
 -(id) init
 {
-    if ((self = [super init]))
+    if (self = [super init])
     {
         [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
     }
@@ -99,6 +99,7 @@
                                                          forKey:transaction.originalTransaction.payment.productIdentifier];
                 [[NSUserDefaults standardUserDefaults] synchronize];
                 [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
+                [[SKPaymentQueue defaultQueue] removeTransactionObserver:self];
                 break;
             }
             case SKPaymentTransactionStatePurchased:
@@ -111,24 +112,28 @@
                                                                  forKey:self.productID];
                         [[NSUserDefaults standardUserDefaults] synchronize];
                         [self.delegate productPurchaseSucceeded:self withMessage:@"In-App Purchase succeeded."];
+                        [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
+                        [[SKPaymentQueue defaultQueue] removeTransactionObserver:self];
                     }
                 }
                 else
                 {
                     if ([transaction.payment.productIdentifier isEqualToString:self.productID])
                     {
-                        [[NSUserDefaults standardUserDefaults] synchronize];
                         [self.delegate productPurchaseSucceeded:self withMessage:@"In-App Purchase succeeded."];
+                        [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
+                        [[SKPaymentQueue defaultQueue] removeTransactionObserver:self];
                     }
                 }
                 
-                [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
+//                [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
                 break;
             }
             case SKPaymentTransactionStateFailed:
             {
                 [self.delegate productPurchaseFailed:self withMessage:transaction.error.localizedDescription];
                 [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
+                [[SKPaymentQueue defaultQueue] removeTransactionObserver:self];
                 break;
             }
             default:

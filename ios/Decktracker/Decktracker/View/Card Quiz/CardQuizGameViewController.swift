@@ -545,14 +545,23 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         self.saveMana()
         successSoundPlayer!.play()
         
-        // remove the first card and then add more cards. exec in GCD
         dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_USER_INITIATED.value), 0)) {
+            
+            // remove the last card
             self.cards!.removeAtIndex(0)
+            if self.gameType == kCQEasyCurrentCard {
+                NSUserDefaults.standardUserDefaults().removeObjectForKey(kCQEasyCurrentCard)
+            } else if self.gameType == kCQModerateCurrentCard {
+                NSUserDefaults.standardUserDefaults().removeObjectForKey(kCQModerateCurrentCard)
+            } else if self.gameType == kCQHardCurrentCard {
+                NSUserDefaults.standardUserDefaults().removeObjectForKey(kCQHardCurrentCard)
+            }
             
             if self.cards!.count == 0 {
                 self.preloadRandomCards()
             }
             
+            // set up a new card
             let value = self.cards!.first!.set.code + "_" + self.cards!.first!.number
             NSUserDefaults.standardUserDefaults().setObject(value, forKey: self.gameType!)
             NSUserDefaults.standardUserDefaults().synchronize()
@@ -608,6 +617,12 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         predicate = NSCompoundPredicate.andPredicateWithSubpredicates([predicate1, predicate2])
         
         cards = Array()
+        for card in Database.sharedInstance().fetchRandomCards(kCQMaxCurrentCards-(value != nil ? 1:0), withPredicate: self.predicate, includeInAppPurchase: true) {
+            if self.checkValidCard(card as! DTCard) {
+                FileManager.sharedInstance().downloadCardImage(card as! DTCard, immediately:false)
+                cards!.append(card as! DTCard)
+            }
+        }
         
         if value != nil {
             let array = split(value!) {$0 == "_"}
@@ -617,15 +632,15 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
             
             if self.checkValidCard(card!) {
                 FileManager.sharedInstance().downloadCardImage(card, immediately:false)
-                cards!.append(card!)
+                cards!.insert(card!, atIndex:0)
             }
-        }
-        
-        for card in Database.sharedInstance().fetchRandomCards(kCQMaxCurrentCards-cards!.count, withPredicate: self.predicate, includeInAppPurchase: true) {
-            if self.checkValidCard(card as! DTCard) {
-                FileManager.sharedInstance().downloadCardImage(card as! DTCard, immediately:false)
-                cards!.append(card as! DTCard)
-            }
+            
+        } else {
+            let card = cards!.first! as DTCard
+            let value = card.set.code + "_" + card.number
+            
+            NSUserDefaults.standardUserDefaults().setObject(value, forKey: key!)
+            NSUserDefaults.standardUserDefaults().synchronize()
         }
     }
     
@@ -671,7 +686,8 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         let dict = sender.userInfo as Dictionary?
         let card = dict?["card"] as! DTCard
         
-        if (cards!.first == card) {
+        // cards!.first becomes nil after comparison below, e.g. cards!.first == card
+        if cards!.first === card {
             let path = FileManager.sharedInstance().cropPath(card)
             
             if path != currentCropPath {
@@ -697,7 +713,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         let dict = sender.userInfo as Dictionary?
         let card = dict?["card"] as! DTCard
         
-        if (cards!.first == card) {
+        if cards!.first === card {
             let path = FileManager.sharedInstance().cardPath(card)
             
             if path != currentCardPath {
@@ -935,19 +951,9 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
             answer += " "
         }
         answer = answer.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
-        
+        println("before: \(self.cards!.first!.name)")
         if answer.rangeOfString("*") == nil {
             if answer.lowercaseString == cards!.first!.name.lowercaseString {
-                
-                // clean up the last card
-                if gameType == kCQEasyCurrentCard {
-                    NSUserDefaults.standardUserDefaults().removeObjectForKey(kCQEasyCurrentCard)
-                } else if gameType == kCQModerateCurrentCard {
-                    NSUserDefaults.standardUserDefaults().removeObjectForKey(kCQModerateCurrentCard)
-                } else if gameType == kCQHardCurrentCard {
-                    NSUserDefaults.standardUserDefaults().removeObjectForKey(kCQHardCurrentCard)
-                }
-                
                 displayAnswer()
                 
             } else {
@@ -959,6 +965,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
                 failSoundPlayer!.play()
             }
         }
+        println("after: \(self.cards!.first!.name)")
     }
     
     func quizForCard(card: DTCard) -> String {
@@ -1051,11 +1058,14 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
             manaColorless += 10
         }
         
+        lblBlack!.text     = " \(manaBlack)"
+        lblBlue!.text      = " \(manaBlue)"
+        lblGreen!.text     = " \(manaGreen)"
+        lblRed!.text       = " \(manaRed)"
+        lblWhite!.text     = " \(manaWhite)"
+        lblColorless!.text = " \(manaColorless)"
+        
         // save the mana in the cloud
         self.saveMana()
-        
-        // update mana pool display
-        self.updateManaPool()
-//        Database.sharedInstance().fetchUserMana()
     }
 }
