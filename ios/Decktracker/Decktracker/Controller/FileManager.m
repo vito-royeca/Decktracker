@@ -377,7 +377,7 @@ static FileManager *_me;
             }
             else if ([mana isEqualToString:noCurliesReverse])
             {
-                NSString *path = [NSString stringWithFormat:@"%@/images/mana/%@/%D.png", [[NSBundle mainBundle] bundlePath], noCurliesReverse, pngSize];
+                NSString *path = [NSString stringWithFormat:@"%@/images/mana/%@/%d.png", [[NSBundle mainBundle] bundlePath], noCurliesReverse, pngSize];
                 
                 [arrManaImages addObject:@{@"width"  : [NSNumber numberWithFloat:width],
                                            @"height" : [NSNumber numberWithFloat:height],
