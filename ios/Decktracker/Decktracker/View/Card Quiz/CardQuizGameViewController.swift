@@ -1051,58 +1051,37 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
     }
     
     func nextCardTapped(sender: UITapGestureRecognizer) {
-//        lblCastingCost!.removeFromSuperview()
-//        lblCastingCost = nil
-//        for view in self.viewCastingCost!.subviews {
-//            view.removeFromSuperview()
-//        }
-//        viewCastingCost!.removeFromSuperview()
-//        viewCastingCost = nil
-//        viewImage!.removeFromSuperview()
-//        viewImage = nil
-//        btnNextCard!.removeFromSuperview()
-//        btnNextCard = nil
-//        
-//        rotateCards()
-//        setupCastingCost()
-//        setupFunctionButtons()
-//        updateManaPool()
-//        displayQuiz()
-        
         let hud = MBProgressHUD(view: self.view)
         hud.delegate = self
         self.view.addSubview(hud)
         
         let executingBlock = { () -> Void in
-            // clean
-            self.lblCastingCost!.removeFromSuperview()
-            self.lblCastingCost = nil
-            
-            for view in self.viewCastingCost!.subviews {
-                view.removeFromSuperview()
-            }
-            self.viewCastingCost!.removeFromSuperview()
-            self.viewCastingCost = nil
-            
-            self.viewImage!.removeFromSuperview()
-            self.viewImage = nil
-            
-            self.btnNextCard!.removeFromSuperview()
-            self.btnNextCard = nil
-            
             dispatch_async(dispatch_get_main_queue()) {
+                // clean
+                self.lblCastingCost!.removeFromSuperview()
+                self.lblCastingCost = nil
+                
+                for view in self.viewCastingCost!.subviews {
+                    view.removeFromSuperview()
+                }
+                self.viewCastingCost!.removeFromSuperview()
+                self.viewCastingCost = nil
+                
+                self.viewImage!.removeFromSuperview()
+                self.viewImage = nil
+                
+                self.btnNextCard!.removeFromSuperview()
+                self.btnNextCard = nil
+                
                 self.rotateCards()
+                self.setupCastingCost()
+                self.setupFunctionButtons()
+                self.updateManaPool()
+                self.displayQuiz()
             }
         }
         
-        let completionBlock = {  () -> Void in
-            self.setupCastingCost()
-            self.setupFunctionButtons()
-            self.updateManaPool()
-            self.displayQuiz()
-        }
-        
-        hud.showAnimated(true, whileExecutingBlock:executingBlock, completionBlock:completionBlock)
+        hud.showAnimated(true, whileExecutingBlock:executingBlock, completionBlock:nil)
     }
     
     func castTapped(sender: UITapGestureRecognizer) {

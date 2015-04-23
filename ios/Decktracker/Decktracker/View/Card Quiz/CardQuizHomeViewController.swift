@@ -291,30 +291,32 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         var game:CardQuizGameViewController?
         
         let executingBlock = { () -> Void in
-            let tap = sender as! UITapGestureRecognizer
-            let button = tap.view as! UILabel
-            let title = button.text
-            var gameType:String?
-            
-            if title == "Easy: Standard" {
-                gameType = kCQEasyCurrentCard
-            } else if title == "Moderate: Modern" {
-                gameType = kCQModerateCurrentCard
-            } else if title == "Hard: Vintage" {
-                gameType = kCQHardCurrentCard
-            }
-            
-            game = CardQuizGameViewController()
-            game!.userMana = self.userMana
-            game!.gameType = gameType
-            
             dispatch_async(dispatch_get_main_queue()) {
+                let tap = sender as! UITapGestureRecognizer
+                let button = tap.view as! UILabel
+                let title = button.text
+                var gameType:String?
+                
+                if title == "Easy: Standard" {
+                    gameType = kCQEasyCurrentCard
+                } else if title == "Moderate: Modern" {
+                    gameType = kCQModerateCurrentCard
+                } else if title == "Hard: Vintage" {
+                    gameType = kCQHardCurrentCard
+                }
+                
+                game = CardQuizGameViewController()
+                game!.userMana = self.userMana
+                game!.gameType = gameType
+                
                 game!.preloadRandomCards()
             }
         }
         
         let completionBlock = {  () -> Void in
-            self.presentViewController(game!, animated: false, completion: nil)
+            dispatch_async(dispatch_get_main_queue()) {
+                self.presentViewController(game!, animated: false, completion: nil)
+            }
         }
         
         hud.delegate = self

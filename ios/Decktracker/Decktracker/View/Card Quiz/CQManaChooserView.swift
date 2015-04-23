@@ -438,23 +438,22 @@ class CQManaChooserView: UIView {
             
             switch txt.tag {
             case 0:
-                
-                dict.updateValue(NSNumber(integer: mana), forKey: "colorless")
+                dict["colorless"] = NSNumber(integer: mana)
             case 1:
-                dict.updateValue(NSNumber(integer: mana), forKey: "black")
+                dict["black"] = NSNumber(integer: mana)
             case 2:
-                dict.updateValue(NSNumber(integer: mana), forKey: "blue")
+                dict["blue"] = NSNumber(integer: mana)
             case 3:
-                dict.updateValue(NSNumber(integer: mana), forKey: "green")
+                dict["green"] = NSNumber(integer: mana)
             case 4:
-                dict.updateValue(NSNumber(integer: mana), forKey: "red")
+                dict["red"] = NSNumber(integer: mana)
             case 5:
-                dict.updateValue(NSNumber(integer: mana), forKey: "white")
+                dict["white"] = NSNumber(integer: mana)
             default:
                 break
             }
         }
-        dict.updateValue(NSNumber(integer: totalCMC), forKey: "totalCMC")
+        dict["totalCMC"] = NSNumber(integer: totalCMC)
         
         return dict
     }
@@ -494,11 +493,61 @@ class CQManaChooserView: UIView {
     }
     
     func validate() -> Bool {
-        var mana = manaPaid() as Dictionary<String, NSNumber>
-        var valid = true
+        var mana = manaPaid()
+        var colorless = 0
         
-        valid = (card!.cmc.integerValue == mana["totalCMC"]!.integerValue)
+        if card!.cmc.integerValue != mana["totalCMC"]!.integerValue {
+            return false
+        }
     
-        return valid
+        for (k,v) in mana {
+            if k == "totalCMC" {
+                continue
+            } else if k == "black" {
+                let cc = castingCostOfCard(card!, forColor: "B")
+                if v.integerValue < cc {
+                    return false
+                } else {
+                    colorless += (v.integerValue - cc)
+                }
+            } else if k == "blue" {
+                let cc = castingCostOfCard(card!, forColor: "U")
+                if v.integerValue < cc {
+                    return false
+                } else {
+                    colorless += (v.integerValue - cc)
+                }
+            } else if k == "green" {
+                let cc = castingCostOfCard(card!, forColor: "G")
+                if v.integerValue < cc {
+                    return false
+                } else {
+                    colorless += (v.integerValue - cc)
+                }
+            } else if k == "red" {
+                let cc = castingCostOfCard(card!, forColor: "R")
+                if v.integerValue < cc {
+                    return false
+                } else {
+                    colorless += (v.integerValue - cc)
+                }
+            } else if k == "white" {
+                let cc = castingCostOfCard(card!, forColor: "W")
+                if v.integerValue < cc {
+                    return false
+                } else {
+                    colorless += (v.integerValue - cc)
+                }
+            } else if k == "colorless" {
+                let cc = castingCostOfCard(card!, forColor: "\(v)")
+                colorless += cc
+            }
+        }
+        
+        if colorless < castingCostOfCard(card!, forColor: "\(colorless)") {
+            return false
+        }
+        
+        return true
     }
 }
