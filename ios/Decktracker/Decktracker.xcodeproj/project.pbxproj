@@ -166,6 +166,7 @@
 		8CE7F2BE19C0A2D0004FBEA5 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CE7F2BD19C0A2D0004FBEA5 /* StoreKit.framework */; };
 		8CE971C61A126C0000D4386B /* BannerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE971C41A126C0000D4386B /* BannerCollectionViewCell.swift */; };
 		8CE971C71A126C0000D4386B /* BannerCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CE971C51A126C0000D4386B /* BannerCollectionViewCell.xib */; };
+		8CEAD8B11AE552DE00F72D3B /* CQManaChooserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEAD8B01AE552DE00F72D3B /* CQManaChooserView.swift */; };
 		8CEF2EAB1A6B395E0026D4EF /* CardListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEF2EAA1A6B395E0026D4EF /* CardListViewController.swift */; };
 		8CF14BF41A2E199600BEC434 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF14BF31A2E199600BEC434 /* LoginViewController.swift */; };
 		8CF3309F1A35B33D00B6301D /* UserAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF3309E1A35B33D00B6301D /* UserAccountViewController.swift */; };
@@ -451,6 +452,7 @@
 		8CE7F2C219C0A2F7004FBEA5 /* Decktracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Decktracker.entitlements; sourceTree = "<group>"; };
 		8CE971C41A126C0000D4386B /* BannerCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BannerCollectionViewCell.swift; sourceTree = "<group>"; };
 		8CE971C51A126C0000D4386B /* BannerCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BannerCollectionViewCell.xib; sourceTree = "<group>"; };
+		8CEAD8B01AE552DE00F72D3B /* CQManaChooserView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CQManaChooserView.swift; sourceTree = "<group>"; };
 		8CEF2EAA1A6B395E0026D4EF /* CardListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardListViewController.swift; sourceTree = "<group>"; };
 		8CF14BF31A2E199600BEC434 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		8CF3309E1A35B33D00B6301D /* UserAccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAccountViewController.swift; sourceTree = "<group>"; };
@@ -916,6 +918,7 @@
 				8CA376B71A667B6C0041FDAA /* CardQuizGameViewController.swift */,
 				77D564E8D46C17B81D56F614 /* CardQuizHomeViewController.swift */,
 				8C0117161ADCAF230075A933 /* CardQuizLeaderboardViewController.swift */,
+				8CEAD8B01AE552DE00F72D3B /* CQManaChooserView.swift */,
 			);
 			path = "Card Quiz";
 			sourceTree = "<group>";
@@ -1291,6 +1294,7 @@
 				8C2A97A819F5027B0094C97F /* ReaderThumbRequest.m in Sources */,
 				8CC5BA711A1386A700F3BDD2 /* SetCollectionViewCell.swift in Sources */,
 				8CCE99691A6A80D400ECCA1C /* QuantityTableViewCell.m in Sources */,
+				8CEAD8B11AE552DE00F72D3B /* CQManaChooserView.swift in Sources */,
 				8CE971C61A126C0000D4386B /* BannerCollectionViewCell.swift in Sources */,
 				8C33E9BE19D73AAB000892D9 /* InAppPurchaseViewController.m in Sources */,
 				8C2A97AA19F5027B0094C97F /* ReaderThumbView.m in Sources */,

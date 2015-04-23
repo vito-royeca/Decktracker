@@ -24,6 +24,7 @@
 
 static Database *_me;
 
+#pragma mark: Setup code
 +(id) sharedInstance
 {
     if (!_me)
@@ -169,6 +170,7 @@ static Database *_me;
     [MagicalRecord cleanUp];
 }
 
+#pragma mark - Finders with FetchedResultsController
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
 -(NSFetchedResultsController*) search:(NSString*) query
                   withSortDescriptors:(NSArray*) sorters
@@ -193,7 +195,7 @@ static Database *_me;
         predicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[pred1, pred2, pred3, pred4]];
     }
     
-    NSManagedObjectContext *moc = [NSManagedObjectContext MR_defaultContext];
+    NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     if (!sorters)
     {
@@ -262,7 +264,7 @@ static Database *_me;
         }
     }
     
-    NSManagedObjectContext *moc = [NSManagedObjectContext MR_defaultContext];
+    NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     if (!sorters)
     {
@@ -482,7 +484,7 @@ static Database *_me;
         predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, predDefault]];
     }
     
-    NSManagedObjectContext *moc = [NSManagedObjectContext MR_defaultContext];
+    NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:@"name"
                                                                    ascending:YES];
@@ -510,6 +512,7 @@ static Database *_me;
 }
 #endif
 
+#pragma mark - Finders
 -(DTCard*) findCard:(NSString*) cardName inSet:(NSString*) setCode
 {
     NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"name == %@", cardName];
@@ -639,7 +642,7 @@ static Database *_me;
             card.tcgPlayerLink = link ? [JJJUtil trim:link] : card.tcgPlayerLink;
             card.tcgPlayerFetchDate = [NSDate date];
             
-            NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_defaultContext];
+            NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
             if ([currentContext hasChanges])
             {
                 [currentContext MR_saveToPersistentStoreAndWait];
@@ -658,11 +661,31 @@ static Database *_me;
     }
 }
 
--(NSArray*) fetchRandomCards:(int) howMany withPredicate:(NSPredicate*) predicate includeInAppPurchase:(BOOL) inAppPurchase
+/*
+ + (void)backgroundFetchWithPredicate:(NSPredicate *)predicate
+ completion:(void(^)(NSArray *))completion {
+ 
+ NSManagedObjectContext *privateContext = [NSManagedObjectContext MR_context];
+ 
+ [privateContext performBlock:^{
+ NSArray *privateObjects = [MR_findAllWithPredicate:predicate inContext:privateContext];
+ NSArray *privateObjectIDs = [privateObjects valueForKey:@"objectID"];
+ // Return to our main thread
+ dispatch_async(dispatch_get_main_queue(), ^{
+ NSPredicate *mainPredicate = [NSPredicate predicateWithFormat:@"self IN %@", privateObjectIDs];
+ NSArray *finalResults = [self MR_findAllWithPredicate:mainPredicate];
+ completion(finalResults, nil);
+ });
+ }];
+ }*/
+
+-(NSArray*) fetchRandomCards:(int) howMany
+               withPredicate:(NSPredicate*) predicate
+        includeInAppPurchase:(BOOL) inAppPurchase
 {
     NSMutableArray *array = [[NSMutableArray alloc] init];
     
-    NSManagedObjectContext *moc = [NSManagedObjectContext MR_defaultContext];
+    NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:@"name"
                                                                     ascending:YES];
@@ -707,7 +730,7 @@ static Database *_me;
 
 -(NSArray*) fetchSets:(int) howMany
 {
-    NSManagedObjectContext *moc = [NSManagedObjectContext MR_defaultContext];
+    NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:@"releaseDate"
                                                                     ascending:NO];

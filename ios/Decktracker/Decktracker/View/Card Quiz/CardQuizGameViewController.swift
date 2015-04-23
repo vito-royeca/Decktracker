@@ -9,9 +9,10 @@
 import UIKit
 import AVFoundation
 
-class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InAppPurchaseViewControllerDelegate {
+class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InAppPurchaseViewControllerDelegate, CQManaChooserViewDelegate {
 
 //  MARK: Variables
+    var btnClose:UIImageView?
     var lblBlack:UILabel?
     var lblBlue:UILabel?
     var lblGreen:UILabel?
@@ -62,16 +63,23 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         
         // load the sounds
         successSoundPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("/audio/cardquiz_success", ofType: "caf")!), error: nil)
+        successSoundPlayer!.prepareToPlay()
+        
         failSoundPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("/audio/cardquiz_fail", ofType: "caf")!), error: nil)
+        failSoundPlayer!.prepareToPlay()
+        
         answerDeleteSoundPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("/audio/cardquiz_answer_delete", ofType: "caf")!), error: nil)
+        answerDeleteSoundPlayer!.prepareToPlay()
+        
         castSoundPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("/audio/cardquiz_cast", ofType: "caf")!), error: nil)
+        castSoundPlayer!.prepareToPlay()
         
         setupBackground()
         setupManaPoints()
-        setupImageView()
+        setupCastingCost()
         setupFunctionButtons()
-        displayQuiz()
         updateManaPool()
+        displayQuiz()
         
         self.navigationItem.title = "Card Quiz"
 #if !DEBUG
@@ -88,17 +96,39 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         
     }
     
+    override func prefersStatusBarHidden() -> Bool {
+        return true
+    }
+    
+    override func preferredStatusBarUpdateAnimation() -> UIStatusBarAnimation {
+        return UIStatusBarAnimation.None
+    }
+
+    
 //  MARK: UI Setup Code
     func setupBackground() {
-        var dWidth = self.view.frame.size.width
-        var dX = CGFloat(0)
-        var dY = UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height
-        var dHeight = self.view.frame.height - dY - 120
-        var frame = CGRect(x:dX, y:dY, width:dWidth, height:dHeight)
+        var dX = CGFloat(5)
+        var dY = CGFloat(5)
+        var dWidth = CGFloat(30)
+        var dHeight = CGFloat(30)
+        var dFrame = CGRect(x:dX, y:dY, width:dWidth, height:dHeight)
+        
+        btnClose = UIImageView(frame: dFrame)
+        btnClose!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "closeTapped:"))
+        btnClose!.userInteractionEnabled = true
+        btnClose!.contentMode = UIViewContentMode.ScaleAspectFill
+        btnClose!.image = UIImage(named: "cancel.png")
+        self.view.addSubview(btnClose!)
         
         self.view.backgroundColor = UIColor(patternImage: UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/Gray_Patterned_BG.jpg")!)
         
-        let circleImage = UIImageView(frame: frame)
+        dX = CGFloat(0)
+        dY = btnClose!.frame.origin.y + btnClose!.frame.size.height + 10
+        dWidth = self.view.frame.size.width
+        dHeight = self.view.frame.height - dY - 125
+        dFrame = CGRect(x:dX, y:dY, width:dWidth, height:dHeight)
+        
+        let circleImage = UIImageView(frame: dFrame)
         circleImage.contentMode = UIViewContentMode.ScaleAspectFill
         circleImage.image = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/Card_Circles.png")
         self.view.addSubview(circleImage)
@@ -112,90 +142,90 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         let manaLabelHeight = manaImageHeight+2
         
         var dX:CGFloat = 10
-        var dY:CGFloat = UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height+5
-        var frame = CGRect(x:dX, y:dY, width:manaImageWidth, height:manaImageHeight)
-        var imageView = UIImageView(frame: frame)
+        var dY = btnClose!.frame.origin.y + btnClose!.frame.size.height + 10
+        var dFrame = CGRect(x:dX, y:dY, width:manaImageWidth, height:manaImageHeight)
+        var imageView = UIImageView(frame: dFrame)
         imageView.image = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/mana/B/32.png")
         self.view.addSubview(imageView)
         
-        dX = frame.origin.x + frame.size.width
-        frame = CGRect(x:dX, y:dY, width:manaLabelWidth, height:manaLabelHeight)
-        lblBlack = UILabel(frame: frame)
+        dX = dFrame.origin.x + dFrame.size.width
+        dFrame = CGRect(x:dX, y:dY, width:manaLabelWidth, height:manaLabelHeight)
+        lblBlack = UILabel(frame: dFrame)
         lblBlack!.text = " 0"
         lblBlack!.font = CQTheme.kManaLabelFont
         lblBlack!.adjustsFontSizeToFitWidth = true
         lblBlack!.textColor = CQTheme.kManaLabelColor
         self.view.addSubview(lblBlack!)
         
-        dX = frame.origin.x + frame.size.width
-        frame = CGRect(x:dX, y:dY, width:manaImageWidth, height:manaImageHeight)
-        imageView = UIImageView(frame: frame)
+        dX = dFrame.origin.x + dFrame.size.width
+        dFrame = CGRect(x:dX, y:dY, width:manaImageWidth, height:manaImageHeight)
+        imageView = UIImageView(frame: dFrame)
         imageView.image = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/mana/U/32.png")
         self.view.addSubview(imageView)
         
-        dX = frame.origin.x + frame.size.width
-        frame = CGRect(x:dX, y:dY, width:manaLabelWidth, height:manaLabelHeight)
-        lblBlue = UILabel(frame: frame)
+        dX = dFrame.origin.x + dFrame.size.width
+        dFrame = CGRect(x:dX, y:dY, width:manaLabelWidth, height:manaLabelHeight)
+        lblBlue = UILabel(frame: dFrame)
         lblBlue!.text = " 0"
         lblBlue!.font = CQTheme.kManaLabelFont
         lblBlue!.adjustsFontSizeToFitWidth = true
         lblBlue!.textColor = CQTheme.kManaLabelColor
         self.view.addSubview(lblBlue!)
         
-        dX = frame.origin.x + frame.size.width
-        frame = CGRect(x:dX, y:dY, width:manaImageWidth, height:manaImageHeight)
-        imageView = UIImageView(frame: frame)
+        dX = dFrame.origin.x + dFrame.size.width
+        dFrame = CGRect(x:dX, y:dY, width:manaImageWidth, height:manaImageHeight)
+        imageView = UIImageView(frame: dFrame)
         imageView.image = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/mana/G/32.png")
         self.view.addSubview(imageView)
         
-        dX = frame.origin.x + frame.size.width
-        frame = CGRect(x:dX, y:dY, width:manaLabelWidth, height:manaLabelHeight)
-        lblGreen = UILabel(frame: frame)
+        dX = dFrame.origin.x + dFrame.size.width
+        dFrame = CGRect(x:dX, y:dY, width:manaLabelWidth, height:manaLabelHeight)
+        lblGreen = UILabel(frame: dFrame)
         lblGreen!.text = " 0"
         lblGreen!.font = CQTheme.kManaLabelFont
         lblGreen!.adjustsFontSizeToFitWidth = true
         lblGreen!.textColor = CQTheme.kManaLabelColor
         self.view.addSubview(lblGreen!)
         
-        dX = frame.origin.x + frame.size.width
-        frame = CGRect(x:dX, y:dY, width:manaImageWidth, height:manaImageHeight)
-        imageView = UIImageView(frame: frame)
+        dX = dFrame.origin.x + dFrame.size.width
+        dFrame = CGRect(x:dX, y:dY, width:manaImageWidth, height:manaImageHeight)
+        imageView = UIImageView(frame: dFrame)
         imageView.image = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/mana/R/32.png")
         self.view.addSubview(imageView)
         
-        dX = frame.origin.x + frame.size.width
-        frame = CGRect(x:dX, y:dY, width:manaLabelWidth, height:manaLabelHeight)
-        lblRed = UILabel(frame: frame)
+        dX = dFrame.origin.x + dFrame.size.width
+        dFrame = CGRect(x:dX, y:dY, width:manaLabelWidth, height:manaLabelHeight)
+        lblRed = UILabel(frame: dFrame)
         lblRed!.text = " 0"
         lblRed!.font = CQTheme.kManaLabelFont
         lblRed!.adjustsFontSizeToFitWidth = true
         lblRed!.textColor = CQTheme.kManaLabelColor
         self.view.addSubview(lblRed!)
         
-        dX = frame.origin.x + frame.size.width
-        frame = CGRect(x:dX, y:dY, width:manaImageWidth, height:manaImageHeight)
-        imageView = UIImageView(frame: frame)
+        dX = dFrame.origin.x + dFrame.size.width
+        dFrame = CGRect(x:dX, y:dY, width:manaImageWidth, height:manaImageHeight)
+        imageView = UIImageView(frame: dFrame)
         imageView.image = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/mana/W/32.png")
         self.view.addSubview(imageView)
         
-        dX = frame.origin.x + frame.size.width
-        frame = CGRect(x:dX, y:dY, width:manaLabelWidth, height:manaLabelHeight)
-        lblWhite = UILabel(frame: frame)
+        dX = dFrame.origin.x + dFrame.size.width
+        dFrame = CGRect(x:dX, y:dY, width:manaLabelWidth, height:manaLabelHeight)
+        lblWhite = UILabel(frame: dFrame)
         lblWhite!.text = " 0"
         lblWhite!.font = CQTheme.kManaLabelFont
         lblWhite!.adjustsFontSizeToFitWidth = true
         lblWhite!.textColor = CQTheme.kManaLabelColor
         self.view.addSubview(lblWhite!)
         
-        dX = frame.origin.x + frame.size.width
-        frame = CGRect(x:dX, y:dY, width:manaImageWidth, height:manaImageHeight)
-        imageView = UIImageView(frame: frame)
+        dX = dFrame.origin.x + dFrame.size.width
+        dFrame = CGRect(x:dX, y:dY, width:manaImageWidth, height:manaImageHeight)
+        imageView = UIImageView(frame: dFrame)
         imageView.image = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/mana/Colorless/32.png")
         self.view.addSubview(imageView)
         
-        dX = frame.origin.x + frame.size.width
-        frame = CGRect(x:dX, y:dY, width:manaLabelWidth, height:manaLabelHeight)
-        lblColorless = UILabel(frame: frame)
+        dX = dFrame.origin.x + dFrame.size.width
+        dFrame = CGRect(x:dX, y:dY, width:manaLabelWidth, height:manaLabelHeight)
+        lblColorless = UILabel(frame: dFrame)
         lblColorless!.text = " 0"
         lblColorless!.font = CQTheme.kManaLabelFont
         lblColorless!.adjustsFontSizeToFitWidth = true
@@ -203,22 +233,15 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         self.view.addSubview(lblColorless!)
     }
     
-    func setupImageView() {
+    func setupCastingCost() {
         var dWidth = self.view.frame.size.width * 0.70
         var dX = (self.view.frame.size.width - dWidth) / 2
-        var dY = UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height + 40
+        var dY = lblColorless!.frame.origin.y + lblColorless!.frame.size.height + 10
         var dHeight = CGFloat(16)
-        var frame = CGRect(x:dX, y:dY, width:dWidth, height:dHeight)
+        var dFrame = CGRect(x:dX, y:dY, width:dWidth, height:dHeight)
         
-        viewCastingCost = UIView(frame: frame)
+        viewCastingCost = UIView(frame: dFrame)
         self.view.addSubview(viewCastingCost!)
-        
-        dY = frame.origin.y + frame.size.height + 10
-        dHeight = dWidth - 20
-        frame = CGRect(x:dX, y:dY, width:dWidth, height:dHeight)
-        viewImage = UIImageView(frame: frame)
-        viewImage!.contentMode = UIViewContentMode.ScaleAspectFill//Fit
-        self.view.addSubview(viewImage!)
     }
     
     func setupFunctionButtons() {
@@ -269,8 +292,6 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         btnCast!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
         btnCast!.layer.borderWidth = 1
         self.view.addSubview(btnCast!)
-        
-        updateManaPool()
     }
 
     func updateManaPool() {
@@ -302,9 +323,122 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         }
     }
 
+    func animateManaLabels() {
+        // black
+        var mana = lblBlack!.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()).toInt()!
+        var color:UIColor?
+        lblBlack!.text     = " \(manaBlack)"
+        if mana < manaBlack {
+            color = UIColor.greenColor()
+        } else if mana > manaBlack {
+            color = UIColor.redColor()
+        }
+        if color != nil {
+            UIView.transitionWithView(lblBlack!, duration: 2, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: {() in
+                    self.lblBlack!.textColor = color
+                }, completion: nil)
+        }
+        color = nil
+        
+        // blue
+        mana = lblBlue!.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()).toInt()!
+        lblBlue!.text     = " \(manaBlue)"
+        if mana < manaBlue {
+            color = UIColor.greenColor()
+        } else if mana > manaBlue {
+            color = UIColor.redColor()
+        }
+        if color != nil {
+            UIView.transitionWithView(lblBlue!, duration: 2, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: {() in
+                self.lblBlue!.textColor = color
+                }, completion: nil)
+        }
+        color = nil
+        
+        // green
+        mana = lblGreen!.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()).toInt()!
+        lblGreen!.text     = " \(manaGreen)"
+        if mana < manaGreen {
+            color = UIColor.greenColor()
+        } else if mana > manaGreen {
+            color = UIColor.redColor()
+        }
+        if color != nil {
+            UIView.transitionWithView(lblGreen!, duration: 2, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: {() in
+                self.lblGreen!.textColor = color
+                }, completion: nil)
+        }
+        color = nil
+
+        // red
+        mana = lblRed!.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()).toInt()!
+        lblRed!.text     = " \(manaRed)"
+        if mana < manaRed {
+            color = UIColor.greenColor()
+        } else if mana > manaRed {
+            color = UIColor.redColor()
+        }
+        if color != nil {
+            UIView.transitionWithView(lblRed!, duration: 2, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: {() in
+                self.lblRed!.textColor = color
+                }, completion: nil)
+        }
+        color = nil
+
+        // white
+        mana = lblWhite!.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()).toInt()!
+        lblWhite!.text     = " \(manaWhite)"
+        if mana < manaWhite {
+            color = UIColor.greenColor()
+        } else if mana > manaWhite {
+            color = UIColor.redColor()
+        }
+        if color != nil {
+            UIView.transitionWithView(lblWhite!, duration: 2, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: {() in
+                self.lblWhite!.textColor = color
+                }, completion: nil)
+        }
+        color = nil
+        
+        // colorless
+        mana = lblColorless!.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()).toInt()!
+        lblColorless!.text     = " \(manaColorless)"
+        if mana < manaColorless {
+            color = UIColor.greenColor()
+        } else if mana > manaColorless {
+            color = UIColor.redColor()
+        }
+        if color != nil {
+            UIView.transitionWithView(lblColorless!, duration: 2, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: {() in
+                self.lblColorless!.textColor = color
+                }, completion: nil)
+        }
+        color = nil
+    }
+    
     func displayQuiz() {
         NSNotificationCenter.defaultCenter().removeObserver(self, name:kCardDownloadCompleted,  object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector:"loadCropImage:",  name:kCardDownloadCompleted, object:nil)
+        
+        // reset the mana labels's colors
+        if lblBlack!.textColor != CQTheme.kTileTextColor {
+            lblBlack!.textColor = CQTheme.kTileTextColor
+        }
+        if lblBlue!.textColor != CQTheme.kTileTextColor {
+            lblBlue!.textColor = CQTheme.kTileTextColor
+        }
+        if lblGreen!.textColor != CQTheme.kTileTextColor {
+            lblGreen!.textColor = CQTheme.kTileTextColor
+        }
+        if lblRed!.textColor != CQTheme.kTileTextColor {
+            lblRed!.textColor = CQTheme.kTileTextColor
+        }
+        if lblWhite!.textColor != CQTheme.kTileTextColor {
+            lblWhite!.textColor = CQTheme.kTileTextColor
+        }
+        if lblColorless!.textColor != CQTheme.kTileTextColor {
+            lblColorless!.textColor = CQTheme.kTileTextColor
+        }
         
         // draw the mana cost
         let manaImages = FileManager.sharedInstance().manaImagesForCard(cards!.first) as! [NSDictionary]
@@ -334,11 +468,6 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
             index++
         }
         
-        // load the image
-        currentCropPath = FileManager.sharedInstance().cropPath(cards!.first)
-        viewImage!.image = UIImage(contentsOfFile: currentCropPath!)
-        FileManager.sharedInstance().downloadCardImage(cards!.first, immediately:true)
-        
         // tokenize the answer
         arrAnswers = Array<Array<UILabel>>()
         var lines = [String]()
@@ -361,7 +490,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         
         // draw the answer view
         index = 0
-        dY = self.viewImage!.frame.origin.y + self.viewImage!.frame.size.height + 10
+        dY = self.view.frame.height - (120+10) - CGFloat(30*lines.count)
         for line in lines {
             var arr = Array<UILabel>()
             
@@ -396,6 +525,23 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
             dY += dHeight
             index++
         }
+        
+        // draw the image
+        if let x = viewImage {
+            x.removeFromSuperview()
+        }
+        dWidth = self.view.frame.size.width * 0.90
+        dX = (self.view.frame.size.width - dWidth) / 2
+        dY = viewCastingCost!.frame.origin.y + viewCastingCost!.frame.size.height + 10
+        dHeight = self.view.frame.height - (120+20) - CGFloat(30*lines.count) - dY
+        dFrame = CGRect(x:dX, y:dY, width:dWidth, height:dHeight)
+        viewImage = UIImageView(frame: dFrame!)
+        viewImage!.contentMode = UIViewContentMode.ScaleAspectFit
+        self.view.addSubview(viewImage!)
+        
+        currentCropPath = FileManager.sharedInstance().cropPath(cards!.first)
+        viewImage!.image = UIImage(contentsOfFile: currentCropPath!)
+        FileManager.sharedInstance().downloadCardImage(cards!.first, immediately:true)
         
         // draw the quiz
         let quiz = self.quizForCard(cards!.first!)
@@ -440,16 +586,18 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         NSNotificationCenter.defaultCenter().removeObserver(self, name:kCardDownloadCompleted,  object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector:"loadCardImage:",  name:kCardDownloadCompleted, object:nil)
         
-        var dWidth = self.view.frame.size.width * 0.80
+        var dWidth = self.view.frame.size.width * 0.90
         var dX = (self.view.frame.size.width - dWidth) / 2
-        var dY = UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height + 40
-        var dHeight = self.view.frame.height - 120
+        var dY = viewCastingCost!.frame.origin.y + viewCastingCost!.frame.size.height + 10
+        var dHeight = self.view.frame.height - 160
         
         var viewImageFrame = CGRect(x: dX, y: dY, width: dWidth, height: dHeight)
         var btnNextCardFrame = CGRect(x: btnBuy!.frame.origin.x, y: btnBuy!.frame.origin.y+80, width: btnBuy!.frame.size.width, height: btnBuy!.frame.size.height)
         
         // clean up
         viewImage!.removeFromSuperview()
+        viewImage = nil
+        
         if arrAnswers != nil {
             for arr in arrAnswers! {
                 for label in arr {
@@ -458,14 +606,19 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
             }
         }
         btnHelp!.removeFromSuperview()
+        btnHelp = nil
+        
         btnBuy!.removeFromSuperview()
+        btnBuy = nil
+        
         btnCast!.removeFromSuperview()
+        btnCast = nil
+        
         if arrQuizzes != nil {
             for label in arrQuizzes! {
                 label.removeFromSuperview()
             }
         }
-        lblCastingCost!.text = "Added To Your Mana Pool: "
 
         // load the full card image
         viewImage = UIImageView(frame: viewImageFrame)
@@ -488,88 +641,8 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         btnNextCard!.layer.borderWidth = 1
         self.view.addSubview(btnNextCard!)
         
-        // update the mana pool
-        for dict in FileManager.sharedInstance().manaImagesForCard(cards!.first) as! [NSDictionary] {
-            let symbol = dict["symbol"] as! String
-            
-            if symbol == "B" {
-                manaBlack++
-            } else if symbol == "U" {
-                manaBlue++
-            } else if symbol == "G" {
-                manaGreen++
-            } else if symbol == "R" {
-                manaRed++
-            } else if symbol == "W" {
-                manaWhite++
-            } else if symbol == "1" {
-                manaColorless += 1
-            } else if symbol == "2" {
-                manaColorless += 2
-            } else if symbol == "3" {
-                manaColorless += 3
-            } else if symbol == "4" {
-                manaColorless += 4
-            } else if symbol == "5" {
-                manaColorless += 5
-            } else if symbol == "6" {
-                manaColorless += 6
-            } else if symbol == "7" {
-                manaColorless += 7
-            } else if symbol == "8" {
-                manaColorless += 8
-            } else if symbol == "9" {
-                manaColorless += 9
-            } else if symbol == "10" {
-                manaColorless += 10
-            } else if symbol == "11" {
-                manaColorless += 11
-            } else if symbol == "12" {
-                manaColorless += 12
-            } else if symbol == "13" {
-                manaColorless += 13
-            } else if symbol == "14" {
-                manaColorless += 14
-            } else if symbol == "15" {
-                manaColorless += 15
-            }
-        }
-
-        lblBlack!.text     = " \(manaBlack)"
-        lblBlue!.text      = " \(manaBlue)"
-        lblGreen!.text     = " \(manaGreen)"
-        lblRed!.text       = " \(manaRed)"
-        lblWhite!.text     = " \(manaWhite)"
-        lblColorless!.text = " \(manaColorless)"
-        
+        self.animateManaLabels()
         self.saveMana()
-        successSoundPlayer!.play()
-        
-        dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_USER_INITIATED.value), 0)) {
-            
-            // remove the last card
-            self.cards!.removeAtIndex(0)
-            if self.gameType == kCQEasyCurrentCard {
-                NSUserDefaults.standardUserDefaults().removeObjectForKey(kCQEasyCurrentCard)
-            } else if self.gameType == kCQModerateCurrentCard {
-                NSUserDefaults.standardUserDefaults().removeObjectForKey(kCQModerateCurrentCard)
-            } else if self.gameType == kCQHardCurrentCard {
-                NSUserDefaults.standardUserDefaults().removeObjectForKey(kCQHardCurrentCard)
-            }
-            
-            if self.cards!.count == 0 {
-                self.preloadRandomCards()
-            }
-            
-            // set up a new card
-            let value = self.cards!.first!.set.code + "_" + self.cards!.first!.number
-            NSUserDefaults.standardUserDefaults().setObject(value, forKey: self.gameType!)
-            NSUserDefaults.standardUserDefaults().synchronize()
-            
-//            dispatch_async(dispatch_get_main_queue()) {
-//                
-//            }
-        }
     }
 
 //  MARK: Logic Code
@@ -617,7 +690,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         predicate = NSCompoundPredicate.andPredicateWithSubpredicates([predicate1, predicate2])
         
         cards = Array()
-        for card in Database.sharedInstance().fetchRandomCards(kCQMaxCurrentCards-(value != nil ? 1:0), withPredicate: self.predicate, includeInAppPurchase: true) {
+        for card in Database.sharedInstance().fetchRandomCards(kCQMaxCurrentCards, withPredicate: self.predicate, includeInAppPurchase: true) {
             if self.checkValidCard(card as! DTCard) {
                 FileManager.sharedInstance().downloadCardImage(card as! DTCard, immediately:false)
                 cards!.append(card as! DTCard)
@@ -628,11 +701,11 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
             let array = split(value!) {$0 == "_"}
             let code = array[0]
             let number = array[1]
-            let card = DTCard.MR_findFirstWithPredicate(NSPredicate(format: "set.code = %@ AND number = %@", code, number)) as? DTCard
+            let card = DTCard.MR_findFirstWithPredicate(NSPredicate(format: "set.code = %@ AND number = %@", code, number)) as! DTCard
             
-            if self.checkValidCard(card!) {
-                FileManager.sharedInstance().downloadCardImage(card, immediately:false)
-                cards!.insert(card!, atIndex:0)
+            if self.checkValidCard(card) {
+                FileManager.sharedInstance().downloadCardImage(card, immediately:true)
+                cards!.insert(card, atIndex:0)
             }
             
         } else {
@@ -663,6 +736,29 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         return nameOk
     }
     
+    func rotateCards() {
+        // remove the last card
+        self.cards!.removeAtIndex(0)
+        
+        if self.gameType == kCQEasyCurrentCard {
+            NSUserDefaults.standardUserDefaults().removeObjectForKey(kCQEasyCurrentCard)
+        } else if self.gameType == kCQModerateCurrentCard {
+            NSUserDefaults.standardUserDefaults().removeObjectForKey(kCQModerateCurrentCard)
+        } else if self.gameType == kCQHardCurrentCard {
+            NSUserDefaults.standardUserDefaults().removeObjectForKey(kCQHardCurrentCard)
+        }
+        
+        if self.cards!.count == 0 {
+            self.preloadRandomCards()
+
+        } else {
+            // set up a new card
+            let value = self.cards!.first!.set.code + "_" + self.cards!.first!.number
+            NSUserDefaults.standardUserDefaults().setObject(value, forKey: self.gameType!)
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+    }
+
     func saveMana() {
         let totalCMC = manaBlack +
             manaBlue +
@@ -686,7 +782,6 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         let dict = sender.userInfo as Dictionary?
         let card = dict?["card"] as! DTCard
         
-        // cards!.first becomes nil after comparison below, e.g. cards!.first == card
         if cards!.first === card {
             let path = FileManager.sharedInstance().cropPath(card)
             
@@ -803,7 +898,61 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         self.updateManaPool()
     }
 
+    func toggleUI(enabled: Bool) {
+        
+        lblBlack?.textColor = enabled ? CQTheme.kTileTextColor : CQTheme.kTileTextColorX
+        lblBlue?.textColor = enabled ? CQTheme.kTileTextColor : CQTheme.kTileTextColorX
+        lblGreen?.textColor = enabled ? CQTheme.kTileTextColor : CQTheme.kTileTextColorX
+        lblRed?.textColor = enabled ? CQTheme.kTileTextColor : CQTheme.kTileTextColorX
+        lblWhite?.textColor = enabled ? CQTheme.kTileTextColor : CQTheme.kTileTextColorX
+        lblColorless?.textColor = enabled ? CQTheme.kTileTextColor : CQTheme.kTileTextColorX
+        lblCastingCost?.textColor = enabled ? CQTheme.kTileTextColor : CQTheme.kTileTextColorX
+        
+        if arrAnswers != nil {
+            for arr in arrAnswers! {
+                for label in arr {
+                    label.textColor = enabled ? CQTheme.kTileTextColor : CQTheme.kTileTextColorX
+                    label.userInteractionEnabled = enabled
+                }
+            }
+        }
+        
+        btnHelp?.textColor = enabled ? CQTheme.kTileTextColor : CQTheme.kTileTextColorX
+        btnHelp?.userInteractionEnabled = enabled
+        
+        btnBuy?.textColor = enabled ? CQTheme.kTileTextColor : CQTheme.kTileTextColorX
+        btnBuy?.userInteractionEnabled = enabled
+        
+        btnCast?.textColor = enabled ? CQTheme.kTileTextColor : CQTheme.kTileTextColorX
+        btnCast?.userInteractionEnabled = enabled
+        
+        if arrQuizzes != nil {
+            for label in arrQuizzes! {
+                label.textColor = enabled ? CQTheme.kTileTextColor : CQTheme.kTileTextColorX
+                label.userInteractionEnabled = enabled
+            }
+        }
+    }
+    
+    
 //  MARK: Event Handlers
+    func closeTapped(sender: AnyObject) {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name:kParseUserManaDone,  object:nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name:kCardDownloadCompleted,  object:nil)
+        
+        if btnNextCard != nil {
+            if gameType == kCQEasyCurrentCard {
+                NSUserDefaults.standardUserDefaults().removeObjectForKey(kCQEasyCurrentCard)
+            } else if gameType == kCQModerateCurrentCard {
+                NSUserDefaults.standardUserDefaults().removeObjectForKey(kCQModerateCurrentCard)
+            } else if gameType == kCQHardCurrentCard {
+                NSUserDefaults.standardUserDefaults().removeObjectForKey(kCQHardCurrentCard)
+            }
+            self.cards!.removeAtIndex(0)
+        }
+        self.dismissViewControllerAnimated(false, completion: nil)
+    }
+    
     func helpTapped(sender: UITapGestureRecognizer) {
         var sharingItems = Array<AnyObject>()
         
@@ -852,7 +1001,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
             view2.productDetails = ["name": dict!["In-App Display Name"] as String!,
                 "description": dict!["In-App Description"] as String!]
             
-            self.navigationController?.pushViewController(view2, animated:false)
+            self.presentViewController(view2, animated: false, completion: nil)
         }
         
         ActionSheetStringPicker.showPickerWithTitle("Buy Mana",
@@ -864,6 +1013,24 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
     }
     
     func nextCardTapped(sender: UITapGestureRecognizer) {
+//        lblCastingCost!.removeFromSuperview()
+//        lblCastingCost = nil
+//        for view in self.viewCastingCost!.subviews {
+//            view.removeFromSuperview()
+//        }
+//        viewCastingCost!.removeFromSuperview()
+//        viewCastingCost = nil
+//        viewImage!.removeFromSuperview()
+//        viewImage = nil
+//        btnNextCard!.removeFromSuperview()
+//        btnNextCard = nil
+//        
+//        rotateCards()
+//        setupCastingCost()
+//        setupFunctionButtons()
+//        updateManaPool()
+//        displayQuiz()
+        
         let hud = MBProgressHUD(view: self.view)
         hud.delegate = self
         self.view.addSubview(hud)
@@ -871,17 +1038,29 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         let executingBlock = { () -> Void in
             // clean
             self.lblCastingCost!.removeFromSuperview()
+            self.lblCastingCost = nil
+            
             for view in self.viewCastingCost!.subviews {
                 view.removeFromSuperview()
             }
             self.viewCastingCost!.removeFromSuperview()
+            self.viewCastingCost = nil
+            
             self.viewImage!.removeFromSuperview()
+            self.viewImage = nil
+            
             self.btnNextCard!.removeFromSuperview()
+            self.btnNextCard = nil
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                self.rotateCards()
+            }
         }
         
         let completionBlock = {  () -> Void in
-            self.setupImageView()
+            self.setupCastingCost()
             self.setupFunctionButtons()
+            self.updateManaPool()
             self.displayQuiz()
         }
         
@@ -889,9 +1068,17 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
     }
     
     func castTapped(sender: UITapGestureRecognizer) {
-        let label = sender.view as! UILabel
-        println("\(label.text!)")
-        castSoundPlayer!.play()
+        let dX = viewCastingCost!.frame.origin.x
+        let dY = viewCastingCost!.frame.origin.y + viewCastingCost!.frame.size.height + 10
+        let dWidth = viewCastingCost!.frame.size.width
+        let dHeight = self.view.frame.height - 120 - dY
+        let dFrame = CGRect(x:dX, y:dY, width:dWidth, height:dHeight)
+        
+        let manaChooser = CQManaChooserView(frame: dFrame, title: "Pay the Casting Cost", userMana: userMana, card: cards!.first)
+        manaChooser.delegate = self
+        self.toggleUI(false)
+        
+        view.addSubview(manaChooser)
     }
     
     func answerActivated(sender: UITapGestureRecognizer) {
@@ -921,6 +1108,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
     
     func quizActivated(sender: UITapGestureRecognizer) {
         let label = sender.view as! UILabel
+        var answer = String()
         
         if label.text == " " {
             return
@@ -943,7 +1131,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
             }
         }
         
-        var answer = String()
+        
         for arr in arrAnswers! {
             for lblAnswer in arr {
                 answer += lblAnswer.text!
@@ -951,10 +1139,59 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
             answer += " "
         }
         answer = answer.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
-        println("before: \(self.cards!.first!.name)")
+
         if answer.rangeOfString("*") == nil {
             if answer.lowercaseString == cards!.first!.name.lowercaseString {
+
+                for dict in FileManager.sharedInstance().manaImagesForCard(cards!.first) as! [NSDictionary] {
+                    let symbol = dict["symbol"] as! String
+                    
+                    if symbol == "B" {
+                        manaBlack++
+                    } else if symbol == "U" {
+                        manaBlue++
+                    } else if symbol == "G" {
+                        manaGreen++
+                    } else if symbol == "R" {
+                        manaRed++
+                    } else if symbol == "W" {
+                        manaWhite++
+                    } else if symbol == "1" {
+                        manaColorless += 1
+                    } else if symbol == "2" {
+                        manaColorless += 2
+                    } else if symbol == "3" {
+                        manaColorless += 3
+                    } else if symbol == "4" {
+                        manaColorless += 4
+                    } else if symbol == "5" {
+                        manaColorless += 5
+                    } else if symbol == "6" {
+                        manaColorless += 6
+                    } else if symbol == "7" {
+                        manaColorless += 7
+                    } else if symbol == "8" {
+                        manaColorless += 8
+                    } else if symbol == "9" {
+                        manaColorless += 9
+                    } else if symbol == "10" {
+                        manaColorless += 10
+                    } else if symbol == "11" {
+                        manaColorless += 11
+                    } else if symbol == "12" {
+                        manaColorless += 12
+                    } else if symbol == "13" {
+                        manaColorless += 13
+                    } else if symbol == "14" {
+                        manaColorless += 14
+                    } else if symbol == "15" {
+                        manaColorless += 15
+                    }
+                }
+                
+                lblCastingCost!.text = "Added To Your Mana Pool: "
                 displayAnswer()
+                successSoundPlayer!.play()
                 
             } else {
                 for arr in arrAnswers! {
@@ -965,7 +1202,6 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
                 failSoundPlayer!.play()
             }
         }
-        println("after: \(self.cards!.first!.name)")
     }
     
     func quizForCard(card: DTCard) -> String {
@@ -1058,14 +1294,38 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
             manaColorless += 10
         }
         
-        lblBlack!.text     = " \(manaBlack)"
-        lblBlue!.text      = " \(manaBlue)"
-        lblGreen!.text     = " \(manaGreen)"
-        lblRed!.text       = " \(manaRed)"
-        lblWhite!.text     = " \(manaWhite)"
-        lblColorless!.text = " \(manaColorless)"
-        
-        // save the mana in the cloud
+        self.animateManaLabels()
         self.saveMana()
+    }
+    
+//    MARK: CQManaChooserViewDelegate
+    func manaChooserCancelTapped(sender: CQManaChooserView) {
+        sender.removeFromSuperview()
+        toggleUI(true)
+    }
+    
+    func manaChooserOkTapped(sender: CQManaChooserView, mana: Dictionary<String, NSNumber>) {
+        for (k,v) in mana {
+            if k == "black" {
+                manaBlack -= v.integerValue
+            } else if k == "blue" {
+                manaBlue -= v.integerValue
+            } else if k == "green" {
+                manaGreen -= v.integerValue
+            } else if k == "red" {
+                manaRed -= v.integerValue
+            } else if k == "white" {
+                manaWhite -= v.integerValue
+            } else if k == "colorless" {
+                manaColorless -= v.integerValue
+            }
+        }
+        
+        sender.removeFromSuperview()
+        toggleUI(true)
+        
+        lblCastingCost!.text = "Removed From Your Mana Pool: "
+        displayAnswer()
+        castSoundPlayer!.play()
     }
 }

@@ -11,6 +11,7 @@ import UIKit
 class CardQuizLeaderboardViewController: UIViewController, MBProgressHUDDelegate {
 
     var hud:MBProgressHUD?
+    var btnClose:UIImageView?
     var webView:UIWebView?
     
     override func viewDidLoad() {
@@ -21,21 +22,13 @@ class CardQuizLeaderboardViewController: UIViewController, MBProgressHUDDelegate
         
         NSNotificationCenter.defaultCenter().removeObserver(self, name:kParseLeaderboardDone,  object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector:"fetchLeaderboardDone:",  name:kParseLeaderboardDone, object:nil)
-        
-        var dX = CGFloat(0)
-        var dY = CGFloat(0) //UIApplication.sharedApplication().statusBarFrame.size.height
-        var dWidth = self.view.frame.size.width
-        var dHeight = self.view.frame.height
-        var frame = CGRect(x:dX, y:dY, width:dWidth, height:dHeight)
-        
-        webView = UIWebView(frame: frame)
-        self.view.addSubview(webView!)
-        self.navigationItem.title = "Leaderboard"
+
+        setupBackground()
         fetchLeaderboard(nil)
 #if !DEBUG
         // send the screen to Google Analytics
         let tracker = GAI.sharedInstance().defaultTracker
-        tracker.set(kGAIScreenName, value: self.navigationItem.title)
+        tracker.set(kGAIScreenName, value: "Leaderboard")
         tracker.send(GAIDictionaryBuilder.createScreenView().build())
 #endif
     }
@@ -45,6 +38,54 @@ class CardQuizLeaderboardViewController: UIViewController, MBProgressHUDDelegate
         // Dispose of any resources that can be recreated.
     }
 
+    override func prefersStatusBarHidden() -> Bool {
+        return true
+    }
+    
+    override func preferredStatusBarUpdateAnimation() -> UIStatusBarAnimation {
+        return UIStatusBarAnimation.None
+    }
+
+    //  MARK: UI code
+    func setupBackground() {
+        var dX = CGFloat(5)
+        var dY = CGFloat(5)
+        var dWidth = CGFloat(30)
+        var dHeight = CGFloat(30)
+        var dFrame = CGRect(x:dX, y:dY, width:dWidth, height:dHeight)
+        
+        btnClose = UIImageView(frame: dFrame)
+        btnClose!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "closeTapped:"))
+        btnClose!.userInteractionEnabled = true
+        btnClose!.contentMode = UIViewContentMode.ScaleAspectFill
+        btnClose!.image = UIImage(named: "cancel.png")
+        self.view.addSubview(btnClose!)
+        
+        
+        self.view.backgroundColor = UIColor(patternImage: UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/Gray_Patterned_BG.jpg")!)
+        
+        dX = CGFloat(0)
+        dY = btnClose!.frame.origin.y + btnClose!.frame.size.height + 10
+        dWidth = self.view.frame.size.width
+        dHeight = self.view.frame.height - dY - 125
+        dFrame = CGRect(x:dX, y:dY, width:dWidth, height:dHeight)
+        
+        let circleImage = UIImageView(frame: dFrame)
+        circleImage.contentMode = UIViewContentMode.ScaleAspectFill
+        circleImage.image = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/Card_Circles.png")
+        self.view.addSubview(circleImage)
+        
+
+        dHeight = self.view.frame.height - dY
+        dFrame = CGRect(x:dX, y:dY, width:dWidth, height:dHeight)
+        
+        webView = UIWebView(frame: dFrame)
+        webView!.backgroundColor = UIColor.clearColor()
+        webView!.opaque = false
+        self.view.addSubview(webView!)
+    }
+
+//  MARK: Logic code
     func fetchLeaderboard(sender: AnyObject?) {
         hud = MBProgressHUD(view: view)
         hud!.delegate = self
@@ -80,6 +121,11 @@ class CardQuizLeaderboardViewController: UIViewController, MBProgressHUDDelegate
         
         webView!.loadHTMLString(html as! String, baseURL: baseURL)
         hud!.hide(true)
+    }
+    
+//  MARK: Event handlers
+    func closeTapped(sender: AnyObject) {
+        self.dismissViewControllerAnimated(false, completion: nil)
     }
     
 //  MARK: MBProgressHUDDelegate

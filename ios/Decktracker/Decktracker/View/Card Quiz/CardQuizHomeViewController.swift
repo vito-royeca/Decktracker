@@ -7,15 +7,20 @@ import Foundation
 
 class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate {
 
+//  MARK: Variables
     var loginViewController:LoginViewController?
+    
+    var lblTitle:UILabel?
     var lblAccount:UILabel?
     var btnLogin:UILabel?
     var btnEasy:UILabel?
     var btnModerate:UILabel?
     var btnHard:UILabel?
     var btnLeaderboard:UILabel?
+    var btnExit:UILabel?
     var userMana:PFObject?
     
+//  MARK: Boilerplate code
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -26,8 +31,8 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         NSNotificationCenter.defaultCenter().addObserver(self, selector:"fetchUserManaDone:",  name:kParseUserManaDone, object:nil)
         
         setupBackground()
-        self.navigationItem.title = "Card Quiz"
         Database.sharedInstance().fetchUserMana()
+        self.setupMenu()
         
 #if !DEBUG
         // send the screen to Google Analytics
@@ -37,31 +42,42 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
 #endif
     }
     
-    override func viewDidAppear(animated: Bool) {
-        self.setupMenu()
-    }
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
         
     }
     
-    func fetchUserManaDone(sender: AnyObject) {
-        let dict = sender.userInfo as Dictionary?
-        userMana = dict?["userMana"] as? PFObject
+    override func prefersStatusBarHidden() -> Bool {
+        return true
     }
     
+    override func preferredStatusBarUpdateAnimation() -> UIStatusBarAnimation {
+        return UIStatusBarAnimation.None
+    }
+    
+//  MARK: UI code
     func setupBackground() {
-        var dWidth = self.view.frame.size.width
         var dX = CGFloat(0)
-        var dY = UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height
-        var dHeight = self.view.frame.height - dY - 120
-        var frame = CGRect(x:dX, y:dY, width:dWidth, height:dHeight)
+        var dY = CGFloat(35)
+        var dWidth = self.view.frame.size.width
+        var dHeight = CGFloat(40)
+        var dFrame = CGRect(x:dX, y:dY, width:dWidth, height:dHeight)
         
         self.view.backgroundColor = UIColor(patternImage: UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/Gray_Patterned_BG.jpg")!)
 
-        let circleImage = UIImageView(frame: frame)
+        lblTitle = UILabel(frame: dFrame)
+        lblTitle!.text = "Card Quiz"
+        lblTitle!.textAlignment = NSTextAlignment.Center
+        lblTitle!.font = CQTheme.kTitleLabelFont
+        lblTitle!.textColor = CQTheme.kTileTextColor
+        self.view.addSubview(lblTitle!)
+        
+        dY = lblTitle!.frame.origin.y + lblTitle!.frame.size.height + 5
+        dHeight = self.view.frame.height - dY - 125
+        dFrame = CGRect(x:dX, y:dY, width:dWidth, height:dHeight)
+        
+        let circleImage = UIImageView(frame: dFrame)
         circleImage.contentMode = UIViewContentMode.ScaleAspectFill
         circleImage.image = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/Card_Circles.png")
         self.view.addSubview(circleImage)
@@ -74,9 +90,10 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         btnModerate?.removeFromSuperview()
         btnHard?.removeFromSuperview()
         btnLeaderboard?.removeFromSuperview()
+        btnExit?.removeFromSuperview()
         
         var dX = self.view.frame.size.width/8
-        var dY = UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height + 40
+        var dY = lblTitle!.frame.origin.y + lblTitle!.frame.size.height + 5
         var dWidth = self.view.frame.size.width*(3/4)
         var dHeight = CGFloat(40)
         var dFrame = CGRect(x: dX, y: dY, width: dWidth, height: dHeight)
@@ -167,7 +184,7 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         dY = self.btnLogin!.frame.origin.y + dHeight + 20
         dFrame = CGRect(x: dX, y: dY, width: dWidth, height: dHeight)
         btnEasy = UILabel(frame: dFrame)
-        btnEasy!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "startGame:"))
+        btnEasy!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "startGameTapped:"))
         btnEasy!.userInteractionEnabled = true
         btnEasy!.text = "Easy: Standard"
         btnEasy!.textAlignment = NSTextAlignment.Center
@@ -181,7 +198,7 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         dY = self.btnEasy!.frame.origin.y + dHeight + 20
         dFrame = CGRect(x: dX, y: dY, width: dWidth, height: dHeight)
         btnModerate = UILabel(frame: dFrame)
-        btnModerate!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "startGame:"))
+        btnModerate!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "startGameTapped:"))
         btnModerate!.userInteractionEnabled = true
         btnModerate!.text = "Moderate: Modern"
         btnModerate!.textAlignment = NSTextAlignment.Center
@@ -195,7 +212,7 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         dY = self.btnModerate!.frame.origin.y + dHeight + 20
         dFrame = CGRect(x: dX, y: dY, width: dWidth, height: dHeight)
         btnHard = UILabel(frame: dFrame)
-        btnHard!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "startGame:"))
+        btnHard!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "startGameTapped:"))
         btnHard!.userInteractionEnabled = true
         btnHard!.text = "Hard: Vintage"
         btnHard!.textAlignment = NSTextAlignment.Center
@@ -219,8 +236,29 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         btnLeaderboard!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
         btnLeaderboard!.layer.borderWidth = 1
         self.view.addSubview(btnLeaderboard!)
+        
+        dY = self.btnLeaderboard!.frame.origin.y + dHeight + 20
+        dFrame = CGRect(x: dX, y: dY, width: dWidth, height: dHeight)
+        btnExit = UILabel(frame: dFrame)
+        btnExit!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "exitTapped:"))
+        btnExit!.userInteractionEnabled = true
+        btnExit!.text = "Exit"
+        btnExit!.textAlignment = NSTextAlignment.Center
+        btnExit!.font = CQTheme.kManaLabelFont
+        btnExit!.textColor = CQTheme.kTileTextColor
+        btnExit!.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
+        btnExit!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+        btnExit!.layer.borderWidth = 1
+        self.view.addSubview(btnExit!)
     }
 
+//   MARK: Logic code
+    func fetchUserManaDone(sender: AnyObject) {
+        let dict = sender.userInfo as Dictionary?
+        userMana = dict?["userMana"] as? PFObject
+    }
+
+//   MARK: Event handlers
     func loginTapped(sender: AnyObject) {
         let currentUser = PFUser.currentUser()
         
@@ -229,7 +267,7 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
             self.loginViewController!.delegate = self
             self.loginViewController!.signUpController!.delegate = self
             
-            self.navigationController?.presentViewController(self.loginViewController!, animated:true, completion: nil)
+            self.presentViewController(self.loginViewController!, animated:true, completion: nil)
 
         } else {
             PFUser.logOut()
@@ -239,7 +277,7 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         }
     }
     
-    func startGame(sender: AnyObject) {
+    func startGameTapped(sender: AnyObject) {
         if let currentUser = PFUser.currentUser() {
             if !PFFacebookUtils.isLinkedWithUser(currentUser) &&
                !PFTwitterUtils.isLinkedWithUser(currentUser) &&
@@ -269,11 +307,14 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
             game = CardQuizGameViewController()
             game!.userMana = self.userMana
             game!.gameType = gameType
-            game!.preloadRandomCards()
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                game!.preloadRandomCards()
+            }
         }
         
         let completionBlock = {  () -> Void in
-            self.navigationController!.pushViewController(game!, animated:true)
+            self.presentViewController(game!, animated: false, completion: nil)
         }
         
         hud.delegate = self
@@ -283,9 +324,14 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
     
     func leaderboardTapped(sender: AnyObject) {
         var leaderboard = CardQuizLeaderboardViewController()
-        self.navigationController!.pushViewController(leaderboard, animated:true)
+        self.presentViewController(leaderboard, animated: false, completion: nil)
     }
-    
+
+    func exitTapped(sender: AnyObject) {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name:kParseUserManaDone,  object:nil)
+        self.dismissViewControllerAnimated(false, completion: nil)
+    }
+
 //    MARK: MBProgressHUDDelegate methods
     func hudWasHidden(hud: MBProgressHUD) {
         hud.removeFromSuperview()
@@ -295,6 +341,7 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
     func logInViewController(controller: PFLogInViewController, didLogInUser user: PFUser) -> Void {
         controller.dismissViewControllerAnimated(true, completion: nil)
         Database.sharedInstance().fetchUserMana()
+        self.setupMenu()
     }
     
 //    MARK: PFSignUpViewControllerDelegate

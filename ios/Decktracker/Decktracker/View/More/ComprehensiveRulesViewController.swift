@@ -68,6 +68,7 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        hidesBottomBarWhenPushed = true
         
         let height = view.frame.size.height //- tabBarController!.tabBar.frame.size.height
         var frame = CGRect(x:0, y:0, width:view.frame.width, height:height)

@@ -50,6 +50,7 @@ static FileManager *_me;
     return self;
 }
 
+#pragma mark - Cards
 - (NSString*) tempPath
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
@@ -305,6 +306,170 @@ static FileManager *_me;
     NSString *path = [NSString stringWithFormat:@"%@/keywords.plist", [[NSBundle mainBundle] bundlePath]];
     
     return [[NSArray alloc] initWithContentsOfFile:path];
+}
+
+- (NSArray*) manaImagesForCard:(DTCard *)card
+{
+    NSMutableArray *arrManaImages = [[NSMutableArray alloc] init];
+    NSMutableArray *arrSymbols = [[NSMutableArray alloc] init];
+    int curlyOpen = -1;
+    int curlyClose = -1;
+    
+    for (int i=0; i<card.manaCost.length; i++)
+    {
+        if ([card.manaCost characterAtIndex:i] == '{')
+        {
+            curlyOpen = i;
+        }
+        if ([card.manaCost characterAtIndex:i] == '}')
+        {
+            curlyClose = i;
+        }
+        if (curlyOpen != -1 && curlyClose != -1)
+        {
+            NSString *symbol = [card.manaCost substringWithRange:NSMakeRange(curlyOpen, (curlyClose-curlyOpen)+1)];
+            
+            [arrSymbols addObject:symbol];
+            
+            curlyOpen = -1;
+            curlyClose = -1;
+        }
+    }
+    
+    for (NSString *symbol in arrSymbols)
+    {
+        BOOL bFound = NO;
+        NSString *noCurlies = [[symbol substringWithRange:NSMakeRange(1, symbol.length-2)] stringByReplacingOccurrencesOfString:@"/" withString:@""];
+        NSString *noCurliesReverse = [JJJUtil reverseString:noCurlies];
+        CGFloat width, height;
+        int pngSize;
+        
+        if ([noCurlies isEqualToString:@"100"])
+        {
+            width = 24;
+            height = 13;
+            pngSize = 48;
+        }
+        else if ([noCurlies isEqualToString:@"1000000"])
+        {
+            width = 64;
+            height = 13;
+            pngSize = 96;
+        }
+        else
+        {
+            width = 16;
+            height = 16;
+            pngSize = 32;
+        }
+        
+        for (NSString *mana in kManaSymbols)
+        {
+            if ([mana isEqualToString:noCurlies])
+            {
+                NSString *path = [NSString stringWithFormat:@"%@/images/mana/%@/%d.png", [[NSBundle mainBundle] bundlePath], noCurlies, pngSize];
+                
+                [arrManaImages addObject:@{@"width"  : [NSNumber numberWithFloat:width],
+                                           @"height" : [NSNumber numberWithFloat:height],
+                                           @"path"   : path,
+                                           @"symbol" : mana}];
+                bFound = YES;
+            }
+            else if ([mana isEqualToString:noCurliesReverse])
+            {
+                NSString *path = [NSString stringWithFormat:@"%@/images/mana/%@/%D.png", [[NSBundle mainBundle] bundlePath], noCurliesReverse, pngSize];
+                
+                [arrManaImages addObject:@{@"width"  : [NSNumber numberWithFloat:width],
+                                           @"height" : [NSNumber numberWithFloat:height],
+                                           @"path"   : path,
+                                           @"symbol" : mana}];
+                bFound = YES;
+            }
+        }
+        
+        if (!bFound)
+        {
+            for (NSString *mana in kOtherSymbols)
+            {
+                if ([mana isEqualToString:noCurlies])
+                {
+                    NSString *path = [NSString stringWithFormat:@"%@/images/other/%@/%d.png", [[NSBundle mainBundle] bundlePath], noCurlies, pngSize];
+                    
+                    [arrManaImages addObject:@{@"width"  : [NSNumber numberWithFloat:width],
+                                               @"height" : [NSNumber numberWithFloat:height],
+                                               @"path"   : path,
+                                               @"symbol" : mana}];
+                }
+                else if ([mana isEqualToString:noCurlies])
+                {
+                    NSString *path = [NSString stringWithFormat:@"%@/images/other/%@/%d.png", [[NSBundle mainBundle] bundlePath], noCurliesReverse, pngSize];
+                    
+                    [arrManaImages addObject:@{@"width"  : [NSNumber numberWithFloat:width],
+                                               @"height" : [NSNumber numberWithFloat:height],
+                                               @"path"   : path,
+                                               @"symbol" : mana}];
+                }
+            }
+        }
+    }
+    
+    return arrManaImages;
+}
+
+-(NSString*) languageInitialsForLanguage:(NSString*) languageName
+{
+    NSString *languageInitials;
+    
+    if ([languageName isEqualToString:@"Chinese Simplified"])
+    {
+        languageInitials = @"cn";
+    }
+    else if ([languageName isEqualToString:@"Chinese Traditional"])
+    {
+        languageInitials = @"tw";
+    }
+    else if ([languageName isEqualToString:@"French"])
+    {
+        languageInitials = @"fr";
+    }
+    else if ([languageName isEqualToString:@"German"])
+    {
+        languageInitials = @"de";
+    }
+    else if ([languageName isEqualToString:@"Italian"])
+    {
+        languageInitials = @"it";
+    }
+    else if ([languageName isEqualToString:@"Japanese"])
+    {
+        languageInitials = @"jp";
+    }
+    else if ([languageName isEqualToString:@"Korean"])
+    {
+        languageInitials = @"ko";
+    }
+    else if ([languageName isEqualToString:@"Portuguese"])
+    {
+        languageInitials = @"pt";
+    }
+    else if ([languageName isEqualToString:@"Portuguese (Brazil)"])
+    {
+        languageInitials = @"pt";
+    }
+    else if ([languageName isEqualToString:@"Russian"])
+    {
+        languageInitials = @"ru";
+    }
+    else if ([languageName isEqualToString:@"Spanish"])
+    {
+        languageInitials = @"es";
+    }
+    else
+    {
+        languageInitials = @"en";
+    }
+    
+    return languageInitials;
 }
 
 #pragma mark - Files
@@ -772,170 +937,6 @@ static FileManager *_me;
             [self uploadLocalFile:fileName toFileSystem:i atPath:path];
         }
     }
-}
-
-- (NSArray*) manaImagesForCard:(DTCard *)card
-{
-    NSMutableArray *arrManaImages = [[NSMutableArray alloc] init];
-    NSMutableArray *arrSymbols = [[NSMutableArray alloc] init];
-    int curlyOpen = -1;
-    int curlyClose = -1;
-    
-    for (int i=0; i<card.manaCost.length; i++)
-    {
-        if ([card.manaCost characterAtIndex:i] == '{')
-        {
-            curlyOpen = i;
-        }
-        if ([card.manaCost characterAtIndex:i] == '}')
-        {
-            curlyClose = i;
-        }
-        if (curlyOpen != -1 && curlyClose != -1)
-        {
-            NSString *symbol = [card.manaCost substringWithRange:NSMakeRange(curlyOpen, (curlyClose-curlyOpen)+1)];
-            
-            [arrSymbols addObject:symbol];
-            
-            curlyOpen = -1;
-            curlyClose = -1;
-        }
-    }
-    
-    for (NSString *symbol in arrSymbols)
-    {
-        BOOL bFound = NO;
-        NSString *noCurlies = [[symbol substringWithRange:NSMakeRange(1, symbol.length-2)] stringByReplacingOccurrencesOfString:@"/" withString:@""];
-        NSString *noCurliesReverse = [JJJUtil reverseString:noCurlies];
-        CGFloat width, height;
-        int pngSize;
-        
-        if ([noCurlies isEqualToString:@"100"])
-        {
-            width = 24;
-            height = 13;
-            pngSize = 48;
-        }
-        else if ([noCurlies isEqualToString:@"1000000"])
-        {
-            width = 64;
-            height = 13;
-            pngSize = 96;
-        }
-        else
-        {
-            width = 16;
-            height = 16;
-            pngSize = 32;
-        }
-        
-        for (NSString *mana in kManaSymbols)
-        {
-            if ([mana isEqualToString:noCurlies])
-            {
-                NSString *path = [NSString stringWithFormat:@"%@/images/mana/%@/%d.png", [[NSBundle mainBundle] bundlePath], noCurlies, pngSize];
-                
-                [arrManaImages addObject:@{@"width"  : [NSNumber numberWithFloat:width],
-                                           @"height" : [NSNumber numberWithFloat:height],
-                                           @"path"   : path,
-                                           @"symbol" : mana}];
-                bFound = YES;
-            }
-            else if ([mana isEqualToString:noCurliesReverse])
-            {
-               NSString *path = [NSString stringWithFormat:@"%@/images/mana/%@/%D.png", [[NSBundle mainBundle] bundlePath], noCurliesReverse, pngSize];
-                
-                [arrManaImages addObject:@{@"width"  : [NSNumber numberWithFloat:width],
-                                           @"height" : [NSNumber numberWithFloat:height],
-                                           @"path"   : path,
-                                           @"symbol" : mana}];
-                bFound = YES;
-            }
-        }
-        
-        if (!bFound)
-        {
-            for (NSString *mana in kOtherSymbols)
-            {
-                if ([mana isEqualToString:noCurlies])
-                {
-                    NSString *path = [NSString stringWithFormat:@"%@/images/other/%@/%d.png", [[NSBundle mainBundle] bundlePath], noCurlies, pngSize];
-                    
-                    [arrManaImages addObject:@{@"width"  : [NSNumber numberWithFloat:width],
-                                               @"height" : [NSNumber numberWithFloat:height],
-                                               @"path"   : path,
-                                               @"symbol" : mana}];
-                }
-                else if ([mana isEqualToString:noCurlies])
-                {
-                    NSString *path = [NSString stringWithFormat:@"%@/images/other/%@/%d.png", [[NSBundle mainBundle] bundlePath], noCurliesReverse, pngSize];
-                    
-                    [arrManaImages addObject:@{@"width"  : [NSNumber numberWithFloat:width],
-                                               @"height" : [NSNumber numberWithFloat:height],
-                                               @"path"   : path,
-                                               @"symbol" : mana}];
-                }
-            }
-        }
-    }
-    
-    return arrManaImages;
-}
-
--(NSString*) languageInitialsForLanguage:(NSString*) languageName
-{
-    NSString *languageInitials;
-    
-    if ([languageName isEqualToString:@"Chinese Simplified"])
-    {
-        languageInitials = @"cn";
-    }
-    else if ([languageName isEqualToString:@"Chinese Traditional"])
-    {
-        languageInitials = @"tw";
-    }
-    else if ([languageName isEqualToString:@"French"])
-    {
-        languageInitials = @"fr";
-    }
-    else if ([languageName isEqualToString:@"German"])
-    {
-        languageInitials = @"de";
-    }
-    else if ([languageName isEqualToString:@"Italian"])
-    {
-        languageInitials = @"it";
-    }
-    else if ([languageName isEqualToString:@"Japanese"])
-    {
-        languageInitials = @"jp";
-    }
-    else if ([languageName isEqualToString:@"Korean"])
-    {
-        languageInitials = @"ko";
-    }
-    else if ([languageName isEqualToString:@"Portuguese"])
-    {
-        languageInitials = @"pt";
-    }
-    else if ([languageName isEqualToString:@"Portuguese (Brazil)"])
-    {
-        languageInitials = @"pt";
-    }
-    else if ([languageName isEqualToString:@"Russian"])
-    {
-        languageInitials = @"ru";
-    }
-    else if ([languageName isEqualToString:@"Spanish"])
-    {
-        languageInitials = @"es";
-    }
-    else
-    {
-        languageInitials = @"en";
-    }
-    
-    return languageInitials;
 }
 
 @end

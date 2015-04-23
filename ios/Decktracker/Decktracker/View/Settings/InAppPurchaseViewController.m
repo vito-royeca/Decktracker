@@ -48,20 +48,23 @@
     
     [self.view addSubview:self.tblProducDetails];
     
-    self.btnCancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                   target:self
-                                                                   action:@selector(cancelPurchase:)];
-    
-    self.btnBuy = [[UIBarButtonItem alloc] initWithTitle:@"Buy"
-                                                   style:UIBarButtonItemStylePlain
-                                                  target:self
-                                                  action:@selector(purchaseProduct:)];
-    self.btnBuy.enabled = NO;
-    
-    self.navigationItem.leftBarButtonItem = btnCancel;
-    self.navigationItem.rightBarButtonItem = btnBuy;
-    self.navigationItem.title = @"Product Details";
-    
+    if (self.navigationController)
+    {
+        self.btnCancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                       target:self
+                                                                       action:@selector(cancelPurchase:)];
+        
+        self.btnBuy = [[UIBarButtonItem alloc] initWithTitle:@"Buy"
+                                                       style:UIBarButtonItemStylePlain
+                                                      target:self
+                                                      action:@selector(purchaseProduct:)];
+        self.btnBuy.enabled = NO;
+        
+        self.navigationItem.leftBarButtonItem = btnCancel;
+        self.navigationItem.rightBarButtonItem = btnBuy;
+        self.navigationItem.title = @"Product Details";
+    }
+
     _hud = [[MBProgressHUD alloc] initWithView:self.view];
     _hud.delegate = self;
     [self.view addSubview:_hud];
@@ -87,7 +90,14 @@
 
 -(void) cancelPurchase:(id) sender
 {
-    [self.navigationController popViewControllerAnimated:NO];
+    if (self.navigationController)
+    {
+        [self.navigationController popViewControllerAnimated:NO];
+    }
+    else
+    {
+        [self dismissViewControllerAnimated:NO completion:nil];
+    }
     
 #ifndef DEBUG
     // send to Google Analytics
@@ -197,7 +207,14 @@
 {
     [self.delegate productPurchaseSucceeded:inAppPurchase.productID];
     
-    [self.navigationController popViewControllerAnimated:NO];
+    if (self.navigationController)
+    {
+        [self.navigationController popViewControllerAnimated:NO];
+    }
+    else
+    {
+        [self dismissViewControllerAnimated:NO completion:nil];
+    }
     
 #ifndef DEBUG
     id tracker = [[GAI sharedInstance] defaultTracker];
@@ -211,7 +228,15 @@
 -(void) productPurchaseFailed:(InAppPurchase*) inAppPurchase withMessage:(NSString*) message
 {
     [JJJUtil alertWithTitle:@"Message" andMessage:message];
-    [self.navigationController popViewControllerAnimated:NO];
+    
+    if (self.navigationController)
+    {
+        [self.navigationController popViewControllerAnimated:NO];
+    }
+    else
+    {
+        [self dismissViewControllerAnimated:NO completion:nil];
+    }
 }
 
 -(void) purchaseRestoreSucceeded:(InAppPurchase*) inAppPurchase withMessage:(NSString*) message
@@ -222,7 +247,15 @@
 -(void) purchaseRestoreFailed:(InAppPurchase*) inAppPurchase withMessage:(NSString*) message
 {
     [JJJUtil alertWithTitle:@"Message" andMessage:message];
-    [self.navigationController popViewControllerAnimated:NO];
+    
+    if (self.navigationController)
+    {
+        [self.navigationController popViewControllerAnimated:NO];
+    }
+    else
+    {
+        [self dismissViewControllerAnimated:NO completion:nil];
+    }
 }
 
 #pragma mark -MBProgressHUDDelegate

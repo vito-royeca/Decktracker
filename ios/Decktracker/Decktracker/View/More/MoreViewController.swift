@@ -91,12 +91,13 @@ class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDe
 //    MARK: UITableViewDelegate
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
     {
-        var newView:UIViewController?
-        
         let row = arrayData[indexPath.section]
         let key = Array(row.keys)[0]
         let dict = row[key]!
         let value = dict[indexPath.row]
+        
+        var newView:UIViewController?
+        var fullScreen = false
         
         if value == "Basic Rulebook" {
             let pdfs = NSBundle.mainBundle().pathsForResourcesOfType("pdf", inDirectory:"rules")
@@ -111,10 +112,10 @@ class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDe
         } else if value == "Comprehensive Rules" {
             let compView = ComprehensiveRulesViewController()
             newView = compView
-            newView!.hidesBottomBarWhenPushed = true
             
         } else if value == "Card Quiz" {
             newView = CardQuizHomeViewController()
+            fullScreen = true
             
         } else if value == "Life Counter" {
             
@@ -122,8 +123,12 @@ class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDe
             newView = SettingsViewController()
         }
         
-        if newView != nil {
-            navigationController?.pushViewController(newView!, animated:true)
+        if let v = newView {
+            if fullScreen {
+                self.presentViewController(v, animated: false, completion: nil)
+            } else {
+                navigationController?.pushViewController(v, animated:true)
+            }
         }
     }
     

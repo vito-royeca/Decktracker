@@ -52,7 +52,9 @@
 -(DTCard*) findCardByMultiverseID:(NSString*) multiverseID;
 -(NSString*) cardRarityIndex:(DTCard*) card;
 -(void) fetchTcgPlayerPriceForCard:(DTCard*) card;
--(NSArray*) fetchRandomCards:(int) howMany withPredicate:(NSPredicate*) predicate includeInAppPurchase:(BOOL) inAppPurchase;
+-(NSArray*) fetchRandomCards:(int) howMany
+               withPredicate:(NSPredicate*) predicate
+        includeInAppPurchase:(BOOL) inAppPurchase;
 -(NSArray*) fetchSets:(int) howMany;
 -(BOOL) isCardModern:(DTCard*) card;
 -(void) loadInAppSets;
@@ -65,7 +67,6 @@
 -(void) fetchTopViewed:(int) limit skip:(int) skip;
 -(void) incrementCardView:(DTCard*) card;
 -(void) rateCard:(DTCard*) card withRating:(float) rating;
-//-(void) updateParseCards;
 -(void) prefetchAllSetObjects;
 -(void) fetchUserMana;
 -(void) saveUserMana:(PFObject*) userMana;
