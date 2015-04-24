@@ -7,12 +7,15 @@
 //
 
 import UIKit
+import AVFoundation
 
 class CardQuizLeaderboardViewController: UIViewController, MBProgressHUDDelegate {
 
     var hud:MBProgressHUD?
     var btnClose:UIImageView?
     var webView:UIWebView?
+    
+    var backgroundSoundPlayer:AVAudioPlayer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +26,11 @@ class CardQuizLeaderboardViewController: UIViewController, MBProgressHUDDelegate
         NSNotificationCenter.defaultCenter().removeObserver(self, name:kParseLeaderboardDone,  object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector:"fetchLeaderboardDone:",  name:kParseLeaderboardDone, object:nil)
 
+        // load the sounds
+        backgroundSoundPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("/audio/cardquiz_leaderboard", ofType: "caf")!), error: nil)
+        backgroundSoundPlayer!.prepareToPlay()
+        backgroundSoundPlayer!.volume = 1.0
+        
         setupBackground()
         fetchLeaderboard(nil)
 #if !DEBUG
@@ -48,6 +56,10 @@ class CardQuizLeaderboardViewController: UIViewController, MBProgressHUDDelegate
 
     //  MARK: UI code
     func setupBackground() {
+        // play the background sound infinitely
+        backgroundSoundPlayer!.numberOfLoops = -1
+        backgroundSoundPlayer!.play()
+        
         var dX = CGFloat(5)
         var dY = CGFloat(5)
         var dWidth = CGFloat(30)
@@ -125,6 +137,7 @@ class CardQuizLeaderboardViewController: UIViewController, MBProgressHUDDelegate
     
 //  MARK: Event handlers
     func closeTapped(sender: AnyObject) {
+        self.backgroundSoundPlayer!.stop()
         self.dismissViewControllerAnimated(false, completion: nil)
     }
     

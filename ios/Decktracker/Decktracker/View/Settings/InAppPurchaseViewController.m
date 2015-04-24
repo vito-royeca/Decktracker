@@ -90,6 +90,8 @@
 
 -(void) cancelPurchase:(id) sender
 {
+    [self.delegate productPurchaseCancelled];
+    
     if (self.navigationController)
     {
         [self.navigationController popViewControllerAnimated:NO];

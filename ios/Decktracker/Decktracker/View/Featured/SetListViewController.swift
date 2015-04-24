@@ -357,6 +357,10 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
 //    MARK: InAppPurchaseViewControllerDelegate
+    func productPurchaseCancelled() {
+        // empty implementation
+    }
+    
     func productPurchaseSucceeded(productID: String)
     {
         Database.sharedInstance().loadInAppSets()

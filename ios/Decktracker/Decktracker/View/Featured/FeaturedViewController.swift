@@ -332,6 +332,10 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
 //    MARK: InAppPurchaseViewControllerDelegate
+    func productPurchaseCancelled() {
+        // empty implementation
+    }
+    
     func productPurchaseSucceeded(productID: String)
     {
         Database.sharedInstance().loadInAppSets()

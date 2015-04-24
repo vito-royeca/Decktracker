@@ -45,6 +45,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
     var gameType:String?
 
     // sounds
+    var backgroundSoundPlayer:AVAudioPlayer?
     var successSoundPlayer:AVAudioPlayer?
     var failSoundPlayer:AVAudioPlayer?
     var answerDeleteSoundPlayer:AVAudioPlayer?
@@ -62,17 +63,25 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         NSNotificationCenter.defaultCenter().addObserver(self, selector:"fetchUserManaDone:",  name:kParseUserManaDone, object:nil)
         
         // load the sounds
+        backgroundSoundPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("/audio/cardquiz_game", ofType: "caf")!), error: nil)
+        backgroundSoundPlayer!.prepareToPlay()
+        backgroundSoundPlayer!.volume = 1.0
+        
         successSoundPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("/audio/cardquiz_success", ofType: "caf")!), error: nil)
         successSoundPlayer!.prepareToPlay()
+        successSoundPlayer!.volume = 1.0
         
         failSoundPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("/audio/cardquiz_fail", ofType: "caf")!), error: nil)
         failSoundPlayer!.prepareToPlay()
+        failSoundPlayer!.volume = 1.0
         
         answerDeleteSoundPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("/audio/cardquiz_answer_delete", ofType: "caf")!), error: nil)
         answerDeleteSoundPlayer!.prepareToPlay()
+        answerDeleteSoundPlayer!.volume = 1.0
         
         castSoundPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("/audio/cardquiz_cast", ofType: "caf")!), error: nil)
         castSoundPlayer!.prepareToPlay()
+        castSoundPlayer!.volume = 1.0
         
         setupBackground()
         setupManaPoints()
@@ -107,6 +116,10 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
     
 //  MARK: UI Setup Code
     func setupBackground() {
+        // play the background sound infinitely
+        backgroundSoundPlayer!.numberOfLoops = -1
+        backgroundSoundPlayer!.play()
+        
         var dX = CGFloat(5)
         var dY = CGFloat(5)
         var dWidth = CGFloat(30)
@@ -975,6 +988,8 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
     
 //  MARK: Event Handlers
     func closeTapped(sender: AnyObject) {
+        backgroundSoundPlayer!.stop()
+        
         NSNotificationCenter.defaultCenter().removeObserver(self, name:kParseUserManaDone,  object:nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name:kCardDownloadCompleted,  object:nil)
         
@@ -1017,6 +1032,9 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
     
     func buyTapped(sender: UITapGestureRecognizer) {
         let doneBlock = { (picker: ActionSheetStringPicker?, selectedIndex: NSInteger, selectedValue: AnyObject?) -> Void in
+            
+            self.backgroundSoundPlayer!.pause()
+            
             let filePath = "\(NSBundle.mainBundle().bundlePath)/In-App Mana.plist"
             let arrMana = NSArray(contentsOfFile: filePath)
             var dict:Dictionary<String, String>?
@@ -1040,6 +1058,11 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
                 "description": dict!["In-App Description"] as String!]
             
             self.presentViewController(view2, animated: false, completion: nil)
+        }
+        
+        let cancelBlock = { (picker: ActionSheetStringPicker? ) -> Void in
+            self.backgroundSoundPlayer!.play()
+        
         }
         
         ActionSheetStringPicker.showPickerWithTitle("Buy Mana",
@@ -1286,6 +1309,10 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
     }
     
 //    MARK: InAppPurchaseViewControllerDelegate
+    func productPurchaseCancelled() {
+        backgroundSoundPlayer!.play()
+    }
+    
     func productPurchaseSucceeded(productID: String) {
         
         if productID == "18Mana_ID" {
@@ -1311,8 +1338,9 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
             manaColorless += 10
         }
         
-        self.animateManaLabels()
-        self.saveMana()
+        backgroundSoundPlayer!.play()
+        animateManaLabels()
+        saveMana()
     }
     
 //    MARK: CQManaChooserViewDelegate

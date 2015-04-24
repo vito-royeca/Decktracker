@@ -4,6 +4,7 @@
 //
 
 import Foundation
+import AVFoundation
 
 class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate {
 
@@ -29,6 +30,14 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         
         NSNotificationCenter.defaultCenter().removeObserver(self, name:kParseUserManaDone,  object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector:"fetchUserManaDone:",  name:kParseUserManaDone, object:nil)
+        
+        var error:NSError?
+        var success = AVAudioSession.sharedInstance().setCategory(
+            AVAudioSessionCategoryPlayback,
+            withOptions: .DefaultToSpeaker, error: &error)
+        if !success {
+            NSLog("Failed to set audio session category.  Error: \(error)")
+        }
         
         setupBackground()
         Database.sharedInstance().fetchUserMana()
