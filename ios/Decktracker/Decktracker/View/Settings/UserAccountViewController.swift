@@ -62,7 +62,7 @@ class UserAccountViewController: UIViewController {
         // send the screen to Google Analytics
         let tracker = GAI.sharedInstance().defaultTracker
         tracker.set(kGAIScreenName, value: "User Account")
-        tracker.send(GAIDictionaryBuilder.createScreenView().build())
+        tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject : AnyObject])
 #endif
     }
 
@@ -72,6 +72,6 @@ class UserAccountViewController: UIViewController {
     }
     
     func loadUser() {
-        self.nameLabel!.text = NSUserDefaults.standardUserDefaults().stringForKey("User_FullName") as! String?
+        self.nameLabel!.text = NSUserDefaults.standardUserDefaults().stringForKey("User_FullName") as String?
     }
 }

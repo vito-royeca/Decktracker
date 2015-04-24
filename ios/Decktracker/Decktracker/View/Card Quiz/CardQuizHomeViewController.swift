@@ -47,7 +47,7 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         // send the screen to Google Analytics
         let tracker = GAI.sharedInstance().defaultTracker
         tracker.set(kGAIScreenName, value: "Card Quiz Home")
-        tracker.send(GAIDictionaryBuilder.createScreenView().build())
+        tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject : AnyObject])
 #endif
     }
     

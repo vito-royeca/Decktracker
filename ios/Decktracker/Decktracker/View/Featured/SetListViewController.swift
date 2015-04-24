@@ -61,7 +61,7 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
     // send the screen to Google Analytics
     let tracker = GAI.sharedInstance().defaultTracker
     tracker.set(kGAIScreenName, value: "Sets")
-    tracker.send(GAIDictionaryBuilder.createScreenView().build())
+    tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject : AnyObject])
 #endif
     }
     

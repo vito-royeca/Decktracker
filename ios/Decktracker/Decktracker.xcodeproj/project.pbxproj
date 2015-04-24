@@ -127,7 +127,6 @@
 		8C6847B919EE426C0074960E /* libJJJ.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C6847B019EE41FF0074960E /* libJJJ.a */; };
 		8C71A0A21A28127A00162CA2 /* SetListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C71A0A11A28127A00162CA2 /* SetListViewController.swift */; };
 		8C74B82B1A10A2F3004A350F /* DeckIASKSettingsStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C74B82A1A10A2F3004A350F /* DeckIASKSettingsStore.m */; };
-		8C89BD4319DD33870070E4F5 /* script.pl in Resources */ = {isa = PBXBuildFile; fileRef = 8C89BD4219DD33870070E4F5 /* script.pl */; };
 		8C89BD4419DD33870070E4F5 /* script.pl in Resources */ = {isa = PBXBuildFile; fileRef = 8C89BD4219DD33870070E4F5 /* script.pl */; };
 		8C89BD4719DD39F60070E4F5 /* AFNetworking.license in Resources */ = {isa = PBXBuildFile; fileRef = 8C89BD4619DD39F60070E4F5 /* AFNetworking.license */; };
 		8C89BD4B19DD3D110070E4F5 /* CorePlot.license in Resources */ = {isa = PBXBuildFile; fileRef = 8C89BD4A19DD3D110070E4F5 /* CorePlot.license */; };
@@ -1134,7 +1133,6 @@
 				8C38C0511A15F6E500FC3411 /* BannerScrollTableViewCell.xib in Resources */,
 				8C2A979919F5027B0094C97F /* Reader-Thumbs.png in Resources */,
 				8C2A979619F5027B0094C97F /* Reader-Mark-Y@2x.png in Resources */,
-				8C89BD4319DD33870070E4F5 /* script.pl in Resources */,
 				8C2A978B19F5027B0094C97F /* Reader-Button-H.png in Resources */,
 				8C325F3E1A5A60B200FA58E6 /* DecksTableViewCell.xib in Resources */,
 				8C2E13FD1990741100023BAA /* InfoPlist.strings in Resources */,
@@ -1399,8 +1397,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Jovito Royeca (43CD66539H)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Jovito Royeca (43CD66539H)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEFINES_MODULE = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1441,8 +1439,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Jovito Royeca (43CD66539H)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Jovito Royeca (43CD66539H)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				DEFINES_MODULE = YES;
 				ENABLE_NS_ASSERTIONS = NO;

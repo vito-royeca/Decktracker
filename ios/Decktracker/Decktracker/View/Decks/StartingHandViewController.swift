@@ -108,7 +108,7 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         // send the screen to Google Analytics
         let tracker = GAI.sharedInstance().defaultTracker
         tracker.set(kGAIScreenName, value: "Starting Hand")
-        tracker.send(GAIDictionaryBuilder.createScreenView().build())
+        tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject : AnyObject])
 #endif
     }
 

@@ -48,7 +48,7 @@ public class LoginViewController: PFLogInViewController {
         // send the screen to Google Analytics
         let tracker = GAI.sharedInstance().defaultTracker
         tracker.set(kGAIScreenName, value: "Login or Signup")
-        tracker.send(GAIDictionaryBuilder.createScreenView().build())
+        tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject : AnyObject])
 #endif
     }
 
