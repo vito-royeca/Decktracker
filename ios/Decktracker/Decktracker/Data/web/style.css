@@ -60,11 +60,12 @@ html, body
     color: #ffffff;
 }
 
-.th_totalCMC
+.td_score
 {
-	font-family: Magic;
-    font-size: 16pt;
+    font-family: Magic;
+    font-size: 12pt;
     color: #ffffff;
+    text-align: right;
 }
 
 .td_totalCMC

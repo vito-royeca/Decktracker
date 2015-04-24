@@ -20,22 +20,17 @@
 @implementation InAppPurchaseViewController
 {
     InAppPurchase *_inAppPurchase;
-    NSArray *_arrSections;
+    NSMutableArray *_arrSections;
     MBProgressHUD *_hud;
+    BOOL isBuying;
 }
-
-@synthesize productID;
-@synthesize productDetails;
-@synthesize btnCancel;
-@synthesize btnBuy;
-@synthesize tblProducDetails;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    _arrSections = @[@"Name", @"Price", @"Description"];
+    _arrSections = [NSMutableArray arrayWithArray:@[@"Name", @"Price", @"Description"]];
     
     CGFloat dX = 0;
     CGFloat dY = 0;
@@ -45,7 +40,6 @@
     self.tblProducDetails = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight) style:UITableViewStyleGrouped];
     self.tblProducDetails.delegate = self;
     self.tblProducDetails.dataSource = self;
-    
     [self.view addSubview:self.tblProducDetails];
     
     if (self.navigationController)
@@ -60,11 +54,17 @@
                                                       action:@selector(purchaseProduct:)];
         self.btnBuy.enabled = NO;
         
-        self.navigationItem.leftBarButtonItem = btnCancel;
-        self.navigationItem.rightBarButtonItem = btnBuy;
+        self.navigationItem.leftBarButtonItem = self.btnCancel;
+        self.navigationItem.rightBarButtonItem = self.btnBuy;
         self.navigationItem.title = @"Product Details";
     }
+    else
+    {
+        [_arrSections addObject:@"Action"];
+    }
 
+    isBuying = false;
+    
     _hud = [[MBProgressHUD alloc] initWithView:self.view];
     _hud.delegate = self;
     [self.view addSubview:_hud];
@@ -113,11 +113,18 @@
 
 -(void) purchaseProduct:(id) sender
 {
+    if (isBuying)
+    {
+        return;
+    }
+
     self.btnBuy.enabled = NO;
     [_inAppPurchase purchaseProduct:self.productID];
+    
+    isBuying = YES;
 }
 
-#pragma mark - UITable
+#pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return _arrSections.count;
@@ -130,18 +137,13 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.section == 2)
+    if (section == 3)
     {
-        return 132;
+        return 2;
     }
     else
     {
-        return UITableViewAutomaticDimension;
+        return 1;
     }
 }
 
@@ -157,6 +159,8 @@
     }
     
     tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+    cell.userInteractionEnabled = YES;
+    cell.textLabel.enabled = YES;
     
     switch (indexPath.section)
     {
@@ -186,9 +190,60 @@
             tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
             break;
         }
+        case 3:
+        {
+            if (indexPath.row == 0)
+            {
+                cell.textLabel.text = @"Buy";
+                if (isBuying)
+                {
+                    cell.userInteractionEnabled = NO;
+                    cell.textLabel.enabled = NO;
+                }
+            }
+            else if (indexPath.row == 1)
+            {
+                cell.textLabel.text = @"Cancel";
+                if (isBuying)
+                {
+                    cell.userInteractionEnabled = NO;
+                    cell.textLabel.enabled = NO;
+                }
+            }
+            
+            break;
+        }
     }
     
     return cell;
+}
+
+#pragma mark - UITableViewDelegate
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 2)
+    {
+        return 132;
+    }
+    else
+    {
+        return UITableViewAutomaticDimension;
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 3)
+    {
+        if (indexPath.row == 0)
+        {
+            [self purchaseProduct:nil];
+        }
+        else if (indexPath.row == 1)
+        {
+            [self cancelPurchase:nil];
+        }
+    }
 }
 
 #pragma mark - InAppPurchaseDelegate
@@ -231,6 +286,14 @@
 {
     [JJJUtil alertWithTitle:@"Message" andMessage:message];
     
+    isBuying = NO;
+    self.btnBuy.enabled = YES;
+}
+
+-(void) purchaseRestoreSucceeded:(InAppPurchase*) inAppPurchase withMessage:(NSString*) message
+{
+    [self.delegate productPurchaseSucceeded:inAppPurchase.productID];
+    
     if (self.navigationController)
     {
         [self.navigationController popViewControllerAnimated:NO];
@@ -239,25 +302,22 @@
     {
         [self dismissViewControllerAnimated:NO completion:nil];
     }
-}
-
--(void) purchaseRestoreSucceeded:(InAppPurchase*) inAppPurchase withMessage:(NSString*) message
-{
     
+#ifndef DEBUG
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:[NSString stringWithFormat:@"Product Details - %@", self.productID]
+                                                          action:@"Restore"
+                                                           label:@"Succeeded"
+                                                           value:nil] build]];
+#endif
 }
 
 -(void) purchaseRestoreFailed:(InAppPurchase*) inAppPurchase withMessage:(NSString*) message
 {
     [JJJUtil alertWithTitle:@"Message" andMessage:message];
     
-    if (self.navigationController)
-    {
-        [self.navigationController popViewControllerAnimated:NO];
-    }
-    else
-    {
-        [self dismissViewControllerAnimated:NO completion:nil];
-    }
+    isBuying = NO;
+    self.btnBuy.enabled = YES;
 }
 
 #pragma mark -MBProgressHUDDelegate

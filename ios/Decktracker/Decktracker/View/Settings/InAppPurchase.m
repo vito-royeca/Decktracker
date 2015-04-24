@@ -99,7 +99,7 @@
                                                          forKey:transaction.originalTransaction.payment.productIdentifier];
                 [[NSUserDefaults standardUserDefaults] synchronize];
                 [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
-                [[SKPaymentQueue defaultQueue] removeTransactionObserver:self];
+//                [[SKPaymentQueue defaultQueue] removeTransactionObserver:self];
                 break;
             }
             case SKPaymentTransactionStatePurchased:
@@ -125,8 +125,6 @@
                         [[SKPaymentQueue defaultQueue] removeTransactionObserver:self];
                     }
                 }
-                
-//                [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
                 break;
             }
             case SKPaymentTransactionStateFailed:

@@ -41,7 +41,7 @@
     CGFloat dX = 0;
     CGFloat dY = [UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height;
     CGFloat dWidth = self.view.frame.size.width;
-    CGFloat dHeight = self.view.frame.size.height - dY/* - self.tabBarController.tabBar.frame.size.height*/;
+    CGFloat dHeight = self.view.frame.size.height - dY - self.tabBarController.tabBar.frame.size.height;
     
     self.appSettingsViewController = [[IASKAppSettingsViewController alloc] init];
     self.appSettingsViewController.delegate = self;
@@ -86,10 +86,10 @@
     // Dispose of any resources that can be recreated.
 }
 
--(BOOL)hidesBottomBarWhenPushed
-{
-    return YES;
-}
+//-(BOOL)hidesBottomBarWhenPushed
+//{
+//    return YES;
+//}
 
 -(NSSet*) hiddenKeys
 {
@@ -151,7 +151,7 @@
                                                             options:kNilOptions
                                                                error:&error];
         NSString *fullName = json[@"name"];
-        NSString *pictureURL= json[@"profile_image_url"];
+//        NSString *pictureURL= json[@"profile_image_url"];
         
         [[NSUserDefaults standardUserDefaults] setValue:fullName forKey:@"User_FullName"];
         [[NSUserDefaults standardUserDefaults] synchronize];

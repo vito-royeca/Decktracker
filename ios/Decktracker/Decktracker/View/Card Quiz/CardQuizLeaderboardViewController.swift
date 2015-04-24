@@ -116,8 +116,14 @@ class CardQuizLeaderboardViewController: UIViewController, MBProgressHUDDelegate
         var i = 1
         
         for leader in leaderboard! {
-            let user = leader["user"] as! PFUser
-            let totalCMC = leader["totalCMC"] as! NSNumber
+            let user      = leader["user"] as! PFUser
+            let black     = leader["black"] as! NSNumber
+            let blue      = leader["blue"] as! NSNumber
+            let green     = leader["green"] as! NSNumber
+            let red       = leader["red"] as! NSNumber
+            let white     = leader["white"] as! NSNumber
+            let colorless = leader["colorless"] as! NSNumber
+            let totalCMC  = leader["totalCMC"] as! NSNumber
             var name:String?
             
             if let x = user["name"] as? String {
@@ -126,7 +132,29 @@ class CardQuizLeaderboardViewController: UIViewController, MBProgressHUDDelegate
                 name = user["username"] as? String
             }
             
-            frag += "<tr><td class='td_rank'>\(i)</td><td class='td_player'>\(name!)</td><td class='td_totalCMC'>\(totalCMC)</td></tr>"
+            frag += "<tr><td class='td_rank'>\(i)</td><td class='td_player' colspan='12'>\(name!)</td></tr>"
+            frag += "<tr><td>&nbsp;</td><td class='td_player' colspan='12'>Score: \(totalCMC)</td></tr>"
+            frag += "<tr><td>&nbsp;</td>"
+            
+            frag += "<td><img src='../images/mana/B/32.png' width='16' height='16'></td>"
+            frag += "<td class='td_score'>\(black)</td>"
+            
+            frag += "<td><img src='../images/mana/U/32.png' width='16' height='16'></td>"
+            frag += "<td class='td_score'>\(blue)</td>"
+            
+            frag += "<td><img src='../images/mana/G/32.png' width='16' height='16'></td>"
+            frag += "<td class='td_score'>\(green)</td>"
+            
+            frag += "<td><img src='../images/mana/R/32.png' width='16' height='16'></td>"
+            frag += "<td class='td_score'>\(red)</td>"
+            
+            frag += "<td><img src='../images/mana/W/32.png' width='16' height='16'></td>"
+            frag += "<td class='td_score'>\(white)</td>"
+            
+            frag += "<td><img src='../images/mana/Colorless/32.png' width='16' height='16'></td>"
+            frag += "<td class='td_score'>\(colorless)</td>"
+            
+            frag += "</tr><tr><td colspan='13'>&nbsp;</td></tr>"
             i++
         }
         html = html!.stringByReplacingOccurrencesOfString("#_PLACEHOLDER_#", withString: frag)

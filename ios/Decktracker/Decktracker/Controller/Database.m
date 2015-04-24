@@ -707,7 +707,7 @@ static Database *_me;
 
     // do not include cards without images
     NSPredicate *predWithoutImages = [NSPredicate predicateWithFormat:@"set.magicCardsInfoCode != nil"];
-    predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, predWithoutImages]];
+    predicate = predicate ? [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, predWithoutImages]] : predWithoutImages;
 
     fetchRequest.entity = entity;
     fetchRequest.predicate = predicate;
