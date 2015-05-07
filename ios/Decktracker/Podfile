@@ -26,6 +26,7 @@ pod "Parse"
 pod "ParseFacebookUtils"
 pod "ParseUI"
 pod "PureLayout"
+pod "Realm"
 #pod "vfrReader", '~> 2.8.5'
 pod "XLForm"
 

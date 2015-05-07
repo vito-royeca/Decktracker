@@ -35,7 +35,6 @@
 		8CE75CB41AB96DBB001EB70E /* MagicCompRules_20140926.htm in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C87AB321A7F1F6C00E901DE /* MagicCompRules_20140926.htm */; };
 		8CF0C9DC1991CDB900349F35 /* libJJJ.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF0C9CD1991CD5500349F35 /* libJJJ.a */; };
 		8CF9CE52199F9A22008127E5 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF9CE51199F9A22008127E5 /* AppKit.framework */; };
-		8CFC1B091A6D738C005BD8E3 /* InAppPurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CFC1B081A6D738C005BD8E3 /* InAppPurchase.m */; };
 		8CFD32F2198E7B2900F1AFC3 /* ImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CFD32F1198E7B2900F1AFC3 /* ImageLoader.m */; };
 /* End PBXBuildFile section */
 
@@ -138,8 +137,6 @@
 		8CF0C9C61991CD5400349F35 /* JJJ.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JJJ.xcodeproj; path = ../jjj/JJJ/JJJ.xcodeproj; sourceTree = "<group>"; };
 		8CF9CE4B199F982A008127E5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		8CF9CE51199F9A22008127E5 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
-		8CFC1B071A6D738C005BD8E3 /* InAppPurchase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InAppPurchase.h; path = ../../Decktracker/Decktracker/View/Settings/InAppPurchase.h; sourceTree = "<group>"; };
-		8CFC1B081A6D738C005BD8E3 /* InAppPurchase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InAppPurchase.m; path = ../../Decktracker/Decktracker/View/Settings/InAppPurchase.m; sourceTree = "<group>"; };
 		8CFD32F0198E7B2900F1AFC3 /* ImageLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageLoader.h; sourceTree = "<group>"; };
 		8CFD32F1198E7B2900F1AFC3 /* ImageLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageLoader.m; sourceTree = "<group>"; };
 		AA9812F902A74C339C3CEB23 /* libPods-DataSource.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DataSource.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -200,8 +197,6 @@
 				8C25DA661AD7D817006ED492 /* Constants.h */,
 				8C80A0BF198D01AD00BADA6C /* Controller */,
 				8C3E414219AE29850058FF67 /* Data */,
-				8CFC1B071A6D738C005BD8E3 /* InAppPurchase.h */,
-				8CFC1B081A6D738C005BD8E3 /* InAppPurchase.m */,
 				8C1B4DCD198CF0C000B4C948 /* main.m */,
 				8C21506E1993C5FF00B0128C /* Model */,
 				8C1B4DCF198CF0C000B4C948 /* Supporting Files */,
@@ -425,7 +420,6 @@
 				8C3857E91A36FCE600E5B38C /* DTCard.m in Sources */,
 				8C3857E61A36FCE600E5B38C /* database.xcdatamodeld in Sources */,
 				8C3857F51A36FCE600E5B38C /* DTSetType.m in Sources */,
-				8CFC1B091A6D738C005BD8E3 /* InAppPurchase.m in Sources */,
 				8C3857EA1A36FCE600E5B38C /* DTCardColor.m in Sources */,
 				8C80A0CC198D040500BADA6C /* Database.m in Sources */,
 				8C80A0C2198D01D600BADA6C /* JSONLoader.m in Sources */,

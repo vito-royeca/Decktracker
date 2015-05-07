@@ -7,7 +7,7 @@ target "DataSource" do
 
 pod "hpple"
 pod "MagicalRecord"
-
+pod "Realm"
 end
 
 
