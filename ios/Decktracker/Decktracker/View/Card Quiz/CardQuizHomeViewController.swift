@@ -269,20 +269,19 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
 
 //   MARK: Event handlers
     func loginTapped(sender: AnyObject) {
-        let currentUser = PFUser.currentUser()
         
-        if currentUser == nil {
+        if let currentUser = PFUser.currentUser() {
+            PFUser.logOut()
+            Database.sharedInstance().deleteUserManaLocally()
+            Database.sharedInstance().fetchUserMana()
+            self.setupMenu()
+            
+        } else {
             self.loginViewController = LoginViewController()
             self.loginViewController!.delegate = self
             self.loginViewController!.signUpController!.delegate = self
             
             self.presentViewController(self.loginViewController!, animated:true, completion: nil)
-
-        } else {
-            PFUser.logOut()
-            Database.sharedInstance().deleteUserManaLocally()
-            Database.sharedInstance().fetchUserMana()
-            self.setupMenu()
         }
     }
     
@@ -293,6 +292,7 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
                currentUser["emailVerified"] == nil {
                 
                 JJJUtil.alertWithTitle("Email Verification", andMessage: "You may need to verify your email address. We have sent you a verification email. Logout first and then login again after verifying your email.")
+                return
             }
         }
         

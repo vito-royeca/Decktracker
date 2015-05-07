@@ -14,6 +14,7 @@
 #import "JJJ/JJJ.h"
 
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
+#import "InAppPurchase.h"
 #import "Bolts.h"
 #import <Parse/Parse.h>
 #endif
@@ -46,21 +47,22 @@
                       withSectionName:(NSString*) sectionName;
 
 -(NSFetchedResultsController*) advanceSearch:(NSDictionary*)query withSorter:(NSDictionary*) sorter;
+
+-(void) loadInAppSets;
+-(NSDictionary*) inAppSettingsForSet:(DTSet*) set;
+-(NSArray*) inAppSetCodes;
+-(BOOL) isSetPurchased:(DTSet*) set;
+-(NSArray*) fetchRandomCards:(int) howMany
+               withPredicate:(NSPredicate*) predicate
+        includeInAppPurchase:(BOOL) inAppPurchase;
 #endif
 
 -(DTCard*) findCard:(NSString*) card inSet:(NSString*) setCode;
 -(DTCard*) findCardByMultiverseID:(NSString*) multiverseID;
 -(NSString*) cardRarityIndex:(DTCard*) card;
 -(void) fetchTcgPlayerPriceForCard:(DTCard*) card;
--(NSArray*) fetchRandomCards:(int) howMany
-               withPredicate:(NSPredicate*) predicate
-        includeInAppPurchase:(BOOL) inAppPurchase;
 -(NSArray*) fetchSets:(int) howMany;
 -(BOOL) isCardModern:(DTCard*) card;
--(void) loadInAppSets;
--(NSDictionary*) inAppSettingsForSet:(DTSet*) set;
--(NSArray*) inAppSetCodes;
--(BOOL) isSetPurchased:(DTSet*) set;
 
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
 -(void) fetchTopRated:(int) limit skip:(int) skip;
@@ -72,7 +74,6 @@
 -(void) saveUserMana:(PFObject*) userMana;
 -(void) deleteUserManaLocally;
 -(void) fetchLeaderboard;
-
 #endif
 
 @end

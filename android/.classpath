@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="Decktracker/app/build/generated/source/buildConfig/debug"/>
+	<classpathentry kind="src" path="Decktracker/app/build/generated/source/buildConfig/test/debug"/>
+	<classpathentry kind="src" path="Decktracker/app/build/generated/source/r/debug"/>
+	<classpathentry kind="src" path="Decktracker/app/src/androidTest/java"/>
+	<classpathentry kind="src" path="Decktracker/app/src/main/java"/>
+	<classpathentry kind="lib" path="Decktracker/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/classes.jar"/>
+	<classpathentry kind="lib" path="Decktracker/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/classes.jar"/>
+	<classpathentry kind="lib" path="Decktracker/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/libs/internal_impl-21.0.3.jar"/>
+	<classpathentry kind="lib" path="Decktracker/app/build/intermediates/pre-dexed/debug/android-async-http-1.4.4-5ddf268009448eabcae92fdbb976d3ea9b32c979.jar"/>
+	<classpathentry kind="lib" path="Decktracker/app/build/intermediates/pre-dexed/debug/classes-082633b69b8008d7a4750f37d083392f4532be0e.jar"/>
+	<classpathentry kind="lib" path="Decktracker/app/build/intermediates/pre-dexed/debug/classes-235f198a3e9d5ea852db24ee588f6c89986ab7a8.jar"/>
+	<classpathentry kind="lib" path="Decktracker/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-71616e8b40414ae7fd3364c4290a7f7e97548e5f.jar"/>
+	<classpathentry kind="lib" path="Decktracker/app/build/intermediates/pre-dexed/debug/picasso-2.1.1-f0b4bb58edc7665a0ddc9df6672fc8738a13483b.jar"/>
+	<classpathentry kind="lib" path="Decktracker/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.3-0f752d44648538ee8ccdcdfc77e81b02a3823b3c.jar"/>
+	<classpathentry kind="lib" path="Decktracker/gradle/wrapper/gradle-wrapper.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="Decktracker/app/build/intermediates/classes/debug"/>
+</classpath>

@@ -90,11 +90,10 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         updateManaPool()
         displayQuiz()
         
-        self.navigationItem.title = "Card Quiz"
 #if !DEBUG
         // send the screen to Google Analytics
         let tracker = GAI.sharedInstance().defaultTracker
-        tracker.set(kGAIScreenName, value: self.navigationItem.title)
+        tracker.set(kGAIScreenName, value: "Card Quiz Game")
         tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject : AnyObject])
 #endif
     }

@@ -9,7 +9,6 @@
 #import "Database.h"
 #import "DTCardRating.h"
 #import "DTSet.h"
-#import "InAppPurchase.h"
 #import "Constants.h"
 
 #import "TFHpple.h"
@@ -150,9 +149,10 @@ static Database *_me;
     [MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:kDatabaseStore];
     DTSet *set = [DTSet MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"name == %@", @"Eighth Edition"]];
     _8thEditionReleaseDate = set.releaseDate;
-    [self loadInAppSets];
     
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
+    [self loadInAppSets];
+    
     for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentPath error:nil])
     {
         if ([file hasPrefix:@"decktracker."])
@@ -510,6 +510,112 @@ static Database *_me;
                                                  sectionNameKeyPath:nil
                                                           cacheName:nil];
 }
+
+-(void) loadInAppSets
+{
+    NSString *filePath = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] bundlePath], @"In-App Sets.plist"];
+    _arrInAppSets = [[NSMutableArray alloc] init];
+    
+    for (NSDictionary *dict in [NSArray arrayWithContentsOfFile:filePath])
+    {
+        if (![InAppPurchase isProductPurchased:dict[@"In-App Product ID"]])
+        {
+            [_arrInAppSets addObject:dict];
+        }
+    }
+}
+
+-(NSDictionary*) inAppSettingsForSet:(DTSet*) set
+{
+    for (NSDictionary *dict in _arrInAppSets)
+    {
+        if ([dict[@"Name"] isEqualToString:set.name] &&
+            [dict[@"Code"] isEqualToString:set.code])
+        {
+            return dict;
+        }
+    }
+    return nil;
+}
+
+-(NSArray*) inAppSetCodes
+{
+    NSMutableArray *arrSetCodes = [[NSMutableArray alloc] init];
+    
+    for (NSDictionary *dict in _arrInAppSets) {
+        [arrSetCodes addObject:dict[@"Code"]];
+    }
+    
+    return arrSetCodes;
+}
+
+-(BOOL) isSetPurchased:(DTSet*) set
+{
+    NSArray *inAppSetCodes = [self inAppSetCodes];
+    
+    if (inAppSetCodes.count > 0)
+    {
+        for (NSString *code in inAppSetCodes)
+        {
+            if ([set.code isEqualToString:code])
+            {
+                return NO;
+            }
+        }
+    }
+    
+    return YES;
+}
+
+-(NSArray*) fetchRandomCards:(int) howMany
+               withPredicate:(NSPredicate*) predicate
+        includeInAppPurchase:(BOOL) inAppPurchase
+{
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    
+    NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:@"name"
+                                                                    ascending:YES];
+    NSSortDescriptor *sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:@"set.releaseDate"
+                                                                    ascending:NO];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"DTCard"
+                                              inManagedObjectContext:moc];
+    
+    if (!inAppPurchase)
+    {
+        NSArray *inAppSetCodes = [self inAppSetCodes];
+        if (inAppSetCodes.count > 0)
+        {
+            NSPredicate *predInAppSets = [NSPredicate predicateWithFormat:@"NOT (set.code IN %@)", inAppSetCodes];
+            
+            predicate = predicate ? [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, predInAppSets]] : predInAppSets;
+        }
+    }
+    
+    // do not include cards without images
+    NSPredicate *predWithoutImages = [NSPredicate predicateWithFormat:@"set.magicCardsInfoCode != nil"];
+    predicate = predicate ? [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, predWithoutImages]] : predWithoutImages;
+    
+    fetchRequest.entity = entity;
+    fetchRequest.predicate = predicate;
+    fetchRequest.sortDescriptors = @[sortDescriptor1, sortDescriptor2];
+    fetchRequest.resultType = NSManagedObjectIDResultType;
+    
+    NSError *error = nil;
+    NSArray *arrIDs = [moc executeFetchRequest:fetchRequest error:&error];
+    
+    if (arrIDs.count > 0)
+    {
+        for (int i=0; i<howMany; i++)
+        {
+            int random = arc4random() % (arrIDs.count - 1) + 1;
+            [array addObject:[moc objectWithID:arrIDs[random]]];
+        }
+    }
+    return array;
+}
+
 #endif
 
 #pragma mark - Finders
@@ -520,19 +626,22 @@ static Database *_me;
     NSPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[pred1, pred2]];
     
     // to do: exclude In-App Sets
+#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
     NSArray *inAppSetCodes = [self inAppSetCodes];
     if (inAppSetCodes.count > 0)
     {
         NSPredicate *predInAppSets = [NSPredicate predicateWithFormat:@"NOT (set.code IN %@)", inAppSetCodes];
         predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, predInAppSets]];
     }
+#endif
     return [DTCard MR_findFirstWithPredicate:predicate];
 }
 
 -(DTCard*) findCardByMultiverseID:(NSString*) multiverseID
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"multiverseID == %@", multiverseID];
-    
+
+#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
     // to do: exclude In-App Sets
     NSArray *inAppSetCodes = [self inAppSetCodes];
     if (inAppSetCodes.count > 0)
@@ -540,7 +649,8 @@ static Database *_me;
         NSPredicate *predInAppSets = [NSPredicate predicateWithFormat:@"NOT (set.code IN %@)", inAppSetCodes];
         predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, predInAppSets]];
     }
-    
+#endif
+
     return [DTCard MR_findFirstWithPredicate:predicate];
 }
 
@@ -679,55 +789,6 @@ static Database *_me;
  }];
  }*/
 
--(NSArray*) fetchRandomCards:(int) howMany
-               withPredicate:(NSPredicate*) predicate
-        includeInAppPurchase:(BOOL) inAppPurchase
-{
-    NSMutableArray *array = [[NSMutableArray alloc] init];
-    
-    NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:@"name"
-                                                                    ascending:YES];
-    NSSortDescriptor *sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:@"set.releaseDate"
-                                                                    ascending:NO];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"DTCard"
-                                              inManagedObjectContext:moc];
-    
-    if (!inAppPurchase)
-    {
-        NSArray *inAppSetCodes = [self inAppSetCodes];
-        if (inAppSetCodes.count > 0)
-        {
-            NSPredicate *predInAppSets = [NSPredicate predicateWithFormat:@"NOT (set.code IN %@)", inAppSetCodes];
-            
-            predicate = predicate ? [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, predInAppSets]] : predInAppSets;
-        }
-    }
-
-    // do not include cards without images
-    NSPredicate *predWithoutImages = [NSPredicate predicateWithFormat:@"set.magicCardsInfoCode != nil"];
-    predicate = predicate ? [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, predWithoutImages]] : predWithoutImages;
-
-    fetchRequest.entity = entity;
-    fetchRequest.predicate = predicate;
-    fetchRequest.sortDescriptors = @[sortDescriptor1, sortDescriptor2];
-    fetchRequest.resultType = NSManagedObjectIDResultType;
-    
-    NSError *error = nil;
-    NSArray *arrIDs = [moc executeFetchRequest:fetchRequest error:&error];
-    
-    if (arrIDs.count > 0)
-    {
-        for (int i=0; i<howMany; i++)
-        {
-            int random = arc4random() % (arrIDs.count - 1) + 1;
-            [array addObject:[moc objectWithID:arrIDs[random]]];
-        }
-    }
-    return array;
-}
-
 -(NSArray*) fetchSets:(int) howMany
 {
     NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
@@ -776,62 +837,6 @@ static Database *_me;
     }
     return [releaseDate compare:_8thEditionReleaseDate] == NSOrderedSame ||
         [releaseDate compare:_8thEditionReleaseDate] == NSOrderedDescending;
-}
-
--(void) loadInAppSets
-{
-    NSString *filePath = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] bundlePath], @"In-App Sets.plist"];
-    _arrInAppSets = [[NSMutableArray alloc] init];
-    
-    for (NSDictionary *dict in [NSArray arrayWithContentsOfFile:filePath])
-    {
-        if (![InAppPurchase isProductPurchased:dict[@"In-App Product ID"]])
-        {
-            [_arrInAppSets addObject:dict];
-        }
-    }
-}
-
--(NSDictionary*) inAppSettingsForSet:(DTSet*) set
-{
-    for (NSDictionary *dict in _arrInAppSets)
-    {
-        if ([dict[@"Name"] isEqualToString:set.name] &&
-            [dict[@"Code"] isEqualToString:set.code])
-        {
-            return dict;
-        }
-    }
-    return nil;
-}
-
--(NSArray*) inAppSetCodes
-{
-    NSMutableArray *arrSetCodes = [[NSMutableArray alloc] init];
-    
-    for (NSDictionary *dict in _arrInAppSets) {
-        [arrSetCodes addObject:dict[@"Code"]];
-    }
-    
-    return arrSetCodes;
-}
-
--(BOOL) isSetPurchased:(DTSet*) set
-{
-    NSArray *inAppSetCodes = [self inAppSetCodes];
-    
-    if (inAppSetCodes.count > 0)
-    {
-        for (NSString *code in inAppSetCodes)
-        {
-            if ([set.code isEqualToString:code])
-            {
-                return NO;
-            }
-        }
-    }
-    
-    return YES;
 }
 
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
