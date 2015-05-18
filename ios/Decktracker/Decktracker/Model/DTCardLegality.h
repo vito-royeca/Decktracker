@@ -6,15 +6,15 @@
 //  Copyright (c) 2014 Jovito Royeca. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <CoreData/CoreData.h>
+#import <Realm/Realm.h>
+#import "RLMArrays.h"
 
 @class DTCard, DTFormat;
 
-@interface DTCardLegality : NSManagedObject
+@interface DTCardLegality : RLMObject
 
-@property (nonatomic, retain) NSString * name;
-@property (nonatomic, retain) DTCard *card;
-@property (nonatomic, retain) DTFormat *format;
+@property NSString * name;
+@property DTCard *card;
+@property DTFormat *format;
 
 @end

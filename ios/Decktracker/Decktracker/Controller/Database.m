@@ -7,8 +7,6 @@
 //
 
 #import "Database.h"
-#import "DTCardRating.h"
-#import "DTSet.h"
 #import "Constants.h"
 
 #import "TFHpple.h"
@@ -119,9 +117,12 @@ static Database *_me;
         {
             NSLog(@"Error: Unable to copy preloaded database.");
         }
-        [[NSUserDefaults standardUserDefaults] setValue:jsonVersion forKey:@"JSON Version"];
-        [[NSUserDefaults standardUserDefaults] setValue:imagesVersion forKey:@"Images Version"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        else
+        {
+            [[NSUserDefaults standardUserDefaults] setValue:jsonVersion forKey:@"JSON Version"];
+            [[NSUserDefaults standardUserDefaults] setValue:imagesVersion forKey:@"Images Version"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
     }
     else
     {
@@ -145,9 +146,9 @@ static Database *_me;
         }
     }
 #endif
-    
-    [MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:kDatabaseStore];
-    DTSet *set = [DTSet MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"name == %@", @"Eighth Edition"]];
+
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name == %@", @"Eighth Edition"];
+    DTSet *set = [[DTSet objectsWithPredicate:predicate] firstObject];
     _8thEditionReleaseDate = set.releaseDate;
     
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
@@ -167,7 +168,18 @@ static Database *_me;
 
 -(void) closeDb
 {
-    [MagicalRecord cleanUp];
+//    [MagicalRecord cleanUp];
+}
+
+-(void) copyRealmDatabaseToHome
+{
+    NSString *path = @"/Users/tontonsevilla/decktracker.realm";
+    
+    if ([[NSFileManager defaultManager] fileExistsAtPath:path])
+    {
+        [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
+    }
+    [[RLMRealm defaultRealm] writeCopyToPath:path error:nil];
 }
 
 #pragma mark - Finders with FetchedResultsController
@@ -634,7 +646,7 @@ static Database *_me;
         predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, predInAppSets]];
     }
 #endif
-    return [DTCard MR_findFirstWithPredicate:predicate];
+    return [[DTCard objectsWithPredicate:predicate] firstObject];
 }
 
 -(DTCard*) findCardByMultiverseID:(NSString*) multiverseID
@@ -651,7 +663,7 @@ static Database *_me;
     }
 #endif
 
-    return [DTCard MR_findFirstWithPredicate:predicate];
+    return [[DTCard objectsWithPredicate:predicate] firstObject];
 }
 
 -(NSString*) cardRarityIndex:(DTCard*) card
@@ -683,7 +695,7 @@ static Database *_me;
         }
     }
     
-    if (!card.set.tcgPlayerName)
+    if (card.set.tcgPlayerName.length <= 0)
     {
         bWillFetch = NO;
     }
@@ -692,10 +704,6 @@ static Database *_me;
     {
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
-#endif
-
-#ifdef DEBUG
-            NSLog(@"Fetching price for %@ (%@)", card.name, card.set.code);
 #endif
 
             NSString *tcgPricing = [[NSString stringWithFormat:@"http://partner.tcgplayer.com/x3/phl.asmx/p?pk=%@&s=%@&p=%@", TCGPLAYER_PARTNER_KEY, card.set.tcgPlayerName, card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
@@ -744,19 +752,24 @@ static Database *_me;
                     }
                 }
             }
+#ifndef DEBUG
+            NSLog(@"DEBUG... ^TCGPlayer: (%@) %@", card.set.code, card.name);
+            RLMRealm *realm = [RLMRealm defaultRealm];
+            [realm beginWriteTransaction];
+#endif
             
-            card.tcgPlayerHighPrice = high ? [NSNumber numberWithDouble:[high doubleValue]] : card.tcgPlayerHighPrice;
-            card.tcgPlayerMidPrice  = mid  ? [NSNumber numberWithDouble:[mid doubleValue]]  : card.tcgPlayerMidPrice;
-            card.tcgPlayerLowPrice  = low  ? [NSNumber numberWithDouble:[low doubleValue]]  : card.tcgPlayerLowPrice;
-            card.tcgPlayerFoilPrice = foil ? [NSNumber numberWithDouble:[foil doubleValue]] : card.tcgPlayerFoilPrice;
+#ifdef DEBUG
+            NSLog(@"^TCGPlayer: (%@) %@", card.set.code, card.name);
+#endif
+            card.tcgPlayerHighPrice = high ? [high doubleValue] : card.tcgPlayerHighPrice;
+            card.tcgPlayerMidPrice  = mid  ? [mid doubleValue]  : card.tcgPlayerMidPrice;
+            card.tcgPlayerLowPrice  = low  ? [low doubleValue]  : card.tcgPlayerLowPrice;
+            card.tcgPlayerFoilPrice = foil ? [foil doubleValue] : card.tcgPlayerFoilPrice;
             card.tcgPlayerLink = link ? [JJJUtil trim:link] : card.tcgPlayerLink;
             card.tcgPlayerFetchDate = [NSDate date];
-            
-            NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
-            if ([currentContext hasChanges])
-            {
-                [currentContext MR_saveToPersistentStoreAndWait];
-            }
+#ifndef DEBUG
+            [realm commitWriteTransaction];
+#endif
             
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -789,26 +802,28 @@ static Database *_me;
  }];
  }*/
 
--(NSArray*) fetchSets:(int) howMany
+-(RLMResults*) fetchSets:(int) howMany
 {
-    NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+//    NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
+//    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:@"releaseDate"
                                                                     ascending:NO];
     NSSortDescriptor *sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:@"name"
                                                                     ascending:YES];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"DTSet"
-                                              inManagedObjectContext:moc];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"magicCardsInfoCode != nil"];
+//    NSEntityDescription *entity = [NSEntityDescription entityForName:@"DTSet"
+//                                              inManagedObjectContext:moc];
+//    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"magicCardsInfoCode != nil"];
+//    
+//    [fetchRequest setEntity:entity];
+//    [fetchRequest setPredicate:predicate];
+//    [fetchRequest setSortDescriptors:@[sortDescriptor1, sortDescriptor2]];
+//    [fetchRequest setFetchLimit:howMany];
+//    
+//    NSError *error = nil;
+//    NSArray *array = [moc executeFetchRequest:fetchRequest error:&error];
+//    return array;
     
-    [fetchRequest setEntity:entity];
-    [fetchRequest setPredicate:predicate];
-    [fetchRequest setSortDescriptors:@[sortDescriptor1, sortDescriptor2]];
-    [fetchRequest setFetchLimit:howMany];
-    
-    NSError *error = nil;
-    NSArray *array = [moc executeFetchRequest:fetchRequest error:&error];
-    return array;
+    return [[DTSet allObjects] sortedResultsUsingDescriptors:@[sortDescriptor1, sortDescriptor2]];
 }
 
 -(BOOL) isCardModern:(DTCard*) card

@@ -7,12 +7,10 @@
 //
 
 #import "ImageLoader.h"
-#import "JJJ/JJJUtil.h"
 #import "Database.h"
-#import "DTCard.h"
-#import "DTCardRarity.h"
-#import "DTSet.h"
 #import "Constants.h"
+
+#import "JJJ/JJJUtil.h"
 
 @implementation ImageLoader
 

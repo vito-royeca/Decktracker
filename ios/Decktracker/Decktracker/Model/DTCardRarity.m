@@ -7,12 +7,7 @@
 //
 
 #import "DTCardRarity.h"
-#import "DTCard.h"
-
 
 @implementation DTCardRarity
-
-@dynamic name;
-@dynamic cards;
 
 @end

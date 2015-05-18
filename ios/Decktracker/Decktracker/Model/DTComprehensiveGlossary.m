@@ -7,13 +7,7 @@
 //
 
 #import "DTComprehensiveGlossary.h"
-#import "DTComprehensiveRule.h"
-
 
 @implementation DTComprehensiveGlossary
-
-@dynamic definition;
-@dynamic term;
-@dynamic rules;
 
 @end

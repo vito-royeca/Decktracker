@@ -6,42 +6,30 @@
 //  Copyright (c) 2014 Jovito Royeca. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <CoreData/CoreData.h>
+#import <Realm/Realm.h>
+#import "RLMArrays.h"
 
 @class DTBlock, DTCard, DTSetType;
 
-@interface DTSet : NSManagedObject
+@interface DTSet : RLMObject
 
-@property (nonatomic, retain) NSString * border;
-@property (nonatomic, retain) NSString * code;
-@property (nonatomic, retain) NSString * gathererCode;
-@property (nonatomic, retain) NSString * magicCardsInfoCode;
-@property (nonatomic, retain) NSNumber * imagesDownloaded;
-@property (nonatomic, retain) NSString * name;
-@property (nonatomic, retain) NSNumber * numberOfCards;
-@property (nonatomic, retain) NSString * oldCode;
-@property (nonatomic, retain) NSNumber * onlineOnly;
-@property (nonatomic, retain) NSDate * releaseDate;
-@property (nonatomic, retain) NSString * sectionNameInitial;
-@property (nonatomic, retain) NSString * sectionYear;
-@property (nonatomic, retain) NSString * tcgPlayerName;
-@property (nonatomic, retain) DTBlock *block;
-@property (nonatomic, retain) NSSet *cards;
-@property (nonatomic, retain) NSSet *printings;
-@property (nonatomic, retain) DTSetType *type;
-@end
-
-@interface DTSet (CoreDataGeneratedAccessors)
-
-- (void)addCardsObject:(DTCard *)value;
-- (void)removeCardsObject:(DTCard *)value;
-- (void)addCards:(NSSet *)values;
-- (void)removeCards:(NSSet *)values;
-
-- (void)addPrintingsObject:(DTCard *)value;
-- (void)removePrintingsObject:(DTCard *)value;
-- (void)addPrintings:(NSSet *)values;
-- (void)removePrintings:(NSSet *)values;
+@property NSString * border;
+@property NSString * code;
+@property NSString * gathererCode;
+@property NSString * magicCardsInfoCode;
+@property BOOL imagesDownloaded;
+@property NSString * name;
+@property int numberOfCards;
+@property NSString * oldCode;
+@property BOOL onlineOnly;
+@property NSDate * releaseDate;
+@property NSString * sectionNameInitial;
+@property NSString * sectionType;
+@property NSString * sectionYear;
+@property NSString * tcgPlayerName;
+@property DTBlock *block;
+@property RLMArray<DTCard> *cards;
+@property RLMArray<DTCard> *printings;
+@property DTSetType *type;
 
 @end

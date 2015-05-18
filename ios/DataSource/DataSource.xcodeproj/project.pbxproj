@@ -7,35 +7,37 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		55B58066BDC147D7BAFEDDC3 /* libPods-DataSource.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA9812F902A74C339C3CEB23 /* libPods-DataSource.a */; };
 		8C1B4DC9198CF0C000B4C948 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C1B4DC8198CF0C000B4C948 /* CoreData.framework */; };
 		8C1B4DCB198CF0C000B4C948 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C1B4DCA198CF0C000B4C948 /* Foundation.framework */; };
 		8C1B4DCE198CF0C000B4C948 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1B4DCD198CF0C000B4C948 /* main.m */; };
+		8C2427E01B02F3C3004D190A /* RulesLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2427DF1B02F3C3004D190A /* RulesLoader.m */; };
 		8C3857E61A36FCE600E5B38C /* database.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8C3857C11A36FCE600E5B38C /* database.xcdatamodeld */; };
-		8C3857E71A36FCE600E5B38C /* DTArtist.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3857C91A36FCE600E5B38C /* DTArtist.m */; };
-		8C3857E81A36FCE600E5B38C /* DTBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3857CB1A36FCE600E5B38C /* DTBlock.m */; };
-		8C3857E91A36FCE600E5B38C /* DTCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3857CD1A36FCE600E5B38C /* DTCard.m */; };
-		8C3857EA1A36FCE600E5B38C /* DTCardColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3857CF1A36FCE600E5B38C /* DTCardColor.m */; };
-		8C3857EB1A36FCE600E5B38C /* DTCardForeignName.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3857D11A36FCE600E5B38C /* DTCardForeignName.m */; };
-		8C3857EC1A36FCE600E5B38C /* DTCardLegality.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3857D31A36FCE600E5B38C /* DTCardLegality.m */; };
-		8C3857ED1A36FCE600E5B38C /* DTCardRarity.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3857D51A36FCE600E5B38C /* DTCardRarity.m */; };
-		8C3857EE1A36FCE600E5B38C /* DTCardRating.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3857D71A36FCE600E5B38C /* DTCardRating.m */; };
-		8C3857EF1A36FCE600E5B38C /* DTCardRuling.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3857D91A36FCE600E5B38C /* DTCardRuling.m */; };
-		8C3857F01A36FCE600E5B38C /* DTCardType.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3857DB1A36FCE600E5B38C /* DTCardType.m */; };
-		8C3857F11A36FCE600E5B38C /* DTComprehensiveGlossary.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3857DD1A36FCE600E5B38C /* DTComprehensiveGlossary.m */; };
-		8C3857F21A36FCE600E5B38C /* DTComprehensiveRule.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3857DF1A36FCE600E5B38C /* DTComprehensiveRule.m */; };
-		8C3857F31A36FCE600E5B38C /* DTFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3857E11A36FCE600E5B38C /* DTFormat.m */; };
-		8C3857F41A36FCE600E5B38C /* DTSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3857E31A36FCE600E5B38C /* DTSet.m */; };
-		8C3857F51A36FCE600E5B38C /* DTSetType.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3857E51A36FCE600E5B38C /* DTSetType.m */; };
-		8C3D17F81A08847D00D9CBD7 /* RulesLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3D17F71A08847D00D9CBD7 /* RulesLoader.m */; };
 		8C4B9D0E1A515D0B00F727E7 /* tcgplayer_sets.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C4B9D091A51384400F727E7 /* tcgplayer_sets.plist */; };
-		8C80A0C2198D01D600BADA6C /* JSONLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C80A0C1198D01D600BADA6C /* JSONLoader.m */; };
-		8C80A0CC198D040500BADA6C /* Database.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C80A0CB198D040500BADA6C /* Database.m */; };
 		8CE75CB01AB96D40001EB70E /* AllSets-x.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C87AB311A7F1F6C00E901DE /* AllSets-x.json */; };
 		8CE75CB41AB96DBB001EB70E /* MagicCompRules_20140926.htm in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C87AB321A7F1F6C00E901DE /* MagicCompRules_20140926.htm */; };
+		8CEF64C01B0069890056450F /* DTArtist.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEF64A31B0069890056450F /* DTArtist.m */; };
+		8CEF64C11B0069890056450F /* DTBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEF64A51B0069890056450F /* DTBlock.m */; };
+		8CEF64C21B0069890056450F /* DTCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEF64A71B0069890056450F /* DTCard.m */; };
+		8CEF64C31B0069890056450F /* DTCardColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEF64A91B0069890056450F /* DTCardColor.m */; };
+		8CEF64C41B0069890056450F /* DTCardForeignName.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEF64AB1B0069890056450F /* DTCardForeignName.m */; };
+		8CEF64C51B0069890056450F /* DTCardLegality.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEF64AD1B0069890056450F /* DTCardLegality.m */; };
+		8CEF64C61B0069890056450F /* DTCardRarity.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEF64AF1B0069890056450F /* DTCardRarity.m */; };
+		8CEF64C71B0069890056450F /* DTCardRating.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEF64B11B0069890056450F /* DTCardRating.m */; };
+		8CEF64C81B0069890056450F /* DTCardRuling.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEF64B31B0069890056450F /* DTCardRuling.m */; };
+		8CEF64C91B0069890056450F /* DTCardType.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEF64B51B0069890056450F /* DTCardType.m */; };
+		8CEF64CA1B0069890056450F /* DTComprehensiveGlossary.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEF64B71B0069890056450F /* DTComprehensiveGlossary.m */; };
+		8CEF64CB1B0069890056450F /* DTComprehensiveRule.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEF64B91B0069890056450F /* DTComprehensiveRule.m */; };
+		8CEF64CC1B0069890056450F /* DTFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEF64BB1B0069890056450F /* DTFormat.m */; };
+		8CEF64CD1B0069890056450F /* DTSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEF64BD1B0069890056450F /* DTSet.m */; };
+		8CEF64CE1B0069890056450F /* DTSetType.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEF64BF1B0069890056450F /* DTSetType.m */; };
+		8CEF64D21B0074E90056450F /* Database.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEF64D11B0074E90056450F /* Database.m */; };
+		8CEF64DA1B007BB30056450F /* JSONLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEF64D61B007BB30056450F /* JSONLoader.m */; };
+		8CEF64DF1B0081260056450F /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CEF64DE1B0081260056450F /* libc++.dylib */; };
+		8CEF64E91B00B3CF0056450F /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CEF64E81B00B3CF0056450F /* Realm.framework */; };
+		8CEF64ED1B00B4300056450F /* Realm.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CEF64E81B00B3CF0056450F /* Realm.framework */; };
 		8CF0C9DC1991CDB900349F35 /* libJJJ.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF0C9CD1991CD5500349F35 /* libJJJ.a */; };
 		8CF9CE52199F9A22008127E5 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF9CE51199F9A22008127E5 /* AppKit.framework */; };
-		8CFD32F2198E7B2900F1AFC3 /* ImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CFD32F1198E7B2900F1AFC3 /* ImageLoader.m */; };
+		A0B569F1C7C2DC4684A7C971 /* libPods-DataSource.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AE7CCBA05B0E7E9D81A1C1F /* libPods-DataSource.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,14 +77,28 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8CEF64E51B0083CE0056450F /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				8CEF64ED1B00B4300056450F /* Realm.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4AE7CCBA05B0E7E9D81A1C1F /* libPods-DataSource.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DataSource.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C069C4B1B044EEE004C92E2 /* RLMArrays.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLMArrays.h; path = ../../Decktracker/Decktracker/Model/RLMArrays.h; sourceTree = "<group>"; };
 		8C1B4DC5198CF0C000B4C948 /* DataSource */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DataSource; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C1B4DC8198CF0C000B4C948 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		8C1B4DCA198CF0C000B4C948 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		8C1B4DCD198CF0C000B4C948 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8C1B4DD0198CF0C000B4C948 /* DataSource-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DataSource-Prefix.pch"; sourceTree = "<group>"; };
+		8C2427DE1B02F3C3004D190A /* RulesLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RulesLoader.h; sourceTree = "<group>"; };
+		8C2427DF1B02F3C3004D190A /* RulesLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RulesLoader.m; sourceTree = "<group>"; };
 		8C25DA661AD7D817006ED492 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Constants.h; path = ../../Decktracker/Decktracker/Constants.h; sourceTree = "<group>"; };
 		8C3857C21A36FCE600E5B38C /* database.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = database.xcdatamodel; sourceTree = "<group>"; };
 		8C3857C31A36FCE600E5B38C /* Dec-9-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Dec-9-2014.xcdatamodel"; sourceTree = "<group>"; };
@@ -90,56 +106,54 @@
 		8C3857C51A36FCE600E5B38C /* Nov-15-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Nov-15-2014.xcdatamodel"; sourceTree = "<group>"; };
 		8C3857C61A36FCE600E5B38C /* Nov-4-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Nov-4-2014.xcdatamodel"; sourceTree = "<group>"; };
 		8C3857C71A36FCE600E5B38C /* Oct-5-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Oct-5-2014.xcdatamodel"; sourceTree = "<group>"; };
-		8C3857C81A36FCE600E5B38C /* DTArtist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTArtist.h; path = ../../Decktracker/Decktracker/Model/DTArtist.h; sourceTree = "<group>"; };
-		8C3857C91A36FCE600E5B38C /* DTArtist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTArtist.m; path = ../../Decktracker/Decktracker/Model/DTArtist.m; sourceTree = "<group>"; };
-		8C3857CA1A36FCE600E5B38C /* DTBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTBlock.h; path = ../../Decktracker/Decktracker/Model/DTBlock.h; sourceTree = "<group>"; };
-		8C3857CB1A36FCE600E5B38C /* DTBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTBlock.m; path = ../../Decktracker/Decktracker/Model/DTBlock.m; sourceTree = "<group>"; };
-		8C3857CC1A36FCE600E5B38C /* DTCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTCard.h; path = ../../Decktracker/Decktracker/Model/DTCard.h; sourceTree = "<group>"; };
-		8C3857CD1A36FCE600E5B38C /* DTCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTCard.m; path = ../../Decktracker/Decktracker/Model/DTCard.m; sourceTree = "<group>"; };
-		8C3857CE1A36FCE600E5B38C /* DTCardColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTCardColor.h; path = ../../Decktracker/Decktracker/Model/DTCardColor.h; sourceTree = "<group>"; };
-		8C3857CF1A36FCE600E5B38C /* DTCardColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTCardColor.m; path = ../../Decktracker/Decktracker/Model/DTCardColor.m; sourceTree = "<group>"; };
-		8C3857D01A36FCE600E5B38C /* DTCardForeignName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTCardForeignName.h; path = ../../Decktracker/Decktracker/Model/DTCardForeignName.h; sourceTree = "<group>"; };
-		8C3857D11A36FCE600E5B38C /* DTCardForeignName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTCardForeignName.m; path = ../../Decktracker/Decktracker/Model/DTCardForeignName.m; sourceTree = "<group>"; };
-		8C3857D21A36FCE600E5B38C /* DTCardLegality.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTCardLegality.h; path = ../../Decktracker/Decktracker/Model/DTCardLegality.h; sourceTree = "<group>"; };
-		8C3857D31A36FCE600E5B38C /* DTCardLegality.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTCardLegality.m; path = ../../Decktracker/Decktracker/Model/DTCardLegality.m; sourceTree = "<group>"; };
-		8C3857D41A36FCE600E5B38C /* DTCardRarity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTCardRarity.h; path = ../../Decktracker/Decktracker/Model/DTCardRarity.h; sourceTree = "<group>"; };
-		8C3857D51A36FCE600E5B38C /* DTCardRarity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTCardRarity.m; path = ../../Decktracker/Decktracker/Model/DTCardRarity.m; sourceTree = "<group>"; };
-		8C3857D61A36FCE600E5B38C /* DTCardRating.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTCardRating.h; path = ../../Decktracker/Decktracker/Model/DTCardRating.h; sourceTree = "<group>"; };
-		8C3857D71A36FCE600E5B38C /* DTCardRating.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTCardRating.m; path = ../../Decktracker/Decktracker/Model/DTCardRating.m; sourceTree = "<group>"; };
-		8C3857D81A36FCE600E5B38C /* DTCardRuling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTCardRuling.h; path = ../../Decktracker/Decktracker/Model/DTCardRuling.h; sourceTree = "<group>"; };
-		8C3857D91A36FCE600E5B38C /* DTCardRuling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTCardRuling.m; path = ../../Decktracker/Decktracker/Model/DTCardRuling.m; sourceTree = "<group>"; };
-		8C3857DA1A36FCE600E5B38C /* DTCardType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTCardType.h; path = ../../Decktracker/Decktracker/Model/DTCardType.h; sourceTree = "<group>"; };
-		8C3857DB1A36FCE600E5B38C /* DTCardType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTCardType.m; path = ../../Decktracker/Decktracker/Model/DTCardType.m; sourceTree = "<group>"; };
-		8C3857DC1A36FCE600E5B38C /* DTComprehensiveGlossary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTComprehensiveGlossary.h; path = ../../Decktracker/Decktracker/Model/DTComprehensiveGlossary.h; sourceTree = "<group>"; };
-		8C3857DD1A36FCE600E5B38C /* DTComprehensiveGlossary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTComprehensiveGlossary.m; path = ../../Decktracker/Decktracker/Model/DTComprehensiveGlossary.m; sourceTree = "<group>"; };
-		8C3857DE1A36FCE600E5B38C /* DTComprehensiveRule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTComprehensiveRule.h; path = ../../Decktracker/Decktracker/Model/DTComprehensiveRule.h; sourceTree = "<group>"; };
-		8C3857DF1A36FCE600E5B38C /* DTComprehensiveRule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTComprehensiveRule.m; path = ../../Decktracker/Decktracker/Model/DTComprehensiveRule.m; sourceTree = "<group>"; };
-		8C3857E01A36FCE600E5B38C /* DTFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTFormat.h; path = ../../Decktracker/Decktracker/Model/DTFormat.h; sourceTree = "<group>"; };
-		8C3857E11A36FCE600E5B38C /* DTFormat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTFormat.m; path = ../../Decktracker/Decktracker/Model/DTFormat.m; sourceTree = "<group>"; };
-		8C3857E21A36FCE600E5B38C /* DTSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTSet.h; path = ../../Decktracker/Decktracker/Model/DTSet.h; sourceTree = "<group>"; };
-		8C3857E31A36FCE600E5B38C /* DTSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTSet.m; path = ../../Decktracker/Decktracker/Model/DTSet.m; sourceTree = "<group>"; };
-		8C3857E41A36FCE600E5B38C /* DTSetType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTSetType.h; path = ../../Decktracker/Decktracker/Model/DTSetType.h; sourceTree = "<group>"; };
-		8C3857E51A36FCE600E5B38C /* DTSetType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTSetType.m; path = ../../Decktracker/Decktracker/Model/DTSetType.m; sourceTree = "<group>"; };
-		8C3D17F61A08847D00D9CBD7 /* RulesLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RulesLoader.h; sourceTree = "<group>"; };
-		8C3D17F71A08847D00D9CBD7 /* RulesLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RulesLoader.m; sourceTree = "<group>"; };
 		8C4B9D091A51384400F727E7 /* tcgplayer_sets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = tcgplayer_sets.plist; sourceTree = "<group>"; };
 		8C4B9D0D1A51562F00F727E7 /* tcgplayer_sets.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tcgplayer_sets.txt; sourceTree = "<group>"; };
-		8C80A0C0198D01D600BADA6C /* JSONLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONLoader.h; sourceTree = "<group>"; };
-		8C80A0C1198D01D600BADA6C /* JSONLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONLoader.m; sourceTree = "<group>"; };
-		8C80A0CA198D040500BADA6C /* Database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Database.h; path = ../../../DeckTracker/DeckTracker/Controller/Database.h; sourceTree = "<group>"; };
-		8C80A0CB198D040500BADA6C /* Database.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Database.m; path = ../../../DeckTracker/DeckTracker/Controller/Database.m; sourceTree = "<group>"; };
 		8C87AB311A7F1F6C00E901DE /* AllSets-x.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "AllSets-x.json"; path = "../../../../data/AllSets-x.json"; sourceTree = "<group>"; };
 		8C87AB321A7F1F6C00E901DE /* MagicCompRules_20140926.htm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = MagicCompRules_20140926.htm; path = ../../../../data/MagicCompRules_20140926.htm; sourceTree = "<group>"; };
 		8CE263361AB00ACD00D30826 /* Mar-11-2015.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Mar-11-2015.xcdatamodel"; sourceTree = "<group>"; };
 		8CE2633B1AB01A3000D30826 /* Mar-11-2015 B.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Mar-11-2015 B.xcdatamodel"; sourceTree = "<group>"; };
 		8CE5E9771A68F56D0001852A /* Jan-16-2015.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Jan-16-2015.xcdatamodel"; sourceTree = "<group>"; };
 		8CE6E0981AD9FF4200EE2C79 /* Apr-12-2015.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Apr-12-2015.xcdatamodel"; sourceTree = "<group>"; };
+		8CEF64A21B0069890056450F /* DTArtist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTArtist.h; path = ../../Decktracker/Decktracker/Model/DTArtist.h; sourceTree = "<group>"; };
+		8CEF64A31B0069890056450F /* DTArtist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTArtist.m; path = ../../Decktracker/Decktracker/Model/DTArtist.m; sourceTree = "<group>"; };
+		8CEF64A41B0069890056450F /* DTBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTBlock.h; path = ../../Decktracker/Decktracker/Model/DTBlock.h; sourceTree = "<group>"; };
+		8CEF64A51B0069890056450F /* DTBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTBlock.m; path = ../../Decktracker/Decktracker/Model/DTBlock.m; sourceTree = "<group>"; };
+		8CEF64A61B0069890056450F /* DTCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTCard.h; path = ../../Decktracker/Decktracker/Model/DTCard.h; sourceTree = "<group>"; };
+		8CEF64A71B0069890056450F /* DTCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTCard.m; path = ../../Decktracker/Decktracker/Model/DTCard.m; sourceTree = "<group>"; };
+		8CEF64A81B0069890056450F /* DTCardColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTCardColor.h; path = ../../Decktracker/Decktracker/Model/DTCardColor.h; sourceTree = "<group>"; };
+		8CEF64A91B0069890056450F /* DTCardColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTCardColor.m; path = ../../Decktracker/Decktracker/Model/DTCardColor.m; sourceTree = "<group>"; };
+		8CEF64AA1B0069890056450F /* DTCardForeignName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTCardForeignName.h; path = ../../Decktracker/Decktracker/Model/DTCardForeignName.h; sourceTree = "<group>"; };
+		8CEF64AB1B0069890056450F /* DTCardForeignName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTCardForeignName.m; path = ../../Decktracker/Decktracker/Model/DTCardForeignName.m; sourceTree = "<group>"; };
+		8CEF64AC1B0069890056450F /* DTCardLegality.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTCardLegality.h; path = ../../Decktracker/Decktracker/Model/DTCardLegality.h; sourceTree = "<group>"; };
+		8CEF64AD1B0069890056450F /* DTCardLegality.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTCardLegality.m; path = ../../Decktracker/Decktracker/Model/DTCardLegality.m; sourceTree = "<group>"; };
+		8CEF64AE1B0069890056450F /* DTCardRarity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTCardRarity.h; path = ../../Decktracker/Decktracker/Model/DTCardRarity.h; sourceTree = "<group>"; };
+		8CEF64AF1B0069890056450F /* DTCardRarity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTCardRarity.m; path = ../../Decktracker/Decktracker/Model/DTCardRarity.m; sourceTree = "<group>"; };
+		8CEF64B01B0069890056450F /* DTCardRating.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTCardRating.h; path = ../../Decktracker/Decktracker/Model/DTCardRating.h; sourceTree = "<group>"; };
+		8CEF64B11B0069890056450F /* DTCardRating.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTCardRating.m; path = ../../Decktracker/Decktracker/Model/DTCardRating.m; sourceTree = "<group>"; };
+		8CEF64B21B0069890056450F /* DTCardRuling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTCardRuling.h; path = ../../Decktracker/Decktracker/Model/DTCardRuling.h; sourceTree = "<group>"; };
+		8CEF64B31B0069890056450F /* DTCardRuling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTCardRuling.m; path = ../../Decktracker/Decktracker/Model/DTCardRuling.m; sourceTree = "<group>"; };
+		8CEF64B41B0069890056450F /* DTCardType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTCardType.h; path = ../../Decktracker/Decktracker/Model/DTCardType.h; sourceTree = "<group>"; };
+		8CEF64B51B0069890056450F /* DTCardType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTCardType.m; path = ../../Decktracker/Decktracker/Model/DTCardType.m; sourceTree = "<group>"; };
+		8CEF64B61B0069890056450F /* DTComprehensiveGlossary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTComprehensiveGlossary.h; path = ../../Decktracker/Decktracker/Model/DTComprehensiveGlossary.h; sourceTree = "<group>"; };
+		8CEF64B71B0069890056450F /* DTComprehensiveGlossary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTComprehensiveGlossary.m; path = ../../Decktracker/Decktracker/Model/DTComprehensiveGlossary.m; sourceTree = "<group>"; };
+		8CEF64B81B0069890056450F /* DTComprehensiveRule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTComprehensiveRule.h; path = ../../Decktracker/Decktracker/Model/DTComprehensiveRule.h; sourceTree = "<group>"; };
+		8CEF64B91B0069890056450F /* DTComprehensiveRule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTComprehensiveRule.m; path = ../../Decktracker/Decktracker/Model/DTComprehensiveRule.m; sourceTree = "<group>"; };
+		8CEF64BA1B0069890056450F /* DTFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTFormat.h; path = ../../Decktracker/Decktracker/Model/DTFormat.h; sourceTree = "<group>"; };
+		8CEF64BB1B0069890056450F /* DTFormat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTFormat.m; path = ../../Decktracker/Decktracker/Model/DTFormat.m; sourceTree = "<group>"; };
+		8CEF64BC1B0069890056450F /* DTSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTSet.h; path = ../../Decktracker/Decktracker/Model/DTSet.h; sourceTree = "<group>"; };
+		8CEF64BD1B0069890056450F /* DTSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTSet.m; path = ../../Decktracker/Decktracker/Model/DTSet.m; sourceTree = "<group>"; };
+		8CEF64BE1B0069890056450F /* DTSetType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTSetType.h; path = ../../Decktracker/Decktracker/Model/DTSetType.h; sourceTree = "<group>"; };
+		8CEF64BF1B0069890056450F /* DTSetType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTSetType.m; path = ../../Decktracker/Decktracker/Model/DTSetType.m; sourceTree = "<group>"; };
+		8CEF64D01B0074E90056450F /* Database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Database.h; path = ../../../Decktracker/Decktracker/Controller/Database.h; sourceTree = "<group>"; };
+		8CEF64D11B0074E90056450F /* Database.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Database.m; path = ../../../Decktracker/Decktracker/Controller/Database.m; sourceTree = "<group>"; };
+		8CEF64D51B007BB30056450F /* JSONLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONLoader.h; sourceTree = "<group>"; };
+		8CEF64D61B007BB30056450F /* JSONLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONLoader.m; sourceTree = "<group>"; };
+		8CEF64DE1B0081260056450F /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
+		8CEF64E81B00B3CF0056450F /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
 		8CF0C9C61991CD5400349F35 /* JJJ.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JJJ.xcodeproj; path = ../jjj/JJJ/JJJ.xcodeproj; sourceTree = "<group>"; };
 		8CF9CE4B199F982A008127E5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		8CF9CE51199F9A22008127E5 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
-		8CFD32F0198E7B2900F1AFC3 /* ImageLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageLoader.h; sourceTree = "<group>"; };
-		8CFD32F1198E7B2900F1AFC3 /* ImageLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageLoader.m; sourceTree = "<group>"; };
-		AA9812F902A74C339C3CEB23 /* libPods-DataSource.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DataSource.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8CFF719C1B020D6D002428D2 /* DataSource-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "DataSource-Info.plist"; sourceTree = "<group>"; };
 		CD8211BD792C165D977F3102 /* Pods-DataSource.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DataSource.release.xcconfig"; path = "Pods/Target Support Files/Pods-DataSource/Pods-DataSource.release.xcconfig"; sourceTree = "<group>"; };
 		ECD2E97926F06FB12495ED6D /* Pods-DataSource.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DataSource.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DataSource/Pods-DataSource.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -149,11 +163,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8CEF64DF1B0081260056450F /* libc++.dylib in Frameworks */,
 				8CF9CE52199F9A22008127E5 /* AppKit.framework in Frameworks */,
 				8CF0C9DC1991CDB900349F35 /* libJJJ.a in Frameworks */,
 				8C1B4DC9198CF0C000B4C948 /* CoreData.framework in Frameworks */,
+				8CEF64E91B00B3CF0056450F /* Realm.framework in Frameworks */,
 				8C1B4DCB198CF0C000B4C948 /* Foundation.framework in Frameworks */,
-				55B58066BDC147D7BAFEDDC3 /* libPods-DataSource.a in Frameworks */,
+				A0B569F1C7C2DC4684A7C971 /* libPods-DataSource.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -182,11 +198,13 @@
 		8C1B4DC7198CF0C000B4C948 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8CEF64E81B00B3CF0056450F /* Realm.framework */,
+				8CEF64DE1B0081260056450F /* libc++.dylib */,
 				8CF9CE51199F9A22008127E5 /* AppKit.framework */,
 				8CF9CE4B199F982A008127E5 /* CoreGraphics.framework */,
 				8C1B4DC8198CF0C000B4C948 /* CoreData.framework */,
 				8C1B4DCA198CF0C000B4C948 /* Foundation.framework */,
-				AA9812F902A74C339C3CEB23 /* libPods-DataSource.a */,
+				4AE7CCBA05B0E7E9D81A1C1F /* libPods-DataSource.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -208,6 +226,7 @@
 			isa = PBXGroup;
 			children = (
 				8C1B4DD0198CF0C000B4C948 /* DataSource-Prefix.pch */,
+				8CFF719C1B020D6D002428D2 /* DataSource-Info.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -216,36 +235,37 @@
 			isa = PBXGroup;
 			children = (
 				8C3857C11A36FCE600E5B38C /* database.xcdatamodeld */,
-				8C3857C81A36FCE600E5B38C /* DTArtist.h */,
-				8C3857C91A36FCE600E5B38C /* DTArtist.m */,
-				8C3857CA1A36FCE600E5B38C /* DTBlock.h */,
-				8C3857CB1A36FCE600E5B38C /* DTBlock.m */,
-				8C3857CC1A36FCE600E5B38C /* DTCard.h */,
-				8C3857CD1A36FCE600E5B38C /* DTCard.m */,
-				8C3857CE1A36FCE600E5B38C /* DTCardColor.h */,
-				8C3857CF1A36FCE600E5B38C /* DTCardColor.m */,
-				8C3857D01A36FCE600E5B38C /* DTCardForeignName.h */,
-				8C3857D11A36FCE600E5B38C /* DTCardForeignName.m */,
-				8C3857D21A36FCE600E5B38C /* DTCardLegality.h */,
-				8C3857D31A36FCE600E5B38C /* DTCardLegality.m */,
-				8C3857D41A36FCE600E5B38C /* DTCardRarity.h */,
-				8C3857D51A36FCE600E5B38C /* DTCardRarity.m */,
-				8C3857D61A36FCE600E5B38C /* DTCardRating.h */,
-				8C3857D71A36FCE600E5B38C /* DTCardRating.m */,
-				8C3857D81A36FCE600E5B38C /* DTCardRuling.h */,
-				8C3857D91A36FCE600E5B38C /* DTCardRuling.m */,
-				8C3857DA1A36FCE600E5B38C /* DTCardType.h */,
-				8C3857DB1A36FCE600E5B38C /* DTCardType.m */,
-				8C3857DC1A36FCE600E5B38C /* DTComprehensiveGlossary.h */,
-				8C3857DD1A36FCE600E5B38C /* DTComprehensiveGlossary.m */,
-				8C3857DE1A36FCE600E5B38C /* DTComprehensiveRule.h */,
-				8C3857DF1A36FCE600E5B38C /* DTComprehensiveRule.m */,
-				8C3857E01A36FCE600E5B38C /* DTFormat.h */,
-				8C3857E11A36FCE600E5B38C /* DTFormat.m */,
-				8C3857E21A36FCE600E5B38C /* DTSet.h */,
-				8C3857E31A36FCE600E5B38C /* DTSet.m */,
-				8C3857E41A36FCE600E5B38C /* DTSetType.h */,
-				8C3857E51A36FCE600E5B38C /* DTSetType.m */,
+				8CEF64A21B0069890056450F /* DTArtist.h */,
+				8CEF64A31B0069890056450F /* DTArtist.m */,
+				8CEF64A41B0069890056450F /* DTBlock.h */,
+				8CEF64A51B0069890056450F /* DTBlock.m */,
+				8CEF64A61B0069890056450F /* DTCard.h */,
+				8CEF64A71B0069890056450F /* DTCard.m */,
+				8CEF64A81B0069890056450F /* DTCardColor.h */,
+				8CEF64A91B0069890056450F /* DTCardColor.m */,
+				8CEF64AA1B0069890056450F /* DTCardForeignName.h */,
+				8CEF64AB1B0069890056450F /* DTCardForeignName.m */,
+				8CEF64AC1B0069890056450F /* DTCardLegality.h */,
+				8CEF64AD1B0069890056450F /* DTCardLegality.m */,
+				8CEF64AE1B0069890056450F /* DTCardRarity.h */,
+				8CEF64AF1B0069890056450F /* DTCardRarity.m */,
+				8CEF64B01B0069890056450F /* DTCardRating.h */,
+				8CEF64B11B0069890056450F /* DTCardRating.m */,
+				8CEF64B21B0069890056450F /* DTCardRuling.h */,
+				8CEF64B31B0069890056450F /* DTCardRuling.m */,
+				8CEF64B41B0069890056450F /* DTCardType.h */,
+				8CEF64B51B0069890056450F /* DTCardType.m */,
+				8CEF64B61B0069890056450F /* DTComprehensiveGlossary.h */,
+				8CEF64B71B0069890056450F /* DTComprehensiveGlossary.m */,
+				8CEF64B81B0069890056450F /* DTComprehensiveRule.h */,
+				8CEF64B91B0069890056450F /* DTComprehensiveRule.m */,
+				8CEF64BA1B0069890056450F /* DTFormat.h */,
+				8CEF64BB1B0069890056450F /* DTFormat.m */,
+				8CEF64BC1B0069890056450F /* DTSet.h */,
+				8CEF64BD1B0069890056450F /* DTSet.m */,
+				8CEF64BE1B0069890056450F /* DTSetType.h */,
+				8CEF64BF1B0069890056450F /* DTSetType.m */,
+				8C069C4B1B044EEE004C92E2 /* RLMArrays.h */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -264,14 +284,12 @@
 		8C80A0BF198D01AD00BADA6C /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				8C80A0CA198D040500BADA6C /* Database.h */,
-				8C80A0CB198D040500BADA6C /* Database.m */,
-				8CFD32F0198E7B2900F1AFC3 /* ImageLoader.h */,
-				8CFD32F1198E7B2900F1AFC3 /* ImageLoader.m */,
-				8C80A0C0198D01D600BADA6C /* JSONLoader.h */,
-				8C80A0C1198D01D600BADA6C /* JSONLoader.m */,
-				8C3D17F61A08847D00D9CBD7 /* RulesLoader.h */,
-				8C3D17F71A08847D00D9CBD7 /* RulesLoader.m */,
+				8CEF64D01B0074E90056450F /* Database.h */,
+				8CEF64D11B0074E90056450F /* Database.m */,
+				8CEF64D51B007BB30056450F /* JSONLoader.h */,
+				8CEF64D61B007BB30056450F /* JSONLoader.m */,
+				8C2427DE1B02F3C3004D190A /* RulesLoader.h */,
+				8C2427DF1B02F3C3004D190A /* RulesLoader.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -307,6 +325,7 @@
 				8C1B4DC2198CF0C000B4C948 /* Frameworks */,
 				8C1B4DC3198CF0C000B4C948 /* CopyFiles */,
 				D12A9A43E3EF49278255A531 /* Copy Pods Resources */,
+				8CEF64E51B0083CE0056450F /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -411,27 +430,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8C3857F21A36FCE600E5B38C /* DTComprehensiveRule.m in Sources */,
-				8C3857EC1A36FCE600E5B38C /* DTCardLegality.m in Sources */,
-				8C3857F31A36FCE600E5B38C /* DTFormat.m in Sources */,
-				8C3857E71A36FCE600E5B38C /* DTArtist.m in Sources */,
-				8C3857EB1A36FCE600E5B38C /* DTCardForeignName.m in Sources */,
-				8C3857ED1A36FCE600E5B38C /* DTCardRarity.m in Sources */,
-				8C3857E91A36FCE600E5B38C /* DTCard.m in Sources */,
+				8CEF64C71B0069890056450F /* DTCardRating.m in Sources */,
+				8CEF64C51B0069890056450F /* DTCardLegality.m in Sources */,
+				8CEF64CC1B0069890056450F /* DTFormat.m in Sources */,
+				8CEF64C21B0069890056450F /* DTCard.m in Sources */,
+				8CEF64DA1B007BB30056450F /* JSONLoader.m in Sources */,
+				8CEF64CA1B0069890056450F /* DTComprehensiveGlossary.m in Sources */,
 				8C3857E61A36FCE600E5B38C /* database.xcdatamodeld in Sources */,
-				8C3857F51A36FCE600E5B38C /* DTSetType.m in Sources */,
-				8C3857EA1A36FCE600E5B38C /* DTCardColor.m in Sources */,
-				8C80A0CC198D040500BADA6C /* Database.m in Sources */,
-				8C80A0C2198D01D600BADA6C /* JSONLoader.m in Sources */,
-				8CFD32F2198E7B2900F1AFC3 /* ImageLoader.m in Sources */,
-				8C3857EF1A36FCE600E5B38C /* DTCardRuling.m in Sources */,
-				8C3857F01A36FCE600E5B38C /* DTCardType.m in Sources */,
-				8C3857F41A36FCE600E5B38C /* DTSet.m in Sources */,
-				8C3857EE1A36FCE600E5B38C /* DTCardRating.m in Sources */,
+				8CEF64CD1B0069890056450F /* DTSet.m in Sources */,
 				8C1B4DCE198CF0C000B4C948 /* main.m in Sources */,
-				8C3857F11A36FCE600E5B38C /* DTComprehensiveGlossary.m in Sources */,
-				8C3D17F81A08847D00D9CBD7 /* RulesLoader.m in Sources */,
-				8C3857E81A36FCE600E5B38C /* DTBlock.m in Sources */,
+				8CEF64C31B0069890056450F /* DTCardColor.m in Sources */,
+				8C2427E01B02F3C3004D190A /* RulesLoader.m in Sources */,
+				8CEF64C41B0069890056450F /* DTCardForeignName.m in Sources */,
+				8CEF64CB1B0069890056450F /* DTComprehensiveRule.m in Sources */,
+				8CEF64C91B0069890056450F /* DTCardType.m in Sources */,
+				8CEF64C01B0069890056450F /* DTArtist.m in Sources */,
+				8CEF64C61B0069890056450F /* DTCardRarity.m in Sources */,
+				8CEF64C81B0069890056450F /* DTCardRuling.m in Sources */,
+				8CEF64CE1B0069890056450F /* DTSetType.m in Sources */,
+				8CEF64D21B0074E90056450F /* Database.m in Sources */,
+				8CEF64C11B0069890056450F /* DTBlock.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -473,6 +491,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 			};
 			name = Debug;
 		};
@@ -505,6 +524,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 			};
 			name = Release;
 		};
@@ -512,8 +532,15 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = ECD2E97926F06FB12495ED6D /* Pods-DataSource.debug.xcconfig */;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug/Pods-DataSource",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DataSource/DataSource-Prefix.pch";
+				INFOPLIST_FILE = "DataSource/DataSource-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) '@executable_path/../Frameworks' '@loader_path/Frameworks'";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -522,8 +549,15 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CD8211BD792C165D977F3102 /* Pods-DataSource.release.xcconfig */;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug/Pods-DataSource",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DataSource/DataSource-Prefix.pch";
+				INFOPLIST_FILE = "DataSource/DataSource-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) '@executable_path/../Frameworks' '@loader_path/Frameworks'";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

@@ -2,7 +2,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 # Uncomment this line to define a global platform for your project
 # platform :ios, "6.0"
-`$(inherited)`
+use_frameworks!
 
 target "Decktracker" do
 pod "ActionSheetPicker-3.0"
@@ -15,21 +15,19 @@ pod "CSStickyHeaderFlowLayout"
 pod "Dropbox-Sync-API-SDK"
 pod "EDStarRating"
 pod "Facebook-iOS-SDK"
-pod "FFCircularProgressView"
+#pod "FFCircularProgressView"
 pod "GoogleAnalytics-iOS-SDK"
 pod "hpple"
 pod "InAppSettingsKit"
 pod "LMAlertView"
-pod "MagicalRecord"
 pod "MBProgressHUD"
 pod "Parse"
 pod "ParseFacebookUtils"
 pod "ParseUI"
 pod "PureLayout"
-pod "Realm"
+#pod "RealmSwift"
 #pod "vfrReader", '~> 2.8.5'
 pod "XLForm"
-
 
 end
 

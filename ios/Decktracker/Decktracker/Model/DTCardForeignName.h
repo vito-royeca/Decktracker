@@ -6,15 +6,15 @@
 //  Copyright (c) 2014 Jovito Royeca. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <CoreData/CoreData.h>
+#import <Realm/Realm.h>
+//#import "RLMArrays.h"
 
-@class DTCard;
+//@class DTCard;
 
-@interface DTCardForeignName : NSManagedObject
+@interface DTCardForeignName : RLMObject
 
-@property (nonatomic, retain) NSString * language;
-@property (nonatomic, retain) NSString * name;
-@property (nonatomic, retain) DTCard *card;
+@property NSString * language;
+@property NSString * name;
+//@property DTCard *card;
 
 @end

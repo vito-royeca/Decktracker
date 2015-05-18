@@ -6,22 +6,14 @@
 //  Copyright (c) 2014 Jovito Royeca. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <CoreData/CoreData.h>
+#import <Realm/Realm.h>
+//#import "RLMArrays.h"
 
-@class DTCard;
+//@class DTCard;
 
-@interface DTCardColor : NSManagedObject
+@interface DTCardColor : RLMObject
 
-@property (nonatomic, retain) NSString * name;
-@property (nonatomic, retain) NSSet *cards;
-@end
-
-@interface DTCardColor (CoreDataGeneratedAccessors)
-
-- (void)addCardsObject:(DTCard *)value;
-- (void)removeCardsObject:(DTCard *)value;
-- (void)addCards:(NSSet *)values;
-- (void)removeCards:(NSSet *)values;
+@property NSString * name;
+//@property RLMArray<DTCard> *cards;
 
 @end

@@ -7,16 +7,7 @@
 //
 
 #import "DTComprehensiveRule.h"
-#import "DTComprehensiveGlossary.h"
-#import "DTComprehensiveRule.h"
-
 
 @implementation DTComprehensiveRule
-
-@dynamic number;
-@dynamic rule;
-@dynamic children;
-@dynamic glossary;
-@dynamic parent;
 
 @end

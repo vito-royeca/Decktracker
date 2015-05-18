@@ -7,12 +7,7 @@
 //
 
 #import "DTCardColor.h"
-#import "DTCard.h"
-
 
 @implementation DTCardColor
-
-@dynamic name;
-@dynamic cards;
 
 @end

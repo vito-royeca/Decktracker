@@ -1,0 +1,6 @@
+framework module RBBAnimation {
+  umbrella header "Pods-Decktracker-RBBAnimation-umbrella.h"
+
+  export *
+  module * { export * }
+}

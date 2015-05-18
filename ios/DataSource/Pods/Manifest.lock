@@ -1,20 +1,10 @@
 PODS:
   - hpple (0.2.0)
-  - MagicalRecord (2.2):
-    - MagicalRecord/Core (= 2.2)
-  - MagicalRecord/Core (2.2)
-  - Realm (0.92.0):
-    - Realm/Headers (= 0.92.0)
-  - Realm/Headers (0.92.0)
 
 DEPENDENCIES:
   - hpple
-  - MagicalRecord
-  - Realm
 
 SPEC CHECKSUMS:
   hpple: 3b765f96fc2cd56ad1a49aef6f7be5cb2aa64b57
-  MagicalRecord: f8a56bb87ab6552f20c4bb8681a1958a197ea3cd
-  Realm: 56713b719eab63fe56e968c457a0db930b2f5773
 
-COCOAPODS: 0.36.1
+COCOAPODS: 0.37.1

@@ -6,22 +6,15 @@
 //  Copyright (c) 2014 Jovito Royeca. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <CoreData/CoreData.h>
+#import <Realm/Realm.h>
+//#import "RLMArrays.h"
 
-@class DTSet;
+//@class DTSet;
 
-@interface DTBlock : NSManagedObject
+@interface DTBlock : RLMObject
 
-@property (nonatomic, retain) NSString * name;
-@property (nonatomic, retain) NSSet *sets;
-@end
-
-@interface DTBlock (CoreDataGeneratedAccessors)
-
-- (void)addSetsObject:(DTSet *)value;
-- (void)removeSetsObject:(DTSet *)value;
-- (void)addSets:(NSSet *)values;
-- (void)removeSets:(NSSet *)values;
+@property NSString * name;
+//@property RLMArray<DTSet> *sets;
 
 @end
+

@@ -10,8 +10,10 @@
 
 #import "DTCard.h"
 #import "DTCardRarity.h"
+#import "DTSet.h"
 
 #import "JJJ/JJJ.h"
+#import <Realm/Realm.h>
 
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
 #import "InAppPurchase.h"
@@ -20,7 +22,7 @@
 #endif
 
 #define kFetchBatchSize         100
-#define kDatabaseStore          @"decktracker.sqlite"
+#define kDatabaseStore          @"decktracker.realm"
 
 #define kFetchTopRatedDone      @"kFetchTopRatedDone"
 #define kFetchTopViewedDone     @"kFetchTopViewedDone"
@@ -35,6 +37,7 @@
 
 -(void) setupDb;
 -(void) closeDb;
+-(void) copyRealmDatabaseToHome;
 
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
 -(NSFetchedResultsController*) search:(NSString*) query
@@ -61,7 +64,7 @@
 -(DTCard*) findCardByMultiverseID:(NSString*) multiverseID;
 -(NSString*) cardRarityIndex:(DTCard*) card;
 -(void) fetchTcgPlayerPriceForCard:(DTCard*) card;
--(NSArray*) fetchSets:(int) howMany;
+-(RLMResults*) fetchSets:(int) howMany;
 -(BOOL) isCardModern:(DTCard*) card;
 
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)

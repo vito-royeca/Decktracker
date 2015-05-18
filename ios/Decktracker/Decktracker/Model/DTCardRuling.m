@@ -7,13 +7,7 @@
 //
 
 #import "DTCardRuling.h"
-#import "DTCard.h"
-
 
 @implementation DTCardRuling
-
-@dynamic date;
-@dynamic text;
-@dynamic card;
 
 @end

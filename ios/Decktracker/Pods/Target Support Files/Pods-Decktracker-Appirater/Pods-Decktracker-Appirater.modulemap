@@ -1,0 +1,6 @@
+framework module Appirater {
+  umbrella header "Pods-Decktracker-Appirater-umbrella.h"
+
+  export *
+  module * { export * }
+}

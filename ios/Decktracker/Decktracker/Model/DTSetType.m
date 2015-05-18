@@ -7,12 +7,7 @@
 //
 
 #import "DTSetType.h"
-#import "DTSet.h"
-
 
 @implementation DTSetType
-
-@dynamic name;
-@dynamic sets;
 
 @end

@@ -6,22 +6,14 @@
 //  Copyright (c) 2014 Jovito Royeca. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <CoreData/CoreData.h>
+#import <Realm/Realm.h>
+//#import "RLMArrays.h"
 
-@class DTCardLegality;
+//@class DTCardLegality;
 
-@interface DTFormat : NSManagedObject
+@interface DTFormat : RLMObject
 
-@property (nonatomic, retain) NSString * name;
-@property (nonatomic, retain) NSSet *legalities;
-@end
-
-@interface DTFormat (CoreDataGeneratedAccessors)
-
-- (void)addLegalitiesObject:(DTCardLegality *)value;
-- (void)removeLegalitiesObject:(DTCardLegality *)value;
-- (void)addLegalities:(NSSet *)values;
-- (void)removeLegalities:(NSSet *)values;
+@property NSString * name;
+//@property RLMArray<DTCardLegality> *legalities;
 
 @end

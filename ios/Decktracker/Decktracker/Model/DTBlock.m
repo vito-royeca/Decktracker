@@ -12,7 +12,4 @@
 
 @implementation DTBlock
 
-@dynamic name;
-@dynamic sets;
-
 @end

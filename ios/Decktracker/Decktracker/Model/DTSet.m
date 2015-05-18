@@ -7,29 +7,7 @@
 //
 
 #import "DTSet.h"
-#import "DTBlock.h"
-#import "DTCard.h"
-#import "DTSetType.h"
-
 
 @implementation DTSet
-
-@dynamic border;
-@dynamic code;
-@dynamic gathererCode;
-@dynamic magicCardsInfoCode;
-@dynamic imagesDownloaded;
-@dynamic name;
-@dynamic numberOfCards;
-@dynamic oldCode;
-@dynamic onlineOnly;
-@dynamic releaseDate;
-@dynamic sectionNameInitial;
-@dynamic sectionYear;
-@dynamic tcgPlayerName;
-@dynamic block;
-@dynamic cards;
-@dynamic printings;
-@dynamic type;
 
 @end

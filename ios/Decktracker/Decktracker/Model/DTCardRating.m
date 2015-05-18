@@ -7,12 +7,7 @@
 //
 
 #import "DTCardRating.h"
-#import "DTCard.h"
-
 
 @implementation DTCardRating
-
-@dynamic rating;
-@dynamic card;
 
 @end

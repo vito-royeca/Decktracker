@@ -2,20 +2,18 @@
 //  Use this file to import your target's public headers that you would like to expose to Swift.
 //
 
-#import "ActionSheetStringPicker.h"
-#import "ActionSheetDatePicker.h"
+#import <ActionSheetPicker_3_0/ActionSheetPicker.h>
 #import <CoreData/CoreData.h>
-#import "CoreData+MagicalRecord.h"
-#import "CorePlot-CocoaTouch.h"
-#import "CSStickyHeaderFlowLayout.h"
+#import <CorePlot/CorePlot-CocoaTouch.h>
+#import <CSStickyHeaderFlowLayout/CSStickyHeaderFlowLayout.h>
 #import "ReaderViewController.h"
 #import "GAI.h"
-#import "GAIDictionaryBuilder.h"
-#import "GAIFields.h"
-#import "MBProgressHUD.h"
+//#import "GAIDictionaryBuilder.h"
+//#import "GAIFields.h"
+//#import "MBProgressHUD.h"
 #import <Parse/Parse.h>
 #import <ParseUI/ParseUI.h>
-#import "PureLayout.h"
+//#import "PureLayout.h"
 
 #import <JJJ/JJJUtil.h>
 

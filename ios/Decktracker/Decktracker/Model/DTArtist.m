@@ -12,7 +12,4 @@
 
 @implementation DTArtist
 
-@dynamic name;
-@dynamic cards;
-
 @end

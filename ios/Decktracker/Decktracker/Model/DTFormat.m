@@ -7,12 +7,7 @@
 //
 
 #import "DTFormat.h"
-#import "DTCardLegality.h"
-
 
 @implementation DTFormat
-
-@dynamic name;
-@dynamic legalities;
 
 @end

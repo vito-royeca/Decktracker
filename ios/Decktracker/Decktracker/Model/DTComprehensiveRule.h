@@ -6,25 +6,17 @@
 //  Copyright (c) 2014 Jovito Royeca. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <CoreData/CoreData.h>
+#import <Realm/Realm.h>
+#import "RLMArrays.h"
 
-@class DTComprehensiveGlossary, DTComprehensiveRule;
+@class DTComprehensiveGlossary;
 
-@interface DTComprehensiveRule : NSManagedObject
+@interface DTComprehensiveRule : RLMObject
 
-@property (nonatomic, retain) NSString * number;
-@property (nonatomic, retain) NSString * rule;
-@property (nonatomic, retain) NSSet *children;
-@property (nonatomic, retain) DTComprehensiveGlossary *glossary;
-@property (nonatomic, retain) DTComprehensiveRule *parent;
-@end
-
-@interface DTComprehensiveRule (CoreDataGeneratedAccessors)
-
-- (void)addChildrenObject:(DTComprehensiveRule *)value;
-- (void)removeChildrenObject:(DTComprehensiveRule *)value;
-- (void)addChildren:(NSSet *)values;
-- (void)removeChildren:(NSSet *)values;
+@property NSString * number;
+@property NSString * rule;
+@property RLMArray<DTComprehensiveRule> *children;
+@property DTComprehensiveGlossary *glossary;
+@property DTComprehensiveRule *parent;
 
 @end

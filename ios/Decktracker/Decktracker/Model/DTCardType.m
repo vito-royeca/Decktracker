@@ -7,14 +7,7 @@
 //
 
 #import "DTCardType.h"
-#import "DTCard.h"
-
 
 @implementation DTCardType
-
-@dynamic name;
-@dynamic cardSubTypes;
-@dynamic cardSuperTypes;
-@dynamic cardTypes;
 
 @end

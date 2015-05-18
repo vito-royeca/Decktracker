@@ -1,0 +1,6 @@
+framework module hpple {
+  umbrella header "Pods-Decktracker-hpple-umbrella.h"
+
+  export *
+  module * { export * }
+}

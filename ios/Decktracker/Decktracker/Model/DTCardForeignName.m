@@ -7,13 +7,7 @@
 //
 
 #import "DTCardForeignName.h"
-#import "DTCard.h"
-
 
 @implementation DTCardForeignName
-
-@dynamic language;
-@dynamic name;
-@dynamic card;
 
 @end

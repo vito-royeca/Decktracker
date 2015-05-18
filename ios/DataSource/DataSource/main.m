@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Jovito Royeca. All rights reserved.
 //
 
-#import "ImageLoader.h"
+//#import "ImageLoader.h"
 #import "JSONLoader.h"
 #import "RulesLoader.h"
 
@@ -16,12 +16,8 @@ int main(int argc, const char * argv[])
     {
         /* Step 1 */
         JSONLoader *jsonLoader = [[JSONLoader alloc] init];
-//        [jsonLoader parseCards1stPass];
-//        [jsonLoader updateSets];
-//        [jsonLoader parseCards2ndPass];
-        [jsonLoader fetchTcgPrices]; //??
+        [jsonLoader parseCards];
         
-
         /* Step 2 */
 //        RulesLoader *rulesLoader = [[RulesLoader alloc] init];
 //        [rulesLoader parseRules];

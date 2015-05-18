@@ -7,6 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "DTComprehensiveGlossary.h"
+#import "DTComprehensiveRule.h"
+
+#import <Realm/Realm.h>
 
 @interface RulesLoader : NSObject
 

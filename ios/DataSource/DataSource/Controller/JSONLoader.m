@@ -7,96 +7,59 @@
 //
 
 #import "JSONLoader.h"
-#import "JJJ/JJJUtil.h"
 #import "Constants.h"
 #import "Database.h"
-#import "DTArtist.h"
-#import "DTBlock.h"
-#import "DTCard.h"
-#import "DTCardColor.h"
-#import "DTCardForeignName.h"
-#import "DTCardLegality.h"
-#import "DTCardRarity.h"
-#import "DTCardRuling.h"
-#import "DTCardType.h"
-#import "DTFormat.h"
-#import "DTSet.h"
-#import "DTSetType.h"
+
+#import "JJJ/JJJUtil.h"
 
 #import "TFHpple.h"
 
 @implementation JSONLoader
-{
-    int _cardID;
-}
 
--(void) parseCards1stPass
+-(void) parseCards
 {
     NSDate *dateStart = [NSDate date];
     [[Database sharedInstance] setupDb];
-    _cardID = 1;
     
     NSString *filePath = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] resourcePath], @"Data/AllSets-x.json"];
     NSData *data = [NSData dataWithContentsOfFile:filePath];
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data
                                                          options:NSJSONReadingMutableContainers
                                                            error:nil];
-    NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
-
+    
     for (NSString *setName in [json allKeys])
     {
         NSDictionary * dict = json[setName];
         [self parseSet:dict];
-        [currentContext MR_save];
     }
     
     for (NSString *setName in [json allKeys])
     {
-        NSDictionary * dict = json[setName];
+        NSDictionary *dict = json[setName];
         DTSet *set = [self parseSet:dict];
-        NSSet *cards = [self parseCards:dict[@"cards"] forSet:set];
-        set.numberOfCards = [NSNumber numberWithInt:(int)cards.count];
-        [currentContext MR_save];
+        NSArray *cards = [self parseCards:dict[@"cards"] forSet:set];
         
-        for (NSDictionary *dictCard in dict[@"cards"])
-        {
-            DTCard *card;
-            
-            if (dictCard[@"multiverseID"] && [dictCard[@"multiverseID"] intValue] != 0)
-            {
-                card = [DTCard MR_findFirstByAttribute:@"multiverseID" withValue:dictCard[@"multiverseID"]];
-            }
-            if (!card)
-            {
-                card = [[Database sharedInstance] findCard:dictCard[@"name"] inSet:set.code];
-            }
-            
-            if (card)
-            {
-                card.rulings = [self createRulings:dictCard[@"rulings"]];
-                card.foreignNames = [self createForeignNames:dictCard[@"foreignNames"]];
-                
-                NSArray *names = dictCard[@"names"];
-                NSArray *variations = dictCard[@"variations"];
-                
-                if (names.count > 0 || variations.count > 0)
-                {
-                    [self setNames:names andVariations:variations forCard:card];
-                }
-                [currentContext MR_save];
-            }
-        }
+        RLMRealm *realm = [RLMRealm defaultRealm];
+        [realm beginWriteTransaction];
+        set.numberOfCards = (int)cards.count;
+        [realm commitWriteTransaction];
     }
+
+    // Create additional CardColor
+    DTCardColor *color1 = [[DTCardColor alloc] init];
+    color1.name = @"Colorless";
+    DTCardColor *color2 = [[DTCardColor alloc] init];
+    color2.name = @"Multicolored";
     
-    // Create colorless CardColor
-    DTCardColor *color = [DTCardColor MR_createEntity];
-    color.name = @"Colorless";
-    [currentContext MR_save];
-    color = [DTCardColor MR_createEntity];
-    color.name = @"Multicolored";
-    [currentContext MR_save];
-    
+    RLMRealm *realm = [RLMRealm defaultRealm];
+    [realm beginWriteTransaction];
+    [realm addObject:color1];
+    [realm addObject:color2];
+    [realm commitWriteTransaction];
+
+    // Done
     [[Database sharedInstance] closeDb];
+    [[Database sharedInstance] copyRealmDatabaseToHome];
     NSDate *dateEnd = [NSDate date];
     NSTimeInterval timeDifference = [dateEnd timeIntervalSinceDate:dateStart];
     NSLog(@"Started: %@", dateStart);
@@ -104,121 +67,33 @@
     NSLog(@"Time Elapsed: %@",  [JJJUtil formatInterval:timeDifference]);
 }
 
--(void) parseCards2ndPass
+#pragma mark - Update methods
+-(void) updateTcgPlayerNameOfSet:(DTSet*) set
 {
-    NSDate *dateStart = [NSDate date];
-    [[Database sharedInstance] setupDb];
-    _cardID = 1;
-    
-    NSString *filePath = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] resourcePath], @"Data/AllSets-x.json"];
-    NSData *data = [NSData dataWithContentsOfFile:filePath];
-    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data
-                                                         options:NSJSONReadingMutableContainers
-                                                           error:nil];
-    
-    for (NSString *setName in [json allKeys])
-    {
-        NSDictionary * dict = json[setName];
-        DTSet *set = [self parseSet:dict];
-        
-        for (NSDictionary *dictCard in dict[@"cards"])
-        {
-            NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
-            
-            DTCard *card;
-            
-            if (dictCard[@"multiverseID"] && [dictCard[@"multiverseID"] intValue] != 0)
-            {
-                card = [DTCard MR_findFirstByAttribute:@"multiverseID" withValue:dictCard[@"multiverseID"]];
-            }
-            if (!card)
-            {
-                card = [[Database sharedInstance] findCard:dictCard[@"name"] inSet:set.code];
-            }
-            
-            if (!card.legalities || card.legalities.count == 0)
-            {
-                card.legalities = [self createLegalities:dictCard[@"legalities"]];
-                [currentContext MR_save];
-            }
-        }
-    }
-    
-    [[Database sharedInstance] closeDb];
-    NSDate *dateEnd = [NSDate date];
-    NSTimeInterval timeDifference = [dateEnd timeIntervalSinceDate:dateStart];
-    NSLog(@"Started: %@", dateStart);
-    NSLog(@"Ended: %@", dateEnd);
-    NSLog(@"Time Elapsed: %@",  [JJJUtil formatInterval:timeDifference]);
-}
-
--(void) updateSets
-{
-    [[Database sharedInstance] setupDb];
-    
-    NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
-    
     NSString *filePath = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] resourcePath], @"Data/tcgplayer_sets.plist"];
     NSDictionary *dict = [[NSDictionary alloc] initWithContentsOfFile:filePath];
-    for (DTSet *set in [DTSet MR_findAll])
-    {
-        NSString *tcgName = [dict objectForKey:set.name];
-        
-        set.tcgPlayerName = tcgName.length > 0 ? tcgName : nil;
-        [currentContext MR_save];
-    }
-    
-    /* magiccard.info set codes are handled by MTGJSON since of v2.19.2
-    filePath = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] resourcePath], @"Data/magiccards_sets.plist"];
-    dict = [[NSDictionary alloc] initWithContentsOfFile:filePath];
-    
-    for (DTSet *set in [DTSet MR_findAll])
-    {
-        NSString *magicCardsInfoCode = [dict objectForKey:set.name];
-        
-        set.magicCardsInfoCode = magicCardsInfoCode;
-        [currentContext MR_save];
-    }*/
-    
-    for (DTSet *set in [DTSet MR_findAllSortedBy:@"releaseDate" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"magicCardsInfoCode != nil"]])
-    {
-        NSArray *cards = [DTCard MR_findAllSortedBy:@"name" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"set.name == %@", set.name]];
-        BOOL hasNumber = YES;
-        for (DTCard *card in cards)
-        {
-            hasNumber = card.number ? YES : NO;
-            
-            if (!hasNumber)
-            {
-                break;
-            }
-        }
+    set.tcgPlayerName = [dict objectForKey:set.name] ? [dict objectForKey:set.name] : @"";
+}
 
-        if (!hasNumber)
-        {
-            NSString *url = [[NSString stringWithFormat:@"http://magiccards.info/%@/en.html", set.magicCardsInfoCode] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-            NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
-            TFHpple *parser = [TFHpple hppleWithHTMLData:data];
-            
-            NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-            [dict addEntriesFromDictionary:[self parseCardNumber:[parser searchWithXPathQuery:@"//tr[@class='even']"]]];
-            [dict addEntriesFromDictionary:[self parseCardNumber:[parser searchWithXPathQuery:@"//tr[@class='odd']"]]];
-            
-            for (NSString *key in [dict allKeys])
-            {
-                DTCard *card = [DTCard MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"ANY name LIKE[c] %@ AND number = nil AND set.name = %@", dict[key], set.name]];
-                
-                if (card)
-                {
-                    NSLog(@"#%@ %@ (%@)", key, card.name, set.name);
-                    card.number = key;
-                    [currentContext MR_save];
-                }
-            }
-        }
+-(void) updateNumberOfCard:(DTCard*) card
+{
+    if (card.number.length > 0 || card.set.magicCardsInfoCode.length <= 0)
+    {
+        return;
     }
     
-    [[Database sharedInstance] closeDb];
+    NSString *url = [[NSString stringWithFormat:@"http://magiccards.info/%@/en.html", card.set.magicCardsInfoCode] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
+    TFHpple *parser = [TFHpple hppleWithHTMLData:data];
+    
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    [dict addEntriesFromDictionary:[self parseCardNumber:[parser searchWithXPathQuery:@"//tr[@class='even']"]]];
+    [dict addEntriesFromDictionary:[self parseCardNumber:[parser searchWithXPathQuery:@"//tr[@class='odd']"]]];
+    
+    for (NSString *key in [dict allKeys])
+    {
+        card.number = key;
+    }
 }
 
 -(NSDictionary*) parseCardNumber:(NSArray*) nodes
@@ -266,17 +141,26 @@
 -(void) fetchTcgPrices
 {
     NSDate *dateStart = [NSDate date];
-    
     [[Database sharedInstance] setupDb];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"set.tcgPlayerName != nil"];
-    _cardID = 1;
     
-    for (DTCard *card in [DTCard MR_findAllSortedBy:@"set.releaseDate" ascending:YES withPredicate:predicate])
+    for (DTSet *set in [[DTSet allObjects] sortedResultsUsingProperty:@"releaseDate" ascending:YES])
     {
-        [[Database sharedInstance] fetchTcgPlayerPriceForCard:card];
+        if (set.tcgPlayerName.length <= 0)
+        {
+            continue;
+        }
+    
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"set.name = %@", set.name];
+        
+        for (DTCard *card in [[DTCard objectsWithPredicate:predicate] sortedResultsUsingProperty:@"name" ascending:YES])
+        {
+            [[Database sharedInstance] fetchTcgPlayerPriceForCard:card];
+        }
     }
     
+    // Done
     [[Database sharedInstance] closeDb];
+    [[Database sharedInstance] copyRealmDatabaseToHome];
     NSDate *dateEnd = [NSDate date];
     NSTimeInterval timeDifference = [dateEnd timeIntervalSinceDate:dateStart];
     NSLog(@"Started: %@", dateStart);
@@ -292,33 +176,37 @@
         return nil;
     }
     
-    NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
-    DTSet *set = [DTSet MR_findFirstByAttribute:@"name"
-                                      withValue:dict[@"name"]];
-    
-    
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = @"yyyy";
     
+    DTSet *set = [[DTSet objectsWithPredicate:[NSPredicate predicateWithFormat:@"name = %@", dict[@"name"]]] firstObject];
+    
     if (!set)
     {
-        set = [DTSet MR_createEntity];
+        set = [[DTSet alloc] init];
+        set.border = dict[@"border"] ? [self capitalizeFirstLetterOfWords:dict[@"border"]] : @"";
+        set.code = dict[@"code"] ? dict[@"code"] : @"";
+        set.gathererCode = dict[@"gathererCode"] ? dict[@"gathererCode"] : @"";
+        set.imagesDownloaded = false;
+        set.magicCardsInfoCode = dict[@"magicCardsInfoCode"] ? dict[@"magicCardsInfoCode"] : @"";
+        set.name = dict[@"name"] ? dict[@"name"] : @"";
+        set.numberOfCards = 0;
+        set.oldCode = dict[@"oldCode"] ? dict[@"oldCode"] : @"";
+        set.onlineOnly = dict[@"onlineOnly"] ? [dict[@"onlineOnly"] boolValue] : false;
+        set.releaseDate = dict[@"releaseDate"] ? [JJJUtil parseDate:dict[@"releaseDate"] withFormat:@"YYYY-MM-dd"] : [NSDate date];
+        set.sectionNameInitial = dict[@"name"] ? ([JJJUtil isAlphaStart:set.name] ?  [set.name substringToIndex:1] : @"#") : @"";
+        set.sectionType = @"";
+        set.sectionYear = dict[@"releaseDate"] ? [formatter stringFromDate:set.releaseDate] : @"";
+        [self updateTcgPlayerNameOfSet:set];
         
-        set.name = dict[@"name"];
-        set.code = dict[@"code"];
-        set.gathererCode = dict[@"gathererCode"];
-        set.oldCode = dict[@"oldCode"];
-        set.releaseDate = [JJJUtil parseDate:dict[@"releaseDate"] withFormat:@"YYYY-MM-dd"];
-        set.border = [self capitalizeFirstLetterOfWords:dict[@"border"]];
-        set.type = [self findSetType:dict[@"type"]];
         set.block = [self findBlock:dict[@"block"]];
-        set.onlineOnly = [NSNumber numberWithBool:[dict[@"onlineOnly"] boolValue]];
-        set.magicCardsInfoCode = dict[@"magicCardsInfoCode"];
+        set.type = [self findSetType:dict[@"type"]];
         
-        set.sectionNameInitial = [JJJUtil isAlphaStart:set.name] ?  [set.name substringToIndex:1] : @"#";
-        set.sectionYear = [formatter stringFromDate:set.releaseDate];
-        
-        [currentContext MR_save];
+        RLMRealm *realm = [RLMRealm defaultRealm];
+        [realm beginWriteTransaction];
+//        NSLog(@"+Set: %@", set.name);
+        [realm addObject:set];
+        [realm commitWriteTransaction];
     }
     return set;
 }
@@ -331,13 +219,18 @@
     }
 
     NSString *cap = [self capitalizeFirstLetterOfWords:name];
-    DTSetType *setType = [DTSetType MR_findFirstByAttribute:@"name"
-                                                  withValue:cap];
+    DTSetType *setType = [[DTSetType objectsWithPredicate:[NSPredicate predicateWithFormat:@"name = %@", cap]] firstObject];
     
     if (!setType)
     {
-        setType = [DTSetType MR_createEntity];
+        setType = [[DTSetType alloc] init];
         setType.name = cap;
+        
+        RLMRealm *realm = [RLMRealm defaultRealm];
+        [realm beginWriteTransaction];
+//        NSLog(@"+SetType: %@", cap);
+        [realm addObject:setType];
+        [realm commitWriteTransaction];
     }
     return setType;
 }
@@ -349,82 +242,98 @@
         return nil;
     }
     
-    DTBlock *block = [DTBlock MR_findFirstByAttribute:@"name"
-                                            withValue:name];
-    
+    DTBlock *block = [[DTBlock objectsWithPredicate:[NSPredicate predicateWithFormat:@"name = %@", name]] firstObject];
     if (!block)
     {
-        block = [DTBlock MR_createEntity];
+        block = [[DTBlock alloc] init];
         block.name = name;
+        
+        RLMRealm *realm = [RLMRealm defaultRealm];
+        [realm beginWriteTransaction];
+//        NSLog(@"+Block: %@", name);
+        [realm addObject:block];
+        [realm commitWriteTransaction];
     }
     return block;
 }
 
--(DTCardRarity*) findCardRarity:(NSString*) name
+-(NSArray*) findSets:(NSArray*) array
 {
-    if (!name || name.length == 0)
+    if (!array || array.count <= 0)
     {
         return nil;
     }
-
-    NSString *cap = [self capitalizeFirstLetterOfWords:name];
-    DTCardRarity *cardRarity = [DTCardRarity MR_findFirstByAttribute:@"name"
-                                                           withValue:cap];
     
-    if (!cardRarity)
+    NSMutableArray *results = [[NSMutableArray alloc] init];
+    
+    for (NSString *name in array)
     {
-        cardRarity = [DTCardRarity MR_createEntity];
-        cardRarity.name = cap;
+        DTSet *printing = [[DTSet objectsWithPredicate:[NSPredicate predicateWithFormat:@"name = %@", name]] firstObject];
+        
+        if (!printing)
+        {
+            printing = [[DTSet alloc] init];
+            printing.name = name;
+            
+            RLMRealm *realm = [RLMRealm defaultRealm];
+            [realm beginWriteTransaction];
+            [realm addObject:printing];
+            [realm commitWriteTransaction];
+        }
+        [results addObject:printing];
     }
-    return cardRarity;
+    
+    return results;
 }
 
 #pragma mark - Cards parsing
--(NSSet*) parseCards:(NSArray*) array forSet:(DTSet*) set
+-(NSArray*) parseCards:(NSArray*) array forSet:(DTSet*) set
 {
-    NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
-    NSMutableSet *cards = [[NSMutableSet alloc] init];
+    NSMutableArray *cards = [[NSMutableArray alloc] init];
     
     for (NSDictionary *dict in array)
     {
-        DTCard *card = [DTCard MR_createEntity];
-        
-        card.cardID = [NSNumber numberWithInt:_cardID];
-        card.layout = dict[@"layout"];
-        card.name = dict[@"name"];
-        card.manaCost = dict[@"manaCost"];
-        card.cmc = [NSNumber numberWithFloat:[dict[@"cmc"] floatValue]];
-        card.type = dict[@"type"];
-        card.rarity = [self findCardRarity:dict[@"rarity"]];
-        card.text = dict[@"text"];
-        card.flavor = dict[@"flavor"];
-        card.artist = [self findArtist:dict[@"artist"]];
-        card.number = dict[@"number"];
-        card.power = dict[@"power"];
-        card.toughness = dict[@"toughness"];
-        card.loyalty = [NSNumber numberWithInt:[dict[@"loyalty"] intValue]];
-        card.multiverseID = [NSNumber numberWithInt:[dict[@"multiverseid"] intValue]];
-        card.imageName = dict[@"imageName"];
-        card.watermark = dict[@"watermark"];
-        card.source = dict[@"source"];
-        card.border = dict[@"border"];
-        card.timeshifted = [NSNumber numberWithBool:[dict[@"timeshifted"] boolValue]];
-        card.reserved = [NSNumber numberWithBool:[dict[@"reserved"] boolValue]];
-        card.releaseDate = dict[@"releaseDate"];
-        card.handModifier = [NSNumber numberWithInt:[dict[@"hand"] intValue]];
-        card.printings = [self findSets:dict[@"printings"]];
-        card.originalText = dict[@"originalText"];
-        card.originalType = dict[@"originalType"];
-        card.lifeModifier = [NSNumber numberWithInt:[dict[@"life"] intValue]];
-        card.types = [self findTypes:dict[@"types"]];
-        card.superTypes = [self findTypes:dict[@"supertypes"]];
-        card.subTypes = [self findTypes:dict[@"subtypes"]];
-        card.starter = [NSNumber numberWithBool:[dict[@"starter"] boolValue]];
-        card.colors = [self findColors:dict[@"colors"]];
+        DTCard *card = [[DTCard alloc] init];
         card.set = set;
-
-        card.sectionNameInitial = [JJJUtil isAlphaStart:card.name] ?  [card.name substringToIndex:1] : @"#";
         
+        card.border = dict[@"border"] ? dict[@"border"] : @"";
+        card.cmc = dict[@"cmc"] ? [dict[@"cmc"] floatValue] : 0.0;
+        card.flavor = dict[@"flavor"] ? dict[@"flavor"] : @"";
+        card.handModifier = dict[@"hand"] ? [dict[@"hand"] intValue] : 0;
+        card.imageName = dict[@"imageName"] ? dict[@"imageName"] : @"";
+        card.layout = dict[@"layout"] ? dict[@"layout"] : @"";
+        card.lifeModifier = dict[@"life"] ? [dict[@"life"] intValue] : 0;
+        card.loyalty = dict[@"loyalty"] ? [dict[@"loyalty"] intValue] : 0;
+        card.manaCost = dict[@"manaCost"] ? dict[@"manaCost"] : @"";
+        card.multiverseID = dict[@"multiverseid"] ? [dict[@"multiverseid"] intValue] : 0;
+        card.name = dict[@"name"] ? dict[@"name"] : @"";
+        card.number = dict[@"number"] ? dict[@"number"] : @"";
+        [self updateNumberOfCard:card];
+        card.originalText = dict[@"originalText"] ? dict[@"originalText"] : @"";
+        card.originalType = dict[@"originalType"] ? dict[@"originalType"] : @"";
+        card.power = dict[@"power"] ? dict[@"power"] : @"";
+        card.rating = 0.0;
+        card.releaseDate = dict[@"releaseDate"] ? dict[@"releaseDate"] : @"";
+        card.reserved = dict[@"reserved"] ? [dict[@"reserved"] boolValue] : false;
+        card.sectionColor = @"";
+        card.sectionNameInitial = dict[@"name"] ? ([JJJUtil isAlphaStart:card.name] ?  [card.name substringToIndex:1] : @"#") : @"";
+        card.sectionType = @"";
+        card.source = dict[@"source"] ? dict[@"source"] : @"";
+        card.starter = dict[@"starter"] ? [dict[@"starter"] boolValue] : false;
+        card.tcgPlayerFetchDate = [NSDate dateWithTimeIntervalSince1970:1];
+        card.tcgPlayerFoilPrice = 0.0;
+        card.tcgPlayerHighPrice = 0.0;
+        card.tcgPlayerLink = @"";
+        card.tcgPlayerLowPrice = 0.0;
+        card.tcgPlayerMidPrice = 0.0;
+        [[Database sharedInstance] fetchTcgPlayerPriceForCard:card];
+        card.text = dict[@"text"] ? dict[@"text"] : @"";
+        card.timeshifted = dict[@"timeshifted"] ? [dict[@"timeshifted"] boolValue] : false;
+        card.toughness = dict[@"toughness"] ? dict[@"toughness"] : @"";
+        card.type = dict[@"type"] ? dict[@"type"] : @"";
+        card.watermark = dict[@"watermark"] ? dict[@"watermark"] : @"";
+        
+        [card.colors addObjects:[self findColors:dict[@"colors"]]];
         if (!card.colors || card.colors.count == 0)
         {
             card.sectionColor = @"Colorless";
@@ -435,8 +344,8 @@
         }
         else if (card.colors.count == 1)
         {
-            DTCardColor *color = [card.colors allObjects][0];
-            
+            DTCardColor *color = [card.colors firstObject];
+                             
             for (NSString *colorName in CARD_COLORS)
             {
                 if ([color.name isEqualToString:colorName])
@@ -446,8 +355,17 @@
                 }
             }
         }
+        card.artist = [self findArtist:dict[@"artist"]];
+        [card.printings addObjects:[self findSets:dict[@"printings"]]];
+        [card.rulings addObjects:[self createRulings:dict[@"rulings"]]];
+        [card.foreignNames addObjects:[self createForeignNames:dict[@"foreignNames"]]];
+        [card.legalities addObjects:[self createLegalities:dict[@"legalities"]]];
         
-        for (DTCardType *type in [card.types allObjects])
+        card.rarity = [self findCardRarity:dict[@"rarity"]];
+        [card.subTypes addObjects:[self findTypes:dict[@"subtypes"]]];
+        [card.superTypes addObjects:[self findTypes:dict[@"supertypes"]]];
+        [card.types addObjects:[self findTypes:dict[@"types"]]];
+        for (DTCardType *type in card.types)
         {
             for (NSString *typeName in CARD_TYPES)
             {
@@ -465,13 +383,53 @@
             }
         }
         
-        [currentContext MR_save];
-
+        NSArray *names = dict[@"names"];
+        NSArray *variations = dict[@"variations"];
+        if (names.count > 0 || variations.count > 0)
+        {
+            [self setNames:names andVariations:variations forCard:card];
+        }
+        
+        RLMRealm *realm = [RLMRealm defaultRealm];
+        [realm beginWriteTransaction];
+//        NSLog(@"+Card: %@ - %@", set.name, card.name);
+        [realm addObject:card];
+        [realm commitWriteTransaction];
+        
         [cards addObject:card];
-        _cardID++;
     }
 
     return cards;
+}
+
+-(NSArray*) findColors:(NSArray*) array
+{
+    if (!array || array.count <= 0)
+    {
+        return nil;
+    }
+    
+    NSMutableArray *results = [[NSMutableArray alloc] init];
+    
+    for (NSString *name in array)
+    {
+        DTCardColor *color = [[DTCardColor objectsWithPredicate:[NSPredicate predicateWithFormat:@"name = %@", name]] firstObject];
+        
+        if (!color)
+        {
+            color = [[DTCardColor alloc] init];
+            color.name = name;
+            
+            RLMRealm *realm = [RLMRealm defaultRealm];
+            [realm beginWriteTransaction];
+//            NSLog(@"+CardColor: %@", name);
+            [realm addObject:color];
+            [realm commitWriteTransaction];
+        }
+        [results addObject:color];
+    }
+                                
+    return results;
 }
 
 -(DTArtist*) findArtist:(NSString*) name
@@ -481,29 +439,89 @@
         return nil;
     }
     
-    DTArtist *artist = [DTArtist MR_findFirstByAttribute:@"name"
-                                                    withValue:name];
+    DTArtist *artist = [[DTArtist objectsWithPredicate:[NSPredicate predicateWithFormat:@"name = %@", name]] firstObject];
     
     if (!artist)
     {
-        artist = [DTArtist MR_createEntity];
+        artist = [[DTArtist alloc] init];
         artist.name = name;
+        
+        RLMRealm *realm = [RLMRealm defaultRealm];
+        [realm beginWriteTransaction];
+//        NSLog(@"+Artist: %@", name);
+        [realm addObject:artist];
+        [realm commitWriteTransaction];
     }
     return artist;
 }
 
--(NSSet*) createRulings:(NSArray*) array
+-(DTCardRarity*) findCardRarity:(NSString*) name
+{
+    if (!name || name.length == 0)
+    {
+        return nil;
+    }
+    
+    NSString *cap = [self capitalizeFirstLetterOfWords:name];
+    DTCardRarity *cardRarity = [[DTCardRarity objectsWithPredicate:[NSPredicate predicateWithFormat:@"name = %@", cap]] firstObject];
+    
+    if (!cardRarity)
+    {
+        cardRarity = [[DTCardRarity alloc] init];
+        cardRarity.name = cap;
+        
+        RLMRealm *realm = [RLMRealm defaultRealm];
+        [realm beginWriteTransaction];
+//        NSLog(@"+CardRarity: %@", name);
+        [realm addObject:cardRarity];
+        [realm commitWriteTransaction];
+    }
+    return cardRarity;
+}
+
+-(NSArray*) findTypes:(NSArray*) array
 {
     if (!array || array.count <= 0)
     {
         return nil;
     }
     
-    NSMutableSet *set = [[NSMutableSet alloc] init];
+    NSMutableArray *results = [[NSMutableArray alloc] init];
+    
+    for (NSString *name in array)
+    {
+        DTCardType *type = [[DTCardType objectsWithPredicate:[NSPredicate predicateWithFormat:@"name = %@", name]] firstObject];
+        
+        if (!type)
+        {
+            type = [[DTCardType alloc] init];
+            type.name = name;
+            
+            RLMRealm *realm = [RLMRealm defaultRealm];
+            [realm beginWriteTransaction];
+//            NSLog(@"+CardType: %@", name);
+            [realm addObject:type];
+            [realm commitWriteTransaction];
+        }
+        [results addObject:type];
+    }
+    
+    return results;
+}
+
+
+-(NSArray*) createRulings:(NSArray*) array
+{
+    if (!array || array.count <= 0)
+    {
+        return nil;
+    }
+    
+    NSMutableArray *rulings = [[NSMutableArray alloc] init];
     
     for (NSDictionary *dict in array)
     {
-        DTCardRuling *ruling = [DTCardRuling MR_createEntity];
+        DTCardRuling *ruling = [[DTCardRuling alloc] init];
         
         for (NSString *key in [dict allKeys])
         {
@@ -516,24 +534,30 @@
                 ruling.text = dict[key];
             }
         }
-        [set addObject:ruling];
+        RLMRealm *realm = [RLMRealm defaultRealm];
+        [realm beginWriteTransaction];
+//        NSLog(@"+CardRuling: %@", [JJJUtil formatDate:ruling.date withFormat:@"YYYY-MM-dd"]);
+        [realm addObject:ruling];
+        [realm commitWriteTransaction];
+        
+        [rulings addObject:ruling];
     }
     
-    return set;
+    return rulings;
 }
 
--(NSSet*) createForeignNames:(NSArray*) array
+-(NSArray*) createForeignNames:(NSArray*) array
 {
     if (!array || array.count <= 0)
     {
         return nil;
     }
     
-    NSMutableSet *set = [[NSMutableSet alloc] init];
+    NSMutableArray *foreignNames = [[NSMutableArray alloc] init];
     
     for (NSDictionary *dict in array)
     {
-        DTCardForeignName *foreignName = [DTCardForeignName MR_createEntity];
+        DTCardForeignName *foreignName = [[DTCardForeignName alloc] init];
         
         for (NSString *key in [dict allKeys])
         {
@@ -546,108 +570,72 @@
                 foreignName.name = dict[key];
             }
         }
-        [set addObject:foreignName];
-    }
-    
-    return set;
-}
-
--(NSSet*) findSets:(NSArray*) array
-{
-    if (!array || array.count <= 0)
-    {
-        return nil;
-    }
-    
-    NSMutableSet *set = [[NSMutableSet alloc] init];
-    
-    for (NSString *name in array)
-    {
-        DTSet *printing = [DTSet MR_findFirstByAttribute:@"name"
-                                           withValue:name];
+        RLMRealm *realm = [RLMRealm defaultRealm];
+        [realm beginWriteTransaction];
+//        NSLog(@"+ForeignName: %@", foreignName.name);
+        [realm addObject:foreignName];
+        [realm commitWriteTransaction];
         
-        if (!printing)
-        {
-            printing = [DTSet MR_createEntity];
-            
-            printing.name = name;
-        }
-        [set addObject:printing];
+        [foreignNames addObject:foreignName];
     }
-
-    return set;
+    
+    return foreignNames;
 }
 
--(NSSet*) findTypes:(NSArray*) array
+-(void) setNames:(NSArray*)names andVariations:(NSArray*)variations forCard:(DTCard*)card
 {
-    if (!array || array.count <= 0)
-    {
-        return nil;
-    }
+    NSMutableArray *arrNames = [[NSMutableArray alloc] init];
+    NSMutableSet *arrVariations = [[NSMutableSet alloc] init];
     
-    NSMutableSet *set = [[NSMutableSet alloc] init];
-    
-    for (NSString *name in array)
+    for (NSString *x in names)
     {
-        DTCardType *type = [DTCardType MR_findFirstByAttribute:@"name"
-                                                     withValue:name];
+        DTCard *xCard = [[DTCard objectsWithPredicate:[NSPredicate predicateWithFormat:@"name = %@", x]] firstObject];
         
-        if (!type)
+        if (xCard)
         {
-            type = [DTCardType MR_createEntity];
-            
-            type.name = name;
+            [arrNames addObject:xCard];
         }
-        [set addObject:type];
     }
     
-    return set;
+    for (NSString *x in variations)
+    {
+        DTCard *xCard = [[DTCard objectsWithPredicate:[NSPredicate predicateWithFormat:@"multiverseID = %@", x]] firstObject];
+        
+        if (xCard)
+        {
+            [arrVariations addObject:xCard];
+        }
+    }
+    
+    [card.names addObjects:arrNames];
+    [card.variations addObjects:arrVariations];
 }
 
--(NSSet*) findColors:(NSArray*) array
-{
-    if (!array || array.count <= 0)
-    {
-        return nil;
-    }
-    
-    NSMutableSet *set = [[NSMutableSet alloc] init];
-    
-    for (NSString *name in array)
-    {
-        DTCardColor *color = [DTCardColor MR_findFirstByAttribute:@"name"
-                                                        withValue:name];
-        
-        if (!color)
-        {
-            color = [DTCardColor MR_createEntity];
-            
-            color.name = name;
-        }
-        [set addObject:color];
-    }
-    
-    return set;
-}
-
--(NSSet*) createLegalities:(NSDictionary*) dict
+-(NSArray*) createLegalities:(NSDictionary*) dict
 {
     if (!dict || dict.count <= 0)
     {
         return nil;
     }
     
-    NSMutableSet *set = [[NSMutableSet alloc] init];
+    NSMutableArray *legalities = [[NSMutableArray alloc] init];
     
     for (NSString *key in [dict allKeys])
     {
-        DTCardLegality *legality = [DTCardLegality MR_createEntity];
+        DTCardLegality *legality = [[DTCardLegality alloc] init];
         
         legality.name = dict[key];
         legality.format = [self findFormat:key];
-        [set addObject:legality];
+        
+        RLMRealm *realm = [RLMRealm defaultRealm];
+        [realm beginWriteTransaction];
+//        NSLog(@"+CardLegality: %@", legality.name);
+        [realm addObject:legality];
+        [realm commitWriteTransaction];
+        
+        [legalities addObject:legality];
     }
-    return set;
+    return legalities;
 }
 
 -(DTFormat*) findFormat:(NSString*) name
@@ -657,44 +645,21 @@
         return nil;
     }
     
-    DTFormat *format = [DTFormat MR_findFirstByAttribute:@"name"
-                                               withValue:name];
+    DTFormat *format = [[DTFormat objectsWithPredicate:[NSPredicate predicateWithFormat:@"name = %@", name]] firstObject];
     
     if (!format)
     {
-        format = [DTFormat MR_createEntity];
+        format = [[DTFormat alloc] init];
         format.name = name;
+        
+        RLMRealm *realm = [RLMRealm defaultRealm];
+        [realm beginWriteTransaction];
+//        NSLog(@"+Format: %@", format);
+        [realm addObject:format];
+        [realm commitWriteTransaction];
     }
+    
     return format;
-}
-
--(void) setNames:(NSArray*)names andVariations:(NSArray*)variations forCard:(DTCard*)card
-{
-    NSMutableSet *setNames = [[NSMutableSet alloc] init];
-    NSMutableSet *setVariations = [[NSMutableSet alloc] init];
-    
-    for (NSString *x in names)
-    {
-        DTCard *xCard = [DTCard MR_findFirstByAttribute:@"name"
-                                              withValue:x];
-        if (xCard)
-        {
-            [setNames addObject:xCard];
-        }
-    }
-    
-    for (NSString *x in variations)
-    {
-        DTCard *xCard = [DTCard MR_findFirstByAttribute:@"multiverseID"
-                                              withValue:x];
-        if (xCard)
-        {
-            [setVariations addObject:xCard];
-        }
-    }
-    
-    card.names = setNames;
-    card.variations = setVariations;
 }
 
 #pragma mark - Utility methods
@@ -726,6 +691,7 @@
     return [newWords componentsJoinedByString:@" "];
 }
 
+/*
 -(void) updateDeckInAppSettings
 {
     // copy formats...
@@ -760,5 +726,5 @@
         i++;
     }
 }
-
+*/
 @end

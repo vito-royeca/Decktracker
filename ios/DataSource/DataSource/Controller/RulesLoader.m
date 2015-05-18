@@ -8,8 +8,6 @@
 
 #import "RulesLoader.h"
 #import "Database.h"
-#import "DTComprehensiveGlossary.h"
-#import "DTComprehensiveRule.h"
 
 #import "TFHpple.h"
 
@@ -27,9 +25,19 @@
     NSData *data = [NSData dataWithContentsOfFile:filePath];
     TFHpple *parser = [TFHpple hppleWithHTMLData:data];
     
-    [self parse:parser];
-    [[Database sharedInstance] closeDb];
+    // clean first
+    RLMRealm *realm = [RLMRealm defaultRealm];
+    [realm beginWriteTransaction];
+    NSLog(@"-ComprehensiveRules");
+    [realm deleteObjects:[DTComprehensiveRule allObjects]];
+    NSLog(@"-ComprehensiveGlossaries");
+    [realm deleteObjects:[DTComprehensiveGlossary allObjects]];
+    [realm commitWriteTransaction];
     
+    [self parse:parser];
+    
+    [[Database sharedInstance] closeDb];
+    [[Database sharedInstance] copyRealmDatabaseToHome];
     NSDate *dateEnd = [NSDate date];
     NSTimeInterval timeDifference = [dateEnd timeIntervalSinceDate:dateStart];
     NSLog(@"Started: %@", dateStart);
@@ -53,7 +61,7 @@
                     {
                         NSString *content = [JJJUtil removeNewLines:[self extractContent:child]];
 //                        NSString *content = [self extractContent:child];
-                        [self createRule:content];
+                        [self createRuleWithContent:content cascadeRule:NO];
                     }
                     
                     else if ([child.attributes[@"class"] isEqualToString:@"CR1001"] ||
@@ -64,20 +72,16 @@
                         
                         if (content.length > 0)
                         {
-                            [self createRule:content];
+                            [self createRuleWithContent:content cascadeRule:NO];
                             _lastContent = content;
                         }
                     }
                     else if ([child.attributes[@"class"] isEqualToString:@"CREx1001"])
                     {
-                        NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
                         NSString *content = [JJJUtil removeNewLines:[self extractContent:child]];
 //                        NSString *content = [self extractContent:child];
                         
-                        DTComprehensiveRule *rule = [self createRule:_lastContent];
-                        
-                        rule.rule = [NSString stringWithFormat:@"%@ %@", rule.rule, content];
-                        [currentContext MR_save];
+                        [self createRuleWithContent:content cascadeRule:YES];
                         _lastContent = nil;
                     }
                     
@@ -89,14 +93,15 @@
                     {
                         if (_lastContent) {
                             
-                            DTComprehensiveGlossary *glossary = [DTComprehensiveGlossary MR_findFirstByAttribute:@"term"
-                                                                                                       withValue:_lastContent];
-                            
+                            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"term = %@", _lastContent];
+                            DTComprehensiveGlossary *glossary = [[DTComprehensiveGlossary objectsWithPredicate:predicate] firstObject];
                             if (glossary)
                             {
-                                NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
+                                RLMRealm *realm = [RLMRealm defaultRealm];
+                                [realm beginWriteTransaction];
+                                NSLog(@"^ComprehensiveGlossary: %@", glossary.term);
                                 glossary.definition = [self extractContent:child];
-                                [currentContext MR_save];
+                                [realm commitWriteTransaction];
                             }
                             else
                             {
@@ -137,7 +142,7 @@
     return content;
 }
 
--(DTComprehensiveRule*) createRule:(NSString*) content
+-(DTComprehensiveRule*) createRuleWithContent:(NSString*) content cascadeRule:(BOOL) cascadeRule
 {
     if ([content rangeOfString:@"."].location == NSNotFound)
     {
@@ -158,14 +163,13 @@
         number = [number substringToIndex:range.location-1];
     }
     
-    NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
-    DTComprehensiveRule *rule = [DTComprehensiveRule MR_findFirstByAttribute:@"number"
-                                                               withValue:number];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"number = %@", number];
+    DTComprehensiveRule *rule = [[DTComprehensiveRule objectsWithPredicate:predicate] firstObject];
     DTComprehensiveRule *parent;
     
     if (!rule)
     {
-        rule = [DTComprehensiveRule MR_createEntity];
+        rule = [[DTComprehensiveRule alloc] init];
         rule.number = number;
         rule.rule = text;
         
@@ -173,21 +177,31 @@
         if (range.location != NSNotFound)
         {
             number = [number substringToIndex:range.location];
-            parent = [DTComprehensiveRule MR_findFirstByAttribute:@"number"
-                                                        withValue:number];
+            predicate = [NSPredicate predicateWithFormat:@"number = %@", number];
+            parent = [[DTComprehensiveRule objectsWithPredicate:predicate] firstObject];
         }
         else
         {
             number = [number substringToIndex:1];
-            parent = [DTComprehensiveRule MR_findFirstByAttribute:@"number"
-                                                        withValue:number];
+            predicate = [NSPredicate predicateWithFormat:@"number = %@", number];
+            parent = [[DTComprehensiveRule objectsWithPredicate:predicate] firstObject];
         }
         
         if (![rule.number isEqualToString:parent.number])
         {
             rule.parent = parent;
         }
-        [currentContext MR_save];
+        
+        if (cascadeRule)
+        {
+            rule.rule = [NSString stringWithFormat:@"%@ %@", rule.rule, content];
+        }
+
+        RLMRealm *realm = [RLMRealm defaultRealm];
+        [realm beginWriteTransaction];
+        NSLog(@"+ComprehensiveRule: %@", rule.number);
+        [realm addObject:rule];
+        [realm commitWriteTransaction];
     }
     
     return rule;
@@ -195,22 +209,26 @@
 
 -(DTComprehensiveRule*) findParentRule:(NSString*) content
 {
-    return [DTComprehensiveRule MR_findFirstByAttribute:@"number"
-                                              withValue:[content substringToIndex:1]];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"number = %@", [content substringToIndex:1]];
+    return [[DTComprehensiveRule objectsWithPredicate:predicate] firstObject];
 }
 
 -(DTComprehensiveGlossary*) createGlossary:(NSString*) term withDefinition:(NSString*) definition
 {
-    NSManagedObjectContext *currentContext = [NSManagedObjectContext MR_contextForCurrentThread];
-    DTComprehensiveGlossary *glossary = [DTComprehensiveGlossary MR_findFirstByAttribute:@"term"
-                                                                               withValue:term];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"term = %@", term];
+    DTComprehensiveGlossary *glossary = [[DTComprehensiveGlossary objectsWithPredicate:predicate] firstObject];
     
     if (!glossary)
     {
-        glossary = [DTComprehensiveGlossary MR_createEntity];
+        glossary = [[DTComprehensiveGlossary alloc] init];
         glossary.term = term;
-        glossary.definition = definition;
-        [currentContext MR_save];
+        glossary.definition = definition ? definition : @"";
+        
+        RLMRealm *realm = [RLMRealm defaultRealm];
+        [realm beginWriteTransaction];
+        NSLog(@"+ComprehensiveGlossary: %@", glossary.term);
+        [realm addObject:glossary];
+        [realm commitWriteTransaction];
     }
     
     return glossary;

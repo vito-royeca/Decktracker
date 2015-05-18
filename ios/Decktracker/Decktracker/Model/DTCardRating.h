@@ -6,14 +6,14 @@
 //  Copyright (c) 2014 Jovito Royeca. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <CoreData/CoreData.h>
+#import <Realm/Realm.h>
+#import "RLMArrays.h"
 
 @class DTCard;
 
-@interface DTCardRating : NSManagedObject
+@interface DTCardRating : RLMObject
 
-@property (nonatomic, retain) NSNumber * rating;
-@property (nonatomic, retain) DTCard *card;
+@property float rating;
+@property DTCard *card;
 
 @end
