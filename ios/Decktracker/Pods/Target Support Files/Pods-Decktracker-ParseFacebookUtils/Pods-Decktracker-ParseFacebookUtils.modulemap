@@ -1,6 +1,0 @@
-framework module ParseFacebookUtils {
-  umbrella header "Pods-Decktracker-ParseFacebookUtils-umbrella.h"
-
-  export *
-  module * { export * }
-}

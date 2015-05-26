@@ -1,6 +1,0 @@
-framework module LMAlertView {
-  umbrella header "Pods-Decktracker-LMAlertView-umbrella.h"
-
-  export *
-  module * { export * }
-}

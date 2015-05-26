@@ -1,24 +1,24 @@
 PODS:
   - ActionSheetPicker-3.0 (1.6.2)
-  - AFNetworking (2.5.3):
-    - AFNetworking/NSURLConnection (= 2.5.3)
-    - AFNetworking/NSURLSession (= 2.5.3)
-    - AFNetworking/Reachability (= 2.5.3)
-    - AFNetworking/Security (= 2.5.3)
-    - AFNetworking/Serialization (= 2.5.3)
-    - AFNetworking/UIKit (= 2.5.3)
-  - AFNetworking/NSURLConnection (2.5.3):
+  - AFNetworking (2.5.4):
+    - AFNetworking/NSURLConnection (= 2.5.4)
+    - AFNetworking/NSURLSession (= 2.5.4)
+    - AFNetworking/Reachability (= 2.5.4)
+    - AFNetworking/Security (= 2.5.4)
+    - AFNetworking/Serialization (= 2.5.4)
+    - AFNetworking/UIKit (= 2.5.4)
+  - AFNetworking/NSURLConnection (2.5.4):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.5.3):
+  - AFNetworking/NSURLSession (2.5.4):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (2.5.3)
-  - AFNetworking/Security (2.5.3)
-  - AFNetworking/Serialization (2.5.3)
-  - AFNetworking/UIKit (2.5.3):
+  - AFNetworking/Reachability (2.5.4)
+  - AFNetworking/Security (2.5.4)
+  - AFNetworking/Serialization (2.5.4)
+  - AFNetworking/UIKit (2.5.4):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - Appirater (2.0.5)
@@ -36,22 +36,22 @@ PODS:
   - EDStarRating (1.1)
   - Facebook-iOS-SDK (3.23.2):
     - Bolts (~> 1.0)
-  - GoogleAnalytics-iOS-SDK (3.11):
-    - GoogleAnalytics-iOS-SDK/Core (= 3.11)
-  - GoogleAnalytics-iOS-SDK/Core (3.11)
+  - GoogleAnalytics-iOS-SDK (3.12):
+    - GoogleAnalytics-iOS-SDK/Core (= 3.12)
+  - GoogleAnalytics-iOS-SDK/Core (3.12)
   - hpple (0.2.0)
   - InAppSettingsKit (2.6)
   - LMAlertView (1.1.0):
     - CAAnimationBlocks (~> 0.0.1)
     - RBBAnimation (~> 0.3.0)
   - MBProgressHUD (0.9.1)
-  - Parse (1.7.2.2):
+  - Parse (1.7.4):
     - Bolts/Tasks (>= 1.1.5)
-  - ParseFacebookUtils (1.7.2.2):
+  - ParseFacebookUtils (1.7.4):
     - Bolts/Tasks (>= 1.1.5)
-    - Facebook-iOS-SDK (~> 3.23.2)
-    - Parse (~> 1.7.2)
-  - ParseUI (1.1.3):
+    - Facebook-iOS-SDK (~> 3.23)
+    - Parse (~> 1.7.4)
+  - ParseUI (1.1.4):
     - Parse (~> 1.7)
   - PureLayout (2.0.6)
   - RBBAnimation (0.3.0)
@@ -81,7 +81,7 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   ActionSheetPicker-3.0: cc9f90ae785070623e9b972270013c3242190fb0
-  AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
+  AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
   Appirater: e7c0a47fb67ee5041ce8479e6ba960927fb40264
   Bolts: aac24961496d504aa56fc267cde95162a71bac39
   CAAnimation-EasingEquations: b75813a9ab2fbacf87a273240db35335683621cc
@@ -91,14 +91,14 @@ SPEC CHECKSUMS:
   Dropbox-Sync-API-SDK: 92652bd663984740f963ba228864542711eda148
   EDStarRating: a41a6440a945020745d0e9ff8ada7d1afa952114
   Facebook-iOS-SDK: cd87f0b2f0c1d9574b44e8fa2baacc275524bac3
-  GoogleAnalytics-iOS-SDK: fb15cc7e3d01d06d531653f37443fda90274d53d
+  GoogleAnalytics-iOS-SDK: 0a3327a993b8ed2b8fe1c6c4a8dcf5b76d2237a8
   hpple: 3b765f96fc2cd56ad1a49aef6f7be5cb2aa64b57
   InAppSettingsKit: cc56d3ec45f11352a16d5b210da8a3fa1b9d05ed
   LMAlertView: fa4589ea2cb540b888636ff6739fc39b16ac1e4b
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
-  Parse: 6187586a80eb7b4960d755f85e1353148a611f87
-  ParseFacebookUtils: 86d051b953fa5f493301b991e768be4da7b752e0
-  ParseUI: 1a68e9cebc3bd458eed9605ce7b33d7cc082f473
+  Parse: 6ca512c6e860b66739c95151b2f76ac4712b7842
+  ParseFacebookUtils: 7115990b291ae95b920fde413272828d0eb0d963
+  ParseUI: d1228541b02a36a7354c8f47747f5f7a89cf1ff0
   PureLayout: f25f0bb904d5ccfe6e31da3cb869185259f02e0d
   RBBAnimation: cb6cb419f511434ce932f7d0fabf369612fafb4e
   XLForm: 799e61ef230f519914e722bf032b19a597223c19
