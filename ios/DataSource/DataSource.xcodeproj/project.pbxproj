@@ -7,11 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8C1B4DC9198CF0C000B4C948 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C1B4DC8198CF0C000B4C948 /* CoreData.framework */; };
 		8C1B4DCB198CF0C000B4C948 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C1B4DCA198CF0C000B4C948 /* Foundation.framework */; };
 		8C1B4DCE198CF0C000B4C948 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1B4DCD198CF0C000B4C948 /* main.m */; };
 		8C2427E01B02F3C3004D190A /* RulesLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2427DF1B02F3C3004D190A /* RulesLoader.m */; };
 		8C3857E61A36FCE600E5B38C /* database.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8C3857C11A36FCE600E5B38C /* database.xcdatamodeld */; };
+		8C45F0A01B1C428E00C19C8F /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C45F09F1B1C428E00C19C8F /* Realm.framework */; };
+		8C45F0AA1B1C4C4100C19C8F /* DTLanguage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C45F0A91B1C4C4100C19C8F /* DTLanguage.m */; };
 		8C4B9D0E1A515D0B00F727E7 /* tcgplayer_sets.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C4B9D091A51384400F727E7 /* tcgplayer_sets.plist */; };
 		8CE75CB01AB96D40001EB70E /* AllSets-x.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C87AB311A7F1F6C00E901DE /* AllSets-x.json */; };
 		8CE75CB41AB96DBB001EB70E /* MagicCompRules_20140926.htm in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C87AB321A7F1F6C00E901DE /* MagicCompRules_20140926.htm */; };
@@ -33,8 +34,6 @@
 		8CEF64D21B0074E90056450F /* Database.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEF64D11B0074E90056450F /* Database.m */; };
 		8CEF64DA1B007BB30056450F /* JSONLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEF64D61B007BB30056450F /* JSONLoader.m */; };
 		8CEF64DF1B0081260056450F /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CEF64DE1B0081260056450F /* libc++.dylib */; };
-		8CEF64E91B00B3CF0056450F /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CEF64E81B00B3CF0056450F /* Realm.framework */; };
-		8CEF64ED1B00B4300056450F /* Realm.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CEF64E81B00B3CF0056450F /* Realm.framework */; };
 		8CF0C9DC1991CDB900349F35 /* libJJJ.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF0C9CD1991CD5500349F35 /* libJJJ.a */; };
 		8CF9CE52199F9A22008127E5 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF9CE51199F9A22008127E5 /* AppKit.framework */; };
 		A0B569F1C7C2DC4684A7C971 /* libPods-DataSource.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AE7CCBA05B0E7E9D81A1C1F /* libPods-DataSource.a */; };
@@ -83,7 +82,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
-				8CEF64ED1B00B4300056450F /* Realm.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,6 +104,9 @@
 		8C3857C51A36FCE600E5B38C /* Nov-15-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Nov-15-2014.xcdatamodel"; sourceTree = "<group>"; };
 		8C3857C61A36FCE600E5B38C /* Nov-4-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Nov-4-2014.xcdatamodel"; sourceTree = "<group>"; };
 		8C3857C71A36FCE600E5B38C /* Oct-5-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Oct-5-2014.xcdatamodel"; sourceTree = "<group>"; };
+		8C45F09F1B1C428E00C19C8F /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
+		8C45F0A81B1C4C4100C19C8F /* DTLanguage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTLanguage.h; path = ../../Decktracker/Decktracker/Model/DTLanguage.h; sourceTree = "<group>"; };
+		8C45F0A91B1C4C4100C19C8F /* DTLanguage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTLanguage.m; path = ../../Decktracker/Decktracker/Model/DTLanguage.m; sourceTree = "<group>"; };
 		8C4B9D091A51384400F727E7 /* tcgplayer_sets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = tcgplayer_sets.plist; sourceTree = "<group>"; };
 		8C4B9D0D1A51562F00F727E7 /* tcgplayer_sets.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tcgplayer_sets.txt; sourceTree = "<group>"; };
 		8C87AB311A7F1F6C00E901DE /* AllSets-x.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "AllSets-x.json"; path = "../../../../data/AllSets-x.json"; sourceTree = "<group>"; };
@@ -149,7 +150,6 @@
 		8CEF64D51B007BB30056450F /* JSONLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONLoader.h; sourceTree = "<group>"; };
 		8CEF64D61B007BB30056450F /* JSONLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONLoader.m; sourceTree = "<group>"; };
 		8CEF64DE1B0081260056450F /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
-		8CEF64E81B00B3CF0056450F /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
 		8CF0C9C61991CD5400349F35 /* JJJ.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JJJ.xcodeproj; path = ../jjj/JJJ/JJJ.xcodeproj; sourceTree = "<group>"; };
 		8CF9CE4B199F982A008127E5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		8CF9CE51199F9A22008127E5 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -163,11 +163,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C45F0A01B1C428E00C19C8F /* Realm.framework in Frameworks */,
 				8CEF64DF1B0081260056450F /* libc++.dylib in Frameworks */,
 				8CF9CE52199F9A22008127E5 /* AppKit.framework in Frameworks */,
 				8CF0C9DC1991CDB900349F35 /* libJJJ.a in Frameworks */,
-				8C1B4DC9198CF0C000B4C948 /* CoreData.framework in Frameworks */,
-				8CEF64E91B00B3CF0056450F /* Realm.framework in Frameworks */,
 				8C1B4DCB198CF0C000B4C948 /* Foundation.framework in Frameworks */,
 				A0B569F1C7C2DC4684A7C971 /* libPods-DataSource.a in Frameworks */,
 			);
@@ -198,7 +197,7 @@
 		8C1B4DC7198CF0C000B4C948 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				8CEF64E81B00B3CF0056450F /* Realm.framework */,
+				8C45F09F1B1C428E00C19C8F /* Realm.framework */,
 				8CEF64DE1B0081260056450F /* libc++.dylib */,
 				8CF9CE51199F9A22008127E5 /* AppKit.framework */,
 				8CF9CE4B199F982A008127E5 /* CoreGraphics.framework */,
@@ -261,6 +260,8 @@
 				8CEF64B91B0069890056450F /* DTComprehensiveRule.m */,
 				8CEF64BA1B0069890056450F /* DTFormat.h */,
 				8CEF64BB1B0069890056450F /* DTFormat.m */,
+				8C45F0A81B1C4C4100C19C8F /* DTLanguage.h */,
+				8C45F0A91B1C4C4100C19C8F /* DTLanguage.m */,
 				8CEF64BC1B0069890056450F /* DTSet.h */,
 				8CEF64BD1B0069890056450F /* DTSet.m */,
 				8CEF64BE1B0069890056450F /* DTSetType.h */,
@@ -449,6 +450,7 @@
 				8CEF64C81B0069890056450F /* DTCardRuling.m in Sources */,
 				8CEF64CE1B0069890056450F /* DTSetType.m in Sources */,
 				8CEF64D21B0074E90056450F /* Database.m in Sources */,
+				8C45F0AA1B1C4C4100C19C8F /* DTLanguage.m in Sources */,
 				8CEF64C11B0069890056450F /* DTBlock.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

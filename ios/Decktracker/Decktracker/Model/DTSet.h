@@ -9,7 +9,7 @@
 #import <Realm/Realm.h>
 #import "RLMArrays.h"
 
-@class DTBlock, DTCard, DTSetType;
+@class DTBlock, DTCard, DTLanguage, DTSetType;
 
 @interface DTSet : RLMObject
 
@@ -24,12 +24,10 @@
 @property BOOL onlineOnly;
 @property NSDate * releaseDate;
 @property NSString * sectionNameInitial;
-@property NSString * sectionType;
 @property NSString * sectionYear;
 @property NSString * tcgPlayerName;
 @property DTBlock *block;
-@property RLMArray<DTCard> *cards;
-@property RLMArray<DTCard> *printings;
+@property RLMArray<DTLanguage> *languages;
 @property DTSetType *type;
 
 @end

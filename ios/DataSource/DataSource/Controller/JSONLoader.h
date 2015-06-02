@@ -17,6 +17,7 @@
 #import "DTCardRarity.h"
 #import "DTCardRuling.h"
 #import "DTCardType.h"
+#import "DTLanguage.h"
 #import "DTFormat.h"
 #import "DTSet.h"
 #import "DTSetType.h"
@@ -25,6 +26,6 @@
 
 @interface JSONLoader : NSObject
 
--(void) parseCards;
+-(void) json2Database;
 
 @end

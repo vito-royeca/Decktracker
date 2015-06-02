@@ -713,8 +713,8 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
             let array = split(value!) {$0 == "_"}
             let code = array[0]
             let number = array[1]
-            let card = DTCard.MR_findFirstWithPredicate(NSPredicate(format: "set.code = %@ AND number = %@", code, number)) as! DTCard
-            
+            let card = DTCard.objectsWithPredicate(NSPredicate(format: "set.code = %@ AND number = %@", code, number)).firstObject() as! DTCard
+                
             if self.checkValidCard(card) {
                 FileManager.sharedInstance().downloadCardImage(card, immediately:true)
                 cards!.insert(card, atIndex:0)

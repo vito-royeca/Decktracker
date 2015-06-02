@@ -496,7 +496,7 @@ class CQManaChooserView: UIView {
         var mana = manaPaid()
         var colorless = 0
         
-        if card!.cmc.integerValue != mana["totalCMC"]!.integerValue {
+        if card!.cmc != mana["totalCMC"]!.floatValue {
             return false
         }
     

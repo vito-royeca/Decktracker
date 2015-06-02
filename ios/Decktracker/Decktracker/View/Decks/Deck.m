@@ -17,16 +17,6 @@
     NSMutableDictionary *_dict;
 }
 
-@synthesize name = _name;
-@synthesize format = _format;
-@synthesize notes = _notes;
-@synthesize originalDesigner = _originalDesigner;
-@synthesize year = _year;
-@synthesize arrLands = _arrLands;
-@synthesize arrCreatures = _arrCreatures;
-@synthesize arrOtherSpells = _arrOtherSpells;
-@synthesize arrSideboard = _arrSideboard;
-
 -(id) initWithDictionary:(NSDictionary*) dict
 {
     if (self = [super init])
@@ -54,7 +44,7 @@
             
             if (d[@"multiverseID"] && [d[@"multiverseID"] longValue] != 0)
             {
-                card = [DTCard MR_findFirstByAttribute:@"multiverseID" withValue:d[@"multiverseID"]];
+                card = [[DTCard objectsWithPredicate:[NSPredicate predicateWithFormat:@"multiverseID = %@", d[@"multiverseID"]]] firstObject];
             }
             if (!card)
             {
@@ -62,14 +52,14 @@
                 NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"set.code == %@", d[@"set"]];
                 NSPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[pred1, pred2]];
 
-                card = [DTCard MR_findFirstWithPredicate:predicate];
+                card = [[DTCard objectsWithPredicate:predicate] firstObject];
             }
             
             if (card)
             {
                 pack = @{@"card" : card,
                          @"set" : card.set ? card.set.code : @"",
-                         @"multiverseID" : card.multiverseID,
+                         @"multiverseID" : [NSNumber numberWithInt:card.multiverseID],
                          @"qty" : d[@"qty"]};
                 
                 if ([card.sectionType isEqualToString:@"Land"])
@@ -95,9 +85,9 @@
             DTCard *card;
             NSDictionary *pack;
             
-            if (d[@"multiverseID"] && [d[@"multiverseID"] longValue] != 0)
+            if (d[@"multiverseID"] && [d[@"multiverseID"] intValue] != 0)
             {
-                card = [DTCard MR_findFirstByAttribute:@"multiverseID" withValue:d[@"multiverseID"]];
+                card = [[DTCard objectsWithPredicate:[NSPredicate predicateWithFormat:@"multiverseID = %@", d[@"multiverseID"]]] firstObject];
             }
             if (!card)
             {
@@ -105,14 +95,14 @@
                 NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"set.code == %@", d[@"set"]];
                 NSPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[pred1, pred2]];
                 
-                card = [DTCard MR_findFirstWithPredicate:predicate];
+                card = [[DTCard objectsWithPredicate:predicate] firstObject];
             }
             
             if (card)
             {
                 pack = @{@"card" : card,
                          @"set" : card.set ? card.set.code : @"",
-                         @"multiverseID" : card.multiverseID,
+                         @"multiverseID" : [NSNumber numberWithInt:card.multiverseID],
                          @"qty" : d[@"qty"]};
                 
                 [self.arrSideboard addObject:pack];
@@ -212,7 +202,7 @@
     {
         DTCard *c = dict[@"card"];
         
-        if (([dict[@"multiverseID"] longValue] != 0 && ([dict[@"multiverseID"] longValue] == [card.multiverseID longValue])) ||
+        if (([dict[@"multiverseID"] intValue] != 0 && ([dict[@"multiverseID"] intValue] == card.multiverseID)) ||
             ([c.name isEqualToString:card.name] && [c.set.code isEqualToString:card.set.code]))
         {
             dictMain = dict;
@@ -228,14 +218,14 @@
             NSMutableDictionary *newDict = [[NSMutableDictionary alloc] initWithDictionary:dictMain];
             
             [newDict setValue:[NSNumber numberWithInt:newValue] forKey:@"qty"];
-            [newDict setValue:card.multiverseID forKey:@"multiverseID"];
+            [newDict setValue:[NSNumber numberWithInt:card.multiverseID] forKey:@"multiverseID"];
             [arrBoard addObject:newDict];
         }
     }
     else
     {
         [arrBoard addObject:@{@"card" : card,
-                              @"multiverseID" : card.multiverseID,
+                              @"multiverseID" : [NSNumber numberWithInt:card.multiverseID],
                               @"set"  : card.set.code,
                               @"qty"  : [NSNumber numberWithInt:newValue]}];
     }
@@ -275,7 +265,7 @@
     {
         DTCard *c = dict[@"card"];
         
-        if (([dict[@"multiverseID"] longValue] != 0 && ([dict[@"multiverseID"] longValue] == [card.multiverseID longValue])) ||
+        if (([dict[@"multiverseID"] intValue] != 0 && ([dict[@"multiverseID"] intValue] == card.multiverseID)) ||
             ([c.name isEqualToString:card.name] && [c.set.code isEqualToString:card.set.code]))
         {
             qty = [dict[@"qty"] intValue];
@@ -340,7 +330,7 @@
         
         if (card.tcgPlayerMidPrice)
         {
-            totalPrice += ([card.tcgPlayerMidPrice doubleValue] * [qty intValue]);
+            totalPrice += (card.tcgPlayerMidPrice * [qty intValue]);
         }
     }
     
@@ -351,7 +341,7 @@
         
         if (card.tcgPlayerMidPrice)
         {
-            totalPrice += ([card.tcgPlayerMidPrice doubleValue] * [qty intValue]);
+            totalPrice += (card.tcgPlayerMidPrice * [qty intValue]);
         }
     }
     
@@ -362,7 +352,7 @@
         
         if (card.tcgPlayerMidPrice)
         {
-            totalPrice += ([card.tcgPlayerMidPrice doubleValue] * [qty intValue]);
+            totalPrice += (card.tcgPlayerMidPrice * [qty intValue]);
         }
     }
     
@@ -373,7 +363,7 @@
         
         if (card.tcgPlayerMidPrice)
         {
-            totalPrice += ([card.tcgPlayerMidPrice doubleValue] * [qty intValue]);
+            totalPrice += (card.tcgPlayerMidPrice * [qty intValue]);
         }
     }
     

@@ -16,23 +16,35 @@
 
 @implementation JSONLoader
 
--(void) parseCards
+-(void) json2Database
 {
-    NSDate *dateStart = [NSDate date];
-    [[Database sharedInstance] setupDb];
-    
     NSString *filePath = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] resourcePath], @"Data/AllSets-x.json"];
     NSData *data = [NSData dataWithContentsOfFile:filePath];
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data
                                                          options:NSJSONReadingMutableContainers
                                                            error:nil];
+
+    [[Database sharedInstance] setupDb];
     
+    // Create additional CardColor
+    DTCardColor *color1 = [[DTCardColor alloc] init];
+    color1.name = @"Colorless";
+    DTCardColor *color2 = [[DTCardColor alloc] init];
+    color2.name = @"Multicolored";
+    RLMRealm *realm = [RLMRealm defaultRealm];
+    [realm beginWriteTransaction];
+    [realm addObject:color1];
+    [realm addObject:color2];
+    [realm commitWriteTransaction];
+    
+    // parse the sets
     for (NSString *setName in [json allKeys])
     {
         NSDictionary * dict = json[setName];
         [self parseSet:dict];
     }
     
+    // parse the cards
     for (NSString *setName in [json allKeys])
     {
         NSDictionary *dict = json[setName];
@@ -45,26 +57,9 @@
         [realm commitWriteTransaction];
     }
 
-    // Create additional CardColor
-    DTCardColor *color1 = [[DTCardColor alloc] init];
-    color1.name = @"Colorless";
-    DTCardColor *color2 = [[DTCardColor alloc] init];
-    color2.name = @"Multicolored";
-    
-    RLMRealm *realm = [RLMRealm defaultRealm];
-    [realm beginWriteTransaction];
-    [realm addObject:color1];
-    [realm addObject:color2];
-    [realm commitWriteTransaction];
-
     // Done
     [[Database sharedInstance] closeDb];
     [[Database sharedInstance] copyRealmDatabaseToHome];
-    NSDate *dateEnd = [NSDate date];
-    NSTimeInterval timeDifference = [dateEnd timeIntervalSinceDate:dateStart];
-    NSLog(@"Started: %@", dateStart);
-    NSLog(@"Ended: %@", dateEnd);
-    NSLog(@"Time Elapsed: %@",  [JJJUtil formatInterval:timeDifference]);
 }
 
 #pragma mark - Update methods
@@ -92,7 +87,10 @@
     
     for (NSString *key in [dict allKeys])
     {
-        card.number = key;
+        if ([[card.name lowercaseString] isEqualToString:[dict[key] lowercaseString]])
+        {
+            card.number = key;
+        }
     }
 }
 
@@ -138,36 +136,6 @@
     return dict;
 }
 
--(void) fetchTcgPrices
-{
-    NSDate *dateStart = [NSDate date];
-    [[Database sharedInstance] setupDb];
-    
-    for (DTSet *set in [[DTSet allObjects] sortedResultsUsingProperty:@"releaseDate" ascending:YES])
-    {
-        if (set.tcgPlayerName.length <= 0)
-        {
-            continue;
-        }
-    
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"set.name = %@", set.name];
-        
-        for (DTCard *card in [[DTCard objectsWithPredicate:predicate] sortedResultsUsingProperty:@"name" ascending:YES])
-        {
-            [[Database sharedInstance] fetchTcgPlayerPriceForCard:card];
-        }
-    }
-    
-    // Done
-    [[Database sharedInstance] closeDb];
-    [[Database sharedInstance] copyRealmDatabaseToHome];
-    NSDate *dateEnd = [NSDate date];
-    NSTimeInterval timeDifference = [dateEnd timeIntervalSinceDate:dateStart];
-    NSLog(@"Started: %@", dateStart);
-    NSLog(@"Ended: %@", dateEnd);
-    NSLog(@"Time Elapsed: %@",  [JJJUtil formatInterval:timeDifference]);
-}
-
 #pragma mark - Sets parsing
 -(DTSet*) parseSet:(NSDictionary*) dict
 {
@@ -195,11 +163,11 @@
         set.onlineOnly = dict[@"onlineOnly"] ? [dict[@"onlineOnly"] boolValue] : false;
         set.releaseDate = dict[@"releaseDate"] ? [JJJUtil parseDate:dict[@"releaseDate"] withFormat:@"YYYY-MM-dd"] : [NSDate date];
         set.sectionNameInitial = dict[@"name"] ? ([JJJUtil isAlphaStart:set.name] ?  [set.name substringToIndex:1] : @"#") : @"";
-        set.sectionType = @"";
         set.sectionYear = dict[@"releaseDate"] ? [formatter stringFromDate:set.releaseDate] : @"";
         [self updateTcgPlayerNameOfSet:set];
         
         set.block = [self findBlock:dict[@"block"]];
+        [set.languages addObjects:[self findLanguages:dict[@"languagesPrinted"]]];
         set.type = [self findSetType:dict[@"type"]];
         
         RLMRealm *realm = [RLMRealm defaultRealm];
@@ -266,21 +234,44 @@
     
     NSMutableArray *results = [[NSMutableArray alloc] init];
     
+    for (NSString *code in array)
+    {
+        DTSet *printing = [[DTSet objectsWithPredicate:[NSPredicate predicateWithFormat:@"code = %@", code]] firstObject];
+        
+        if (printing)
+        {
+            [results addObject:printing];
+        }
+    }
+    
+    return results;
+}
+
+-(NSArray*) findLanguages:(NSArray*) array
+{
+    if (!array || array.count <= 0)
+    {
+        return nil;
+    }
+    
+    NSMutableArray *results = [[NSMutableArray alloc] init];
+    
     for (NSString *name in array)
     {
-        DTSet *printing = [[DTSet objectsWithPredicate:[NSPredicate predicateWithFormat:@"name = %@", name]] firstObject];
+        DTLanguage *language = [[DTLanguage objectsWithPredicate:[NSPredicate predicateWithFormat:@"name = %@", name]] firstObject];
         
-        if (!printing)
+        if (!language)
         {
-            printing = [[DTSet alloc] init];
-            printing.name = name;
+            language = [[DTLanguage alloc] init];
+            language.name = name;
             
             RLMRealm *realm = [RLMRealm defaultRealm];
             [realm beginWriteTransaction];
-            [realm addObject:printing];
+//            NSLog(@"+Language: %@", name);
+            [realm addObject:language];
             [realm commitWriteTransaction];
         }
-        [results addObject:printing];
+        [results addObject:language];
     }
     
     return results;
@@ -297,7 +288,7 @@
         card.set = set;
         
         card.border = dict[@"border"] ? dict[@"border"] : @"";
-        card.cmc = dict[@"cmc"] ? [dict[@"cmc"] floatValue] : 0.0;
+        card.cmc = dict[@"cmc"] ? [dict[@"cmc"] floatValue] : -1.0;
         card.flavor = dict[@"flavor"] ? dict[@"flavor"] : @"";
         card.handModifier = dict[@"hand"] ? [dict[@"hand"] intValue] : 0;
         card.imageName = dict[@"imageName"] ? dict[@"imageName"] : @"";
@@ -356,9 +347,9 @@
             }
         }
         card.artist = [self findArtist:dict[@"artist"]];
-        [card.printings addObjects:[self findSets:dict[@"printings"]]];
+        [card.printings addObjects:[self findSets:dict[@"printingCodes"]]];
         [card.rulings addObjects:[self createRulings:dict[@"rulings"]]];
-        [card.foreignNames addObjects:[self createForeignNames:dict[@"foreignNames"]]];
+        [card.foreignNames addObjects:[self createForeignNamesForCard:card withLanguages:dict[@"foreignNames"]]];
         [card.legalities addObjects:[self createLegalities:dict[@"legalities"]]];
         
         card.rarity = [self findCardRarity:dict[@"rarity"]];
@@ -546,7 +537,7 @@
     return rulings;
 }
 
--(NSArray*) createForeignNames:(NSArray*) array
+-(NSArray*) createForeignNamesForCard:(DTCard*) card withLanguages:(NSArray*) array
 {
     if (!array || array.count <= 0)
     {
@@ -563,20 +554,34 @@
         {
             if ([key isEqualToString:@"language"])
             {
-                foreignName.language = dict[key];
+                DTLanguage * language = [[self findLanguages:@[dict[key]]] firstObject];
+                
+                for (DTLanguage *l in card.set.languages)
+                {
+                    if ([l.name isEqualToString:language.name])
+                    {
+                        foreignName.language = language;
+                        break;
+                    }
+                }
+                
             }
             else if ([key isEqualToString:@"name"])
             {
                 foreignName.name = dict[key];
             }
         }
-        RLMRealm *realm = [RLMRealm defaultRealm];
-        [realm beginWriteTransaction];
-//        NSLog(@"+ForeignName: %@", foreignName.name);
-        [realm addObject:foreignName];
-        [realm commitWriteTransaction];
         
-        [foreignNames addObject:foreignName];
+        if (foreignName.language)
+        {
+            RLMRealm *realm = [RLMRealm defaultRealm];
+            [realm beginWriteTransaction];
+//            NSLog(@"+ForeignName: %@", foreignName.name);
+            [realm addObject:foreignName];
+            [realm commitWriteTransaction];
+        
+            [foreignNames addObject:foreignName];
+        }
     }
     
     return foreignNames;

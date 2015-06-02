@@ -31,13 +31,6 @@
     NSArray *_arrSorters;
 }
 
-@synthesize segmentedControl = _segmentedControl;
-@synthesize tblView = _tblView;
-@synthesize dictCurrentQuery = _dictCurrentQuery;
-@synthesize dictCurrentSorter = _dictCurrentSorter;
-@synthesize fetchedResultsController = _fetchedResultsController;
-@synthesize mode = _mode;
-
 - (NSFetchedResultsController *)fetchedResultsController
 {
     if (_fetchedResultsController != nil)
@@ -450,43 +443,70 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSArray *arrFilterOptions;
+    NSMutableArray *arrFilterOptions = [[NSMutableArray alloc] init];
 
     if ([_arrFilters[indexPath.row] isEqualToString:@"Set"])
     {
-        arrFilterOptions = [DTSet MR_findAllSortedBy:@"name" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"magicCardsInfoCode != nil AND NOT (code IN %@)", [[Database sharedInstance] inAppSetCodes]]];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"magicCardsInfoCode != %@ AND NOT (code IN %@)", @"", [[Database sharedInstance] inAppSetCodes]];
+        
+        for (DTSet *set in [[DTSet objectsWithPredicate:predicate] sortedResultsUsingProperty:@"name" ascending:YES])
+        {
+            [arrFilterOptions addObject:set];
+        }
     }
     else if ([_arrFilters[indexPath.row] isEqualToString:@"Format"])
     {
-        arrFilterOptions = [DTFormat MR_findAllSortedBy:@"name" ascending:YES];
+        for (DTFormat *format in [[DTFormat allObjects] sortedResultsUsingProperty:@"name" ascending:YES])
+        {
+            [arrFilterOptions addObject:format];
+        }
     }
     else if ([_arrFilters[indexPath.row] isEqualToString:@"Rarity"])
     {
-        arrFilterOptions = [DTCardRarity MR_findAll];
+        for (DTCardRarity *rarity in [DTCardRarity allObjects])
+        {
+            [arrFilterOptions addObject:rarity];
+        }
     }
     else if ([_arrFilters[indexPath.row] isEqualToString:@"Type"])
     {
-        arrFilterOptions = [DTCardType MR_findAllSortedBy:@"name" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"name IN %@", CARD_TYPES]];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name IN %@", CARD_TYPES];
+        
+        for (DTCardType *cardType in [[DTCardType objectsWithPredicate:predicate] sortedResultsUsingProperty:@"name" ascending:YES])
+        {
+            [arrFilterOptions addObject:cardType];
+        }
     }
     else if ([_arrFilters[indexPath.row] isEqualToString:@"Subtype"])
     {
-        arrFilterOptions = [DTCardType MR_findAllSortedBy:@"name" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"NOT (name IN %@)", CARD_TYPES]];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"NOT (name IN %@)", CARD_TYPES];
+        
+        for (DTCardType *cardType in [[DTCardType objectsWithPredicate:predicate] sortedResultsUsingProperty:@"name" ascending:YES])
+        {
+            [arrFilterOptions addObject:cardType];
+        }
     }
     else if ([_arrFilters[indexPath.row] isEqualToString:@"Color"])
     {
-        arrFilterOptions = [DTCardColor MR_findAllSortedBy:@"name" ascending:YES];;
+        for (DTCardColor *cardColor in [[DTCardColor allObjects] sortedResultsUsingProperty:@"name" ascending:YES])
+        {
+            [arrFilterOptions addObject:cardColor];
+        }
     }
     else if ([_arrFilters[indexPath.row] isEqualToString:@"Keyword"])
     {
-        arrFilterOptions = [[FileManager sharedInstance] loadKeywords];
+        [arrFilterOptions addObjectsFromArray:[[FileManager sharedInstance] loadKeywords]];
     }
     else if ([_arrFilters[indexPath.row] isEqualToString:@"Artist"])
     {
-        arrFilterOptions = [DTArtist MR_findAllSortedBy:@"name" ascending:YES];
+        for (DTArtist *artist in [[DTArtist allObjects] sortedResultsUsingProperty:@"name" ascending:YES])
+        {
+            [arrFilterOptions addObject:artist];
+        }
     }
     else if ([_arrFilters[indexPath.row] isEqualToString:@"Will Be Reprinted?"])
     {
-        arrFilterOptions = @[@"Yes", @"No"];
+        [arrFilterOptions addObjectsFromArray:@[@"Yes", @"No"]];
     }
     
     FilterInputViewController *view = [[FilterInputViewController alloc] init];

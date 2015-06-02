@@ -30,9 +30,10 @@ class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
 #if !DEBUG
         // send the screen to Google Analytics
-        let tracker = GAI.sharedInstance().defaultTracker
-        tracker.set(kGAIScreenName, value: "More")
-        tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject : AnyObject])
+        if let tracker = GAI.sharedInstance().defaultTracker {
+            tracker.set(kGAIScreenName, value: "More")
+            tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject : AnyObject])
+        }
 #endif
     }
 

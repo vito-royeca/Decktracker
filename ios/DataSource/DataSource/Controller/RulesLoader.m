@@ -18,7 +18,6 @@
 
 -(void) parseRules
 {
-    NSDate *dateStart = [NSDate date];
     [[Database sharedInstance] setupDb];
     
     NSString *filePath = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] resourcePath], @"Data/MagicCompRules_20140926.htm"];
@@ -38,11 +37,6 @@
     
     [[Database sharedInstance] closeDb];
     [[Database sharedInstance] copyRealmDatabaseToHome];
-    NSDate *dateEnd = [NSDate date];
-    NSTimeInterval timeDifference = [dateEnd timeIntervalSinceDate:dateStart];
-    NSLog(@"Started: %@", dateStart);
-    NSLog(@"Ended: %@", dateEnd);
-    NSLog(@"Time Elapsed: %@",  [JJJUtil formatInterval:timeDifference]);
 }
 
 -(void) parse:(TFHpple*) parser

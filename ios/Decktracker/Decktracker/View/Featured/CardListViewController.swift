@@ -8,20 +8,6 @@
 
 import UIKit
 
-//enum CardViewMode: Printable  {
-//    case ByList
-//    case ByGrid2x2
-//    case ByGrid3x3
-//    
-//    var description : String {
-//        switch self {
-//        case ByList: return "List"
-//        case ByGrid2x2: return "2x2"
-//        case ByGrid3x3: return "3x3"
-//        }
-//    }
-//}
-
 enum CardSortMode: Printable  {
     case ByName
     case ByColor
@@ -52,7 +38,7 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
     var sectionIndexTitles:[String]?
     var arrayData:[AnyObject]?
     var predicate:NSPredicate?
-    var sorters:[NSSortDescriptor]?
+    var sorters:[RLMSortDescriptor]?
     var viewMode:String?
     var sortMode:CardSortMode?
     var sectionName:String?
@@ -107,9 +93,10 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
         self.viewLoadedOnce = false
 #if !DEBUG
         // send the screen to Google Analytics
-        let tracker = GAI.sharedInstance().defaultTracker
-        tracker.set(kGAIScreenName, value: "Set: \(self.navigationItem.title!)")
-        tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject : AnyObject])
+        if let tracker = GAI.sharedInstance().defaultTracker {
+            tracker.set(kGAIScreenName, value: "Set: \(self.navigationItem.title!)")
+            tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject : AnyObject])
+        }
 #endif
     }
     
@@ -210,23 +197,23 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
     func loadData() {
         switch sortMode! {
         case .ByName:
-            self.sorters = [NSSortDescriptor(key: "sectionNameInitial", ascending: true),
-                            NSSortDescriptor(key: "name", ascending: true)]
+            self.sorters = [RLMSortDescriptor(property: "sectionNameInitial", ascending: true),
+                            RLMSortDescriptor(property: "name", ascending: true)]
         case .ByColor:
-            self.sorters = [NSSortDescriptor(key: "sectionColor", ascending: true),
-                            NSSortDescriptor(key: "name", ascending: true)]
+            self.sorters = [RLMSortDescriptor(property: "sectionColor", ascending: true),
+                            RLMSortDescriptor(property: "name", ascending: true)]
             
         case .ByType:
-            self.sorters = [NSSortDescriptor(key: "sectionType", ascending: true),
-                            NSSortDescriptor(key: "name", ascending: true)]
+            self.sorters = [RLMSortDescriptor(property: "sectionType", ascending: true),
+                            RLMSortDescriptor(property: "name", ascending: true)]
             
         case .ByRarity:
-            self.sorters = [NSSortDescriptor(key: "rarity.name", ascending: true),
-                            NSSortDescriptor(key: "name", ascending: true)]
+            self.sorters = [RLMSortDescriptor(property: "rarity.name", ascending: true),
+                            RLMSortDescriptor(property: "name", ascending: true)]
             
         case .ByPrice:
-            self.sorters = [NSSortDescriptor(key: "tcgPlayerMidPrice", ascending: false),
-                            NSSortDescriptor(key: "name", ascending: true)]
+            self.sorters = [RLMSortDescriptor(property: "tcgPlayerMidPrice", ascending: false),
+                            RLMSortDescriptor(property: "name", ascending: true)]
         default:
             break
         }

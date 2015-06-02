@@ -90,16 +90,16 @@ class DecksTableViewCell: UITableViewCell, CPTPlotDataSource {
         let graph = self.hostView!.hostedGraph
         
         // 2 - Create chart
-        let pieChart = CPTPieChart()
+        let pieChart = CPTPieChart(frame: self.hostView!.bounds)
         pieChart.dataSource = self
         pieChart.delegate = self
         pieChart.pieRadius = (self.hostView!.bounds.size.width * 0.7) / 2
         pieChart.startAngle = CGFloat(M_PI_4)
-        pieChart.sliceDirection = CPTPieDirectionClockwise
+        pieChart.sliceDirection = CPTPieDirection.Clockwise
         
         // 3 - Create gradient
         var overlayGradient = CPTGradient()
-        overlayGradient.gradientType = CPTGradientTypeRadial
+        overlayGradient.gradientType = CPTGradientType.Radial
         overlayGradient = overlayGradient.addColorStop(CPTColor.blackColor().colorWithAlphaComponent(0.0), atPosition: 0.98)
         overlayGradient = overlayGradient.addColorStop(CPTColor.blackColor().colorWithAlphaComponent(0.4), atPosition: 1.0)
         pieChart.overlayFill = CPTFill(gradient: overlayGradient)
@@ -113,7 +113,8 @@ class DecksTableViewCell: UITableViewCell, CPTPlotDataSource {
         return UInt(conciseData!.count)
     }
     
-    func numberForPlot(plot: CPTPlot, field fieldEnum: UInt, recordIndex index: UInt) -> NSNumber {
+//    func numberForPlot(plot: CPTPlot, field fieldEnum: UInt, recordIndex index: UInt) -> NSNumber {
+    func numberForPlot(plot: CPTPlot, field fieldEnum:UInt, recordIndex index: UInt) -> AnyObject {
         let dict = conciseData![Int(index)]
         let keys = dict.keys
         let part = Double(dict[keys.first!]!)

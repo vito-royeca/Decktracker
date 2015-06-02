@@ -24,7 +24,7 @@ class BannerCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
         // Initialization code
         
-        planeswalkerType = DTCardType.MR_findFirstByAttribute("name", withValue:"Planeswalker") as! DTCardType?
+        planeswalkerType = DTCardType.objectsWithPredicate(NSPredicate(format: "name = %@", "Planeswalker")).firstObject() as! DTCardType?
         _pre8thEditionFont = UIFont(name: "Magic:the Gathering", size:25)
         _8thEditionFont = UIFont(name: "Matrix-Bold", size:25)
         

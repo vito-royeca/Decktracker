@@ -10,23 +10,33 @@
 #import "JSONLoader.h"
 #import "RulesLoader.h"
 
+#import "JJJ/JJJ.h"
+
 int main(int argc, const char * argv[])
 {
     @autoreleasepool
     {
+        NSDate *dateStart = [NSDate date];
+        
         /* Step 1 */
         JSONLoader *jsonLoader = [[JSONLoader alloc] init];
-        [jsonLoader parseCards];
+        [jsonLoader json2Database];
         
         /* Step 2 */
-//        RulesLoader *rulesLoader = [[RulesLoader alloc] init];
-//        [rulesLoader parseRules];
+        RulesLoader *rulesLoader = [[RulesLoader alloc] init];
+        [rulesLoader parseRules];
 
         /* Optional */
 //        ImageLoader *imageLoader = [[ImageLoader alloc] init];
 //        [imageLoader downloadSetIcons:@[@"DDO"]];
 //        [imageLoader downloadSymbols];
 //        [imageLoader downloadOtherSymbols];
+        
+        NSDate *dateEnd = [NSDate date];
+        NSTimeInterval timeDifference = [dateEnd timeIntervalSinceDate:dateStart];
+        NSLog(@"Started: %@", dateStart);
+        NSLog(@"Ended: %@", dateEnd);
+        NSLog(@"Time Elapsed: %@",  [JJJUtil formatInterval:timeDifference]);
     }
     return 0;
 }

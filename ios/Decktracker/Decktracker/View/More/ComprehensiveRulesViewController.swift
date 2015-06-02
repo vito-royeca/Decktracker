@@ -93,16 +93,16 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
         
 #if !DEBUG
         // send the screen to Google Analytics
-        let tracker = GAI.sharedInstance().defaultTracker
-        tracker.set(kGAIScreenName, value: "Comprehensive Rules")
-        tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject : AnyObject])
+        if let tracker = GAI.sharedInstance().defaultTracker {
+            tracker.set(kGAIScreenName, value: "Comprehensive Rules")
+            tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject : AnyObject])
+        }
 #endif
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-        
     }
     
     func loadTableOfContents() {
@@ -110,8 +110,9 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
         
         var array = [String]()
         array.append("Introduction")
-        for rule in DTComprehensiveRule.MR_findByAttribute("parent", withValue:nil) {
-            array.append(rule.number + ". " + rule.rule)
+        for rule in DTComprehensiveRule.objectsWithPredicate(NSPredicate(format:"parent = %@", "")) { //DTComprehensiveRule.MR_findByAttribute("parent", withValue:nil) {
+            let r = rule as! DTComprehensiveRule
+            array.append(r.number + ". " + r.rule)
         }
         array.append("Glossary")
         array.append("Credits")
@@ -199,7 +200,8 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
                 var number:NSString = value!
                 var range:NSRange = number.rangeOfString(" ")
                 number = number.substringToIndex(range.location-1)
-                if let rule = DTComprehensiveRule.MR_findFirstByAttribute("number", withValue:number) as? DTComprehensiveRule {
+//                if let rule = DTComprehensiveRule.MR_findFirstByAttribute("number", withValue:number) as? DTComprehensiveRule {
+                if let rule = DTComprehensiveRule.objectsWithPredicate(NSPredicate(format:"number = ", number)).firstObject() as? DTComprehensiveRule {
                     if rule.children.count == 0 {
                         cell.accessoryType = UITableViewCellAccessoryType.None
                         cell.titleLabel.text = rule.number
@@ -208,7 +210,8 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
                 }
 
             } else if key == "Glossary" {
-                if let glossary = DTComprehensiveGlossary.MR_findFirstByAttribute("term", withValue:value) as? DTComprehensiveGlossary {
+//                if let glossary = DTComprehensiveGlossary.MR_findFirstByAttribute("term", withValue:value) as? DTComprehensiveGlossary {
+                if let glossary = DTComprehensiveGlossary.objectsWithPredicate(NSPredicate(format: "term = ", value!)).firstObject() as? DTComprehensiveGlossary {
                     cell.accessoryType = UITableViewCellAccessoryType.None
                     cell.titleLabel.text = glossary.term
                     cell.bodyLabel.text = glossary.definition
@@ -251,8 +254,9 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
         } else if value == "Glossary" {
             var array = [String]()
             
-            for child in DTComprehensiveGlossary.MR_findAllSortedBy("term", ascending: true) {
-                array.append(child.term)
+            for child in DTComprehensiveGlossary.allObjects().sortedResultsUsingProperty("term", ascending: true) {
+                let c = child as! DTComprehensiveGlossary
+                array.append(c.term)
             }
             compView = ComprehensiveRulesViewController(data: ["Glossary": array], showSections: true)
         
@@ -265,7 +269,7 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
                 var number:NSString = value!
                 var range:NSRange = number.rangeOfString(" ")
                 number = number.substringToIndex(range.location-1)
-                let rule = DTComprehensiveRule.MR_findFirstByAttribute("number", withValue:number) as! DTComprehensiveRule
+                let rule = DTComprehensiveRule.objectsWithPredicate(NSPredicate(format:"number = %@", number)).firstObject() as! DTComprehensiveRule
                 
                 if rule.children.count == 0 {
                     bWillPush = false
@@ -273,8 +277,9 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
                 } else {
                     var array = [String]()
                     
-                    for child in DTComprehensiveRule.MR_findByAttribute("parent.number", withValue:number) {
-                        array.append(child.number + ". " + child.rule)
+                    for child in DTComprehensiveRule.objectsWithPredicate(NSPredicate(format: "number = %@", number)) {
+                        let c = child as! DTComprehensiveRule
+                        array.append(c.number + ". " + c.rule)
                     }
                     compView = ComprehensiveRulesViewController(data: ["Rules": array], showSections: false)
                 }

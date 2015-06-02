@@ -106,9 +106,10 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         
 #if !DEBUG
         // send the screen to Google Analytics
-        let tracker = GAI.sharedInstance().defaultTracker
-        tracker.set(kGAIScreenName, value: "Starting Hand")
-        tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject : AnyObject])
+        if let tracker = GAI.sharedInstance().defaultTracker {
+            tracker.set(kGAIScreenName, value: "Starting Hand")
+            tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject : AnyObject])
+        }
 #endif
     }
 
@@ -320,8 +321,9 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         arrayDeck = Array()
 
         for dict in self.deck!.arrLands {
-            let card = dict["card"] as! DTCard
-            let qty = dict["qty"] as! NSNumber
+            let d = dict as! Dictionary<String, AnyObject>
+            let card = d["card"] as! DTCard
+            let qty = d["qty"] as! NSNumber
             
             for var i=0; i<qty.integerValue; i++ {
                 arrayDeck!.append(card)
@@ -329,8 +331,9 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         }
         
         for dict in self.deck!.arrCreatures {
-            let card = dict["card"] as! DTCard
-            let qty = dict["qty"] as! NSNumber
+            let d = dict as! Dictionary<String, AnyObject>
+            let card = d["card"] as! DTCard
+            let qty = d["qty"] as! NSNumber
             
             for var i=0; i<qty.integerValue; i++ {
                 arrayDeck!.append(card)
@@ -338,8 +341,9 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         }
         
         for dict in self.deck!.arrOtherSpells {
-            let card = dict["card"] as! DTCard
-            let qty = dict["qty"] as! NSNumber
+            let d = dict as! Dictionary<String, AnyObject>
+            let card = d["card"] as! DTCard
+            let qty = d["qty"] as! NSNumber
             
             for var i=0; i<qty.integerValue; i++ {
                 arrayDeck!.append(card)

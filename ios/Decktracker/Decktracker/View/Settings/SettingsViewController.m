@@ -9,7 +9,6 @@
 #import "SettingsViewController.h"
 #import "AcknowledgementTableViewCell.h"
 #import "Decktracker-Swift.h"
-#import "DownloadSetImagesViewController.h"
 #import "FileManager.h"
 #import "MainViewController.h"
 
@@ -302,6 +301,11 @@
         MainViewController *view = (MainViewController*)self.tabBarController;
         [view addCollectionsProduct];
     }
+}
+
+-(void) productPurchaseCancelled
+{
+    // not implemented
 }
 
 #pragma mark - InAppPurchaseDelegate

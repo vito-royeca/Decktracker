@@ -58,10 +58,11 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
         self.loadData()
         
 #if !DEBUG
-    // send the screen to Google Analytics
-    let tracker = GAI.sharedInstance().defaultTracker
-    tracker.set(kGAIScreenName, value: "Sets")
-    tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject : AnyObject])
+        // send the screen to Google Analytics
+        if let tracker = GAI.sharedInstance().defaultTracker {
+            tracker.set(kGAIScreenName, value: "Sets")
+            tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject : AnyObject])
+        }
 #endif
     }
     
@@ -159,22 +160,23 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
             
         case .ByType:
             arrayData!.sort{ $0.name < $1.name }
-            
-            for setType in DTSetType.MR_findAllSortedBy("name", ascending: true) as! [DTSetType] {
+            for setType in DTSetType.allObjects().sortedResultsUsingProperty("name", ascending: true) {
+                let st = setType as! DTSetType
+                
                 for set in arrayData! as! [DTSet] {
-                    if set.type == setType {
+                    if set.type == st {
                         let keys = Array(sections!.keys)
                         var sets:[DTSet]?
                         
-                        if contains(keys, setType.name) {
-                            sets = sections![setType.name] as? [DTSet]
+                        if contains(keys, st.name) {
+                            sets = sections![st.name] as? [DTSet]
                         } else {
                             sets = [DTSet]()
                         }
                         sets!.append(set)
-                        sections!.updateValue(sets!, forKey: setType.name)
+                        sections!.updateValue(sets!, forKey: st.name)
                         
-                        let letter = setType.name.substringWithRange(Range(start: setType.name.startIndex, end: advance(setType.name.startIndex, 1)))
+                        let letter = st.name.substringWithRange(Range(start: st.name.startIndex, end: advance(st.name.startIndex, 1)))
                         if !contains(sectionIndexTitles!, letter) {
                             sectionIndexTitles!.append(letter)
                         }

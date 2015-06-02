@@ -42,7 +42,7 @@
     self.imgCrop.layer.cornerRadius = 10.0;
     self.imgCrop.layer.masksToBounds = YES;
 
-    _planeswalkerType = [DTCardType MR_findFirstByAttribute:@"name" withValue:@"Planeswalker"];
+    _planeswalkerType = [[DTCardType objectsWithPredicate:[NSPredicate predicateWithFormat:@"name = %@", @"Planeswalker"]] firstObject];
     _pre8thEditionFont = [UIFont fontWithName:@"Magic:the Gathering" size:20];
     _8thEditionFont = [UIFont fontWithName:@"Matrix-Bold" size:18];
     
@@ -111,13 +111,20 @@
     
     NSMutableString *type = [[NSMutableString alloc] initWithFormat:@"%@", card.type];
     
-    if (card.power || card.toughness)
+    if (card.power.length > 0 || card.toughness.length > 0)
     {
         [type appendFormat:@" (%@/%@)", card.power, card.toughness];
     }
-    else if ([card.types containsObject:_planeswalkerType])
+    else
     {
-        [type appendFormat:@" (Loyalty: %@)", card.loyalty];
+        for (DTCardType *cardType in card.types)
+        {
+            if (cardType == _planeswalkerType)
+            {
+                [type appendFormat:@" (Loyalty: %d)", card.loyalty];
+                break;
+            }
+        }
     }
     
     if ([[Database sharedInstance] isCardModern:card])
@@ -132,7 +139,7 @@
     self.lblCardName.text = [NSString stringWithFormat:@" %@", card.name];
     self.lblDetail.text = type;
     self.lblSet.text = [NSString stringWithFormat:@"%@ (%@)", card.set.name, card.rarity.name];
-    _ratingControl.rating = [_card.rating doubleValue];
+    _ratingControl.rating = (float)_card.rating;
     
     // crop image
     _currentCropPath = [[FileManager sharedInstance] cropPath:card];
@@ -253,6 +260,9 @@
     
     if (_card == card)
     {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"set.code = %@ AND name = %@ AND number = %@", card.set.code, card.name, card.number];
+        _card = [[DTCard objectsWithPredicate:predicate] firstObject];
+        
         [self showCardPricing];
         
         [[NSNotificationCenter defaultCenter] removeObserver:self
@@ -269,23 +279,23 @@
     [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
     formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
     
-    NSString *price = [_card.tcgPlayerLowPrice doubleValue] != 0 ? [formatter stringFromNumber:_card.tcgPlayerLowPrice] : @"N/A";
-    UIColor *color = [_card.tcgPlayerLowPrice doubleValue] != 0 ? [UIColor redColor] : [UIColor lightGrayColor];
+    NSString *price = _card.tcgPlayerLowPrice != 0 ? [formatter stringFromNumber:[NSNumber numberWithDouble:_card.tcgPlayerLowPrice]] : @"N/A";
+    UIColor *color = _card.tcgPlayerLowPrice != 0 ? [UIColor redColor] : [UIColor lightGrayColor];
     self.lblLowPrice.text = price;
     self.lblLowPrice.textColor = color;
     
-    price = [_card.tcgPlayerMidPrice doubleValue] != 0 ? [formatter stringFromNumber:_card.tcgPlayerMidPrice] : @"N/A";
-    color = [_card.tcgPlayerMidPrice doubleValue] != 0 ? [UIColor blueColor] : [UIColor lightGrayColor];
+    price = _card.tcgPlayerMidPrice != 0 ? [formatter stringFromNumber:[NSNumber numberWithDouble:_card.tcgPlayerMidPrice]] : @"N/A";
+    color = _card.tcgPlayerMidPrice != 0 ? [UIColor blueColor] : [UIColor lightGrayColor];
     self.lblMedianPrice.text = price;
     self.lblMedianPrice.textColor = color;
     
-    price = [_card.tcgPlayerHighPrice doubleValue] != 0 ? [formatter stringFromNumber:_card.tcgPlayerHighPrice] : @"N/A";
-    color = [_card.tcgPlayerHighPrice doubleValue] != 0 ? [self colorFromHexString:@"#008000"] : [UIColor lightGrayColor];
+    price = _card.tcgPlayerHighPrice != 0 ? [formatter stringFromNumber:[NSNumber numberWithDouble:_card.tcgPlayerHighPrice]] : @"N/A";
+    color = _card.tcgPlayerHighPrice != 0 ? [self colorFromHexString:@"#008000"] : [UIColor lightGrayColor];
     self.lblHighPrice.text = price;
     self.lblHighPrice.textColor = color;
     
-    price = [_card.tcgPlayerFoilPrice doubleValue] != 0 ? [formatter stringFromNumber:_card.tcgPlayerFoilPrice] : @"N/A";
-    color = [_card.tcgPlayerFoilPrice doubleValue] != 0 ? [self colorFromHexString:@"#998100"] : [UIColor lightGrayColor];
+    price = _card.tcgPlayerFoilPrice != 0 ? [formatter stringFromNumber:[NSNumber numberWithDouble:_card.tcgPlayerFoilPrice]] : @"N/A";
+    color = _card.tcgPlayerFoilPrice != 0 ? [self colorFromHexString:@"#998100"] : [UIColor lightGrayColor];
     self.lblFoilPrice.text = price;
     self.lblFoilPrice.textColor = color;
 }
@@ -322,7 +332,7 @@
     
     if (_card == card)
     {
-        _ratingControl.rating = [card.rating doubleValue];
+        _ratingControl.rating = (float)card.rating;
         
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:kParseSyncDone

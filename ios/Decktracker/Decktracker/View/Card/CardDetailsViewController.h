@@ -7,6 +7,7 @@
 //
 
 @import UIKit;
+@import CoreData;
 
 #import "DTCard.h"
 #import "MBProgressHUD.h"

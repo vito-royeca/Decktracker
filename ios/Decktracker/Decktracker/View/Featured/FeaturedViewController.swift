@@ -320,8 +320,12 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
             view = view2;
         case 3:
             let view2 = SetListViewController()
-            let predicate = NSPredicate(format: "magicCardsInfoCode != nil")
-            view2.arrayData = DTSet.MR_findAllSortedBy("releaseDate", ascending: false, withPredicate: predicate)
+            let predicate = NSPredicate(format: "magicCardsInfoCode != %@", "")
+            var arrayData = [AnyObject]()
+            for set in DTSet.objectsWithPredicate(predicate).sortedResultsUsingProperty("releaseDate", ascending: false) {
+                arrayData.append(set)
+            }
+            view2.arrayData = arrayData
             view = view2;
         default:
             println("tag = \(tag)")

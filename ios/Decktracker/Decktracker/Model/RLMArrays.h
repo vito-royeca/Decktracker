@@ -25,6 +25,7 @@ DTCardType,
 DTComprehensiveGlossary,
 DTComprehensiveRule,
 DTFormat,
+DTLanguage,
 DTSet,
 DTSetType;
 
@@ -41,6 +42,7 @@ RLM_ARRAY_TYPE(DTCardType)
 RLM_ARRAY_TYPE(DTComprehensiveGlossary)
 RLM_ARRAY_TYPE(DTComprehensiveRule)
 RLM_ARRAY_TYPE(DTFormat)
+RLM_ARRAY_TYPE(DTLanguage)
 RLM_ARRAY_TYPE(DTSet)
 RLM_ARRAY_TYPE(DTSetType)
 

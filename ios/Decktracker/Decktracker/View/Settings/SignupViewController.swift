@@ -23,12 +23,13 @@ class SignupViewController: PFSignUpViewController {
         
         self.navigationItem.title = "Signup"
         
-        #if !DEBUG
-            // send the screen to Google Analytics
-            let tracker = GAI.sharedInstance().defaultTracker
+#if !DEBUG
+        // send the screen to Google Analytics
+        if let tracker = GAI.sharedInstance().defaultTracker {
             tracker.set(kGAIScreenName, value: "Signup")
             tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject : AnyObject])
-        #endif
+        }
+#endif
     }
 
     override func didReceiveMemoryWarning() {

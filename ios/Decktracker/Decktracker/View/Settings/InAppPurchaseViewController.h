@@ -13,8 +13,8 @@
 
 @protocol InAppPurchaseViewControllerDelegate
 
--(void) productPurchaseCancelled;
 -(void) productPurchaseSucceeded:(NSString*) productID;
+-(void) productPurchaseCancelled;
 
 @end
 

@@ -1202,7 +1202,7 @@
     if ([specifier.key isEqualToString:@"format"])
     {
         NSMutableArray *arrFormats = [[NSMutableArray alloc] init];
-        for (DTFormat *format in [DTFormat MR_findAllSortedBy:@"name" ascending:YES])
+        for (DTFormat *format in [[DTFormat allObjects] sortedResultsUsingProperty:@"name" ascending:YES])
         {
             [arrFormats addObject:format.name];
         }

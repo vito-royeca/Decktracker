@@ -39,9 +39,10 @@ class PieChartViewController: UIViewController, CPTPlotDataSource {
         
 #if !DEBUG
         // send the screen to Google Analytics
-        let tracker = GAI.sharedInstance().defaultTracker
-        tracker.set(kGAIScreenName, value: self.navigationItem.title)
-        tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject : AnyObject])
+        if let tracker = GAI.sharedInstance().defaultTracker {
+            tracker.set(kGAIScreenName, value: self.navigationItem.title)
+            tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject : AnyObject])
+        }
 #endif
     }
 
@@ -75,7 +76,7 @@ class PieChartViewController: UIViewController, CPTPlotDataSource {
         graph.axisSet = nil
         
         // 2 - Set up text style
-        let textStyle = CPTMutableTextStyle.textStyle() as! CPTMutableTextStyle
+        let textStyle = CPTMutableTextStyle() //.textStyle() as! CPTMutableTextStyle
         textStyle.color = CPTColor.grayColor()
         textStyle.fontName = "Helvetica-Bold"
         textStyle.fontSize = 16.0
@@ -83,7 +84,7 @@ class PieChartViewController: UIViewController, CPTPlotDataSource {
         // 3 - Configure title
         graph.title = graphTitle
         graph.titleTextStyle = textStyle
-        graph.titlePlotAreaFrameAnchor = CPTRectAnchorTop
+        graph.titlePlotAreaFrameAnchor = CPTRectAnchor.Top
         graph.titleDisplacement = CGPoint(x:0, y:-80)
         
         graph.applyTheme(CPTTheme(named: kCPTPlainWhiteTheme))
@@ -95,17 +96,17 @@ class PieChartViewController: UIViewController, CPTPlotDataSource {
         let graph = self.hostView!.hostedGraph
         
         // 2 - Create chart
-        let pieChart = CPTPieChart()
+        let pieChart = CPTPieChart(frame: self.hostView!.bounds)
         pieChart.dataSource = self
         pieChart.delegate = self
         pieChart.pieRadius = (self.hostView!.bounds.size.width * 0.7) / 2
         pieChart.identifier = graph.title
         pieChart.startAngle = CGFloat(M_PI_4)
-        pieChart.sliceDirection = CPTPieDirectionClockwise
+        pieChart.sliceDirection = CPTPieDirection.Clockwise
         
         // 3 - Create gradient
         var overlayGradient = CPTGradient()
-        overlayGradient.gradientType = CPTGradientTypeRadial
+        overlayGradient.gradientType = CPTGradientType.Radial
         overlayGradient = overlayGradient.addColorStop(CPTColor.blackColor().colorWithAlphaComponent(0.0), atPosition: 0.9)
         overlayGradient = overlayGradient.addColorStop(CPTColor.blackColor().colorWithAlphaComponent(0.4), atPosition: 1.0)
         pieChart.overlayFill = CPTFill(gradient: overlayGradient)
@@ -129,7 +130,7 @@ class PieChartViewController: UIViewController, CPTPlotDataSource {
         
         // 4 - Add legend to graph
         graph.legend = theLegend
-        graph.legendAnchor = CPTRectAnchorBottomRight
+        graph.legendAnchor = CPTRectAnchor.BottomRight
 //        let legendPadding = -(self.view.bounds.size.width / 8)
         graph.legendDisplacement = CGPoint(x: 0, y: 0)
     }
@@ -140,7 +141,8 @@ class PieChartViewController: UIViewController, CPTPlotDataSource {
         return detailsEnabled ? UInt(detailedData!.count) : UInt(conciseData!.count)
     }
     
-    func numberForPlot(plot: CPTPlot, field fieldEnum: UInt, recordIndex index: UInt) -> NSNumber {
+//    func numberForPlot(plot: CPTPlot, field fieldEnum: UInt, recordIndex index: UInt) -> NSNumber {
+    func numberForPlot(plot: CPTPlot, field fieldEnum:UInt, recordIndex index: UInt) -> AnyObject {
         let dict = detailsEnabled ? detailedData![Int(index)] : conciseData![Int(index)]
         let keys = dict.keys
         let part = Double(dict[keys.first!]!)

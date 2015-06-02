@@ -22,9 +22,10 @@ class BarGraphViewController: UIViewController, CPTBarPlotDataSource {
         
 #if !DEBUG
         // send the screen to Google Analytics
-        let tracker = GAI.sharedInstance().defaultTracker
-        tracker.set(kGAIScreenName, value: self.navigationItem.title)
-        tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject : AnyObject])
+        if let tracker = GAI.sharedInstance().defaultTracker {
+            tracker.set(kGAIScreenName, value: self.navigationItem.title)
+            tracker.send(GAIDictionaryBuilder.createScreenView().build() as [NSObject : AnyObject])
+        }
 #endif
     }
 
@@ -59,7 +60,7 @@ class BarGraphViewController: UIViewController, CPTBarPlotDataSource {
         graph.paddingRight  = -5.0
         
         // 3 - Set up styles
-        let titleStyle = CPTMutableTextStyle.textStyle() as! CPTMutableTextStyle
+        let titleStyle = CPTMutableTextStyle() //.textStyle() as CPTMutableTextStyle
         titleStyle.color = CPTColor.grayColor()
         titleStyle.fontName = "Helvetica-Bold"
         titleStyle.fontSize = 16.0
@@ -67,7 +68,7 @@ class BarGraphViewController: UIViewController, CPTBarPlotDataSource {
         // 4 - Set up title
         graph.title = graphTitle
         graph.titleTextStyle = titleStyle
-        graph.titlePlotAreaFrameAnchor = CPTRectAnchorTop
+        graph.titlePlotAreaFrameAnchor = CPTRectAnchor.Top
         graph.titleDisplacement = CGPoint(x:0, y:-80)
         
         // 5 - Set up plot space
@@ -120,11 +121,11 @@ class BarGraphViewController: UIViewController, CPTBarPlotDataSource {
     
     func configureAxes() {
         // 1 - Configure styles
-        let axisTitleStyle = CPTMutableTextStyle.textStyle() as! CPTMutableTextStyle
+        let axisTitleStyle = CPTMutableTextStyle() //.textStyle() as! CPTMutableTextStyle
         axisTitleStyle.color = CPTColor.blackColor()
         axisTitleStyle.fontName = "Helvetica-Bold"
         axisTitleStyle.fontSize = 12
-        let axisLineStyle = CPTMutableLineStyle.lineStyle() as! CPTMutableLineStyle
+        let axisLineStyle = CPTMutableLineStyle()//.lineStyle() as! CPTMutableLineStyle
         axisLineStyle.lineWidth = 2
         axisLineStyle.lineColor = CPTColor.blackColor().colorWithAlphaComponent(1)
         
@@ -151,7 +152,8 @@ class BarGraphViewController: UIViewController, CPTBarPlotDataSource {
         return 2
     }
     
-    func numberForPlot(plot: CPTPlot, field fieldEnum:UInt, recordIndex index: UInt) -> NSNumber {
+//    func numberForPlot(plot: CPTPlot, field fieldEnum:UInt, recordIndex index: UInt) -> NSNumber {
+    func numberForPlot(plot: CPTPlot, field fieldEnum:UInt, recordIndex index: UInt) -> AnyObject {
 //        if fieldEnum == CPTBarPlotFieldBarTip &&
 //        (index < [[[CPDStockPriceStore sharedInstance] datesInWeek] count])) {
 //            if ([plot.identifier isEqual:CPDTickerSymbolAAPL]) {

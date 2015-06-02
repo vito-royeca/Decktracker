@@ -19,6 +19,7 @@
 #import "DTCardRuling.h"
 #import "DTCardType.h"
 #import "DTFormat.h"
+#import "DTLanguage.h"
 #import "DTSet.h"
 #import "Database.h"
 #import "FileManager.h"
@@ -42,12 +43,15 @@
     float _newRating;
     NSString *_currentCardImage;
     NSString *_currentLanguage;
+    
+    NSPredicate *_cardPredicate;
 }
 
 -(void) setCard:(DTCard *)card
 {
     _card = card;
     _currentCardImage = [[FileManager sharedInstance] cardPath:card forLanguage:_currentLanguage];
+    _cardPredicate = [NSPredicate predicateWithFormat:@"set.code = %@ AND number = %@", _card.set.code, _card.number];
     
     [[FileManager sharedInstance] downloadCardImage:_card forLanguage:_currentLanguage immediately:YES];
 
@@ -178,7 +182,7 @@
         }
     }
     
-    _planeswalkerType = [DTCardType MR_findFirstByAttribute:@"name" withValue:@"Planeswalker"];
+    _planeswalkerType = [[DTCardType objectsWithPredicate:[NSPredicate predicateWithFormat:@"name = %@", @"Planeswalker"]] firstObject];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:kCardDownloadCompleted
@@ -402,6 +406,9 @@
 
 - (void) displayDetails
 {
+    // refetch for a new thread
+    self.card = [[DTCard objectsWithPredicate:_cardPredicate] firstObject];
+    
     NSString *path = [[NSBundle mainBundle] bundlePath];
     NSURL *baseURL = [NSURL fileURLWithPath:path];
     
@@ -488,13 +495,20 @@
     {
         [text appendFormat:@"<p><div class='flavorText'>%@</div></p>", [self replaceSymbolsInText:self.card.flavor]];
     }
-    if (self.card.power || self.card.toughness)
+    if (self.card.power.length > 0  || self.card.toughness.length > 0)
     {
         [text appendFormat:@"<p><div class='powerToughness'>%@/%@</div>", self.card.power, self.card.toughness];
     }
-    else if ([self.card.types containsObject:_planeswalkerType])
+    else
     {
-        [text appendFormat:@"<p><div class='powerToughness'>%@</div>", self.card.loyalty];
+        for (DTCardType *cardType in self.card.types)
+        {
+            if (cardType == _planeswalkerType)
+            {
+                [text appendFormat:@"<p><div class='powerToughness'>%d</div>", self.card.loyalty];
+                break;
+            }
+        }
     }
     if (text.length > 0)
     {
@@ -509,21 +523,27 @@
     }
     
     [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
-    if (self.card.cmc)
+    if (self.card.cmc >= 0)
     {
         [html appendFormat:@"<tr><td width='50%%' align='right'><div class='detailHeaderSmall'>Converted Mana Cost&nbsp;&nbsp;</div></td>"];
-        [html appendFormat:@"<td><div class='detailTextSmall'>%@</div></td></tr>", [self replaceSymbolsInText:[NSString stringWithFormat:@"{%@}", self.card.cmc]]];
+    [html appendFormat:@"<td><div class='detailTextSmall'>%@</div></td></tr>", [self replaceSymbolsInText:[NSString stringWithFormat:@"{%@}", [NSNumber numberWithFloat:self.card.cmc]]]];
     }
 
-    if (self.card.power || self.card.toughness)
+    if (self.card.power.length > 0 || self.card.toughness.length > 0)
     {
         [html appendFormat:@"<tr><td width='50%%' align='right'><div class='detailHeaderSmall'>Power/Toughness&nbsp;&nbsp;</div></td>"];
         [html appendFormat:@"<td><div class='detailTextSmall'>%@/%@</div></td></tr>", self.card.power, self.card.toughness];
     }
-    else if ([self.card.types containsObject:_planeswalkerType])
+    else
     {
-        [html appendFormat:@"<tr><td width='50%%' align='right'><div class='detailHeaderSmall'>Loyalty&nbsp;&nbsp;</div></td>"];
-        [html appendFormat:@"<td><div class='detailTextSmall'>%@</div></td></tr>", self.card.loyalty];
+        for (DTCardType *cardType in self.card.types)
+        {
+            if (cardType == _planeswalkerType)
+            {
+                [html appendFormat:@"<tr><td width='50%%' align='right'><div class='detailHeaderSmall'>Loyalty&nbsp;&nbsp;</div></td>"];
+                [html appendFormat:@"<td><div class='detailTextSmall'>%d</div></td></tr>", self.card.loyalty];
+            }
+        }
     }
     
     if (self.card.types.count > 1)
@@ -594,13 +614,13 @@
         [html appendFormat:@"<td><div class='detailTextSmall'><a href='%@'>%@</a></div></td></tr>", link, self.card.artist.name];
     }
     
-    if (self.card.number)
+    if (self.card.number.length > 0)
     {
         [html appendFormat:@"<tr><td width='50%%' align='right'><div class='detailHeaderSmall'>Number&nbsp;&nbsp;</div></td>"];
-        [html appendFormat:@"<td><div class='detailTextSmall'>%@/%@</div></td></tr>", self.card.number, self.card.set.numberOfCards];
+        [html appendFormat:@"<td><div class='detailTextSmall'>%@/%d</div></td></tr>", self.card.number, self.card.set.numberOfCards];
     }
     
-    if (self.card.source)
+    if (self.card.source.length > 0)
     {
         [html appendFormat:@"<tr><td width='50%%' align='right'><div class='detailHeaderSmall'>Source&nbsp;&nbsp;</div></td>"];
         [html appendFormat:@"<td><div class='detailTextSmall'>%@</div></td></tr>", self.card.source];
@@ -609,13 +629,18 @@
     if (self.card.reserved)
     {
         [html appendFormat:@"<tr><td width='50%%' align='right'><div class='detailHeaderSmall'>Will Be Reprinted?&nbsp;&nbsp;</div></td>"];
-        [html appendFormat:@"<td><div class='detailTextSmall'>%@</div></td></tr>", [self.card.reserved boolValue] ? @"No" : @"Yes"];
+        [html appendFormat:@"<td><div class='detailTextSmall'>%@</div></td></tr>", self.card.reserved ? @"No" : @"Yes"];
     }
 
     [html appendFormat:@"<tr><td>&nbsp;</td>"];
     [html appendFormat:@"<tr><td colspan='2'><div class='detailHeader'>Printings</div></td></tr>"];
     [html appendFormat:@"<tr><td colspan='2'><table>"];
-    for (DTSet *set in [[self.card.printings allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"releaseDate" ascending:NO]]])
+    NSMutableArray *sets = [[NSMutableArray alloc] init];
+    for (DTSet *set in self.card.printings)
+    {
+        [sets addObject:set];
+    }
+    for (DTSet *set in [sets sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"releaseDate" ascending:NO]]])
     {
         if (![[Database sharedInstance] isSetPurchased:set])
         {
@@ -637,7 +662,12 @@
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
         [html appendFormat:@"<tr><td colspan='2'><div class='detailHeader'>Names</div></td></tr>"];
         [html appendFormat:@"<tr><td colspan='2'><table>"];
-        for (DTCard *card in [[self.card.names allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]])
+        NSMutableArray *cards = [[NSMutableArray alloc] init];
+        for (DTCard *card in self.card.names)
+        {
+            [cards addObject:card];
+        }
+        for (DTCard *card in [cards sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]])
         {
             if (![[Database sharedInstance] isSetPurchased:card.set])
             {
@@ -657,7 +687,12 @@
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
         [html appendFormat:@"<tr><td colspan='2'><div class='detailHeader'>Variations</div></td></tr>"];
         [html appendFormat:@"<tr><td colspan='2'><table>"];
-        for (DTCard *card in [[self.card.variations allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]])
+        NSMutableArray *cards = [[NSMutableArray alloc] init];
+        for (DTCard *card in self.card.variations)
+        {
+            [cards addObject:card];
+        }
+        for (DTCard *card in [cards sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]])
         {
             if (![[Database sharedInstance] isSetPurchased:card.set])
             {
@@ -676,7 +711,12 @@
     {
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
         [html appendFormat:@"<tr><td colspan='2'><div class='detailHeader'>Rulings</div></td></tr>"];
-        for (DTCardRuling *ruling in [[self.card.rulings allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO]]])
+        NSMutableArray *rulings = [[NSMutableArray alloc] init];
+        for (DTCardRuling *ruling in self.card.rulings)
+        {
+            [rulings addObject:ruling];
+        }
+        for (DTCardRuling *ruling in [rulings sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO]]])
         {
             [html appendFormat:@"<tr><td colspan='2'><i><b>%@</b></i>: %@</td></tr>", [JJJUtil formatDate:ruling.date withFormat:@"YYYY-MM-dd"], [self replaceSymbolsInText:ruling.text]];
         }
@@ -687,8 +727,13 @@
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
         [html appendFormat:@"<tr><td colspan='2'><div class='detailHeader'>Legalities</div></td></tr>"];
         [html appendFormat:@"<tr><td colspan='2'><table width='100%%'>"];
-        for (DTCardLegality *legality in [[self.card.legalities allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"format.name" ascending:YES],
-              [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]])
+        NSMutableArray *legalities = [[NSMutableArray alloc] init];
+        for (DTCardLegality *legality in self.card.legalities)
+        {
+            [legalities addObject:legality];
+        }
+        for (DTCardLegality *legality in [legalities sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"format.name" ascending:YES],
+              [RLMSortDescriptor sortDescriptorWithProperty:@"name" ascending:YES]]])
         {
             [html appendFormat:@"<tr><td width='50%%'><div class='detailTextSmall'>%@</div></td>", legality.format.name];
             [html appendFormat:@"<td><div class='detailTextSmall'>%@</div></td></tr>", legality.name];
@@ -701,11 +746,24 @@
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
         [html appendFormat:@"<tr><td colspan='2'><div class='detailHeader'>Languages</div></td></tr>"];
         [html appendFormat:@"<tr><td colspan='2'><table width='100%%'>"];
-        for (DTCardForeignName *foreignName in [[self.card.foreignNames allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"language" ascending:YES]]])
+        
+        NSMutableArray *foreignNames = [[NSMutableArray alloc] init];
+        for (DTLanguage *language in [self.card.set.languages sortedResultsUsingProperty:@"name" ascending:YES])
+        {
+            for (DTCardForeignName *foreignName in self.card.foreignNames)
+            {
+                if ([foreignName.language.name isEqualToString:language.name])
+                {
+                    [foreignNames addObject:foreignName];
+                }
+            }
+        }
+        
+        for (DTCardForeignName *foreignName in foreignNames)
         {
 //            NSString *link = [[NSString stringWithFormat:@"foreign?set=%@&language=%@&number=%@", self.card.set.code, foreignName.language, self.card.number] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             
-            [html appendFormat:@"<tr><td width='50%%'><div class='detailTextSmall'>%@</div></td>", foreignName.language];
+            [html appendFormat:@"<tr><td width='50%%'><div class='detailTextSmall'>%@</div></td>", foreignName.language.name];
             [html appendFormat:@"<td><div class='detailTextSmall'>%@</div></td></tr>", foreignName.name];
         }
         [html appendFormat:@"</table></td></tr>"];
@@ -856,8 +914,8 @@
              [path isEqualToString:@"variations"])
     {
         self.fetchedResultsController = nil;
-        
-        DTCard *card = [DTCard MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"set.code = %@ AND number = %@", kvPairs[@"set"], kvPairs[@"number"]]];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"set.code = %@ AND number = %@", kvPairs[@"set"], kvPairs[@"number"]];
+        DTCard *card = [[DTCard objectsWithPredicate:predicate] firstObject];
         
         [self setCard:card];
         self.segmentedControl.selectedSegmentIndex = 0;
@@ -866,8 +924,8 @@
     else if ([path isEqualToString:@"foreign"])
     {
         _currentLanguage = kvPairs[@"language"];
-        
-        DTCard *card = [DTCard MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"set.code = %@ AND number = %@", kvPairs[@"set"], kvPairs[@"number"]]];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"set.code = %@ AND number = %@", kvPairs[@"set"], kvPairs[@"number"]];
+        DTCard *card = [[DTCard objectsWithPredicate:predicate] firstObject];
         
         [self setCard:card];
         self.segmentedControl.selectedSegmentIndex = 0;
@@ -894,12 +952,6 @@
 //    webView.frame = newFrame;
 //    webView.scrollView.scrollEnabled = NO;
 //}
-
-#pragma mark - MBProgressHUDDelegate methods
-- (void)hudWasHidden:(MBProgressHUD *)hud
-{
-	[hud removeFromSuperview];
-}
 
 #pragma mark -  MHFacebookImageViewerDatasource
 - (NSInteger) numberImagesForImageViewer:(MHFacebookImageViewer*) imageViewer
@@ -1116,6 +1168,12 @@
     {
         [[Database sharedInstance] rateCard:self.card withRating:_newRating];
     }
+}
+
+#pragma mark - MBProgressHUDDelegate methods
+- (void)hudWasHidden:(MBProgressHUD *)hud
+{
+    [hud removeFromSuperview];
 }
 
 @end

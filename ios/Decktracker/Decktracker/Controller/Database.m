@@ -145,6 +145,21 @@ static Database *_me;
             [self setupDb];
         }
     }
+    
+    // delete core data files
+    for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentPath error:nil])
+    {
+        if ([file hasSuffix:@"sqlite"] ||
+            [file hasSuffix:@"sqlite-shm"] ||
+            [file hasSuffix:@"sqlite-wal"])
+        {
+            [[NSFileManager defaultManager] removeItemAtPath:[documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", file]]
+                                                       error:nil];
+        }
+    }
+    
+    [RLMRealm setDefaultRealmPath:storePath];
+
 #endif
 
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name == %@", @"Eighth Edition"];
@@ -188,7 +203,7 @@ static Database *_me;
                   withSortDescriptors:(NSArray*) sorters
                       withSectionName:(NSString*) sectionName
 {
-    NSPredicate *predicate;
+    /*NSPredicate *predicate;
     
     if (query.length == 0)
     {
@@ -238,7 +253,8 @@ static Database *_me;
     return [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                managedObjectContext:moc
                                                  sectionNameKeyPath:sectionName
-                                                          cacheName:nil];
+                                                          cacheName:nil];*/
+    return nil;
 }
 
 -(NSFetchedResultsController*) search:(NSString*) query
@@ -246,7 +262,7 @@ static Database *_me;
                   withSortDescriptors:(NSArray*) sorters
                       withSectionName:(NSString*) sectionName
 {
-    NSPredicate *predicate2;
+    /*NSPredicate *predicate2;
     
     if (query.length > 0)
     {
@@ -308,12 +324,13 @@ static Database *_me;
     return [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                managedObjectContext:moc
                                                  sectionNameKeyPath:sectionName
-                                                          cacheName:nil];
+                                                          cacheName:nil];*/
+    return nil;
 }
 
 -(NSFetchedResultsController*) advanceSearch:(NSDictionary*)query withSorter:(NSDictionary*) sorter
 {
-    NSMutableString *sql = [[NSMutableString alloc] init];
+    /*NSMutableString *sql = [[NSMutableString alloc] init];
     NSMutableArray *arrParams = [[NSMutableArray alloc] init];
     NSString *defaultFieldName;
     NSArray *defaultFieldValues;
@@ -520,7 +537,8 @@ static Database *_me;
     return [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                managedObjectContext:moc
                                                  sectionNameKeyPath:nil
-                                                          cacheName:nil];
+                                                          cacheName:nil];*/
+    return nil;
 }
 
 -(void) loadInAppSets
@@ -584,15 +602,8 @@ static Database *_me;
         includeInAppPurchase:(BOOL) inAppPurchase
 {
     NSMutableArray *array = [[NSMutableArray alloc] init];
-    
-    NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:@"name"
-                                                                    ascending:YES];
-    NSSortDescriptor *sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:@"set.releaseDate"
-                                                                    ascending:NO];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"DTCard"
-                                              inManagedObjectContext:moc];
+    RLMSortDescriptor *sortDescriptor1 = [RLMSortDescriptor sortDescriptorWithProperty:@"name" ascending:YES];
+//    RLMSortDescriptor *sortDescriptor2 = [RLMSortDescriptor sortDescriptorWithProperty:@"set.releaseDate" ascending:NO];
     
     if (!inAppPurchase)
     {
@@ -606,25 +617,20 @@ static Database *_me;
     }
     
     // do not include cards without images
-    NSPredicate *predWithoutImages = [NSPredicate predicateWithFormat:@"set.magicCardsInfoCode != nil"];
+    NSPredicate *predWithoutImages = [NSPredicate predicateWithFormat:@"set.magicCardsInfoCode != %@", @""];
     predicate = predicate ? [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, predWithoutImages]] : predWithoutImages;
     
-    fetchRequest.entity = entity;
-    fetchRequest.predicate = predicate;
-    fetchRequest.sortDescriptors = @[sortDescriptor1, sortDescriptor2];
-    fetchRequest.resultType = NSManagedObjectIDResultType;
+    RLMResults *results = [[DTCard objectsWithPredicate:predicate] sortedResultsUsingDescriptors:@[sortDescriptor1/*, sortDescriptor2*/]];
     
-    NSError *error = nil;
-    NSArray *arrIDs = [moc executeFetchRequest:fetchRequest error:&error];
-    
-    if (arrIDs.count > 0)
+    if (results.count > 0)
     {
         for (int i=0; i<howMany; i++)
         {
-            int random = arc4random() % (arrIDs.count - 1) + 1;
-            [array addObject:[moc objectWithID:arrIDs[random]]];
+            int random = arc4random() % (results.count - 1) + 1;
+            [array addObject:[results objectAtIndex:random+1]];
         }
     }
+    
     return array;
 }
 
@@ -702,14 +708,20 @@ static Database *_me;
     
     if (bWillFetch)
     {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"set.code = %@ AND name = %@ AND number = %@", card.set.code, card.name, card.number];
+        __block DTCard *card2;
+        
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
+            card2 = [[DTCard objectsWithPredicate:predicate] firstObject];
+#else
+            card2 = card;
 #endif
 
-            NSString *tcgPricing = [[NSString stringWithFormat:@"http://partner.tcgplayer.com/x3/phl.asmx/p?pk=%@&s=%@&p=%@", TCGPLAYER_PARTNER_KEY, card.set.tcgPlayerName, card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-            if (!card.set.tcgPlayerName)
+            NSString *tcgPricing = [[NSString stringWithFormat:@"http://partner.tcgplayer.com/x3/phl.asmx/p?pk=%@&s=%@&p=%@", TCGPLAYER_PARTNER_KEY, card2.set.tcgPlayerName, card2.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            if (!card2.set.tcgPlayerName)
             {
-                tcgPricing = [[NSString stringWithFormat:@"http://partner.tcgplayer.com/x3/phl.asmx/p?pk=%@&p=%@", TCGPLAYER_PARTNER_KEY, card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                tcgPricing = [[NSString stringWithFormat:@"http://partner.tcgplayer.com/x3/phl.asmx/p?pk=%@&p=%@", TCGPLAYER_PARTNER_KEY, card2.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             }
             
             NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:tcgPricing]];
@@ -752,22 +764,21 @@ static Database *_me;
                     }
                 }
             }
-#ifndef DEBUG
-            NSLog(@"DEBUG... ^TCGPlayer: (%@) %@", card.set.code, card.name);
+#ifdef DEBUG
+            NSLog(@"^TCGPlayer: (%@) %@", card2.set.code, card2.name);
+#endif
+            
+#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
             RLMRealm *realm = [RLMRealm defaultRealm];
             [realm beginWriteTransaction];
 #endif
-            
-#ifdef DEBUG
-            NSLog(@"^TCGPlayer: (%@) %@", card.set.code, card.name);
-#endif
-            card.tcgPlayerHighPrice = high ? [high doubleValue] : card.tcgPlayerHighPrice;
-            card.tcgPlayerMidPrice  = mid  ? [mid doubleValue]  : card.tcgPlayerMidPrice;
-            card.tcgPlayerLowPrice  = low  ? [low doubleValue]  : card.tcgPlayerLowPrice;
-            card.tcgPlayerFoilPrice = foil ? [foil doubleValue] : card.tcgPlayerFoilPrice;
-            card.tcgPlayerLink = link ? [JJJUtil trim:link] : card.tcgPlayerLink;
-            card.tcgPlayerFetchDate = [NSDate date];
-#ifndef DEBUG
+            card2.tcgPlayerHighPrice = high ? [high doubleValue] : card2.tcgPlayerHighPrice;
+            card2.tcgPlayerMidPrice  = mid  ? [mid doubleValue]  : card2.tcgPlayerMidPrice;
+            card2.tcgPlayerLowPrice  = low  ? [low doubleValue]  : card2.tcgPlayerLowPrice;
+            card2.tcgPlayerFoilPrice = foil ? [foil doubleValue] : card2.tcgPlayerFoilPrice;
+            card2.tcgPlayerLink = link ? [JJJUtil trim:link] : card2.tcgPlayerLink;
+            card2.tcgPlayerFetchDate = [NSDate date];
+#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
             [realm commitWriteTransaction];
 #endif
             
@@ -784,46 +795,22 @@ static Database *_me;
     }
 }
 
-/*
- + (void)backgroundFetchWithPredicate:(NSPredicate *)predicate
- completion:(void(^)(NSArray *))completion {
- 
- NSManagedObjectContext *privateContext = [NSManagedObjectContext MR_context];
- 
- [privateContext performBlock:^{
- NSArray *privateObjects = [MR_findAllWithPredicate:predicate inContext:privateContext];
- NSArray *privateObjectIDs = [privateObjects valueForKey:@"objectID"];
- // Return to our main thread
- dispatch_async(dispatch_get_main_queue(), ^{
- NSPredicate *mainPredicate = [NSPredicate predicateWithFormat:@"self IN %@", privateObjectIDs];
- NSArray *finalResults = [self MR_findAllWithPredicate:mainPredicate];
- completion(finalResults, nil);
- });
- }];
- }*/
-
--(RLMResults*) fetchSets:(int) howMany
+-(NSArray*) fetchSets:(int) howMany
 {
-//    NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
-//    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:@"releaseDate"
-                                                                    ascending:NO];
-    NSSortDescriptor *sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:@"name"
-                                                                    ascending:YES];
-//    NSEntityDescription *entity = [NSEntityDescription entityForName:@"DTSet"
-//                                              inManagedObjectContext:moc];
-//    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"magicCardsInfoCode != nil"];
-//    
-//    [fetchRequest setEntity:entity];
-//    [fetchRequest setPredicate:predicate];
-//    [fetchRequest setSortDescriptors:@[sortDescriptor1, sortDescriptor2]];
-//    [fetchRequest setFetchLimit:howMany];
-//    
-//    NSError *error = nil;
-//    NSArray *array = [moc executeFetchRequest:fetchRequest error:&error];
-//    return array;
-    
-    return [[DTSet allObjects] sortedResultsUsingDescriptors:@[sortDescriptor1, sortDescriptor2]];
+    RLMSortDescriptor *sortDescriptor1 = [RLMSortDescriptor sortDescriptorWithProperty:@"releaseDate"
+                                                                             ascending:NO];
+    RLMSortDescriptor *sortDescriptor2 = [RLMSortDescriptor  sortDescriptorWithProperty:@"name"
+                                                                              ascending:YES];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"magicCardsInfoCode != %@", @""];
+
+    NSMutableArray *arrResults = [[NSMutableArray alloc] init];
+    RLMResults *sets = [[DTSet objectsWithPredicate:predicate] sortedResultsUsingDescriptors:@[sortDescriptor1, sortDescriptor2]];
+
+    for (int i=0; i<howMany; i++)
+    {
+        [arrResults addObject:[sets objectAtIndex:i]];
+    }
+    return arrResults;
 }
 
 -(BOOL) isCardModern:(DTCard*) card
@@ -876,40 +863,35 @@ static Database *_me;
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error)
     {
         NSMutableArray *arrResults = [[NSMutableArray alloc] init];
-        NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
         
         if (!error)
         {
+            RLMRealm *realm = [RLMRealm defaultRealm];
+            
             for (PFObject *object in objects)
             {
                 NSPredicate *p = [NSPredicate predicateWithFormat:@"(%K = %@ AND %K = %@ AND %K = %@)", @"name", object[@"name"], @"multiverseID", object[@"multiverseID"], @"set.name", object[@"set"][@"name"]];
-                DTCard *card = [DTCard MR_findFirstWithPredicate:p];
+                DTCard *card = [[DTCard objectsWithPredicate:p] firstObject];
                 
-                card.rating = object[@"rating"];
-                if ([moc hasChanges])
-                {
-                    [moc MR_saveToPersistentStoreAndWait];
-                }
+                [realm beginWriteTransaction];
+                card.rating = [object[@"rating"] doubleValue];
+                [realm commitWriteTransaction];
+                
                 [arrResults addObject:card];
             }
         }
         else
         {
-            NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-            NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:@"rating"
-                                                                            ascending:NO];
-            NSSortDescriptor *sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:@"name"
-                                                                            ascending:YES];
-            NSEntityDescription *entity = [NSEntityDescription entityForName:@"DTCard"
-                                                      inManagedObjectContext:moc];
+            RLMSortDescriptor *sortDescriptor1 = [RLMSortDescriptor sortDescriptorWithProperty:@"rating"
+                                                                                     ascending:NO];
+            RLMSortDescriptor *sortDescriptor2 = [RLMSortDescriptor sortDescriptorWithProperty:@"name"
+                                                                                     ascending:YES];
             
-            [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"rating >= 0"]];
-            [fetchRequest setEntity:entity];
-            [fetchRequest setSortDescriptors:@[sortDescriptor1, sortDescriptor2]];
-            [fetchRequest setFetchLimit:limit];
-            
-            NSError *error = nil;
-            [arrResults addObjectsFromArray:[moc executeFetchRequest:fetchRequest error:&error]];
+            RLMResults *results = [[DTCard objectsWithPredicate:[NSPredicate predicateWithFormat:@"rating >= 0"]] sortedResultsUsingDescriptors:@[sortDescriptor1, sortDescriptor2]];
+            for (int i=0; i<limit; i++)
+            {
+                [arrResults addObject:[results objectAtIndex:i]];
+            }
         }
         
         [[NSNotificationCenter defaultCenter] postNotificationName:kFetchTopRatedDone
@@ -945,7 +927,7 @@ static Database *_me;
             for (PFObject *object in objects)
             {
                 NSPredicate *p = [NSPredicate predicateWithFormat:@"(%K = %@ AND %K = %@ AND %K = %@)", @"name", object[@"name"], @"multiverseID", object[@"multiverseID"], @"set.name", object[@"set"][@"name"]];
-                DTCard *card = [DTCard MR_findFirstWithPredicate:p];
+                DTCard *card = [[DTCard objectsWithPredicate:p] firstObject];
                 
                 [arrResults addObject:card];
             }
@@ -962,11 +944,11 @@ static Database *_me;
     DTCard *card = _currentParseQueue[0];
     void (^callbackTask)(PFObject *pfCard) = _currentParseQueue[1];
     
-    void (^callbackFindCard)(NSString *cardName, NSNumber *multiverseID, NSString *cardNumber, PFObject *pfSet) = ^void(NSString *cardName, NSNumber *multiverseID, NSString *cardNumber, PFObject *pfSet)
+    void (^callbackFindCard)(NSString *cardName, int multiverseID, NSString *cardNumber, PFObject *pfSet) = ^void(NSString *cardName, int multiverseID, NSString *cardNumber, PFObject *pfSet)
     {
         __block PFQuery *query = [PFQuery queryWithClassName:@"Card"];
         [query whereKey:@"name" equalTo:cardName];
-        [query whereKey:@"multiverseID" equalTo:multiverseID];
+        [query whereKey:@"multiverseID" equalTo:[NSNumber numberWithInt:multiverseID]];
         [query whereKey:@"set" equalTo:pfSet];
         [query fromLocalDatastore];
         
@@ -993,7 +975,7 @@ static Database *_me;
                 // not found in local datastore, find remotely
                 query = [PFQuery queryWithClassName:@"Card"];
                 [query whereKey:@"name" equalTo:cardName];
-                [query whereKey:@"multiverseID" equalTo:multiverseID];
+                [query whereKey:@"multiverseID" equalTo:[NSNumber numberWithInt:multiverseID]];
                 [query whereKey:@"set" equalTo:pfSet];
                 
                 [[query findObjectsInBackground] continueWithSuccessBlock:^id(BFTask *task)
@@ -1011,7 +993,7 @@ static Database *_me;
                             // not found remotely
                             pfCard = [PFObject objectWithClassName:@"Card"];
                             pfCard[@"name"] = cardName;
-                            pfCard[@"multiverseID"] = multiverseID;
+                            pfCard[@"multiverseID"] = [NSNumber numberWithInt:multiverseID];
                             pfCard[@"set"] = pfSet;
                             pfCard[@"number"] = cardNumber;
                         }
@@ -1028,7 +1010,7 @@ static Database *_me;
          }];
     };
     
-    void (^callbackFindSet)(NSString *setName, NSString *setCode, NSString *cardName, NSNumber *multiverseID, NSString *cardNumber) = ^void(NSString *setName, NSString *setCode, NSString *cardName, NSNumber *multiverseID, NSString *cardNumber)
+    void (^callbackFindSet)(NSString *setName, NSString *setCode, NSString *cardName, int multiverseID, NSString *cardNumber) = ^void(NSString *setName, NSString *setCode, NSString *cardName, int multiverseID, NSString *cardNumber)
     {
         __block PFQuery *query = [PFQuery queryWithClassName:@"Set"];
         [query whereKey:@"name" equalTo:setName];
@@ -1112,9 +1094,11 @@ static Database *_me;
         [pfCard incrementKey:@"numberOfViews"];
         
         [pfCard saveEventually:^(BOOL success, NSError *error) {
-            NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
-            card.rating = pfCard[@"rating"];
-            [moc MR_saveToPersistentStoreAndWait];
+            
+            RLMRealm *realm = [RLMRealm defaultRealm];
+            [realm beginWriteTransaction];
+            card.rating = [pfCard[@"rating"] doubleValue];
+            [realm commitWriteTransaction];
             
             [[NSNotificationCenter defaultCenter] postNotificationName:kParseSyncDone
                                                                 object:nil
@@ -1140,16 +1124,18 @@ static Database *_me;
             [query whereKey:@"card" equalTo:pfCard];
             
             [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-                NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
                 double totalRating = 0;
                 double averageRating = 0;
                 
                 for (PFObject *object in objects)
                 {
-                    DTCardRating *rating = [DTCardRating MR_createEntity];
-                    rating.rating = object[@"rating"];
+                    RLMRealm *realm = [RLMRealm defaultRealm];
+                    [realm beginWriteTransaction];
+                    DTCardRating *rating = [[DTCardRating alloc] init];
+                    rating.rating = [object[@"rating"] floatValue];
                     rating.card = card;
-                    [moc MR_saveToPersistentStoreAndWait];
+                    [realm addObject:rating];
+                    [realm commitWriteTransaction];
                     
                     totalRating += [object[@"rating"] doubleValue];
                 }
@@ -1162,8 +1148,11 @@ static Database *_me;
                 
                 pfCard[@"rating"] = [NSNumber numberWithDouble:averageRating];
                 [pfCard saveEventually:^(BOOL success, NSError *error) {
-                    card.rating = [NSNumber numberWithDouble:averageRating];
-                    [moc MR_saveToPersistentStoreAndWait];
+                    
+                    RLMRealm *realm = [RLMRealm defaultRealm];
+                    [realm beginWriteTransaction];
+                    card.rating = averageRating;
+                    [realm commitWriteTransaction];
                     
                     [[NSNotificationCenter defaultCenter] postNotificationName:kParseSyncDone
                                                                         object:nil
@@ -1431,6 +1420,13 @@ static Database *_me;
 }
 
 #pragma mark: Extra methods
+-(DTCard*) refetchCardForNewThread:(DTCard*) card
+{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"set.code = %@ AND name = %@ AND number = %@", card.set.code, card.name, card.number];
+    
+    return [[DTCard objectsWithPredicate:predicate] firstObject];
+}
+
 //-(void) parseSynch:(DTCard*) card
 //{
 //    void (^callbackParseSynchCard)(PFObject *pfCard) = ^void(PFObject *pfCard) {
@@ -1477,9 +1473,9 @@ static Database *_me;
 
 -(void) updateParseSets
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"magicCardsInfoCode != nil"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"magicCardsInfoCode != %@", @""];
     
-    for (DTSet *set in [DTSet MR_findAllSortedBy:@"releaseDate" ascending:NO withPredicate:predicate])
+    for (DTSet *set in [[DTSet objectsWithPredicate:predicate] sortedResultsUsingProperty:@"releaseDate" ascending:NO] )
     {
         PFQuery *query = [PFQuery queryWithClassName:@"Set"];
         [query whereKey:@"name" equalTo:set.name];
@@ -1511,7 +1507,7 @@ static Database *_me;
 
 -(void) updateParseCards
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"set.magicCardsInfoCode != nil"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"set.magicCardsInfoCode != %@", @""];
     PFQuery *query = [PFQuery queryWithClassName:@"Set"];
     query.limit = 200;
     
@@ -1519,7 +1515,7 @@ static Database *_me;
         
         if (!error)
         {
-            for (DTCard *card in [DTCard MR_findAllSortedBy:@"set.releaseDate" ascending:YES withPredicate:predicate])
+            for (DTCard *card in [[DTCard objectsWithPredicate:predicate] sortedResultsUsingProperty:@"set.releaseDate" ascending:YES])
             {
                 PFObject *pfSet;
                 
@@ -1536,7 +1532,7 @@ static Database *_me;
                 PFQuery *query = [PFQuery queryWithClassName:@"Card"];
                 [query whereKey:@"name" equalTo:card.name];
                 [query whereKey:@"set" equalTo:pfSet];
-                [query whereKey:@"multiverseID" equalTo:card.multiverseID];
+                [query whereKey:@"multiverseID" equalTo:[NSNumber numberWithInt:card.multiverseID]];
                 [query whereKeyDoesNotExist:@"number"];
                 
                 [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {

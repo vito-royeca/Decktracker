@@ -10,6 +10,7 @@
 
 #import "DTCard.h"
 #import "DTCardRarity.h"
+#import "DTCardRating.h"
 #import "DTSet.h"
 
 #import "JJJ/JJJ.h"
@@ -64,7 +65,7 @@
 -(DTCard*) findCardByMultiverseID:(NSString*) multiverseID;
 -(NSString*) cardRarityIndex:(DTCard*) card;
 -(void) fetchTcgPlayerPriceForCard:(DTCard*) card;
--(RLMResults*) fetchSets:(int) howMany;
+-(NSArray*) fetchSets:(int) howMany;
 -(BOOL) isCardModern:(DTCard*) card;
 
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
