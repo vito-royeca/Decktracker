@@ -15,7 +15,7 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
     var viewButton:UIBarButtonItem?
     var tblList:UITableView?
     var colList:UICollectionView?
-    var arrayData:[DTCard]?
+    var cardIds:[String]?
     var viewMode:String?
     var viewLoadedOnce = true
 
@@ -174,7 +174,7 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return arrayData!.count
+        return cardIds!.count
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -183,8 +183,7 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     {
-        let card = arrayData![indexPath.row] as DTCard
-        
+        let cardId = cardIds![indexPath.row]
         var cell = tableView.dequeueReusableCellWithIdentifier(kSearchResultsIdentifier) as! SearchResultsTableViewCell?
         if cell == nil {
             cell = SearchResultsTableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: kSearchResultsIdentifier)
@@ -192,14 +191,15 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
         
         cell!.accessoryType = UITableViewCellAccessoryType.None
         cell!.selectionStyle = UITableViewCellSelectionStyle.None
-        cell!.displayCard(card)
+        cell!.displayCard(cardId)
         cell!.addRank(indexPath.row+1);
         
         return cell!
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let card = arrayData![indexPath.row] as DTCard
+        let cardId = cardIds![indexPath.row]
+        let card = DTCard(forPrimaryKey: cardId)
         let dict = Database.sharedInstance().inAppSettingsForSet(card.set)
         var view:UIViewController?
         
@@ -215,7 +215,7 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
         } else {
             let view2 = CardDetailsViewController()
             view2.addButtonVisible = true
-            view2.card = card
+            view2.cardId = cardId
             view = view2
         }
         
@@ -224,21 +224,22 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
     
 //    MARK: UICollectionViewDataSource
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return arrayData!.count
+        return cardIds!.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let card = arrayData![indexPath.row] as DTCard
+        let cardId = cardIds![indexPath.row]
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Card", forIndexPath: indexPath) as! CardListCollectionViewCell
         
-        cell.displayCard(card)
+        cell.displayCard(cardId)
         cell.addRank(indexPath.row+1)
         return cell
     }
     
 //    MARK: UICollectionViewDelegate
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let card = arrayData![indexPath.row] as DTCard
+        let cardId = cardIds![indexPath.row]
+        let card = DTCard(forPrimaryKey: cardId)
         let dict = Database.sharedInstance().inAppSettingsForSet(card.set)
         var view:UIViewController?
         
@@ -254,7 +255,7 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
         } else {
             let view2 = CardDetailsViewController()
             view2.addButtonVisible = true
-            view2.card = card
+            view2.cardId = cardId
             view = view2
         }
         
@@ -267,16 +268,16 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
         if scrollView.isKindOfClass(UITableView.classForCoder()) ||
            scrollView.isKindOfClass(UICollectionView.classForCoder()) {
             if navigationItem.title == "Top Rated" {
-                if arrayData!.count >= 100 {
+                if cardIds!.count >= 100 {
                     return
                 } else {
-                    Database.sharedInstance().fetchTopRated(10, skip: Int32(arrayData!.count))
+                    Database.sharedInstance().fetchTopRated(10, skip: Int32(cardIds!.count))
                 }
             } else if navigationItem.title == "Top Viewed" {
-                if arrayData!.count >= 100 {
+                if cardIds!.count >= 100 {
                     return
                 } else {
-                    Database.sharedInstance().fetchTopViewed(10, skip: Int32(arrayData!.count))
+                    Database.sharedInstance().fetchTopViewed(10, skip: Int32(cardIds!.count))
                 }
             }
         }
@@ -284,15 +285,15 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
     
     func updateData(sender: AnyObject) {
         let notif = sender as! NSNotification
-        let dict = notif.userInfo as! [String: [DTCard]]
-        let cards = dict["data"]!
+        let dict = notif.userInfo as! [String: [String]]
+        let kardIds = dict["cardIds"]!
         var paths = [NSIndexPath]()
 
-        for card in cards {
-            if !contains(arrayData! as [DTCard], card) {
-                arrayData!.append(card)
-                paths.append(NSIndexPath(forRow: arrayData!.count-1, inSection: 0))
-                FileManager.sharedInstance().downloadCardImage(card, immediately:false)
+        for cardId in kardIds {
+            if !contains(cardIds!, cardId) {
+                cardIds!.append(cardId)
+                paths.append(NSIndexPath(forRow: cardIds!.count-1, inSection: 0))
+                FileManager.sharedInstance().downloadCardImage(cardId, immediately:false)
             }
         }
 

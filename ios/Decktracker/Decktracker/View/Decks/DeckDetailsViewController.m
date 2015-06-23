@@ -15,8 +15,8 @@
 #import "DecksViewController.h"
 #import "DTFormat.h"
 #import "FileManager.h"
-#import "LimitedSearchViewController.h"
 #import "SearchResultsTableViewCell.h"
+
 #import "Decktracker-Swift.h"
 
 #import "ActionSheetStringPicker.h"
@@ -37,14 +37,6 @@
     NSString *_viewMode;
     BOOL _viewLoadedOnce;
 }
-
-@synthesize btnBack = _btnBack;
-@synthesize btnView = _btnView;
-@synthesize segmentedControl = _segmentedControl;
-@synthesize tblCards = _tblCards;
-@synthesize colCards = _colCards;
-@synthesize cardDetailsViewController = _cardDetailsViewController;
-@synthesize deck = _deck;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -389,8 +381,8 @@
 {
     LimitedSearchViewController *view = [[LimitedSearchViewController alloc] init];
     
-    view.predicate = predicate;
-    view.deckName = self.deck.name;
+//    view.predicate = predicate;
+//    view.deckName = self.deck.name;
     [self.navigationController pushViewController:view animated:YES];
 }
 
@@ -809,14 +801,7 @@
                     
                     view2.arrDecks = [[NSMutableArray alloc] initWithArray:@[self.deck.name]];
                     
-                    view2.arrCollections = [[NSMutableArray alloc] init];
-                    for (NSString *file in [[FileManager sharedInstance] listFilesAtPath:@"/Collections"
-                                                                          fromFileSystem:FileSystemLocal])
-                    {
-                        [view2.arrCollections addObject:[file stringByDeletingPathExtension]];
-                    }
-                    
-                    [view2 setCard:card];
+                    [view2 setCardId:card.cardId];
                     view2.createButtonVisible = NO;
                     view2.showCardButtonVisible = YES;
                     view2.segmentedControlIndex = 0;
@@ -1018,8 +1003,7 @@
     }
     
     CardListCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"Card" forIndexPath:indexPath];
-    
-    [cell displayCard:card];
+    [cell displayCard:card.cardId];
     [cell addBadge:badge];
     
     return cell;
@@ -1144,14 +1128,7 @@
             
             view2.arrDecks = [[NSMutableArray alloc] initWithArray:@[self.deck.name]];
             
-            view2.arrCollections = [[NSMutableArray alloc] init];
-            for (NSString *file in [[FileManager sharedInstance] listFilesAtPath:@"/Collections"
-                                                                  fromFileSystem:FileSystemLocal])
-            {
-                [view2.arrCollections addObject:[file stringByDeletingPathExtension]];
-            }
-            
-            [view2 setCard:card];
+            [view2 setCardId:card.cardId];
             view2.createButtonVisible = NO;
             view2.showCardButtonVisible = YES;
             view2.segmentedControlIndex = 0;
@@ -1248,6 +1225,11 @@
 {
     [[Database sharedInstance] loadInAppSets];
     [self.tblCards reloadData];
+}
+
+-(void) productPurchaseCancelled
+{
+    // Unimplemented
 }
 
 @end

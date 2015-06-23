@@ -14,8 +14,6 @@
 
 @implementation SearchResultsTableViewCell
 {
-    DTCard *_card;
-    DTCardType *_planeswalkerType;
     UIFont *_pre8thEditionFont;
     UIFont *_8thEditionFont;
     EDStarRating *_ratingControl;
@@ -42,7 +40,6 @@
     self.imgCrop.layer.cornerRadius = 10.0;
     self.imgCrop.layer.masksToBounds = YES;
 
-    _planeswalkerType = [[DTCardType objectsWithPredicate:[NSPredicate predicateWithFormat:@"name = %@", @"Planeswalker"]] firstObject];
     _pre8thEditionFont = [UIFont fontWithName:@"Magic:the Gathering" size:20];
     _8thEditionFont = [UIFont fontWithName:@"Matrix-Bold" size:18];
     
@@ -83,9 +80,9 @@
     // Configure the view for the selected state
 }
 
--(void) displayCard:(DTCard*) card
+-(void) displayCard:(NSString*) cardId
 {
-    _card = card;
+    self.cardId = cardId;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:kCardDownloadCompleted
@@ -109,6 +106,8 @@
                                                  name:kPriceUpdateDone
                                                object:nil];
     
+    DTCard *card = [DTCard objectForPrimaryKey:self.cardId];
+    
     NSMutableString *type = [[NSMutableString alloc] initWithFormat:@"%@", card.type];
     
     if (card.power.length > 0 || card.toughness.length > 0)
@@ -117,9 +116,11 @@
     }
     else
     {
+        DTCardType *planeswalkerType = [[DTCardType objectsWithPredicate:[NSPredicate predicateWithFormat:@"name = %@", @"Planeswalker"]] firstObject];
+        
         for (DTCardType *cardType in card.types)
         {
-            if (cardType == _planeswalkerType)
+            if (cardType == planeswalkerType)
             {
                 [type appendFormat:@" (Loyalty: %d)", card.loyalty];
                 break;
@@ -127,7 +128,7 @@
         }
     }
     
-    if ([[Database sharedInstance] isCardModern:card])
+    if ([[Database sharedInstance] isCardModern:self.cardId])
     {
         self.lblCardName.font = _8thEditionFont;
     }
@@ -139,17 +140,17 @@
     self.lblCardName.text = [NSString stringWithFormat:@" %@", card.name];
     self.lblDetail.text = type;
     self.lblSet.text = [NSString stringWithFormat:@"%@ (%@)", card.set.name, card.rarity.name];
-    _ratingControl.rating = (float)_card.rating;
+    _ratingControl.rating = (float)card.rating;
     
     // crop image
-    _currentCropPath = [[FileManager sharedInstance] cropPath:card];
+    _currentCropPath = [[FileManager sharedInstance] cropPath:self.cardId];
     self.imgCrop.image = [[UIImage alloc] initWithContentsOfFile:_currentCropPath];
     
-    [[FileManager sharedInstance] downloadCardImage:card immediately:NO];
+    [[FileManager sharedInstance] downloadCardImage:self.cardId immediately:NO];
     [[Database sharedInstance] fetchTcgPlayerPriceForCard:card];
     
     // type image
-    NSString *path = [[FileManager sharedInstance] cardTypePath:card];
+    NSString *path = [[FileManager sharedInstance] cardTypePath:self.cardId];
     if (path)
     {
         UIImage *typeImage = [[UIImage alloc] initWithContentsOfFile:path];
@@ -175,7 +176,7 @@
     }
     else
     {
-        path = [[FileManager sharedInstance] cardSetPath:card];
+        path = [[FileManager sharedInstance] cardSetPath:self.cardId];
         if (path)
         {
             UIImage *setImage = [[UIImage alloc] initWithContentsOfFile:path];
@@ -194,7 +195,7 @@
         }
     }
     
-    NSArray *arrManaImages = [[FileManager sharedInstance] manaImagesForCard:card];
+    NSArray *arrManaImages = [[FileManager sharedInstance] manaImagesForCard:self.cardId];
     
     // remove first
     for (UIView *view in [self.viewManaCost subviews])
@@ -256,13 +257,10 @@
 
 -(void) updatePricing:(id) sender
 {
-    DTCard *card = [sender userInfo][@"card"];
+    NSString *cardId = [sender userInfo][@"cardId"];
     
-    if (_card == card)
+    if (self.cardId == cardId)
     {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"set.code = %@ AND name = %@ AND number = %@", card.set.code, card.name, card.number];
-        _card = [[DTCard objectsWithPredicate:predicate] firstObject];
-        
         [self showCardPricing];
         
         [[NSNotificationCenter defaultCenter] removeObserver:self
@@ -279,34 +277,36 @@
     [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
     formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
     
-    NSString *price = _card.tcgPlayerLowPrice != 0 ? [formatter stringFromNumber:[NSNumber numberWithDouble:_card.tcgPlayerLowPrice]] : @"N/A";
-    UIColor *color = _card.tcgPlayerLowPrice != 0 ? [UIColor redColor] : [UIColor lightGrayColor];
+    DTCard *card = [DTCard objectForPrimaryKey:self.cardId];
+    
+    NSString *price = card.tcgPlayerLowPrice != 0 ? [formatter stringFromNumber:[NSNumber numberWithDouble:card.tcgPlayerLowPrice]] : @"N/A";
+    UIColor *color = card.tcgPlayerLowPrice != 0 ? [UIColor redColor] : [UIColor lightGrayColor];
     self.lblLowPrice.text = price;
     self.lblLowPrice.textColor = color;
     
-    price = _card.tcgPlayerMidPrice != 0 ? [formatter stringFromNumber:[NSNumber numberWithDouble:_card.tcgPlayerMidPrice]] : @"N/A";
-    color = _card.tcgPlayerMidPrice != 0 ? [UIColor blueColor] : [UIColor lightGrayColor];
+    price = card.tcgPlayerMidPrice != 0 ? [formatter stringFromNumber:[NSNumber numberWithDouble:card.tcgPlayerMidPrice]] : @"N/A";
+    color = card.tcgPlayerMidPrice != 0 ? [UIColor blueColor] : [UIColor lightGrayColor];
     self.lblMedianPrice.text = price;
     self.lblMedianPrice.textColor = color;
     
-    price = _card.tcgPlayerHighPrice != 0 ? [formatter stringFromNumber:[NSNumber numberWithDouble:_card.tcgPlayerHighPrice]] : @"N/A";
-    color = _card.tcgPlayerHighPrice != 0 ? [self colorFromHexString:@"#008000"] : [UIColor lightGrayColor];
+    price = card.tcgPlayerHighPrice != 0 ? [formatter stringFromNumber:[NSNumber numberWithDouble:card.tcgPlayerHighPrice]] : @"N/A";
+    color = card.tcgPlayerHighPrice != 0 ? [self colorFromHexString:@"#008000"] : [UIColor lightGrayColor];
     self.lblHighPrice.text = price;
     self.lblHighPrice.textColor = color;
     
-    price = _card.tcgPlayerFoilPrice != 0 ? [formatter stringFromNumber:[NSNumber numberWithDouble:_card.tcgPlayerFoilPrice]] : @"N/A";
-    color = _card.tcgPlayerFoilPrice != 0 ? [self colorFromHexString:@"#998100"] : [UIColor lightGrayColor];
+    price = card.tcgPlayerFoilPrice != 0 ? [formatter stringFromNumber:[NSNumber numberWithDouble:card.tcgPlayerFoilPrice]] : @"N/A";
+    color = card.tcgPlayerFoilPrice != 0 ? [self colorFromHexString:@"#998100"] : [UIColor lightGrayColor];
     self.lblFoilPrice.text = price;
     self.lblFoilPrice.textColor = color;
 }
 
 -(void) loadCropImage:(id) sender
 {
-    DTCard *card = [sender userInfo][@"card"];
+    NSString *cardId = [sender userInfo][@"cardId"];
     
-    if (_card == card)
+    if (self.cardId == cardId)
     {
-        NSString *path = [[FileManager sharedInstance] cropPath:card];
+        NSString *path = [[FileManager sharedInstance] cropPath:self.cardId];
         
         if (![path isEqualToString:_currentCropPath])
         {
@@ -328,10 +328,11 @@
 
 -(void) parseSyncDone:(id) sender
 {
-    DTCard *card = [sender userInfo][@"card"];
+    NSString *cardId = [sender userInfo][@"cardId"];
     
-    if (_card == card)
+    if (self.cardId == cardId)
     {
+        DTCard *card = [DTCard objectForPrimaryKey:self.cardId];
         _ratingControl.rating = (float)card.rating;
         
         [[NSNotificationCenter defaultCenter] removeObserver:self

@@ -1,3 +1,19 @@
+0.93.2 Release notes (2015-06-12)
+=============================================================
+
+### Bugfixes
+
+* Fixed an issue where the packaged OS X Realm.framework was built with
+  `GCC_GENERATE_TEST_COVERAGE_FILES` and `GCC_INSTRUMENT_PROGRAM_FLOW_ARCS`
+  enabled.
+* Fix a memory leak when constructing standalone Swift objects with NSDate
+  properties.
+* Throw an exception rather than asserting when an invalidated object is added
+  to an RLMArray.
+* Fix a case where data loss would occur if a device was hard-powered-off
+  shortly after a write transaction was committed which had to expand the Realm
+  file.
+
 0.93.1 Release notes (2015-05-29)
 =============================================================
 
@@ -1025,27 +1041,6 @@ The Objective-C API has been updated and your code will break!
 * Adding appendRow to TightdbTable.
 * Adding object subscripting.
 * Adding method removeColumn on table.
-
-### Bugfixes
-
-* None.
-
-
-
-*Template follows:*
-
-x.x.x Release notes (yyyy-MM-dd)
-=============================================================
-
-?? summary
-
-### API breaking changes
-
-* None.
-
-### Enhancements
-
-* None.
 
 ### Bugfixes
 

@@ -25,8 +25,8 @@ class SetCollectionViewCell: UICollectionViewCell {
         lblNumberOfCards.adjustsFontSizeToFitWidth = true
     }
 
-    func displaySet(set: DTSet) {
-        let path = FileManager.sharedInstance().setPath(set, small: false)
+    func displaySet(setId: String) {
+        let path = FileManager.sharedInstance().setPath(setId, small: false)
         var setImage:UIImage?
         
         if path != nil && NSFileManager.defaultManager().fileExistsAtPath(path) {
@@ -46,13 +46,14 @@ class SetCollectionViewCell: UICollectionViewCell {
             UIGraphicsEndImageContext()
         }
         
-        let dict = Database.sharedInstance().inAppSettingsForSet(set)
+        let dict = Database.sharedInstance().inAppSettingsForSet(setId)
         if dict != nil {
             imgLocked.image = UIImage(named: "locked.png")
         } else {
             imgLocked.image = UIImage(named: "blank.png")
         }
         
+        let set = DTSet(forPrimaryKey: setId)
         lblSetName.text = set.name
         lblReleaseDate.text = JJJUtil.formatDate(set.releaseDate, withFormat:"YYYY-MM-dd")
         lblNumberOfCards.text = "\(set.numberOfCards) cards"

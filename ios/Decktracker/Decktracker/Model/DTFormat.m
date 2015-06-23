@@ -10,4 +10,8 @@
 
 @implementation DTFormat
 
++ (NSArray *)indexedProperties {
+    return @[@"name"];
+}
+
 @end

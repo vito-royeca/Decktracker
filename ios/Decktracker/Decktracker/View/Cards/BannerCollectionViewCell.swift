@@ -14,7 +14,7 @@ class BannerCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var imgCrop: UIImageView!
 
     @IBOutlet weak var imgSet: UIImageView!
-    var card:DTCard?
+    var cardId:String?
     var planeswalkerType:DTCardType?
     var _pre8thEditionFont:UIFont?
     var _8thEditionFont:UIFont?
@@ -32,23 +32,24 @@ class BannerCollectionViewCell: UICollectionViewCell {
         lblCardName.shadowOffset = CGSizeMake(1, 1)
     }
 
-    func displayCard(card: DTCard) {
-        self.card = card
+    func displayCard(cardId: String) {
+        self.cardId = cardId
+        let card = DTCard(forPrimaryKey: self.cardId)
         
         NSNotificationCenter.defaultCenter().removeObserver(self,
             name:kCardDownloadCompleted,  object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self,
             selector:"loadCropImage:",  name:kCardDownloadCompleted, object:nil)
         
-        if Database.sharedInstance().isCardModern(card) {
+        if Database.sharedInstance().isCardModern(self.cardId) {
             lblCardName.font = _8thEditionFont;
         
         } else {
             lblCardName.font = _pre8thEditionFont;
         }
-        lblCardName.text = self.card?.name
+        lblCardName.text = card.name
         
-        _currentCropPath = FileManager.sharedInstance().cropPath(self.card)
+        _currentCropPath = FileManager.sharedInstance().cropPath(self.cardId)
         var cropImage:UIImage?
         var averageColor:UIColor?
 
@@ -65,10 +66,10 @@ class BannerCollectionViewCell: UICollectionViewCell {
         imgCrop.image = cropImage
         lblCardName.shadowColor = cropImage?.patternColor(averageColor)
         lblCardName.textColor = averageColor
-        FileManager.sharedInstance().downloadCardImage(self.card, immediately:false)
+        FileManager.sharedInstance().downloadCardImage(self.cardId, immediately:false)
         
         // set image
-        let path = FileManager.sharedInstance().cardSetPath(card)
+        let path = FileManager.sharedInstance().cardSetPath(self.cardId)
         var setImage = UIImage(contentsOfFile: path)
         imgSet.image = setImage
         // resize the image
@@ -84,12 +85,11 @@ class BannerCollectionViewCell: UICollectionViewCell {
     
     func loadCropImage(sender: AnyObject) {
         let dict = sender.userInfo as Dictionary?
-        let card = dict?["card"] as! DTCard
-    
-        if (self.card == card) {
-            let path = FileManager.sharedInstance().cropPath(card)
+        let cardId = dict?["cardId"] as! String
+        
+        if self.cardId == cardId {
+            let path = FileManager.sharedInstance().cropPath(self.cardId)
             
-
             if path != _currentCropPath {
                 let hiResImage = UIImage(contentsOfFile: path)
                 

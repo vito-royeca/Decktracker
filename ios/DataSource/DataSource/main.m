@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Jovito Royeca. All rights reserved.
 //
 
+#import "Database.h"
 //#import "ImageLoader.h"
 #import "JSONLoader.h"
 #import "RulesLoader.h"
@@ -21,16 +22,19 @@ int main(int argc, const char * argv[])
         /* Step 1 */
         JSONLoader *jsonLoader = [[JSONLoader alloc] init];
         [jsonLoader json2Database];
+//        [jsonLoader updateCardPricing];
         
         /* Step 2 */
         RulesLoader *rulesLoader = [[RulesLoader alloc] init];
-        [rulesLoader parseRules];
+        [rulesLoader json2Database];
 
         /* Optional */
 //        ImageLoader *imageLoader = [[ImageLoader alloc] init];
 //        [imageLoader downloadSetIcons:@[@"DDO"]];
 //        [imageLoader downloadSymbols];
 //        [imageLoader downloadOtherSymbols];
+        
+        [[Database sharedInstance] copyRealmDatabaseToHome];
         
         NSDate *dateEnd = [NSDate date];
         NSTimeInterval timeDifference = [dateEnd timeIntervalSinceDate:dateStart];

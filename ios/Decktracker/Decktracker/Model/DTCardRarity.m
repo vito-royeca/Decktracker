@@ -10,4 +10,8 @@
 
 @implementation DTCardRarity
 
++ (NSArray *)indexedProperties {
+    return @[@"name"];
+}
+
 @end

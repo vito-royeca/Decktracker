@@ -15,7 +15,7 @@ class ThumbCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var lblSetName: UILabel!
     @IBOutlet weak var imgSet: UIImageView!
     
-    var card:DTCard?
+    var cardId:String?
     var currentCropPath:String?
     
     override func awakeFromNib() {
@@ -26,21 +26,23 @@ class ThumbCollectionViewCell: UICollectionViewCell {
         imgCrop.layer.masksToBounds = true
     }
 
-    func displayCard(card: DTCard) {
-        self.card = card
+    func displayCard(cardId: String) {
+        self.cardId = cardId
+        
+        let card = DTCard(forPrimaryKey: self.cardId)
         
         NSNotificationCenter.defaultCenter().removeObserver(self,
             name:kCardDownloadCompleted,  object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self,
             selector:"loadCropImage:",  name:kCardDownloadCompleted, object:nil)
         
-        lblCardName.text = self.card?.name
-        lblSetName.text = self.card?.set.name
+        lblCardName.text = card.name
+        lblSetName.text = card.set.name
         
-        currentCropPath = FileManager.sharedInstance().cropPath(self.card)
+        currentCropPath = FileManager.sharedInstance().cropPath(self.cardId)
         imgCrop.image = UIImage(contentsOfFile: currentCropPath!)
         
-        FileManager.sharedInstance().downloadCardImage(self.card, immediately:false)
+        FileManager.sharedInstance().downloadCardImage(self.cardId, immediately:false)
         
         // set image
         let dict = Database.sharedInstance().inAppSettingsForSet(card.set)
@@ -48,7 +50,7 @@ class ThumbCollectionViewCell: UICollectionViewCell {
             imgSet.image = UIImage(named: "locked.png")
             
         } else {
-            let path = FileManager.sharedInstance().cardSetPath(card)
+            let path = FileManager.sharedInstance().cardSetPath(self.cardId)
             var setImage = UIImage(contentsOfFile: path)
             imgSet.image = setImage
             // resize the image
@@ -65,10 +67,10 @@ class ThumbCollectionViewCell: UICollectionViewCell {
     
     func loadCropImage(sender: AnyObject) {
         let dict = sender.userInfo as Dictionary?
-        let card = dict?["card"] as! DTCard
+        let cardID = dict?["cardId"] as! String
         
-        if (self.card == card) {
-            let path = FileManager.sharedInstance().cropPath(card)
+        if self.cardId == cardId {
+            let path = FileManager.sharedInstance().cropPath(self.cardId)
             
             if path != currentCropPath {
                 let hiResImage = UIImage(contentsOfFile: path)

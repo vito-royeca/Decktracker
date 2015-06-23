@@ -10,4 +10,12 @@
 
 @implementation DTCard
 
++ (NSString *)primaryKey {
+    return @"cardId";
+}
+
++ (NSArray *)indexedProperties {
+    return @[@"name", @"multiverseID"];
+}
+
 @end

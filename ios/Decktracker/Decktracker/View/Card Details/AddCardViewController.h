@@ -9,13 +9,11 @@
 @import UIKit;
 
 #import "DTCard.h"
-#import "InAppPurchaseViewController.h"
 #import "MBProgressHUD.h"
 #import "QuantityTableViewCell.h"
 
-@interface AddCardViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, QuantityTableViewCellDelegate, MBProgressHUDDelegate, InAppPurchaseViewControllerDelegate>
+@interface AddCardViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, QuantityTableViewCellDelegate, MBProgressHUDDelegate>
 
-@property(strong,nonatomic) UISegmentedControl *segmentedControl;
 @property(strong,nonatomic) UITableView *tblAddTo;
 @property(strong,nonatomic) UIBarButtonItem *btnCancel;
 @property(strong,nonatomic) UIBarButtonItem *btnDone;
@@ -23,9 +21,8 @@
 @property(strong,nonatomic) UIBarButtonItem *btnCreate;
 @property(strong,nonatomic) UIToolbar *bottomToolbar;
 
-@property(strong,nonatomic) DTCard *card;
+@property(strong, nonatomic) NSString *cardId;
 @property(strong,nonatomic) NSMutableArray *arrDecks;
-@property(strong,nonatomic) NSMutableArray *arrCollections;
 
 @property(nonatomic) int segmentedControlIndex;
 @property(nonatomic) int selectedDeckIndex;

@@ -17,8 +17,8 @@
 
 @interface CardDetailsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIWebViewDelegate, MBProgressHUDDelegate, MHFacebookImageViewerDatasource, UIAlertViewDelegate>
 
-@property(strong, nonatomic) DTCard *card;
-@property(strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
+@property(strong, nonatomic) NSString *cardId;
+@property(strong, nonatomic) NSArray *cardIds;
 
 @property(strong, nonatomic) UISegmentedControl *segmentedControl;
 @property(strong, nonatomic) UIImageView *cardImage;

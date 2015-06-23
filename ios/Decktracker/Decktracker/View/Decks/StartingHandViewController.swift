@@ -464,7 +464,7 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
             
         cell1!.accessoryType = UITableViewCellAccessoryType.None
         cell1!.selectionStyle = UITableViewCellSelectionStyle.None
-        cell1!.displayCard(card)
+        cell1!.displayCard(card!.cardId)
         cell = cell1;
         
         return cell!
@@ -518,7 +518,7 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Card", forIndexPath: indexPath) as! CardListCollectionViewCell
         
-        cell.displayCard(card!)
+        cell.displayCard(card!.cardId)
         return cell
     }
     

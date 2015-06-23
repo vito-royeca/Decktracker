@@ -10,7 +10,6 @@
 
 @interface MainViewController : UITabBarController<UITabBarControllerDelegate>
 
--(void) addCollectionsProduct;
 -(void) addNavigationController:(UINavigationController*) navController atIndex:(int) index;
 
 @end

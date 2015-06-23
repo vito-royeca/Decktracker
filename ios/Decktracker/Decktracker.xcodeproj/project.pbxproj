@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		77D56A16A583FB0A4C860216 /* CardQuizHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D564E8D46C17B81D56F614 /* CardQuizHomeViewController.swift */; };
 		77D56A818E39E63A1D4A8453 /* CardQuizConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D560F3C5D2147D03F3F0C5 /* CardQuizConstants.swift */; };
+		8C00AC141B2ED4D600748A37 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C00AC131B2ED4D600748A37 /* Realm.framework */; };
+		8C00AC151B2ED4D600748A37 /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8C00AC131B2ED4D600748A37 /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8C00AC171B2ED4F400748A37 /* RLMSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C00AC161B2ED4F400748A37 /* RLMSupport.swift */; };
 		8C0117171ADCAF230075A933 /* CardQuizLeaderboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0117161ADCAF230075A933 /* CardQuizLeaderboardViewController.swift */; };
 		8C01E0FD1ADB9A8800509DDB /* In-App Mana.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C01E0FC1ADB9A8800509DDB /* In-App Mana.plist */; };
 		8C057CED1AE01BAF0016E0F5 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C057CEC1AE01BAF0016E0F5 /* AVFoundation.framework */; };
@@ -28,6 +31,11 @@
 		8C069C451B044E7E004C92E2 /* DTSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C069C351B044E7E004C92E2 /* DTSet.m */; };
 		8C069C461B044E7E004C92E2 /* DTSetType.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C069C371B044E7E004C92E2 /* DTSetType.m */; };
 		8C069C511B044F99004C92E2 /* decktracker.realm in Resources */ = {isa = PBXBuildFile; fileRef = 8C069C501B044F99004C92E2 /* decktracker.realm */; };
+		8C0AE5221B26FCCA00C9139F /* SimpleSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0AE5211B26FCCA00C9139F /* SimpleSearchViewController.swift */; };
+		8C0AE5241B26FD9300C9139F /* AdvanceSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0AE5231B26FD9300C9139F /* AdvanceSearchViewController.swift */; };
+		8C0AE5261B26FEC200C9139F /* NewAdvanceSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0AE5251B26FEC200C9139F /* NewAdvanceSearchViewController.swift */; };
+		8C0AE5281B26FF2B00C9139F /* AdvanceSearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0AE5271B26FF2B00C9139F /* AdvanceSearchResultsViewController.swift */; };
+		8C0AE52A1B26FF7200C9139F /* LimitedSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0AE5291B26FF7200C9139F /* LimitedSearchViewController.swift */; };
 		8C12CD2F1B1D47ED00B817A3 /* images in Resources */ = {isa = PBXBuildFile; fileRef = 8C12CD2E1B1D47ED00B817A3 /* images */; };
 		8C12CD351B1D48FD00B817A3 /* Advance Search in Resources */ = {isa = PBXBuildFile; fileRef = 8C12CD301B1D48FC00B817A3 /* Advance Search */; };
 		8C12CD361B1D48FD00B817A3 /* audio in Resources */ = {isa = PBXBuildFile; fileRef = 8C12CD311B1D48FC00B817A3 /* audio */; };
@@ -36,14 +44,24 @@
 		8C12CD391B1D48FD00B817A3 /* web in Resources */ = {isa = PBXBuildFile; fileRef = 8C12CD341B1D48FD00B817A3 /* web */; };
 		8C13467819A9B17B00E0B3C3 /* SearchResultsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C13467619A9B17B00E0B3C3 /* SearchResultsTableViewCell.m */; };
 		8C13467919A9B17B00E0B3C3 /* SearchResultsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C13467719A9B17B00E0B3C3 /* SearchResultsTableViewCell.xib */; };
-		8C1623191A1C816400ABC4DB /* TopListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1623181A1C816400ABC4DB /* TopListViewController.swift */; };
+		8C1FCDDC1B2855D300754177 /* BannerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1FCDCB1B2855D300754177 /* BannerCollectionViewCell.swift */; };
+		8C1FCDDD1B2855D300754177 /* BannerCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C1FCDCC1B2855D300754177 /* BannerCollectionViewCell.xib */; };
+		8C1FCDDE1B2855D300754177 /* BannerScrollTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1FCDCD1B2855D300754177 /* BannerScrollTableViewCell.swift */; };
+		8C1FCDDF1B2855D300754177 /* BannerScrollTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C1FCDCE1B2855D300754177 /* BannerScrollTableViewCell.xib */; };
+		8C1FCDE01B2855D300754177 /* CardListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1FCDCF1B2855D300754177 /* CardListCollectionViewCell.swift */; };
+		8C1FCDE11B2855D300754177 /* CardListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1FCDD01B2855D300754177 /* CardListViewController.swift */; };
+		8C1FCDE21B2855D300754177 /* CardsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1FCDD11B2855D300754177 /* CardsViewController.swift */; };
+		8C1FCDE31B2855D300754177 /* HorizontalScrollTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1FCDD21B2855D300754177 /* HorizontalScrollTableViewCell.swift */; };
+		8C1FCDE41B2855D300754177 /* HorizontalScrollTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C1FCDD31B2855D300754177 /* HorizontalScrollTableViewCell.xib */; };
+		8C1FCDE51B2855D300754177 /* SetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1FCDD41B2855D300754177 /* SetCollectionViewCell.swift */; };
+		8C1FCDE61B2855D300754177 /* SetCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C1FCDD51B2855D300754177 /* SetCollectionViewCell.xib */; };
+		8C1FCDE71B2855D300754177 /* SetListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1FCDD61B2855D300754177 /* SetListViewController.swift */; };
+		8C1FCDE81B2855D300754177 /* ThumbCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1FCDD71B2855D300754177 /* ThumbCollectionViewCell.swift */; };
+		8C1FCDE91B2855D300754177 /* ThumbCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C1FCDD81B2855D300754177 /* ThumbCollectionViewCell.xib */; };
+		8C1FCDEA1B2855D300754177 /* TopListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1FCDD91B2855D300754177 /* TopListViewController.swift */; };
+		8C1FCDEB1B2855D300754177 /* UIImage+AverageColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1FCDDB1B2855D300754177 /* UIImage+AverageColor.m */; };
 		8C2094E11A5D1611008878D6 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2094E01A5D1611008878D6 /* Accelerate.framework */; };
-		8C26A67919A63FAC00FE00E7 /* AdvanceSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C26A67019A63FAC00FE00E7 /* AdvanceSearchResultsViewController.m */; };
-		8C26A67A19A63FAC00FE00E7 /* AdvanceSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C26A67219A63FAC00FE00E7 /* AdvanceSearchViewController.m */; };
 		8C26A67B19A63FAC00FE00E7 /* FilterInputViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C26A67419A63FAC00FE00E7 /* FilterInputViewController.m */; };
-		8C26A67C19A63FAC00FE00E7 /* NewAdvanceSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C26A67619A63FAC00FE00E7 /* NewAdvanceSearchViewController.m */; };
-		8C26A67D19A63FAC00FE00E7 /* SimpleSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C26A67819A63FAC00FE00E7 /* SimpleSearchViewController.m */; };
-		8C2908AA1A11E8E30045394F /* FeaturedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2908A91A11E8E30045394F /* FeaturedViewController.swift */; };
 		8C2A96D619F4D9510094C97F /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2A96D519F4D9510094C97F /* ImageIO.framework */; };
 		8C2A96D719F4D95C0094C97F /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C66750B19D30AF800A90C03 /* MessageUI.framework */; };
 		8C2A978B19F5027B0094C97F /* Reader-Button-H.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C2A974919F5027B0094C97F /* Reader-Button-H.png */; };
@@ -82,7 +100,6 @@
 		8C2A97AC19F5027B0094C97F /* ThumbsMainToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2A977D19F5027B0094C97F /* ThumbsMainToolbar.m */; };
 		8C2A97AD19F5027B0094C97F /* ThumbsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2A977F19F5027B0094C97F /* ThumbsViewController.m */; };
 		8C2A97AE19F5027B0094C97F /* UIXToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2A978119F5027B0094C97F /* UIXToolbarView.m */; };
-		8C2CFCF519BB1F8B00F5348B /* LimitedSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2CFCF419BB1F8B00F5348B /* LimitedSearchViewController.m */; };
 		8C2E13F11990741100023BAA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2E13F01990741100023BAA /* Foundation.framework */; };
 		8C2E13F31990741100023BAA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2E13F21990741100023BAA /* CoreGraphics.framework */; };
 		8C2E13F51990741100023BAA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2E13F41990741100023BAA /* UIKit.framework */; };
@@ -98,7 +115,6 @@
 		8C2E141A1990741200023BAA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8C2E14181990741200023BAA /* InfoPlist.strings */; };
 		8C2E141C1990741200023BAA /* DecktrackerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2E141B1990741200023BAA /* DecktrackerTests.m */; };
 		8C2E1431199085C700023BAA /* Database.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2E1430199085C700023BAA /* Database.m */; };
-		8C2EC95F1A1670900011BAA2 /* UIImage+AverageColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2EC95E1A1670900011BAA2 /* UIImage+AverageColor.m */; };
 		8C325F3D1A5A60B200FA58E6 /* DecksTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C325F3B1A5A60B200FA58E6 /* DecksTableViewCell.swift */; };
 		8C325F3E1A5A60B200FA58E6 /* DecksTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C325F3C1A5A60B200FA58E6 /* DecksTableViewCell.xib */; };
 		8C325F401A5A778100FA58E6 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C325F3F1A5A778100FA58E6 /* libsqlite3.dylib */; };
@@ -106,15 +122,10 @@
 		8C372C771A2DD900001D7EF3 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C372C761A2DD900001D7EF3 /* Accounts.framework */; };
 		8C372C7B1A2DD908001D7EF3 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C372C7A1A2DD908001D7EF3 /* Social.framework */; };
 		8C378E0019A7434B00B9367F /* MHFacebookImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C378DFF19A7434B00B9367F /* MHFacebookImageViewer.m */; };
-		8C38C0501A15F6E500FC3411 /* BannerScrollTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C38C04E1A15F6E500FC3411 /* BannerScrollTableViewCell.swift */; };
-		8C38C0511A15F6E500FC3411 /* BannerScrollTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C38C04F1A15F6E500FC3411 /* BannerScrollTableViewCell.xib */; };
 		8C3C7D6719DE41CB0030B6E9 /* MTG-JSON.license in Resources */ = {isa = PBXBuildFile; fileRef = 8C3C7D6519DE41CB0030B6E9 /* MTG-JSON.license */; };
 		8C3C7D6E19DE41EE0030B6E9 /* MTG-Image.license in Resources */ = {isa = PBXBuildFile; fileRef = 8C3C7D6C19DE41EE0030B6E9 /* MTG-Image.license */; };
 		8C3E948319E4207200C7EF21 /* AcknowledgementTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3E948119E4207200C7EF21 /* AcknowledgementTableViewCell.m */; };
 		8C3E948419E4207200C7EF21 /* AcknowledgementTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C3E948219E4207200C7EF21 /* AcknowledgementTableViewCell.xib */; };
-		8C45F0931B1C399900C19C8F /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C45F0921B1C399900C19C8F /* Realm.framework */; };
-		8C45F0941B1C399900C19C8F /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8C45F0921B1C399900C19C8F /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		8C45F0991B1C39E200C19C8F /* RLMSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C45F0981B1C39E200C19C8F /* RLMSupport.swift */; };
 		8C45F0A41B1C4B8500C19C8F /* DTLanguage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C45F0A31B1C4B8500C19C8F /* DTLanguage.m */; };
 		8C467CF019F1132600B27F05 /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C467CEF19F1132600B27F05 /* MoreViewController.swift */; };
 		8C49656719B0A01F001C7935 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C49656619B0A01E001C7935 /* Crashlytics.framework */; };
@@ -122,14 +133,10 @@
 		8C5246E119A5137300B10147 /* FileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5246E019A5137300B10147 /* FileManager.m */; };
 		8C524A6519B81E9E005E697B /* DeckDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C524A6419B81E9E005E697B /* DeckDetailsViewController.m */; };
 		8C524A7019B82C01005E697B /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C524A6F19B82C01005E697B /* SettingsViewController.m */; };
-		8C56F56119B5B5BB0084B2B8 /* CardDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C56F56019B5B5BB0084B2B8 /* CardDetailsViewController.m */; };
-		8C5B446A19BEF3C00071604C /* CollectionDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5B446919BEF3C00071604C /* CollectionDetailsViewController.m */; };
-		8C5B446D19BEFFF60071604C /* AddCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5B446C19BEFFF60071604C /* AddCardViewController.m */; };
 		8C5FF9E819AE2EE3003CE54C /* keywords.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C5FF9E719AE2EE3003CE54C /* keywords.plist */; };
 		8C66751119D30B8E00A90C03 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8C66751019D30B8E00A90C03 /* Settings.bundle */; };
 		8C6847B619EE42370074960E /* JJJ.xcodeproj in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C6847A919EE41FF0074960E /* JJJ.xcodeproj */; };
 		8C6847B919EE426C0074960E /* libJJJ.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C6847B019EE41FF0074960E /* libJJJ.a */; };
-		8C71A0A21A28127A00162CA2 /* SetListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C71A0A11A28127A00162CA2 /* SetListViewController.swift */; };
 		8C74B82B1A10A2F3004A350F /* DeckIASKSettingsStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C74B82A1A10A2F3004A350F /* DeckIASKSettingsStore.m */; };
 		8C89BD4419DD33870070E4F5 /* script.pl in Resources */ = {isa = PBXBuildFile; fileRef = 8C89BD4219DD33870070E4F5 /* script.pl */; };
 		8C89BD4719DD39F60070E4F5 /* AFNetworking.license in Resources */ = {isa = PBXBuildFile; fileRef = 8C89BD4619DD39F60070E4F5 /* AFNetworking.license */; };
@@ -139,18 +146,13 @@
 		8C89BD5319DD4FFE0070E4F5 /* InAppSettingsKit.license in Resources */ = {isa = PBXBuildFile; fileRef = 8C89BD5219DD4FFE0070E4F5 /* InAppSettingsKit.license */; };
 		8C89BD5519DD50160070E4F5 /* MagicalRecord.license in Resources */ = {isa = PBXBuildFile; fileRef = 8C89BD5419DD50160070E4F5 /* MagicalRecord.license */; };
 		8C89BD5719DD50340070E4F5 /* MBProgressHUD.license in Resources */ = {isa = PBXBuildFile; fileRef = 8C89BD5619DD50340070E4F5 /* MBProgressHUD.license */; };
+		8C8F88231B2B1BDF00ABD279 /* AddCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C8F88201B2B1BDF00ABD279 /* AddCardViewController.m */; };
+		8C8F88241B2B1BDF00ABD279 /* CardDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C8F88221B2B1BDF00ABD279 /* CardDetailsViewController.m */; };
 		8C90A17F19C97ADF00F7278C /* Deck.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C90A17E19C97ADF00F7278C /* Deck.m */; };
 		8C911E1C1A526D5D006210B5 /* StartingHandViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C911E1B1A526D5D006210B5 /* StartingHandViewController.swift */; };
 		8C911E2D1A52DF89006210B5 /* PieChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C911E2C1A52DF89006210B5 /* PieChartViewController.swift */; };
 		8C930AA31A090B380061C082 /* ComprehensiveRulesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C930AA21A090B380061C082 /* ComprehensiveRulesViewController.swift */; };
 		8CA376B81A667B6C0041FDAA /* CardQuizGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA376B71A667B6C0041FDAA /* CardQuizGameViewController.swift */; };
-		8CAAA0ED1A15057100DD209D /* HorizontalScrollTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAAA0EB1A15057100DD209D /* HorizontalScrollTableViewCell.swift */; };
-		8CAAA0EE1A15057100DD209D /* HorizontalScrollTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CAAA0EC1A15057100DD209D /* HorizontalScrollTableViewCell.xib */; };
-		8CB550ED1A7FBA360049AD6B /* CardListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB550EC1A7FBA360049AD6B /* CardListCollectionViewCell.swift */; };
-		8CC5BA681A13509600F3BDD2 /* ThumbCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC5BA661A13509600F3BDD2 /* ThumbCollectionViewCell.swift */; };
-		8CC5BA691A13509600F3BDD2 /* ThumbCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CC5BA671A13509600F3BDD2 /* ThumbCollectionViewCell.xib */; };
-		8CC5BA711A1386A700F3BDD2 /* SetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC5BA6F1A1386A700F3BDD2 /* SetCollectionViewCell.swift */; };
-		8CC5BA721A1386A700F3BDD2 /* SetCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CC5BA701A1386A700F3BDD2 /* SetCollectionViewCell.xib */; };
 		8CCE99641A6A80D400ECCA1C /* CustomViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CCE99591A6A80D400ECCA1C /* CustomViewCell.m */; };
 		8CCE99651A6A80D400ECCA1C /* CustomViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CCE995A1A6A80D400ECCA1C /* CustomViewCell.xib */; };
 		8CCE99661A6A80D400ECCA1C /* FieldEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CCE995C1A6A80D400ECCA1C /* FieldEditorViewController.m */; };
@@ -167,15 +169,10 @@
 		8CD705981A540E3600CF8425 /* BarGraphViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD705971A540E3600CF8425 /* BarGraphViewController.swift */; };
 		8CE6E0AA1ADA00E700EE2C79 /* database.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8CE6E09F1ADA00E700EE2C79 /* database.xcdatamodeld */; };
 		8CE7F2BE19C0A2D0004FBEA5 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CE7F2BD19C0A2D0004FBEA5 /* StoreKit.framework */; };
-		8CE971C61A126C0000D4386B /* BannerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE971C41A126C0000D4386B /* BannerCollectionViewCell.swift */; };
-		8CE971C71A126C0000D4386B /* BannerCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CE971C51A126C0000D4386B /* BannerCollectionViewCell.xib */; };
 		8CEAD8B11AE552DE00F72D3B /* CQManaChooserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEAD8B01AE552DE00F72D3B /* CQManaChooserView.swift */; };
-		8CEF2EAB1A6B395E0026D4EF /* CardListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEF2EAA1A6B395E0026D4EF /* CardListViewController.swift */; };
 		8CF14BF41A2E199600BEC434 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF14BF31A2E199600BEC434 /* LoginViewController.swift */; };
 		8CF3309F1A35B33D00B6301D /* UserAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF3309E1A35B33D00B6301D /* UserAccountViewController.swift */; };
-		8CF418D719C9C6790082E3BC /* Collection.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF418D619C9C6790082E3BC /* Collection.m */; };
 		8CF79A6519A8BFA300BE4246 /* DecksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF79A6419A8BFA300BE4246 /* DecksViewController.m */; };
-		8CF79A6B19A8BFB400BE4246 /* CollectionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF79A6A19A8BFB400BE4246 /* CollectionsViewController.m */; };
 		8CF7F0991B099D3400ADBC01 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF7F0981B099D3400ADBC01 /* libc++.dylib */; };
 		8CF7F0A51B09A67300ADBC01 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF7F0A41B09A67300ADBC01 /* SystemConfiguration.framework */; };
 		8CF7F0A91B09A67A00ADBC01 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF7F0A81B09A67A00ADBC01 /* libz.dylib */; };
@@ -230,7 +227,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				8C45F0941B1C399900C19C8F /* Realm.framework in Embed Frameworks */,
+				8C00AC151B2ED4D600748A37 /* Realm.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -240,6 +237,8 @@
 /* Begin PBXFileReference section */
 		77D560F3C5D2147D03F3F0C5 /* CardQuizConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardQuizConstants.swift; sourceTree = "<group>"; };
 		77D564E8D46C17B81D56F614 /* CardQuizHomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardQuizHomeViewController.swift; sourceTree = "<group>"; };
+		8C00AC131B2ED4D600748A37 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
+		8C00AC161B2ED4F400748A37 /* RLMSupport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RLMSupport.swift; sourceTree = "<group>"; };
 		8C0117161ADCAF230075A933 /* CardQuizLeaderboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardQuizLeaderboardViewController.swift; sourceTree = "<group>"; };
 		8C01E0FC1ADB9A8800509DDB /* In-App Mana.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "In-App Mana.plist"; sourceTree = "<group>"; };
 		8C057CEC1AE01BAF0016E0F5 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -275,6 +274,11 @@
 		8C069C371B044E7E004C92E2 /* DTSetType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTSetType.m; sourceTree = "<group>"; };
 		8C069C4D1B044F6B004C92E2 /* RLMArrays.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMArrays.h; sourceTree = "<group>"; };
 		8C069C501B044F99004C92E2 /* decktracker.realm */ = {isa = PBXFileReference; lastKnownFileType = file; name = decktracker.realm; path = ../../../../data/decktracker.realm; sourceTree = "<group>"; };
+		8C0AE5211B26FCCA00C9139F /* SimpleSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleSearchViewController.swift; sourceTree = "<group>"; };
+		8C0AE5231B26FD9300C9139F /* AdvanceSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvanceSearchViewController.swift; sourceTree = "<group>"; };
+		8C0AE5251B26FEC200C9139F /* NewAdvanceSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewAdvanceSearchViewController.swift; sourceTree = "<group>"; };
+		8C0AE5271B26FF2B00C9139F /* AdvanceSearchResultsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvanceSearchResultsViewController.swift; sourceTree = "<group>"; };
+		8C0AE5291B26FF7200C9139F /* LimitedSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LimitedSearchViewController.swift; sourceTree = "<group>"; };
 		8C12CD2E1B1D47ED00B817A3 /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; name = images; path = ../../../../data/images; sourceTree = "<group>"; };
 		8C12CD301B1D48FC00B817A3 /* Advance Search */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "Advance Search"; path = "../../../../data/Advance Search"; sourceTree = "<group>"; };
 		8C12CD311B1D48FC00B817A3 /* audio */ = {isa = PBXFileReference; lastKnownFileType = folder; name = audio; path = ../../../../data/audio; sourceTree = "<group>"; };
@@ -284,19 +288,26 @@
 		8C13467519A9B17B00E0B3C3 /* SearchResultsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultsTableViewCell.h; sourceTree = "<group>"; };
 		8C13467619A9B17B00E0B3C3 /* SearchResultsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultsTableViewCell.m; sourceTree = "<group>"; };
 		8C13467719A9B17B00E0B3C3 /* SearchResultsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultsTableViewCell.xib; sourceTree = "<group>"; };
-		8C1623181A1C816400ABC4DB /* TopListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopListViewController.swift; sourceTree = "<group>"; };
+		8C1FCDCB1B2855D300754177 /* BannerCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BannerCollectionViewCell.swift; sourceTree = "<group>"; };
+		8C1FCDCC1B2855D300754177 /* BannerCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BannerCollectionViewCell.xib; sourceTree = "<group>"; };
+		8C1FCDCD1B2855D300754177 /* BannerScrollTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BannerScrollTableViewCell.swift; sourceTree = "<group>"; };
+		8C1FCDCE1B2855D300754177 /* BannerScrollTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BannerScrollTableViewCell.xib; sourceTree = "<group>"; };
+		8C1FCDCF1B2855D300754177 /* CardListCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardListCollectionViewCell.swift; sourceTree = "<group>"; };
+		8C1FCDD01B2855D300754177 /* CardListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardListViewController.swift; sourceTree = "<group>"; };
+		8C1FCDD11B2855D300754177 /* CardsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardsViewController.swift; sourceTree = "<group>"; };
+		8C1FCDD21B2855D300754177 /* HorizontalScrollTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HorizontalScrollTableViewCell.swift; sourceTree = "<group>"; };
+		8C1FCDD31B2855D300754177 /* HorizontalScrollTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HorizontalScrollTableViewCell.xib; sourceTree = "<group>"; };
+		8C1FCDD41B2855D300754177 /* SetCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetCollectionViewCell.swift; sourceTree = "<group>"; };
+		8C1FCDD51B2855D300754177 /* SetCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SetCollectionViewCell.xib; sourceTree = "<group>"; };
+		8C1FCDD61B2855D300754177 /* SetListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetListViewController.swift; sourceTree = "<group>"; };
+		8C1FCDD71B2855D300754177 /* ThumbCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbCollectionViewCell.swift; sourceTree = "<group>"; };
+		8C1FCDD81B2855D300754177 /* ThumbCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThumbCollectionViewCell.xib; sourceTree = "<group>"; };
+		8C1FCDD91B2855D300754177 /* TopListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopListViewController.swift; sourceTree = "<group>"; };
+		8C1FCDDA1B2855D300754177 /* UIImage+AverageColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+AverageColor.h"; sourceTree = "<group>"; };
+		8C1FCDDB1B2855D300754177 /* UIImage+AverageColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+AverageColor.m"; sourceTree = "<group>"; };
 		8C2094E01A5D1611008878D6 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
-		8C26A66F19A63FAC00FE00E7 /* AdvanceSearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvanceSearchResultsViewController.h; sourceTree = "<group>"; };
-		8C26A67019A63FAC00FE00E7 /* AdvanceSearchResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvanceSearchResultsViewController.m; sourceTree = "<group>"; };
-		8C26A67119A63FAC00FE00E7 /* AdvanceSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvanceSearchViewController.h; sourceTree = "<group>"; };
-		8C26A67219A63FAC00FE00E7 /* AdvanceSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvanceSearchViewController.m; sourceTree = "<group>"; };
 		8C26A67319A63FAC00FE00E7 /* FilterInputViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterInputViewController.h; sourceTree = "<group>"; };
 		8C26A67419A63FAC00FE00E7 /* FilterInputViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterInputViewController.m; sourceTree = "<group>"; };
-		8C26A67519A63FAC00FE00E7 /* NewAdvanceSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewAdvanceSearchViewController.h; sourceTree = "<group>"; };
-		8C26A67619A63FAC00FE00E7 /* NewAdvanceSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewAdvanceSearchViewController.m; sourceTree = "<group>"; };
-		8C26A67719A63FAC00FE00E7 /* SimpleSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleSearchViewController.h; sourceTree = "<group>"; };
-		8C26A67819A63FAC00FE00E7 /* SimpleSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleSearchViewController.m; sourceTree = "<group>"; };
-		8C2908A91A11E8E30045394F /* FeaturedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeaturedViewController.swift; sourceTree = "<group>"; };
 		8C2A96D519F4D9510094C97F /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		8C2A96DC19F4DA010094C97F /* vfrReader.license */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = vfrReader.license; sourceTree = "<group>"; };
 		8C2A974919F5027B0094C97F /* Reader-Button-H.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Reader-Button-H.png"; sourceTree = "<group>"; };
@@ -355,8 +366,6 @@
 		8C2A977F19F5027B0094C97F /* ThumbsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbsViewController.m; sourceTree = "<group>"; };
 		8C2A978019F5027B0094C97F /* UIXToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIXToolbarView.h; sourceTree = "<group>"; };
 		8C2A978119F5027B0094C97F /* UIXToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIXToolbarView.m; sourceTree = "<group>"; };
-		8C2CFCF319BB1F8B00F5348B /* LimitedSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LimitedSearchViewController.h; sourceTree = "<group>"; };
-		8C2CFCF419BB1F8B00F5348B /* LimitedSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LimitedSearchViewController.m; sourceTree = "<group>"; };
 		8C2E13ED1990741100023BAA /* Decktracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Decktracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C2E13F01990741100023BAA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		8C2E13F21990741100023BAA /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -377,8 +386,6 @@
 		8C2E142B199074A900023BAA /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		8C2E142F199085C700023BAA /* Database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Database.h; sourceTree = "<group>"; };
 		8C2E1430199085C700023BAA /* Database.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Database.m; sourceTree = "<group>"; };
-		8C2EC95D1A1670900011BAA2 /* UIImage+AverageColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+AverageColor.h"; sourceTree = "<group>"; };
-		8C2EC95E1A1670900011BAA2 /* UIImage+AverageColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+AverageColor.m"; sourceTree = "<group>"; };
 		8C325F3B1A5A60B200FA58E6 /* DecksTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecksTableViewCell.swift; sourceTree = "<group>"; };
 		8C325F3C1A5A60B200FA58E6 /* DecksTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DecksTableViewCell.xib; sourceTree = "<group>"; };
 		8C325F3F1A5A778100FA58E6 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
@@ -389,15 +396,11 @@
 		8C372C7A1A2DD908001D7EF3 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		8C378DFE19A7434B00B9367F /* MHFacebookImageViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MHFacebookImageViewer.h; sourceTree = "<group>"; };
 		8C378DFF19A7434B00B9367F /* MHFacebookImageViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MHFacebookImageViewer.m; sourceTree = "<group>"; };
-		8C38C04E1A15F6E500FC3411 /* BannerScrollTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BannerScrollTableViewCell.swift; sourceTree = "<group>"; };
-		8C38C04F1A15F6E500FC3411 /* BannerScrollTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BannerScrollTableViewCell.xib; sourceTree = "<group>"; };
 		8C3C7D6519DE41CB0030B6E9 /* MTG-JSON.license */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "MTG-JSON.license"; sourceTree = "<group>"; };
 		8C3C7D6C19DE41EE0030B6E9 /* MTG-Image.license */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "MTG-Image.license"; sourceTree = "<group>"; };
 		8C3E948019E4207200C7EF21 /* AcknowledgementTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AcknowledgementTableViewCell.h; sourceTree = "<group>"; };
 		8C3E948119E4207200C7EF21 /* AcknowledgementTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AcknowledgementTableViewCell.m; sourceTree = "<group>"; };
 		8C3E948219E4207200C7EF21 /* AcknowledgementTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AcknowledgementTableViewCell.xib; sourceTree = "<group>"; };
-		8C45F0921B1C399900C19C8F /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
-		8C45F0981B1C39E200C19C8F /* RLMSupport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RLMSupport.swift; sourceTree = "<group>"; };
 		8C45F0A21B1C4B8500C19C8F /* DTLanguage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTLanguage.h; sourceTree = "<group>"; };
 		8C45F0A31B1C4B8500C19C8F /* DTLanguage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTLanguage.m; sourceTree = "<group>"; };
 		8C467CEF19F1132600B27F05 /* MoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
@@ -409,17 +412,10 @@
 		8C524A6419B81E9E005E697B /* DeckDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeckDetailsViewController.m; sourceTree = "<group>"; };
 		8C524A6E19B82C01005E697B /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		8C524A6F19B82C01005E697B /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
-		8C56F55F19B5B5BB0084B2B8 /* CardDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardDetailsViewController.h; sourceTree = "<group>"; };
-		8C56F56019B5B5BB0084B2B8 /* CardDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardDetailsViewController.m; sourceTree = "<group>"; };
-		8C5B446819BEF3C00071604C /* CollectionDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionDetailsViewController.h; sourceTree = "<group>"; };
-		8C5B446919BEF3C00071604C /* CollectionDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionDetailsViewController.m; sourceTree = "<group>"; };
-		8C5B446B19BEFFF60071604C /* AddCardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddCardViewController.h; sourceTree = "<group>"; };
-		8C5B446C19BEFFF60071604C /* AddCardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddCardViewController.m; sourceTree = "<group>"; };
 		8C5FF9E719AE2EE3003CE54C /* keywords.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = keywords.plist; sourceTree = "<group>"; };
 		8C66750B19D30AF800A90C03 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		8C66751019D30B8E00A90C03 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		8C6847A919EE41FF0074960E /* JJJ.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JJJ.xcodeproj; path = ../jjj/JJJ/JJJ.xcodeproj; sourceTree = "<group>"; };
-		8C71A0A11A28127A00162CA2 /* SetListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetListViewController.swift; sourceTree = "<group>"; };
 		8C74B8291A10A2F3004A350F /* DeckIASKSettingsStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeckIASKSettingsStore.h; sourceTree = "<group>"; };
 		8C74B82A1A10A2F3004A350F /* DeckIASKSettingsStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeckIASKSettingsStore.m; sourceTree = "<group>"; };
 		8C89BD4219DD33870070E4F5 /* script.pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = script.pl; sourceTree = "<group>"; };
@@ -430,6 +426,10 @@
 		8C89BD5219DD4FFE0070E4F5 /* InAppSettingsKit.license */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = InAppSettingsKit.license; sourceTree = "<group>"; };
 		8C89BD5419DD50160070E4F5 /* MagicalRecord.license */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MagicalRecord.license; sourceTree = "<group>"; };
 		8C89BD5619DD50340070E4F5 /* MBProgressHUD.license */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MBProgressHUD.license; sourceTree = "<group>"; };
+		8C8F881F1B2B1BDF00ABD279 /* AddCardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddCardViewController.h; sourceTree = "<group>"; };
+		8C8F88201B2B1BDF00ABD279 /* AddCardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddCardViewController.m; sourceTree = "<group>"; };
+		8C8F88211B2B1BDF00ABD279 /* CardDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardDetailsViewController.h; sourceTree = "<group>"; };
+		8C8F88221B2B1BDF00ABD279 /* CardDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardDetailsViewController.m; sourceTree = "<group>"; };
 		8C90A17D19C97ADF00F7278C /* Deck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Deck.h; sourceTree = "<group>"; };
 		8C90A17E19C97ADF00F7278C /* Deck.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Deck.m; sourceTree = "<group>"; };
 		8C911E1B1A526D5D006210B5 /* StartingHandViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartingHandViewController.swift; sourceTree = "<group>"; };
@@ -437,13 +437,6 @@
 		8C930AA21A090B380061C082 /* ComprehensiveRulesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComprehensiveRulesViewController.swift; sourceTree = "<group>"; };
 		8CA317C719C56B73001F94F5 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		8CA376B71A667B6C0041FDAA /* CardQuizGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardQuizGameViewController.swift; sourceTree = "<group>"; };
-		8CAAA0EB1A15057100DD209D /* HorizontalScrollTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HorizontalScrollTableViewCell.swift; sourceTree = "<group>"; };
-		8CAAA0EC1A15057100DD209D /* HorizontalScrollTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HorizontalScrollTableViewCell.xib; sourceTree = "<group>"; };
-		8CB550EC1A7FBA360049AD6B /* CardListCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardListCollectionViewCell.swift; sourceTree = "<group>"; };
-		8CC5BA661A13509600F3BDD2 /* ThumbCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbCollectionViewCell.swift; sourceTree = "<group>"; };
-		8CC5BA671A13509600F3BDD2 /* ThumbCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThumbCollectionViewCell.xib; sourceTree = "<group>"; };
-		8CC5BA6F1A1386A700F3BDD2 /* SetCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetCollectionViewCell.swift; sourceTree = "<group>"; };
-		8CC5BA701A1386A700F3BDD2 /* SetCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SetCollectionViewCell.xib; sourceTree = "<group>"; };
 		8CCE99581A6A80D400ECCA1C /* CustomViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomViewCell.h; sourceTree = "<group>"; };
 		8CCE99591A6A80D400ECCA1C /* CustomViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomViewCell.m; sourceTree = "<group>"; };
 		8CCE995A1A6A80D400ECCA1C /* CustomViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomViewCell.xib; sourceTree = "<group>"; };
@@ -475,18 +468,11 @@
 		8CE6E0A91ADA00E700EE2C79 /* Oct-5-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Oct-5-2014.xcdatamodel"; sourceTree = "<group>"; };
 		8CE7F2BD19C0A2D0004FBEA5 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		8CE7F2C219C0A2F7004FBEA5 /* Decktracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Decktracker.entitlements; sourceTree = "<group>"; };
-		8CE971C41A126C0000D4386B /* BannerCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BannerCollectionViewCell.swift; sourceTree = "<group>"; };
-		8CE971C51A126C0000D4386B /* BannerCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BannerCollectionViewCell.xib; sourceTree = "<group>"; };
 		8CEAD8B01AE552DE00F72D3B /* CQManaChooserView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CQManaChooserView.swift; sourceTree = "<group>"; };
-		8CEF2EAA1A6B395E0026D4EF /* CardListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardListViewController.swift; sourceTree = "<group>"; };
 		8CF14BF31A2E199600BEC434 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		8CF3309E1A35B33D00B6301D /* UserAccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAccountViewController.swift; sourceTree = "<group>"; };
-		8CF418D519C9C6790082E3BC /* Collection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Collection.h; sourceTree = "<group>"; };
-		8CF418D619C9C6790082E3BC /* Collection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Collection.m; sourceTree = "<group>"; };
 		8CF79A6319A8BFA300BE4246 /* DecksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DecksViewController.h; sourceTree = "<group>"; };
 		8CF79A6419A8BFA300BE4246 /* DecksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DecksViewController.m; sourceTree = "<group>"; };
-		8CF79A6919A8BFB400BE4246 /* CollectionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionsViewController.h; sourceTree = "<group>"; };
-		8CF79A6A19A8BFB400BE4246 /* CollectionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionsViewController.m; sourceTree = "<group>"; };
 		8CF7F0981B099D3400ADBC01 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		8CF7F0A41B09A67300ADBC01 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		8CF7F0A81B09A67A00ADBC01 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -513,7 +499,7 @@
 				8C372C7B1A2DD908001D7EF3 /* Social.framework in Frameworks */,
 				8C372C771A2DD900001D7EF3 /* Accounts.framework in Frameworks */,
 				8C2A96D719F4D95C0094C97F /* MessageUI.framework in Frameworks */,
-				8C45F0931B1C399900C19C8F /* Realm.framework in Frameworks */,
+				8C00AC141B2ED4D600748A37 /* Realm.framework in Frameworks */,
 				8C2A96D619F4D9510094C97F /* ImageIO.framework in Frameworks */,
 				8C6847B919EE426C0074960E /* libJJJ.a in Frameworks */,
 				8C6847B619EE42370074960E /* JJJ.xcodeproj in Frameworks */,
@@ -551,50 +537,45 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		8C1FCDCA1B2855D300754177 /* Cards */ = {
+			isa = PBXGroup;
+			children = (
+				8C1FCDCB1B2855D300754177 /* BannerCollectionViewCell.swift */,
+				8C1FCDCC1B2855D300754177 /* BannerCollectionViewCell.xib */,
+				8C1FCDCD1B2855D300754177 /* BannerScrollTableViewCell.swift */,
+				8C1FCDCE1B2855D300754177 /* BannerScrollTableViewCell.xib */,
+				8C1FCDCF1B2855D300754177 /* CardListCollectionViewCell.swift */,
+				8C1FCDD01B2855D300754177 /* CardListViewController.swift */,
+				8C1FCDD11B2855D300754177 /* CardsViewController.swift */,
+				8C1FCDD21B2855D300754177 /* HorizontalScrollTableViewCell.swift */,
+				8C1FCDD31B2855D300754177 /* HorizontalScrollTableViewCell.xib */,
+				8C1FCDD41B2855D300754177 /* SetCollectionViewCell.swift */,
+				8C1FCDD51B2855D300754177 /* SetCollectionViewCell.xib */,
+				8C1FCDD61B2855D300754177 /* SetListViewController.swift */,
+				8C1FCDD71B2855D300754177 /* ThumbCollectionViewCell.swift */,
+				8C1FCDD81B2855D300754177 /* ThumbCollectionViewCell.xib */,
+				8C1FCDD91B2855D300754177 /* TopListViewController.swift */,
+				8C1FCDDA1B2855D300754177 /* UIImage+AverageColor.h */,
+				8C1FCDDB1B2855D300754177 /* UIImage+AverageColor.m */,
+			);
+			path = Cards;
+			sourceTree = "<group>";
+		};
 		8C26A66B19A63EA500FE00E7 /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				8C26A66F19A63FAC00FE00E7 /* AdvanceSearchResultsViewController.h */,
-				8C26A67019A63FAC00FE00E7 /* AdvanceSearchResultsViewController.m */,
-				8C26A67119A63FAC00FE00E7 /* AdvanceSearchViewController.h */,
-				8C26A67219A63FAC00FE00E7 /* AdvanceSearchViewController.m */,
+				8C0AE5271B26FF2B00C9139F /* AdvanceSearchResultsViewController.swift */,
+				8C0AE5231B26FD9300C9139F /* AdvanceSearchViewController.swift */,
 				8C26A67319A63FAC00FE00E7 /* FilterInputViewController.h */,
 				8C26A67419A63FAC00FE00E7 /* FilterInputViewController.m */,
-				8C2CFCF319BB1F8B00F5348B /* LimitedSearchViewController.h */,
-				8C2CFCF419BB1F8B00F5348B /* LimitedSearchViewController.m */,
-				8C26A67519A63FAC00FE00E7 /* NewAdvanceSearchViewController.h */,
-				8C26A67619A63FAC00FE00E7 /* NewAdvanceSearchViewController.m */,
+				8C0AE5291B26FF7200C9139F /* LimitedSearchViewController.swift */,
+				8C0AE5251B26FEC200C9139F /* NewAdvanceSearchViewController.swift */,
 				8C13467519A9B17B00E0B3C3 /* SearchResultsTableViewCell.h */,
 				8C13467619A9B17B00E0B3C3 /* SearchResultsTableViewCell.m */,
 				8C13467719A9B17B00E0B3C3 /* SearchResultsTableViewCell.xib */,
-				8C26A67719A63FAC00FE00E7 /* SimpleSearchViewController.h */,
-				8C26A67819A63FAC00FE00E7 /* SimpleSearchViewController.m */,
+				8C0AE5211B26FCCA00C9139F /* SimpleSearchViewController.swift */,
 			);
 			path = Search;
-			sourceTree = "<group>";
-		};
-		8C2908A81A11E8C40045394F /* Featured */ = {
-			isa = PBXGroup;
-			children = (
-				8CE971C41A126C0000D4386B /* BannerCollectionViewCell.swift */,
-				8CE971C51A126C0000D4386B /* BannerCollectionViewCell.xib */,
-				8C38C04E1A15F6E500FC3411 /* BannerScrollTableViewCell.swift */,
-				8C38C04F1A15F6E500FC3411 /* BannerScrollTableViewCell.xib */,
-				8CB550EC1A7FBA360049AD6B /* CardListCollectionViewCell.swift */,
-				8CEF2EAA1A6B395E0026D4EF /* CardListViewController.swift */,
-				8C2908A91A11E8E30045394F /* FeaturedViewController.swift */,
-				8CAAA0EB1A15057100DD209D /* HorizontalScrollTableViewCell.swift */,
-				8CAAA0EC1A15057100DD209D /* HorizontalScrollTableViewCell.xib */,
-				8CC5BA6F1A1386A700F3BDD2 /* SetCollectionViewCell.swift */,
-				8CC5BA701A1386A700F3BDD2 /* SetCollectionViewCell.xib */,
-				8C71A0A11A28127A00162CA2 /* SetListViewController.swift */,
-				8CC5BA661A13509600F3BDD2 /* ThumbCollectionViewCell.swift */,
-				8CC5BA671A13509600F3BDD2 /* ThumbCollectionViewCell.xib */,
-				8C1623181A1C816400ABC4DB /* TopListViewController.swift */,
-				8C2EC95D1A1670900011BAA2 /* UIImage+AverageColor.h */,
-				8C2EC95E1A1670900011BAA2 /* UIImage+AverageColor.m */,
-			);
-			path = Featured;
 			sourceTree = "<group>";
 		};
 		8C2A973E19F502720094C97F /* vfrReader */ = {
@@ -702,6 +683,7 @@
 		8C2E13EF1990741100023BAA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8C00AC131B2ED4D600748A37 /* Realm.framework */,
 				8C2094E01A5D1611008878D6 /* Accelerate.framework */,
 				8C372C761A2DD900001D7EF3 /* Accounts.framework */,
 				8CA317C719C56B73001F94F5 /* AdSupport.framework */,
@@ -718,7 +700,6 @@
 				8CF7F0A81B09A67A00ADBC01 /* libz.dylib */,
 				8C66750B19D30AF800A90C03 /* MessageUI.framework */,
 				8CFA452919E1C580000B5205 /* QuartzCore.framework */,
-				8C45F0921B1C399900C19C8F /* Realm.framework */,
 				8C372C7A1A2DD908001D7EF3 /* Social.framework */,
 				8CE7F2BD19C0A2D0004FBEA5 /* StoreKit.framework */,
 				8CF7F0A41B09A67300ADBC01 /* SystemConfiguration.framework */,
@@ -821,11 +802,10 @@
 		8C2E14261990746100023BAA /* View */ = {
 			isa = PBXGroup;
 			children = (
-				8C56F55B19B5B5770084B2B8 /* Card */,
+				8C8F881E1B2B1BDF00ABD279 /* Card Details */,
 				8CA376B61A667B290041FDAA /* Card Quiz */,
-				8CF79A6019A88B5300BE4246 /* Collections */,
+				8C1FCDCA1B2855D300754177 /* Cards */,
 				8CF79A5C19A88B4500BE4246 /* Decks */,
-				8C2908A81A11E8C40045394F /* Featured */,
 				8CD627A41A6BE7C900382143 /* Life Counter */,
 				8CCE99571A6A7F8B00ECCA1C /* Miscellaneous */,
 				8C467CEE19F112F600B27F05 /* More */,
@@ -868,7 +848,7 @@
 			isa = PBXGroup;
 			children = (
 				8C378DFD19A7433500B9367F /* MHFacebookImageViewer */,
-				8C45F0981B1C39E200C19C8F /* RLMSupport.swift */,
+				8C00AC161B2ED4F400748A37 /* RLMSupport.swift */,
 				8C2A973E19F502720094C97F /* vfrReader */,
 			);
 			path = Libs;
@@ -911,17 +891,6 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
-		8C56F55B19B5B5770084B2B8 /* Card */ = {
-			isa = PBXGroup;
-			children = (
-				8C5B446B19BEFFF60071604C /* AddCardViewController.h */,
-				8C5B446C19BEFFF60071604C /* AddCardViewController.m */,
-				8C56F55F19B5B5BB0084B2B8 /* CardDetailsViewController.h */,
-				8C56F56019B5B5BB0084B2B8 /* CardDetailsViewController.m */,
-			);
-			path = Card;
-			sourceTree = "<group>";
-		};
 		8C6847AA19EE41FF0074960E /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -949,6 +918,17 @@
 				8C2A96DC19F4DA010094C97F /* vfrReader.license */,
 			);
 			path = Licenses;
+			sourceTree = "<group>";
+		};
+		8C8F881E1B2B1BDF00ABD279 /* Card Details */ = {
+			isa = PBXGroup;
+			children = (
+				8C8F881F1B2B1BDF00ABD279 /* AddCardViewController.h */,
+				8C8F88201B2B1BDF00ABD279 /* AddCardViewController.m */,
+				8C8F88211B2B1BDF00ABD279 /* CardDetailsViewController.h */,
+				8C8F88221B2B1BDF00ABD279 /* CardDetailsViewController.m */,
+			);
+			path = "Card Details";
 			sourceTree = "<group>";
 		};
 		8CA376B61A667B290041FDAA /* Card Quiz */ = {
@@ -1008,19 +988,6 @@
 				8C911E1B1A526D5D006210B5 /* StartingHandViewController.swift */,
 			);
 			path = Decks;
-			sourceTree = "<group>";
-		};
-		8CF79A6019A88B5300BE4246 /* Collections */ = {
-			isa = PBXGroup;
-			children = (
-				8CF418D519C9C6790082E3BC /* Collection.h */,
-				8CF418D619C9C6790082E3BC /* Collection.m */,
-				8C5B446819BEF3C00071604C /* CollectionDetailsViewController.h */,
-				8C5B446919BEF3C00071604C /* CollectionDetailsViewController.m */,
-				8CF79A6919A8BFB400BE4246 /* CollectionsViewController.h */,
-				8CF79A6A19A8BFB400BE4246 /* CollectionsViewController.m */,
-			);
-			path = Collections;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1149,29 +1116,31 @@
 				8C2A979719F5027B0094C97F /* Reader-Print.png in Resources */,
 				8C89BD5119DD4FD70070E4F5 /* hpple.license in Resources */,
 				8C12CD2F1B1D47ED00B817A3 /* images in Resources */,
+				8C1FCDE61B2855D300754177 /* SetCollectionViewCell.xib in Resources */,
 				8C2A979119F5027B0094C97F /* Reader-Export.png in Resources */,
 				8C5FF9E819AE2EE3003CE54C /* keywords.plist in Resources */,
 				8CFA21D31A64F8CC00E5409B /* Main.storyboard in Resources */,
+				8C1FCDDF1B2855D300754177 /* BannerScrollTableViewCell.xib in Resources */,
 				8C89BD5319DD4FFE0070E4F5 /* InAppSettingsKit.license in Resources */,
 				8CCFC02E1A3E7C2C004B1853 /* decktracker.plist in Resources */,
 				8C3C7D6E19DE41EE0030B6E9 /* MTG-Image.license in Resources */,
+				8C1FCDDD1B2855D300754177 /* BannerCollectionViewCell.xib in Resources */,
 				8C12CD391B1D48FD00B817A3 /* web in Resources */,
 				8C2A979219F5027B0094C97F /* Reader-Export@2x.png in Resources */,
 				8C3C7D6719DE41CB0030B6E9 /* MTG-JSON.license in Resources */,
 				8C2A979819F5027B0094C97F /* Reader-Print@2x.png in Resources */,
 				8CFA452419E1B69A000B5205 /* FCCircularProgressView.license in Resources */,
 				8C13467919A9B17B00E0B3C3 /* SearchResultsTableViewCell.xib in Resources */,
-				8C38C0511A15F6E500FC3411 /* BannerScrollTableViewCell.xib in Resources */,
 				8C2A979919F5027B0094C97F /* Reader-Thumbs.png in Resources */,
 				8C2A979619F5027B0094C97F /* Reader-Mark-Y@2x.png in Resources */,
 				8C12CD371B1D48FD00B817A3 /* Decks in Resources */,
+				8C1FCDE41B2855D300754177 /* HorizontalScrollTableViewCell.xib in Resources */,
 				8C12CD351B1D48FD00B817A3 /* Advance Search in Resources */,
 				8C2A978B19F5027B0094C97F /* Reader-Button-H.png in Resources */,
 				8C325F3E1A5A60B200FA58E6 /* DecksTableViewCell.xib in Resources */,
 				8C2E13FD1990741100023BAA /* InfoPlist.strings in Resources */,
 				8C12CD381B1D48FD00B817A3 /* rules in Resources */,
 				8C3E948419E4207200C7EF21 /* AcknowledgementTableViewCell.xib in Resources */,
-				8CC5BA721A1386A700F3BDD2 /* SetCollectionViewCell.xib in Resources */,
 				8C2A979419F5027B0094C97F /* Reader-Mark-N@2x.png in Resources */,
 				8C2A979319F5027B0094C97F /* Reader-Mark-N.png in Resources */,
 				8C89BD5519DD50160070E4F5 /* MagicalRecord.license in Resources */,
@@ -1183,15 +1152,13 @@
 				8CCE99651A6A80D400ECCA1C /* CustomViewCell.xib in Resources */,
 				8C2A978E19F5027B0094C97F /* Reader-Button-N@2x.png in Resources */,
 				8C89BD5719DD50340070E4F5 /* MBProgressHUD.license in Resources */,
-				8CE971C71A126C0000D4386B /* BannerCollectionViewCell.xib in Resources */,
 				8C89BD4B19DD3D110070E4F5 /* CorePlot.license in Resources */,
+				8C1FCDE91B2855D300754177 /* ThumbCollectionViewCell.xib in Resources */,
 				8C2A979A19F5027B0094C97F /* Reader-Thumbs@2x.png in Resources */,
 				8C2A978F19F5027B0094C97F /* Reader-Email.png in Resources */,
 				8C2A978D19F5027B0094C97F /* Reader-Button-N.png in Resources */,
 				8C12CD361B1D48FD00B817A3 /* audio in Resources */,
-				8CC5BA691A13509600F3BDD2 /* ThumbCollectionViewCell.xib in Resources */,
 				8C2A979519F5027B0094C97F /* Reader-Mark-Y.png in Resources */,
-				8CAAA0EE1A15057100DD209D /* HorizontalScrollTableViewCell.xib in Resources */,
 				8C89BD4D19DD4F800070E4F5 /* Dropbox.license in Resources */,
 				8C66751119D30B8E00A90C03 /* Settings.bundle in Resources */,
 				8C069C511B044F99004C92E2 /* decktracker.realm in Resources */,
@@ -1288,63 +1255,52 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8CAAA0ED1A15057100DD209D /* HorizontalScrollTableViewCell.swift in Sources */,
-				8C26A67919A63FAC00FE00E7 /* AdvanceSearchResultsViewController.m in Sources */,
 				8C069C411B044E7E004C92E2 /* DTCardType.m in Sources */,
 				8C13467819A9B17B00E0B3C3 /* SearchResultsTableViewCell.m in Sources */,
-				8CB550ED1A7FBA360049AD6B /* CardListCollectionViewCell.swift in Sources */,
 				8CF3309F1A35B33D00B6301D /* UserAccountViewController.swift in Sources */,
 				8CCE996B1A6A80D400ECCA1C /* SubtitleTableViewCell.swift in Sources */,
-				8C26A67D19A63FAC00FE00E7 /* SimpleSearchViewController.m in Sources */,
 				8C2A97A419F5027B0094C97F /* ReaderThumbCache.m in Sources */,
+				8C1FCDE71B2855D300754177 /* SetListViewController.swift in Sources */,
+				8C0AE5221B26FCCA00C9139F /* SimpleSearchViewController.swift in Sources */,
 				8CE6E0AA1ADA00E700EE2C79 /* database.xcdatamodeld in Sources */,
 				8C2A97A519F5027B0094C97F /* ReaderThumbFetch.m in Sources */,
 				8C2A97A319F5027B0094C97F /* ReaderMainToolbar.m in Sources */,
-				8C5B446A19BEF3C00071604C /* CollectionDetailsViewController.m in Sources */,
-				8C2908AA1A11E8E30045394F /* FeaturedViewController.swift in Sources */,
+				8C1FCDE01B2855D300754177 /* CardListCollectionViewCell.swift in Sources */,
+				8C1FCDE31B2855D300754177 /* HorizontalScrollTableViewCell.swift in Sources */,
 				8C74B82B1A10A2F3004A350F /* DeckIASKSettingsStore.m in Sources */,
 				8C378E0019A7434B00B9367F /* MHFacebookImageViewer.m in Sources */,
 				8CA376B81A667B6C0041FDAA /* CardQuizGameViewController.swift in Sources */,
-				8CF79A6B19A8BFB400BE4246 /* CollectionsViewController.m in Sources */,
-				8C1623191A1C816400ABC4DB /* TopListViewController.swift in Sources */,
-				8C26A67A19A63FAC00FE00E7 /* AdvanceSearchViewController.m in Sources */,
 				8C524A7019B82C01005E697B /* SettingsViewController.m in Sources */,
 				8C069C401B044E7E004C92E2 /* DTCardRuling.m in Sources */,
 				8C069C441B044E7E004C92E2 /* DTFormat.m in Sources */,
 				8C2A97A619F5027B0094C97F /* ReaderThumbQueue.m in Sources */,
 				8C0117171ADCAF230075A933 /* CardQuizLeaderboardViewController.swift in Sources */,
 				8C2A97A019F5027B0094C97F /* ReaderDocument.m in Sources */,
-				8C38C0501A15F6E500FC3411 /* BannerScrollTableViewCell.swift in Sources */,
-				8CEF2EAB1A6B395E0026D4EF /* CardListViewController.swift in Sources */,
 				8C2A97A919F5027B0094C97F /* ReaderThumbsView.m in Sources */,
 				8C325F3D1A5A60B200FA58E6 /* DecksTableViewCell.swift in Sources */,
+				8C00AC171B2ED4F400748A37 /* RLMSupport.swift in Sources */,
 				8C2A97A219F5027B0094C97F /* ReaderMainPagebar.m in Sources */,
 				8CD2E1EC19DACE1A00503ACC /* InAppPurchase.m in Sources */,
-				8C71A0A21A28127A00162CA2 /* SetListViewController.swift in Sources */,
 				8C90A17F19C97ADF00F7278C /* Deck.m in Sources */,
 				8CCE99661A6A80D400ECCA1C /* FieldEditorViewController.m in Sources */,
 				8C930AA31A090B380061C082 /* ComprehensiveRulesViewController.swift in Sources */,
+				8C1FCDE11B2855D300754177 /* CardListViewController.swift in Sources */,
 				8CCE99681A6A80D400ECCA1C /* MultilineTableViewCell.swift in Sources */,
-				8C26A67C19A63FAC00FE00E7 /* NewAdvanceSearchViewController.m in Sources */,
 				8C2A97AC19F5027B0094C97F /* ThumbsMainToolbar.m in Sources */,
 				8C2A97AD19F5027B0094C97F /* ThumbsViewController.m in Sources */,
 				8C467CF019F1132600B27F05 /* MoreViewController.swift in Sources */,
 				8CF79A6519A8BFA300BE4246 /* DecksViewController.m in Sources */,
 				8C069C3C1B044E7E004C92E2 /* DTCardForeignName.m in Sources */,
+				8C1FCDDC1B2855D300754177 /* BannerCollectionViewCell.swift in Sources */,
 				8C069C421B044E7E004C92E2 /* DTComprehensiveGlossary.m in Sources */,
 				8C45F0A41B1C4B8500C19C8F /* DTLanguage.m in Sources */,
 				8C069C431B044E7E004C92E2 /* DTComprehensiveRule.m in Sources */,
-				8C45F0991B1C39E200C19C8F /* RLMSupport.swift in Sources */,
-				8C56F56119B5B5BB0084B2B8 /* CardDetailsViewController.m in Sources */,
 				8C2A97A819F5027B0094C97F /* ReaderThumbRequest.m in Sources */,
-				8CC5BA711A1386A700F3BDD2 /* SetCollectionViewCell.swift in Sources */,
 				8CCE99691A6A80D400ECCA1C /* QuantityTableViewCell.m in Sources */,
 				8CEAD8B11AE552DE00F72D3B /* CQManaChooserView.swift in Sources */,
-				8CE971C61A126C0000D4386B /* BannerCollectionViewCell.swift in Sources */,
 				8C069C3E1B044E7E004C92E2 /* DTCardRarity.m in Sources */,
 				8C33E9BE19D73AAB000892D9 /* InAppPurchaseViewController.m in Sources */,
 				8C2A97AA19F5027B0094C97F /* ReaderThumbView.m in Sources */,
-				8C5B446D19BEFFF60071604C /* AddCardViewController.m in Sources */,
 				8C2A97A719F5027B0094C97F /* ReaderThumbRender.m in Sources */,
 				8C2A979C19F5027B0094C97F /* ReaderConstants.m in Sources */,
 				8CCE99641A6A80D400ECCA1C /* CustomViewCell.m in Sources */,
@@ -1354,34 +1310,42 @@
 				8C069C461B044E7E004C92E2 /* DTSetType.m in Sources */,
 				8C069C3F1B044E7E004C92E2 /* DTCardRating.m in Sources */,
 				8C2A97AB19F5027B0094C97F /* ReaderViewController.m in Sources */,
+				8C0AE5261B26FEC200C9139F /* NewAdvanceSearchViewController.swift in Sources */,
 				8C2A97A119F5027B0094C97F /* ReaderDocumentOutline.m in Sources */,
 				8C069C391B044E7E004C92E2 /* DTBlock.m in Sources */,
+				8C1FCDDE1B2855D300754177 /* BannerScrollTableViewCell.swift in Sources */,
 				8C3E948319E4207200C7EF21 /* AcknowledgementTableViewCell.m in Sources */,
-				8C2CFCF519BB1F8B00F5348B /* LimitedSearchViewController.m in Sources */,
 				8C2A979B19F5027B0094C97F /* CGPDFDocument.m in Sources */,
 				8C2A979D19F5027B0094C97F /* ReaderContentPage.m in Sources */,
+				8C1FCDE21B2855D300754177 /* CardsViewController.swift in Sources */,
 				8C524A6519B81E9E005E697B /* DeckDetailsViewController.m in Sources */,
 				8CD705981A540E3600CF8425 /* BarGraphViewController.swift in Sources */,
 				8C911E2D1A52DF89006210B5 /* PieChartViewController.swift in Sources */,
+				8C8F88231B2B1BDF00ABD279 /* AddCardViewController.m in Sources */,
 				8CCE99671A6A80D400ECCA1C /* MainViewController.m in Sources */,
-				8C2EC95F1A1670900011BAA2 /* UIImage+AverageColor.m in Sources */,
 				8C2E1431199085C700023BAA /* Database.m in Sources */,
 				8C069C3D1B044E7E004C92E2 /* DTCardLegality.m in Sources */,
 				8C2E14031990741100023BAA /* AppDelegate.m in Sources */,
 				8C2A97AE19F5027B0094C97F /* UIXToolbarView.m in Sources */,
 				8C2A979F19F5027B0094C97F /* ReaderContentView.m in Sources */,
 				8C911E1C1A526D5D006210B5 /* StartingHandViewController.swift in Sources */,
-				8CC5BA681A13509600F3BDD2 /* ThumbCollectionViewCell.swift in Sources */,
-				8CF418D719C9C6790082E3BC /* Collection.m in Sources */,
+				8C1FCDE51B2855D300754177 /* SetCollectionViewCell.swift in Sources */,
+				8C1FCDE81B2855D300754177 /* ThumbCollectionViewCell.swift in Sources */,
+				8C0AE5241B26FD9300C9139F /* AdvanceSearchViewController.swift in Sources */,
+				8C1FCDEB1B2855D300754177 /* UIImage+AverageColor.m in Sources */,
 				8C2E13FF1990741100023BAA /* main.m in Sources */,
 				8C069C451B044E7E004C92E2 /* DTSet.m in Sources */,
 				8C26A67B19A63FAC00FE00E7 /* FilterInputViewController.m in Sources */,
+				8C1FCDEA1B2855D300754177 /* TopListViewController.swift in Sources */,
 				8CF14BF41A2E199600BEC434 /* LoginViewController.swift in Sources */,
 				8C5246E119A5137300B10147 /* FileManager.m in Sources */,
 				77D56A16A583FB0A4C860216 /* CardQuizHomeViewController.swift in Sources */,
+				8C0AE52A1B26FF7200C9139F /* LimitedSearchViewController.swift in Sources */,
+				8C0AE5281B26FF2B00C9139F /* AdvanceSearchResultsViewController.swift in Sources */,
 				8C4A0BC21AD53985004754CB /* SignupViewController.swift in Sources */,
 				77D56A818E39E63A1D4A8453 /* CardQuizConstants.swift in Sources */,
 				8C069C3A1B044E7E004C92E2 /* DTCard.m in Sources */,
+				8C8F88241B2B1BDF00ABD279 /* CardDetailsViewController.m in Sources */,
 				8C069C3B1B044E7E004C92E2 /* DTCardColor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

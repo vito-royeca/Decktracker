@@ -40,33 +40,32 @@
 -(void) closeDb;
 -(void) copyRealmDatabaseToHome;
 
-#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
--(NSFetchedResultsController*) search:(NSString*) query
-                  withSortDescriptors:(NSArray*) sorters
-                      withSectionName:(NSString*) sectionName;
+-(RLMResults*) findCards:(NSString*) query
+     withSortDescriptors:(NSArray*) sorters
+         withSectionName:(NSString*) sectionName;
 
--(NSFetchedResultsController*) search:(NSString*)query
-                        withPredicate:(NSPredicate*)predicate
-                  withSortDescriptors:(NSArray*) sorters
-                      withSectionName:(NSString*) sectionName;
+-(RLMResults*) findCards:(NSString*)query
+           withPredicate:(NSPredicate*)predicate
+     withSortDescriptors:(NSArray*) sorters
+         withSectionName:(NSString*) sectionName;
 
--(NSFetchedResultsController*) advanceSearch:(NSDictionary*)query withSorter:(NSDictionary*) sorter;
+-(RLMResults*) advanceFindCards:(NSDictionary*)query
+                     withSorter:(NSDictionary*) sorter;
 
 -(void) loadInAppSets;
--(NSDictionary*) inAppSettingsForSet:(DTSet*) set;
+-(NSDictionary*) inAppSettingsForSet:(id) setId;
 -(NSArray*) inAppSetCodes;
 -(BOOL) isSetPurchased:(DTSet*) set;
 -(NSArray*) fetchRandomCards:(int) howMany
                withPredicate:(NSPredicate*) predicate
         includeInAppPurchase:(BOOL) inAppPurchase;
-#endif
 
 -(DTCard*) findCard:(NSString*) card inSet:(NSString*) setCode;
 -(DTCard*) findCardByMultiverseID:(NSString*) multiverseID;
 -(NSString*) cardRarityIndex:(DTCard*) card;
--(void) fetchTcgPlayerPriceForCard:(DTCard*) card;
+-(void) fetchTcgPlayerPriceForCard:(id) cardId;
 -(NSArray*) fetchSets:(int) howMany;
--(BOOL) isCardModern:(DTCard*) card;
+-(BOOL) isCardModern:(id) cardId;
 
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
 -(void) fetchTopRated:(int) limit skip:(int) skip;

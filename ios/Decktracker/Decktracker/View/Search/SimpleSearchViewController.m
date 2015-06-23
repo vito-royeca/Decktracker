@@ -27,13 +27,6 @@
     NSTimer *_searchTimer;
 }
 
-@synthesize titleString = _titleString;
-@synthesize searchBar  = _searchBar;
-@synthesize tblResults = _tblResults;
-@synthesize predicate = _predicate;
-@synthesize fetchedResultsController = _fetchedResultsController;
-@synthesize showTabBar = _showTabBar;
-
 - (NSFetchedResultsController *)fetchedResultsController
 {
     if (_fetchedResultsController != nil)

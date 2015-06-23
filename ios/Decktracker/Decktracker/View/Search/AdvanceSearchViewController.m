@@ -27,10 +27,6 @@
     NSInteger _selectedRow;
 }
 
-@synthesize arrAdvanceSearches = _arrAdvanceSearches;
-@synthesize tblView = _tblView;
-@synthesize fetchedResultsController = _fetchedResultsController;
-
 - (NSFetchedResultsController *)fetchedResultsController
 {
     if (_fetchedResultsController != nil)

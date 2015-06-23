@@ -15,6 +15,10 @@
 #import "TFHpple.h"
 
 @implementation JSONLoader
+{
+    NSMutableDictionary *_dictMagicCardsInfo;
+    NSInteger _globalId;
+}
 
 -(void) json2Database
 {
@@ -23,6 +27,8 @@
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data
                                                          options:NSJSONReadingMutableContainers
                                                            error:nil];
+    _dictMagicCardsInfo = [[NSMutableDictionary alloc] init];
+    _globalId = 0;
 
     [[Database sharedInstance] setupDb];
     
@@ -49,20 +55,44 @@
     {
         NSDictionary *dict = json[setName];
         DTSet *set = [self parseSet:dict];
+//        if (![set.code isEqualToString:@"HOP"])
+//        {
+//            continue;
+//        }//
+        
         NSArray *cards = [self parseCards:dict[@"cards"] forSet:set];
         
         RLMRealm *realm = [RLMRealm defaultRealm];
         [realm beginWriteTransaction];
         set.numberOfCards = (int)cards.count;
         [realm commitWriteTransaction];
+        
+        [_dictMagicCardsInfo removeObjectForKey:set.magicCardsInfoCode];
     }
 
     // Done
     [[Database sharedInstance] closeDb];
-    [[Database sharedInstance] copyRealmDatabaseToHome];
 }
 
 #pragma mark - Update methods
+-(void) updateCardPricing
+{
+    [[Database sharedInstance] setupDb];
+    
+    NSArray *sorters = @[[RLMSortDescriptor sortDescriptorWithProperty:@"releaseDate" ascending:YES],
+                         [RLMSortDescriptor sortDescriptorWithProperty:@"name" ascending:YES]];
+    for (DTCard  *card in [[DTCard allObjects] sortedResultsUsingDescriptors:sorters])
+    {
+        RLMRealm *realm = [RLMRealm defaultRealm];
+        [realm beginWriteTransaction];
+        [[Database sharedInstance] fetchTcgPlayerPriceForCard:card.cardId];
+        [realm commitWriteTransaction];
+    }
+    
+    // Done
+    [[Database sharedInstance] closeDb];
+}
+
 -(void) updateTcgPlayerNameOfSet:(DTSet*) set
 {
     NSString *filePath = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] resourcePath], @"Data/tcgplayer_sets.plist"];
@@ -72,26 +102,36 @@
 
 -(void) updateNumberOfCard:(DTCard*) card
 {
+    NSMutableDictionary *dict = _dictMagicCardsInfo[card.set.magicCardsInfoCode];
+    
+    if (!dict)
+    {
+        NSString *url = [[NSString stringWithFormat:@"http://magiccards.info/%@/en.html", card.set.magicCardsInfoCode] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
+        TFHpple *parser = [TFHpple hppleWithHTMLData:data];
+        
+        dict = [[NSMutableDictionary alloc] init];
+        [dict addEntriesFromDictionary:[self parseCardNumber:[parser searchWithXPathQuery:@"//tr[@class='even']"]]];
+        [dict addEntriesFromDictionary:[self parseCardNumber:[parser searchWithXPathQuery:@"//tr[@class='odd']"]]];
+        
+        [_dictMagicCardsInfo setObject:dict forKey:card.set.magicCardsInfoCode];
+    }
+    
     if (card.number.length > 0 || card.set.magicCardsInfoCode.length <= 0)
     {
         return;
     }
-    
-    NSString *url = [[NSString stringWithFormat:@"http://magiccards.info/%@/en.html", card.set.magicCardsInfoCode] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
-    TFHpple *parser = [TFHpple hppleWithHTMLData:data];
-    
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-    [dict addEntriesFromDictionary:[self parseCardNumber:[parser searchWithXPathQuery:@"//tr[@class='even']"]]];
-    [dict addEntriesFromDictionary:[self parseCardNumber:[parser searchWithXPathQuery:@"//tr[@class='odd']"]]];
     
     for (NSString *key in [dict allKeys])
     {
         if ([[card.name lowercaseString] isEqualToString:[dict[key] lowercaseString]])
         {
             card.number = key;
+            break;
         }
     }
+    
+    [dict removeObjectForKey:card.number];
 }
 
 -(NSDictionary*) parseCardNumber:(NSArray*) nodes
@@ -152,6 +192,7 @@
     if (!set)
     {
         set = [[DTSet alloc] init];
+        set.setId = [NSString stringWithFormat:@"%tu", _globalId];
         set.border = dict[@"border"] ? [self capitalizeFirstLetterOfWords:dict[@"border"]] : @"";
         set.code = dict[@"code"] ? dict[@"code"] : @"";
         set.gathererCode = dict[@"gathererCode"] ? dict[@"gathererCode"] : @"";
@@ -175,6 +216,7 @@
 //        NSLog(@"+Set: %@", set.name);
         [realm addObject:set];
         [realm commitWriteTransaction];
+        _globalId++;
     }
     return set;
 }
@@ -285,6 +327,7 @@
     for (NSDictionary *dict in array)
     {
         DTCard *card = [[DTCard alloc] init];
+        card.cardId = [NSString stringWithFormat:@"%tu", _globalId];
         card.set = set;
         
         card.border = dict[@"border"] ? dict[@"border"] : @"";
@@ -296,7 +339,7 @@
         card.lifeModifier = dict[@"life"] ? [dict[@"life"] intValue] : 0;
         card.loyalty = dict[@"loyalty"] ? [dict[@"loyalty"] intValue] : 0;
         card.manaCost = dict[@"manaCost"] ? dict[@"manaCost"] : @"";
-        card.multiverseID = dict[@"multiverseid"] ? [dict[@"multiverseid"] intValue] : 0;
+        card.multiverseID = dict[@"multiverseid"] ? [dict[@"multiverseid"] intValue] : -1;
         card.name = dict[@"name"] ? dict[@"name"] : @"";
         card.number = dict[@"number"] ? dict[@"number"] : @"";
         [self updateNumberOfCard:card];
@@ -317,7 +360,6 @@
         card.tcgPlayerLink = @"";
         card.tcgPlayerLowPrice = 0.0;
         card.tcgPlayerMidPrice = 0.0;
-        [[Database sharedInstance] fetchTcgPlayerPriceForCard:card];
         card.text = dict[@"text"] ? dict[@"text"] : @"";
         card.timeshifted = dict[@"timeshifted"] ? [dict[@"timeshifted"] boolValue] : false;
         card.toughness = dict[@"toughness"] ? dict[@"toughness"] : @"";
@@ -383,11 +425,14 @@
         
         RLMRealm *realm = [RLMRealm defaultRealm];
         [realm beginWriteTransaction];
-//        NSLog(@"+Card: %@ - %@", set.name, card.name);
+//        NSLog(@"+Card: %@ [%@] - %@", set.name, set.code, card.name);
         [realm addObject:card];
         [realm commitWriteTransaction];
         
-        [cards addObject:card];
+        [cards addObject:card.cardId];
+        
+        [[Database sharedInstance] fetchTcgPlayerPriceForCard:card.cardId];
+        _globalId++;
     }
 
     return cards;

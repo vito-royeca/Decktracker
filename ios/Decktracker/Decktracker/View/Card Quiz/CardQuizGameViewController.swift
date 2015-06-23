@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import Realm
 
 class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InAppPurchaseViewControllerDelegate, CQManaChooserViewDelegate {
 
@@ -36,7 +37,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
     var btnNextCard:UILabel?
     var arrAnswers:Array<Array<UILabel>>?
     var arrQuizzes:[UILabel]?
-    var cards:Array<DTCard>?
+    var cardIds:Array<String>?
     var currentCropPath:String?
     var currentCardPath:String?
     
@@ -432,6 +433,8 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         NSNotificationCenter.defaultCenter().removeObserver(self, name:kCardDownloadCompleted,  object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector:"loadCropImage:",  name:kCardDownloadCompleted, object:nil)
         
+        let card = DTCard(forPrimaryKey: self.cardIds!.first)
+
         // reset the mana labels's colors
         if lblBlack!.textColor != CQTheme.kTileTextColor {
             lblBlack!.textColor = CQTheme.kTileTextColor
@@ -453,7 +456,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         }
         
         // draw the mana cost
-        let manaImages = FileManager.sharedInstance().manaImagesForCard(cards!.first) as! [NSDictionary]
+        let manaImages = FileManager.sharedInstance().manaImagesForCard(self.cardIds!.first) as! [NSDictionary]
         var dX = CGFloat(0)
         var dY = CGFloat(0)
         var index = 0
@@ -483,7 +486,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         // tokenize the answer
         arrAnswers = Array<Array<UILabel>>()
         var lines = [String]()
-        for word in cards!.first!.name.componentsSeparatedByString(" ") {
+        for word in card.name.componentsSeparatedByString(" ") {
             var line = lines.last != nil ? lines.last : word
             
             if word == line {
@@ -551,12 +554,12 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         viewImage!.contentMode = UIViewContentMode.ScaleAspectFit
         self.view.addSubview(viewImage!)
         
-        currentCropPath = FileManager.sharedInstance().cropPath(cards!.first)
+        currentCropPath = FileManager.sharedInstance().cropPath(self.cardIds!.first)
         viewImage!.image = UIImage(contentsOfFile: currentCropPath!)
-        FileManager.sharedInstance().downloadCardImage(cards!.first, immediately:true)
+        FileManager.sharedInstance().downloadCardImage(self.cardIds!.first, immediately:true)
         
         // draw the quiz
-        let quiz = self.quizForCard(cards!.first!)
+        let quiz = self.quizForCard(card)
         index = 0
         arrQuizzes = Array()
         dWidth = self.view.frame.size.width/10
@@ -636,9 +639,9 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         viewImage = UIImageView(frame: viewImageFrame)
         viewImage!.contentMode = UIViewContentMode.ScaleAspectFit
         self.view.addSubview(viewImage!)
-        currentCardPath = FileManager.sharedInstance().cardPath(cards!.first)
+        currentCardPath = FileManager.sharedInstance().cardPath(self.cardIds!.first)
         viewImage!.image = UIImage(contentsOfFile: currentCardPath!)
-        FileManager.sharedInstance().downloadCardImage(cards!.first, immediately:true)
+        FileManager.sharedInstance().downloadCardImage(self.cardIds!.first, immediately:true)
         
         // draw the next card button
         btnNextCard = UILabel(frame: btnNextCardFrame)
@@ -701,11 +704,13 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         let predicate2 = NSPredicate(format: "cmc >= 1 AND cmc <= 15 AND name MATCHES %@", "^.{0,20}")
         predicate = NSCompoundPredicate.andPredicateWithSubpredicates([predicate1, predicate2])
         
-        cards = Array()
-        for card in Database.sharedInstance().fetchRandomCards(kCQMaxCurrentCards, withPredicate: self.predicate, includeInAppPurchase: true) {
-            if self.checkValidCard(card as! DTCard) {
-                FileManager.sharedInstance().downloadCardImage(card as! DTCard, immediately:false)
-                cards!.append(card as! DTCard)
+        cardIds = Array()
+        for x in Database.sharedInstance().fetchRandomCards(kCQMaxCurrentCards, withPredicate: self.predicate, includeInAppPurchase: true) {
+            let card = x as! DTCard
+            if self.checkValidCard(card) {
+                let cardId = card.cardId
+                FileManager.sharedInstance().downloadCardImage(cardId, immediately:false)
+                cardIds!.append(cardId)
             }
         }
         
@@ -713,15 +718,17 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
             let array = split(value!) {$0 == "_"}
             let code = array[0]
             let number = array[1]
-            let card = DTCard.objectsWithPredicate(NSPredicate(format: "set.code = %@ AND number = %@", code, number)).firstObject() as! DTCard
+            let pred = NSPredicate(format: "set.code = %@ AND number = %@", code, number)
+            let card = DTCard.objectsWithPredicate(pred).firstObject() as! DTCard
                 
             if self.checkValidCard(card) {
-                FileManager.sharedInstance().downloadCardImage(card, immediately:true)
-                cards!.insert(card, atIndex:0)
+                let cardId = card.cardId
+                FileManager.sharedInstance().downloadCardImage(cardId, immediately:true)
+                cardIds!.insert(cardId, atIndex:0)
             }
             
         } else {
-            let card = cards!.first! as DTCard
+            let card = DTCard(forPrimaryKey: self.cardIds!.first)
             let value = card.set.code + "_" + card.number
             
             NSUserDefaults.standardUserDefaults().setObject(value, forKey: key!)
@@ -746,7 +753,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         }
 
         // exclude special mana symbols. only include B,U,G,R,W, and Colorless
-        for elem in FileManager.sharedInstance().manaImagesForCard(card) as NSArray {
+        for elem in FileManager.sharedInstance().manaImagesForCard(card.cardId) as NSArray {
             let dict = elem as! NSDictionary
             
             for key in dict.allKeys {
@@ -788,7 +795,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
     
     func rotateCards() {
         // remove the last card
-        self.cards!.removeAtIndex(0)
+        self.cardIds!.removeAtIndex(0)
         
         if self.gameType == kCQEasyCurrentCard {
             NSUserDefaults.standardUserDefaults().removeObjectForKey(kCQEasyCurrentCard)
@@ -798,12 +805,13 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
             NSUserDefaults.standardUserDefaults().removeObjectForKey(kCQHardCurrentCard)
         }
         
-        if self.cards!.count == 0 {
+        if self.cardIds!.count == 0 {
             self.preloadRandomCards()
 
         } else {
             // set up a new card
-            let value = self.cards!.first!.set.code + "_" + self.cards!.first!.number
+            let card = DTCard(forPrimaryKey: cardIds!.first)
+            let value = card.set.code + "_" + card.number
             NSUserDefaults.standardUserDefaults().setObject(value, forKey: self.gameType!)
             NSUserDefaults.standardUserDefaults().synchronize()
         }
@@ -830,10 +838,10 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
     
     func loadCropImage(sender: AnyObject) {
         let dict = sender.userInfo as Dictionary?
-        let card = dict?["card"] as! DTCard
+        let cardId = dict?["cardId"] as! String
         
-        if cards!.first === card {
-            let path = FileManager.sharedInstance().cropPath(card)
+        if cardIds!.first == cardId {
+            let path = FileManager.sharedInstance().cropPath(cardIds!.first!)
             
             if path != currentCropPath {
                 let hiResImage = UIImage(contentsOfFile: path)
@@ -856,10 +864,10 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         }
 
         let dict = sender.userInfo as Dictionary?
-        let card = dict?["card"] as! DTCard
+        let cardId = dict?["cardId"] as! String
         
-        if cards!.first === card {
-            let path = FileManager.sharedInstance().cardPath(card)
+        if cardIds!.first == cardId {
+            let path = FileManager.sharedInstance().cardPath(cardIds!.first!)
             
             if path != currentCardPath {
                 let hiResImage = UIImage(contentsOfFile: path)
@@ -884,7 +892,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         var ccWhite     = 0
         var ccColorless = 0
         
-        for dict in FileManager.sharedInstance().manaImagesForCard(cards!.first) as! [NSDictionary] {
+        for dict in FileManager.sharedInstance().manaImagesForCard(cardIds!.first) as! [NSDictionary] {
             let symbol = dict["symbol"] as! String
             
             if symbol == "B" {
@@ -1000,7 +1008,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
             } else if gameType == kCQHardCurrentCard {
                 NSUserDefaults.standardUserDefaults().removeObjectForKey(kCQHardCurrentCard)
             }
-            self.cards!.removeAtIndex(0)
+            self.cardIds!.removeAtIndex(0)
         }
         self.dismissViewControllerAnimated(false, completion: nil)
     }
@@ -1113,7 +1121,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         let dHeight = self.view.frame.height - 120 - dY
         let dFrame = CGRect(x:dX, y:dY, width:dWidth, height:dHeight)
         
-        let manaChooser = CQManaChooserView(frame: dFrame, title: "Pay the Casting Cost", userMana: userMana, card: cards!.first)
+        let manaChooser = CQManaChooserView(frame: dFrame, title: "Pay the Casting Cost", userMana: userMana!, cardId: cardIds!.first!)
         manaChooser.delegate = self
         self.toggleUI(false)
         
@@ -1180,9 +1188,11 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         answer = answer.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
 
         if answer.rangeOfString("*") == nil {
-            if answer.lowercaseString == cards!.first!.name.lowercaseString {
+            let card = DTCard(forPrimaryKey: cardIds!.first)
+            
+            if answer.lowercaseString == card.name.lowercaseString {
 
-                for dict in FileManager.sharedInstance().manaImagesForCard(cards!.first) as! [NSDictionary] {
+                for dict in FileManager.sharedInstance().manaImagesForCard(cardIds!.first) as! [NSDictionary] {
                     let symbol = dict["symbol"] as! String
                     
                     if symbol == "B" {

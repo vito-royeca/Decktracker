@@ -13,6 +13,7 @@
 
 @interface DTCard : RLMObject
 
+@property NSString * cardId;
 @property NSString * border;
 @property float cmc;
 @property NSString * flavor;

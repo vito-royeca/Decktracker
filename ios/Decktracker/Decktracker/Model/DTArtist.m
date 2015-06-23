@@ -12,4 +12,8 @@
 
 @implementation DTArtist
 
++ (NSArray *)indexedProperties {
+    return @[@"name"];
+}
+
 @end

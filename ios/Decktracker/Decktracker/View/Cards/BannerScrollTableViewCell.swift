@@ -72,7 +72,7 @@ class BannerScrollTableViewCell: UITableViewCell {
         slideshowTimer = nil
     }
     
-    func continueScrolling(data: Array<DTCard>) {
+    func continueScrolling(data: Array<String>) {
         // Calculate where the collection view should be at the right-hand end item
         let offset = collectionView.frame.size.width * CGFloat(data.count-1)
         var newIndexPath:NSIndexPath?

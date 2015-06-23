@@ -26,7 +26,7 @@ enum CardSortMode: Printable  {
     }
 }
 
-class CardListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, NSFetchedResultsControllerDelegate {
+class CardListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, MBProgressHUDDelegate {
 
     let kSearchResultsIdentifier = "kSearchResultsIdentifier"
     
@@ -34,7 +34,7 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
     var sortButton:UIBarButtonItem?
     var tblSets:UITableView?
     var colSets:UICollectionView?
-    var sections:[String: [AnyObject]]?
+    var sections:[String: [String]]?
     var sectionIndexTitles:[String]?
     var arrayData:[AnyObject]?
     var predicate:NSPredicate?
@@ -44,13 +44,11 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
     var sectionName:String?
     var viewLoadedOnce = true
     
-    lazy var fetchedResultsController: NSFetchedResultsController = {
-        var nsfrc = Database.sharedInstance().search(nil, withPredicate:self.predicate, withSortDescriptors: self.sorters, withSectionName:self.sectionName)
-        
-        self.fetchedResultsController = nsfrc
-        self.fetchedResultsController.delegate = self
-        return self.fetchedResultsController
-        } ()
+//    var cards:RLMResults {
+//        get {
+//            return Database.sharedInstance().findCards(nil, withPredicate:self.predicate, withSortDescriptors: self.sorters, withSectionName:self.sectionName)
+//        }
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,7 +86,6 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
         
         self.sortMode = CardSortMode.ByName
         self.sectionName = "sectionNameInitial"
-
         self.loadData()
         self.viewLoadedOnce = false
 #if !DEBUG
@@ -218,28 +215,73 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
             break
         }
         
-        var nsfrc = Database.sharedInstance().search(nil, withPredicate:self.predicate, withSortDescriptors: self.sorters, withSectionName:self.sectionName)
-        self.fetchedResultsController = nsfrc
-        self.fetchedResultsController.delegate = self
-        self.doSearch()
+//        self.cards
+
+        var view:UIView?
+        if self.viewMode == kCardViewModeList {
+            view = tblSets
+        } else {
+            view = colSets
+        }
+        
+        let hud = MBProgressHUD(view: view)
+        view!.addSubview(hud)
+        hud.delegate = self;
+        hud.showWhileExecuting("doSearch", onTarget: self, withObject: nil, animated: true)
     }
     
     func doSearch() {
-        var error:NSError?
-        
-        if (!fetchedResultsController.performFetch(&error)) {
-            println("Unresolved error \(error), \(error?.userInfo)");
-        }
-        
-        sections = [String: [AnyObject]]()
+        sections = [String: [String]]()
         sectionIndexTitles = [String]()
         
-        for sectionInfo in fetchedResultsController.sections as! [NSFetchedResultsSectionInfo]! {
+//        for sectionInfo in fetchedResultsController.sections as! [NSFetchedResultsSectionInfo]! {
+//            if self.sortMode != .ByPrice {
+//                let name = sectionInfo.name
+//                
+//                if (name != nil) {
+//                    let cards = sectionInfo.objects
+//                    let index = advance(name!.startIndex, 1)
+//                    var indexTitle = name!.substringToIndex(index)
+//                    
+//                    if name == "Blue" {
+//                        indexTitle = "U"
+//                    }
+//                    
+//                    sections!.updateValue(cards, forKey: name!)
+//                    self.sectionIndexTitles!.append(indexTitle)
+//                }
+//            }
+//        }
+
+        var cards = Database.sharedInstance().findCards(nil, withPredicate:self.predicate, withSortDescriptors: self.sorters, withSectionName:self.sectionName)
+        for x in cards {
+            let card = x as! DTCard
+            
             if self.sortMode != .ByPrice {
-                let name = sectionInfo.name
+//                let name = sectionInfo.name
+                var name:String?
+                var predicate:NSPredicate?
+                
+                if sectionName == "sectionNameInitial" {
+                    name = card.sectionNameInitial
+                } else if sectionName == "sectionColor" {
+                    name = card.sectionColor
+                } else if sectionName == "sectionType" {
+                    name = card.sectionType
+                } else if sectionName == "rarity.name" {
+                    name = card.rarity.name
+                }
+
+                predicate = NSPredicate(format: "%K = %@", sectionName!, name!)
                 
                 if (name != nil) {
-                    let cards = sectionInfo.objects
+                    var cardIds = Array<String>()
+                    
+                    for y in cards.objectsWithPredicate(predicate) {
+                        let z = y as! DTCard
+                        cardIds.append(z.cardId)
+                    }
+                    
                     let index = advance(name!.startIndex, 1)
                     var indexTitle = name!.substringToIndex(index)
                     
@@ -247,8 +289,10 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
                         indexTitle = "U"
                     }
                     
-                    sections!.updateValue(cards, forKey: name!)
-                    self.sectionIndexTitles!.append(indexTitle)
+                    sections!.updateValue(cardIds, forKey: name!)
+                    if !contains(self.sectionIndexTitles!, indexTitle) {
+                        self.sectionIndexTitles!.append(indexTitle)
+                    }
                 }
             }
         }
@@ -317,14 +361,17 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let sectionInfos = fetchedResultsController.sections as! [NSFetchedResultsSectionInfo]
-        let sectionInfo = sectionInfos[section]
-        return sectionInfo.numberOfObjects
+//        let sectionInfos = fetchedResultsController.sections as! [NSFetchedResultsSectionInfo]
+//        let sectionInfo = sectionInfos[section]
+//        return sectionInfo.numberOfObjects
+        let key = sections!.keys.array[section]
+        return sections![key]!.count
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        let sectionInfos = fetchedResultsController.sections as! [NSFetchedResultsSectionInfo]
-        return sectionInfos.count
+//        let sectionInfos = fetchedResultsController.sections as! [NSFetchedResultsSectionInfo]
+//        return sectionInfos.count
+        return sections!.keys.array.count
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -332,11 +379,15 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
             return nil
             
         } else {
-            let sectionInfos = fetchedResultsController.sections as! [NSFetchedResultsSectionInfo]
-            let sectionInfo = sectionInfos[section]
-            let cardsString = sectionInfo.numberOfObjects > 1 ? "cards" : "card"
-            let name = sectionInfo.name
-            return "\(name!) (\(sectionInfo.numberOfObjects) \(cardsString))"
+//            let sectionInfos = fetchedResultsController.sections as! [NSFetchedResultsSectionInfo]
+//            let sectionInfo = sectionInfos[section]
+//            let cardsString = sectionInfo.numberOfObjects > 1 ? "cards" : "card"
+//            let name = sectionInfo.name
+//            return "\(name!) (\(sectionInfo.numberOfObjects) \(cardsString))"
+            let key = sections!.keys.array[section]
+            let predicates = sections![key]
+            let cardsString = predicates!.count > 1 ? "cards" : "card"
+            return "\(key) (\(predicates!.count) \(cardsString))"
         }
     }
     
@@ -366,7 +417,10 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let card = fetchedResultsController.objectAtIndexPath(indexPath) as! DTCard
+//        let card = fetchedResultsController.objectAtIndexPath(indexPath) as! DTCard
+        let key = sections!.keys.array[indexPath.section]
+        let cardIds = sections![key]
+        let cardId = cardIds![indexPath.row]
         let cell:SearchResultsTableViewCell?
         
         if let x = tableView.dequeueReusableCellWithIdentifier(kSearchResultsIdentifier) as? SearchResultsTableViewCell {
@@ -377,14 +431,18 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
         
         cell!.accessoryType = UITableViewCellAccessoryType.None
         cell!.selectionStyle = UITableViewCellSelectionStyle.None
-        cell!.displayCard(card)
+        cell!.displayCard(cardId)
         
         return cell!
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let card = fetchedResultsController.objectAtIndexPath(indexPath) as! DTCard
-        
+//        let card = fetchedResultsController.objectAtIndexPath(indexPath) as! DTCard
+        let key = sections!.keys.array[indexPath.section]
+        let cardIds = sections![key]
+        let cardId = cardIds![indexPath.row]
+        let card = DTCard(forPrimaryKey: cardId)
+
         let dict = Database.sharedInstance().inAppSettingsForSet(card.set)
         if dict != nil {
             return
@@ -392,29 +450,36 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
         
         let view = CardDetailsViewController()
         view.addButtonVisible = true
-        view.fetchedResultsController = fetchedResultsController
-        view.card = card
+        view.cardIds = cardIds
+        view.cardId = cardId
         
         self.navigationController?.pushViewController(view, animated:true)
     }
     
 //    MARK: UICollectionViewDataSource
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        let sectionInfos = fetchedResultsController.sections as! [NSFetchedResultsSectionInfo]
-        return sectionInfos.count
+//        let sectionInfos = fetchedResultsController.sections as! [NSFetchedResultsSectionInfo]
+//        return sectionInfos.count
+        return sections!.keys.array.count
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let sectionInfos = fetchedResultsController.sections as! [NSFetchedResultsSectionInfo]
-        let sectionInfo = sectionInfos[section]
-        return sectionInfo.numberOfObjects
+//        let sectionInfos = fetchedResultsController.sections as! [NSFetchedResultsSectionInfo]
+//        let sectionInfo = sectionInfos[section]
+//        return sectionInfo.numberOfObjects
+        let key = sections!.keys.array[section]
+        return sections![key]!.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let card = fetchedResultsController.objectAtIndexPath(indexPath) as! DTCard
+//        let card = fetchedResultsController.objectAtIndexPath(indexPath) as! DTCard
+        let key = sections!.keys.array[indexPath.section]
+        let cardIds = sections![key]
+        let cardId = cardIds![indexPath.row]
+        
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Card", forIndexPath: indexPath) as! CardListCollectionViewCell
 
-        cell.displayCard(card)
+        cell.displayCard(cardId)
         return cell
     }
     
@@ -426,11 +491,15 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
             if (self.sortMode == CardSortMode.ByPrice) {
                 
             } else {
-                let sectionInfos = fetchedResultsController.sections as! [NSFetchedResultsSectionInfo]
-                let sectionInfo = sectionInfos[indexPath.section]
-                let cardsString = sectionInfo.numberOfObjects > 1 ? "cards" : "card"
-                let name = sectionInfo.name
-                let text = "  \(name!) (\(sectionInfo.numberOfObjects) \(cardsString))"
+//                let sectionInfos = fetchedResultsController.sections as! [NSFetchedResultsSectionInfo]
+//                let sectionInfo = sectionInfos[indexPath.section]
+//                let cardsString = sectionInfo.numberOfObjects > 1 ? "cards" : "card"
+//                let name = sectionInfo.name
+//                let text = "  \(name!) (\(sectionInfo.numberOfObjects) \(cardsString))"
+                let key = sections!.keys.array[indexPath.section]
+                let predicates = sections![key]
+                let cardsString = predicates!.count > 1 ? "cards" : "card"
+                let text =  "  \(key) (\(predicates!.count) \(cardsString))"
                 
                 let label = UILabel(frame: CGRect(x:0, y:0, width:self.view.frame.size.width, height:22))
                 label.text = text
@@ -451,7 +520,11 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
 
 //    MARK: UICollectionViewDelegate
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let card = fetchedResultsController.objectAtIndexPath(indexPath) as! DTCard
+//        let card = fetchedResultsController.objectAtIndexPath(indexPath) as! DTCard
+        let key = sections!.keys.array[indexPath.section]
+        let cardIds = sections![key]
+        let cardId = cardIds![indexPath.row]
+        let card = DTCard(forPrimaryKey: cardId)
         
         let dict = Database.sharedInstance().inAppSettingsForSet(card.set)
         if dict != nil {
@@ -460,62 +533,67 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
         
         let view = CardDetailsViewController()
         view.addButtonVisible = true
-        view.fetchedResultsController = fetchedResultsController
-        view.card = card
+        view.cardIds = cardIds
+        view.cardId = cardId
         
         self.navigationController?.pushViewController(view, animated:true)
     }
 
-//    MARK: NSFetchedResultsControllerDelegate
-    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
-        //        println("\(__LINE__) \(__PRETTY_FUNCTION__) \(__FUNCTION__)")
-        
-        let tableView = tblSets;
-        var paths = [NSIndexPath]()
-        
-        switch(type) {
-        case NSFetchedResultsChangeType.Insert:
-            paths.append(newIndexPath!)
-            tblSets!.insertRowsAtIndexPaths(paths, withRowAnimation:UITableViewRowAnimation.Fade)
-            
-        case NSFetchedResultsChangeType.Delete:
-            paths.append(indexPath!)
-            tblSets!.deleteRowsAtIndexPaths(paths, withRowAnimation:UITableViewRowAnimation.Fade)
-            
-        case NSFetchedResultsChangeType.Update:
-            let card = fetchedResultsController.objectAtIndexPath(indexPath!) as! DTCard
-            let cell = tblSets!.cellForRowAtIndexPath(indexPath!) as! SearchResultsTableViewCell?
-            cell?.displayCard(card)
-        case NSFetchedResultsChangeType.Move:
-            paths.append(indexPath!)
-            tblSets!.deleteRowsAtIndexPaths(paths, withRowAnimation:UITableViewRowAnimation.Fade)
-            
-            paths = [NSIndexPath]()
-            paths.append(newIndexPath!)
-            tblSets!.insertRowsAtIndexPaths(paths, withRowAnimation:UITableViewRowAnimation.Fade)
-        }
+//    MARK: MBProgressHUDDelegate methods
+    func hudWasHidden(hud: MBProgressHUD) {
+        hud.removeFromSuperview()
     }
     
-    func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
-        //        println("\(__LINE__) \(__PRETTY_FUNCTION__) \(__FUNCTION__)")
-        
-        switch(type) {
-        case NSFetchedResultsChangeType.Insert:
-            tblSets!.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation:UITableViewRowAnimation.Fade)
-        case NSFetchedResultsChangeType.Delete:
-            tblSets!.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation:UITableViewRowAnimation.Fade)
-        default:
-            break;
-        }
-    }
-    
-    func controllerWillChangeContent(controller: NSFetchedResultsController) {
-        tblSets!.beginUpdates()
-        //        println("\(__LINE__) \(__PRETTY_FUNCTION__) \(__FUNCTION__)")
-    }
-    
-    func controllerDidChangeContent(controller: NSFetchedResultsController) {
-        //        println("\(__LINE__) \(__PRETTY_FUNCTION__) \(__FUNCTION__)")        
-        tblSets!.endUpdates()
-    }
+////    MARK: NSFetchedResultsControllerDelegate
+//    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+//        //        println("\(__LINE__) \(__PRETTY_FUNCTION__) \(__FUNCTION__)")
+//        
+//        let tableView = tblSets;
+//        var paths = [NSIndexPath]()
+//        
+//        switch(type) {
+//        case NSFetchedResultsChangeType.Insert:
+//            paths.append(newIndexPath!)
+//            tblSets!.insertRowsAtIndexPaths(paths, withRowAnimation:UITableViewRowAnimation.Fade)
+//            
+//        case NSFetchedResultsChangeType.Delete:
+//            paths.append(indexPath!)
+//            tblSets!.deleteRowsAtIndexPaths(paths, withRowAnimation:UITableViewRowAnimation.Fade)
+//            
+//        case NSFetchedResultsChangeType.Update:
+//            let card = fetchedResultsController.objectAtIndexPath(indexPath!) as! DTCard
+//            let cell = tblSets!.cellForRowAtIndexPath(indexPath!) as! SearchResultsTableViewCell?
+//            cell?.displayCard(card)
+//        case NSFetchedResultsChangeType.Move:
+//            paths.append(indexPath!)
+//            tblSets!.deleteRowsAtIndexPaths(paths, withRowAnimation:UITableViewRowAnimation.Fade)
+//            
+//            paths = [NSIndexPath]()
+//            paths.append(newIndexPath!)
+//            tblSets!.insertRowsAtIndexPaths(paths, withRowAnimation:UITableViewRowAnimation.Fade)
+//        }
+//    }
+//    
+//    func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
+//        //        println("\(__LINE__) \(__PRETTY_FUNCTION__) \(__FUNCTION__)")
+//        
+//        switch(type) {
+//        case NSFetchedResultsChangeType.Insert:
+//            tblSets!.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation:UITableViewRowAnimation.Fade)
+//        case NSFetchedResultsChangeType.Delete:
+//            tblSets!.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation:UITableViewRowAnimation.Fade)
+//        default:
+//            break;
+//        }
+//    }
+//    
+//    func controllerWillChangeContent(controller: NSFetchedResultsController) {
+//        tblSets!.beginUpdates()
+//        //        println("\(__LINE__) \(__PRETTY_FUNCTION__) \(__FUNCTION__)")
+//    }
+//    
+//    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+//        //        println("\(__LINE__) \(__PRETTY_FUNCTION__) \(__FUNCTION__)")        
+//        tblSets!.endUpdates()
+//    }
 }

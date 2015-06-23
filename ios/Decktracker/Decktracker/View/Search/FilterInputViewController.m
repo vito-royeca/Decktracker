@@ -362,7 +362,7 @@
                 }
                 
                 cell.textLabel.text = set.name;
-                cell.detailTextLabel.text = [NSString stringWithFormat:@"Released: %@ (%@ cards)", [JJJUtil formatDate:set.releaseDate withFormat:@"YYYY-MM-dd"], set.numberOfCards];
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"Released: %@ (%d cards)", [JJJUtil formatDate:set.releaseDate withFormat:@"YYYY-MM-dd"], set.numberOfCards];
             }
             else if ([[self.filterOptions firstObject] isKindOfClass:[DTFormat class]])
             {

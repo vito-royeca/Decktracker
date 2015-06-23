@@ -10,4 +10,8 @@
 
 @implementation DTComprehensiveGlossary
 
++ (NSArray *)indexedProperties {
+    return @[@"term"];
+}
+
 @end

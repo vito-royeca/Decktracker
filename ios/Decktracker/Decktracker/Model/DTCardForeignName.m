@@ -10,4 +10,8 @@
 
 @implementation DTCardForeignName
 
++ (NSArray *)indexedProperties {
+    return @[@"name"];
+}
+
 @end

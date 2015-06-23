@@ -198,12 +198,11 @@ static Database *_me;
 }
 
 #pragma mark - Finders with FetchedResultsController
-#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
--(NSFetchedResultsController*) search:(NSString*) query
-                  withSortDescriptors:(NSArray*) sorters
-                      withSectionName:(NSString*) sectionName
+-(RLMResults*) findCards:(NSString*) query
+     withSortDescriptors:(NSArray*) sorters
+         withSectionName:(NSString*) sectionName
 {
-    /*NSPredicate *predicate;
+    NSPredicate *predicate;
     
     if (query.length == 0)
     {
@@ -222,7 +221,7 @@ static Database *_me;
         predicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[pred1, pred2, pred3, pred4]];
     }
     
-    NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
+    /*NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     if (!sorters)
     {
@@ -235,7 +234,8 @@ static Database *_me;
     }
     
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"DTCard"
-                                              inManagedObjectContext:moc];
+                                              inManagedObjectContext:moc];*/
+
     
     // to do: exclude In-App Sets
     NSArray *inAppSetCodes = [self inAppSetCodes];
@@ -245,7 +245,7 @@ static Database *_me;
         predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, predInAppSets]];
     }
     
-    [fetchRequest setPredicate:predicate];
+    /*[fetchRequest setPredicate:predicate];
     [fetchRequest setEntity:entity];
     [fetchRequest setSortDescriptors:sorters];
     [fetchRequest setFetchBatchSize:kFetchBatchSize];
@@ -254,15 +254,16 @@ static Database *_me;
                                                managedObjectContext:moc
                                                  sectionNameKeyPath:sectionName
                                                           cacheName:nil];*/
-    return nil;
+    
+    return [[DTCard objectsWithPredicate:predicate] sortedResultsUsingDescriptors:sorters];
 }
 
--(NSFetchedResultsController*) search:(NSString*) query
-                        withPredicate:(NSPredicate*)predicate
-                  withSortDescriptors:(NSArray*) sorters
-                      withSectionName:(NSString*) sectionName
+-(RLMResults*) findCards:(NSString*) query
+           withPredicate:(NSPredicate*)predicate
+     withSortDescriptors:(NSArray*) sorters
+         withSectionName:(NSString*) sectionName
 {
-    /*NSPredicate *predicate2;
+    NSPredicate *predicate2;
     
     if (query.length > 0)
     {
@@ -292,7 +293,7 @@ static Database *_me;
         }
     }
     
-    NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
+    /*NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     if (!sorters)
     {
@@ -304,7 +305,7 @@ static Database *_me;
         sorters = @[sortDescriptor1, sortDescriptor2];
     }
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"DTCard"
-                                              inManagedObjectContext:moc];
+                                              inManagedObjectContext:moc];*/
     
     
     NSPredicate *pred = predicate2 ? predicate2 : predicate;
@@ -316,7 +317,7 @@ static Database *_me;
         pred = [NSCompoundPredicate andPredicateWithSubpredicates:@[pred, predInAppSets]];
     }
     
-    [fetchRequest setPredicate:pred];
+    /*[fetchRequest setPredicate:pred];
     [fetchRequest setEntity:entity];
     [fetchRequest setSortDescriptors:sorters];
     [fetchRequest setFetchBatchSize:kFetchBatchSize];
@@ -325,12 +326,14 @@ static Database *_me;
                                                managedObjectContext:moc
                                                  sectionNameKeyPath:sectionName
                                                           cacheName:nil];*/
-    return nil;
+
+    return [[DTCard objectsWithPredicate:pred] sortedResultsUsingDescriptors:sorters];
 }
 
--(NSFetchedResultsController*) advanceSearch:(NSDictionary*)query withSorter:(NSDictionary*) sorter
+-(RLMResults*) advanceFindCards:(NSDictionary*)query
+                     withSorter:(NSDictionary*) sorter
 {
-    /*NSMutableString *sql = [[NSMutableString alloc] init];
+    NSMutableString *sql = [[NSMutableString alloc] init];
     NSMutableArray *arrParams = [[NSMutableArray alloc] init];
     NSString *defaultFieldName;
     NSArray *defaultFieldValues;
@@ -513,14 +516,17 @@ static Database *_me;
         predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, predDefault]];
     }
     
-    NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
+    /*NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:@"name"
                                                                    ascending:YES];
     NSSortDescriptor *sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:@"set.releaseDate"
                                                                     ascending:NO];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"DTCard"
-                                              inManagedObjectContext:moc];
+                                              inManagedObjectContext:moc];*/
+    RLMSortDescriptor *sortDescriptor1 = [RLMSortDescriptor sortDescriptorWithProperty:@"name" ascending:YES];
+//    RLMSortDescriptor *sortDescriptor2 = [RLMSortDescriptor sortDescriptorWithProperty:@"set.releaseDate" ascending:YES];
+    
     
     // to do: exclude In-App Sets
     NSArray *inAppSetCodes = [self inAppSetCodes];
@@ -529,7 +535,8 @@ static Database *_me;
         NSPredicate *predInAppSets = [NSPredicate predicateWithFormat:@"NOT (set.code IN %@)", inAppSetCodes];
         predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, predInAppSets]];
     }
-    [fetchRequest setPredicate:predicate];
+    
+    /*[fetchRequest setPredicate:predicate];
     [fetchRequest setEntity:entity];
     [fetchRequest setSortDescriptors:@[sortDescriptor1, sortDescriptor2]];
     [fetchRequest setFetchBatchSize:kFetchBatchSize];
@@ -538,9 +545,11 @@ static Database *_me;
                                                managedObjectContext:moc
                                                  sectionNameKeyPath:nil
                                                           cacheName:nil];*/
-    return nil;
+    
+    return [[DTCard objectsWithPredicate:predicate] sortedResultsUsingDescriptors:@[sortDescriptor1/*, sortDescriptor2*/]];
 }
 
+#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
 -(void) loadInAppSets
 {
     NSString *filePath = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] bundlePath], @"In-App Sets.plist"];
@@ -555,8 +564,10 @@ static Database *_me;
     }
 }
 
--(NSDictionary*) inAppSettingsForSet:(DTSet*) set
+-(NSDictionary*) inAppSettingsForSet:(id) setId
 {
+    DTSet *set = [DTSet objectForPrimaryKey:setId];
+    
     for (NSDictionary *dict in _arrInAppSets)
     {
         if ([dict[@"Name"] isEqualToString:set.name] &&
@@ -596,6 +607,7 @@ static Database *_me;
     
     return YES;
 }
+#endif
 
 -(NSArray*) fetchRandomCards:(int) howMany
                withPredicate:(NSPredicate*) predicate
@@ -633,8 +645,6 @@ static Database *_me;
     
     return array;
 }
-
-#endif
 
 #pragma mark - Finders
 -(DTCard*) findCard:(NSString*) cardName inSet:(NSString*) setCode
@@ -677,8 +687,9 @@ static Database *_me;
     return [card.rarity.name isEqualToString:@"Basic Land"] ? @"C" : [[card.rarity.name substringToIndex:1] uppercaseString];
 }
 
--(void) fetchTcgPlayerPriceForCard:(DTCard*) card
+-(void) fetchTcgPlayerPriceForCard:(id) cardId
 {
+    DTCard *card = [DTCard objectForPrimaryKey:cardId];
     BOOL bWillFetch = NO;
     
     if (!card.tcgPlayerFetchDate)
@@ -708,20 +719,13 @@ static Database *_me;
     
     if (bWillFetch)
     {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"set.code = %@ AND name = %@ AND number = %@", card.set.code, card.name, card.number];
-        __block DTCard *card2;
-        
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
-            card2 = [[DTCard objectsWithPredicate:predicate] firstObject];
-#else
-            card2 = card;
 #endif
-
-            NSString *tcgPricing = [[NSString stringWithFormat:@"http://partner.tcgplayer.com/x3/phl.asmx/p?pk=%@&s=%@&p=%@", TCGPLAYER_PARTNER_KEY, card2.set.tcgPlayerName, card2.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-            if (!card2.set.tcgPlayerName)
+            NSString *tcgPricing = [[NSString stringWithFormat:@"http://partner.tcgplayer.com/x3/phl.asmx/p?pk=%@&s=%@&p=%@", TCGPLAYER_PARTNER_KEY, card.set.tcgPlayerName, card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            if (!card.set.tcgPlayerName)
             {
-                tcgPricing = [[NSString stringWithFormat:@"http://partner.tcgplayer.com/x3/phl.asmx/p?pk=%@&p=%@", TCGPLAYER_PARTNER_KEY, card2.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                tcgPricing = [[NSString stringWithFormat:@"http://partner.tcgplayer.com/x3/phl.asmx/p?pk=%@&p=%@", TCGPLAYER_PARTNER_KEY, card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             }
             
             NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:tcgPricing]];
@@ -765,29 +769,29 @@ static Database *_me;
                 }
             }
 #ifdef DEBUG
-            NSLog(@"^TCGPlayer: (%@) %@", card2.set.code, card2.name);
+            NSLog(@"^TCGPlayer: %@ [%@] - %@", card.set.name, card.set.code, card.name);
 #endif
-            
-#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
+        
+//#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
             RLMRealm *realm = [RLMRealm defaultRealm];
             [realm beginWriteTransaction];
-#endif
-            card2.tcgPlayerHighPrice = high ? [high doubleValue] : card2.tcgPlayerHighPrice;
-            card2.tcgPlayerMidPrice  = mid  ? [mid doubleValue]  : card2.tcgPlayerMidPrice;
-            card2.tcgPlayerLowPrice  = low  ? [low doubleValue]  : card2.tcgPlayerLowPrice;
-            card2.tcgPlayerFoilPrice = foil ? [foil doubleValue] : card2.tcgPlayerFoilPrice;
-            card2.tcgPlayerLink = link ? [JJJUtil trim:link] : card2.tcgPlayerLink;
-            card2.tcgPlayerFetchDate = [NSDate date];
-#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
+//#endif
+            card.tcgPlayerHighPrice = high ? [high doubleValue] : card.tcgPlayerHighPrice;
+            card.tcgPlayerMidPrice  = mid  ? [mid doubleValue]  : card.tcgPlayerMidPrice;
+            card.tcgPlayerLowPrice  = low  ? [low doubleValue]  : card.tcgPlayerLowPrice;
+            card.tcgPlayerFoilPrice = foil ? [foil doubleValue] : card.tcgPlayerFoilPrice;
+            card.tcgPlayerLink = link ? [JJJUtil trim:link] : card.tcgPlayerLink;
+            card.tcgPlayerFetchDate = [NSDate date];
+//#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
             [realm commitWriteTransaction];
-#endif
+//#endif
             
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
             dispatch_async(dispatch_get_main_queue(), ^{
 #endif
                 [[NSNotificationCenter defaultCenter] postNotificationName:kPriceUpdateDone
                                                                     object:nil
-                                                                  userInfo:@{@"card": card}];
+                                                                  userInfo:@{@"cardId": cardId}];
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
             });
         });
@@ -808,13 +812,15 @@ static Database *_me;
 
     for (int i=0; i<howMany; i++)
     {
-        [arrResults addObject:[sets objectAtIndex:i]];
+        DTSet *set = [sets objectAtIndex:i];
+        [arrResults addObject:set.setId];
     }
     return arrResults;
 }
 
--(BOOL) isCardModern:(DTCard*) card
+-(BOOL) isCardModern:(id) cardId
 {
+    DTCard *card = [DTCard objectForPrimaryKey:cardId];
     NSDate *releaseDate;
     
     if (card.releaseDate)
@@ -877,7 +883,7 @@ static Database *_me;
                 card.rating = [object[@"rating"] doubleValue];
                 [realm commitWriteTransaction];
                 
-                [arrResults addObject:card];
+                [arrResults addObject:card.cardId];
             }
         }
         else
@@ -890,13 +896,14 @@ static Database *_me;
             RLMResults *results = [[DTCard objectsWithPredicate:[NSPredicate predicateWithFormat:@"rating >= 0"]] sortedResultsUsingDescriptors:@[sortDescriptor1, sortDescriptor2]];
             for (int i=0; i<limit; i++)
             {
-                [arrResults addObject:[results objectAtIndex:i]];
+                DTCard *card = [results objectAtIndex:i];
+                [arrResults addObject:card.cardId];
             }
         }
         
         [[NSNotificationCenter defaultCenter] postNotificationName:kFetchTopRatedDone
                                                             object:nil
-                                                          userInfo:@{@"data": arrResults}];
+                                                          userInfo:@{@"cardIds": arrResults}];
     }];
 }
 
@@ -929,13 +936,13 @@ static Database *_me;
                 NSPredicate *p = [NSPredicate predicateWithFormat:@"(%K = %@ AND %K = %@ AND %K = %@)", @"name", object[@"name"], @"multiverseID", object[@"multiverseID"], @"set.name", object[@"set"][@"name"]];
                 DTCard *card = [[DTCard objectsWithPredicate:p] firstObject];
                 
-                [arrResults addObject:card];
+                [arrResults addObject:card.cardId];
             }
         }
         
         [[NSNotificationCenter defaultCenter] postNotificationName:kFetchTopViewedDone
                                                             object:nil
-                                                          userInfo:@{@"data": arrResults}];
+                                                          userInfo:@{@"cardIds": arrResults}];
     }];
 }
 
@@ -1420,13 +1427,6 @@ static Database *_me;
 }
 
 #pragma mark: Extra methods
--(DTCard*) refetchCardForNewThread:(DTCard*) card
-{
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"set.code = %@ AND name = %@ AND number = %@", card.set.code, card.name, card.number];
-    
-    return [[DTCard objectsWithPredicate:predicate] firstObject];
-}
-
 //-(void) parseSynch:(DTCard*) card
 //{
 //    void (^callbackParseSynchCard)(PFObject *pfCard) = ^void(PFObject *pfCard) {

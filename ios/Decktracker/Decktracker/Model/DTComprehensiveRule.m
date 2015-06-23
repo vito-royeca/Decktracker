@@ -10,4 +10,8 @@
 
 @implementation DTComprehensiveRule
 
++ (NSArray *)indexedProperties {
+    return @[@"number"];
+}
+
 @end

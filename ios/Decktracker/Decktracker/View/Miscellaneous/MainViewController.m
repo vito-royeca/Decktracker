@@ -7,10 +7,8 @@
 //
 
 #import "MainViewController.h"
-#import "CollectionsViewController.h"
 #import "Constants.h"
 #import "DecksViewController.h"
-#import "SimpleSearchViewController.h"
 
 #import "Decktracker-Swift.h"
 
@@ -32,9 +30,11 @@
     // Do any additional setup after loading the view.
     
     UINavigationController *nc1 = [[UINavigationController alloc] init];
-    UIViewController *vc1 = [[FeaturedViewController alloc] initWithNibName:nil bundle:nil];
+    UIViewController *vc1 = [[CardsViewController alloc] initWithNibName:nil bundle:nil];
     nc1.viewControllers = [NSArray arrayWithObjects:vc1, nil];
-    nc1.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemFeatured tag:1];
+    nc1.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Cards"
+                                                   image:[UIImage imageNamed:@"cards.png"]
+                                           selectedImage:nil];
     
     UINavigationController *nc2 = [[UINavigationController alloc] init];
     UIViewController *vc2 = [[DecksViewController alloc] initWithNibName:nil bundle:nil];
@@ -44,10 +44,10 @@
                                            selectedImage:nil];
     
     UINavigationController *nc4 = [[UINavigationController alloc] init];
-    UIViewController *vc4 = [[SimpleSearchViewController alloc] initWithNibName:nil bundle:nil];
+    UIViewController *vc4 = [[CardQuizHomeViewController alloc] initWithNibName:nil bundle:nil];
     nc4.viewControllers = [NSArray arrayWithObjects:vc4, nil];
-    nc4.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Search"
-                                                   image:[UIImage imageNamed:@"search.png"]
+    nc4.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Card Quiz"
+                                                   image:[UIImage imageNamed:@"questions.png"]
                                            selectedImage:nil];
     
     UINavigationController *nc5 = [[UINavigationController alloc] init];
@@ -57,45 +57,12 @@
     
     self.viewControllers = @[nc1, nc2, nc4, nc5];
     self.selectedViewController = nc1;
-    
-    [self addCollectionsProduct];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
--(void) addCollectionsProduct
-{
-    if (![InAppPurchase isProductPurchased:COLLECTIONS_IAP_PRODUCT_ID])
-    {
-        return;
-    }
-    
-    BOOL bAlreaddyAdded = NO;
-    
-    for (UINavigationController *view in self.viewControllers)
-    {
-        if ([view.tabBarItem.title isEqualToString:@"Collections"])
-        {
-            bAlreaddyAdded = YES;
-            break;
-        }
-    }
-    
-    if (!bAlreaddyAdded)
-    {
-        UINavigationController *nc3 = [[UINavigationController alloc] init];
-        UIViewController *vc3 = [[CollectionsViewController alloc] initWithNibName:nil bundle:nil];
-        nc3.viewControllers = [NSArray arrayWithObjects:vc3, nil];
-        nc3.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Collections"
-                                                       image:[UIImage imageNamed:@"cards.png"]
-                                               selectedImage:nil];
-        
-        [self addNavigationController:nc3 atIndex:2];
-    }
 }
 
 -(void) addNavigationController:(UINavigationController*) navController atIndex:(int) index

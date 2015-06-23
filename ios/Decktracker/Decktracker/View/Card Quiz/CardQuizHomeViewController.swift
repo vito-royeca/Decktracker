@@ -18,7 +18,7 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
     var btnModerate:UILabel?
     var btnHard:UILabel?
     var btnLeaderboard:UILabel?
-    var btnExit:UILabel?
+//    var btnExit:UILabel?
     var userMana:PFObject?
     
 //  MARK: Boilerplate code
@@ -26,7 +26,7 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        hidesBottomBarWhenPushed = true
+//        hidesBottomBarWhenPushed = true
         
         NSNotificationCenter.defaultCenter().removeObserver(self, name:kParseUserManaDone,  object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector:"fetchUserManaDone:",  name:kParseUserManaDone, object:nil)
@@ -69,7 +69,7 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
 //  MARK: UI code
     func setupBackground() {
         var dX = CGFloat(0)
-        var dY = CGFloat(35)
+        var dY = UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height + 35
         var dWidth = self.view.frame.size.width
         var dHeight = CGFloat(40)
         var dFrame = CGRect(x:dX, y:dY, width:dWidth, height:dHeight)
@@ -100,7 +100,7 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         btnModerate?.removeFromSuperview()
         btnHard?.removeFromSuperview()
         btnLeaderboard?.removeFromSuperview()
-        btnExit?.removeFromSuperview()
+//        btnExit?.removeFromSuperview()
         
         var dX = self.view.frame.size.width/8
         var dY = lblTitle!.frame.origin.y + lblTitle!.frame.size.height + 5
@@ -247,19 +247,19 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         btnLeaderboard!.layer.borderWidth = 1
         self.view.addSubview(btnLeaderboard!)
         
-        dY = self.btnLeaderboard!.frame.origin.y + dHeight + 20
-        dFrame = CGRect(x: dX, y: dY, width: dWidth, height: dHeight)
-        btnExit = UILabel(frame: dFrame)
-        btnExit!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "exitTapped:"))
-        btnExit!.userInteractionEnabled = true
-        btnExit!.text = "Exit"
-        btnExit!.textAlignment = NSTextAlignment.Center
-        btnExit!.font = CQTheme.kManaLabelFont
-        btnExit!.textColor = CQTheme.kTileTextColor
-        btnExit!.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
-        btnExit!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
-        btnExit!.layer.borderWidth = 1
-        self.view.addSubview(btnExit!)
+//        dY = self.btnLeaderboard!.frame.origin.y + dHeight + 20
+//        dFrame = CGRect(x: dX, y: dY, width: dWidth, height: dHeight)
+//        btnExit = UILabel(frame: dFrame)
+//        btnExit!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "exitTapped:"))
+//        btnExit!.userInteractionEnabled = true
+//        btnExit!.text = "Exit"
+//        btnExit!.textAlignment = NSTextAlignment.Center
+//        btnExit!.font = CQTheme.kManaLabelFont
+//        btnExit!.textColor = CQTheme.kTileTextColor
+//        btnExit!.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
+//        btnExit!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+//        btnExit!.layer.borderWidth = 1
+//        self.view.addSubview(btnExit!)
     }
 
 //   MARK: Logic code

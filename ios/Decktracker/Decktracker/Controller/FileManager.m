@@ -68,13 +68,15 @@ static FileManager *_me;
     return tmp;
 }
 
-- (NSString*) cardPath:(DTCard*) card
+- (NSString*) cardPath:(id) cardId
 {
-    return [self cardPath:card forLanguage:nil];
+    return [self cardPath:cardId forLanguage:nil];
 }
 
-- (NSString*) cardPath:(DTCard*) card forLanguage:(NSString*) languageName
+- (NSString*) cardPath:(id) cardId forLanguage:(NSString*) languageName
 {
+    DTCard *card = [DTCard objectForPrimaryKey:cardId];
+    
     NSString *languageInitials = [self languageInitialsForLanguage:languageName];
 
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
@@ -87,8 +89,10 @@ static FileManager *_me;
     return [[NSFileManager defaultManager] fileExistsAtPath:cardHQPath] ? cardHQPath : ([[NSFileManager defaultManager] fileExistsAtPath:cardPath] ? cardPath : cardBackPath);
 }
 
-- (NSString*) cropPath:(DTCard*) card
+- (NSString*) cropPath:(id) cardId
 {
+    DTCard *card = [DTCard objectForPrimaryKey:cardId];
+    
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *cacheDirectory = [paths firstObject];
     NSString *path = [cacheDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/crop/%@/", card.set.code]];
@@ -99,13 +103,17 @@ static FileManager *_me;
     return [[NSFileManager defaultManager] fileExistsAtPath:cropHQPath] ? cropHQPath : ([[NSFileManager defaultManager] fileExistsAtPath:cropPath] ? cropPath : cropBackPath);
 }
 
-- (NSString*) cardSetPath:(DTCard*) card
+- (NSString*) cardSetPath:(id) cardId
 {
+    DTCard *card = [DTCard objectForPrimaryKey:cardId];
+    
     return [NSString stringWithFormat:@"%@/images/set/%@/%@/48.png", [[NSBundle mainBundle] bundlePath], card.set.code, [[Database sharedInstance] cardRarityIndex:card]];
 }
 
-- (NSString*) cardTypePath:(DTCard*) card
+- (NSString*) cardTypePath:(id) cardId
 {
+    DTCard *card = [DTCard objectForPrimaryKey:cardId];
+    
     NSString *typePath;
     
     for (NSString *type in CARD_TYPES_WITH_SYMBOL)
@@ -118,8 +126,9 @@ static FileManager *_me;
     return [NSString stringWithFormat:@"%@/images/other/%@/48.png", [[NSBundle mainBundle] bundlePath], typePath];
 }
 
-- (NSString*) setPath:(DTSet*) set small:(BOOL) small
+- (NSString*) setPath:(id) setId small:(BOOL) small
 {
+    DTSet *set = [DTSet objectForPrimaryKey:setId];
     NSArray *rarities = @[@"C", @"R", @"U", @"M", @"S"];
     
     for (NSString *rarity in rarities)
@@ -135,21 +144,23 @@ static FileManager *_me;
     return nil;
 }
 
-- (void) downloadCardImage:(DTCard*) card
+- (void) downloadCardImage:(id) cardId
                immediately:(BOOL) immediately
 {
-    [self downloadCardImage:card forLanguage:nil immediately:immediately];
+    [self downloadCardImage:cardId forLanguage:nil immediately:immediately];
 }
 
-- (void) downloadCardImage:(DTCard*) card
+- (void) downloadCardImage:(id) cardId
                forLanguage:(NSString*) languageName
                immediately:(BOOL) immediately
 {
-    if (!card)
+    if (!cardId)
     {
         return;
     }
 
+    DTCard *card = [DTCard objectForPrimaryKey:cardId];
+    
     NSString *languageInitials = [self languageInitialsForLanguage:languageName];
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *cacheDirectory = [paths firstObject];
@@ -189,8 +200,8 @@ static FileManager *_me;
     {
         NSURL *url = [NSURL URLWithString:[[NSString stringWithFormat:@"http://magiccards.info/scans/%@/%@/%@.jpg", languageInitials, card.set.magicCardsInfoCode, card.number] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         
-        NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithObjects:@[card, cardPath, url]
-                                                                         forKeys:@[@"card", @"path", @"url"]];
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithObjects:@[cardId, cardPath, url]
+                                                                         forKeys:@[@"cardId", @"path", @"url"]];
         
         if (immediately)
         {
@@ -206,17 +217,18 @@ static FileManager *_me;
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:kCardDownloadCompleted
                                                             object:nil
-                                                          userInfo:@{@"card": card}];
+                                                          userInfo:@{@"cardId": cardId}];
     }
 }
 
-- (void) createCropForCard:(DTCard*) card
+- (void) createCropForCard:(id) cardId
 {
-    UIImage *image = [[UIImage alloc] initWithContentsOfFile:[self cardPath:card]];
+    DTCard *card = [DTCard objectForPrimaryKey:cardId];
+    UIImage *image = [[UIImage alloc] initWithContentsOfFile:[self cardPath:cardId]];
 
     CGFloat width = image.size.width*3/4;
     CGRect rect = CGRectMake((image.size.width-width)/2,
-                             [[Database sharedInstance] isCardModern:card] ? 45 : 40,
+                             [[Database sharedInstance] isCardModern:cardId] ? 45 : 40,
                              width,
                              width-60);
     
@@ -278,13 +290,13 @@ static FileManager *_me;
         }
         
         
-        DTCard *card = currentQueue[@"card"];
-        if (card)
+        id cardId = currentQueue[@"cardId"];
+        if (cardId)
         {
-            [self createCropForCard:card];
+            [self createCropForCard:cardId];
             [[NSNotificationCenter defaultCenter] postNotificationName:kCardDownloadCompleted
                                                                 object:nil
-                                                              userInfo:@{@"card":card}];
+                                                              userInfo:@{@"cardId":cardId}];
         }
         
         _cuncurrentDownloads--;
@@ -308,8 +320,10 @@ static FileManager *_me;
     return [[NSArray alloc] initWithContentsOfFile:path];
 }
 
-- (NSArray*) manaImagesForCard:(DTCard *)card
+- (NSArray*) manaImagesForCard:(id) cardId
 {
+    DTCard *card = [DTCard objectForPrimaryKey:cardId];
+    
     NSMutableArray *arrManaImages = [[NSMutableArray alloc] init];
     NSMutableArray *arrSymbols = [[NSMutableArray alloc] init];
     int curlyOpen = -1;

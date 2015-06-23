@@ -14,6 +14,6 @@
 
 @interface RulesLoader : NSObject
 
--(void) parseRules;
+-(void) json2Database;
 
 @end

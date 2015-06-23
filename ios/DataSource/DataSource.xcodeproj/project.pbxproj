@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8C00AC0F1B2ED44A00748A37 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C00AC0E1B2ED44A00748A37 /* Realm.framework */; };
 		8C1B4DCB198CF0C000B4C948 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C1B4DCA198CF0C000B4C948 /* Foundation.framework */; };
 		8C1B4DCE198CF0C000B4C948 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1B4DCD198CF0C000B4C948 /* main.m */; };
 		8C2427E01B02F3C3004D190A /* RulesLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2427DF1B02F3C3004D190A /* RulesLoader.m */; };
 		8C3857E61A36FCE600E5B38C /* database.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8C3857C11A36FCE600E5B38C /* database.xcdatamodeld */; };
-		8C45F0A01B1C428E00C19C8F /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C45F09F1B1C428E00C19C8F /* Realm.framework */; };
 		8C45F0AA1B1C4C4100C19C8F /* DTLanguage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C45F0A91B1C4C4100C19C8F /* DTLanguage.m */; };
 		8C4B9D0E1A515D0B00F727E7 /* tcgplayer_sets.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C4B9D091A51384400F727E7 /* tcgplayer_sets.plist */; };
 		8CE75CB01AB96D40001EB70E /* AllSets-x.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C87AB311A7F1F6C00E901DE /* AllSets-x.json */; };
@@ -89,6 +89,7 @@
 
 /* Begin PBXFileReference section */
 		4AE7CCBA05B0E7E9D81A1C1F /* libPods-DataSource.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DataSource.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C00AC0E1B2ED44A00748A37 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
 		8C069C4B1B044EEE004C92E2 /* RLMArrays.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLMArrays.h; path = ../../Decktracker/Decktracker/Model/RLMArrays.h; sourceTree = "<group>"; };
 		8C1B4DC5198CF0C000B4C948 /* DataSource */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DataSource; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C1B4DC8198CF0C000B4C948 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -104,7 +105,6 @@
 		8C3857C51A36FCE600E5B38C /* Nov-15-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Nov-15-2014.xcdatamodel"; sourceTree = "<group>"; };
 		8C3857C61A36FCE600E5B38C /* Nov-4-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Nov-4-2014.xcdatamodel"; sourceTree = "<group>"; };
 		8C3857C71A36FCE600E5B38C /* Oct-5-2014.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Oct-5-2014.xcdatamodel"; sourceTree = "<group>"; };
-		8C45F09F1B1C428E00C19C8F /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
 		8C45F0A81B1C4C4100C19C8F /* DTLanguage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTLanguage.h; path = ../../Decktracker/Decktracker/Model/DTLanguage.h; sourceTree = "<group>"; };
 		8C45F0A91B1C4C4100C19C8F /* DTLanguage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTLanguage.m; path = ../../Decktracker/Decktracker/Model/DTLanguage.m; sourceTree = "<group>"; };
 		8C4B9D091A51384400F727E7 /* tcgplayer_sets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = tcgplayer_sets.plist; sourceTree = "<group>"; };
@@ -163,7 +163,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8C45F0A01B1C428E00C19C8F /* Realm.framework in Frameworks */,
+				8C00AC0F1B2ED44A00748A37 /* Realm.framework in Frameworks */,
 				8CEF64DF1B0081260056450F /* libc++.dylib in Frameworks */,
 				8CF9CE52199F9A22008127E5 /* AppKit.framework in Frameworks */,
 				8CF0C9DC1991CDB900349F35 /* libJJJ.a in Frameworks */,
@@ -197,7 +197,7 @@
 		8C1B4DC7198CF0C000B4C948 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				8C45F09F1B1C428E00C19C8F /* Realm.framework */,
+				8C00AC0E1B2ED44A00748A37 /* Realm.framework */,
 				8CEF64DE1B0081260056450F /* libc++.dylib */,
 				8CF9CE51199F9A22008127E5 /* AppKit.framework */,
 				8CF9CE4B199F982A008127E5 /* CoreGraphics.framework */,

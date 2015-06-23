@@ -10,4 +10,8 @@
 
 @implementation DTLanguage
 
++ (NSArray *)indexedProperties {
+    return @[@"name"];
+}
+
 @end

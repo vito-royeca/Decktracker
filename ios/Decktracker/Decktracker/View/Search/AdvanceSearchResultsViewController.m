@@ -7,7 +7,6 @@
 //
 
 #import "AdvanceSearchResultsViewController.h"
-#import "AdvanceSearchViewController.h"
 #import "CardDetailsViewController.h"
 #import "Database.h"
 #import "DTCard.h"
@@ -16,7 +15,6 @@
 #import "DTCardType.h"
 #import "DTSet.h"
 #import "FileManager.h"
-#import "NewAdvanceSearchViewController.h"
 #import "SearchResultsTableViewCell.h"
 #import "Decktracker-Swift.h"
 

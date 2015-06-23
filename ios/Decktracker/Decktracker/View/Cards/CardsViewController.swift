@@ -1,6 +1,6 @@
 
 //
-//  FeaturedViewController.swift
+//  CardsViewController.swift
 //  Decktracker
 //
 //  Created by Jovit Royeca on 11/11/14.
@@ -9,15 +9,16 @@
 
 import UIKit
 
-class FeaturedViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, HorizontalScrollTableViewCellDelegate, InAppPurchaseViewControllerDelegate {
+class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, HorizontalScrollTableViewCellDelegate, InAppPurchaseViewControllerDelegate {
     
     let kHorizontalCellIdentifier   = "kHorizontalCellIdentifier"
     let kBannerCellIdentifier       = "kBannerCellIdentifier"
     let kDefaultCellIdentifier      = "kDefaultCellIdentifier"
     
+    var searchBar:UISearchBar?
     var tblFeatured:UITableView?
     var colBanner:UICollectionView?
-    var arrayData:[[String: [AnyObject]]]?
+    var arrayData:[[String: [String]]]?
     var bannerCell:BannerScrollTableViewCell?
     
     override func viewDidLoad() {
@@ -26,13 +27,22 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         // Do any additional setup after loading the view.
         let height = view.frame.size.height - tabBarController!.tabBar.frame.size.height
         var frame = CGRect(x:0, y:0, width:view.frame.width, height:height)
+
+        var btnAdvance = UIBarButtonItem(image: UIImage(named: "filter.png"), style: UIBarButtonItemStyle.Plain, target: self, action: "btnAdvanceTapped")
+        
+        searchBar = UISearchBar()
+        searchBar!.autoresizingMask = UIViewAutoresizing.FlexibleWidth
+        searchBar!.placeholder = "Search"
+        searchBar!.delegate = self
         
         tblFeatured = UITableView(frame: frame, style: UITableViewStyle.Plain)
         tblFeatured!.delegate = self
         tblFeatured!.dataSource = self
         tblFeatured!.registerNib(UINib(nibName: "BannerScrollTableViewCell", bundle: nil), forCellReuseIdentifier: kBannerCellIdentifier)
         tblFeatured!.registerNib(UINib(nibName: "HorizontalScrollTableViewCell", bundle: nil), forCellReuseIdentifier: kHorizontalCellIdentifier)
-        
+
+        self.navigationItem.leftBarButtonItem = btnAdvance;
+        self.navigationItem.titleView = self.searchBar;
         view.addSubview(tblFeatured!)
         
         self.navigationItem.title = "Featured"
@@ -75,26 +85,26 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func loadData() {
-        arrayData = [[String: [AnyObject]]]()
+        arrayData = [[String: [String]]]()
         
         let arrRandom = Database.sharedInstance().fetchRandomCards(6, withPredicate: nil, includeInAppPurchase: false) as! [DTCard]
-        var array:[DTCard] = Array()
-        array.append(arrRandom.last!)
+        var array:[String] = Array()
+        array.append(arrRandom.last!.cardId)
         for card in arrRandom {
-            array.append(card)
+            array.append(card.cardId)
         }
-        array.append(arrRandom.first!)
+        array.append(arrRandom.first!.cardId)
         arrayData!.append(["Random": array])
-        arrayData!.append(["Top Rated": [DTCard]()])
-        arrayData!.append(["Top Viewed": [DTCard]()])
-        arrayData!.append(["Sets": Database.sharedInstance().fetchSets(10) as! [DTSet]!])
+        arrayData!.append(["Top Rated": [String]()])
+        arrayData!.append(["Top Viewed": [String]()])
+        arrayData!.append(["Sets": Database.sharedInstance().fetchSets(10) as! [String]!])
         
         for dict in arrayData! {
             for (key,value) in dict {
                 for x in value {
-                    if x.isKindOfClass(DTCard.classForCoder()) {
-                        FileManager.sharedInstance().downloadCardImage(x as! DTCard, immediately:false)
-                    }
+//                    if x.isKindOfClass(String.class()) {
+                        FileManager.sharedInstance().downloadCardImage(x, immediately:false)
+//                    }
                 }
             }
         }
@@ -111,12 +121,14 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func reloadTable(sender: AnyObject, key: String) {
         let notif = sender as! NSNotification
-        let dict = notif.userInfo as! [String: [AnyObject]]
-        let cards = dict["data"]! as [AnyObject]
-        let newRow = [key: cards]
+        let dict = notif.userInfo as! [String: [String]]
+        let cardIds = dict["cardIds"]! as [String]
+        let newRow = [key: cardIds]
         
-        for x in cards {
-            FileManager.sharedInstance().downloadCardImage(x as? DTCard, immediately:false)
+        for x in cardIds {
+//            if x.isKindOfClass(String.class()) {
+                FileManager.sharedInstance().downloadCardImage(x, immediately:false)
+//            }
         }
         
         var i = 0
@@ -132,6 +144,9 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         }
         tblFeatured!.reloadData()
     }
+
+//    MARK: UISearchBarDelegate
+    
     
 //    MARK: UITableViewDelegate
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -224,21 +239,21 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         var cell:UICollectionViewCell?
         
         if collectionView.tag == 0 {
-            let card = dict[indexPath.row] as! DTCard
+            let cardId = dict[indexPath.row]
             var cell2 = collectionView.dequeueReusableCellWithReuseIdentifier(kBannerCellIdentifier, forIndexPath:indexPath) as! BannerCollectionViewCell
-            cell2.displayCard(card)
+            cell2.displayCard(cardId)
             cell = cell2
             
         } else if collectionView.tag == 1 || collectionView.tag == 2 {
-            let card = dict[indexPath.row] as! DTCard
+            let cardId = dict[indexPath.row]
             var cell2 = collectionView.dequeueReusableCellWithReuseIdentifier("kThumbCellIdentifier", forIndexPath:indexPath) as! ThumbCollectionViewCell
-            cell2.displayCard(card)
+            cell2.displayCard(cardId)
             cell = cell2
             
         }  else if collectionView.tag == 3 {
-            let set = dict[indexPath.row] as! DTSet
+            let setId = dict[indexPath.row]
             var cell2 = collectionView.dequeueReusableCellWithReuseIdentifier("kSetCellIdentifier", forIndexPath:indexPath) as! SetCollectionViewCell
-            cell2.displaySet(set)
+            cell2.displaySet(setId)
             cell = cell2
         }
         
@@ -253,7 +268,8 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         var view:UIViewController?
         
         if collectionView.tag == 0 || collectionView.tag == 1 || collectionView.tag == 2 {
-            let card = dict[indexPath.row] as! DTCard
+            let cardId = dict[indexPath.row]
+            let card = DTCard(forPrimaryKey: cardId)
             let dict = Database.sharedInstance().inAppSettingsForSet(card.set)
             
             if dict != nil {
@@ -269,12 +285,13 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
                 let view2 = CardDetailsViewController()
             
                 view2.addButtonVisible = true
-                view2.card = card
+                view2.cardId = card.cardId
                 view = view2
             }
 
         } else if collectionView.tag == 3 { // Sets
-            let set = dict[indexPath.row] as! DTSet
+            let setId = dict[indexPath.row]
+            let set = DTSet(forPrimaryKey: setId)
             let dict = Database.sharedInstance().inAppSettingsForSet(set)
             
             if dict != nil {
@@ -310,12 +327,12 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         switch tag {
         case 1:
             let view2 = TopListViewController()
-            view2.arrayData = row[key] as? [DTCard]
+            view2.cardIds = row[key]
             Database.sharedInstance().fetchTopRated(20, skip: 10)
             view = view2;
         case 2:
             let view2 = TopListViewController()
-            view2.arrayData = row[key] as? [DTCard]
+            view2.cardIds = row[key]
             Database.sharedInstance().fetchTopViewed(20, skip: 10)
             view = view2;
         case 3:
@@ -344,7 +361,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
     {
         Database.sharedInstance().loadInAppSets()
         arrayData!.removeLast()
-        arrayData!.append(["Sets": Database.sharedInstance().fetchSets(10) as! [DTSet]])
+        arrayData!.append(["Sets": Database.sharedInstance().fetchSets(10) as! [String]])
         tblFeatured!.reloadData()
     }
     
@@ -353,7 +370,7 @@ class FeaturedViewController: UIViewController, UITableViewDataSource, UITableVi
         if scrollView.tag == 0 {
             let row = arrayData![scrollView.tag]
             let key = Array(row.keys)[0]
-            let dict = row[key]! as! Array<DTCard>
+            let dict = row[key]!
             bannerCell?.continueScrolling(dict)
             
         }

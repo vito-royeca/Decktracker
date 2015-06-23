@@ -160,11 +160,12 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
             
         case .ByType:
             arrayData!.sort{ $0.name < $1.name }
+            
             for setType in DTSetType.allObjects().sortedResultsUsingProperty("name", ascending: true) {
                 let st = setType as! DTSetType
                 
                 for set in arrayData! as! [DTSet] {
-                    if set.type == st {
+                    if set.type.name == st.name {
                         let keys = Array(sections!.keys)
                         var sets:[DTSet]?
                         

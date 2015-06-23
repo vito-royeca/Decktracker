@@ -12,4 +12,8 @@
 
 @implementation DTBlock
 
++ (NSArray *)indexedProperties {
+    return @[@"name"];
+}
+
 @end

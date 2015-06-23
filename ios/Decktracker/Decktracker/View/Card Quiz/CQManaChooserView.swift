@@ -33,14 +33,14 @@ class CQManaChooserView: UIView {
     var btnOk:UILabel?
 
     var userMana:PFObject?
-    var card:DTCard?
+    var cardId:String?
     
 //  MARK: Boilerplate
-    init(frame: CGRect, title: String, userMana: PFObject?, card: DTCard?) {
+    init(frame: CGRect, title: String, userMana: PFObject, cardId: String) {
         super.init(frame: frame)
         
         self.userMana = userMana
-        self.card = card
+        self.cardId = cardId
         
         setupTitleAndButtons(title)
         setupManaButtons()
@@ -59,6 +59,8 @@ class CQManaChooserView: UIView {
         arrTxtMana = Array()
         arrBtnRemoveMana = Array()
         arrBtnAddMana = Array()
+        
+        let card = DTCard(forPrimaryKey: cardId)
         
         let space = CGFloat(10)
         
@@ -92,21 +94,21 @@ class CQManaChooserView: UIView {
                 manaColorless = userMana!["colorless"]!.integerValue
                 if manaColorless > 0 {
                     manaImage = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/mana/Colorless/64.png")
-                    currentMana += self.castingCostOfCard(card!, forColor: "1")
-                    currentMana += self.castingCostOfCard(card!, forColor: "2")
-                    currentMana += self.castingCostOfCard(card!, forColor: "3")
-                    currentMana += self.castingCostOfCard(card!, forColor: "4")
-                    currentMana += self.castingCostOfCard(card!, forColor: "5")
-                    currentMana += self.castingCostOfCard(card!, forColor: "6")
-                    currentMana += self.castingCostOfCard(card!, forColor: "7")
-                    currentMana += self.castingCostOfCard(card!, forColor: "8")
-                    currentMana += self.castingCostOfCard(card!, forColor: "9")
-                    currentMana += self.castingCostOfCard(card!, forColor: "10")
-                    currentMana += self.castingCostOfCard(card!, forColor: "11")
-                    currentMana += self.castingCostOfCard(card!, forColor: "12")
-                    currentMana += self.castingCostOfCard(card!, forColor: "13")
-                    currentMana += self.castingCostOfCard(card!, forColor: "14")
-                    currentMana += self.castingCostOfCard(card!, forColor: "15")
+                    currentMana += self.castingCostOfCard(card, forColor: "1")
+                    currentMana += self.castingCostOfCard(card, forColor: "2")
+                    currentMana += self.castingCostOfCard(card, forColor: "3")
+                    currentMana += self.castingCostOfCard(card, forColor: "4")
+                    currentMana += self.castingCostOfCard(card, forColor: "5")
+                    currentMana += self.castingCostOfCard(card, forColor: "6")
+                    currentMana += self.castingCostOfCard(card, forColor: "7")
+                    currentMana += self.castingCostOfCard(card, forColor: "8")
+                    currentMana += self.castingCostOfCard(card, forColor: "9")
+                    currentMana += self.castingCostOfCard(card, forColor: "10")
+                    currentMana += self.castingCostOfCard(card, forColor: "11")
+                    currentMana += self.castingCostOfCard(card, forColor: "12")
+                    currentMana += self.castingCostOfCard(card, forColor: "13")
+                    currentMana += self.castingCostOfCard(card, forColor: "14")
+                    currentMana += self.castingCostOfCard(card, forColor: "15")
                     removeEnabled = currentMana > 0
                     addEnabled = currentMana < manaColorless
                 } else {
@@ -117,7 +119,7 @@ class CQManaChooserView: UIView {
                 manaBlack = userMana!["black"]!.integerValue
                 if manaBlack > 0 {
                     manaImage = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/mana/B/64.png")
-                    currentMana = self.castingCostOfCard(card!, forColor: "B")
+                    currentMana = self.castingCostOfCard(card, forColor: "B")
                     removeEnabled = currentMana > 0
                     addEnabled = currentMana < manaBlack
                 } else {
@@ -128,7 +130,7 @@ class CQManaChooserView: UIView {
                 manaBlue = userMana!["blue"]!.integerValue
                 if manaBlue > 0 {
                     manaImage = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/mana/U/64.png")
-                    currentMana = self.castingCostOfCard(card!, forColor: "U")
+                    currentMana = self.castingCostOfCard(card, forColor: "U")
                     removeEnabled = currentMana > 0
                     addEnabled = currentMana < manaBlue
                 } else {
@@ -139,7 +141,7 @@ class CQManaChooserView: UIView {
                 manaGreen = userMana!["green"]!.integerValue
                 if manaGreen > 0 {
                     manaImage = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/mana/G/64.png")
-                    currentMana = self.castingCostOfCard(card!, forColor: "G")
+                    currentMana = self.castingCostOfCard(card, forColor: "G")
                     removeEnabled = currentMana > 0
                     addEnabled = currentMana < manaGreen
                 } else {
@@ -150,7 +152,7 @@ class CQManaChooserView: UIView {
                 manaRed = userMana!["red"]!.integerValue
                 if manaRed > 0 {
                     manaImage = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/mana/R/64.png")
-                    currentMana = self.castingCostOfCard(card!, forColor: "R")
+                    currentMana = self.castingCostOfCard(card, forColor: "R")
                     removeEnabled = currentMana > 0
                     addEnabled = currentMana < manaRed
                 } else {
@@ -161,7 +163,7 @@ class CQManaChooserView: UIView {
                 manaWhite = userMana!["white"]!.integerValue
                 if manaWhite > 0 {
                     manaImage = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/mana/W/64.png")
-                    currentMana = self.castingCostOfCard(card!, forColor: "W")
+                    currentMana = self.castingCostOfCard(card, forColor: "W")
                     removeEnabled = currentMana > 0
                     addEnabled = currentMana < manaWhite
                 } else {
@@ -461,7 +463,8 @@ class CQManaChooserView: UIView {
     func castingCostOfCard(card: DTCard, forColor: String) -> Int {
         var castingCost = 0
         
-        for dict in FileManager.sharedInstance().manaImagesForCard(card) as! [NSDictionary] {
+        let kardId = card.cardId
+        for dict in FileManager.sharedInstance().manaImagesForCard(kardId) as! [NSDictionary] {
             let symbol = dict["symbol"] as! String
             
             if symbol == forColor {
@@ -493,10 +496,11 @@ class CQManaChooserView: UIView {
     }
     
     func validate() -> Bool {
+        let card = DTCard(forPrimaryKey: cardId)
         var mana = manaPaid()
         var colorless = 0
         
-        if card!.cmc != mana["totalCMC"]!.floatValue {
+        if card.cmc != mana["totalCMC"]!.floatValue {
             return false
         }
     
@@ -504,47 +508,47 @@ class CQManaChooserView: UIView {
             if k == "totalCMC" {
                 continue
             } else if k == "black" {
-                let cc = castingCostOfCard(card!, forColor: "B")
+                let cc = castingCostOfCard(card, forColor: "B")
                 if v.integerValue < cc {
                     return false
                 } else {
                     colorless += (v.integerValue - cc)
                 }
             } else if k == "blue" {
-                let cc = castingCostOfCard(card!, forColor: "U")
+                let cc = castingCostOfCard(card, forColor: "U")
                 if v.integerValue < cc {
                     return false
                 } else {
                     colorless += (v.integerValue - cc)
                 }
             } else if k == "green" {
-                let cc = castingCostOfCard(card!, forColor: "G")
+                let cc = castingCostOfCard(card, forColor: "G")
                 if v.integerValue < cc {
                     return false
                 } else {
                     colorless += (v.integerValue - cc)
                 }
             } else if k == "red" {
-                let cc = castingCostOfCard(card!, forColor: "R")
+                let cc = castingCostOfCard(card, forColor: "R")
                 if v.integerValue < cc {
                     return false
                 } else {
                     colorless += (v.integerValue - cc)
                 }
             } else if k == "white" {
-                let cc = castingCostOfCard(card!, forColor: "W")
+                let cc = castingCostOfCard(card, forColor: "W")
                 if v.integerValue < cc {
                     return false
                 } else {
                     colorless += (v.integerValue - cc)
                 }
             } else if k == "colorless" {
-                let cc = castingCostOfCard(card!, forColor: "\(v)")
+                let cc = castingCostOfCard(card, forColor: "\(v)")
                 colorless += cc
             }
         }
         
-        if colorless < castingCostOfCard(card!, forColor: "\(colorless)") {
+        if colorless < castingCostOfCard(card, forColor: "\(colorless)") {
             return false
         }
         

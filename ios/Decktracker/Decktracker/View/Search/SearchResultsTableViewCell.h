@@ -29,14 +29,15 @@
 @property(strong,nonatomic) IBOutlet UIImageView *imgSet;
 @property(strong,nonatomic) IBOutlet UILabel *lblBadge;
 @property(strong,nonatomic) IBOutlet UIView *viewRating;
-@property (weak, nonatomic) IBOutlet UILabel *lblLowPrice;
-@property (weak, nonatomic) IBOutlet UILabel *lblMedianPrice;
-@property (weak, nonatomic) IBOutlet UILabel *lblHighPrice;
-@property (weak, nonatomic) IBOutlet UILabel *lblFoilPrice;
-@property (weak, nonatomic) IBOutlet UIImageView *imgType;
+@property(strong,nonatomic) IBOutlet UILabel *lblLowPrice;
+@property(strong,nonatomic) IBOutlet UILabel *lblMedianPrice;
+@property(strong,nonatomic) IBOutlet UILabel *lblHighPrice;
+@property(strong,nonatomic) IBOutlet UILabel *lblFoilPrice;
+@property(strong,nonatomic) IBOutlet UIImageView *imgType;
 
+@property(strong,nonatomic) NSString *cardId;
 
--(void) displayCard:(DTCard*) card;
+-(void) displayCard:(NSString*) cardId;
 -(void) addBadge:(int) badgeValue;
 -(void) addRank:(int) rankValue;
 //-(void) updatePricing;

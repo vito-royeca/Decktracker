@@ -10,4 +10,8 @@
 
 @implementation DTCardColor
 
++ (NSArray *)indexedProperties {
+    return @[@"name"];
+}
+
 @end

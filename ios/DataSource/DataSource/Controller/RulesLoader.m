@@ -16,7 +16,7 @@
     NSString *_lastContent;
 }
 
--(void) parseRules
+-(void) json2Database
 {
     [[Database sharedInstance] setupDb];
     
@@ -36,7 +36,6 @@
     [self parse:parser];
     
     [[Database sharedInstance] closeDb];
-    [[Database sharedInstance] copyRealmDatabaseToHome];
 }
 
 -(void) parse:(TFHpple*) parser
@@ -54,7 +53,6 @@
                     if ([child.attributes[@"class"] isEqualToString:@"CR1100"])
                     {
                         NSString *content = [JJJUtil removeNewLines:[self extractContent:child]];
-//                        NSString *content = [self extractContent:child];
                         [self createRuleWithContent:content cascadeRule:NO];
                     }
                     
@@ -62,7 +60,6 @@
                              [child.attributes[@"class"] isEqualToString:@"CR1001a"])
                     {
                         NSString *content = [JJJUtil removeNewLines:[self extractContent:child]];
-//                        NSString *content = [self extractContent:child];
                         
                         if (content.length > 0)
                         {
@@ -73,7 +70,6 @@
                     else if ([child.attributes[@"class"] isEqualToString:@"CREx1001"])
                     {
                         NSString *content = [JJJUtil removeNewLines:[self extractContent:child]];
-//                        NSString *content = [self extractContent:child];
                         
                         [self createRuleWithContent:content cascadeRule:YES];
                         _lastContent = nil;
@@ -99,14 +95,14 @@
                             }
                             else
                             {
-                                [self createGlossary:_lastContent withDefinition:[self extractContent:child]];
+                                [self createGlossaryWithTerm:_lastContent andDefinition:[self extractContent:child]];
                             }
                             _lastContent = nil;
                             
                         }
                         else
                         {
-                            [self createGlossary:[self extractContent:child] withDefinition:nil];
+                            [self createGlossaryWithTerm:[self extractContent:child] andDefinition:nil];
                             _lastContent = [self extractContent:child];
                         }
                     }
@@ -207,7 +203,7 @@
     return [[DTComprehensiveRule objectsWithPredicate:predicate] firstObject];
 }
 
--(DTComprehensiveGlossary*) createGlossary:(NSString*) term withDefinition:(NSString*) definition
+-(DTComprehensiveGlossary*) createGlossaryWithTerm:(NSString*) term andDefinition:(NSString*) definition
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"term = %@", term];
     DTComprehensiveGlossary *glossary = [[DTComprehensiveGlossary objectsWithPredicate:predicate] firstObject];

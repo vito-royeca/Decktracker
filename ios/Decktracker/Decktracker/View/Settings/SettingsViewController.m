@@ -296,11 +296,11 @@
 #pragma mark - InAppPurchaseViewControllerDelegate
 -(void) productPurchaseSucceeded:(NSString*) productID
 {
-    if ([productID isEqualToString:COLLECTIONS_IAP_PRODUCT_ID])
-    {
-        MainViewController *view = (MainViewController*)self.tabBarController;
-        [view addCollectionsProduct];
-    }
+//    if ([productID isEqualToString:COLLECTIONS_IAP_PRODUCT_ID])
+//    {
+//        MainViewController *view = (MainViewController*)self.tabBarController;
+//        [view addCollectionsProduct];
+//    }
 }
 
 -(void) productPurchaseCancelled
@@ -318,7 +318,7 @@
 {
     // Collections
     MainViewController *view = (MainViewController*)self.tabBarController;
-    [view addCollectionsProduct];
+//    [view addCollectionsProduct];
     
     // In-App Sets
     [[Database sharedInstance] loadInAppSets];

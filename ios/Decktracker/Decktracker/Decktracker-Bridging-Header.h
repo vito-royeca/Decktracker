@@ -15,6 +15,7 @@
 #import <Parse/Parse.h>
 #import <ParseUI/ParseUI.h>
 #import "PureLayout.h"
+#import <Realm/Realm.h>
 #import <JJJ/JJJUtil.h>
 
 #import "DTArtist.h"
@@ -30,6 +31,7 @@
 #import "DTComprehensiveGlossary.h"
 #import "DTComprehensiveRule.h"
 #import "DTFormat.h"
+#import "DTLanguage.h"
 #import "DTSet.h"
 #import "DTSetType.h"
 
@@ -43,5 +45,4 @@
 #import "MainViewController.h"
 #import "SearchResultsTableViewCell.h"
 #import "SettingsViewController.h"
-#import "SimpleSearchViewController.h"
 #import "UIImage+AverageColor.h"

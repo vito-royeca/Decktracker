@@ -10,4 +10,12 @@
 
 @implementation DTSet
 
++ (NSString *)primaryKey {
+    return @"setId";
+}
+
++ (NSArray *)indexedProperties {
+    return @[@"code", @"name"];
+}
+
 @end

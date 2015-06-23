@@ -10,4 +10,8 @@
 
 @implementation DTSetType
 
++ (NSArray *)indexedProperties {
+    return @[@"name"];
+}
+
 @end

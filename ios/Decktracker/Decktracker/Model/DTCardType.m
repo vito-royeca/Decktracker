@@ -10,4 +10,8 @@
 
 @implementation DTCardType
 
++ (NSArray *)indexedProperties {
+    return @[@"name"];
+}
+
 @end

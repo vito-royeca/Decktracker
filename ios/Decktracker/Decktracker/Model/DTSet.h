@@ -13,6 +13,7 @@
 
 @interface DTSet : RLMObject
 
+@property NSString * setId;
 @property NSString * border;
 @property NSString * code;
 @property NSString * gathererCode;

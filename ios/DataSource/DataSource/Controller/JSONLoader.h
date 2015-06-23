@@ -27,5 +27,6 @@
 @interface JSONLoader : NSObject
 
 -(void) json2Database;
+-(void) updateCardPricing;
 
 @end

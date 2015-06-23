@@ -12,7 +12,6 @@ class MoreViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     var tblMore:UITableView!
     let arrayData = [["Rules": ["Basic Rulebook", "Comprehensive Rules"]],
-                     ["Tools": ["Card Quiz"/*, "Life Counter"*/]],
                      ["": ["Settings"]]]
     
     override func viewDidLoad() {

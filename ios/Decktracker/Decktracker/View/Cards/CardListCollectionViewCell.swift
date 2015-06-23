@@ -13,7 +13,7 @@ class CardListCollectionViewCell: UICollectionViewCell {
     var lblRank:UILabel?
     var lblBadge:UILabel?
     var imgCard:UIImageView?
-    var card:DTCard?
+    var cardId:String?
     var currentCardPath:String?
     
     override init(frame: CGRect) {
@@ -59,8 +59,9 @@ class CardListCollectionViewCell: UICollectionViewCell {
         super.init(coder: aDecoder)
     }
     
-    func displayCard(card: DTCard) {
-        self.card = card
+    func displayCard(cardId: String) {
+        self.cardId = cardId
+        let card = DTCard(forPrimaryKey: self.cardId)
         
         NSNotificationCenter.defaultCenter().removeObserver(self,
             name:kCardDownloadCompleted,  object:nil)
@@ -68,17 +69,17 @@ class CardListCollectionViewCell: UICollectionViewCell {
             selector:"loadCardImage:",  name:kCardDownloadCompleted, object:nil)
         
         // card image
-        currentCardPath = FileManager.sharedInstance().cardPath(card)
+        currentCardPath = FileManager.sharedInstance().cardPath(self.cardId)
         self.imgCard!.image = UIImage(contentsOfFile: currentCardPath!)
-        FileManager.sharedInstance().downloadCardImage(card, immediately:false)
+        FileManager.sharedInstance().downloadCardImage(self.cardId, immediately:false)
     }
     
     func loadCardImage(sender: AnyObject) {
         let dict = sender.userInfo as Dictionary!
-        let card = dict["card"] as! DTCard
+        let cardId = dict["cardId"] as! String
         
-        if (self.card == card) {
-            let path = FileManager.sharedInstance().cardPath(card)
+        if self.cardId == cardId {
+            let path = FileManager.sharedInstance().cardPath(self.cardId)
             
             if path != currentCardPath {
                 let hiResImage = UIImage(contentsOfFile: path)
