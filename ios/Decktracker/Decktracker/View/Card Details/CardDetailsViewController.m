@@ -57,7 +57,7 @@
         DTCard *card = [DTCard objectForPrimaryKey:cardId];
         NSInteger index = 0;
         
-        for (DTCard *k in  [DTCard objectsWhere:@"id in %@", self.cardIds])
+        for (DTCard *k in  [DTCard objectsWhere:@"cardId in %@", self.cardIds])
         {
             if ([k.name isEqualToString:card.name] &&
                 [k.number isEqualToString:card.number] &&
@@ -909,7 +909,7 @@
              [path isEqualToString:@"variations"])
     {
         self.cardIds = nil;
-        DTCard *card = [[DTCard objectsWithPredicate:[NSPredicate predicateWithFormat:@"set.code = %@ AND number = %@", kvPairs[@"set"], kvPairs[@"number"]]] firstObject];
+//        DTCard *card = [[DTCard objectsWithPredicate:[NSPredicate predicateWithFormat:@"set.code = %@ AND number = %@", kvPairs[@"set"], kvPairs[@"number"]]] firstObject];
         
         self.cardId = kvPairs[@"cardId"];
         self.segmentedControl.selectedSegmentIndex = 0;

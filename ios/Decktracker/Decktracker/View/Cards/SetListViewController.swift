@@ -292,13 +292,13 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
         cell!.textLabel!.text = set.name
         cell!.detailTextLabel?.text = "Released: \(date) (\(set.numberOfCards) cards)"
         
-        let dict = Database.sharedInstance().inAppSettingsForSet(set)
+        let dict = Database.sharedInstance().inAppSettingsForSet(set.setId)
         
         if dict != nil {
             cell!.imageView!.image = UIImage(named: "locked.png")
 
         } else {
-            let path = FileManager.sharedInstance().setPath(set, small: true)
+            let path = FileManager.sharedInstance().setPath(set.setId, small: true)
             
             if path != nil && NSFileManager.defaultManager().fileExistsAtPath(path) {
                 let setImage = UIImage(contentsOfFile: path)
@@ -338,7 +338,7 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
         let key = keys![indexPath.section]
         let sets = sections![key] as? [DTSet]
         let set = sets![indexPath.row]
-        let dict = Database.sharedInstance().inAppSettingsForSet(set)
+        let dict = Database.sharedInstance().inAppSettingsForSet(set.setId)
         
         if dict != nil {
             let view2 = InAppPurchaseViewController()

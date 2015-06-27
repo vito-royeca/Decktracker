@@ -47,8 +47,6 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
         
         self.navigationItem.title = "Featured"
         self.loadData()
-        
-//        Database.sharedInstance().updateParseCards()
     }
 
     override func didReceiveMemoryWarning() {
@@ -101,10 +99,11 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
         
         for dict in arrayData! {
             for (key,value) in dict {
+                if key == "Sets" {
+                    continue
+                }
                 for x in value {
-//                    if x.isKindOfClass(String.class()) {
-                        FileManager.sharedInstance().downloadCardImage(x, immediately:false)
-//                    }
+                    FileManager.sharedInstance().downloadCardImage(x, immediately:false)
                 }
             }
         }
@@ -270,7 +269,7 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
         if collectionView.tag == 0 || collectionView.tag == 1 || collectionView.tag == 2 {
             let cardId = dict[indexPath.row]
             let card = DTCard(forPrimaryKey: cardId)
-            let dict = Database.sharedInstance().inAppSettingsForSet(card.set)
+            let dict = Database.sharedInstance().inAppSettingsForSet(card.set.setId)
             
             if dict != nil {
                 let view2 = InAppPurchaseViewController()
@@ -292,7 +291,7 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
         } else if collectionView.tag == 3 { // Sets
             let setId = dict[indexPath.row]
             let set = DTSet(forPrimaryKey: setId)
-            let dict = Database.sharedInstance().inAppSettingsForSet(set)
+            let dict = Database.sharedInstance().inAppSettingsForSet(set.setId)
             
             if dict != nil {
                 let view2 = InAppPurchaseViewController()

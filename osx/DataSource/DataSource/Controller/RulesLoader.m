@@ -35,6 +35,17 @@
     
     [self parse:parser];
     
+    realm = [RLMRealm defaultRealm];
+    [realm beginWriteTransaction];
+    for (DTComprehensiveRule *parent in [DTComprehensiveRule objectsWithPredicate:[NSPredicate predicateWithFormat:@"parent = nil"]])
+    {
+        for (DTComprehensiveRule *child in [DTComprehensiveRule objectsWithPredicate:[NSPredicate predicateWithFormat:@"parent = %@", parent]])
+        {
+            [parent.children addObject:child];
+        }
+    }
+    [realm commitWriteTransaction];
+    
     [[Database sharedInstance] closeDb];
 }
 

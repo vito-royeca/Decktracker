@@ -316,10 +316,6 @@
 
 -(void) purchaseRestoreSucceeded:(InAppPurchase*) inAppPurchase withMessage:(NSString*) message
 {
-    // Collections
-    MainViewController *view = (MainViewController*)self.tabBarController;
-//    [view addCollectionsProduct];
-    
     // In-App Sets
     [[Database sharedInstance] loadInAppSets];
     

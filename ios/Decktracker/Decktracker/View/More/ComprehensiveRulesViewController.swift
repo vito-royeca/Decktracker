@@ -110,7 +110,9 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
         
         var array = [String]()
         array.append("Introduction")
-        for rule in DTComprehensiveRule.objectsWithPredicate(NSPredicate(format:"parent = %@", "")) { //DTComprehensiveRule.MR_findByAttribute("parent", withValue:nil) {
+        
+        let predicate = NSPredicate(format:"parent = nil")
+        for rule in DTComprehensiveRule.objectsWithPredicate(predicate) {
             let r = rule as! DTComprehensiveRule
             array.append(r.number + ". " + r.rule)
         }
@@ -201,7 +203,7 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
                 var range:NSRange = number.rangeOfString(" ")
                 number = number.substringToIndex(range.location-1)
 //                if let rule = DTComprehensiveRule.MR_findFirstByAttribute("number", withValue:number) as? DTComprehensiveRule {
-                if let rule = DTComprehensiveRule.objectsWithPredicate(NSPredicate(format:"number = ", number)).firstObject() as? DTComprehensiveRule {
+                if let rule = DTComprehensiveRule.objectsWithPredicate(NSPredicate(format:"number = %@", number)).firstObject() as? DTComprehensiveRule {
                     if rule.children.count == 0 {
                         cell.accessoryType = UITableViewCellAccessoryType.None
                         cell.titleLabel.text = rule.number
@@ -211,7 +213,7 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
 
             } else if key == "Glossary" {
 //                if let glossary = DTComprehensiveGlossary.MR_findFirstByAttribute("term", withValue:value) as? DTComprehensiveGlossary {
-                if let glossary = DTComprehensiveGlossary.objectsWithPredicate(NSPredicate(format: "term = ", value!)).firstObject() as? DTComprehensiveGlossary {
+                if let glossary = DTComprehensiveGlossary.objectsWithPredicate(NSPredicate(format: "term = %@", value!)).firstObject() as? DTComprehensiveGlossary {
                     cell.accessoryType = UITableViewCellAccessoryType.None
                     cell.titleLabel.text = glossary.term
                     cell.bodyLabel.text = glossary.definition

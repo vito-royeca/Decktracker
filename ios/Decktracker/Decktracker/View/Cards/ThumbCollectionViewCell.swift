@@ -45,7 +45,7 @@ class ThumbCollectionViewCell: UICollectionViewCell {
         FileManager.sharedInstance().downloadCardImage(self.cardId, immediately:false)
         
         // set image
-        let dict = Database.sharedInstance().inAppSettingsForSet(card.set)
+        let dict = Database.sharedInstance().inAppSettingsForSet(card.set.setId)
         if dict != nil {
             imgSet.image = UIImage(named: "locked.png")
             

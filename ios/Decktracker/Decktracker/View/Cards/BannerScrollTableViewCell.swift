@@ -57,7 +57,7 @@ class BannerScrollTableViewCell: UITableViewCell {
             
             newIndexPath = NSIndexPath(forRow: row, inSection: 0)
 #if DEBUG
-            println("Scrolling to... \(newIndexPath!)")
+//            println("Scrolling to... \(newIndexPath!)")
 #endif
             collectionView.scrollToItemAtIndexPath(newIndexPath!, atScrollPosition: UICollectionViewScrollPosition.Left, animated: bWillSlide)
         }

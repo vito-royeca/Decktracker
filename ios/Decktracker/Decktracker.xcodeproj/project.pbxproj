@@ -31,7 +31,6 @@
 		8C069C451B044E7E004C92E2 /* DTSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C069C351B044E7E004C92E2 /* DTSet.m */; };
 		8C069C461B044E7E004C92E2 /* DTSetType.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C069C371B044E7E004C92E2 /* DTSetType.m */; };
 		8C069C511B044F99004C92E2 /* decktracker.realm in Resources */ = {isa = PBXBuildFile; fileRef = 8C069C501B044F99004C92E2 /* decktracker.realm */; };
-		8C0AE5221B26FCCA00C9139F /* SimpleSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0AE5211B26FCCA00C9139F /* SimpleSearchViewController.swift */; };
 		8C0AE5241B26FD9300C9139F /* AdvanceSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0AE5231B26FD9300C9139F /* AdvanceSearchViewController.swift */; };
 		8C0AE5261B26FEC200C9139F /* NewAdvanceSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0AE5251B26FEC200C9139F /* NewAdvanceSearchViewController.swift */; };
 		8C0AE5281B26FF2B00C9139F /* AdvanceSearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0AE5271B26FF2B00C9139F /* AdvanceSearchResultsViewController.swift */; };
@@ -163,7 +162,6 @@
 		8CCE996B1A6A80D400ECCA1C /* SubtitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCE99631A6A80D400ECCA1C /* SubtitleTableViewCell.swift */; };
 		8CCFC02E1A3E7C2C004B1853 /* decktracker.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8CCFC02D1A3E7C2C004B1853 /* decktracker.plist */; };
 		8CD2E1EC19DACE1A00503ACC /* InAppPurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD2E1EB19DACE1A00503ACC /* InAppPurchase.m */; };
-		8CD57B661B1378610090DC94 /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CDE24591B1225DE00C60804 /* libGoogleAnalyticsServices.a */; };
 		8CD627A61A6BE7E100382143 /* LifeCounterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD627A51A6BE7E100382143 /* LifeCounterViewController.swift */; };
 		8CD627A81A6BEDE000382143 /* In-App Sets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8CD627A71A6BEDE000382143 /* In-App Sets.plist */; };
 		8CD705981A540E3600CF8425 /* BarGraphViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD705971A540E3600CF8425 /* BarGraphViewController.swift */; };
@@ -176,7 +174,6 @@
 		8CF7F0991B099D3400ADBC01 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF7F0981B099D3400ADBC01 /* libc++.dylib */; };
 		8CF7F0A51B09A67300ADBC01 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF7F0A41B09A67300ADBC01 /* SystemConfiguration.framework */; };
 		8CF7F0A91B09A67A00ADBC01 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF7F0A81B09A67A00ADBC01 /* libz.dylib */; };
-		8CFA21D31A64F8CC00E5409B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CFA21D21A64F8CC00E5409B /* Main.storyboard */; };
 		8CFA452419E1B69A000B5205 /* FCCircularProgressView.license in Resources */ = {isa = PBXBuildFile; fileRef = 8CFA452219E1B69A000B5205 /* FCCircularProgressView.license */; };
 		8CFA452A19E1C580000B5205 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CFA452919E1C580000B5205 /* QuartzCore.framework */; };
 		A3BBD6DCFB78C22CDF28574E /* libPods-Decktracker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C6D823F40EB97F7F91714E13 /* libPods-Decktracker.a */; };
@@ -274,7 +271,6 @@
 		8C069C371B044E7E004C92E2 /* DTSetType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTSetType.m; sourceTree = "<group>"; };
 		8C069C4D1B044F6B004C92E2 /* RLMArrays.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMArrays.h; sourceTree = "<group>"; };
 		8C069C501B044F99004C92E2 /* decktracker.realm */ = {isa = PBXFileReference; lastKnownFileType = file; name = decktracker.realm; path = ../../../../data/decktracker.realm; sourceTree = "<group>"; };
-		8C0AE5211B26FCCA00C9139F /* SimpleSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleSearchViewController.swift; sourceTree = "<group>"; };
 		8C0AE5231B26FD9300C9139F /* AdvanceSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvanceSearchViewController.swift; sourceTree = "<group>"; };
 		8C0AE5251B26FEC200C9139F /* NewAdvanceSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewAdvanceSearchViewController.swift; sourceTree = "<group>"; };
 		8C0AE5271B26FF2B00C9139F /* AdvanceSearchResultsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvanceSearchResultsViewController.swift; sourceTree = "<group>"; };
@@ -476,7 +472,6 @@
 		8CF7F0981B099D3400ADBC01 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		8CF7F0A41B09A67300ADBC01 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		8CF7F0A81B09A67A00ADBC01 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		8CFA21D21A64F8CC00E5409B /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		8CFA452219E1B69A000B5205 /* FCCircularProgressView.license */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = FCCircularProgressView.license; sourceTree = "<group>"; };
 		8CFA452919E1C580000B5205 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		A1EECA4CC90AE98A2888F201 /* Pods-Decktracker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Decktracker.release.xcconfig"; path = "Pods/Target Support Files/Pods-Decktracker/Pods-Decktracker.release.xcconfig"; sourceTree = "<group>"; };
@@ -489,7 +484,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8CD57B661B1378610090DC94 /* libGoogleAnalyticsServices.a in Frameworks */,
 				8CF7F0A91B09A67A00ADBC01 /* libz.dylib in Frameworks */,
 				8CF7F0A51B09A67300ADBC01 /* SystemConfiguration.framework in Frameworks */,
 				8CF7F0991B099D3400ADBC01 /* libc++.dylib in Frameworks */,
@@ -573,7 +567,6 @@
 				8C13467519A9B17B00E0B3C3 /* SearchResultsTableViewCell.h */,
 				8C13467619A9B17B00E0B3C3 /* SearchResultsTableViewCell.m */,
 				8C13467719A9B17B00E0B3C3 /* SearchResultsTableViewCell.xib */,
-				8C0AE5211B26FCCA00C9139F /* SimpleSearchViewController.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -721,7 +714,6 @@
 				8CE7F2C219C0A2F7004FBEA5 /* Decktracker.entitlements */,
 				8C2E14071990741100023BAA /* Images.xcassets */,
 				8C378DF919A742D800B9367F /* Libs */,
-				8CFA21D21A64F8CC00E5409B /* Main.storyboard */,
 				8C2E14251990744E00023BAA /* Model */,
 				8C2E13F91990741100023BAA /* Supporting Files */,
 				8C2E14261990746100023BAA /* View */,
@@ -1119,7 +1111,6 @@
 				8C1FCDE61B2855D300754177 /* SetCollectionViewCell.xib in Resources */,
 				8C2A979119F5027B0094C97F /* Reader-Export.png in Resources */,
 				8C5FF9E819AE2EE3003CE54C /* keywords.plist in Resources */,
-				8CFA21D31A64F8CC00E5409B /* Main.storyboard in Resources */,
 				8C1FCDDF1B2855D300754177 /* BannerScrollTableViewCell.xib in Resources */,
 				8C89BD5319DD4FFE0070E4F5 /* InAppSettingsKit.license in Resources */,
 				8CCFC02E1A3E7C2C004B1853 /* decktracker.plist in Resources */,
@@ -1261,7 +1252,6 @@
 				8CCE996B1A6A80D400ECCA1C /* SubtitleTableViewCell.swift in Sources */,
 				8C2A97A419F5027B0094C97F /* ReaderThumbCache.m in Sources */,
 				8C1FCDE71B2855D300754177 /* SetListViewController.swift in Sources */,
-				8C0AE5221B26FCCA00C9139F /* SimpleSearchViewController.swift in Sources */,
 				8CE6E0AA1ADA00E700EE2C79 /* database.xcdatamodeld in Sources */,
 				8C2A97A519F5027B0094C97F /* ReaderThumbFetch.m in Sources */,
 				8C2A97A319F5027B0094C97F /* ReaderMainToolbar.m in Sources */,
@@ -1486,6 +1476,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"/Users/tontonsevilla/workspace/decktracker/osx/DataSource/Pods/Parse-OSX",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Decktracker/Decktracker-Prefix.pch";
@@ -1521,6 +1512,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"/Users/tontonsevilla/workspace/decktracker/osx/DataSource/Pods/Parse-OSX",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Decktracker/Decktracker-Prefix.pch";

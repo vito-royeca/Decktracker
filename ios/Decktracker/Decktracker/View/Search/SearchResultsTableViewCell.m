@@ -147,7 +147,7 @@
     self.imgCrop.image = [[UIImage alloc] initWithContentsOfFile:_currentCropPath];
     
     [[FileManager sharedInstance] downloadCardImage:self.cardId immediately:NO];
-    [[Database sharedInstance] fetchTcgPlayerPriceForCard:card];
+    [[Database sharedInstance] fetchTcgPlayerPriceForCard:card.cardId];
     
     // type image
     NSString *path = [[FileManager sharedInstance] cardTypePath:self.cardId];
@@ -169,7 +169,7 @@
     }
     
     // set image
-    NSDictionary *dict = [[Database sharedInstance] inAppSettingsForSet:card.set];
+    NSDictionary *dict = [[Database sharedInstance] inAppSettingsForSet:card.set.setId];
     if (dict)
     {
         self.imgSet.image = [UIImage imageNamed:@"locked.png"];
@@ -304,7 +304,7 @@
 {
     NSString *cardId = [sender userInfo][@"cardId"];
     
-    if (self.cardId == cardId)
+    if ([self.cardId isEqualToString:cardId])
     {
         NSString *path = [[FileManager sharedInstance] cropPath:self.cardId];
         

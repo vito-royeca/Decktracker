@@ -326,7 +326,6 @@ static Database *_me;
                                                managedObjectContext:moc
                                                  sectionNameKeyPath:sectionName
                                                           cacheName:nil];*/
-
     return [[DTCard objectsWithPredicate:pred] sortedResultsUsingDescriptors:sorters];
 }
 
@@ -564,7 +563,7 @@ static Database *_me;
     }
 }
 
--(NSDictionary*) inAppSettingsForSet:(id) setId
+-(NSDictionary*) inAppSettingsForSet:(NSString*) setId
 {
     DTSet *set = [DTSet objectForPrimaryKey:setId];
     
@@ -682,14 +681,9 @@ static Database *_me;
     return [[DTCard objectsWithPredicate:predicate] firstObject];
 }
 
--(NSString*) cardRarityIndex:(DTCard*) card
+-(void) fetchTcgPlayerPriceForCard:(NSString*) cardId
 {
-    return [card.rarity.name isEqualToString:@"Basic Land"] ? @"C" : [[card.rarity.name substringToIndex:1] uppercaseString];
-}
-
--(void) fetchTcgPlayerPriceForCard:(id) cardId
-{
-    DTCard *card = [DTCard objectForPrimaryKey:cardId];
+    __block DTCard *card = [DTCard objectForPrimaryKey:cardId];
     BOOL bWillFetch = NO;
     
     if (!card.tcgPlayerFetchDate)
@@ -721,6 +715,7 @@ static Database *_me;
     {
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
+            card = [DTCard objectForPrimaryKey:cardId];
 #endif
             NSString *tcgPricing = [[NSString stringWithFormat:@"http://partner.tcgplayer.com/x3/phl.asmx/p?pk=%@&s=%@&p=%@", TCGPLAYER_PARTNER_KEY, card.set.tcgPlayerName, card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             if (!card.set.tcgPlayerName)
@@ -772,19 +767,16 @@ static Database *_me;
             NSLog(@"^TCGPlayer: %@ [%@] - %@", card.set.name, card.set.code, card.name);
 #endif
         
-//#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
             RLMRealm *realm = [RLMRealm defaultRealm];
             [realm beginWriteTransaction];
-//#endif
+
             card.tcgPlayerHighPrice = high ? [high doubleValue] : card.tcgPlayerHighPrice;
             card.tcgPlayerMidPrice  = mid  ? [mid doubleValue]  : card.tcgPlayerMidPrice;
             card.tcgPlayerLowPrice  = low  ? [low doubleValue]  : card.tcgPlayerLowPrice;
             card.tcgPlayerFoilPrice = foil ? [foil doubleValue] : card.tcgPlayerFoilPrice;
             card.tcgPlayerLink = link ? [JJJUtil trim:link] : card.tcgPlayerLink;
             card.tcgPlayerFetchDate = [NSDate date];
-//#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
             [realm commitWriteTransaction];
-//#endif
             
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -818,7 +810,7 @@ static Database *_me;
     return arrResults;
 }
 
--(BOOL) isCardModern:(id) cardId
+-(BOOL) isCardModern:(NSString*) cardId
 {
     DTCard *card = [DTCard objectForPrimaryKey:cardId];
     NSDate *releaseDate;
@@ -876,14 +868,32 @@ static Database *_me;
             
             for (PFObject *object in objects)
             {
-                NSPredicate *p = [NSPredicate predicateWithFormat:@"(%K = %@ AND %K = %@ AND %K = %@)", @"name", object[@"name"], @"multiverseID", object[@"multiverseID"], @"set.name", object[@"set"][@"name"]];
+                NSPredicate *p = object[@"number"] ? [NSPredicate predicateWithFormat:@"(%K = %@ AND %K = %@ AND %K = %@)", @"name", object[@"name"], @"number", object[@"number"], @"set.name", object[@"set"][@"name"]] :
+                [NSPredicate predicateWithFormat:@"%K = %@ AND %K = %@", @"name", object[@"name"], @"set.name", object[@"set"][@"name"]];
+//                NSPredicate *p;
+                
+//                if (object[@"number"])
+//                {
+//                    p = [NSPredicate predicateWithFormat:@"(%K = %@ AND %K = %@ AND %K = %@)", @"name", object[@"name"], @"number", object[@"number"], @"set.name", object[@"set"][@"name"]];
+//                }
+//                else if (object[@"multiverseID"])
+//                {
+//                    p = [NSPredicate predicateWithFormat:@"(%K = %@ AND %K = %@ AND %K = %@)", @"name", object[@"name"], @"multiverseID", object[@"multiverseID"], @"set.name", object[@"set"][@"name"]];
+//                }
+//                else
+//                {
+//                    p = [NSPredicate predicateWithFormat:@"(%K = %@ AND %K = %@)", @"name", object[@"name"], @"set.name", object[@"set"][@"name"]];
+//                }
+                
                 DTCard *card = [[DTCard objectsWithPredicate:p] firstObject];
                 
-                [realm beginWriteTransaction];
-                card.rating = [object[@"rating"] doubleValue];
-                [realm commitWriteTransaction];
-                
-                [arrResults addObject:card.cardId];
+                if (card)
+                {
+                    [realm beginWriteTransaction];
+                    card.rating = [object[@"rating"] doubleValue];
+                    [realm commitWriteTransaction];
+                    [arrResults addObject:card.cardId];
+                }
             }
         }
         else
@@ -933,10 +943,14 @@ static Database *_me;
         {
             for (PFObject *object in objects)
             {
-                NSPredicate *p = [NSPredicate predicateWithFormat:@"(%K = %@ AND %K = %@ AND %K = %@)", @"name", object[@"name"], @"multiverseID", object[@"multiverseID"], @"set.name", object[@"set"][@"name"]];
-                DTCard *card = [[DTCard objectsWithPredicate:p] firstObject];
+                NSPredicate *p = object[@"number"] ? [NSPredicate predicateWithFormat:@"(%K = %@ AND %K = %@ AND %K = %@)", @"name", object[@"name"], @"number", object[@"number"], @"set.name", object[@"set"][@"name"]] :
+                [NSPredicate predicateWithFormat:@"%K = %@ AND %K = %@", @"name", object[@"name"], @"set.name", object[@"set"][@"name"]];
                 
-                [arrResults addObject:card.cardId];
+                DTCard *card = [[DTCard objectsWithPredicate:p] firstObject];
+                if (card)
+                {
+                    [arrResults addObject:card.cardId];
+                }
             }
         }
         
@@ -1426,7 +1440,6 @@ static Database *_me;
     }];
 }
 
-#pragma mark: Extra methods
 //-(void) parseSynch:(DTCard*) card
 //{
 //    void (^callbackParseSynchCard)(PFObject *pfCard) = ^void(PFObject *pfCard) {
@@ -1473,25 +1486,27 @@ static Database *_me;
 
 -(void) updateParseSets
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"magicCardsInfoCode != %@", @""];
+    PFQuery *query = [PFQuery queryWithClassName:@"Set"];
+    [query whereKeyDoesNotExist:@"magicCardsInfoCode"];
     
-    for (DTSet *set in [[DTSet objectsWithPredicate:predicate] sortedResultsUsingProperty:@"releaseDate" ascending:NO] )
-    {
-        PFQuery *query = [PFQuery queryWithClassName:@"Set"];
-        [query whereKey:@"name" equalTo:set.name];
-        [query whereKey:@"code" equalTo:set.code];
+    
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         
-        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-            
-            if (!error)
+        if (!error)
+        {
+            for (PFObject *pfSet in objects)
             {
-                for (PFObject *pfSet in objects)
+                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name = %@ AND code = %@", pfSet[@"name"], pfSet[@"code"]];
+                
+                DTSet *set = [[DTSet objectsWithPredicate:predicate] firstObject];
+                
+                if (set)
                 {
                     pfSet[@"magicCardsInfoCode"] = set.magicCardsInfoCode;
-                    [pfSet saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                    [pfSet saveEventually:^(BOOL success, NSError *error) {
                         if (!error)
                         {
-                            NSLog(@"Updated: %@ - %@ = %@", set.name, set.code, set.magicCardsInfoCode);
+                            NSLog(@"Updated: %@ - %@: %@", set.name, set.code, set.magicCardsInfoCode);
                         }
                         else
                         {
@@ -1500,64 +1515,90 @@ static Database *_me;
                     }];
                 }
             }
-        }];
-    }
+        }
+    }];
+    
+    
+    //    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"magicCardsInfoCode != %@", @""];
+    //
+    //    for (DTSet *set in [[DTSet objectsWithPredicate:predicate] sortedResultsUsingProperty:@"releaseDate" ascending:NO] )
+    //    {
+    //        PFQuery *query = [PFQuery queryWithClassName:@"Set"];
+    //        [query whereKey:@"name" equalTo:set.name];
+    //        [query whereKey:@"code" equalTo:set.code];
+    //
+    //        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+    //
+    //            if (!error)
+    //            {
+    //                for (PFObject *pfSet in objects)
+    //                {
+    //                    pfSet[@"magicCardsInfoCode"] = set.magicCardsInfoCode;
+    //                    [pfSet saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+    //                        if (!error)
+    //                        {
+    //                            NSLog(@"Updated: %@ - %@ = %@", set.name, set.code, set.magicCardsInfoCode);
+    //                        }
+    //                        else
+    //                        {
+    //                            NSLog(@"%@", error);
+    //                        }
+    //                    }];
+    //                }
+    //            }
+    //        }];
+    //    }
 }
 
 
 -(void) updateParseCards
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"set.magicCardsInfoCode != %@", @""];
-    PFQuery *query = [PFQuery queryWithClassName:@"Set"];
-    query.limit = 200;
-    
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+    for (int i=0; i<6; i++)
+    {
+        PFQuery *query = [PFQuery queryWithClassName:@"Card"];
+        [query whereKeyDoesNotExist:@"number"];
+        [query includeKey:@"set"];
+        [query orderByDescending:@"createdAt"];
+        query.limit = 1000;
         
-        if (!error)
-        {
-            for (DTCard *card in [[DTCard objectsWithPredicate:predicate] sortedResultsUsingProperty:@"set.releaseDate" ascending:YES])
+        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+            
+            if (!error)
             {
-                PFObject *pfSet;
-                
-                for (PFObject *object in objects)
+                for (PFObject *pfCard in objects)
                 {
-                    if ([object[@"name"] isEqualToString:card.set.name] &&
-                        [object[@"code"] isEqualToString:card.set.code])
+                    PFObject *pfSet = pfCard[@"set"];
+                    if (!pfSet || !pfSet[@"magicCardsInfoCode"] || [pfSet[@"magicCardsInfoCode"] isEqualToString:@""])
                     {
-                        pfSet = object;
-                        break;
+                        continue;
+                    }
+                    
+                    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name = %@ AND set.code = %@", pfCard[@"name"], pfSet[@"code"]];
+                    
+                    DTCard *card = [[DTCard objectsWithPredicate:predicate] firstObject];
+                    if (card)
+                    {
+                        pfCard[@"number"] = card.number;
+                        NSString *setName = card.set.name;
+                        NSString *setCode = card.set.code;
+                        NSString *cardName = card.name;
+                        NSString *cardNumber = card.number;
+                        
+                        [pfCard saveEventually:^(BOOL success, NSError *error) {
+                            if (!error)
+                            {
+                                NSLog(@"#%d Updated: %@ - %@: %@(%@)", i, setName, setCode, cardName, cardNumber);
+                            }
+                            else
+                            {
+                                NSLog(@"%@", error);
+                            }
+                        }];
                     }
                 }
-                
-                PFQuery *query = [PFQuery queryWithClassName:@"Card"];
-                [query whereKey:@"name" equalTo:card.name];
-                [query whereKey:@"set" equalTo:pfSet];
-                [query whereKey:@"multiverseID" equalTo:[NSNumber numberWithInt:card.multiverseID]];
-                [query whereKeyDoesNotExist:@"number"];
-                
-                [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-                    
-                    if (!error)
-                    {
-                        for (PFObject *pfCard in objects)
-                        {
-                            pfCard[@"number"] = card.number;
-                            [pfCard saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                                if (!error)
-                                {
-                                    NSLog(@"Updated: %@ - %@ - %@", card.name, card.set.code, card.number);
-                                }
-                                else
-                                {
-                                    NSLog(@"%@", error);
-                                }
-                            }];
-                        }
-                    }
-                }];
             }
-        }
-    }];
+        }];
+    }
 }
 
 #endif

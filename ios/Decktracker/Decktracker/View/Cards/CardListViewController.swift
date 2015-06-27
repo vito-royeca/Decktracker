@@ -34,7 +34,7 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
     var sortButton:UIBarButtonItem?
     var tblSets:UITableView?
     var colSets:UICollectionView?
-    var sections:[String: [String]]?
+    var sections:Array<[String: [String]]>?
     var sectionIndexTitles:[String]?
     var arrayData:[AnyObject]?
     var predicate:NSPredicate?
@@ -43,12 +43,6 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
     var sortMode:CardSortMode?
     var sectionName:String?
     var viewLoadedOnce = true
-    
-//    var cards:RLMResults {
-//        get {
-//            return Database.sharedInstance().findCards(nil, withPredicate:self.predicate, withSortDescriptors: self.sorters, withSectionName:self.sectionName)
-//        }
-//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -215,8 +209,6 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
             break
         }
         
-//        self.cards
-
         var view:UIView?
         if self.viewMode == kCardViewModeList {
             view = tblSets
@@ -231,70 +223,56 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func doSearch() {
-        sections = [String: [String]]()
+        var unsortedSections = [String: [String]]()
+        sections = Array<[String: [String]]>()
         sectionIndexTitles = [String]()
         
-//        for sectionInfo in fetchedResultsController.sections as! [NSFetchedResultsSectionInfo]! {
-//            if self.sortMode != .ByPrice {
-//                let name = sectionInfo.name
-//                
-//                if (name != nil) {
-//                    let cards = sectionInfo.objects
-//                    let index = advance(name!.startIndex, 1)
-//                    var indexTitle = name!.substringToIndex(index)
-//                    
-//                    if name == "Blue" {
-//                        indexTitle = "U"
-//                    }
-//                    
-//                    sections!.updateValue(cards, forKey: name!)
-//                    self.sectionIndexTitles!.append(indexTitle)
-//                }
-//            }
-//        }
-
         var cards = Database.sharedInstance().findCards(nil, withPredicate:self.predicate, withSortDescriptors: self.sorters, withSectionName:self.sectionName)
         for x in cards {
-            let card = x as! DTCard
+            if self.sortMode == .ByPrice {
+                continue
+            }
             
-            if self.sortMode != .ByPrice {
-//                let name = sectionInfo.name
-                var name:String?
-                var predicate:NSPredicate?
+            let card = x as! DTCard
+            var name:String?
+            var predicate:NSPredicate?
+            
+            if sectionName == "sectionNameInitial" {
+                name = card.sectionNameInitial
+            } else if sectionName == "sectionColor" {
+                name = card.sectionColor
+            } else if sectionName == "sectionType" {
+                name = card.sectionType
+            } else if sectionName == "rarity.name" {
+                name = card.rarity.name
+            }
+            predicate = NSPredicate(format: "%K = %@", sectionName!, name!)
+            
+            if (name != nil) {
+                var cardIds = Array<String>()
                 
-                if sectionName == "sectionNameInitial" {
-                    name = card.sectionNameInitial
-                } else if sectionName == "sectionColor" {
-                    name = card.sectionColor
-                } else if sectionName == "sectionType" {
-                    name = card.sectionType
-                } else if sectionName == "rarity.name" {
-                    name = card.rarity.name
+                for y in cards.objectsWithPredicate(predicate) {
+                    let z = y as! DTCard
+                    cardIds.append(z.cardId)
                 }
-
-                predicate = NSPredicate(format: "%K = %@", sectionName!, name!)
                 
-                if (name != nil) {
-                    var cardIds = Array<String>()
-                    
-                    for y in cards.objectsWithPredicate(predicate) {
-                        let z = y as! DTCard
-                        cardIds.append(z.cardId)
-                    }
-                    
-                    let index = advance(name!.startIndex, 1)
-                    var indexTitle = name!.substringToIndex(index)
-                    
-                    if name == "Blue" {
-                        indexTitle = "U"
-                    }
-                    
-                    sections!.updateValue(cardIds, forKey: name!)
-                    if !contains(self.sectionIndexTitles!, indexTitle) {
-                        self.sectionIndexTitles!.append(indexTitle)
-                    }
+                let index = advance(name!.startIndex, 1)
+                var indexTitle = name!.substringToIndex(index)
+                
+                if name == "Blue" {
+                    indexTitle = "U"
+                }
+                
+                unsortedSections.updateValue(cardIds, forKey: name!)
+                if !contains(sectionIndexTitles!, indexTitle) {
+                    sectionIndexTitles!.append(indexTitle)
                 }
             }
+        }
+        
+        for k in unsortedSections.keys.array.sorted(<) {
+            let dict = [k: unsortedSections[k]!]
+            sections!.append(dict)
         }
         
         if self.viewMode == kCardViewModeList {
@@ -361,17 +339,16 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        let sectionInfos = fetchedResultsController.sections as! [NSFetchedResultsSectionInfo]
-//        let sectionInfo = sectionInfos[section]
-//        return sectionInfo.numberOfObjects
-        let key = sections!.keys.array[section]
-        return sections![key]!.count
+        let dict = sections![section]
+        let key = dict.keys.array[0]
+        return dict[key]!.count
+//        let key = sections!.keys.array[section]
+//        let cardIds = sections![key]
+//        return cardIds!.count
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-//        let sectionInfos = fetchedResultsController.sections as! [NSFetchedResultsSectionInfo]
-//        return sectionInfos.count
-        return sections!.keys.array.count
+        return sections!.count
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -379,15 +356,11 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
             return nil
             
         } else {
-//            let sectionInfos = fetchedResultsController.sections as! [NSFetchedResultsSectionInfo]
-//            let sectionInfo = sectionInfos[section]
-//            let cardsString = sectionInfo.numberOfObjects > 1 ? "cards" : "card"
-//            let name = sectionInfo.name
-//            return "\(name!) (\(sectionInfo.numberOfObjects) \(cardsString))"
-            let key = sections!.keys.array[section]
-            let predicates = sections![key]
-            let cardsString = predicates!.count > 1 ? "cards" : "card"
-            return "\(key) (\(predicates!.count) \(cardsString))"
+            let dict = sections![section]
+            let key = dict.keys.array[0]
+            let cardIds = dict[key]
+            let cardsString = cardIds!.count > 1 ? "cards" : "card"
+            return "\(key) (\(cardIds!.count) \(cardsString))"
         }
     }
     
@@ -396,30 +369,32 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int {
-        var section = -1
+//        var section = -1
+//        
+//        let keys = Array(sections!.keys)//.sorted(<)
+//        
+//        for (i, value) in enumerate(keys) {
+//            if (value == "Blue" && title == "U") {
+//                section = i
+//                break
+//                
+//            } else {
+//                if value.hasPrefix(title) {
+//                    section = i
+//                    break
+//                }
+//            }
+//        }
+//        
+//        return section
         
-        let keys = Array(sections!.keys).sorted(<)
-        
-        for (i, value) in enumerate(keys) {
-            if (value == "Blue" && title == "U") {
-                section = i
-                break
-                
-            } else {
-                if value.hasPrefix(title) {
-                    section = i
-                    break
-                }
-            }
-        }
-        
-        return section
+        return index
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-//        let card = fetchedResultsController.objectAtIndexPath(indexPath) as! DTCard
-        let key = sections!.keys.array[indexPath.section]
-        let cardIds = sections![key]
+        let dict = sections![indexPath.section]
+        let key = dict.keys.array[0]
+        let cardIds = dict[key]
         let cardId = cardIds![indexPath.row]
         let cell:SearchResultsTableViewCell?
         
@@ -437,15 +412,23 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        let card = fetchedResultsController.objectAtIndexPath(indexPath) as! DTCard
-        let key = sections!.keys.array[indexPath.section]
-        let cardIds = sections![key]
-        let cardId = cardIds![indexPath.row]
+        let dict = sections![indexPath.section]
+        var key = dict.keys.array[0]
+        var cardIds = dict[key]
+        var cardId = cardIds![indexPath.row]
         let card = DTCard(forPrimaryKey: cardId)
 
-        let dict = Database.sharedInstance().inAppSettingsForSet(card.set)
-        if dict != nil {
+        let iaps = Database.sharedInstance().inAppSettingsForSet(card.set.setId)
+        if iaps != nil {
             return
+        }
+        
+        cardIds = Array()
+        for d in sections! {
+            key = d.keys.array[0]
+            for cardId in d[key]! {
+                cardIds!.append(cardId)
+            }
         }
         
         let view = CardDetailsViewController()
@@ -458,23 +441,19 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
     
 //    MARK: UICollectionViewDataSource
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-//        let sectionInfos = fetchedResultsController.sections as! [NSFetchedResultsSectionInfo]
-//        return sectionInfos.count
-        return sections!.keys.array.count
+        return sections!.count
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        let sectionInfos = fetchedResultsController.sections as! [NSFetchedResultsSectionInfo]
-//        let sectionInfo = sectionInfos[section]
-//        return sectionInfo.numberOfObjects
-        let key = sections!.keys.array[section]
-        return sections![key]!.count
+        let dict = sections![section]
+        let key = dict.keys.array[0]
+        return dict[key]!.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-//        let card = fetchedResultsController.objectAtIndexPath(indexPath) as! DTCard
-        let key = sections!.keys.array[indexPath.section]
-        let cardIds = sections![key]
+        let dict = sections![indexPath.section]
+        let key = dict.keys.array[0]
+        let cardIds = dict[key]
         let cardId = cardIds![indexPath.row]
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Card", forIndexPath: indexPath) as! CardListCollectionViewCell
@@ -491,15 +470,13 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
             if (self.sortMode == CardSortMode.ByPrice) {
                 
             } else {
-//                let sectionInfos = fetchedResultsController.sections as! [NSFetchedResultsSectionInfo]
-//                let sectionInfo = sectionInfos[indexPath.section]
-//                let cardsString = sectionInfo.numberOfObjects > 1 ? "cards" : "card"
-//                let name = sectionInfo.name
-//                let text = "  \(name!) (\(sectionInfo.numberOfObjects) \(cardsString))"
-                let key = sections!.keys.array[indexPath.section]
-                let predicates = sections![key]
-                let cardsString = predicates!.count > 1 ? "cards" : "card"
-                let text =  "  \(key) (\(predicates!.count) \(cardsString))"
+                let dict = sections![indexPath.section]
+                let key = dict.keys.array[0]
+                let cardIds = dict[key]
+//                let key = sections!.keys.array[indexPath.section]
+//                let cardIds = sections![key]
+                let cardsString = cardIds!.count > 1 ? "cards" : "card"
+                let text =  "  \(key) (\(cardIds!.count) \(cardsString))"
                 
                 let label = UILabel(frame: CGRect(x:0, y:0, width:self.view.frame.size.width, height:22))
                 label.text = text
@@ -520,15 +497,23 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
 
 //    MARK: UICollectionViewDelegate
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-//        let card = fetchedResultsController.objectAtIndexPath(indexPath) as! DTCard
-        let key = sections!.keys.array[indexPath.section]
-        let cardIds = sections![key]
-        let cardId = cardIds![indexPath.row]
+        let dict = sections![indexPath.section]
+        var key = dict.keys.array[0]
+        var cardIds = dict[key]
+        var cardId = cardIds![indexPath.row]
         let card = DTCard(forPrimaryKey: cardId)
         
-        let dict = Database.sharedInstance().inAppSettingsForSet(card.set)
-        if dict != nil {
+        let iaps = Database.sharedInstance().inAppSettingsForSet(card.set.setId)
+        if iaps != nil {
             return
+        }
+        
+        cardIds = Array()
+        for d in sections! {
+            key = d.keys.array[0]
+            for cardId in d[key]! {
+                cardIds!.append(cardId)
+            }
         }
         
         let view = CardDetailsViewController()
@@ -543,57 +528,4 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
     func hudWasHidden(hud: MBProgressHUD) {
         hud.removeFromSuperview()
     }
-    
-////    MARK: NSFetchedResultsControllerDelegate
-//    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
-//        //        println("\(__LINE__) \(__PRETTY_FUNCTION__) \(__FUNCTION__)")
-//        
-//        let tableView = tblSets;
-//        var paths = [NSIndexPath]()
-//        
-//        switch(type) {
-//        case NSFetchedResultsChangeType.Insert:
-//            paths.append(newIndexPath!)
-//            tblSets!.insertRowsAtIndexPaths(paths, withRowAnimation:UITableViewRowAnimation.Fade)
-//            
-//        case NSFetchedResultsChangeType.Delete:
-//            paths.append(indexPath!)
-//            tblSets!.deleteRowsAtIndexPaths(paths, withRowAnimation:UITableViewRowAnimation.Fade)
-//            
-//        case NSFetchedResultsChangeType.Update:
-//            let card = fetchedResultsController.objectAtIndexPath(indexPath!) as! DTCard
-//            let cell = tblSets!.cellForRowAtIndexPath(indexPath!) as! SearchResultsTableViewCell?
-//            cell?.displayCard(card)
-//        case NSFetchedResultsChangeType.Move:
-//            paths.append(indexPath!)
-//            tblSets!.deleteRowsAtIndexPaths(paths, withRowAnimation:UITableViewRowAnimation.Fade)
-//            
-//            paths = [NSIndexPath]()
-//            paths.append(newIndexPath!)
-//            tblSets!.insertRowsAtIndexPaths(paths, withRowAnimation:UITableViewRowAnimation.Fade)
-//        }
-//    }
-//    
-//    func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
-//        //        println("\(__LINE__) \(__PRETTY_FUNCTION__) \(__FUNCTION__)")
-//        
-//        switch(type) {
-//        case NSFetchedResultsChangeType.Insert:
-//            tblSets!.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation:UITableViewRowAnimation.Fade)
-//        case NSFetchedResultsChangeType.Delete:
-//            tblSets!.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation:UITableViewRowAnimation.Fade)
-//        default:
-//            break;
-//        }
-//    }
-//    
-//    func controllerWillChangeContent(controller: NSFetchedResultsController) {
-//        tblSets!.beginUpdates()
-//        //        println("\(__LINE__) \(__PRETTY_FUNCTION__) \(__FUNCTION__)")
-//    }
-//    
-//    func controllerDidChangeContent(controller: NSFetchedResultsController) {
-//        //        println("\(__LINE__) \(__PRETTY_FUNCTION__) \(__FUNCTION__)")        
-//        tblSets!.endUpdates()
-//    }
 }

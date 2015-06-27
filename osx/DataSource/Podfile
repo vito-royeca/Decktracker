@@ -6,8 +6,8 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 target "DataSource" do
 pod "hpple"
-#pod "MagicalRecord"
-#pod "RealmSwift"
+#pod "Parse-OSX"
+pod "Realm"
 end
 
 

@@ -20,9 +20,8 @@ int main(int argc, const char * argv[])
         NSDate *dateStart = [NSDate date];
         
         /* Step 1 */
-        JSONLoader *jsonLoader = [[JSONLoader alloc] init];
-        [jsonLoader json2Database];
-//        [jsonLoader updateCardPricing];
+//        JSONLoader *jsonLoader = [[JSONLoader alloc] init];
+//        [jsonLoader json2Database];
         
         /* Step 2 */
         RulesLoader *rulesLoader = [[RulesLoader alloc] init];
@@ -35,6 +34,7 @@ int main(int argc, const char * argv[])
 //        [imageLoader downloadOtherSymbols];
         
         [[Database sharedInstance] copyRealmDatabaseToHome];
+//        [[Database sharedInstance] updateParseCards];
         
         NSDate *dateEnd = [NSDate date];
         NSTimeInterval timeDifference = [dateEnd timeIntervalSinceDate:dateStart];

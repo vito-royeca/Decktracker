@@ -69,7 +69,7 @@ class CardListCollectionViewCell: UICollectionViewCell {
             selector:"loadCardImage:",  name:kCardDownloadCompleted, object:nil)
         
         // card image
-        currentCardPath = FileManager.sharedInstance().cardPath(self.cardId)
+        currentCardPath = FileManager.sharedInstance().cardPath(self.cardId!)
         self.imgCard!.image = UIImage(contentsOfFile: currentCardPath!)
         FileManager.sharedInstance().downloadCardImage(self.cardId, immediately:false)
     }

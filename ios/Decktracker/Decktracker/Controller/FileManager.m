@@ -68,12 +68,12 @@ static FileManager *_me;
     return tmp;
 }
 
-- (NSString*) cardPath:(id) cardId
+- (NSString*) cardPath:(NSString*) cardId
 {
     return [self cardPath:cardId forLanguage:nil];
 }
 
-- (NSString*) cardPath:(id) cardId forLanguage:(NSString*) languageName
+- (NSString*) cardPath:(NSString*) cardId forLanguage:(NSString*) languageName
 {
     DTCard *card = [DTCard objectForPrimaryKey:cardId];
     
@@ -89,7 +89,7 @@ static FileManager *_me;
     return [[NSFileManager defaultManager] fileExistsAtPath:cardHQPath] ? cardHQPath : ([[NSFileManager defaultManager] fileExistsAtPath:cardPath] ? cardPath : cardBackPath);
 }
 
-- (NSString*) cropPath:(id) cardId
+- (NSString*) cropPath:(NSString*) cardId
 {
     DTCard *card = [DTCard objectForPrimaryKey:cardId];
     
@@ -103,14 +103,15 @@ static FileManager *_me;
     return [[NSFileManager defaultManager] fileExistsAtPath:cropHQPath] ? cropHQPath : ([[NSFileManager defaultManager] fileExistsAtPath:cropPath] ? cropPath : cropBackPath);
 }
 
-- (NSString*) cardSetPath:(id) cardId
+- (NSString*) cardSetPath:(NSString*) cardId
 {
     DTCard *card = [DTCard objectForPrimaryKey:cardId];
+    NSString *rarity = [card.rarity.name isEqualToString:@"Basic Land"] ? @"C" : [[card.rarity.name substringToIndex:1] uppercaseString];
     
-    return [NSString stringWithFormat:@"%@/images/set/%@/%@/48.png", [[NSBundle mainBundle] bundlePath], card.set.code, [[Database sharedInstance] cardRarityIndex:card]];
+    return [NSString stringWithFormat:@"%@/images/set/%@/%@/48.png", [[NSBundle mainBundle] bundlePath], card.set.code, rarity];
 }
 
-- (NSString*) cardTypePath:(id) cardId
+- (NSString*) cardTypePath:(NSString*) cardId
 {
     DTCard *card = [DTCard objectForPrimaryKey:cardId];
     
@@ -126,7 +127,7 @@ static FileManager *_me;
     return [NSString stringWithFormat:@"%@/images/other/%@/48.png", [[NSBundle mainBundle] bundlePath], typePath];
 }
 
-- (NSString*) setPath:(id) setId small:(BOOL) small
+- (NSString*) setPath:(NSString*) setId small:(BOOL) small
 {
     DTSet *set = [DTSet objectForPrimaryKey:setId];
     NSArray *rarities = @[@"C", @"R", @"U", @"M", @"S"];
@@ -144,13 +145,13 @@ static FileManager *_me;
     return nil;
 }
 
-- (void) downloadCardImage:(id) cardId
+- (void) downloadCardImage:(NSString*) cardId
                immediately:(BOOL) immediately
 {
     [self downloadCardImage:cardId forLanguage:nil immediately:immediately];
 }
 
-- (void) downloadCardImage:(id) cardId
+- (void) downloadCardImage:(NSString*) cardId
                forLanguage:(NSString*) languageName
                immediately:(BOOL) immediately
 {
@@ -221,7 +222,7 @@ static FileManager *_me;
     }
 }
 
-- (void) createCropForCard:(id) cardId
+- (void) createCropForCard:(NSString*) cardId
 {
     DTCard *card = [DTCard objectForPrimaryKey:cardId];
     UIImage *image = [[UIImage alloc] initWithContentsOfFile:[self cardPath:cardId]];
@@ -320,7 +321,7 @@ static FileManager *_me;
     return [[NSArray alloc] initWithContentsOfFile:path];
 }
 
-- (NSArray*) manaImagesForCard:(id) cardId
+- (NSArray*) manaImagesForCard:(NSString*) cardId
 {
     DTCard *card = [DTCard objectForPrimaryKey:cardId];
     

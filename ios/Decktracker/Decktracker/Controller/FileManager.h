@@ -35,19 +35,19 @@ typedef NS_ENUM(NSInteger, FileSystem)
 +(id) sharedInstance;
 
 - (NSString*) tempPath;
-- (NSString*) cardPath:(id) cardId forLanguage:(NSString*) languageName;
-- (NSString*) cardPath:(id) cardId;
-- (NSString*) cropPath:(id) cardId;
-- (NSString*) cardSetPath:(id) cardId;
-- (NSString*) cardTypePath:(id) cardId;
-- (NSString*) setPath:(id) setId small:(BOOL) small;
-- (void) downloadCardImage:(id) cardId immediately:(BOOL) immediately;
-- (void) downloadCardImage:(id) cardId
+- (NSString*) cardPath:(NSString*) cardId forLanguage:(NSString*) languageName;
+- (NSString*) cardPath:(NSString*) cardId;
+- (NSString*) cropPath:(NSString*) cardId;
+- (NSString*) cardSetPath:(NSString*) cardId;
+- (NSString*) cardTypePath:(NSString*) cardId;
+- (NSString*) setPath:(NSString*) setId small:(BOOL) small;
+- (void) downloadCardImage:(NSString*) cardId immediately:(BOOL) immediately;
+- (void) downloadCardImage:(NSString*) cardId
                forLanguage:(NSString*) languageName
                immediately:(BOOL) immediately;
-- (void) createCropForCard:(id) cardId;
+- (void) createCropForCard:(NSString*) cardId;
 - (NSArray*) loadKeywords;
-- (NSArray*) manaImagesForCard:(id) cardId;
+- (NSArray*) manaImagesForCard:(NSString*) cardId;
 
 - (void) connectToFileSystem:(FileSystem) fileSystem
          withViewController:(UIViewController*) viewController;

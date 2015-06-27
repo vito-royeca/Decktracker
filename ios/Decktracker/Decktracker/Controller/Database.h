@@ -53,7 +53,7 @@
                      withSorter:(NSDictionary*) sorter;
 
 -(void) loadInAppSets;
--(NSDictionary*) inAppSettingsForSet:(id) setId;
+-(NSDictionary*) inAppSettingsForSet:(NSString*) setId;
 -(NSArray*) inAppSetCodes;
 -(BOOL) isSetPurchased:(DTSet*) set;
 -(NSArray*) fetchRandomCards:(int) howMany
@@ -62,10 +62,9 @@
 
 -(DTCard*) findCard:(NSString*) card inSet:(NSString*) setCode;
 -(DTCard*) findCardByMultiverseID:(NSString*) multiverseID;
--(NSString*) cardRarityIndex:(DTCard*) card;
--(void) fetchTcgPlayerPriceForCard:(id) cardId;
+-(void) fetchTcgPlayerPriceForCard:(NSString*) cardId;
 -(NSArray*) fetchSets:(int) howMany;
--(BOOL) isCardModern:(id) cardId;
+-(BOOL) isCardModern:(NSString*) cardId;
 
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
 -(void) fetchTopRated:(int) limit skip:(int) skip;
@@ -77,6 +76,9 @@
 -(void) saveUserMana:(PFObject*) userMana;
 -(void) deleteUserManaLocally;
 -(void) fetchLeaderboard;
+// Parse Maintenance
+-(void) updateParseSets;
+-(void) updateParseCards;
 #endif
 
 @end

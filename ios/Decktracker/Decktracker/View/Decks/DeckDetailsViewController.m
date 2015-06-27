@@ -784,7 +784,7 @@
             {
                 UIViewController *view;
                 
-                NSDictionary *dict = [[Database sharedInstance] inAppSettingsForSet:card.set];
+                NSDictionary *dict = [[Database sharedInstance] inAppSettingsForSet:card.set.setId];
                 if (dict)
                 {
                     InAppPurchaseViewController *view2 = [[InAppPurchaseViewController alloc] init];
@@ -1111,7 +1111,7 @@
     {
         UIViewController *view;
         
-        NSDictionary *dict = [[Database sharedInstance] inAppSettingsForSet:card.set];
+        NSDictionary *dict = [[Database sharedInstance] inAppSettingsForSet:card.set.setId];
         if (dict)
         {
             InAppPurchaseViewController *view2 = [[InAppPurchaseViewController alloc] init];

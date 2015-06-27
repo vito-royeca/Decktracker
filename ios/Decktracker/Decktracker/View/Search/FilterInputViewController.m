@@ -341,7 +341,7 @@
             if ([[self.filterOptions firstObject] isKindOfClass:[DTSet class]])
             {
                 DTSet *set = arrFilter[indexPath.row];
-                NSString *path = [[FileManager sharedInstance] setPath:set small:YES];
+                NSString *path = [[FileManager sharedInstance] setPath:set.setId small:YES];
                 
                 if (path && [[NSFileManager defaultManager] fileExistsAtPath:path])
                 {

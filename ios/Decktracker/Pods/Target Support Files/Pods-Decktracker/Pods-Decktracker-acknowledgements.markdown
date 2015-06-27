@@ -410,9 +410,9 @@ Copyright (c) 2013 Ernesto García
    limitations under the License.
 
 
-## GoogleAnalytics-iOS-SDK
+## GoogleAnalytics
 
-Copyright 2009 - 2015 Google, Inc. All rights reserved.
+Copyright 2015 Google Inc.
 
 ## InAppSettingsKit
 
