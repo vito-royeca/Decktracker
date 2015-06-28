@@ -202,7 +202,6 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
                 var number:NSString = value!
                 var range:NSRange = number.rangeOfString(" ")
                 number = number.substringToIndex(range.location-1)
-//                if let rule = DTComprehensiveRule.MR_findFirstByAttribute("number", withValue:number) as? DTComprehensiveRule {
                 if let rule = DTComprehensiveRule.objectsWithPredicate(NSPredicate(format:"number = %@", number)).firstObject() as? DTComprehensiveRule {
                     if rule.children.count == 0 {
                         cell.accessoryType = UITableViewCellAccessoryType.None
@@ -212,14 +211,12 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
                 }
 
             } else if key == "Glossary" {
-//                if let glossary = DTComprehensiveGlossary.MR_findFirstByAttribute("term", withValue:value) as? DTComprehensiveGlossary {
                 if let glossary = DTComprehensiveGlossary.objectsWithPredicate(NSPredicate(format: "term = %@", value!)).firstObject() as? DTComprehensiveGlossary {
                     cell.accessoryType = UITableViewCellAccessoryType.None
                     cell.titleLabel.text = glossary.term
                     cell.bodyLabel.text = glossary.definition
                 }
             }
-            
             
             cell.updateFonts()
             cell.setNeedsUpdateConstraints()
@@ -278,8 +275,9 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
                     
                 } else {
                     var array = [String]()
+                    let rule = DTComprehensiveRule.objectsWithPredicate(NSPredicate(format: "number = %@", number)).firstObject() as! DTComprehensiveRule
                     
-                    for child in DTComprehensiveRule.objectsWithPredicate(NSPredicate(format: "number = %@", number)) {
+                    for child in rule.children {
                         let c = child as! DTComprehensiveRule
                         array.append(c.number + ". " + c.rule)
                     }

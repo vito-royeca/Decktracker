@@ -33,8 +33,10 @@ int main(int argc, const char * argv[])
 //        [imageLoader downloadSymbols];
 //        [imageLoader downloadOtherSymbols];
         
-        [[Database sharedInstance] copyRealmDatabaseToHome];
 //        [[Database sharedInstance] updateParseCards];
+        
+        [[Database sharedInstance] copyRealmDatabaseToHome];
+
         
         NSDate *dateEnd = [NSDate date];
         NSTimeInterval timeDifference = [dateEnd timeIntervalSinceDate:dateStart];

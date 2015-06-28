@@ -37,11 +37,11 @@
     
     realm = [RLMRealm defaultRealm];
     [realm beginWriteTransaction];
-    for (DTComprehensiveRule *parent in [DTComprehensiveRule objectsWithPredicate:[NSPredicate predicateWithFormat:@"parent = nil"]])
+    for (DTComprehensiveRule *rule in [DTComprehensiveRule allObjects])
     {
-        for (DTComprehensiveRule *child in [DTComprehensiveRule objectsWithPredicate:[NSPredicate predicateWithFormat:@"parent = %@", parent]])
+        if (rule.parent)
         {
-            [parent.children addObject:child];
+            [rule.parent.children addObject:rule];
         }
     }
     [realm commitWriteTransaction];
