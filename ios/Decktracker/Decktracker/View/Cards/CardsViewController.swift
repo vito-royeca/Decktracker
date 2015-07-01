@@ -9,16 +9,20 @@
 
 import UIKit
 
-class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, HorizontalScrollTableViewCellDelegate, InAppPurchaseViewControllerDelegate {
+class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, HorizontalScrollTableViewCellDelegate, InAppPurchaseViewControllerDelegate, MBProgressHUDDelegate {
     
     let kHorizontalCellIdentifier   = "kHorizontalCellIdentifier"
     let kBannerCellIdentifier       = "kBannerCellIdentifier"
     let kDefaultCellIdentifier      = "kDefaultCellIdentifier"
+    let kSearchResultsIdentifier    = "kSearchResultsIdentifier"
     
     var searchBar:UISearchBar?
     var tblFeatured:UITableView?
     var colBanner:UICollectionView?
     var arrayData:[[String: [String]]]?
+    var searchSections:Array<[String: [String]]>?
+    var searchSectionIndexTitles:[String]?
+    var searchTimer:NSTimer?
     var bannerCell:BannerScrollTableViewCell?
     
     override func viewDidLoad() {
@@ -28,18 +32,24 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
         let height = view.frame.size.height - tabBarController!.tabBar.frame.size.height
         var frame = CGRect(x:0, y:0, width:view.frame.width, height:height)
 
-        var btnAdvance = UIBarButtonItem(image: UIImage(named: "filter.png"), style: UIBarButtonItemStyle.Plain, target: self, action: "btnAdvanceTapped")
+        var btnAdvance = UIBarButtonItem(image: UIImage(named: "filter.png"), style: UIBarButtonItemStyle.Plain, target: self, action: "btnAdvanceTapped:")
         
         searchBar = UISearchBar()
         searchBar!.autoresizingMask = UIViewAutoresizing.FlexibleWidth
         searchBar!.placeholder = "Search"
         searchBar!.delegate = self
+        // Add a Done button in the keyboard
+        let barButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: searchBar, action: "resignFirstResponder")
+        let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 44))
+        toolbar.items = [barButton]
+        searchBar!.inputAccessoryView = toolbar
         
         tblFeatured = UITableView(frame: frame, style: UITableViewStyle.Plain)
         tblFeatured!.delegate = self
         tblFeatured!.dataSource = self
         tblFeatured!.registerNib(UINib(nibName: "BannerScrollTableViewCell", bundle: nil), forCellReuseIdentifier: kBannerCellIdentifier)
         tblFeatured!.registerNib(UINib(nibName: "HorizontalScrollTableViewCell", bundle: nil), forCellReuseIdentifier: kHorizontalCellIdentifier)
+        tblFeatured!.registerNib(UINib(nibName: "SearchResultsTableViewCell", bundle: nil), forCellReuseIdentifier: kSearchResultsIdentifier)
 
         self.navigationItem.leftBarButtonItem = btnAdvance;
         self.navigationItem.titleView = self.searchBar;
@@ -82,34 +92,84 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
         NSNotificationCenter.defaultCenter().removeObserver(self, name:kFetchTopViewedDone,  object:nil)
     }
     
+    func btnAdvanceTapped(sender: AnyObject) {
+        
+    }
+    
     func loadData() {
-        arrayData = [[String: [String]]]()
+        searchSections = nil
+        searchSectionIndexTitles = nil
         
-        let arrRandom = Database.sharedInstance().fetchRandomCards(6, withPredicate: nil, includeInAppPurchase: false) as! [DTCard]
-        var array:[String] = Array()
-        array.append(arrRandom.last!.cardId)
-        for card in arrRandom {
-            array.append(card.cardId)
-        }
-        array.append(arrRandom.first!.cardId)
-        arrayData!.append(["Random": array])
-        arrayData!.append(["Top Rated": [String]()])
-        arrayData!.append(["Top Viewed": [String]()])
-        arrayData!.append(["Sets": Database.sharedInstance().fetchSets(10) as! [String]!])
-        
-        for dict in arrayData! {
-            for (key,value) in dict {
-                if key == "Sets" {
-                    continue
-                }
-                for x in value {
-                    FileManager.sharedInstance().downloadCardImage(x, immediately:false)
+        if arrayData == nil {
+            arrayData = [[String: [String]]]()
+            
+            let arrRandom = Database.sharedInstance().fetchRandomCards(6, withPredicate: nil, includeInAppPurchase: false) as! [DTCard]
+            var array:[String] = Array()
+            array.append(arrRandom.last!.cardId)
+            for card in arrRandom {
+                array.append(card.cardId)
+            }
+            array.append(arrRandom.first!.cardId)
+            arrayData!.append(["Random": array])
+            arrayData!.append(["Top Rated": [String]()])
+            arrayData!.append(["Top Viewed": [String]()])
+            arrayData!.append(["Sets": Database.sharedInstance().fetchSets(10) as! [String]!])
+            
+            for dict in arrayData! {
+                for (key,value) in dict {
+                    if key == "Sets" {
+                        continue
+                    }
+                    for x in value {
+                        FileManager.sharedInstance().downloadCardImage(x, immediately:false)
+                    }
                 }
             }
         }
+        
         tblFeatured!.reloadData()
     }
 
+    func doSearch() {
+        searchSections = Array<[String: [String]]>()
+        searchSectionIndexTitles = [String]()
+        var unsortedSections = [String: [String]]()
+        
+        var sorter = RLMSortDescriptor(property: "name", ascending: true)
+        let cards = Database.sharedInstance().findCards(searchBar!.text,  withSortDescriptors:[sorter], withSectionName:nil)
+        for x in cards {
+            let card = x as! DTCard
+            let name = card.sectionNameInitial
+            let predicate = NSPredicate(format: "sectionNameInitial = %@", name)
+            
+            var cardIds = Array<String>()
+            
+            for y in cards.objectsWithPredicate(predicate) {
+                let z = y as! DTCard
+                cardIds.append(z.cardId)
+            }
+            
+            let index = advance(name!.startIndex, 1)
+            var indexTitle = name!.substringToIndex(index)
+            
+            if name == "Blue" {
+                indexTitle = "U"
+            }
+            
+            unsortedSections.updateValue(cardIds, forKey: name!)
+            if !contains(searchSectionIndexTitles!, indexTitle) {
+                searchSectionIndexTitles!.append(indexTitle)
+            }
+        }
+        
+        for k in unsortedSections.keys.array.sorted(<) {
+            let dict = [k: unsortedSections[k]!]
+            searchSections!.append(dict)
+        }
+        
+        tblFeatured!.reloadData()
+    }
+    
     func topRatedDone(sender: AnyObject) {
         reloadTable(sender, key: "Top Rated")
     }
@@ -125,9 +185,7 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
         let newRow = [key: cardIds]
         
         for x in cardIds {
-//            if x.isKindOfClass(String.class()) {
-                FileManager.sharedInstance().downloadCardImage(x, immediately:false)
-//            }
+            FileManager.sharedInstance().downloadCardImage(x, immediately:false)
         }
         
         var i = 0
@@ -145,76 +203,224 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
     }
 
 //    MARK: UISearchBarDelegate
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchTimer != nil && searchTimer!.valid {
+            searchTimer!.invalidate()
+        }
+        searchTimer = NSTimer(timeInterval: 1.0, target: self, selector: "handleSearchBarEndTyping", userInfo: nil, repeats: false)
+        NSRunLoop.mainRunLoop().addTimer(searchTimer!, forMode: NSDefaultRunLoopMode)
+    }
     
+    func handleSearchBarEndTyping() {
+        let hud = MBProgressHUD(view: view)
+        view!.addSubview(hud)
+        hud.delegate = self;
+        
+        if searchBar!.text.isEmpty {
+            hud.showWhileExecuting("loadData", onTarget: self, withObject: nil, animated: true)
+            if bannerCell != nil {
+                bannerCell!.startSlideShow()
+            }
+            
+        } else {
+            if bannerCell != nil {
+                bannerCell!.stopSlideShow()
+            }
+            hud.showWhileExecuting("doSearch", onTarget: self, withObject: nil, animated: true)
+        }
+    }
     
 //    MARK: UITableViewDelegate
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if indexPath.row == 0 {
-            return 132
-            
-        } else if indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 3 {
-            return 170
+        if searchSections != nil {
+            return CGFloat(SEARCH_RESULTS_CELL_HEIGHT)
             
         } else {
-            return UITableViewAutomaticDimension
+            if indexPath.row == 0 {
+                return 132
+                
+            } else if indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 3 {
+                return 170
+                
+            } else {
+                return UITableViewAutomaticDimension
+            }
+        }
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if searchSections != nil {
+            let dict = searchSections![indexPath.section]
+            var key = dict.keys.array[0]
+            var cardIds = dict[key]
+            var cardId = cardIds![indexPath.row]
+            let card = DTCard(forPrimaryKey: cardId)
+            
+            let iaps = Database.sharedInstance().inAppSettingsForSet(card.set.setId)
+            if iaps != nil {
+                return
+            }
+            
+            cardIds = Array()
+            for d in searchSections! {
+                key = d.keys.array[0]
+                for cardId in d[key]! {
+                    cardIds!.append(cardId)
+                }
+            }
+            
+            let view = CardDetailsViewController()
+            view.addButtonVisible = true
+            view.cardIds = cardIds
+            view.cardId = cardId
+            
+            self.navigationController?.pushViewController(view, animated:true)
         }
     }
 
 //    MARK: UITableViewDataSource
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int {
+//        if searchSections != nil {
+//            var section = -1
+//            
+//            let dict = searchSections![indexPath.section]
+//            let keys = Array(searchSections!.keys)//.sorted(<)
+//            
+//            for (i, value) in enumerate(keys) {
+//                if (value == "Blue" && title == "U") {
+//                    section = i
+//                    break
+//            
+//                } else {
+//                    if value.hasPrefix(title) {
+//                        section = i
+//                        break
+//                    }
+//                }
+//            }
+//            
+//            return section
+//            
+//        } else {
+//            return 1
+//        }
+        
         return 1
     }
     
+    func sectionIndexTitlesForTableView(tableView: UITableView) -> [AnyObject]! {
+        if searchSections != nil {
+            return searchSectionIndexTitles
+        
+        } else {
+            return nil
+        }
+    }
+    
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if searchSections != nil {
+            let dict = searchSections![section]
+            let key = dict.keys.array[0]
+            let cardIds = dict[key]
+            let cardsString = cardIds!.count > 1 ? "cards" : "card"
+            return "\(key) (\(cardIds!.count) \(cardsString))"
+        
+        } else {
+            return nil
+        }
+    }
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        if searchSections != nil {
+            return searchSections!.count
+        
+        } else {
+            return 1
+        }
+    }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return arrayData!.count
+        if searchSections != nil {
+            let dict = searchSections![section]
+            let key = dict.keys.array[0]
+            return dict[key]!.count
+        
+        } else {
+            return arrayData!.count
+        }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell:UITableViewCell?
+        if searchSections != nil {
+            var cell:SearchResultsTableViewCell?
+            
+            let dict = searchSections![indexPath.section]
+            let key = dict.keys.array[0]
+            let cardIds = dict[key]
+            let cardId = cardIds![indexPath.row]
+            
+            
+            if let x = tableView.dequeueReusableCellWithIdentifier(kSearchResultsIdentifier) as? SearchResultsTableViewCell {
+                cell = x
+            } else {
+                cell = SearchResultsTableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: kSearchResultsIdentifier)
+            }
+            
+            cell!.accessoryType = UITableViewCellAccessoryType.None
+            cell!.selectionStyle = UITableViewCellSelectionStyle.None
+            cell!.displayCard(cardId)
+            return cell!
         
-        if indexPath.row == 0 {
-            var cell2:BannerScrollTableViewCell?
+        } else {
+            var cell:UITableViewCell?
             
-            if let x =  tableView.dequeueReusableCellWithIdentifier(kBannerCellIdentifier) as? BannerScrollTableViewCell {
-                cell2 = x
-            } else {
-                cell2 = BannerScrollTableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: kBannerCellIdentifier)
+            if indexPath.row == 0 {
+                var cell2:BannerScrollTableViewCell?
+                
+                if let x =  tableView.dequeueReusableCellWithIdentifier(kBannerCellIdentifier) as? BannerScrollTableViewCell {
+                    cell2 = x
+                } else {
+                    cell2 = BannerScrollTableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: kBannerCellIdentifier)
+                }
+                cell = cell2
+                
+            } else if indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 3 {
+                let row = arrayData![indexPath.row]
+                let key = Array(row.keys)[0]
+                var cell2:HorizontalScrollTableViewCell?
+                
+                if let x = tableView.dequeueReusableCellWithIdentifier(kHorizontalCellIdentifier) as? HorizontalScrollTableViewCell {
+                    cell2 = x
+                } else {
+                    cell2 = HorizontalScrollTableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: kHorizontalCellIdentifier)
+                }
+                cell2!.lblTitle?.text = key
+                cell = cell2
             }
-            cell = cell2
-
-        } else if indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 3 {
-            let row = arrayData![indexPath.row]
-            let key = Array(row.keys)[0]
-            var cell2:HorizontalScrollTableViewCell?
             
-            if let x = tableView.dequeueReusableCellWithIdentifier(kHorizontalCellIdentifier) as? HorizontalScrollTableViewCell {
-                cell2 = x
-            } else {
-                cell2 = HorizontalScrollTableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: kHorizontalCellIdentifier)
-            }
-            cell2!.lblTitle?.text = key
-            cell = cell2
+            cell!.selectionStyle = UITableViewCellSelectionStyle.None
+            return cell!
         }
-
-        cell!.selectionStyle = UITableViewCellSelectionStyle.None
-        return cell!
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        
-        if indexPath.row == 0  {
-            let cell2 = cell as! BannerScrollTableViewCell
-            cell2.setCollectionViewDataSourceDelegate(self, index: indexPath.row)
+        if searchSections != nil {
             
-            if bannerCell == nil {
-                bannerCell = cell2
-                bannerCell!.startSlideShow()
+        } else {
+            if indexPath.row == 0  {
+                let cell2 = cell as! BannerScrollTableViewCell
+                cell2.setCollectionViewDataSourceDelegate(self, index: indexPath.row)
+                
+                if bannerCell == nil {
+                    bannerCell = cell2
+                    bannerCell!.startSlideShow()
+                }
+                
+            } else if indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 3 {
+                let cell2 = cell as! HorizontalScrollTableViewCell
+                cell2.setCollectionViewDataSourceDelegate(self, index: indexPath.row)
+                cell2.delegate = self
             }
-            
-        } else if indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 3 {
-            let cell2 = cell as! HorizontalScrollTableViewCell
-            cell2.setCollectionViewDataSourceDelegate(self, index: indexPath.row)
-            cell2.delegate = self
         }
     }
     
@@ -224,96 +430,110 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
     }
 
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let row = arrayData![collectionView.tag]
-        let key = Array(row.keys)[0]
-        let dict = row[key]!
-        return dict.count
+        if searchSections != nil {
+            return 0
+        
+        } else {
+            let row = arrayData![collectionView.tag]
+            let key = Array(row.keys)[0]
+            let dict = row[key]!
+            return dict.count
+        }
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let row = arrayData![collectionView.tag]
-        let key = Array(row.keys)[0]
-        let dict = row[key]!
         
-        var cell:UICollectionViewCell?
-        
-        if collectionView.tag == 0 {
-            let cardId = dict[indexPath.row]
-            var cell2 = collectionView.dequeueReusableCellWithReuseIdentifier(kBannerCellIdentifier, forIndexPath:indexPath) as! BannerCollectionViewCell
-            cell2.displayCard(cardId)
-            cell = cell2
+        if searchSections != nil {
+            return UICollectionViewCell()
             
-        } else if collectionView.tag == 1 || collectionView.tag == 2 {
-            let cardId = dict[indexPath.row]
-            var cell2 = collectionView.dequeueReusableCellWithReuseIdentifier("kThumbCellIdentifier", forIndexPath:indexPath) as! ThumbCollectionViewCell
-            cell2.displayCard(cardId)
-            cell = cell2
+        } else {
+            var cell:UICollectionViewCell?
             
-        }  else if collectionView.tag == 3 {
-            let setId = dict[indexPath.row]
-            var cell2 = collectionView.dequeueReusableCellWithReuseIdentifier("kSetCellIdentifier", forIndexPath:indexPath) as! SetCollectionViewCell
-            cell2.displaySet(setId)
-            cell = cell2
+            let row = arrayData![collectionView.tag]
+            let key = Array(row.keys)[0]
+            let dict = row[key]!
+            
+            if collectionView.tag == 0 {
+                let cardId = dict[indexPath.row]
+                var cell2 = collectionView.dequeueReusableCellWithReuseIdentifier(kBannerCellIdentifier, forIndexPath:indexPath) as! BannerCollectionViewCell
+                cell2.displayCard(cardId)
+                cell = cell2
+                
+            } else if collectionView.tag == 1 || collectionView.tag == 2 {
+                let cardId = dict[indexPath.row]
+                var cell2 = collectionView.dequeueReusableCellWithReuseIdentifier("kThumbCellIdentifier", forIndexPath:indexPath) as! ThumbCollectionViewCell
+                cell2.displayCard(cardId)
+                cell = cell2
+                
+            }  else if collectionView.tag == 3 {
+                let setId = dict[indexPath.row]
+                var cell2 = collectionView.dequeueReusableCellWithReuseIdentifier("kSetCellIdentifier", forIndexPath:indexPath) as! SetCollectionViewCell
+                cell2.displaySet(setId)
+                cell = cell2
+            }
+            return cell!
         }
-        
-        return cell!
     }
     
 //    MARK: UICollectionViewDelegate
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let row = arrayData![collectionView.tag]
-        let key = Array(row.keys)[0]
-        let dict = row[key]!
-        var view:UIViewController?
-        
-        if collectionView.tag == 0 || collectionView.tag == 1 || collectionView.tag == 2 {
-            let cardId = dict[indexPath.row]
-            let card = DTCard(forPrimaryKey: cardId)
-            let dict = Database.sharedInstance().inAppSettingsForSet(card.set.setId)
+        if searchSections != nil {
             
-            if dict != nil {
-                let view2 = InAppPurchaseViewController()
-                
-                view2.productID = dict["In-App Product ID"] as! String
-                view2.delegate = self
-                view2.productDetails = ["name" : dict["In-App Display Name"] as! String,
-                    "description": dict["In-App Description"] as! String]
-                view = view2
-                
-            } else {
-                let view2 = CardDetailsViewController()
+        } else {
+            let row = arrayData![collectionView.tag]
+            let key = Array(row.keys)[0]
+            let dict = row[key]!
+            var view:UIViewController?
             
-                view2.addButtonVisible = true
-                view2.cardId = card.cardId
-                view = view2
+            if collectionView.tag == 0 || collectionView.tag == 1 || collectionView.tag == 2 {
+                let cardId = dict[indexPath.row]
+                let card = DTCard(forPrimaryKey: cardId)
+                let dict = Database.sharedInstance().inAppSettingsForSet(card.set.setId)
+                
+                if dict != nil {
+                    let view2 = InAppPurchaseViewController()
+                    
+                    view2.productID = dict["In-App Product ID"] as! String
+                    view2.delegate = self
+                    view2.productDetails = ["name" : dict["In-App Display Name"] as! String,
+                        "description": dict["In-App Description"] as! String]
+                    view = view2
+                    
+                } else {
+                    let view2 = CardDetailsViewController()
+                    
+                    view2.addButtonVisible = true
+                    view2.cardId = card.cardId
+                    view = view2
+                }
+                
+            } else if collectionView.tag == 3 { // Sets
+                let setId = dict[indexPath.row]
+                let set = DTSet(forPrimaryKey: setId)
+                let dict = Database.sharedInstance().inAppSettingsForSet(set.setId)
+                
+                if dict != nil {
+                    let view2 = InAppPurchaseViewController()
+                    
+                    view2.productID = dict["In-App Product ID"] as! String
+                    view2.delegate = self
+                    view2.productDetails = ["name" : dict["In-App Display Name"] as! String,
+                        "description": dict["In-App Description"] as! String]
+                    view = view2
+                    
+                } else {
+                    let predicate = NSPredicate(format: "%K = %@", "set.name", set.name)
+                    let view2 = CardListViewController()
+                    
+                    view2.navigationItem.title = set.name
+                    view2.predicate = predicate
+                    view = view2
+                }
             }
-
-        } else if collectionView.tag == 3 { // Sets
-            let setId = dict[indexPath.row]
-            let set = DTSet(forPrimaryKey: setId)
-            let dict = Database.sharedInstance().inAppSettingsForSet(set.setId)
             
-            if dict != nil {
-                let view2 = InAppPurchaseViewController()
-                
-                view2.productID = dict["In-App Product ID"] as! String
-                view2.delegate = self
-                view2.productDetails = ["name" : dict["In-App Display Name"] as! String,
-                                        "description": dict["In-App Description"] as! String]
-                view = view2
-                
-            } else {
-                let predicate = NSPredicate(format: "%K = %@", "set.name", set.name)
-                let view2 = CardListViewController()
-                
-                view2.navigationItem.title = set.name
-                view2.predicate = predicate
-                view = view2
+            if view != nil {
+                self.navigationController?.pushViewController(view!, animated:false)
             }
-        }
-        
-        if view != nil {
-            self.navigationController?.pushViewController(view!, animated:false)
         }
     }
     
@@ -366,12 +586,19 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
     
 //    MARK: UIScrollViewDelegate
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        if scrollView.tag == 0 {
-            let row = arrayData![scrollView.tag]
-            let key = Array(row.keys)[0]
-            let dict = row[key]!
-            bannerCell?.continueScrolling(dict)
-            
+        if arrayData != nil {
+            if scrollView.tag == 0 {
+                let row = arrayData![scrollView.tag]
+                let key = Array(row.keys)[0]
+                let dict = row[key]!
+                bannerCell?.continueScrolling(dict)
+                
+            }
         }
+    }
+    
+//    MARK: MBProgressHUDDelegate methods
+    func hudWasHidden(hud: MBProgressHUD) {
+        hud.removeFromSuperview()
     }
 }

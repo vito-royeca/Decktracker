@@ -210,32 +210,16 @@ static Database *_me;
     }
     else if (query.length == 1)
     {
-        predicate = [NSPredicate predicateWithFormat:@"%K BEGINSWITH[cd] %@", @"name", query];
+        predicate = [NSPredicate predicateWithFormat:@"%K BEGINSWITH[c] %@", @"name", query];
     }
     else
     {
-        NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", @"name", query];
-        NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", @"type", query];
-        NSPredicate *pred3 = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", @"text", query];
-        NSPredicate *pred4 = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", @"flavor", query];
+        NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"%K CONTAINS[c] %@", @"name", query];
+        NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"%K CONTAINS[c] %@", @"type", query];
+        NSPredicate *pred3 = [NSPredicate predicateWithFormat:@"%K CONTAINS[c] %@", @"text", query];
+        NSPredicate *pred4 = [NSPredicate predicateWithFormat:@"%K CONTAINS[c] %@", @"flavor", query];
         predicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[pred1, pred2, pred3, pred4]];
     }
-    
-    /*NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    if (!sorters)
-    {
-        NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:@"name"
-                                                                        ascending:YES];
-        NSSortDescriptor *sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:@"set.releaseDate"
-                                                                        ascending:NO];
-        
-        sorters = @[sortDescriptor1, sortDescriptor2];
-    }
-    
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"DTCard"
-                                              inManagedObjectContext:moc];*/
-
     
     // to do: exclude In-App Sets
     NSArray *inAppSetCodes = [self inAppSetCodes];
@@ -244,16 +228,6 @@ static Database *_me;
         NSPredicate *predInAppSets = [NSPredicate predicateWithFormat:@"NOT (set.code IN %@)", inAppSetCodes];
         predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, predInAppSets]];
     }
-    
-    /*[fetchRequest setPredicate:predicate];
-    [fetchRequest setEntity:entity];
-    [fetchRequest setSortDescriptors:sorters];
-    [fetchRequest setFetchBatchSize:kFetchBatchSize];
-    
-    return [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                               managedObjectContext:moc
-                                                 sectionNameKeyPath:sectionName
-                                                          cacheName:nil];*/
     
     return [[DTCard objectsWithPredicate:predicate] sortedResultsUsingDescriptors:sorters];
 }
@@ -269,7 +243,7 @@ static Database *_me;
     {
         if (query.length == 1)
         {
-            NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"%K BEGINSWITH[cd] %@", @"name", query];
+            NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"%K BEGINSWITH[c] %@", @"name", query];
             if (predicate)
             {
                 predicate2 = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, pred1]];
@@ -281,7 +255,7 @@ static Database *_me;
         }
         else
         {
-            NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", @"name", query];
+            NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"%K CONTAINS[c] %@", @"name", query];
             if (predicate)
             {
                 predicate2 = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, pred1]];
@@ -293,21 +267,6 @@ static Database *_me;
         }
     }
     
-    /*NSManagedObjectContext *moc = [NSManagedObjectContext MR_contextForCurrentThread];
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    if (!sorters)
-    {
-        NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:@"name"
-                                                                        ascending:YES];
-        NSSortDescriptor *sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:@"set.releaseDate"
-                                                                        ascending:NO];
-        
-        sorters = @[sortDescriptor1, sortDescriptor2];
-    }
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"DTCard"
-                                              inManagedObjectContext:moc];*/
-    
-    
     NSPredicate *pred = predicate2 ? predicate2 : predicate;
     // to do: exclude In-App Sets
     NSArray *inAppSetCodes = [self inAppSetCodes];
@@ -317,15 +276,6 @@ static Database *_me;
         pred = [NSCompoundPredicate andPredicateWithSubpredicates:@[pred, predInAppSets]];
     }
     
-    /*[fetchRequest setPredicate:pred];
-    [fetchRequest setEntity:entity];
-    [fetchRequest setSortDescriptors:sorters];
-    [fetchRequest setFetchBatchSize:kFetchBatchSize];
-    
-    return [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                               managedObjectContext:moc
-                                                 sectionNameKeyPath:sectionName
-                                                          cacheName:nil];*/
     return [[DTCard objectsWithPredicate:pred] sortedResultsUsingDescriptors:sorters];
 }
 
@@ -442,17 +392,17 @@ static Database *_me;
                 {
                     if ([value isKindOfClass:[NSNumber class]])
                     {
-                        [sql appendFormat:@"ANY %@ CONTAINS[cd] %%@", fieldName];
+                        [sql appendFormat:@"ANY %@ CONTAINS[c] %%@", fieldName];
                     }
                     else
                     {
                         if (((NSString*)value).length == 1)
                         {
-                            [sql appendFormat:@"%@ BEGINSWITH[cd] %%@", fieldName];
+                            [sql appendFormat:@"%@ BEGINSWITH[c] %%@", fieldName];
                         }
                         else
                         {
-                            [sql appendFormat:@"%@ CONTAINS[cd] %%@", fieldName];
+                            [sql appendFormat:@"%@ CONTAINS[c] %%@", fieldName];
                         }
                     }
                 }
@@ -483,7 +433,7 @@ static Database *_me;
             
             if (bToMany)
             {
-                [sql appendFormat:@"ANY %@ CONTAINS[cd] %%@", fieldName];
+                [sql appendFormat:@"ANY %@ CONTAINS[c] %%@", fieldName];
             }
             else
             {
@@ -495,11 +445,11 @@ static Database *_me;
                 {
                     if (((NSString*)value).length == 1)
                     {
-                        [sql appendFormat:@"%@ BEGINSWITH[cd] %%@", fieldName];
+                        [sql appendFormat:@"%@ BEGINSWITH[c] %%@", fieldName];
                     }
                     else
                     {
-                        [sql appendFormat:@"%@ CONTAINS[cd] %%@", fieldName];
+                        [sql appendFormat:@"%@ CONTAINS[c] %%@", fieldName];
                     }
                 }
                 

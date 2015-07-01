@@ -186,11 +186,11 @@
         
         if (query.length == 1)
         {
-            predicate = [NSPredicate predicateWithFormat:@"%K BEGINSWITH[cd] %@", @"name", query];
+            predicate = [NSPredicate predicateWithFormat:@"%K BEGINSWITH[c] %@", @"name", query];
         }
         else if (query.length > 1)
         {
-            predicate = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", @"name", query];
+            predicate = [NSPredicate predicateWithFormat:@"%K CONTAINS[c] %@", @"name", query];
         }
     }
     else if ([obj isKindOfClass:[NSDictionary class]])
@@ -204,11 +204,11 @@
         
         if (query.length == 1)
         {
-            predicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH[cd] %@", query];
+            predicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH[c] %@", query];
         }
         else if (query.length > 1)
         {
-            predicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@", query];
+            predicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[c] %@", query];
         }
     }
     

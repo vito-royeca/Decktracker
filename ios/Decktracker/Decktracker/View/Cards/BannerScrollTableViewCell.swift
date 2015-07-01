@@ -68,7 +68,9 @@ class BannerScrollTableViewCell: UITableViewCell {
     }
     
     func stopSlideShow() {
-        slideshowTimer!.invalidate()
+        if slideshowTimer != nil {
+            slideshowTimer!.invalidate()
+        }
         slideshowTimer = nil
     }
     

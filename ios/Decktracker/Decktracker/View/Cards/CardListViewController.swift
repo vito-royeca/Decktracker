@@ -36,7 +36,6 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
     var colSets:UICollectionView?
     var sections:Array<[String: [String]]>?
     var sectionIndexTitles:[String]?
-    var arrayData:[AnyObject]?
     var predicate:NSPredicate?
     var sorters:[RLMSortDescriptor]?
     var viewMode:String?
@@ -227,7 +226,7 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
         sections = Array<[String: [String]]>()
         sectionIndexTitles = [String]()
         
-        var cards = Database.sharedInstance().findCards(nil, withPredicate:self.predicate, withSortDescriptors: self.sorters, withSectionName:self.sectionName)
+        let cards = Database.sharedInstance().findCards(nil, withPredicate:self.predicate, withSortDescriptors: self.sorters, withSectionName:self.sectionName)
         for x in cards {
             if self.sortMode == .ByPrice {
                 continue

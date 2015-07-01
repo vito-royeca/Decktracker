@@ -54,14 +54,10 @@
 
     if (self.cardIds)
     {
-        DTCard *card = [DTCard objectForPrimaryKey:cardId];
         NSInteger index = 0;
         
-        for (DTCard *k in  [DTCard objectsWhere:@"cardId in %@", self.cardIds])
-        {
-            if ([k.name isEqualToString:card.name] &&
-                [k.number isEqualToString:card.number] &&
-                [k.set.code isEqualToString:card.set.code])
+        for (NSString *kardId in self.cardIds) {
+            if ([kardId isEqualToString:cardId])
             {
                 break;
             }
@@ -894,14 +890,11 @@
     
     if ([path isEqualToString:@"artist"])
     {
-//        SimpleSearchViewController *view = [[SimpleSearchViewController alloc] init];
-//        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"artist.name CONTAINS[cd] %@", kvPairs[@"name"]];
-//        view.predicate = predicate;
-//        view.titleString = kvPairs[@"name"];
-//        view.showTabBar = NO;
-//        [view doSearch];
-        
-//        [self.navigationController pushViewController:view animated:YES];
+        CardListViewController *view = [[CardListViewController alloc] init];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"artist.name CONTAINS[c] %@", kvPairs[@"name"]];
+        view.predicate = predicate;
+        view.navigationItem.title = kvPairs[@"name"];
+        [self.navigationController pushViewController:view animated:YES];
     }
     
     else if ([path isEqualToString:@"printings"] ||
