@@ -697,7 +697,7 @@
         }
         [html appendFormat:@"</table></td></tr>"];
     }
-    
+    /*
     if (card.rulings.count > 0)
     {
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
@@ -759,7 +759,7 @@
         }
         [html appendFormat:@"</table></td></tr>"];
     }
-    
+    */
     if (card.tcgPlayerLink)
     {
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];

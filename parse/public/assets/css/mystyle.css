@@ -37,27 +37,25 @@ html, body
     bottom: 0;
 }
 
-.td_circle
+.td_card
 {
-    width:393px;
-    height:400px;
-    background-image: url('../img/Card_Circles.png');
-    background-repeat:no-repeat;
-    background-size:393px 400px;
+    font-family: Magic;
+    font-size: 12pt;
+    color: #ffffff;
 }
 
 .th_player, .th_rank
 {
 	font-family: Magic;
     font-size: 16pt;
-    color: #000000;
+    color: #ffffff;
 }
 
 .td_player, .td_rank
 {
 	font-family: Magic;
     font-size: 12pt;
-    color: #000000;
+    color: #ffffff;
 }
 
 .td_score
@@ -148,9 +146,14 @@ html, body
     text-align: right;
 }
 
-#cardsPage {
-  background: url(../img/Card_Circles.png);
-  background-size: cover;
-  overflow: hidden;
-  position: relative;
+.cardImage
+{
+	border:none;
+	border-radius:13px;
+	-webkit-border-radius:13px;
+	-moz-border-radius:13px;
+}
+
+.cardBackground {
+    background:url('../img/backgrounds/Gray_Patterned_BG.jpg');
 }

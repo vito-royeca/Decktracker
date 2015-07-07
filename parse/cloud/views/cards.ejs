@@ -1,207 +1,160 @@
+<% if (view == "topViewed") { %>
 	<div id="centeredmenu">
+		<p>&nbsp;</p>
    		<ul>
-      		<li><a href="/cards?top=rated" class="active">Top Rated</a></li>
-      		<li><a href="/cards?top=viewed">Top Viewed</a></li>
+      		<li><a href="/cards?view=topRated&pp=0">Top Rated</a></li>
+      		<li><a href="/cards?view=topViewed&pp=0" class="active">Top Viewed</a></li>
    		</ul>
 	</div>
 	
-		  <% if (topRated.length > 0) { %>
-        	<table width="100%">
-    	      <% rank = 1; %>  
-    	      <% _(topRated).each(function(top) { %>  
-    	        <tr>
-    	        	<td width="20%">&nbsp;</td>
-	            	<td class="td_rank" width="60%">
-	            		<%= rank %>. <%= top.get('name') %><br/>
-	            		<%= top.get('set').get('name') %><br/>
-	            		<% if (top.get('rating') == 0.5) { %>
-	            			<img src="/assets/img/stars/starhalf.png"/>
-		            		<img src="/assets/img/stars/star.png"/>
-		            		<img src="/assets/img/stars/star.png"/>
-	    	        		<img src="/assets/img/stars/star.png"/>
-	        	    		<img src="/assets/img/stars/star.png"/>
-	            		<% } else if (top.get('rating') == 1) { %>
-	            		    <img src="/assets/img/stars/starhighlighted.png"/>
-		            		<img src="/assets/img/stars/star.png"/>
-		            		<img src="/assets/img/stars/star.png"/>
-	    	        		<img src="/assets/img/stars/star.png"/>
-	        	    		<img src="/assets/img/stars/star.png"/>
-	            		<% } else if (top.get('rating') == 1.5) { %>
-	            		    <img src="/assets/img/stars/starhighlighted.png"/>
-		            		<img src="/assets/img/stars/starhalf.png"/>
-		            		<img src="/assets/img/stars/star.png"/>
-	    	        		<img src="/assets/img/stars/star.png"/>
-	        	    		<img src="/assets/img/stars/star.png"/>
-	            		<% } else if (top.get('rating') == 2) { %>
-	            		    <img src="/assets/img/stars/starhighlighted.png"/>
-		            		<img src="/assets/img/stars/starhighlighted.png"/>
-		            		<img src="/assets/img/stars/star.png"/>
-	    	        		<img src="/assets/img/stars/star.png"/>
-	        	    		<img src="/assets/img/stars/star.png"/>
-	            		<% } else if (top.get('rating') == 2.5) { %>
-	            		    <img src="/assets/img/stars/starhighlighted.png"/>
-		            		<img src="/assets/img/stars/starhighlighted.png"/>
-		            		<img src="/assets/img/stars/starhalf.png"/>
-	    	        		<img src="/assets/img/stars/star.png"/>
-	        	    		<img src="/assets/img/stars/star.png"/>
-	            		<% } else if (top.get('rating') == 3) { %>
-	            		    <img src="/assets/img/stars/starhighlighted.png"/>
-		            		<img src="/assets/img/stars/starhighlighted.png"/>
-		            		<img src="/assets/img/stars/starhighlighted.png"/>
-	    	        		<img src="/assets/img/stars/star.png"/>
-	        	    		<img src="/assets/img/stars/star.png"/>
-	            		<% } else if (top.get('rating') == 3.5) { %>
-	            		    <img src="/assets/img/stars/starhighlighted.png"/>
-		            		<img src="/assets/img/stars/starhighlighted.png"/>
-		            		<img src="/assets/img/stars/starhighlighted.png"/>
-	    	        		<img src="/assets/img/stars/starhalf.png"/>
-	        	    		<img src="/assets/img/stars/star.png"/>
-	            		<% } else if (top.get('rating') == 4) { %>
-	            		    <img src="/assets/img/stars/starhighlighted.png"/>
-		            		<img src="/assets/img/stars/starhighlighted.png"/>
-		            		<img src="/assets/img/stars/starhighlighted.png"/>
-	    	        		<img src="/assets/img/stars/starhighlighted.png"/>
-	        	    		<img src="/assets/img/stars/star.png"/>
-	            		<% } else if (top.get('rating') == 4.5) { %>
-	            		    <img src="/assets/img/stars/starhighlighted.png"/>
-		            		<img src="/assets/img/stars/starhighlighted.png"/>
-		            		<img src="/assets/img/stars/starhighlighted.png"/>
-	    	        		<img src="/assets/img/stars/starhighlighted.png"/>
-	        	    		<img src="/assets/img/stars/starhalf.png"/>
-	            		<% } else if (top.get('rating') == 5) { %>
-	            		    <img src="/assets/img/stars/starhighlighted.png"/>
-		            		<img src="/assets/img/stars/starhighlighted.png"/>
-		            		<img src="/assets/img/stars/starhighlighted.png"/>
-	    	        		<img src="/assets/img/stars/starhighlighted.png"/>
-	        	    		<img src="/assets/img/stars/starhighlighted.png"/>
-	            		<% } %><br/>
-	            		<img src="http://magiccards.info/scans/en/<%= top.get('set').get('magicCardsInfoCode') %>/<%= top.get('number') %>.jpg" />
-	            	</td>
-					<td width="20%">&nbsp;</td>
-        	    </tr>
-        	    <tr>
-	            	<td >&nbsp;</td>
-        	    </tr>
-	          <% rank++; %>  
-              <% }); } %>
-		    </table>
+	<% if (topViewed.length > 0) { %>
+	<div class="cardBackground">
+	<p>&nbsp;</p>
+    <table width="100%">
+    	<% rank = pp*10; %>  
+    	<% _(topViewed).each(function(top) { %>  
+    	<tr>
+	        <td width="20%">&nbsp;</td>
+	        <td class="td_card" width="60%">
+    			<%= rank+1 %>. <%= top.get('name') %><br>
+    			<% if (top.get('rarity') != null) { %>
+	        	<img src="http://jovitoroyeca.com/decktracker/set/<%= top.get('set').get('code') %>/<%= top.get('rarity').get('symbol') %>/32.png" />
+	        	<% } %>
+	        	<%= top.get('set').get('name') %><br>
+	        	Number of Views: <%= top.get('numberOfViews') %><br>
+	        	<img class="cardImage" alt= "<=% top.get('name')%>" src="http://magiccards.info/scans/en/<%= top.get('set').get('magicCardsInfoCode') %>/<%= top.get('number') %>.jpg" />
+	    	</td>
+	    	<td width="20%">&nbsp;</td>
+        </tr>
+        <tr>
+	        <td colspan="3">&nbsp;</td>
+        </tr>
+	        <% rank++; %>  
+        <% }); %>
+        <tr>
+	        <td width="20%">&nbsp;</td>
+	        <td width="60%" class="td_card">Page
+	        	<% for (i=0; i<10; i++) { %>
+	        		<% if (pp == i) { %>
+	        		<%= i+1 %>
+	        		<% } else { %>
+	        		<a href="/cards?view=topViewed&pp=<%= i %>"><%= i+1 %></a>
+	        		<% }  %>
+	    		<% } %>    	
+	        </td>
+	        <td width="20%">&nbsp;</td>
+	    </tr>
+    </table>  
+    </div>
+	<% } %>
+		    
+<% } else { %>
 
-<!-- feature Section Start 
-  <section id="features">
-    <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-          <h1 class="title-small wow tada">Top Rated</h1>
-          <% if (topRated.length > 0) { %>
-          <p align="center">
-        	<table>
-    	      <% rank = 1; %>  
-    	      <% _(topRated).each(function(top) { %>  
-    	        <tr>
-	            	<td class="td_rank">
-	            		<%= rank %>. <%= top.get('name') %><br/>
-	            		<%= top.get('set').get('name') %><br/>
-	            		<% if (top.get('rating') == 0.5) { %>
-	            			<img src="/assets/img/stars/starhalf.png"/>
-		            		<img src="/assets/img/stars/star.png"/>
-		            		<img src="/assets/img/stars/star.png"/>
-	    	        		<img src="/assets/img/stars/star.png"/>
-	        	    		<img src="/assets/img/stars/star.png"/>
-	            		<% } else if (top.get('rating') == 1) { %>
-	            		    <img src="/assets/img/stars/starhighlighted.png"/>
-		            		<img src="/assets/img/stars/star.png"/>
-		            		<img src="/assets/img/stars/star.png"/>
-	    	        		<img src="/assets/img/stars/star.png"/>
-	        	    		<img src="/assets/img/stars/star.png"/>
-	            		<% } else if (top.get('rating') == 1.5) { %>
-	            		    <img src="/assets/img/stars/starhighlighted.png"/>
-		            		<img src="/assets/img/stars/starhalf.png"/>
-		            		<img src="/assets/img/stars/star.png"/>
-	    	        		<img src="/assets/img/stars/star.png"/>
-	        	    		<img src="/assets/img/stars/star.png"/>
-	            		<% } else if (top.get('rating') == 2) { %>
-	            		    <img src="/assets/img/stars/starhighlighted.png"/>
-		            		<img src="/assets/img/stars/starhighlighted.png"/>
-		            		<img src="/assets/img/stars/star.png"/>
-	    	        		<img src="/assets/img/stars/star.png"/>
-	        	    		<img src="/assets/img/stars/star.png"/>
-	            		<% } else if (top.get('rating') == 2.5) { %>
-	            		    <img src="/assets/img/stars/starhighlighted.png"/>
-		            		<img src="/assets/img/stars/starhighlighted.png"/>
-		            		<img src="/assets/img/stars/starhalf.png"/>
-	    	        		<img src="/assets/img/stars/star.png"/>
-	        	    		<img src="/assets/img/stars/star.png"/>
-	            		<% } else if (top.get('rating') == 3) { %>
-	            		    <img src="/assets/img/stars/starhighlighted.png"/>
-		            		<img src="/assets/img/stars/starhighlighted.png"/>
-		            		<img src="/assets/img/stars/starhighlighted.png"/>
-	    	        		<img src="/assets/img/stars/star.png"/>
-	        	    		<img src="/assets/img/stars/star.png"/>
-	            		<% } else if (top.get('rating') == 3.5) { %>
-	            		    <img src="/assets/img/stars/starhighlighted.png"/>
-		            		<img src="/assets/img/stars/starhighlighted.png"/>
-		            		<img src="/assets/img/stars/starhighlighted.png"/>
-	    	        		<img src="/assets/img/stars/starhalf.png"/>
-	        	    		<img src="/assets/img/stars/star.png"/>
-	            		<% } else if (top.get('rating') == 4) { %>
-	            		    <img src="/assets/img/stars/starhighlighted.png"/>
-		            		<img src="/assets/img/stars/starhighlighted.png"/>
-		            		<img src="/assets/img/stars/starhighlighted.png"/>
-	    	        		<img src="/assets/img/stars/starhighlighted.png"/>
-	        	    		<img src="/assets/img/stars/star.png"/>
-	            		<% } else if (top.get('rating') == 4.5) { %>
-	            		    <img src="/assets/img/stars/starhighlighted.png"/>
-		            		<img src="/assets/img/stars/starhighlighted.png"/>
-		            		<img src="/assets/img/stars/starhighlighted.png"/>
-	    	        		<img src="/assets/img/stars/starhighlighted.png"/>
-	        	    		<img src="/assets/img/stars/starhalf.png"/>
-	            		<% } else if (top.get('rating') == 5) { %>
-	            		    <img src="/assets/img/stars/starhighlighted.png"/>
-		            		<img src="/assets/img/stars/starhighlighted.png"/>
-		            		<img src="/assets/img/stars/starhighlighted.png"/>
-	    	        		<img src="/assets/img/stars/starhighlighted.png"/>
-	        	    		<img src="/assets/img/stars/starhighlighted.png"/>
-	            		<% } %><br/>
-	            		<img src="http://magiccards.info/scans/en/<%= top.get('set').get('magicCardsInfoCode') %>/<%= top.get('number') %>.jpg" />
-	            	</td>
-        	    </tr>
-        	    <tr>
-	            	<td>&nbsp;</td>
-        	    </tr>
-	          <% rank++; %>  
-              <% }); } %>
-		    </table>
-		</div>
-	  </div>
-    </div>
-  </section> -->
-  
-  <!-- feature Section Start 
-  <section id="features">
-    <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-          <h1 class="title-small wow tada">Top Viewed</h1>
-          <% if (topViewed.length > 0) { %>
-          <p align="center">
-        	<table>
-    	      <% rank = 1; %>  
-    	      <% _(topViewed).each(function(top) { %>  
-    	        <tr>
-	            	<td class="td_rank">
-	            		<%= rank %> <%= top.get('name') %><br>
-	            		<%= top.get('set').get('name') %><br>
-	            		Number of Views: <%= top.get('numberOfViews') %><br>
-	            		<img src="http://magiccards.info/scans/en/<%= top.get('set').get('magicCardsInfoCode') %>/<%= top.get('number') %>.jpg" />
-	            	</td>
-        	    </tr>
-        	    <tr>
-	            	<td>&nbsp;</td>
-        	    </tr>
-	          <% rank++; %>  
-              <% }); } %>
-		    </table>
-		</div>
-	  </div>
-    </div>
-  </section> -->
+	<div id="centeredmenu">
+		<p>&nbsp;</p>
+   		<ul>
+      		<li><a href="/cards?view=topRated" class="active">Top Rated</a></li>
+      		<li><a href="/cards?view=topViewed">Top Viewed</a></li>
+   		</ul>
+	</div>
+	
+	<% if (topRated.length > 0) { %>
+	<div class="cardBackground">
+	<p>&nbsp;</p>
+    <table width="100%">
+    	<% rank = pp*10; %>
+    	<% _(topRated).each(function(top) { %>  
+    	<tr>
+        	<td width="20%">&nbsp;</td>
+	        <td class="td_card" width="60%">
+	  			<%= rank+1 %>. <%= top.get('name') %><br/>
+	        	<% if (top.get('rarity') != null) { %>
+	        	<img src="http://jovitoroyeca.com/decktracker/set/<%= top.get('set').get('code') %>/<%= top.get('rarity').get('symbol') %>/32.png" />
+	        	<% } %>
+	        	<%= top.get('set').get('name') %><br>
+	        <% if (top.get('rating') == 0.5) { %>
+	            <img src="/assets/img/stars/starhalf.png"/>
+	    		<img src="/assets/img/stars/star.png"/>
+        		<img src="/assets/img/stars/star.png"/>
+	    	    <img src="/assets/img/stars/star.png"/>
+	    		<img src="/assets/img/stars/star.png"/>
+	        <% } else if (top.get('rating') == 1) { %>
+	            <img src="/assets/img/stars/starhighlighted.png"/>
+	    		<img src="/assets/img/stars/star.png"/>
+	     		<img src="/assets/img/stars/star.png"/>
+	    	    <img src="/assets/img/stars/star.png"/>
+	        	<img src="/assets/img/stars/star.png"/>
+			<% } else if (top.get('rating') == 1.5) { %>
+	            <img src="/assets/img/stars/starhighlighted.png"/>
+	    		<img src="/assets/img/stars/starhalf.png"/>
+		        <img src="/assets/img/stars/star.png"/>
+	    		<img src="/assets/img/stars/star.png"/>
+	        	<img src="/assets/img/stars/star.png"/>
+			<% } else if (top.get('rating') == 2) { %>
+	            <img src="/assets/img/stars/starhighlighted.png"/>
+	    		<img src="/assets/img/stars/starhighlighted.png"/>
+		        <img src="/assets/img/stars/star.png"/>
+	    		<img src="/assets/img/stars/star.png"/>
+	        	<img src="/assets/img/stars/star.png"/>
+			<% } else if (top.get('rating') == 2.5) { %>
+	            <img src="/assets/img/stars/starhighlighted.png"/>
+	    		<img src="/assets/img/stars/starhighlighted.png"/>
+		        <img src="/assets/img/stars/starhalf.png"/>
+	    		<img src="/assets/img/stars/star.png"/>
+	        	<img src="/assets/img/stars/star.png"/>
+			<% } else if (top.get('rating') == 3) { %>
+	            <img src="/assets/img/stars/starhighlighted.png"/>
+	    		<img src="/assets/img/stars/starhighlighted.png"/>
+		        <img src="/assets/img/stars/starhighlighted.png"/>
+	      		<img src="/assets/img/stars/star.png"/>
+	        	<img src="/assets/img/stars/star.png"/>
+			<% } else if (top.get('rating') == 3.5) { %>
+	            <img src="/assets/img/stars/starhighlighted.png"/>
+	    		<img src="/assets/img/stars/starhighlighted.png"/>
+		        <img src="/assets/img/stars/starhighlighted.png"/>
+	    		<img src="/assets/img/stars/starhalf.png"/>
+	        	<img src="/assets/img/stars/star.png"/>
+			<% } else if (top.get('rating') == 4) { %>
+	            <img src="/assets/img/stars/starhighlighted.png"/>
+	    		<img src="/assets/img/stars/starhighlighted.png"/>
+		        <img src="/assets/img/stars/starhighlighted.png"/>
+	    		<img src="/assets/img/stars/starhighlighted.png"/>
+	        	<img src="/assets/img/stars/star.png"/>
+			<% } else if (top.get('rating') == 4.5) { %>
+	            <img src="/assets/img/stars/starhighlighted.png"/>
+	    		<img src="/assets/img/stars/starhighlighted.png"/>
+		        <img src="/assets/img/stars/starhighlighted.png"/>
+	    		<img src="/assets/img/stars/starhighlighted.png"/>
+	        	<img src="/assets/img/stars/starhalf.png"/>
+			<% } else if (top.get('rating') == 5) { %>
+	            <img src="/assets/img/stars/starhighlighted.png"/>
+	    		<img src="/assets/img/stars/starhighlighted.png"/>
+		        <img src="/assets/img/stars/starhighlighted.png"/>
+	    		<img src="/assets/img/stars/starhighlighted.png"/>
+	        	<img src="/assets/img/stars/starhighlighted.png"/>
+			<% } %><br/>
+	        	<img class="cardImage" alt= "<=% top.get('name')%>" src="http://magiccards.info/scans/en/<%= top.get('set').get('magicCardsInfoCode') %>/<%= top.get('number') %>.jpg" />
+	        </td>
+			<td width="20%">&nbsp;</td>
+        </tr>
+        <tr>
+	    	<td colspan="3">&nbsp;</td>
+        </tr>
+	    <% rank++; %>  
+    <% }); } %>
+    	<tr>
+	        <td width="20%">&nbsp;</td>
+	        <td width="60%" class="td_card">Page
+	        	<% for (i=0; i<10; i++) { %>
+	        		<% if (pp == i) { %>
+	        		<%= i+1 %>
+	        		<% } else { %>
+	        		<a href="/cards?view=topRated&pp=<%= i %>"><%= i+1 %></a>
+	        		<% }  %>
+	    		<% } %>    	
+	        </td>
+	        <td width="20%">&nbsp;</td>
+	    </tr>
+	</table>
+	</div>
+<% } %>

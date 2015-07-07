@@ -49,26 +49,47 @@ app.locals.facebookApplicationId = '341320496039341';
 
 // Render the pages
 app.get('/cards', function(req, res) {
-    var query = new Parse.Query("Card");
+    var view = req.query.view
+    if (view == null) {
+        view = "topRated";
+    }
     
-	query.include("set");
-	query.limit(10)
-	query.descending("rating");
-	query.exists("rating");
-	
-	query.find().then(function(objects) {
-	   var query2 = new Parse.Query("Card");
-	   query2.include("set");
-	   query2.limit(10)
-	   query2.descending("numberOfViews");
+    var pp = req.query.pp
+    if (pp == null) {
+        pp = 0;
+    }
 
-	   query2.find().then(function(objects2) {
-	     res.render('cards', { title: "Cards",
-	  	 	    			   navbar: "2",
-						       topRated: objects,
-							   topViewed: objects2});
-	   });
-  });
+	var query = new Parse.Query("Card");    
+    query.include("set");
+	query.include("rarity");
+	query.limit(10)
+	query.skip(pp*10)
+	    
+    if (view == "topRated") {
+		query.descending("rating");
+		query.addAscending("name");
+		query.exists("rating");
+		
+		query.find().then(function(objects) {
+	       res.render('cards', { title: "Cards",
+	  	 	    			     navbar: "2",
+						         topRated: objects,
+							     view: view,
+							     pp: pp});
+		});
+		
+    } else {
+	    query.descending("numberOfViews");
+	    query.exists("numberOfViews");
+	    
+	    query.find().then(function(objects) {
+	       res.render('cards', { title: "Cards",
+	  	 	    			     navbar: "2",
+						         topViewed: objects,
+							     view: view,
+							     pp: pp});
+        });
+     }
 });
 
 app.get('/decks', function(req, res) {

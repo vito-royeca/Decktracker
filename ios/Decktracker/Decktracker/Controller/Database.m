@@ -797,6 +797,7 @@ static Database *_me;
     PFQuery *query = [PFQuery queryWithClassName:@"Card" predicate:predicate];
     [query orderByDescending:@"rating"];
     [query addAscendingOrder:@"name"];
+    [query whereKeyExists:@"rating"];
     [query includeKey:@"set"];
 
     if (limit >= 0)
@@ -1421,7 +1422,7 @@ static Database *_me;
     
     query = [PFQuery queryWithClassName:@"Set"];
 //    [query whereKeyExists:@"magicCardsInfoCode"];
-    [query whereKey:@"code" equalTo:@"LEA"];
+    [query whereKey:@"code" equalTo:@"AVR"];
     
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         
