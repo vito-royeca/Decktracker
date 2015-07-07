@@ -13,6 +13,7 @@
 
 @interface DTArtist : RLMObject
 
+@property NSString * artistId;
 @property NSString * name;
 //@property RLMArray<DTCard> *cards;
 

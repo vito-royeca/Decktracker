@@ -9,12 +9,13 @@
 #import <Realm/Realm.h>
 //#import "RLMArrays.h"
 
-//@class DTCard;
+@class DTCard;
 
 @interface DTCardRuling : RLMObject
 
+@property NSString * rulingId;
 @property NSDate * date;
 @property NSString * text;
-//@property DTCard *card;
+@property DTCard *card;
 
 @end

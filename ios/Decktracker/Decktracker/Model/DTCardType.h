@@ -13,6 +13,7 @@
 
 @interface DTCardType : RLMObject
 
+@property NSString * cardTypeId;
 @property NSString * name;
 //@property RLMArray<DTCard> *cardSubTypes;
 //@property RLMArray<DTCard> *cardSuperTypes;

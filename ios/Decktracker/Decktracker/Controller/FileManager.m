@@ -106,9 +106,8 @@ static FileManager *_me;
 - (NSString*) cardSetPath:(NSString*) cardId
 {
     DTCard *card = [DTCard objectForPrimaryKey:cardId];
-    NSString *rarity = [card.rarity.name isEqualToString:@"Basic Land"] ? @"C" : [[card.rarity.name substringToIndex:1] uppercaseString];
     
-    return [NSString stringWithFormat:@"%@/images/set/%@/%@/48.png", [[NSBundle mainBundle] bundlePath], card.set.code, rarity];
+    return [NSString stringWithFormat:@"%@/images/set/%@/%@/48.png", [[NSBundle mainBundle] bundlePath], card.set.code, card.rarity.symbol];
 }
 
 - (NSString*) cardTypePath:(NSString*) cardId

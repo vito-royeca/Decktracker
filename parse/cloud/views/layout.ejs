@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Decktracker
+  <% if (title.length > 0) { %>
+  	- <%= title %></title>
+  <% } %>
+  </title>
+
+  <link rel="shortcut icon" href="assets/img/icons/favicon.ico">
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
+
+  <!-- Main Style -->
+  <link rel="stylesheet" type="text/css" href="assets/css/main.css">
+
+  <!-- Responsive Style -->
+  <link rel="stylesheet" type="text/css" href="assets/css/responsive.css">
+
+  <!--Icon Font-->
+  <link rel="stylesheet" media="screen" href="assets/fonts/font-awesome/font-awesome.min.css" />
+
+
+  <!-- Extras -->
+  <link rel="stylesheet" type="text/css" href="assets/extras/animate.css">
+
+
+  <!-- jQuery Load -->
+  <script src="assets/js/jquery-min.js"></script>
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+
+  <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+          <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+  
+  <!-- My Style -->
+  <link rel="stylesheet" type="text/css" href="assets/css/mystyle.css">
+  
+  <!-- Setup Parse -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+  <script src="https://www.parsecdn.com/js/parse-1.2.8.min.js"></script>
+  <script>
+    <!-- dev 
+    Parse.initialize("mKMQ9Hl7eGJJIwWb77WYyLfr7GpvsmuNKgGRRZyR", "YCphnlQGSSAZnQYtZeDhvSz5aRj0djOi0zr2k4GZ");
+    -->
+    
+    <!-- prod -->
+    Parse.initialize("gWQ4zjHnoXHJK15ipFVgWLUSA979mqHaZ7sOlPU9", "c2IvVJIhJBCDFQcZtoEgST8g4SfmAvWRxdYoHJ3v");
+
+  </script>
+  
+  <style>
+#centeredmenu {
+   float:left;
+   width:100%;
+   background:#fff;
+   border-bottom:4px solid #000;
+   overflow:hidden;
+   position:relative;
+}
+#centeredmenu ul {
+   clear:left;
+   float:left;
+   list-style:none;
+   margin:0;
+   padding:0;
+   position:relative;
+   left:50%;
+   text-align:center;
+}
+#centeredmenu ul li {
+   display:block;
+   float:left;
+   list-style:none;
+   margin:0;
+   padding:0;
+   position:relative;
+   right:50%;
+}
+#centeredmenu ul li a {
+   display:block;
+   margin:0 0 0 1px;
+   padding:3px 10px;
+   background:#ddd;
+   color:#000;
+   text-decoration:none;
+   line-height:1.3em;
+}
+#centeredmenu ul li a:hover {
+   background:#369;
+   color:#fff;
+}
+#centeredmenu ul li a.active,
+#centeredmenu ul li a.active:hover {
+   color:#fff;
+   background:#000;
+   font-weight:bold;
+}
+</style>
+      
+</head>
+
+<body>
+  <!-- Nav Menu Section -->
+  <div class="logo-menu">
+    <nav class="navbar navbar-default">
+      <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header col-md-3">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/"><img src="assets/img/icons/AppIcon32x32-white.png"/> Decktracker</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="navbar">
+          <ul class="nav navbar-nav pull-right">
+            <% if (navbar == "1") { %>
+            <li class='active'>
+            <% } else { %>
+            <li>
+            <% } %>
+            	<a href="/">Home</a>
+            </li>
+            <% if (navbar == "2") { %>
+            <li class='active'>
+            <% } else { %>
+            <li>
+            <% } %>
+            	<a href="cards">Cards</a>
+            </li>
+            <% if (navbar == "3") { %>
+            <li class='active'>
+            <% } else { %>
+            <li>
+            <% } %>
+            	<a href="decks">Decks</a>
+            </li>
+            <% if (navbar == "4") { %>
+            <li class='active'>
+            <% } else { %>
+            <li>
+            <% } %>
+            	<a href="cardquiz">Card Quiz</a>
+            </li>
+            <% if (!Parse.User.current()) { %>
+          	<% if (navbar == "5") { %>
+            <li class='active'>
+            <% } else { %>
+            <li>
+            <% } %>
+            	<a href="sign-in">Sign In</a>
+            </li>
+        	<% } else { %>
+          	<li>
+            	Hi <%= Parse.User.current().get('username') %>
+            	<form action="/logout" method="post">
+                  <a href="#" onclick="$(this).closest('form').submit()">Logout</a>
+            	</form>
+          	</li>
+        	<% } %>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+  <!-- Nav Menu Section End -->
+  
+  <%- body %>
+  
+  <section id="bottom">
+    <div class="container">
+      <div class="row">
+          Decktracker (c) <a href="http://jovitoroyeca.com" target="_blank">Jovito Royeca</a>. All Rights Reserved.<br>
+          <a href="http://jovitoroyeca.com" target="_blank">http://jovitoroyeca.com</a>
+        <!--<div class="col-md-3 col-sm-3 col-xs-12">
+          <h3>Products</h3>
+          <ul>
+            <li><a href="#">Paypal</a>
+            </li>
+            <li><a href="#">BitCoin</a>
+            </li>
+            <li><a href="#">Skrill</a>
+            </li>
+            <li><a href="#">Alertpay</a>
+            </li>
+            <li><a href="#">Payoneer</a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-3 col-sm-3 col-xs-12">
+          <h3>FAQs</h3>
+          <ul>
+            <li><a href="#">Why choose us?</a>
+            </li>
+            <li><a href="#">Where we are?</a>
+            </li>
+            <li><a href="#">Fees</a>
+            </li>
+            <li><a href="#">Guarantee</a>
+            </li>
+            <li><a href="#">Discount</a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-3 col-sm-3 col-xs-12">
+          <h3>About</h3>
+          <ul>
+            <li><a href="#">Career</a>
+            </li>
+            <li><a href="#">Partners</a>
+            </li>
+            <li><a href="#">Team</a>
+            </li>
+            <li><a href="#">Clients</a>
+            </li>
+            <li><a href="#">Contact</a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-3 col-sm-3 col-xs-12">
+          <h3>Find us on</h3>
+          <a class="social" href="https://www.facebook.com/mtgdecktracker" target="_blank"><i class="fa fa-facebook fa-2x"></i></a>
+          <a class="social" href="#" target="_blank"><i class="fa fa-twitter fa-2x"></i></a>
+          <a class="social" href="#" target="_blank"><i class="fa fa-google-plus fa-2x"></i></a>
+          <a class="social" href="#" target="_blank"><i class="fa fa-linkedin fa-2x"></i></a>
+        </div>-->
+      </div>
+    </div>
+  </section>
+  <!-- Bootstrap JS -->
+  <script src="assets/js/bootstrap.js"></script>
+  <!-- WOW JS plugin for animation -->
+  <script src="assets/js/wow.js"></script>
+  <!-- All JS plugin Triggers -->
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

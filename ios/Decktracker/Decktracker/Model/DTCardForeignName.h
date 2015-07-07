@@ -9,11 +9,13 @@
 #import <Realm/Realm.h>
 //#import "RLMArrays.h"
 
-@class DTLanguage;
+@class DTCard, DTLanguage;
 
 @interface DTCardForeignName : RLMObject
 
+@property NSString * foreignNameId;
 @property NSString * name;
+@property DTCard *card;
 @property DTLanguage *language;
 
 @end

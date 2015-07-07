@@ -12,6 +12,10 @@
 
 @implementation DTArtist
 
++ (NSString *)primaryKey {
+    return @"artistId";
+}
+
 + (NSArray *)indexedProperties {
     return @[@"name"];
 }

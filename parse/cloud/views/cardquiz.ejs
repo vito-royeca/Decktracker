@@ -1,0 +1,57 @@
+<!-- feature Section Start -->
+  <section id="features">
+    <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+          <h1 class="title-small wow tada">Leaderboard</h1>
+          <% if (userManas.length > 0) { %>
+          <p align="center">
+        	<table>
+            	<tr>
+            		<th class="th_rank">Rank</th>
+            		<th class="th_rank">&nbsp;</th>
+	            	<th class="th_player" colspan="12">Player</th>
+    	        </tr>
+    	      <% rank = 1; %>  
+    	      <% _(userManas).each(function(userMana) { %>  
+    	        <tr>
+	            	<td class="td_rank"><%= rank %></td>
+	            	<td class="td_rank">&nbsp;</td>
+    	        	<td class="td_player" colspan="13"><%= userMana.get('user').get('username') %></td>
+        	    </tr>
+            	<tr>
+                	<td>&nbsp;</td>
+                	<td>&nbsp;</td>
+	                <td class="td_player" colspan="13">Score: <%= userMana.get('totalCMC') %></td>
+    	        </tr>
+        	    <tr>
+            	    <td>&nbsp;</td>
+            	    <td>&nbsp;</td>
+                	<td><img src="/assets/img/mana/B/32.png" width="16" height="16"></td>
+	                <td class="td_score"><%= userMana.get('black') %>&nbsp;</td>
+                
+    	            <td><img src="/assets/img/mana/U/32.png" width="16" height="16"></td>
+        	        <td class="td_score"><%= userMana.get('blue') %>&nbsp;</td>
+                
+            	    <td><img src="/assets/img/mana/G/32.png" width="16" height="16"></td>
+                	<td class="td_score"><%= userMana.get('green') %>&nbsp;</td>
+                
+	                <td><img src="/assets/img/mana/R/32.png" width="16" height="16"></td>
+    	            <td class="td_score"><%= userMana.get('red') %>&nbsp;</td>
+                
+        	        <td><img src="/assets/img/mana/W/32.png" width="16" height="16"></td>
+            	    <td class="td_score"><%= userMana.get('white') %>&nbsp;</td>
+                
+                	<td><img src="/assets/img/mana/Colorless/32.png" width="16" height="16"></td>
+	                <td class="td_score"><%= userMana.get('colorless') %>&nbsp;</td>
+    	        </tr>
+        	    <tr>
+            	    <td colspan="14">&nbsp;</td>
+	            </tr>
+	          <% rank++; %>  
+              <% }); } %>
+		    </table>
+		</div>
+	  </div>
+    </div>
+  </section>

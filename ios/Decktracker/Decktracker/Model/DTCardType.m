@@ -10,6 +10,10 @@
 
 @implementation DTCardType
 
++ (NSString *)primaryKey {
+    return @"cardTypeId";
+}
+
 + (NSArray *)indexedProperties {
     return @[@"name"];
 }

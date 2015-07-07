@@ -1,0 +1,34 @@
+<!-- Hero Area Section -->
+
+<section id="sign-in-area">
+
+<div class="container">
+    <div class="row">
+<div class="col-md-12">
+        <h1 class="title-big wow fadeIn"><i class="fa fa-sign-in"></i></h1>
+        <h2 class="subtitle-big">Sign-in to access your account</h2>
+        <% if (locals.flash) { %>
+			<div class="flash"><%= flash %></div>
+		<% } %>
+</div>
+
+
+<div class="col-md-12 text-center">
+
+<form action="/sign-in" method="post" class="sign-in-form">
+  <div class="form-group col-md-offset-4 col-md-4 col-md-offset-4 wow fadeInDown">
+    <input type="text" value="" name="username" class="form-control" id="username" placeholder="Enter Username" />
+  </div>
+  <div class="form-group col-md-offset-4 col-md-4 col-md-offset-4 wow fadeInDown" data-wow-delay=".7s">
+    <input type="password" value="" name="password" class="form-control" id="password" placeholder="Password" />
+    <a class="sign-up-button btn btn-border btn-lg col-md-offset-3 col-md-6 col-md-offset-3 wow fadeInUp" data-wow-delay="1s"
+      href="#" onclick="$(this).closest('form').submit()">Sign In</a>
+  </div>
+</form>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Hero Area Section End-->

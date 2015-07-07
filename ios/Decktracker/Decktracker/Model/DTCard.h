@@ -50,13 +50,13 @@
 @property NSString * watermark;
 @property DTArtist *artist;
 @property RLMArray<DTCardColor> *colors;
-@property RLMArray<DTCardForeignName> *foreignNames;
-@property RLMArray<DTCardLegality> *legalities;
+//@property RLMArray<DTCardForeignName> *foreignNames;
+//@property RLMArray<DTCardLegality> *legalities;
 @property RLMArray<DTCard> *names;
 @property RLMArray<DTSet> *printings;
 @property DTCardRarity *rarity;
 @property RLMArray<DTCardRating> *ratings;
-@property RLMArray<DTCardRuling> *rulings;
+//@property RLMArray<DTCardRuling> *rulings;
 @property DTSet *set;
 @property RLMArray<DTCardType> *subTypes;
 @property RLMArray<DTCardType> *superTypes;

@@ -1,0 +1,156 @@
+@font-face
+{
+    font-family: Magic;
+    src: url('../fonts/Goudy Medieval.ttf');
+}
+
+@font-face
+{
+    font-family: Matrix;
+    src: url('../fonts/Matrix Bold.ttf');
+}
+
+@font-face
+{
+    font-family: MPlantin;
+    src: url('../fonts/MPlantin.ttf');
+}
+
+body, td
+{
+    font-family: Helvetica;
+    font-size: 12pt;
+}
+
+html, body
+{
+    height: 100%;
+}
+
+.img_center
+{
+    position: absolute;
+    margin: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.td_circle
+{
+    width:393px;
+    height:400px;
+    background-image: url('../img/Card_Circles.png');
+    background-repeat:no-repeat;
+    background-size:393px 400px;
+}
+
+.th_player, .th_rank
+{
+	font-family: Magic;
+    font-size: 16pt;
+    color: #000000;
+}
+
+.td_player, .td_rank
+{
+	font-family: Magic;
+    font-size: 12pt;
+    color: #000000;
+}
+
+.td_score
+{
+    font-family: Magic;
+    font-size: 12pt;
+    color: #ffffff;
+    text-align: right;
+}
+
+.td_totalCMC
+{
+	font-family: Magic;
+    font-size: 12pt;
+    color: #ffffff;
+    text-align: right;
+}
+
+.cardNamePreEightEdition
+{
+    font-family: Magic;
+    font-size: 16pt;
+}
+
+.cardNameEightEdition
+{
+    font-family: Matrix;
+    font-size: 16pt;
+}
+
+.detailHeader
+{
+    font-family: Helvetica;
+    font-size: 12pt;
+    font-weight: bold;
+}
+
+.title-magic {
+  font-family: Magic;
+  text-align: center;
+  font-size: 80px;
+  font-weight: bold;
+}
+
+.detailHeaderSmall
+{
+    font-family: Helvetica;
+    font-size: 10pt;
+    color: silver;
+}
+
+.detailTextSmall
+{
+    font-family: Helvetica;
+    font-size: 10pt;
+}
+
+.originalType
+{
+    font-family : MPlantin;
+    font-size: 12pt;
+}
+
+.originalText
+{
+    font-family : MPlantin;
+    font-size: 12pt;
+}
+
+.flavorText
+{
+    font-family : "Times New Roman";
+    font-style: italic;
+    font-size: 12pt;
+}
+
+.textBox
+{
+    padding: 10px;
+    width: 100%;
+    border: 1px solid gray;
+}
+
+.powerToughness
+{
+    font-family : MPlantin;
+    font-size: 14pt;
+    text-align: right;
+}
+
+#cardsPage {
+  background: url(../img/Card_Circles.png);
+  background-size: cover;
+  overflow: hidden;
+  position: relative;
+}

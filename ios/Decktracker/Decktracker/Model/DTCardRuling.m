@@ -10,4 +10,8 @@
 
 @implementation DTCardRuling
 
++ (NSString *)primaryKey {
+    return @"rulingId";
+}
+
 @end

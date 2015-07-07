@@ -390,10 +390,6 @@
         }
         card.artist = [self findArtist:dict[@"artist"]];
         [card.printings addObjects:[self findSets:dict[@"printingCodes"]]];
-        [card.rulings addObjects:[self createRulings:dict[@"rulings"]]];
-        [card.foreignNames addObjects:[self createForeignNamesForCard:card withLanguages:dict[@"foreignNames"]]];
-        [card.legalities addObjects:[self createLegalities:dict[@"legalities"]]];
-        
         card.rarity = [self findCardRarity:dict[@"rarity"]];
         [card.subTypes addObjects:[self findTypes:dict[@"subtypes"]]];
         [card.superTypes addObjects:[self findTypes:dict[@"supertypes"]]];
@@ -425,13 +421,17 @@
         
         RLMRealm *realm = [RLMRealm defaultRealm];
         [realm beginWriteTransaction];
-//        NSLog(@"+Card: %@ [%@] - %@", set.name, set.code, card.name);
+        NSLog(@"+Card: %@ [%@] - %@", set.name, set.code, card.name);
         [realm addObject:card];
         [realm commitWriteTransaction];
         
+        [self createRulingsForCard:card withRulings:dict[@"rulings"]];
+        [self createForeignNamesForCard:card withLanguages:dict[@"foreignNames"]];
+        [self createLegalitiesForCard:card withLegalities:dict[@"legalities"]];
+        
         [cards addObject:card.cardId];
         
-        [[Database sharedInstance] fetchTcgPlayerPriceForCard:card.cardId];
+//        [[Database sharedInstance] fetchTcgPlayerPriceForCard:card.cardId];
         _globalId++;
     }
 
@@ -480,6 +480,7 @@
     if (!artist)
     {
         artist = [[DTArtist alloc] init];
+        artist.artistId = [NSString stringWithFormat:@"%tu", _globalId];
         artist.name = name;
         
         RLMRealm *realm = [RLMRealm defaultRealm];
@@ -487,6 +488,7 @@
 //        NSLog(@"+Artist: %@", name);
         [realm addObject:artist];
         [realm commitWriteTransaction];
+        _globalId++;
     }
     return artist;
 }
@@ -505,6 +507,14 @@
     {
         cardRarity = [[DTCardRarity alloc] init];
         cardRarity.name = cap;
+        if ([cap isEqualToString:@"Basic Land"])
+        {
+            cardRarity.symbol = @"C";
+        }
+        else
+        {
+            cardRarity.symbol = [cap substringToIndex:1];
+        }
         
         RLMRealm *realm = [RLMRealm defaultRealm];
         [realm beginWriteTransaction];
@@ -531,6 +541,7 @@
         if (!type)
         {
             type = [[DTCardType alloc] init];
+            type.cardTypeId = [NSString stringWithFormat:@"%tu", _globalId];
             type.name = name;
             
             RLMRealm *realm = [RLMRealm defaultRealm];
@@ -538,6 +549,7 @@
 //            NSLog(@"+CardType: %@", name);
             [realm addObject:type];
             [realm commitWriteTransaction];
+            _globalId++;
         }
         [results addObject:type];
     }
@@ -546,7 +558,7 @@
 }
 
 
--(NSArray*) createRulings:(NSArray*) array
+-(NSArray*) createRulingsForCard:(DTCard*)card withRulings:(NSArray*) array
 {
     if (!array || array.count <= 0)
     {
@@ -558,6 +570,8 @@
     for (NSDictionary *dict in array)
     {
         DTCardRuling *ruling = [[DTCardRuling alloc] init];
+        ruling.rulingId = [NSString stringWithFormat:@"%tu", _globalId];
+        ruling.card = card;
         
         for (NSString *key in [dict allKeys])
         {
@@ -577,6 +591,7 @@
         [realm commitWriteTransaction];
         
         [rulings addObject:ruling];
+        _globalId++;
     }
     
     return rulings;
@@ -594,6 +609,8 @@
     for (NSDictionary *dict in array)
     {
         DTCardForeignName *foreignName = [[DTCardForeignName alloc] init];
+        foreignName.foreignNameId = [NSString stringWithFormat:@"%tu", _globalId];
+        foreignName.card = card;
         
         for (NSString *key in [dict allKeys])
         {
@@ -626,6 +643,7 @@
             [realm commitWriteTransaction];
         
             [foreignNames addObject:foreignName];
+            _globalId++;
         }
     }
     
@@ -661,7 +679,7 @@
     [card.variations addObjects:arrVariations];
 }
 
--(NSArray*) createLegalities:(NSDictionary*) dict
+-(NSArray*) createLegalitiesForCard:(DTCard*)card withLegalities:(NSDictionary*) dict
 {
     if (!dict || dict.count <= 0)
     {
@@ -674,6 +692,8 @@
     {
         DTCardLegality *legality = [[DTCardLegality alloc] init];
         
+        legality.legalityId = [NSString stringWithFormat:@"%tu", _globalId];
+        legality.card = card;
         legality.name = dict[key];
         legality.format = [self findFormat:key];
         
@@ -684,6 +704,7 @@
         [realm commitWriteTransaction];
         
         [legalities addObject:legality];
+        _globalId++;
     }
     return legalities;
 }

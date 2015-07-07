@@ -10,4 +10,12 @@
 
 @implementation DTCardLegality
 
++ (NSString *)primaryKey {
+    return @"legalityId";
+}
+
++ (NSArray *)indexedProperties {
+    return @[@"name"];
+}
+
 @end

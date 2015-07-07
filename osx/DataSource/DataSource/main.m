@@ -20,12 +20,12 @@ int main(int argc, const char * argv[])
         NSDate *dateStart = [NSDate date];
         
         /* Step 1 */
-//        JSONLoader *jsonLoader = [[JSONLoader alloc] init];
-//        [jsonLoader json2Database];
+        JSONLoader *jsonLoader = [[JSONLoader alloc] init];
+        [jsonLoader json2Database];
         
         /* Step 2 */
-//        RulesLoader *rulesLoader = [[RulesLoader alloc] init];
-//        [rulesLoader json2Database];
+        RulesLoader *rulesLoader = [[RulesLoader alloc] init];
+        [rulesLoader json2Database];
 
         /* Optional */
 //        ImageLoader *imageLoader = [[ImageLoader alloc] init];
@@ -33,8 +33,7 @@ int main(int argc, const char * argv[])
 //        [imageLoader downloadSymbols];
 //        [imageLoader downloadOtherSymbols];
         
-//        [[Database sharedInstance] updateParseCards];
-        
+//        [[Database sharedInstance] updateParseCardsWithNoNumber];
         [[Database sharedInstance] copyRealmDatabaseToHome];
 
         

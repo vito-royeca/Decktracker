@@ -40,12 +40,16 @@
 	<string>Champs Promos</string>
 	<key>Chronicles</key>
 	<string>Chronicles</string>
+	<key>Clash Pack</key>
+	<string>Clash Pack</string>
 	<key>Classic Sixth Edition</key>
 	<string>Classic Sixth Edition</string>
 	<key>Coldsnap</key>
 	<string>Coldsnap</string>
 	<key>Coldsnap Theme Decks</key>
 	<string>Coldsnap Theme Deck Reprints</string>
+	<key>Collector&apos;s Edition</key>
+	<string>Collector&apos;s Edition</string>
 	<key>Commander 2013 Edition</key>
 	<string>Commander 2013</string>
 	<key>Commander 2014</key>
@@ -160,6 +164,8 @@
 	<string>Ice Age</string>
 	<key>Innistrad</key>
 	<string>Innistrad</string>
+	<key>International Collector&apos;s Edition</key>
+	<string>International Edition</string>
 	<key>Introductory Two-Player Set</key>
 	<string></string>
 	<key>Invasion</key>

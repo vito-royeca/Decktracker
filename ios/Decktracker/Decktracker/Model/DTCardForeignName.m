@@ -10,6 +10,10 @@
 
 @implementation DTCardForeignName
 
++ (NSString *)primaryKey {
+    return @"foreignNameId";
+}
+
 + (NSArray *)indexedProperties {
     return @[@"name"];
 }

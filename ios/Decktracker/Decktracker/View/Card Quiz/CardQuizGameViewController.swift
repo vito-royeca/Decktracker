@@ -701,11 +701,14 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         }
         
         let predicate1 = NSPredicate(format: "ANY legalities.format.name IN %@ AND NOT (ANY legalities.format.name IN %@)", [format!], [formatEx1!, formatEx2!])
-        let predicate2 = NSPredicate(format: "cmc >= 1 AND cmc <= 15 AND name MATCHES %@", "^.{0,20}")
+        
+        // 'Operator 'MATCHES' not supported for string type'
+//        let predicate2 = NSPredicate(format: "cmc >= 1 AND cmc <= 15 AND name MATCHES %@", "^.{0,20}")
+        let predicate2 = NSPredicate(format: "cmc >= 1 AND cmc <= 15")
         predicate = NSCompoundPredicate.andPredicateWithSubpredicates([predicate1, predicate2])
         
         cardIds = Array()
-        for x in Database.sharedInstance().fetchRandomCards(kCQMaxCurrentCards, withPredicate: self.predicate, includeInAppPurchase: true) {
+        for x in Database.sharedInstance().fetchRandomCards(kCQMaxCurrentCards, withPredicate: predicate, includeInAppPurchase: true) {
             let card = x as! DTCard
             if self.checkValidCard(card) {
                 let cardId = card.cardId
@@ -728,11 +731,13 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
             }
             
         } else {
-            let card = DTCard(forPrimaryKey: self.cardIds!.first)
-            let value = card.set.code + "_" + card.number
-            
-            NSUserDefaults.standardUserDefaults().setObject(value, forKey: key!)
-            NSUserDefaults.standardUserDefaults().synchronize()
+            if cardIds!.count > 0 {
+                let card = DTCard(forPrimaryKey: cardIds!.first)
+                let value = card.set.code + "_" + card.number
+                
+                NSUserDefaults.standardUserDefaults().setObject(value, forKey: key!)
+                NSUserDefaults.standardUserDefaults().synchronize()
+            }
         }
     }
     
