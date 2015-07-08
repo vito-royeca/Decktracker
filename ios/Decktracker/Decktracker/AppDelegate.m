@@ -57,7 +57,7 @@
 
     // MagicalRecord
     [[Database sharedInstance ] setupDb];
-    [[Database sharedInstance ] updateParseCards];
+//    [[Database sharedInstance ] updateParseCards];
 
     // custom colors
     [[UINavigationBar appearance] setBarTintColor:[JJJUtil UIColorFromRGB:0x691F01]];

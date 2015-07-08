@@ -9,6 +9,7 @@
 @import Foundation;
 
 #import "DTCard.h"
+#import "DTCardLEgality.h"
 #import "DTCardRarity.h"
 #import "DTCardRating.h"
 #import "DTSet.h"
@@ -59,6 +60,9 @@
 -(NSArray*) fetchRandomCards:(int) howMany
                withPredicate:(NSPredicate*) predicate
         includeInAppPurchase:(BOOL) inAppPurchase;
+-(NSArray*) fetchRandomCardsFromFormats:(NSArray*) formats
+                         excludeFormats:(NSArray*) excludeFormats
+                                howMany:(int) howMany;
 
 -(DTCard*) findCard:(NSString*) card inSet:(NSString*) setCode;
 -(DTCard*) findCardByMultiverseID:(NSString*) multiverseID;

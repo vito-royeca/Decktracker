@@ -595,6 +595,29 @@ static Database *_me;
     return array;
 }
 
+-(NSArray*) fetchRandomCardsFromFormats:(NSArray*) formats
+               excludeFormats:(NSArray*) excludeFormats
+                howMany:(int) howMany
+{
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"format.name IN %@ AND NOT (format.name IN %@) AND card.set.magicCardsInfoCode != %@ AND (card.cmc >= 1 AND card.cmc <= 15)", formats, excludeFormats, @""];
+    
+    RLMResults *results = [DTCardLegality objectsWithPredicate:predicate];
+    
+    if (results.count > 0)
+    {
+        for (int i=0; i<howMany; i++)
+        {
+            int random = arc4random() % (results.count - 1) + 1;
+            DTCardLegality *legality = [results objectAtIndex:random+1];
+            [array addObject:legality.card];
+        }
+    }
+    
+    return array;
+}
+
+
 #pragma mark - Finders
 -(DTCard*) findCard:(NSString*) cardName inSet:(NSString*) setCode
 {
@@ -1422,7 +1445,7 @@ static Database *_me;
     
     query = [PFQuery queryWithClassName:@"Set"];
 //    [query whereKeyExists:@"magicCardsInfoCode"];
-    [query whereKey:@"code" equalTo:@"AVR"];
+    [query whereKey:@"code" equalTo:@"TMP"];
     
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         
@@ -1444,6 +1467,8 @@ static Database *_me;
                             for (PFObject *pfCard in objects)
                             {
                                 pfCard[@"number"] = card.number;
+                                pfCard[@"tcgPlayerLink"] = card.tcgPlayerLink;
+                                
                                 for (PFObject *rarity in cardRarities)
                                 {
                                     if ([rarity[@"name"] isEqualToString:card.rarity.name])

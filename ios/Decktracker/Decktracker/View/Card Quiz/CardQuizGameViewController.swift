@@ -700,15 +700,15 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
             formatEx2 = "Modern"
         }
         
-        let predicate1 = NSPredicate(format: "ANY legalities.format.name IN %@ AND NOT (ANY legalities.format.name IN %@)", [format!], [formatEx1!, formatEx2!])
+//        let predicate1 = NSPredicate(format: "ANY legalities.format.name IN %@ AND NOT (ANY legalities.format.name IN %@)", [format!], [formatEx1!, formatEx2!])
         
         // 'Operator 'MATCHES' not supported for string type'
 //        let predicate2 = NSPredicate(format: "cmc >= 1 AND cmc <= 15 AND name MATCHES %@", "^.{0,20}")
-        let predicate2 = NSPredicate(format: "cmc >= 1 AND cmc <= 15")
-        predicate = NSCompoundPredicate.andPredicateWithSubpredicates([predicate1, predicate2])
+//        let predicate2 = NSPredicate(format: "cmc >= 1 AND cmc <= 15")
+//        predicate = NSCompoundPredicate.andPredicateWithSubpredicates([predicate1, predicate2])
         
         cardIds = Array()
-        for x in Database.sharedInstance().fetchRandomCards(kCQMaxCurrentCards, withPredicate: predicate, includeInAppPurchase: true) {
+        for x in Database.sharedInstance().fetchRandomCardsFromFormats([format!], excludeFormats: [formatEx1!, formatEx2!], howMany: kCQMaxCurrentCards) {
             let card = x as! DTCard
             if self.checkValidCard(card) {
                 let cardId = card.cardId
@@ -747,14 +747,13 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         // exclude cards with more than 12 characters in it's name
         for word in card.name.componentsSeparatedByString(" ") {
             if count(word) > 12 {
-                nameOk = false
-                break
+                return false
             }
         }
         
         // exclude cards with more than 20 characters in it's name
         if count(card.name) > 20 {
-            nameOk = false
+            return false
         }
 
         // exclude special mana symbols. only include B,U,G,R,W, and Colorless
@@ -766,27 +765,27 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
                 
                 if k == "symbol" {
                     if let v = dict[k] as? String {
-                        if  v == "B" ||
-                            v == "U" ||
-                            v == "G" ||
-                            v == "R" ||
-                            v == "W" ||
-                            v == "1" ||
-                            v == "2" ||
-                            v == "3" ||
-                            v == "4" ||
-                            v == "5" ||
-                            v == "6" ||
-                            v == "7" ||
-                            v == "8" ||
-                            v == "9" ||
+                        if  v == "B"  ||
+                            v == "U"  ||
+                            v == "G"  ||
+                            v == "R"  ||
+                            v == "W"  ||
+                            v == "1"  ||
+                            v == "2"  ||
+                            v == "3"  ||
+                            v == "4"  ||
+                            v == "5"  ||
+                            v == "6"  ||
+                            v == "7"  ||
+                            v == "8"  ||
+                            v == "9"  ||
                             v == "10" ||
                             v == "11" ||
                             v == "12" ||
                             v == "13" ||
                             v == "14" ||
                             v == "15" {
-                                nameOk = true
+                            nameOk = true
                         } else {
                             nameOk = false
                         }
