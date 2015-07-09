@@ -17,7 +17,6 @@
 @implementation JSONLoader
 {
     NSMutableDictionary *_dictMagicCardsInfo;
-    NSInteger _globalId;
 }
 
 -(void) json2Database
@@ -28,20 +27,12 @@
                                                          options:NSJSONReadingMutableContainers
                                                            error:nil];
     _dictMagicCardsInfo = [[NSMutableDictionary alloc] init];
-    _globalId = 0;
 
     [[Database sharedInstance] setupDb];
     
     // Create additional CardColor
-    DTCardColor *color1 = [[DTCardColor alloc] init];
-    color1.name = @"Colorless";
-    DTCardColor *color2 = [[DTCardColor alloc] init];
-    color2.name = @"Multicolored";
-    RLMRealm *realm = [RLMRealm defaultRealm];
-    [realm beginWriteTransaction];
-    [realm addObject:color1];
-    [realm addObject:color2];
-    [realm commitWriteTransaction];
+    [self createAdditionalColor:@"Colorless"];
+    [self createAdditionalColor:@"Multicolored"];
     
     // parse the sets
     for (NSString *setName in [json allKeys])
@@ -55,10 +46,11 @@
     {
         NSDictionary *dict = json[setName];
         DTSet *set = [self parseSet:dict];
-//        if (![set.code isEqualToString:@"HOP"])
+        // LEA, TMP, TSP, 2ED, LEB, AVR, FUT, pJGP, ONS, pGPX
+//        if (![set.code isEqualToString:@"TSP"])
 //        {
 //            continue;
-//        }//
+//        }
         
         NSArray *cards = [self parseCards:dict[@"cards"] forSet:set];
         
@@ -72,6 +64,23 @@
 
     // Done
     [[Database sharedInstance] closeDb];
+}
+
+-(DTCardColor*) createAdditionalColor:(NSString*) colorName
+{
+    DTCardColor *color = [[DTCardColor objectsWithPredicate:[NSPredicate predicateWithFormat:@"name = %@", colorName]] firstObject];
+    if (!color)
+    {
+        color = [[DTCardColor alloc] init];
+        color.name = colorName;
+        
+        RLMRealm *realm = [RLMRealm defaultRealm];
+        [realm beginWriteTransaction];
+        //        NSLog(@"+CardColor: %@", name);
+        [realm addObject:color];
+        [realm commitWriteTransaction];
+    }
+    return color;
 }
 
 #pragma mark - Update methods
@@ -119,6 +128,7 @@
     
     if (card.number.length > 0 || card.set.magicCardsInfoCode.length <= 0)
     {
+        [dict removeObjectForKey:card.number];
         return;
     }
     
@@ -132,6 +142,10 @@
     }
     
     [dict removeObjectForKey:card.number];
+    if (dict.count == 0)
+    {
+        [_dictMagicCardsInfo removeObjectForKey:card.set.magicCardsInfoCode];
+    }
 }
 
 -(NSDictionary*) parseCardNumber:(NSArray*) nodes
@@ -192,7 +206,7 @@
     if (!set)
     {
         set = [[DTSet alloc] init];
-        set.setId = [NSString stringWithFormat:@"%tu", _globalId];
+        set.setId = [[NSUUID UUID] UUIDString];
         set.border = dict[@"border"] ? [self capitalizeFirstLetterOfWords:dict[@"border"]] : @"";
         set.code = dict[@"code"] ? dict[@"code"] : @"";
         set.gathererCode = dict[@"gathererCode"] ? dict[@"gathererCode"] : @"";
@@ -216,7 +230,6 @@
 //        NSLog(@"+Set: %@", set.name);
         [realm addObject:set];
         [realm commitWriteTransaction];
-        _globalId++;
     }
     return set;
 }
@@ -327,7 +340,7 @@
     for (NSDictionary *dict in array)
     {
         DTCard *card = [[DTCard alloc] init];
-        card.cardId = [NSString stringWithFormat:@"%tu", _globalId];
+        card.cardId = [[NSUUID UUID] UUIDString];
         card.set = set;
         
         card.border = dict[@"border"] ? dict[@"border"] : @"";
@@ -421,7 +434,7 @@
         
         RLMRealm *realm = [RLMRealm defaultRealm];
         [realm beginWriteTransaction];
-        NSLog(@"+Card: %@ [%@] - %@", set.name, set.code, card.name);
+//        NSLog(@"+Card: %@ [%@] - %@", set.name, set.code, card.name);
         [realm addObject:card];
         [realm commitWriteTransaction];
         
@@ -431,8 +444,7 @@
         
         [cards addObject:card.cardId];
         
-//        [[Database sharedInstance] fetchTcgPlayerPriceForCard:card.cardId];
-        _globalId++;
+        [[Database sharedInstance] fetchTcgPlayerPriceForCard:card.cardId];
     }
 
     return cards;
@@ -480,7 +492,7 @@
     if (!artist)
     {
         artist = [[DTArtist alloc] init];
-        artist.artistId = [NSString stringWithFormat:@"%tu", _globalId];
+        artist.artistId = [[NSUUID UUID] UUIDString];
         artist.name = name;
         
         RLMRealm *realm = [RLMRealm defaultRealm];
@@ -488,7 +500,6 @@
 //        NSLog(@"+Artist: %@", name);
         [realm addObject:artist];
         [realm commitWriteTransaction];
-        _globalId++;
     }
     return artist;
 }
@@ -541,7 +552,7 @@
         if (!type)
         {
             type = [[DTCardType alloc] init];
-            type.cardTypeId = [NSString stringWithFormat:@"%tu", _globalId];
+            type.cardTypeId = [[NSUUID UUID] UUIDString];
             type.name = name;
             
             RLMRealm *realm = [RLMRealm defaultRealm];
@@ -549,7 +560,6 @@
 //            NSLog(@"+CardType: %@", name);
             [realm addObject:type];
             [realm commitWriteTransaction];
-            _globalId++;
         }
         [results addObject:type];
     }
@@ -570,7 +580,7 @@
     for (NSDictionary *dict in array)
     {
         DTCardRuling *ruling = [[DTCardRuling alloc] init];
-        ruling.rulingId = [NSString stringWithFormat:@"%tu", _globalId];
+        ruling.rulingId = [[NSUUID UUID] UUIDString];
         ruling.card = card;
         
         for (NSString *key in [dict allKeys])
@@ -591,7 +601,6 @@
         [realm commitWriteTransaction];
         
         [rulings addObject:ruling];
-        _globalId++;
     }
     
     return rulings;
@@ -609,7 +618,7 @@
     for (NSDictionary *dict in array)
     {
         DTCardForeignName *foreignName = [[DTCardForeignName alloc] init];
-        foreignName.foreignNameId = [NSString stringWithFormat:@"%tu", _globalId];
+        foreignName.foreignNameId = [[NSUUID UUID] UUIDString];
         foreignName.card = card;
         
         for (NSString *key in [dict allKeys])
@@ -643,7 +652,6 @@
             [realm commitWriteTransaction];
         
             [foreignNames addObject:foreignName];
-            _globalId++;
         }
     }
     
@@ -692,7 +700,7 @@
     {
         DTCardLegality *legality = [[DTCardLegality alloc] init];
         
-        legality.legalityId = [NSString stringWithFormat:@"%tu", _globalId];
+        legality.legalityId = [[NSUUID UUID] UUIDString];
         legality.card = card;
         legality.name = dict[key];
         legality.format = [self findFormat:key];
@@ -704,7 +712,6 @@
         [realm commitWriteTransaction];
         
         [legalities addObject:legality];
-        _globalId++;
     }
     return legalities;
 }

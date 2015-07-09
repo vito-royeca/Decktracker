@@ -80,6 +80,7 @@ app.get('/cards', function(req, res) {
 		
     } else {
 	    query.descending("numberOfViews");
+	    query.addAscending("name");
 	    query.exists("numberOfViews");
 	    
 	    query.find().then(function(objects) {
@@ -90,6 +91,26 @@ app.get('/cards', function(req, res) {
 							     pp: pp});
         });
      }
+});
+
+app.get('/cardPrice', function(req, res) {
+    var tcgPlayerName = req.query.tcgPlayerName;
+    var cardName = req.query.cardName;
+		
+	Parse.Cloud.httpRequest({
+	    url: "http://partner.tcgplayer.com/x3/phl.asmx/p",
+  		params: {
+   		 	pk : "DECKTRACKER",
+   		 	s : tcgPlayerName,
+   		 	p : cardName
+  		}
+	}).then(function(httpResponse) {
+  		console.log(httpResponse.text);
+		res.type('text/xml');
+	  	res.send(httpResponse.text);
+	}, function(httpResponse) {
+	  	console.error('Request failed with response code ' + httpResponse.status);
+	});
 });
 
 app.get('/decks', function(req, res) {

@@ -1073,7 +1073,9 @@ static Database *_me;
 -(void) incrementCardView:(DTCard*) card
 {
     void (^callbackIncrementCard)(PFObject *pfCard) = ^void(PFObject *pfCard) {
+        
         [pfCard incrementKey:@"numberOfViews"];
+        pfCard[@"number"] = card.number;
         
         [pfCard saveEventually:^(BOOL success, NSError *error) {
             
@@ -1404,8 +1406,8 @@ static Database *_me;
 -(void) updateParseSets
 {
     PFQuery *query = [PFQuery queryWithClassName:@"Set"];
-    [query whereKeyDoesNotExist:@"magicCardsInfoCode"];
-    
+    [query whereKeyDoesNotExist:@"tcgPlayerName"];
+    [query orderByAscending:@"name"];
     
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         
@@ -1419,17 +1421,22 @@ static Database *_me;
                 
                 if (set)
                 {
-                    pfSet[@"magicCardsInfoCode"] = set.magicCardsInfoCode;
-                    [pfSet saveEventually:^(BOOL success, NSError *error) {
-                        if (!error)
-                        {
-                            NSLog(@"Updated: %@ - %@: %@", set.name, set.code, set.magicCardsInfoCode);
-                        }
-                        else
-                        {
-                            NSLog(@"%@", error);
-                        }
-                    }];
+//                    pfSet[@"magicCardsInfoCode"] = set.magicCardsInfoCode;
+                    if (set.tcgPlayerName)
+                    {
+                        pfSet[@"tcgPlayerName"] = set.tcgPlayerName;
+                        
+                        [pfSet saveEventually:^(BOOL success, NSError *error) {
+                            if (!error)
+                            {
+                                NSLog(@"Updated: %@ - %@: %@", set.name, set.code, set.magicCardsInfoCode);
+                            }
+                            else
+                            {
+                                NSLog(@"%@", error);
+                            }
+                        }];
+                    }
                 }
             }
         }
@@ -1439,18 +1446,17 @@ static Database *_me;
 
 -(void) updateParseCards
 {
-    
-    PFQuery *query = [PFQuery queryWithClassName:@"CardRarity"];
-    NSArray *cardRarities = [query findObjects];
-    
-    query = [PFQuery queryWithClassName:@"Set"];
-//    [query whereKeyExists:@"magicCardsInfoCode"];
+    PFQuery *query = [PFQuery queryWithClassName:@"Set"];
     [query whereKey:@"code" equalTo:@"TMP"];
+    [query whereKeyDoesNotExist:@"rarity"];
     
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         
         if (!error)
         {
+            PFQuery *query2 = [PFQuery queryWithClassName:@"CardRarity"];
+            NSArray *cardRarities = [query2 findObjects];
+            
             for (PFObject *pfSet in objects)
             {
                 for (DTCard *card in [DTCard objectsWithPredicate:[NSPredicate predicateWithFormat:@"set.code = %@", pfSet[@"code"]]])
@@ -1467,7 +1473,6 @@ static Database *_me;
                             for (PFObject *pfCard in objects)
                             {
                                 pfCard[@"number"] = card.number;
-                                pfCard[@"tcgPlayerLink"] = card.tcgPlayerLink;
                                 
                                 for (PFObject *rarity in cardRarities)
                                 {

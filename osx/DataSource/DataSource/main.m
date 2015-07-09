@@ -33,7 +33,6 @@ int main(int argc, const char * argv[])
 //        [imageLoader downloadSymbols];
 //        [imageLoader downloadOtherSymbols];
         
-//        [[Database sharedInstance] updateParseCardsWithNoNumber];
         [[Database sharedInstance] copyRealmDatabaseToHome];
 
         

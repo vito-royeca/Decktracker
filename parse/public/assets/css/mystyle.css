@@ -44,6 +44,12 @@ html, body
     color: #ffffff;
 }
 
+.td_normal
+{
+    font-size: 12pt;
+    color: #ffffff;
+}
+
 .th_player, .th_rank
 {
 	font-family: Magic;
@@ -96,7 +102,7 @@ html, body
 .title-magic {
   font-family: Magic;
   text-align: center;
-  font-size: 80px;
+  font-size: 45px;
   font-weight: bold;
 }
 
@@ -152,8 +158,16 @@ html, body
 	border-radius:13px;
 	-webkit-border-radius:13px;
 	-moz-border-radius:13px;
+	padding: 10px;
 }
 
 .cardBackground {
     background:url('../img/backgrounds/Gray_Patterned_BG.jpg');
+}
+
+.setImage
+{
+	width:auto;
+    max-width:50%;
+    height:auto;
 }

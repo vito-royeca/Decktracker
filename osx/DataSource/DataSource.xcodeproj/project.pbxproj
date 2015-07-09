@@ -31,6 +31,14 @@
 		8C4B9D0E1A515D0B00F727E7 /* tcgplayer_sets.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C4B9D091A51384400F727E7 /* tcgplayer_sets.plist */; };
 		8C5BADF91B4A9175007F2C44 /* libPods-DataSource.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AE7CCBA05B0E7E9D81A1C1F /* libPods-DataSource.a */; };
 		8C5BAE171B4A9695007F2C44 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CEF64DE1B0081260056450F /* libc++.dylib */; };
+		8C877F401B4D0BAB004302D2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF9CE4B199F982A008127E5 /* CoreGraphics.framework */; };
+		8C877F421B4D0BB2004302D2 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C877F411B4D0BB2004302D2 /* CFNetwork.framework */; };
+		8C877F441B4D0BBA004302D2 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C877F431B4D0BBA004302D2 /* CoreLocation.framework */; };
+		8C877F461B4D0BC4004302D2 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C877F451B4D0BC4004302D2 /* QuartzCore.framework */; };
+		8C877F481B4D0BCE004302D2 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C877F471B4D0BCE004302D2 /* Security.framework */; };
+		8C877F4A1B4D0BD8004302D2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C877F491B4D0BD8004302D2 /* SystemConfiguration.framework */; };
+		8C877F4C1B4D0BE4004302D2 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C877F4B1B4D0BE4004302D2 /* libsqlite3.dylib */; };
+		8C877F4E1B4D0BEC004302D2 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C877F4D1B4D0BEC004302D2 /* libz.dylib */; };
 		8CE75CB01AB96D40001EB70E /* AllSets-x.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C87AB311A7F1F6C00E901DE /* AllSets-x.json */; };
 		8CE75CB41AB96DBB001EB70E /* MagicCompRules_20140926.htm in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C87AB321A7F1F6C00E901DE /* MagicCompRules_20140926.htm */; };
 		8CEF64DA1B007BB30056450F /* JSONLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEF64D61B007BB30056450F /* JSONLoader.m */; };
@@ -141,6 +149,14 @@
 		8C4B9D091A51384400F727E7 /* tcgplayer_sets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = tcgplayer_sets.plist; sourceTree = "<group>"; };
 		8C4B9D0D1A51562F00F727E7 /* tcgplayer_sets.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tcgplayer_sets.txt; sourceTree = "<group>"; };
 		8C5BADF41B4A8F01007F2C44 /* libPods-DataSource-Bolts.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-DataSource-Bolts.a"; path = "../../../../Library/Developer/Xcode/DerivedData/DataSource-exunlzaqzgqgbjhgyhupklwxiowb/Build/Products/Debug/libPods-DataSource-Bolts.a"; sourceTree = "<group>"; };
+		8C877F411B4D0BB2004302D2 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		8C877F431B4D0BBA004302D2 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		8C877F451B4D0BC4004302D2 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		8C877F471B4D0BCE004302D2 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		8C877F491B4D0BD8004302D2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		8C877F4B1B4D0BE4004302D2 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		8C877F4D1B4D0BEC004302D2 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		8C877F571B4D5238004302D2 /* Investigate.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Investigate.txt; sourceTree = "<group>"; };
 		8C87AB311A7F1F6C00E901DE /* AllSets-x.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "AllSets-x.json"; path = "../../../../data/AllSets-x.json"; sourceTree = "<group>"; };
 		8C87AB321A7F1F6C00E901DE /* MagicCompRules_20140926.htm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = MagicCompRules_20140926.htm; path = ../../../../data/MagicCompRules_20140926.htm; sourceTree = "<group>"; };
 		8CEF64D51B007BB30056450F /* JSONLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONLoader.h; sourceTree = "<group>"; };
@@ -158,6 +174,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C877F4E1B4D0BEC004302D2 /* libz.dylib in Frameworks */,
+				8C877F4C1B4D0BE4004302D2 /* libsqlite3.dylib in Frameworks */,
+				8C877F4A1B4D0BD8004302D2 /* SystemConfiguration.framework in Frameworks */,
+				8C877F481B4D0BCE004302D2 /* Security.framework in Frameworks */,
+				8C877F461B4D0BC4004302D2 /* QuartzCore.framework in Frameworks */,
+				8C877F441B4D0BBA004302D2 /* CoreLocation.framework in Frameworks */,
+				8C877F421B4D0BB2004302D2 /* CFNetwork.framework in Frameworks */,
+				8C877F401B4D0BAB004302D2 /* CoreGraphics.framework in Frameworks */,
 				8C5BAE171B4A9695007F2C44 /* libc++.dylib in Frameworks */,
 				8C5BADF91B4A9175007F2C44 /* libPods-DataSource.a in Frameworks */,
 				8C3EE48B1B38FC020037AF20 /* libJJJ.a in Frameworks */,
@@ -191,6 +215,13 @@
 		8C1B4DC7198CF0C000B4C948 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8C877F4D1B4D0BEC004302D2 /* libz.dylib */,
+				8C877F4B1B4D0BE4004302D2 /* libsqlite3.dylib */,
+				8C877F491B4D0BD8004302D2 /* SystemConfiguration.framework */,
+				8C877F471B4D0BCE004302D2 /* Security.framework */,
+				8C877F451B4D0BC4004302D2 /* QuartzCore.framework */,
+				8C877F431B4D0BBA004302D2 /* CoreLocation.framework */,
+				8C877F411B4D0BB2004302D2 /* CFNetwork.framework */,
 				8CF9CE51199F9A22008127E5 /* AppKit.framework */,
 				8C1B4DC8198CF0C000B4C948 /* CoreData.framework */,
 				8CF9CE4B199F982A008127E5 /* CoreGraphics.framework */,
@@ -271,6 +302,7 @@
 				8C87AB321A7F1F6C00E901DE /* MagicCompRules_20140926.htm */,
 				8C4B9D091A51384400F727E7 /* tcgplayer_sets.plist */,
 				8C4B9D0D1A51562F00F727E7 /* tcgplayer_sets.txt */,
+				8C877F571B4D5238004302D2 /* Investigate.txt */,
 			);
 			path = Data;
 			sourceTree = "<group>";

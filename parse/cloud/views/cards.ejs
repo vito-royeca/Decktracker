@@ -1,3 +1,111 @@
+<script>
+	function loadTCGPrice(rank, tcgPlayerName, cardName) {
+
+// 		Low: <div id="high"></div><br/>
+// 	    Average: <div id="high"></div><br/>
+// 	    High: <div id="high"></div><br/>
+// 	    Foil: <div id="high"></div><br/>
+// 	    Buy this card at <div id="tcgPlayerLink">TCGPlayer</a>.
+	    var urL = "cardPrice?tcgPlayerName="+tcgPlayerName+"&cardName="+cardName;
+	        	
+		var xmlhttp;
+		var txt,x,i;
+		// code for IE7+, Firefox, Chrome, Opera, Safari
+		if (window.XMLHttpRequest) {
+		  	xmlhttp=new XMLHttpRequest();
+		  	
+		// code for IE6, IE5  	
+  		} else {
+  			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  		}
+
+		xmlhttp.onreadystatechange=function() {
+
+  			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+    			xmlDoc=xmlhttp.responseXML;
+			    txt="<table>";
+			    
+			    x=xmlDoc.getElementsByTagName("product");
+			    
+			    for (i=0;i<x.length;i++)
+      			{
+      			  v = ""
+        		  
+        		  xx=x[i].getElementsByTagName("foilavgprice");
+        		  {
+        			try
+          			{
+          				v = xx[0].firstChild.nodeValue == "0" ? "N.A." : ("$"+xx[0].firstChild.nodeValue);
+          			}
+        			catch (er)
+          			{
+          				v = ""
+          			}
+          			txt = txt + "<tr><td>Median Foil</td><td align='right'>" + v + "</td></tr>";
+        		  }
+        		  
+        		  xx=x[i].getElementsByTagName("hiprice");
+        		  {
+        			try
+          			{
+          				v = xx[0].firstChild.nodeValue == "0" ? "N.A." : ("$"+xx[0].firstChild.nodeValue);
+          			}
+        			catch (er)
+          			{
+          				v = ""
+          			}
+          			txt = txt + "<tr><td>High</td><td align='right'>" + v + "</td></tr>";
+        		  }
+        		  
+        		  xx=x[i].getElementsByTagName("avgprice");
+        		  {
+        			try
+          			{
+          				v = xx[0].firstChild.nodeValue == "0" ? "N.A." : ("$"+xx[0].firstChild.nodeValue);
+          			}
+        			catch (er)
+          			{
+          				v = ""
+          			}
+          			txt = txt + "<tr><td>Median</td><td align='right'>" + v + "</td></tr>";
+        		  }
+        		  
+        		  xx=x[i].getElementsByTagName("lowprice");
+        		  {
+        			try
+          			{
+          				v = xx[0].firstChild.nodeValue == "0" ? "N.A." : ("$"+xx[0].firstChild.nodeValue);
+          			}
+        			catch (er)
+          			{
+          				v = ""
+          			}
+          			txt = txt + "<tr><td>Low</td><td align='right'>" + v + "</td></tr>";
+        		  }
+        		  
+        		  xx=x[i].getElementsByTagName("link");
+        		  {
+        			try
+          			{
+          				v = xx[0].firstChild.nodeValue;
+          				txt = txt + "<tr><td colspan='2'>Buy this card at <a target='_blank' href='" + v + "'>TCGPlayer</a>.</td></tr>";
+          			}
+        			catch (er)
+          			{
+          				txt = txt + "<br/>";
+          			}
+        		  }
+        		}
+				
+				document.getElementById("tcgPriceInfo"+rank).innerHTML=txt;
+    		}
+  		}
+  		
+		xmlhttp.open("GET", urL, true);
+		xmlhttp.send();
+	}
+</script>
+
 <% if (view == "topViewed") { %>
 	<div id="centeredmenu">
 		<p>&nbsp;</p>
@@ -15,14 +123,23 @@
     	<% _(topViewed).each(function(top) { %>  
     	<tr>
 	        <td width="20%">&nbsp;</td>
-	        <td class="td_card" width="60%">
-    			<%= rank+1 %>. <%= top.get('name') %><br>
-    			<% if (top.get('rarity') != null) { %>
-	        	<img src="http://jovitoroyeca.com/decktracker/set/<%= top.get('set').get('code') %>/<%= top.get('rarity').get('symbol') %>/32.png" />
-	        	<% } %>
-	        	<%= top.get('set').get('name') %><br>
-	        	Number of Views: <%= top.get('numberOfViews') %><br>
-	        	<img class="cardImage" alt= "<=% top.get('name')%>" src="http://magiccards.info/scans/en/<%= top.get('set').get('magicCardsInfoCode') %>/<%= top.get('number') %>.jpg" />
+	        <td width="60%">
+	        	<img align="left" class="cardImage" alt= "<=% top.get('name')%>" src="http://magiccards.info/scans/en/<%= top.get('set').get('magicCardsInfoCode') %>/<%= top.get('number') %>.jpg" />
+	        	<div class="td_card">
+	    			<%= rank+1 %>. <%= top.get('name') %><br>
+    				<% if (top.get('rarity') != null) { %>
+	    	    	<img class="setImage" src="http://jovitoroyeca.com/decktracker/set/<%= top.get('set').get('code') %>/<%= top.get('rarity').get('symbol') %>/32.png" />
+	        		<% } %>
+	        		<%= top.get('set').get('name') %><br>
+		        	Number of Views: <%= top.get('numberOfViews') %><br>
+	        	</div>
+	        	<p>&nbsp;</p>
+	        	<div class="td_normal" id="tcgPriceInfo<%= rank %>"></div>
+	        	<script>
+	        		setTimeout(function() {
+	        			loadTCGPrice(<%= rank %>, '<%= top.get('set').get('tcgPlayerName') %>', '<%= top.get('name') %>');
+	        		 }, 1);
+	        	</script>
 	    	</td>
 	    	<td width="20%">&nbsp;</td>
         </tr>
@@ -44,6 +161,9 @@
 	        </td>
 	        <td width="20%">&nbsp;</td>
 	    </tr>
+	    <tr>
+	        <td colspan="3">&nbsp;</td>
+        </tr>
     </table>  
     </div>
 	<% } %>
@@ -66,12 +186,15 @@
     	<% _(topRated).each(function(top) { %>  
     	<tr>
         	<td width="20%">&nbsp;</td>
-	        <td class="td_card" width="60%">
-	  			<%= rank+1 %>. <%= top.get('name') %><br/>
-	        	<% if (top.get('rarity') != null) { %>
-	        	<img src="http://jovitoroyeca.com/decktracker/set/<%= top.get('set').get('code') %>/<%= top.get('rarity').get('symbol') %>/32.png" />
-	        	<% } %>
-	        	<%= top.get('set').get('name') %><br>
+	        <td width="60%">
+	        	<img align="left" class="cardImage" alt= "<=% top.get('name')%>" src="http://magiccards.info/scans/en/<%= top.get('set').get('magicCardsInfoCode') %>/<%= top.get('number') %>.jpg" />
+	        	<div class="td_card">
+		  			<%= rank+1 %>. <%= top.get('name') %><br/>
+		        	<% if (top.get('rarity') != null) { %>
+	    	    	<img class="setImage" src="http://jovitoroyeca.com/decktracker/set/<%= top.get('set').get('code') %>/<%= top.get('rarity').get('symbol') %>/32.png" />
+	        		<% } %>
+	        		<%= top.get('set').get('name') %><br>
+	        	</div>
 	        <% if (top.get('rating') == 0.5) { %>
 	            <img src="/assets/img/stars/starhalf.png"/>
 	    		<img src="/assets/img/stars/star.png"/>
@@ -132,8 +255,14 @@
 		        <img src="/assets/img/stars/starhighlighted.png"/>
 	    		<img src="/assets/img/stars/starhighlighted.png"/>
 	        	<img src="/assets/img/stars/starhighlighted.png"/>
-			<% } %><br/>
-	        	<img class="cardImage" alt= "<=% top.get('name')%>" src="http://magiccards.info/scans/en/<%= top.get('set').get('magicCardsInfoCode') %>/<%= top.get('number') %>.jpg" />
+			<% } %>
+				<p>&nbsp;</p>
+	        	<div class="td_normal" id="tcgPriceInfo<%= rank %>"></div>
+	        	<script>
+	        		setTimeout(function() {
+	        			loadTCGPrice(<%= rank %>, '<%= top.get('set').get('tcgPlayerName') %>', '<%= top.get('name') %>');
+	        		 }, 1);
+	        	</script>
 	        </td>
 			<td width="20%">&nbsp;</td>
         </tr>
@@ -155,6 +284,9 @@
 	        </td>
 	        <td width="20%">&nbsp;</td>
 	    </tr>
+	    <tr>
+	        <td colspan="3">&nbsp;</td>
+        </tr>
 	</table>
 	</div>
 <% } %>
