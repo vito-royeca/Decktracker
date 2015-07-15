@@ -10,6 +10,7 @@
 project.xcworkspace/
 xcuserdata/
 .idea
+tmp/
  
 #Eclipse
 .metadata
