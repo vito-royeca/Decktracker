@@ -128,7 +128,7 @@
         }
     }
     
-    if ([[Database sharedInstance] isCardModern:self.cardId])
+    if (card.modern)
     {
         self.lblCardName.font = _8thEditionFont;
     }

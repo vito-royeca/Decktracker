@@ -13,6 +13,7 @@
 
 @interface DTBlock : RLMObject
 
+@property NSString *blockId;
 @property NSString * name;
 //@property RLMArray<DTSet> *sets;
 

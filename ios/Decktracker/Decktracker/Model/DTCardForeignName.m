@@ -10,12 +10,20 @@
 
 @implementation DTCardForeignName
 
-+ (NSString *)primaryKey {
++ (NSString *)primaryKey
+{
     return @"foreignNameId";
 }
 
-+ (NSArray *)indexedProperties {
++ (NSArray *)indexedProperties
+{
     return @[@"name"];
+}
+
++ (NSDictionary *)defaultPropertyValues
+{
+    return @{ @"foreignNameId" : [[NSUUID UUID] UUIDString],
+              @"name": @"" };
 }
 
 @end

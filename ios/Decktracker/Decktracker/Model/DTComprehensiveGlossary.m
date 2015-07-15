@@ -10,8 +10,21 @@
 
 @implementation DTComprehensiveGlossary
 
-+ (NSArray *)indexedProperties {
++ (NSString *)primaryKey
+{
+    return @"glossaryId";
+}
+
++ (NSArray *)indexedProperties
+{
     return @[@"term"];
+}
+
++ (NSDictionary *)defaultPropertyValues
+{
+    return @{@"definition" : @"",
+              @"glossaryId" : [[NSUUID UUID] UUIDString],
+              @"term": @"" };
 }
 
 @end

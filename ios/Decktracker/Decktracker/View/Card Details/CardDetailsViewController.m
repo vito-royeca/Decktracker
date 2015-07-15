@@ -80,7 +80,7 @@
     }
 
 //#ifndef DEBUG
-    [[Database sharedInstance] incrementCardView:[DTCard objectForPrimaryKey:cardId]];
+    [[Database sharedInstance] incrementCardView:cardId];
 //#endif
 }
 
@@ -135,10 +135,11 @@
                                                                   action:@selector(btnActionTapped:)];
     NSMutableArray *arrButtons = [[NSMutableArray alloc] init];
     [arrButtons addObject:self.btnAction];
-    self.btnRate = [[UIBarButtonItem alloc] initWithTitle:@"Rate This Card"
+    self.btnRate = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"rate.png"]
                                                     style:UIBarButtonItemStylePlain
                                                    target:self
                                                    action:@selector(btnRateTapped:)];
+    
     [arrButtons addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
                                                                         target:nil
                                                                         action:nil]];
@@ -448,7 +449,7 @@
     [html appendFormat:@"<table width='100%%'>"];
     
     NSString *cardNameFont;
-    if ([[Database sharedInstance] isCardModern:self.cardId])
+    if (card.modern)
     {
         cardNameFont = @"cardNameEightEdition";
     }
@@ -697,73 +698,73 @@
         }
         [html appendFormat:@"</table></td></tr>"];
     }
-    /*
-    if (card.rulings.count > 0)
+    
+    RLMResults *rulings = [[DTCardRuling objectsWithPredicate:[NSPredicate predicateWithFormat:@"card.cardId = %@", self.cardId]] sortedResultsUsingProperty:@"date" ascending:NO];
+    if (rulings.count > 0)
     {
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
         [html appendFormat:@"<tr><td colspan='2'><div class='detailHeader'>Rulings</div></td></tr>"];
-        NSMutableArray *rulings = [[NSMutableArray alloc] init];
-        for (DTCardRuling *ruling in card.rulings)
-        {
-            [rulings addObject:ruling];
-        }
-        for (DTCardRuling *ruling in [rulings sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO]]])
+        [html appendFormat:@"<tr><td colspan='2'><table width='100%%'>"];
+        for (DTCardRuling *ruling in rulings)
         {
             [html appendFormat:@"<tr><td colspan='2'><i><b>%@</b></i>: %@</td></tr>", [JJJUtil formatDate:ruling.date withFormat:@"YYYY-MM-dd"], [self replaceSymbolsInText:ruling.text]];
         }
+        [html appendFormat:@"</table></td></tr>"];
     }
     
-    if (card.legalities.count > 0)
+    RLMResults *legalities = [[DTCardLegality objectsWithPredicate:[NSPredicate predicateWithFormat:@"card.cardId = %@", self.cardId]] sortedResultsUsingProperty:@"name" ascending:YES];
+    if (legalities.count > 0)
     {
+        NSMutableArray *marrSorted = [[NSMutableArray alloc] init];
+        for (DTCardLegality *legality in legalities)
+        {
+            [marrSorted addObject:legality];
+        }
+        NSArray *arrSorted = [marrSorted sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"format.name" ascending:YES]]];
+
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
         [html appendFormat:@"<tr><td colspan='2'><div class='detailHeader'>Legalities</div></td></tr>"];
         [html appendFormat:@"<tr><td colspan='2'><table width='100%%'>"];
-        NSMutableArray *legalities = [[NSMutableArray alloc] init];
-        for (DTCardLegality *legality in card.legalities)
-        {
-            [legalities addObject:legality];
-        }
-        for (DTCardLegality *legality in [legalities sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"format.name" ascending:YES],
-              [RLMSortDescriptor sortDescriptorWithProperty:@"name" ascending:YES]]])
+        for (DTCardLegality *legality in arrSorted)
         {
             [html appendFormat:@"<tr><td width='50%%'><div class='detailTextSmall'>%@</div></td>", legality.format.name];
             [html appendFormat:@"<td><div class='detailTextSmall'>%@</div></td></tr>", legality.name];
         }
         [html appendFormat:@"</table></td></tr>"];
     }
-
-    if (card.foreignNames.count > 0)
+    
+    RLMResults *foreignNames = [[DTCardForeignName objectsWithPredicate:[NSPredicate predicateWithFormat:@"card.cardId = %@", self.cardId]] sortedResultsUsingProperty:@"name" ascending:YES];
+    if (foreignNames.count > 0)
     {
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
         [html appendFormat:@"<tr><td colspan='2'><div class='detailHeader'>Languages</div></td></tr>"];
         [html appendFormat:@"<tr><td colspan='2'><table width='100%%'>"];
         
-        NSMutableArray *foreignNames = [[NSMutableArray alloc] init];
+        DTCard *card = [DTCard objectForPrimaryKey:self.cardId];
+        NSMutableArray *array = [[NSMutableArray alloc] init];
         for (DTLanguage *language in [card.set.languages sortedResultsUsingProperty:@"name" ascending:YES])
         {
-            for (DTCardForeignName *foreignName in card.foreignNames)
+            for (DTCardForeignName *foreignName in foreignNames)
             {
                 if ([foreignName.language.name isEqualToString:language.name])
                 {
-                    [foreignNames addObject:foreignName];
+                    [array addObject:foreignName];
                 }
             }
         }
         
-        for (DTCardForeignName *foreignName in foreignNames)
+        for (DTCardForeignName *foreignName in array)
         {
-//            NSString *link = [[NSString stringWithFormat:@"foreign?set=%@&language=%@&number=%@", card.set.code, foreignName.language, card.number] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-            
             [html appendFormat:@"<tr><td width='50%%'><div class='detailTextSmall'>%@</div></td>", foreignName.language.name];
             [html appendFormat:@"<td><div class='detailTextSmall'>%@</div></td></tr>", foreignName.name];
         }
         [html appendFormat:@"</table></td></tr>"];
     }
-    */
+    
     if (card.tcgPlayerLink)
     {
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
-        [html appendFormat:@"<tr><td colspan='2'>Card pricing is provided by <a href=%@>TCGPlayer</a>.</td></tr>", card.tcgPlayerLink];
+        [html appendFormat:@"<tr><td colspan='2'>Buy this card at <a href=%@>TCGPlayer</a>.</td></tr>", card.tcgPlayerLink];
         [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
     }
     [html appendFormat:@"</table></body></html>"];
@@ -1148,8 +1149,7 @@
 {
     if (buttonIndex == 1)
     {
-        DTCard *card = [DTCard objectForPrimaryKey:self.cardId];
-        [[Database sharedInstance] rateCard:card withRating:_newRating];
+        [[Database sharedInstance] rateCard:self.cardId withRating:_newRating];
     }
 }
 

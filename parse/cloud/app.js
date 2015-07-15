@@ -47,88 +47,26 @@ app.locals.facebookApplicationId = '341320496039341';
 //   res.send(req.body.message);
 // });
 
-// Render the pages
+
+// cards
+var cards = require('cloud/cards.js');
 app.get('/cards', function(req, res) {
-    var view = req.query.view
-    if (view == null) {
-        view = "topRated";
-    }
-    
-    var pp = req.query.pp
-    if (pp == null) {
-        pp = 0;
-    }
-
-	var query = new Parse.Query("Card");    
-    query.include("set");
-	query.include("rarity");
-	query.limit(10)
-	query.skip(pp*10)
-	    
-    if (view == "topRated") {
-		query.descending("rating");
-		query.addAscending("name");
-		query.exists("rating");
-		
-		query.find().then(function(objects) {
-	       res.render('cards', { title: "Cards",
-	  	 	    			     navbar: "2",
-						         topRated: objects,
-							     view: view,
-							     pp: pp});
-		});
-		
-    } else {
-	    query.descending("numberOfViews");
-	    query.addAscending("name");
-	    query.exists("numberOfViews");
-	    
-	    query.find().then(function(objects) {
-	       res.render('cards', { title: "Cards",
-	  	 	    			     navbar: "2",
-						         topViewed: objects,
-							     view: view,
-							     pp: pp});
-        });
-     }
+    cards.cards(req,res);
 });
-
 app.get('/cardPrice', function(req, res) {
-    var tcgPlayerName = req.query.tcgPlayerName;
-    var cardName = req.query.cardName;
-		
-	Parse.Cloud.httpRequest({
-	    url: "http://partner.tcgplayer.com/x3/phl.asmx/p",
-  		params: {
-   		 	pk : "DECKTRACKER",
-   		 	s : tcgPlayerName,
-   		 	p : cardName
-  		}
-	}).then(function(httpResponse) {
-  		console.log(httpResponse.text);
-		res.type('text/xml');
-	  	res.send(httpResponse.text);
-	}, function(httpResponse) {
-	  	console.error('Request failed with response code ' + httpResponse.status);
-	});
+    cards.cardPrice(req,res);
 });
 
+// decks
+var decks = require('cloud/decks.js');
 app.get('/decks', function(req, res) {
-    res.render('decks', { title: "Decks",
-    					  navbar: "3"});
+    decks.decks(req,res);
 });
 
+// card quiz
+var cardquiz = require('cloud/cardquiz.js');
 app.get('/cardquiz', function(req, res) {
-    var query = new Parse.Query("UserMana");
-	query.include("user");
-	query.descending("totalCMC");
-	
-	
-	query.find().then(function(objects) {
-	  res.render('cardquiz', { title: "Card Quiz",
-	  						   navbar: "4",
-							   userManas: objects});
-	});
+    cardquiz.cardquiz(req,res);
 });
 
 app.get('/', function(req, res) {

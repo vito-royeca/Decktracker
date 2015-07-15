@@ -68,11 +68,10 @@
                                                     style:UIBarButtonItemStylePlain
                                                    target:self
                                                    action:@selector(backButtonTapped)];
-    self.btnView = [[UIBarButtonItem alloc] initWithTitle:@"List"
+    self.btnView = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"list.png"]
                                                     style:UIBarButtonItemStylePlain
                                                    target:self
                                                    action:@selector(viewButtonTapped)];
-    
     self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Cards", @"Details", @"Tools"]];
     self.segmentedControl.frame = CGRectMake(10, 7, dWidth-20, 30);
     self.segmentedControl.selectedSegmentIndex = 0;
@@ -213,16 +212,19 @@
                                            switch (selectedIndex) {
                                                case 0: {
                                                    _viewMode = kCardViewModeList;
+                                                   self.btnView.image = [UIImage imageNamed:@"list.png"];
                                                    [self showTableView];
                                                    break;
                                                }
                                                case 1: {
                                                    _viewMode = kCardViewModeGrid2x2;
+                                                   self.btnView.image = [UIImage imageNamed:@"2x2.png"];
                                                    [self showGridView];
                                                    break;
                                                }
                                                case 2: {
                                                    _viewMode = kCardViewModeGrid3x3;
+                                                   self.btnView.image = [UIImage imageNamed:@"3x3.png"];
                                                    [self showGridView];
                                                    break;
                                                }
@@ -310,7 +312,6 @@
         [self.colCards removeFromSuperview];
     }
     [self.view addSubview:self.tblCards];
-    self.btnView.title = _viewMode;
 }
 
 -(void) showGridView
@@ -343,7 +344,6 @@
         [self.tblCards removeFromSuperview];
     }
     [self.view addSubview:self.colCards];
-    self.btnView.title = _viewMode;
 }
 
 -(UITableViewCell*) createSearchResultsTableCell:(NSDictionary*) dict

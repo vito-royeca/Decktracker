@@ -10,8 +10,16 @@
 
 @implementation DTCardRuling
 
-+ (NSString *)primaryKey {
++ (NSString *)primaryKey
+{
     return @"rulingId";
+}
+
++ (NSDictionary *)defaultPropertyValues
+{
+    return @{ @"date" : [NSDate date],
+              @"rulingId" : [[NSUUID UUID] UUIDString],
+              @"text": @"" };
 }
 
 @end

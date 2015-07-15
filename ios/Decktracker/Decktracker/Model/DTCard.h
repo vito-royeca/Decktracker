@@ -13,8 +13,8 @@
 
 @interface DTCard : RLMObject
 
-@property NSString * cardId;
 @property NSString * border;
+@property NSString * cardId;
 @property float cmc;
 @property NSString * flavor;
 @property int handModifier;
@@ -23,6 +23,7 @@
 @property int lifeModifier;
 @property int loyalty;
 @property NSString * manaCost;
+@property BOOL modern;
 @property int multiverseID;
 @property NSString * name;
 @property NSString * number;

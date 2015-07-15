@@ -10,8 +10,20 @@
 
 @implementation DTSetType
 
-+ (NSArray *)indexedProperties {
++ (NSString *)primaryKey
+{
+    return @"setTypeId";
+}
+
++ (NSArray *)indexedProperties
+{
     return @[@"name"];
+}
+
++ (NSDictionary *)defaultPropertyValues
+{
+    return @{ @"name": @"",
+              @"setTypeId" : [[NSUUID UUID] UUIDString] };
 }
 
 @end

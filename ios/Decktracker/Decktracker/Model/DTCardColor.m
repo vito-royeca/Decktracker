@@ -10,8 +10,20 @@
 
 @implementation DTCardColor
 
-+ (NSArray *)indexedProperties {
++ (NSString *)primaryKey
+{
+    return @"colorId";
+}
+
++ (NSArray *)indexedProperties
+{
     return @[@"name"];
+}
+
++ (NSDictionary *)defaultPropertyValues
+{
+    return @{ @"colorId" : [[NSUUID UUID] UUIDString],
+              @"name": @"" };
 }
 
 @end

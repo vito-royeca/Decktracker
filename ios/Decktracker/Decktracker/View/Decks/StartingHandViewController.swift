@@ -56,7 +56,7 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         var dHeight = self.view.frame.size.height-44
         var frame:CGRect?
         
-        viewButton = UIBarButtonItem(title: "List", style: UIBarButtonItemStyle.Plain, target: self, action: "viewButtonTapped")
+        viewButton = UIBarButtonItem(image: UIImage(named: "list.png"), style: UIBarButtonItemStyle.Plain, target: self, action: "viewButtonTapped")
         showButton = UIBarButtonItem(image: UIImage(named: "view_file.png"), style: UIBarButtonItemStyle.Plain, target: self, action: "showButtonTapped")
         
         newButton = UIBarButtonItem(title: "New Hand", style: UIBarButtonItemStyle.Plain, target: self, action: "newButtonTapped")
@@ -84,10 +84,12 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
                 
             } else if value == kCardViewModeGrid2x2 {
                 self.viewMode = kCardViewModeGrid2x2
+                viewButton!.image = UIImage(named: "2x2.png")
                 self.showGridView()
                 
             } else if value == kCardViewModeGrid3x3 {
                 self.viewMode = kCardViewModeGrid3x3
+                viewButton!.image = UIImage(named: "3x3.png")
                 self.showGridView()
                 
             } else {
@@ -134,12 +136,15 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
             switch selectedIndex {
             case 0:
                 self.viewMode = kCardViewModeList
+                self.viewButton!.image = UIImage(named: "list.png")
                 self.showTableView()
             case 1:
                 self.viewMode = kCardViewModeGrid2x2
+                self.viewButton!.image = UIImage(named: "2x2.png")
                 self.showGridView()
             case 2:
                 self.viewMode = kCardViewModeGrid3x3
+                self.viewButton!.image = UIImage(named: "3x3.png")
                 self.showGridView()
             default:
                 break
@@ -285,7 +290,6 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
             colHand!.removeFromSuperview()
         }
         view.addSubview(tblHand!)
-        viewButton!.title = self.viewMode
     }
     
     func showGridView() {
@@ -314,7 +318,6 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
             tblHand!.removeFromSuperview()
         }
         view.addSubview(colHand!)
-        viewButton!.title = self.viewMode
     }
     
     func initDeck() {

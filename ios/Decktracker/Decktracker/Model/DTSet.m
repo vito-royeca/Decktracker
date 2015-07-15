@@ -10,12 +10,31 @@
 
 @implementation DTSet
 
-+ (NSString *)primaryKey {
++ (NSString *)primaryKey
+{
     return @"setId";
 }
 
-+ (NSArray *)indexedProperties {
-    return @[@"code", @"name"];
++ (NSArray *)indexedProperties
+{
+    return @[@"name", @"code", @"tcgPlayerName", @"magicCardsInfoCode"];
+}
+
++ (NSDictionary *)defaultPropertyValues
+{
+    return @{ @"border" : @"",
+              @"code" : @"",
+              @"gathererCode" : @"",
+              @"magicCardsInfoCode" : @"",
+              @"name": @"",
+              @"numberOfCards" : @0,
+              @"oldCode" : @"",
+              @"onlineOnly" : @NO,
+              @"releaseDate" : [NSDate date],
+              @"sectionNameInitial" : @"",
+              @"sectionYear" : @"",
+              @"setId" : [[NSUUID UUID] UUIDString],
+              @"tcgPlayerName" : @"" };
 }
 
 @end

@@ -1,11 +1,6 @@
 <script>
 	function loadTCGPrice(rank, tcgPlayerName, cardName) {
 
-// 		Low: <div id="high"></div><br/>
-// 	    Average: <div id="high"></div><br/>
-// 	    High: <div id="high"></div><br/>
-// 	    Foil: <div id="high"></div><br/>
-// 	    Buy this card at <div id="tcgPlayerLink">TCGPlayer</a>.
 	    var urL = "cardPrice?tcgPlayerName="+tcgPlayerName+"&cardName="+cardName;
 	        	
 		var xmlhttp;
@@ -41,7 +36,7 @@
           			{
           				v = ""
           			}
-          			txt = txt + "<tr><td>Median Foil</td><td align='right'>" + v + "</td></tr>";
+          			txt = txt + "<tr><td>Foil</td><td align='right'>" + v + "</td></tr>";
         		  }
         		  
         		  xx=x[i].getElementsByTagName("hiprice");
@@ -106,187 +101,167 @@
 	}
 </script>
 
-<% if (view == "topViewed") { %>
 	<div id="centeredmenu">
 		<p>&nbsp;</p>
    		<ul>
+   			<% if (view == "topViewed") { %>
       		<li><a href="/cards?view=topRated&pp=0">Top Rated</a></li>
       		<li><a href="/cards?view=topViewed&pp=0" class="active">Top Viewed</a></li>
-   		</ul>
-	</div>
-	
-	<% if (topViewed.length > 0) { %>
-	<div class="cardBackground">
-	<p>&nbsp;</p>
-    <table width="100%">
-    	<% rank = pp*10; %>  
-    	<% _(topViewed).each(function(top) { %>  
-    	<tr>
-	        <td width="20%">&nbsp;</td>
-	        <td width="60%">
-	        	<img align="left" class="cardImage" alt= "<=% top.get('name')%>" src="http://magiccards.info/scans/en/<%= top.get('set').get('magicCardsInfoCode') %>/<%= top.get('number') %>.jpg" />
-	        	<div class="td_card">
-	    			<%= rank+1 %>. <%= top.get('name') %><br>
-    				<% if (top.get('rarity') != null) { %>
-	    	    	<img class="setImage" src="http://jovitoroyeca.com/decktracker/set/<%= top.get('set').get('code') %>/<%= top.get('rarity').get('symbol') %>/32.png" />
-	        		<% } %>
-	        		<%= top.get('set').get('name') %><br>
-		        	Number of Views: <%= top.get('numberOfViews') %><br>
-	        	</div>
-	        	<p>&nbsp;</p>
-	        	<div class="td_normal" id="tcgPriceInfo<%= rank %>"></div>
-	        	<script>
-	        		setTimeout(function() {
-	        			loadTCGPrice(<%= rank %>, '<%= top.get('set').get('tcgPlayerName') %>', '<%= top.get('name') %>');
-	        		 }, 1);
-	        	</script>
-	    	</td>
-	    	<td width="20%">&nbsp;</td>
-        </tr>
-        <tr>
-	        <td colspan="3">&nbsp;</td>
-        </tr>
-	        <% rank++; %>  
-        <% }); %>
-        <tr>
-	        <td width="20%">&nbsp;</td>
-	        <td width="60%" class="td_card">Page
-	        	<% for (i=0; i<10; i++) { %>
-	        		<% if (pp == i) { %>
-	        		<%= i+1 %>
-	        		<% } else { %>
-	        		<a href="/cards?view=topViewed&pp=<%= i %>"><%= i+1 %></a>
-	        		<% }  %>
-	    		<% } %>    	
-	        </td>
-	        <td width="20%">&nbsp;</td>
-	    </tr>
-	    <tr>
-	        <td colspan="3">&nbsp;</td>
-        </tr>
-    </table>  
-    </div>
-	<% } %>
-		    
-<% } else { %>
-
-	<div id="centeredmenu">
-		<p>&nbsp;</p>
-   		<ul>
+      		<% } else { %>
       		<li><a href="/cards?view=topRated" class="active">Top Rated</a></li>
       		<li><a href="/cards?view=topViewed">Top Viewed</a></li>
+      		<% } %>
    		</ul>
 	</div>
 	
-	<% if (topRated.length > 0) { %>
-	<div class="cardBackground">
+<% if (cards.length > 0) { %>
+  <div class="cardBackground">
+  
 	<p>&nbsp;</p>
-    <table width="100%">
-    	<% rank = pp*10; %>
-    	<% _(topRated).each(function(top) { %>  
-    	<tr>
-        	<td width="20%">&nbsp;</td>
-	        <td width="60%">
-	        	<img align="left" class="cardImage" alt= "<=% top.get('name')%>" src="http://magiccards.info/scans/en/<%= top.get('set').get('magicCardsInfoCode') %>/<%= top.get('number') %>.jpg" />
-	        	<div class="td_card">
-		  			<%= rank+1 %>. <%= top.get('name') %><br/>
-		        	<% if (top.get('rarity') != null) { %>
-	    	    	<img class="setImage" src="http://jovitoroyeca.com/decktracker/set/<%= top.get('set').get('code') %>/<%= top.get('rarity').get('symbol') %>/32.png" />
-	        		<% } %>
-	        		<%= top.get('set').get('name') %><br>
-	        	</div>
-	        <% if (top.get('rating') == 0.5) { %>
+	<div class="mytable">
+	  <% rank = pp*cards.length; %>  
+      <% _(cards).each(function(card) { %>	
+	  <div class="myrow">
+	    <span class="mycell myten">&nbsp;</span>
+	    <span class="mycell myforty">
+	    	<img class="cardImage"
+	    		 alt= "<=% card.get('name')%>"
+	    		src="http://magiccards.info/scans/en/<%= card.get('set').get('magicCardsInfoCode') %>/<%= card.get('number') %>.jpg" />
+	    </span>
+    	<span class="mycell myforty">
+    		<font class="td_normal"><%= rank+1 %>.</font>
+    		<% if (card.get('modern') != null && card.get('modern') == true) { %>
+    		<font class="td_modern"><%= card.get('name') %></font><br/>
+    		<% } else { %>
+    		<font class="td_classic"><%= card.get('name') %></font><br/>
+    		<% } %>
+		    <% if (card.get('rarity') != null) { %>
+	    	<img class="setImage" src="https://jovitoroyecacom.ipage.com/decktracker/set/<%= card.get('set').get('code') %>/<%= card.get('rarity').get('symbol') %>/32.png" />
+	        <% } %>
+	        <font class="td_normal"><%= card.get('set').get('name') %>
+	        <% if (card.get('rarity') != null) { %>
+	        (<%= card.get('rarity').get('name') %>)
+	        <% } %></font></br />
+	        <!-- -->
+	        <% if (card.get('rating') != null) { %>
+		        	<% if (card.get('rating') >= 0 && card.get('rating') < 0.5) { %>
+	            <img src="/assets/img/stars/star.png"/>
+	    		<img src="/assets/img/stars/star.png"/>
+        		<img src="/assets/img/stars/star.png"/>
+	    	    <img src="/assets/img/stars/star.png"/>
+	    		<img src="/assets/img/stars/star.png"/>
+		        	<% } else if (card.get('rating') >= 0.5 && card.get('rating') < 1) { %>
 	            <img src="/assets/img/stars/starhalf.png"/>
 	    		<img src="/assets/img/stars/star.png"/>
         		<img src="/assets/img/stars/star.png"/>
 	    	    <img src="/assets/img/stars/star.png"/>
 	    		<img src="/assets/img/stars/star.png"/>
-	        <% } else if (top.get('rating') == 1) { %>
+		        	<% } else if (card.get('rating') >= 1 && card.get('rating') < 1.5) { %>
 	            <img src="/assets/img/stars/starhighlighted.png"/>
 	    		<img src="/assets/img/stars/star.png"/>
 	     		<img src="/assets/img/stars/star.png"/>
 	    	    <img src="/assets/img/stars/star.png"/>
 	        	<img src="/assets/img/stars/star.png"/>
-			<% } else if (top.get('rating') == 1.5) { %>
+					<% } else if (card.get('rating') >= 1.5 && card.get('rating') < 2) { %>
 	            <img src="/assets/img/stars/starhighlighted.png"/>
 	    		<img src="/assets/img/stars/starhalf.png"/>
 		        <img src="/assets/img/stars/star.png"/>
 	    		<img src="/assets/img/stars/star.png"/>
 	        	<img src="/assets/img/stars/star.png"/>
-			<% } else if (top.get('rating') == 2) { %>
+					<% } else if (card.get('rating') >= 2 && card.get('rating') < 2.5) { %>
 	            <img src="/assets/img/stars/starhighlighted.png"/>
 	    		<img src="/assets/img/stars/starhighlighted.png"/>
 		        <img src="/assets/img/stars/star.png"/>
 	    		<img src="/assets/img/stars/star.png"/>
 	        	<img src="/assets/img/stars/star.png"/>
-			<% } else if (top.get('rating') == 2.5) { %>
+					<% } else if (card.get('rating') >= 2.5 && card.get('rating') < 3) { %>
 	            <img src="/assets/img/stars/starhighlighted.png"/>
 	    		<img src="/assets/img/stars/starhighlighted.png"/>
 		        <img src="/assets/img/stars/starhalf.png"/>
 	    		<img src="/assets/img/stars/star.png"/>
 	        	<img src="/assets/img/stars/star.png"/>
-			<% } else if (top.get('rating') == 3) { %>
+					<% } else if (card.get('rating') >= 3 && card.get('rating') < 3.5) { %>
 	            <img src="/assets/img/stars/starhighlighted.png"/>
 	    		<img src="/assets/img/stars/starhighlighted.png"/>
 		        <img src="/assets/img/stars/starhighlighted.png"/>
 	      		<img src="/assets/img/stars/star.png"/>
 	        	<img src="/assets/img/stars/star.png"/>
-			<% } else if (top.get('rating') == 3.5) { %>
+					<% } else if (card.get('rating') >= 3.5 && card.get('rating') < 4) { %>
 	            <img src="/assets/img/stars/starhighlighted.png"/>
 	    		<img src="/assets/img/stars/starhighlighted.png"/>
 		        <img src="/assets/img/stars/starhighlighted.png"/>
 	    		<img src="/assets/img/stars/starhalf.png"/>
 	        	<img src="/assets/img/stars/star.png"/>
-			<% } else if (top.get('rating') == 4) { %>
+					<% } else if (card.get('rating') >= 4 && card.get('rating') < 4.5) { %>
 	            <img src="/assets/img/stars/starhighlighted.png"/>
 	    		<img src="/assets/img/stars/starhighlighted.png"/>
 		        <img src="/assets/img/stars/starhighlighted.png"/>
 	    		<img src="/assets/img/stars/starhighlighted.png"/>
 	        	<img src="/assets/img/stars/star.png"/>
-			<% } else if (top.get('rating') == 4.5) { %>
+					<% } else if (card.get('rating') >= 4.5 && card.get('rating') < 5) { %>
 	            <img src="/assets/img/stars/starhighlighted.png"/>
 	    		<img src="/assets/img/stars/starhighlighted.png"/>
 		        <img src="/assets/img/stars/starhighlighted.png"/>
 	    		<img src="/assets/img/stars/starhighlighted.png"/>
 	        	<img src="/assets/img/stars/starhalf.png"/>
-			<% } else if (top.get('rating') == 5) { %>
+					<% } else if (card.get('rating') >= 5) { %>
 	            <img src="/assets/img/stars/starhighlighted.png"/>
 	    		<img src="/assets/img/stars/starhighlighted.png"/>
 		        <img src="/assets/img/stars/starhighlighted.png"/>
 	    		<img src="/assets/img/stars/starhighlighted.png"/>
 	        	<img src="/assets/img/stars/starhighlighted.png"/>
-			<% } %>
-				<p>&nbsp;</p>
-	        	<div class="td_normal" id="tcgPriceInfo<%= rank %>"></div>
-	        	<script>
-	        		setTimeout(function() {
-	        			loadTCGPrice(<%= rank %>, '<%= top.get('set').get('tcgPlayerName') %>', '<%= top.get('name') %>');
-	        		 }, 1);
-	        	</script>
-	        </td>
-			<td width="20%">&nbsp;</td>
-        </tr>
-        <tr>
-	    	<td colspan="3">&nbsp;</td>
-        </tr>
-	    <% rank++; %>  
-    <% }); } %>
-    	<tr>
-	        <td width="20%">&nbsp;</td>
-	        <td width="60%" class="td_card">Page
-	        	<% for (i=0; i<10; i++) { %>
+					<% } %>
+				<% } else { %>
+				<img src="/assets/img/stars/star.png"/>
+	    		<img src="/assets/img/stars/star.png"/>
+        		<img src="/assets/img/stars/star.png"/>
+	    	    <img src="/assets/img/stars/star.png"/>
+	    		<img src="/assets/img/stars/star.png"/>
+			<% } %><br />
+
+	        <font class="td_normal">Number of Views: <%= card.get('numberOfViews') %></font>
+	        <p>&nbsp;</p>
+	        <div class="td_normal" id="tcgPriceInfo<%= rank %>"></div>
+	        <script>
+	        	setTimeout(function() {
+	        		loadTCGPrice(<%= rank %>, '<%= card.get('set').get('tcgPlayerName') %>', '<%= card.get('name') %>');
+	        	 }, 1); 
+	        </script>
+	        
+    	</span>
+    	<span class="mycell myten">&nbsp;</span>
+      </div>
+      <div class="myrowfiller">
+      	<span class="mycell myfill">&nbsp;</span>	
+      </div>
+      	<% rank++; %>
+      <% }); %>
+    </div>
+    <div class="myrowfiller">
+      	<span class="mycell myfill">&nbsp;</span>	
+    </div>
+	<div class="mytable">
+  		<div class="myrow">
+  			<span class="mycell myten">&nbsp;</span>
+    		<span class="mycell">
+    		  <font class="td_normal">Page
+    			  <% for (i=0; i<10; i++) { %>
 	        		<% if (pp == i) { %>
 	        		<%= i+1 %>
 	        		<% } else { %>
-	        		<a href="/cards?view=topRated&pp=<%= i %>"><%= i+1 %></a>
+	        		<a href="/cards?view=<%= view %>&pp=<%= i %>"><%= i+1 %></a>&nbsp;
 	        		<% }  %>
-	    		<% } %>    	
-	        </td>
-	        <td width="20%">&nbsp;</td>
-	    </tr>
-	    <tr>
-	        <td colspan="3">&nbsp;</td>
-        </tr>
-	</table>
+	    		  <% } %>
+	    	  </font>
+    		</span>
+    		<span class="mycell myten">&nbsp;</span>
+  		</div>
 	</div>
+	<div class="myrowfiller">
+      	<span class="mycell myfill">&nbsp;</span>	
+    </div>
+  </div>
 <% } %>
+
+	    
+

@@ -280,32 +280,7 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
 
 //    MARK: UITableViewDataSource
     func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int {
-//        if searchSections != nil {
-//            var section = -1
-//            
-//            let dict = searchSections![indexPath.section]
-//            let keys = Array(searchSections!.keys)//.sorted(<)
-//            
-//            for (i, value) in enumerate(keys) {
-//                if (value == "Blue" && title == "U") {
-//                    section = i
-//                    break
-//            
-//                } else {
-//                    if value.hasPrefix(title) {
-//                        section = i
-//                        break
-//                    }
-//                }
-//            }
-//            
-//            return section
-//            
-//        } else {
-//            return 1
-//        }
-        
-        return 1
+        return index
     }
     
     func sectionIndexTitlesForTableView(tableView: UITableView) -> [AnyObject]! {

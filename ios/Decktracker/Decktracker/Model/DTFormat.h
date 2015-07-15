@@ -13,6 +13,7 @@
 
 @interface DTFormat : RLMObject
 
+@property NSString * formatId;
 @property NSString * name;
 //@property RLMArray<DTCardLegality> *legalities;
 

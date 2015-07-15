@@ -13,6 +13,7 @@
 
 @interface DTComprehensiveRule : RLMObject
 
+@property NSString * ruleId;
 @property NSString * number;
 @property NSString * rule;
 @property RLMArray<DTComprehensiveRule> *children;

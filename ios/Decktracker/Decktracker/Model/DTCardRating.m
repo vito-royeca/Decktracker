@@ -10,4 +10,15 @@
 
 @implementation DTCardRating
 
++ (NSString *)primaryKey
+{
+    return @"ratingId";
+}
+
++ (NSDictionary *)defaultPropertyValues
+{
+    return @{ @"rating": @0,
+              @"ratingId" : [[NSUUID UUID] UUIDString]};
+}
+
 @end

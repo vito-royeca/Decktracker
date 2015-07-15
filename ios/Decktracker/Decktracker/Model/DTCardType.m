@@ -10,12 +10,20 @@
 
 @implementation DTCardType
 
-+ (NSString *)primaryKey {
++ (NSString *)primaryKey
+{
     return @"cardTypeId";
 }
 
-+ (NSArray *)indexedProperties {
++ (NSArray *)indexedProperties
+{
     return @[@"name"];
+}
+
++ (NSDictionary *)defaultPropertyValues
+{
+    return @{ @"cardTypeId" : [[NSUUID UUID] UUIDString],
+              @"name": @"" };
 }
 
 @end

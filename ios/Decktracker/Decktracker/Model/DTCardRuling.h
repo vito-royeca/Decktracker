@@ -13,8 +13,8 @@
 
 @interface DTCardRuling : RLMObject
 
-@property NSString * rulingId;
 @property NSDate * date;
+@property NSString * rulingId;
 @property NSString * text;
 @property DTCard *card;
 

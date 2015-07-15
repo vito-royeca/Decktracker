@@ -10,8 +10,20 @@
 
 @implementation DTLanguage
 
-+ (NSArray *)indexedProperties {
++ (NSString *)primaryKey
+{
+    return @"languageId";
+}
+
++ (NSArray *)indexedProperties
+{
     return @[@"name"];
+}
+
++ (NSDictionary *)defaultPropertyValues
+{
+    return @{ @"languageId" : [[NSUUID UUID] UUIDString],
+              @"name": @"" };
 }
 
 @end

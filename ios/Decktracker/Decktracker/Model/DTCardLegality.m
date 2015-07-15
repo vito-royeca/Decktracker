@@ -10,12 +10,20 @@
 
 @implementation DTCardLegality
 
-+ (NSString *)primaryKey {
++ (NSString *)primaryKey
+{
     return @"legalityId";
 }
 
-+ (NSArray *)indexedProperties {
++ (NSArray *)indexedProperties
+{
     return @[@"name"];
+}
+
++ (NSDictionary *)defaultPropertyValues
+{
+    return @{ @"legalityId" : [[NSUUID UUID] UUIDString],
+              @"name": @"" };
 }
 
 @end

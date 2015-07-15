@@ -10,8 +10,21 @@
 
 @implementation DTCardRarity
 
-+ (NSArray *)indexedProperties {
-    return @[@"name"];
++ (NSString *)primaryKey
+{
+    return @"rarityId";
+}
+
++ (NSArray *)indexedProperties
+{
+    return @[@"name", @"symbol"];
+}
+
++ (NSDictionary *)defaultPropertyValues
+{
+    return @{ @"name": @"",
+              @"rarityId" : [[NSUUID UUID] UUIDString],
+              @"symbol" : @""};
 }
 
 @end

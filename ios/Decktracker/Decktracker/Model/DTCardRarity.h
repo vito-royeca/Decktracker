@@ -14,6 +14,7 @@
 @interface DTCardRarity : RLMObject
 
 @property NSString * name;
+@property NSString * rarityId;
 @property NSString * symbol;
 //@property RLMArray<DTCard> *cards;
 

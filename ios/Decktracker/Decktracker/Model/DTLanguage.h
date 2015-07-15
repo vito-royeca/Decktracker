@@ -10,6 +10,7 @@
 
 @interface DTLanguage : RLMObject
 
+@property NSString * languageId;
 @property NSString * name;
 
 @end

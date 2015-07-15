@@ -14,6 +14,7 @@
 @interface DTComprehensiveGlossary : RLMObject
 
 @property NSString * definition;
+@property NSString * glossaryId;
 @property NSString * term;
 @property RLMArray<DTComprehensiveRule> *rules;
 

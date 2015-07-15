@@ -13,6 +13,7 @@
 
 @interface DTCardRating : RLMObject
 
+@property NSString * ratingId;
 @property float rating;
 @property DTCard *card;
 

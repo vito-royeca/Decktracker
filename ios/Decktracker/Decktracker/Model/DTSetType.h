@@ -14,6 +14,7 @@
 @interface DTSetType : RLMObject
 
 @property NSString * name;
+@property NSString * setTypeId;
 //@property RLMArray<DTSet> *sets;
 
 @end

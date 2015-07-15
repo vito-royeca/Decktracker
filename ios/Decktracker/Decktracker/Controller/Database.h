@@ -8,11 +8,14 @@
 
 @import Foundation;
 
+#import "DTArtist.h"
+#import "DTBlock.h"
 #import "DTCard.h"
 #import "DTCardLEgality.h"
 #import "DTCardRarity.h"
 #import "DTCardRating.h"
 #import "DTSet.h"
+#import "DTSetType.h"
 
 #import "JJJ/JJJ.h"
 #import <Realm/Realm.h>
@@ -38,6 +41,7 @@
 + (id)sharedInstance;
 
 -(void) setupDb;
+-(void) migrateDb;
 -(void) closeDb;
 -(void) copyRealmDatabaseToHome;
 
@@ -68,21 +72,23 @@
 -(DTCard*) findCardByMultiverseID:(NSString*) multiverseID;
 -(void) fetchTcgPlayerPriceForCard:(NSString*) cardId;
 -(NSArray*) fetchSets:(int) howMany;
--(BOOL) isCardModern:(NSString*) cardId;
 
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
 -(void) fetchTopRated:(int) limit skip:(int) skip;
 -(void) fetchTopViewed:(int) limit skip:(int) skip;
--(void) incrementCardView:(DTCard*) card;
--(void) rateCard:(DTCard*) card withRating:(float) rating;
--(void) prefetchAllSetObjects;
+-(void) incrementCardView:(NSString*) cardId;
+-(void) rateCard:(NSString*) cardId withRating:(float) rating;
 -(void) fetchUserMana;
 -(void) saveUserMana:(PFObject*) userMana;
 -(void) deleteUserManaLocally;
 -(void) fetchLeaderboard;
 // Parse Maintenance
--(void) updateParseSets;
 -(void) updateParseCards;
+-(void) findDuplicateParseCards;
+-(void) uploadSets;
+-(void) uploadArtists;
+-(void) uploadBlocks;
+-(void) uploadSetTypes;
 #endif
 
 @end

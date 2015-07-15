@@ -148,7 +148,6 @@
 		8C3EE4731B38FB2C0037AF20 /* JJJ.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JJJ.xcodeproj; path = ../../ios/jjj/JJJ/JJJ.xcodeproj; sourceTree = "<group>"; };
 		8C4B9D091A51384400F727E7 /* tcgplayer_sets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = tcgplayer_sets.plist; sourceTree = "<group>"; };
 		8C4B9D0D1A51562F00F727E7 /* tcgplayer_sets.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tcgplayer_sets.txt; sourceTree = "<group>"; };
-		8C5BADF41B4A8F01007F2C44 /* libPods-DataSource-Bolts.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-DataSource-Bolts.a"; path = "../../../../Library/Developer/Xcode/DerivedData/DataSource-exunlzaqzgqgbjhgyhupklwxiowb/Build/Products/Debug/libPods-DataSource-Bolts.a"; sourceTree = "<group>"; };
 		8C877F411B4D0BB2004302D2 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		8C877F431B4D0BBA004302D2 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		8C877F451B4D0BC4004302D2 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -215,20 +214,19 @@
 		8C1B4DC7198CF0C000B4C948 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				8C877F4D1B4D0BEC004302D2 /* libz.dylib */,
-				8C877F4B1B4D0BE4004302D2 /* libsqlite3.dylib */,
-				8C877F491B4D0BD8004302D2 /* SystemConfiguration.framework */,
-				8C877F471B4D0BCE004302D2 /* Security.framework */,
-				8C877F451B4D0BC4004302D2 /* QuartzCore.framework */,
-				8C877F431B4D0BBA004302D2 /* CoreLocation.framework */,
-				8C877F411B4D0BB2004302D2 /* CFNetwork.framework */,
 				8CF9CE51199F9A22008127E5 /* AppKit.framework */,
+				8C877F411B4D0BB2004302D2 /* CFNetwork.framework */,
 				8C1B4DC8198CF0C000B4C948 /* CoreData.framework */,
 				8CF9CE4B199F982A008127E5 /* CoreGraphics.framework */,
+				8C877F431B4D0BBA004302D2 /* CoreLocation.framework */,
 				8C1B4DCA198CF0C000B4C948 /* Foundation.framework */,
 				8CEF64DE1B0081260056450F /* libc++.dylib */,
-				8C5BADF41B4A8F01007F2C44 /* libPods-DataSource-Bolts.a */,
 				4AE7CCBA05B0E7E9D81A1C1F /* libPods-DataSource.a */,
+				8C877F4B1B4D0BE4004302D2 /* libsqlite3.dylib */,
+				8C877F4D1B4D0BEC004302D2 /* libz.dylib */,
+				8C877F451B4D0BC4004302D2 /* QuartzCore.framework */,
+				8C877F471B4D0BCE004302D2 /* Security.framework */,
+				8C877F491B4D0BD8004302D2 /* SystemConfiguration.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -571,7 +569,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/build/Debug/Pods-DataSource",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/Pods/Parse-OSX",
+					"$(PROJECT_DIR)/ParseOSX.framework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DataSource/DataSource-Prefix.pch";
@@ -594,7 +592,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/build/Debug/Pods-DataSource",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/Pods/Parse-OSX",
+					"$(PROJECT_DIR)/ParseOSX.framework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DataSource/DataSource-Prefix.pch";

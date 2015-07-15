@@ -13,6 +13,7 @@
 
 @interface DTCardColor : RLMObject
 
+@property NSString * colorId;
 @property NSString * name;
 //@property RLMArray<DTCard> *cards;
 

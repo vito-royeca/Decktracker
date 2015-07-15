@@ -43,15 +43,23 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
     var sectionName:String?
     var viewLoadedOnce = true
     
+//    init() {
+//        super.init(nibName: nil, bundle: nil)
+//    }
+//
+//    required convenience init(coder aDecoder: NSCoder) {
+//        self.init()
+//        hidesBottomBarWhenPushed = true
+//    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
         hidesBottomBarWhenPushed = true
         
-        viewButton = UIBarButtonItem(title: "List", style: UIBarButtonItemStyle.Plain, target: self, action: "viewButtonTapped")
+        viewButton = UIBarButtonItem(image: UIImage(named: "list.png"), style: UIBarButtonItemStyle.Plain, target: self, action: "viewButtonTapped")
         sortButton = UIBarButtonItem(image: UIImage(named: "generic_sorting.png"), style: UIBarButtonItemStyle.Plain, target: self, action: "sortButtonTapped")
-        
         navigationItem.rightBarButtonItems = [sortButton!, viewButton!]
         
         if let value = NSUserDefaults.standardUserDefaults().stringForKey(kCardViewMode) {
@@ -61,10 +69,12 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
                 
             } else if value == kCardViewModeGrid2x2 {
                 self.viewMode = kCardViewModeGrid2x2
+                viewButton!.image = UIImage(named: "2x2.png")
                 self.showGridView()
                 
             } else if value == kCardViewModeGrid3x3 {
                 self.viewMode = kCardViewModeGrid3x3
+                viewButton!.image = UIImage(named: "3x3.png")
                 self.showGridView()
                 
             } else {
@@ -106,12 +116,15 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
             switch selectedIndex {
             case 0:
                 self.viewMode = kCardViewModeList
+                self.viewButton!.image = UIImage(named: "list.png")
                 self.showTableView()
             case 1:
                 self.viewMode = kCardViewModeGrid2x2
+                self.viewButton!.image = UIImage(named: "2x2.png")
                 self.showGridView()
             case 2:
                 self.viewMode = kCardViewModeGrid3x3
+                self.viewButton!.image = UIImage(named: "3x3.png")
                 self.showGridView()
             default:
                 break
@@ -296,7 +309,6 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
             colSets!.removeFromSuperview()
         }
         view.addSubview(tblSets!)
-        viewButton!.title = self.viewMode
     }
     
     func showGridView() {
@@ -324,7 +336,6 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
             tblSets!.removeFromSuperview()
         }
         view.addSubview(colSets!)
-        viewButton!.title = self.viewMode
     }
     
     override func didReceiveMemoryWarning() {

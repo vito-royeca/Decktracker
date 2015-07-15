@@ -13,7 +13,6 @@
 
 @interface DTSet : RLMObject
 
-@property NSString * setId;
 @property NSString * border;
 @property NSString * code;
 @property NSString * gathererCode;
@@ -26,6 +25,7 @@
 @property NSDate * releaseDate;
 @property NSString * sectionNameInitial;
 @property NSString * sectionYear;
+@property NSString * setId;
 @property NSString * tcgPlayerName;
 @property DTBlock *block;
 @property RLMArray<DTLanguage> *languages;

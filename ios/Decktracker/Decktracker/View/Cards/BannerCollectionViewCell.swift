@@ -41,7 +41,7 @@ class BannerCollectionViewCell: UICollectionViewCell {
         NSNotificationCenter.defaultCenter().addObserver(self,
             selector:"loadCropImage:",  name:kCardDownloadCompleted, object:nil)
         
-        if Database.sharedInstance().isCardModern(self.cardId) {
+        if card.modern {
             lblCardName.font = _8thEditionFont;
         
         } else {

@@ -12,8 +12,20 @@
 
 @implementation DTBlock
 
-+ (NSArray *)indexedProperties {
++ (NSString *)primaryKey
+{
+    return @"blockId";
+}
+
++ (NSArray *)indexedProperties
+{
     return @[@"name"];
+}
+
++ (NSDictionary *)defaultPropertyValues
+{
+    return @{ @"blockId" : [[NSUUID UUID] UUIDString],
+              @"name": @"" };
 }
 
 @end

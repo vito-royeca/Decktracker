@@ -10,8 +10,21 @@
 
 @implementation DTComprehensiveRule
 
-+ (NSArray *)indexedProperties {
++ (NSString *)primaryKey
+{
+    return @"ruleId";
+}
+
++ (NSArray *)indexedProperties
+{
     return @[@"number"];
+}
+
++ (NSDictionary *)defaultPropertyValues
+{
+    return @{ @"number": @"",
+              @"ruleId" : [[NSUUID UUID] UUIDString],
+              @"rule": @"" };
 }
 
 @end

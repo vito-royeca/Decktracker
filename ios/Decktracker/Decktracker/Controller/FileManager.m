@@ -228,7 +228,7 @@ static FileManager *_me;
 
     CGFloat width = image.size.width*3/4;
     CGRect rect = CGRectMake((image.size.width-width)/2,
-                             [[Database sharedInstance] isCardModern:cardId] ? 45 : 40,
+                             card.modern ? 45 : 40,
                              width,
                              width-60);
     

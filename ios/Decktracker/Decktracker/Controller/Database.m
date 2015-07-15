@@ -15,7 +15,6 @@
 {
     NSMutableArray *_parseQueue;
     NSArray *_currentParseQueue;
-    NSDate *_8thEditionReleaseDate;
     NSMutableArray *_arrInAppSets;
 }
 
@@ -157,15 +156,14 @@ static Database *_me;
                                                        error:nil];
         }
     }
-    
+#ifdef DEBUG
+    NSLog(@"storePath=%@", storePath);
+#endif
+
     [RLMRealm setDefaultRealmPath:storePath];
 
 #endif
 
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name == %@", @"Eighth Edition"];
-    DTSet *set = [[DTSet objectsWithPredicate:predicate] firstObject];
-    _8thEditionReleaseDate = set.releaseDate;
-    
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
     [self loadInAppSets];
     
@@ -179,6 +177,24 @@ static Database *_me;
     }
 #endif
 
+}
+
+-(void) migrateDb
+{
+    [RLMRealm setSchemaVersion:1
+                forRealmAtPath:[RLMRealm defaultRealmPath]
+            withMigrationBlock:^(RLMMigration *migration, uint64_t oldSchemaVersion)
+    {
+        // Add the 'fullName' property only to Realms with a schema version of 0
+        if (oldSchemaVersion < 1)
+        {
+//            [migration enumerateObjects:Person.className
+//                                  block:^(RLMObject *oldObject, RLMObject *newObject)
+//            {
+//                newObject[@"fullName"] = [NSString stringWithFormat:@"%@ %@", oldObject[@"firstName"], oldObject[@"lastName"]];
+//            }];
+        }
+    }];
 }
 
 -(void) closeDb
@@ -783,35 +799,6 @@ static Database *_me;
     return arrResults;
 }
 
--(BOOL) isCardModern:(NSString*) cardId
-{
-    DTCard *card = [DTCard objectForPrimaryKey:cardId];
-    NSDate *releaseDate;
-    
-    if (card.releaseDate)
-    {
-        NSString *format = @"YYYY-MM-dd";
-        NSString *tempReleaseDate;
-        
-        if (card.releaseDate.length == 4)
-        {
-            tempReleaseDate = [NSString stringWithFormat:@"%@-01-01", card.releaseDate];
-        }
-        else if (card.releaseDate.length == 7)
-        {
-            tempReleaseDate = [NSString stringWithFormat:@"%@-01", card.releaseDate];
-        }
-        releaseDate = [JJJUtil parseDate:(tempReleaseDate ? tempReleaseDate : card.releaseDate)
-                              withFormat:format];
-    }
-    else
-    {
-        releaseDate = card.set.releaseDate;
-    }
-    return [releaseDate compare:_8thEditionReleaseDate] == NSOrderedSame ||
-        [releaseDate compare:_8thEditionReleaseDate] == NSOrderedDescending;
-}
-
 #pragma mark - Parse
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
 -(void) fetchTopRated:(int) limit skip:(int) skip
@@ -921,82 +908,429 @@ static Database *_me;
     }];
 }
 
+-(void) updateCard:(PFObject*) pfCard
+          existing:(BOOL) existing
+        withCardId:(NSString*) cardId
+            andSet:(PFObject*) pfSet
+         andRarity:(PFObject*) pfRarity
+         andArtist:(PFObject*) pfArtist
+      andPrintings:(NSArray*) pfPrintings
+       andCallback:(void (^)(PFObject*)) callback
+{
+    __block DTCard *card = [DTCard objectForPrimaryKey:cardId];
+    
+    if (card.border.length > 0)
+    {
+        pfCard[@"border"] = card.border;
+    }
+    else
+    {
+        [pfCard removeObjectForKey:@"border"];
+    }
+    
+    if (card.cmc != -1)
+    {
+        pfCard[@"cmc"] = [NSNumber numberWithFloat:card.cmc];
+    }
+    else
+    {
+        [pfCard removeObjectForKey:@"cmc"];
+    }
+    
+    if (card.flavor.length > 0)
+    {
+        pfCard[@"flavor"] = card.flavor;
+    }
+    else
+    {
+        [pfCard removeObjectForKey:@"flavor"];
+    }
+    
+    if (card.handModifier != -1)
+    {
+        pfCard[@"handModifier"] = [NSNumber numberWithInt:card.handModifier];
+    }
+    else
+    {
+        [pfCard removeObjectForKey:@"handModifier"];
+    }
+    
+    if (card.imageName.length > 0)
+    {
+        pfCard[@"imageName"] = card.imageName;
+    }
+    else
+    {
+        [pfCard removeObjectForKey:@"imageName"];
+    }
+    
+    if (card.layout.length > 0)
+    {
+        pfCard[@"layout"] = card.layout;
+    }
+    else
+    {
+        [pfCard removeObjectForKey:@"layout"];
+    }
+    
+    if (card.lifeModifier != -1)
+    {
+        pfCard[@"lifeModifier"] = [NSNumber numberWithInt:card.lifeModifier];
+    }
+    else
+    {
+        [pfCard removeObjectForKey:@"lifeModifier"];
+    }
+    
+    if (card.loyalty != -1)
+    {
+        pfCard[@"loyalty"] = [NSNumber numberWithInt:card.loyalty];
+    }
+    else
+    {
+        [pfCard removeObjectForKey:@"loyalty"];
+    }
+    
+    if (card.manaCost.length > 0)
+    {
+        pfCard[@"manaCost"] = card.manaCost;
+    }
+    else
+    {
+        [pfCard removeObjectForKey:@"manaCOst"];
+    }
+    
+    pfCard[@"modern"] = [NSNumber numberWithBool:card.modern];
+    
+    if (card.multiverseID != -1)
+    {
+        pfCard[@"multiverseID"] = [NSNumber numberWithInt:card.multiverseID];
+    }
+    else
+    {
+        [pfCard removeObjectForKey:@"multiverseID"];
+    }
+    
+    if (card.name.length > 0)
+    {
+        pfCard[@"name"] = card.name;
+    }
+    else
+    {
+        [pfCard removeObjectForKey:@"name"];
+    }
+    
+    if (card.number.length > 0)
+    {
+        pfCard[@"number"] = card.number;
+    }
+    else
+    {
+        [pfCard removeObjectForKey:@"number"];
+    }
+    
+    if (card.originalText.length > 0)
+    {
+        pfCard[@"originalText"] = card.originalText;
+    }
+    else
+    {
+        [pfCard removeObjectForKey:@"originalText"];
+    }
+    
+    if (card.originalType.length > 0)
+    {
+        pfCard[@"originalType"] = card.originalType;
+    }
+    else
+    {
+        [pfCard removeObjectForKey:@"originalType"];
+    }
+    
+    if (card.power.length > 0)
+    {
+        pfCard[@"power"] = card.power;
+    }
+    else
+    {
+        [pfCard removeObjectForKey:@"power"];
+    }
+    
+    if (card.releaseDate.length > 0)
+    {
+        pfCard[@"releaseDate"] = card.releaseDate;
+    }
+    else
+    {
+        [pfCard removeObjectForKey:@"releaseDate"];
+    }
+    
+    pfCard[@"reserved"] = [NSNumber numberWithBool:card.reserved];
+    
+    if (card.source.length > 0)
+    {
+        pfCard[@"source"] = card.source;
+    }
+    else
+    {
+        [pfCard removeObjectForKey:@"source"];
+    }
+    
+    pfCard[@"starter"] = [NSNumber numberWithBool:card.starter];
+    
+    if (card.text.length > 0)
+    {
+        pfCard[@"text"] = card.text;
+    }
+    else
+    {
+        [pfCard removeObjectForKey:@"text"];
+    }
+    
+    pfCard[@"timeshifted"] = [NSNumber numberWithBool:card.timeshifted];
+    
+    if (card.toughness.length > 0)
+    {
+        pfCard[@"toughness"] = card.toughness;
+    }
+    else
+    {
+        [pfCard removeObjectForKey:@"toughness"];
+    }
+    
+    if (card.type.length > 0)
+    {
+        pfCard[@"type"] = card.type;
+    }
+    else
+    {
+        [pfCard removeObjectForKey:@"type"];
+    }
+    
+    if (card.watermark.length > 0)
+    {
+        pfCard[@"watermark"] = card.watermark;
+    }
+    else
+    {
+        [pfCard removeObjectForKey:@"watermark"];
+    }
+    
+    [pfCard saveInBackgroundWithBlock:^(BOOL success, NSError *error) {
+        if (success)
+        {
+            PFRelation *relation = [pfCard relationForKey:@"printings"];
+            for (PFObject *pfSet2 in pfPrintings)
+            {
+                [relation addObject:pfSet2];
+            }
+            
+            pfCard[@"set"] = pfSet;
+            pfCard[@"rarity"] = pfRarity;
+            pfCard[@"artist"] = pfArtist;
+            [pfCard saveInBackgroundWithBlock:^(BOOL success, NSError *error) {
+                if (success)
+                {
+                    [pfCard pinInBackgroundWithBlock:^(BOOL success, NSError *error) {
+#ifdef DEBUG
+                        DTCard *card = [DTCard objectForPrimaryKey:cardId];
+                        NSLog(@"%@Card: %@ [%@]", (existing ? @"^":@"+"), card.name, card.set.code);
+#endif
+                        callback(pfCard);
+                    }];
+                }
+                else
+                {
+#ifdef DEBUG
+                    card = [DTCard objectForPrimaryKey:cardId];
+                    NSLog(@"Error saving Card: %@ : %@", card.name, error.description);
+#endif
+                }
+            }];
+        }
+        else
+        {
+#ifdef DEBUG
+            card = [DTCard objectForPrimaryKey:cardId];
+            NSLog(@"Error saving Card: %@ : %@", card.name, error.description);
+#endif
+        }
+    }];
+}
+
 -(void) processCurrentParseQueue
 {
-    DTCard *card = _currentParseQueue[0];
+    NSString *cardId = _currentParseQueue[0];
     void (^callbackTask)(PFObject *pfCard) = _currentParseQueue[1];
     
-    void (^callbackFindCard)(NSString *cardName, int multiverseID, NSString *cardNumber, PFObject *pfSet) = ^void(NSString *cardName, int multiverseID, NSString *cardNumber, PFObject *pfSet)
+    void (^callbackFindCard)(NSString *cardId, PFObject *pfSet, PFObject *pfRarity, PFObject *pfArtist, NSArray *pfPrintings) = ^void(NSString *cardId, PFObject *pfSet, PFObject *pfRarity, PFObject *pfArtist, NSArray *pfPrintings)
     {
+        __block DTCard *card = [DTCard objectForPrimaryKey:cardId];
         __block PFQuery *query = [PFQuery queryWithClassName:@"Card"];
-        [query whereKey:@"name" equalTo:cardName];
-        [query whereKey:@"multiverseID" equalTo:[NSNumber numberWithInt:multiverseID]];
+        [query whereKey:@"name" equalTo:card.name];
+        if (card.multiverseID == -1)
+        {
+            [query whereKey:@"number" equalTo:card.number];
+        }
+        else
+        {
+            [query whereKey:@"multiverseID" equalTo:[NSNumber numberWithInt:card.multiverseID]];
+        }
         [query whereKey:@"set" equalTo:pfSet];
         [query fromLocalDatastore];
         
         [[query findObjectsInBackground] continueWithBlock:^id(BFTask *task)
-        {
-            if (task.error)
-            {
-                return task;
-            }
-           
-            __block PFObject *pfCard;
-            
-            for (PFObject *object in task.result)
-            {
-                pfCard = object;
-            }
-            
-            if (pfCard)
-            {
-                callbackTask(pfCard);
-            }
-            else
-            {
-                // not found in local datastore, find remotely
-                query = [PFQuery queryWithClassName:@"Card"];
-                [query whereKey:@"name" equalTo:cardName];
-                [query whereKey:@"multiverseID" equalTo:[NSNumber numberWithInt:multiverseID]];
-                [query whereKey:@"set" equalTo:pfSet];
-                
-                [[query findObjectsInBackground] continueWithSuccessBlock:^id(BFTask *task)
+         {
+             if (task.error)
+             {
+                 return task;
+             }
+             
+             __block PFObject *pfCard;
+             
+             for (PFObject *object in task.result)
+             {
+                 pfCard = object;
+             }
+             
+             if (pfCard)
+             {
+                 [self updateCard:pfCard
+                         existing:YES
+                       withCardId:cardId
+                           andSet:pfSet
+                        andRarity:pfRarity
+                        andArtist:pfArtist
+                     andPrintings:pfPrintings
+                      andCallback:callbackTask];
+             }
+             else
+             {
+                 // not found in local datastore, find remotely
+                 card = [DTCard objectForPrimaryKey:cardId];
+                 query = [PFQuery queryWithClassName:@"Card"];
+                 [query whereKey:@"name" equalTo:card.name];
+                 if (card.multiverseID == -1)
                  {
-                    return [[PFObject unpinAllObjectsInBackgroundWithName:@"Cards"] continueWithSuccessBlock:^id(BFTask *ignored)
-                    {
-                        NSArray *results = task.result;
-                        
-                        if (results.count > 0)
-                        {
-                            pfCard = task.result[0];
-                        }
-                        else
-                        {
-                            // not found remotely
-                            pfCard = [PFObject objectWithClassName:@"Card"];
-                            pfCard[@"name"] = cardName;
-                            pfCard[@"multiverseID"] = [NSNumber numberWithInt:multiverseID];
-                            pfCard[@"set"] = pfSet;
-                            pfCard[@"number"] = cardNumber;
-                        }
-                        
-                        [pfCard pinInBackgroundWithBlock:^(BOOL success, NSError *error) {
-                            callbackTask(pfCard);
-                        }];
-                        return nil;
-                    }];
-                 }];
-            }
-            
-            return task;
+                     [query whereKey:@"number" equalTo:card.number];
+                 }
+                 else
+                 {
+                     [query whereKey:@"multiverseID" equalTo:[NSNumber numberWithInt:card.multiverseID]];
+                 }
+                 [query whereKey:@"set" equalTo:pfSet];
+                 
+                 [[query findObjectsInBackground] continueWithSuccessBlock:^id(BFTask *task)
+                  {
+                      NSArray *results = task.result;
+                      BOOL existing = YES;
+                      
+                      if (results.count > 0)
+                      {
+                          pfCard = task.result[0];
+                      }
+                      else
+                      {
+                          // not found remotely, create new
+                          pfCard = [PFObject objectWithClassName:@"Card"];
+                          existing = NO;
+                      }
+                      
+                      [self updateCard:pfCard
+                              existing:existing
+                            withCardId:cardId
+                                andSet:pfSet
+                             andRarity:pfRarity
+                             andArtist:pfArtist
+                          andPrintings:pfPrintings
+                           andCallback:callbackTask];
+                      
+                    return task;
+                  }];
+             }
+             
+             return task;
+         }];
+    };
+
+    void (^callbackFindPrintings)(NSString *cardId, PFObject *pfSet, PFObject *pfCardRarity, PFObject *pfArtist) = ^void(NSString *cardId, PFObject *pfSet, PFObject *pfCardRarity, PFObject *pfArtist)
+    {
+        
+        __block DTCard *card = [DTCard objectForPrimaryKey:cardId];
+        __block PFQuery *query = [PFQuery queryWithClassName:@"Set"];
+        __block NSMutableArray *arrSetNames = [[NSMutableArray alloc] init];
+        for (DTSet *set in card.printings)
+        {
+            [arrSetNames addObject:set.name];
+        }
+        
+        [query whereKey:@"name" containedIn:arrSetNames];
+        [query fromLocalDatastore];
+        
+        [[query findObjectsInBackground] continueWithBlock:^id(BFTask *task)
+         {
+             card = [DTCard objectForPrimaryKey:cardId];
+             __block NSMutableArray *pfPrintings = [[NSMutableArray alloc] init];
+             
+             if (task.error)
+             {
+                 return task;
+             }
+             
+             for (PFObject *object in task.result)
+             {
+                 [pfPrintings addObject:object];
+             }
+             
+             if (pfPrintings.count == card.printings.count)
+             {
+                 callbackFindCard(cardId, pfSet, pfCardRarity, pfArtist, pfPrintings);
+             }
+             else
+             {
+                 // not found in local datastore, find remotely
+                 query = [PFQuery queryWithClassName:@"Set"];
+                 arrSetNames = [[NSMutableArray alloc] init];
+                 for (DTSet *set in card.printings)
+                 {
+                     [arrSetNames addObject:set.name];
+                 }
+                 [query whereKey:@"name" containedIn:arrSetNames];
+                 
+                 [[query findObjectsInBackground] continueWithSuccessBlock:^id(BFTask *task)
+                 {
+                     pfPrintings = [[NSMutableArray alloc] init];
+                     
+                     for (PFObject *object in task.result)
+                     {
+                         [pfPrintings addObject:object];
+                     }
+                     
+                     for (int i=0; i<pfPrintings.count; i++)
+                     {
+                         [pfPrintings[i] pinInBackgroundWithBlock:^(BOOL success, NSError *error)
+                          {
+                              if (i == pfPrintings.count -1)
+                              {
+                                  callbackFindCard(cardId, pfSet, pfCardRarity, pfArtist, pfPrintings);
+                              }
+                          }];
+                     }
+                     
+                     return task;
+                  }];
+             }
+             
+             return task;
          }];
     };
     
-    void (^callbackFindSet)(NSString *setName, NSString *setCode, NSString *cardName, int multiverseID, NSString *cardNumber) = ^void(NSString *setName, NSString *setCode, NSString *cardName, int multiverseID, NSString *cardNumber)
+    void (^callbackFindSet)(NSString *cardId, PFObject *pfCardRarity, PFObject *pfArtist) = ^void(NSString *cardId, PFObject *pfCardRarity, PFObject *pfArtist)
     {
+        __block DTCard *card = [DTCard objectForPrimaryKey:cardId];
         __block PFQuery *query = [PFQuery queryWithClassName:@"Set"];
-        [query whereKey:@"name" equalTo:setName];
-        [query whereKey:@"code" equalTo:setCode];
+        [query whereKey:@"name" equalTo:card.set.name];
+        [query whereKey:@"code" equalTo:card.set.code];
         [query fromLocalDatastore];
         
         [[query findObjectsInBackground] continueWithBlock:^id(BFTask *task)
@@ -1015,39 +1349,39 @@ static Database *_me;
              
              if (pfSet)
              {
-                 callbackFindCard(cardName, multiverseID, cardNumber, pfSet);
+                 callbackFindPrintings(cardId, pfSet, pfCardRarity, pfArtist);
              }
              else
              {
                  // not found in local datastore, find remotely
+                 card = [DTCard objectForPrimaryKey:cardId];
                  query = [PFQuery queryWithClassName:@"Set"];
-                 [query whereKey:@"name" equalTo:setName];
-                 [query whereKey:@"code" equalTo:setCode];
+                 [query whereKey:@"name" equalTo:card.set.name];
+                 [query whereKey:@"code" equalTo:card.set.code];
                  
                  [[query findObjectsInBackground] continueWithSuccessBlock:^id(BFTask *task)
                   {
-                      return [[PFObject unpinAllObjectsInBackgroundWithName:@"Sets"] continueWithSuccessBlock:^id(BFTask *ignored)
+                      card = [DTCard objectForPrimaryKey:cardId];
+                      NSArray *results = task.result;
+                      
+                      if (results.count > 0)
                       {
-                          NSArray *results = task.result;
-                                  
-                          if (results.count > 0)
-                          {
-                              pfSet = task.result[0];
-                          }
-                          else
-                          {
-                              // not found remotely
-                              pfSet = [PFObject objectWithClassName:@"Set"];
-                              pfSet[@"name"] = setName;
-                              pfSet[@"code"] = setCode;
-                          }
-                                  
-                          [pfSet pinInBackgroundWithBlock:^(BOOL success, NSError *error)
-                          {
-                               callbackFindCard(cardName, multiverseID, cardNumber, pfSet);
-                          }];
-                          return nil;
+                          pfSet = task.result[0];
+                      }
+                      else
+                      {
+                          // not found remotely
+                          pfSet = [PFObject objectWithClassName:@"Set"];
+                          pfSet[@"name"] = card.set.name;
+                          pfSet[@"code"] = card.set.code;
+                      }
+                      
+                      [pfSet pinInBackgroundWithBlock:^(BOOL success, NSError *error)
+                      {
+                          callbackFindPrintings(cardId, pfSet, pfCardRarity, pfArtist);
                       }];
+                      
+                      return task;
                   }];
              }
              
@@ -1055,7 +1389,128 @@ static Database *_me;
          }];
     };
     
-    callbackFindSet(card.set.name, card.set.code, card.name, card.multiverseID, card.number);
+    void (^callbackFindArtist)(NSString *cardId, PFObject *pfCardRarity) = ^void(NSString *cardId, PFObject *pfCardRarity)
+    {
+        __block DTCard *card = [DTCard objectForPrimaryKey:cardId];
+        __block PFQuery *query = [PFQuery queryWithClassName:@"Artist"];
+        [query whereKey:@"name" equalTo:card.artist.name];
+        [query fromLocalDatastore];
+        
+        [[query findObjectsInBackground] continueWithBlock:^id(BFTask *task)
+         {
+             __block PFObject *pfArtist;
+             
+             if (task.error)
+             {
+                 return task;
+             }
+             
+             for (PFObject *object in task.result)
+             {
+                 pfArtist = object;
+             }
+             
+             if (pfArtist)
+             {
+                 callbackFindSet(cardId, pfCardRarity, pfArtist);
+             }
+             else
+             {
+                 // not found in local datastore, find remotely
+                 card = [DTCard objectForPrimaryKey:cardId];
+                 query = [PFQuery queryWithClassName:@"Artist"];
+                 [query whereKey:@"name" equalTo:card.artist.name];
+                 
+                 [[query findObjectsInBackground] continueWithSuccessBlock:^id(BFTask *task)
+                  {
+                      card = [DTCard objectForPrimaryKey:cardId];
+                      NSArray *results = task.result;
+                      
+                      if (results.count > 0)
+                      {
+                          pfArtist = task.result[0];
+                      }
+                      else
+                      {
+                          // not found remotely
+                          pfArtist = [PFObject objectWithClassName:@"Artist"];
+                          pfArtist[@"name"] = card.artist.name;
+                      }
+                      
+                      [pfArtist pinInBackgroundWithBlock:^(BOOL success, NSError *error)
+                      {
+                          callbackFindSet(cardId, pfCardRarity, pfArtist);
+                      }];
+                      return task;
+                  }];
+             }
+             
+             return task;
+         }];
+    };
+    
+    void (^callbackFindCardRarity)(NSString *cardId) = ^void(NSString *cardId)
+    {
+        __block DTCard *card = [DTCard objectForPrimaryKey:cardId];
+        __block PFQuery *query = [PFQuery queryWithClassName:@"CardRarity"];
+        [query whereKey:@"name" equalTo:card.rarity.name];
+        [query fromLocalDatastore];
+        
+        [[query findObjectsInBackground] continueWithBlock:^id(BFTask *task)
+         {
+             __block PFObject *pfCardRarity;
+             
+             if (task.error)
+             {
+                 return task;
+             }
+             
+             for (PFObject *object in task.result)
+             {
+                 pfCardRarity = object;
+             }
+             
+             if (pfCardRarity)
+             {
+                 callbackFindArtist(cardId, pfCardRarity);
+             }
+             else
+             {
+                 // not found in local datastore, find remotely
+                 card = [DTCard objectForPrimaryKey:cardId];
+                 query = [PFQuery queryWithClassName:@"CardRarity"];
+                 [query whereKey:@"name" equalTo:card.rarity.name];
+                 
+                 [[query findObjectsInBackground] continueWithSuccessBlock:^id(BFTask *task)
+                  {
+                      card = [DTCard objectForPrimaryKey:cardId];
+                      NSArray *results = task.result;
+                      
+                      if (results.count > 0)
+                      {
+                          pfCardRarity = task.result[0];
+                      }
+                      else
+                      {
+                          // not found remotely
+                          pfCardRarity = [PFObject objectWithClassName:@"CardRarity"];
+                          pfCardRarity[@"name"] = card.rarity.name;
+                          pfCardRarity[@"symbol"] = card.rarity.symbol;
+                      }
+                      
+                      [pfCardRarity pinInBackgroundWithBlock:^(BOOL success, NSError *error)
+                      {
+                          callbackFindArtist(cardId, pfCardRarity);
+                      }];
+                      return task;
+                  }];
+             }
+             
+             return task;
+         }];
+    };
+
+    callbackFindCardRarity(cardId);
 }
 
 -(void) processQueue
@@ -1070,14 +1525,16 @@ static Database *_me;
     [self processCurrentParseQueue];
 }
 
--(void) incrementCardView:(DTCard*) card
+-(void) incrementCardView:(NSString*) cardId
 {
     void (^callbackIncrementCard)(PFObject *pfCard) = ^void(PFObject *pfCard) {
         
+        __block DTCard *card = [DTCard objectForPrimaryKey:cardId];
         [pfCard incrementKey:@"numberOfViews"];
         pfCard[@"number"] = card.number;
         
         [pfCard saveEventually:^(BOOL success, NSError *error) {
+            card = [DTCard objectForPrimaryKey:cardId];
             
             RLMRealm *realm = [RLMRealm defaultRealm];
             [realm beginWriteTransaction];
@@ -1092,11 +1549,11 @@ static Database *_me;
         }];
     };
     
-    [_parseQueue addObject:@[card, callbackIncrementCard]];
+    [_parseQueue addObject:@[cardId, callbackIncrementCard]];
     [self processQueue];
 }
 
--(void) rateCard:(DTCard*) card withRating:(float) rating
+-(void) rateCard:(NSString*) cardId withRating:(float) rating
 {
     void (^callbackRateCard)(PFObject *pfCard) = ^void(PFObject *pfCard) {
         PFObject *pfRating = [PFObject objectWithClassName:@"CardRating"];
@@ -1108,6 +1565,7 @@ static Database *_me;
             [query whereKey:@"card" equalTo:pfCard];
             
             [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+                __block DTCard *card = [DTCard objectForPrimaryKey:cardId];
                 double totalRating = 0;
                 double averageRating = 0;
                 
@@ -1132,6 +1590,7 @@ static Database *_me;
                 
                 pfCard[@"rating"] = [NSNumber numberWithDouble:averageRating];
                 [pfCard saveEventually:^(BOOL success, NSError *error) {
+                    card = [DTCard objectForPrimaryKey:cardId];
                     
                     RLMRealm *realm = [RLMRealm defaultRealm];
                     [realm beginWriteTransaction];
@@ -1148,73 +1607,8 @@ static Database *_me;
         }];
     };
     
-    [_parseQueue addObject:@[card, callbackRateCard]];
+    [_parseQueue addObject:@[cardId, callbackRateCard]];
     [self processQueue];
-}
-
--(void) prefetchAllSetObjects
-{
-    PFQuery *query = [PFQuery queryWithClassName:@"Set"];
-    NSDate *localDate = [[NSUserDefaults standardUserDefaults] objectForKey:@"PFSets.updatedAt"];
-    __block NSDate *remoteDate;
-    __block BOOL bWillFetch = localDate == nil;
-    
-    if (!bWillFetch)
-    {
-        [query orderByDescending:@"updatedAt"];
-        [query setLimit:1];
-        
-        [[query findObjectsInBackground] continueWithSuccessBlock:^id(BFTask *task)
-        {
-            PFObject *latestSet = task.result[0];
-            remoteDate = latestSet.updatedAt;
-            [[NSUserDefaults standardUserDefaults] setObject:remoteDate forKey:@"PFSets.updatedAt"];
-            bWillFetch = [localDate compare:remoteDate] == NSOrderedAscending;
-    
-            if (bWillFetch)
-            {
-                PFQuery *q = [PFQuery queryWithClassName:@"Set"];
-                [q orderByDescending:@"updatedAt"];
-                [q setLimit:200];
-                
-                // Query from the network
-                [[q findObjectsInBackground] continueWithSuccessBlock:^id(BFTask *task)
-                 {
-                     return [[PFObject unpinAllObjectsInBackgroundWithName:@"AllSets"] continueWithSuccessBlock:^id(BFTask *ignored)
-                     {
-                         PFObject *latestSet = task.result[0];
-                         remoteDate = latestSet.updatedAt;
-                         [[NSUserDefaults standardUserDefaults] setObject:remoteDate forKey:@"PFSets.updatedAt"];
-                         [[NSUserDefaults standardUserDefaults] synchronize];
-                                 
-                         NSArray *pfSets = task.result;
-                         return [PFObject pinAllInBackground:pfSets withName:@"AllSets"];
-                     }];
-                 }];
-            }
-            
-            else
-            {
-                // Query for from locally
-                PFQuery *q = [PFQuery queryWithClassName:@"Set"];
-                [q orderByAscending:@"name"];
-                [q setLimit:200];
-                [q fromLocalDatastore];
-                
-                [[q findObjectsInBackground] continueWithBlock:^id(BFTask *task)
-                {
-                    if (task.error)
-                    {
-                        return task;
-                    }
-                     
-                    return task;
-                }];
-            }
-            
-            return nil;
-        }];
-    }
 }
 
 -(void) fetchUserMana
@@ -1403,103 +1797,329 @@ static Database *_me;
     }];
 }
 
--(void) updateParseSets
+#pragma mark Parse.com maintenance
+-(void) updateCard:(NSString*) cardId
 {
-    PFQuery *query = [PFQuery queryWithClassName:@"Set"];
-    [query whereKeyDoesNotExist:@"tcgPlayerName"];
-    [query orderByAscending:@"name"];
+    void (^callbackUpdateCard)(PFObject *pfCard) = ^void(PFObject *pfCard) {
+        _currentParseQueue = nil;
+        [self processQueue];
+    };
     
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        
-        if (!error)
-        {
-            for (PFObject *pfSet in objects)
-            {
-                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name = %@ AND code = %@", pfSet[@"name"], pfSet[@"code"]];
-                
-                DTSet *set = [[DTSet objectsWithPredicate:predicate] firstObject];
-                
-                if (set)
-                {
-//                    pfSet[@"magicCardsInfoCode"] = set.magicCardsInfoCode;
-                    if (set.tcgPlayerName)
-                    {
-                        pfSet[@"tcgPlayerName"] = set.tcgPlayerName;
-                        
-                        [pfSet saveEventually:^(BOOL success, NSError *error) {
-                            if (!error)
-                            {
-                                NSLog(@"Updated: %@ - %@: %@", set.name, set.code, set.magicCardsInfoCode);
-                            }
-                            else
-                            {
-                                NSLog(@"%@", error);
-                            }
-                        }];
-                    }
-                }
-            }
-        }
-    }];
+    [_parseQueue addObject:@[cardId, callbackUpdateCard]];
+    [self processQueue];
 }
-
 
 -(void) updateParseCards
 {
-    PFQuery *query = [PFQuery queryWithClassName:@"Set"];
-    [query whereKey:@"code" equalTo:@"TMP"];
-    [query whereKeyDoesNotExist:@"rarity"];
-    
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        
-        if (!error)
+    for (DTSet *set in [[DTSet allObjects] sortedResultsUsingProperty:@"name" ascending:YES])
+    {
+        // Done: LEA, LEB, DTK, FRF, KTK, M15, ORI, MM2, ORI, C14, DD3_DVD
+        // DD3_EVG, DD3_GVL, DD3_JVC, DDO, CPK, DDN, V14, CNS, VMA, BNG, C13, DDM
+        // DDL, JOU, V13, MD1, THS, DGM, DDK, M14, MMA, pWCQ, CM1, DDJ, V12, GTC, RTR
+        // AVR, DKA, DDI, M13, PCI, M13, PC2, AVR, DDI, DKA, DDH, V11, ISD, M12, PD3
+        // DDG, CMD, ME4, MBS, NPH
+        if ([set.code isEqualToString:@"CMD"] ||
+            [set.code isEqualToString:@"NPH"] ||
+            [set.code isEqualToString:@"DDG"] ||
+            [set.code isEqualToString:@"MBS"] ||
+            [set.code isEqualToString:@"ME4"])
         {
-            PFQuery *query2 = [PFQuery queryWithClassName:@"CardRarity"];
-            NSArray *cardRarities = [query2 findObjects];
-            
-            for (PFObject *pfSet in objects)
+            for (DTCard *card in [[DTCard objectsWithPredicate:[NSPredicate predicateWithFormat:@"set.code = %@", set.code]] sortedResultsUsingProperty:@"name" ascending:YES])
             {
-                for (DTCard *card in [DTCard objectsWithPredicate:[NSPredicate predicateWithFormat:@"set.code = %@", pfSet[@"code"]]])
+                [self updateCard:card.cardId];
+            }
+        }
+    }
+}
+
+-(void) uploadSets
+{
+    NSMutableArray *arrBlocks = [[NSMutableArray alloc] init];
+    NSMutableArray *arrSetTypes = [[NSMutableArray alloc] init];
+    
+    void (^callbackUploadSets)(NSArray *pfBlocks, NSArray *pfSetTypes) = ^void(NSArray *pfBlocks, NSArray *pfSetTypes) {
+        for (DTSet *dt in [[DTSet allObjects] sortedResultsUsingProperty:@"name" ascending:YES])
+        {
+            PFQuery *query = [PFQuery queryWithClassName:@"Set"];
+            [query whereKey:@"name" equalTo:dt.name];
+            
+            __block NSString *dtId = dt.setId;
+            
+            [[query findObjectsInBackground] continueWithBlock:^id(BFTask *task)
+            {
+                __block PFObject *pfDt;
+                __block DTSet *innerDt = [DTSet objectForPrimaryKey:dtId];
+                BOOL existing = YES;
+                
+                if (task.error)
                 {
-                    PFQuery *query2 = [PFQuery queryWithClassName:@"Card"];
-                    [query2 whereKey:@"name" equalTo:card.name];
-                    [query2 whereKey:@"set" equalTo:pfSet];
-                    [query2 whereKeyDoesNotExist:@"rarity"];
+                    return task;
+                }
+                 
+                for (PFObject *object in task.result)
+                {
+                    pfDt = object;
+                }
+                 
+                if (!pfDt)
+                {
+                    pfDt = [PFObject objectWithClassName:@"Set"];
+                    existing = NO;
+                }
+                pfDt[@"code"] = innerDt.code;
+                if (innerDt.gathererCode.length > 0)
+                {
+                    pfDt[@"gathererCode"] = innerDt.gathererCode;
+                }
+                else
+                {
+                    [pfDt removeObjectForKey:@"gathererCode"];
+                }
+                if (innerDt.magicCardsInfoCode.length > 0)
+                {
+                    pfDt[@"magicCardsInfoCode"] = innerDt.magicCardsInfoCode;
+                }
+                else
+                {
+                    [pfDt removeObjectForKey:@"magicCardsInfoCode"];
+                }
+                pfDt[@"name"] = innerDt.name;
+                pfDt[@"numberOfCards"] = [NSNumber numberWithInt:innerDt.numberOfCards];
+                if (innerDt.oldCode.length > 0)
+                {
+                    pfDt[@"oldCode"] = innerDt.oldCode;
+                }
+                else
+                {
+                    [pfDt removeObjectForKey:@"oldCode"];
+                }
+                pfDt[@"onlineOnly"] = [NSNumber numberWithBool:innerDt.onlineOnly];
+                pfDt[@"releaseDate"] = innerDt.releaseDate;
+                if (innerDt.tcgPlayerName.length > 0)
+                {
+                    pfDt[@"tcgPlayerName"] = innerDt.tcgPlayerName;
+                }
+                else
+                {
+                    [pfDt removeObjectForKey:@"tcgPlayerName"];
+                }
+                for (PFObject *pfBlock in pfBlocks)
+                {
+                    if ([pfBlock[@"name"] isEqualToString:innerDt.block.name])
+                    {
+                        pfDt[@"block"] = pfBlock;
+                        break;
+                    }
+                }
+                for (PFObject *pfSetType in pfSetTypes)
+                {
+                    if ([pfSetType[@"name"] isEqualToString:innerDt.type.name])
+                    {
+                        pfDt[@"type"] = pfSetType;
+                        break;
+                    }
+                }
+                 
+                [pfDt saveEventually:^(BOOL success, NSError *error) {
+                    innerDt = [DTSet objectForPrimaryKey:dtId];
+                    NSLog(@"%@Set: %@", (existing ? @"^" : @"+"), innerDt.name);
+                }];
+                 
+                return nil;
+            }];
+        }
+    };
+    
+    PFQuery *query = [PFQuery queryWithClassName:@"Block"];
+    [[query findObjectsInBackground] continueWithBlock:^id(BFTask *task)
+    {
+        for (PFObject *object in task.result)
+        {
+            [arrBlocks addObject:object];
+        }
+    
+        PFQuery *query2 = [PFQuery queryWithClassName:@"SetType"];
+        [[query2 findObjectsInBackground] continueWithBlock:^id(BFTask *task)
+         {
+             for (PFObject *object in task.result)
+             {
+                 [arrSetTypes addObject:object];
+             }
+             
+             callbackUploadSets(arrBlocks, arrSetTypes);
+             return nil;
+         }];
+        
+        return nil;
+    }];
+}
+
+-(void) uploadArtists
+{
+    for (DTArtist *dt in [[DTArtist allObjects] sortedResultsUsingProperty:@"name" ascending:YES])
+    {
+        PFQuery *query = [PFQuery queryWithClassName:@"Artist"];
+        [query whereKey:@"name" equalTo:dt.name];
+        
+        __block NSString *dtId = dt.artistId;
+        
+        [[query findObjectsInBackground] continueWithBlock:^id(BFTask *task)
+         {
+             __block PFObject *pfDt;
+             __block DTArtist *innerDt = [DTArtist objectForPrimaryKey:dtId];
+             
+             if (task.error)
+             {
+                 return task;
+             }
+             
+             for (PFObject *object in task.result)
+             {
+                 pfDt = object;
+             }
+             
+             if (!pfDt)
+             {
+                 pfDt = [PFObject objectWithClassName:@"Artist"];
+             }
+             pfDt[@"name"] = innerDt.name;
+             
+             [pfDt saveEventually:^(BOOL success, NSError *error) {
+                 innerDt = [DTArtist objectForPrimaryKey:dtId];
+                 NSLog(@"+Artist: %@", innerDt.name);
+             }];
+             
+             return nil;
+         }];
+    }
+}
+
+-(void) uploadBlocks
+{
+    for (DTBlock *dt in [[DTBlock allObjects] sortedResultsUsingProperty:@"name" ascending:YES])
+    {
+        PFQuery *query = [PFQuery queryWithClassName:@"Block"];
+        [query whereKey:@"name" equalTo:dt.name];
+        
+        __block NSString *dtId = dt.blockId;
+        
+        [[query findObjectsInBackground] continueWithBlock:^id(BFTask *task)
+         {
+             __block PFObject *pfDt;
+             __block DTBlock *innerDt = [DTBlock objectForPrimaryKey:dtId];
+             
+             if (task.error)
+             {
+                 return task;
+             }
+             
+             for (PFObject *object in task.result)
+             {
+                 pfDt = object;
+             }
+             
+             if (!pfDt)
+             {
+                 pfDt = [PFObject objectWithClassName:@"Block"];
+             }
+             pfDt[@"name"] = innerDt.name;
+             
+             [pfDt saveEventually:^(BOOL success, NSError *error) {
+                 innerDt = [DTBlock objectForPrimaryKey:dtId];
+                 NSLog(@"+Block: %@", innerDt.name);
+             }];
+             
+             return nil;
+         }];
+    }
+}
+
+-(void) uploadSetTypes
+{
+    for (DTSetType *dt in [[DTSetType allObjects] sortedResultsUsingProperty:@"name" ascending:YES])
+    {
+        PFQuery *query = [PFQuery queryWithClassName:@"SetType"];
+        [query whereKey:@"name" equalTo:dt.name];
+        
+        __block NSString *dtId = dt.setTypeId;
+        
+        [[query findObjectsInBackground] continueWithBlock:^id(BFTask *task)
+         {
+             __block PFObject *pfDt;
+             __block DTSetType *innerDt = [DTSetType objectForPrimaryKey:dtId];
+             
+             if (task.error)
+             {
+                 return task;
+             }
+             
+             for (PFObject *object in task.result)
+             {
+                 pfDt = object;
+             }
+             
+             if (!pfDt)
+             {
+                 pfDt = [PFObject objectWithClassName:@"SetType"];
+             }
+             pfDt[@"name"] = innerDt.name;
+             
+             [pfDt saveEventually:^(BOOL success, NSError *error) {
+                 innerDt = [DTSetType objectForPrimaryKey:dtId];
+                 NSLog(@"+SetType: %@", innerDt.name);
+             }];
+             
+             return nil;
+         }];
+    }
+}
+
+-(void) findDuplicateParseCards
+{
+    PFQuery *query = [PFQuery queryWithClassName:@"Set"];
+    [query whereKey:@"code" equalTo:@"ALL"];
+    [query orderByAscending:@"name"];
+    
+    [[query findObjectsInBackground] continueWithBlock:^id(BFTask *task)
+    {
+        for (PFObject *pfSet in task.result)
+        {
+            PFQuery *query2 = [PFQuery queryWithClassName:@"Card"];
+            [query2 whereKey:@"set" equalTo:pfSet];
+            [query2 orderByAscending:@"name"];
+            
+            [[query2 findObjectsInBackground] continueWithBlock:^id(BFTask *task2)
+            {
+                for (PFObject *pfCard in task2.result)
+                {
+                    PFQuery *query3 = [PFQuery queryWithClassName:@"Card"];
+                    [query3 whereKey:@"set" equalTo:pfSet];
+                    [query3 whereKey:@"name" equalTo:pfCard[@"name"]];
+                    [query3 whereKey:@"multiverseID" equalTo:pfCard[@"multiverseID"]];
                     
-                    [query2 findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+                    [[query3 findObjectsInBackground] continueWithBlock:^id(BFTask *task3)
+                    {
+                        NSMutableArray *pfCardsDuplicate = [[NSMutableArray alloc] init];
                         
-                        if (!error)
+                        for (PFObject *object in task3.result)
                         {
-                            for (PFObject *pfCard in objects)
-                            {
-                                pfCard[@"number"] = card.number;
-                                
-                                for (PFObject *rarity in cardRarities)
-                                {
-                                    if ([rarity[@"name"] isEqualToString:card.rarity.name])
-                                    {
-                                        pfCard[@"rarity"] = rarity;
-                                        break;
-                                    }
-                                }
-                                
-                                [pfCard saveEventually:^(BOOL success, NSError *error) {
-                                    if (!error)
-                                    {
-                                        NSLog(@"Updated: %@ - %@: %@(%@)", card.set.name, card.set.code, card.name, card.number);
-                                    }
-                                    else
-                                    {
-                                        NSLog(@"%@", error);
-                                    }
-                                }];
-                            }
+                            [pfCardsDuplicate addObject:object];
                         }
+                        
+                        if (pfCardsDuplicate.count > 1)
+                        {
+                            PFObject *pf = pfCardsDuplicate[0];
+                            
+                            NSLog(@"Duplicate: %@ [%@]", pf[@"name"], pfSet[@"name"]);
+                        }
+                        return nil;
                     }];
                 }
-            }
-            
+                
+                return nil;
+            }];
         }
+        return nil;
     }];
 }
 

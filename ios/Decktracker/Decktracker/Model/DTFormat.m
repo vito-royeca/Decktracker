@@ -10,8 +10,20 @@
 
 @implementation DTFormat
 
-+ (NSArray *)indexedProperties {
++ (NSString *)primaryKey
+{
+    return @"formatId";
+}
+
++ (NSArray *)indexedProperties
+{
     return @[@"name"];
+}
+
++ (NSDictionary *)defaultPropertyValues
+{
+    return @{ @"formatId" : [[NSUUID UUID] UUIDString],
+              @"name": @"" };
 }
 
 @end

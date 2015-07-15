@@ -43,6 +43,8 @@
 #define TCGPLAYER_PARTNER_KEY           @"DECKTRACKER"
 #define TCGPLAYER_FETCH_STORAGE         24*3 // 3 days
 
+#define EIGHTH_EDITION_RELEASE          @"2003-07-28" //@"YYYY-MM-dd"
+
 // In-App Purchase
 #define COLLECTIONS_IAP_PRODUCT_ID      @"Collections_ID"
 

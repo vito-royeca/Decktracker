@@ -12,12 +12,20 @@
 
 @implementation DTArtist
 
-+ (NSString *)primaryKey {
++ (NSString *)primaryKey
+{
     return @"artistId";
 }
 
-+ (NSArray *)indexedProperties {
++ (NSArray *)indexedProperties
+{
     return @[@"name"];
+}
+
++ (NSDictionary *)defaultPropertyValues
+{
+    return @{ @"artistId" : [[NSUUID UUID] UUIDString],
+              @"name": @"" };
 }
 
 @end
