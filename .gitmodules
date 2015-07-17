@@ -1,3 +1,7 @@
 [submodule "ios/jjj"]
 	path = ios/jjj
 	url = https://jovito@bitbucket.org/jovito/jjj.git
+
+[submodule "osx/jjj"]
+	path = osx/jjj
+	url = https://jovito@bitbucket.org/jovito/jjj.git

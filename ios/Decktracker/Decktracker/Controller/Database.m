@@ -1817,12 +1817,14 @@ static Database *_me;
         // DD3_EVG, DD3_GVL, DD3_JVC, DDO, CPK, DDN, V14, CNS, VMA, BNG, C13, DDM
         // DDL, JOU, V13, MD1, THS, DGM, DDK, M14, MMA, pWCQ, CM1, DDJ, V12, GTC, RTR
         // AVR, DKA, DDI, M13, PCI, M13, PC2, AVR, DDI, DKA, DDH, V11, ISD, M12, PD3
-        // DDG, CMD, ME4, MBS, NPH
-        if ([set.code isEqualToString:@"CMD"] ||
-            [set.code isEqualToString:@"NPH"] ||
-            [set.code isEqualToString:@"DDG"] ||
-            [set.code isEqualToString:@"MBS"] ||
-            [set.code isEqualToString:@"ME4"])
+        // DDG, CMD, ME4, MBS, NPH, DDF, V10, M11, PD2, WWK, ROE, DPA, DDE, ARC
+        // ZEN, H09, HOP, ME3, DDD, ARB, CON, DDC, V09, M10, DD2, EVE, DRB, ME2, ALA
+        //
+        if ([set.code isEqualToString:@"SHM"] ||
+            [set.code isEqualToString:@"p15A"] ||
+            [set.code isEqualToString:@"MOR"] ||
+            [set.code isEqualToString:@"pLPA"] ||
+            [set.code isEqualToString:@"EVG"])
         {
             for (DTCard *card in [[DTCard objectsWithPredicate:[NSPredicate predicateWithFormat:@"set.code = %@", set.code]] sortedResultsUsingProperty:@"name" ascending:YES])
             {
