@@ -272,7 +272,7 @@
     ratingControl.rating = 0;
     ratingControl.editable = YES;
     ratingControl.backgroundColor = [UIColor clearColor];
-    ratingControl.displayMode=EDStarRatingDisplayAccurate;
+    ratingControl.displayMode = EDStarRatingDisplayAccurate;
     ratingControl.returnBlock = ^(float rating)
     {
         _newRating = rating;
@@ -349,7 +349,7 @@
 {
     NSString *cardId = [sender userInfo][@"cardId"];
     
-    if (self.cardId == cardId)
+    if ([self.cardId isEqualToString:cardId])
     {
         NSString *path = [[FileManager sharedInstance] cardPath:self.cardId forLanguage:_currentLanguage];
         
@@ -1071,9 +1071,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell;
-    [self.webView removeFromSuperview];
-    [self.cardImage removeFromSuperview];
-    
     CGFloat dX = 0;
     CGFloat dY = 0;
     CGFloat dWidth = self.view.frame.size.width;
@@ -1082,7 +1079,7 @@
     cell.userInteractionEnabled = YES;
     if (indexPath.section == 0)
     {
-        cell = (SearchResultsTableViewCell*)[tableView dequeueReusableCellWithIdentifier:@"Cell1"];
+        cell = [tableView dequeueReusableCellWithIdentifier:@"Cell1"];
         
         if (!cell)
         {
@@ -1090,13 +1087,16 @@
                                                      reuseIdentifier:@"Cell1"];
         }
         
-        [((SearchResultsTableViewCell*)cell) displayCard:self.cardId];
         tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         cell.userInteractionEnabled = NO;
+        [((SearchResultsTableViewCell*)cell) displayCard:self.cardId];
     }
 
     else
     {
+        [self.webView removeFromSuperview];
+        [self.cardImage removeFromSuperview];
+
         cell = [tableView dequeueReusableCellWithIdentifier:@"Cell2"];
         if (cell == nil)
         {

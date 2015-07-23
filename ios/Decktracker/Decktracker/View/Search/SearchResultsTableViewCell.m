@@ -47,7 +47,7 @@
     _ratingControl.userInteractionEnabled = NO;
     _ratingControl.starImage = [UIImage imageNamed:@"star.png"];
     _ratingControl.starHighlightedImage = [UIImage imageNamed:@"starhighlighted.png"];
-    _ratingControl.maxRating = 5.0;
+    _ratingControl.maxRating = 5;
     _ratingControl.backgroundColor = [UIColor clearColor];
     _ratingControl.displayMode=EDStarRatingDisplayHalf;
     
@@ -83,7 +83,7 @@
 -(void) displayCard:(NSString*) cardId
 {
     self.cardId = cardId;
-    
+
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:kCardDownloadCompleted
                                                   object:nil];
@@ -141,13 +141,13 @@
     self.lblDetail.text = type;
     self.lblSet.text = [NSString stringWithFormat:@"%@ (%@)", card.set.name, card.rarity.name];
     _ratingControl.rating = (float)card.rating;
+    [[Database sharedInstance] fetchCardRating:card.cardId];
     
     // crop image
     _currentCropPath = [[FileManager sharedInstance] cropPath:self.cardId];
     self.imgCrop.image = [[UIImage alloc] initWithContentsOfFile:_currentCropPath];
     
     [[FileManager sharedInstance] downloadCardImage:self.cardId immediately:NO];
-    [[Database sharedInstance] fetchTcgPlayerPriceForCard:card.cardId];
     
     // type image
     NSString *path = [[FileManager sharedInstance] cardTypePath:self.cardId];
@@ -239,6 +239,7 @@
     }
     
     [self showCardPricing];
+    [[Database sharedInstance] fetchTcgPlayerPriceForCard:card.cardId];
 }
 
 -(void) addBadge:(int) badgeValue
@@ -255,17 +256,41 @@
     self.lblRank.layer.cornerRadius = self.lblRank.bounds.size.height / 2;
 }
 
+-(void) updateDisplay
+{
+    UIView *view = self;
+    UIView *parent;
+    do
+    {
+        parent = view.superview;
+        view = parent;
+        
+        if ([parent isKindOfClass:[UITableView class]])
+        {
+            break;
+        }
+        
+    } while (parent);
+    
+    if (parent)
+    {
+        UITableView *table = (UITableView *)parent;
+        NSIndexPath *indexPath = [table indexPathForCell: self];
+        [table reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    }
+}
+
 -(void) updatePricing:(id) sender
 {
     NSString *cardId = [sender userInfo][@"cardId"];
     
-    if (self.cardId == cardId)
+    if ([self.cardId isEqualToString:cardId])
     {
         [self showCardPricing];
-        
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:kPriceUpdateDone
                                                       object:nil];
+//        [self updateDisplay];
     }
 }
 
@@ -330,7 +355,7 @@
 {
     NSString *cardId = [sender userInfo][@"cardId"];
     
-    if (self.cardId == cardId)
+    if ([self.cardId isEqualToString:cardId])
     {
         DTCard *card = [DTCard objectForPrimaryKey:self.cardId];
         _ratingControl.rating = (float)card.rating;
@@ -338,6 +363,7 @@
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:kParseSyncDone
                                                       object:nil];
+//        [self updateDisplay];
     }
 }
 

@@ -24,6 +24,7 @@
 #import "InAppPurchase.h"
 #import "Bolts.h"
 #import <Parse/Parse.h>
+#import <ParseFacebookUtils/PFFacebookUtils.h>
 #endif
 
 #define kFetchBatchSize         100
@@ -44,6 +45,7 @@
 -(void) migrateDb;
 -(void) closeDb;
 -(void) copyRealmDatabaseToHome;
+-(void) setupParse:(NSDictionary *)launchOptions;
 
 -(RLMResults*) findCards:(NSString*) query
      withSortDescriptors:(NSArray*) sorters
@@ -78,6 +80,7 @@
 -(void) fetchTopViewed:(int) limit skip:(int) skip;
 -(void) incrementCardView:(NSString*) cardId;
 -(void) rateCard:(NSString*) cardId withRating:(float) rating;
+-(void) fetchCardRating:(NSString*) cardId;
 -(void) fetchUserMana;
 -(void) saveUserMana:(PFObject*) userMana;
 -(void) deleteUserManaLocally;
@@ -85,10 +88,10 @@
 // Parse Maintenance
 -(void) updateParseCards;
 -(void) findDuplicateParseCards;
--(void) uploadSets;
 -(void) uploadArtists;
 -(void) uploadBlocks;
 -(void) uploadSetTypes;
+-(void) uploadSets;
 #endif
 
 @end

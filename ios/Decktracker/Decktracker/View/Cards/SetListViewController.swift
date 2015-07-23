@@ -27,7 +27,9 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
     let kSearchResultsIdentifier = "kSearchResultsIdentifier"
     
     var sortButton:UIBarButtonItem?
+//    var segmentedControl:UISegmentedControl?
     var tblSets:UITableView?
+//    var webView:UIWebView?
     var sections:[String: [AnyObject]]?
     var sectionIndexTitles:[String]?
     var arrayData:[AnyObject]?

@@ -73,6 +73,9 @@ typedef NS_ENUM(NSInteger, EditMode)
 
 #define kParseID                         @"gWQ4zjHnoXHJK15ipFVgWLUSA979mqHaZ7sOlPU9"
 #define kParseClientKey                  @"VVX6xrtslagHUKOSBXV3hj0B0i08izWSk53gSGem"
+#define kParseDevelopID                  @"mKMQ9Hl7eGJJIwWb77WYyLfr7GpvsmuNKgGRRZyR"
+#define kParseDevelopClientKey           @"lfho62cNW9M5HuEfhJ2HK7RuVKIlNmLfFo7bnyd5"
+
 
 #define kTwitterKey                      @"M9SYMK8TAvUxFVpa6qVOAH8Bb"
 #define kTwitterSecret                   @"xOlE7XZgtTeM8LVmXYZ5xtxvOZXBrupYNYLOzHtkIuZpCzEWBf"

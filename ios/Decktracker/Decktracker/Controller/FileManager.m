@@ -184,7 +184,7 @@ static FileManager *_me;
     NSDictionary *oldQueue;
     for (NSDictionary *dict in _downloadQueue)
     {
-        if (dict[@"card"] == card)
+        if (dict[@"cardId"] == cardId)
         {
             oldQueue = dict;
             break;
@@ -271,7 +271,8 @@ static FileManager *_me;
     NSString *path = currentQueue[@"path"];
     
     NSLog(@"Downloading %@", url);
-
+    NSString *cardId = currentQueue[@"cardId"];
+    
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     operation.responseSerializer = [AFImageResponseSerializer serializer];
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -289,22 +290,19 @@ static FileManager *_me;
             [data writeToFile:path atomically:YES];
         }
         
-        
-        id cardId = currentQueue[@"cardId"];
-        if (cardId)
-        {
-            [self createCropForCard:cardId];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kCardDownloadCompleted
-                                                                object:nil
-                                                              userInfo:@{@"cardId":cardId}];
-        }
-        
+        [self createCropForCard:cardId];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kCardDownloadCompleted
+                                                            object:nil
+                                                          userInfo:@{@"cardId":cardId}];
         _cuncurrentDownloads--;
         [self processDownloadQueue];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"File not found: %@", [error userInfo][@"NSErrorFailingURLKey"]);
         
+        [[NSNotificationCenter defaultCenter] postNotificationName:kCardDownloadCompleted
+                                                            object:nil
+                                                          userInfo:@{@"cardId":cardId}];
         _cuncurrentDownloads--;
         [self processDownloadQueue];
     }];

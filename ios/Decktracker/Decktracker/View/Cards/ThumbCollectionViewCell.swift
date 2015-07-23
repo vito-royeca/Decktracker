@@ -12,8 +12,9 @@ class ThumbCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var imgCrop: UIImageView!
     @IBOutlet weak var lblCardName: UILabel!
-    @IBOutlet weak var lblSetName: UILabel!
     @IBOutlet weak var imgSet: UIImageView!
+    @IBOutlet weak var viewRating: UIView!
+    var _ratingControl: EDStarRating?
     
     var cardId:String?
     var currentCropPath:String?
@@ -22,27 +23,39 @@ class ThumbCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
         // Initialization code
         
+        lblCardName.sizeToFit()
+        
         imgCrop.layer.cornerRadius = 10.0
         imgCrop.layer.masksToBounds = true
+        
+        _ratingControl = EDStarRating(frame: self.viewRating.frame)
+        _ratingControl!.userInteractionEnabled = false
+        _ratingControl!.starImage = UIImage(named: "star.png")
+        _ratingControl!.starHighlightedImage = UIImage(named: "starhighlighted.png")
+        _ratingControl!.maxRating = 5
+        _ratingControl!.backgroundColor = UIColor.clearColor()
+        _ratingControl!.displayMode = UInt(EDStarRatingDisplayHalf)
+        
+        self.viewRating!.removeFromSuperview()
+        self.addSubview(_ratingControl!)
     }
 
     func displayCard(cardId: String) {
         self.cardId = cardId
-        
         let card = DTCard(forPrimaryKey: self.cardId)
         
-        NSNotificationCenter.defaultCenter().removeObserver(self,
-            name:kCardDownloadCompleted,  object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self,
-            selector:"loadCropImage:",  name:kCardDownloadCompleted, object:nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: kParseSyncDone, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector:"parseSyncDone:", name: kParseSyncDone, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name:kCardDownloadCompleted,  object:nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector:"loadCropImage:",  name:kCardDownloadCompleted, object:nil)
         
         lblCardName.text = card.name
-        lblSetName.text = card.set.name
-        
         currentCropPath = FileManager.sharedInstance().cropPath(self.cardId)
         imgCrop.image = UIImage(contentsOfFile: currentCropPath!)
+        _ratingControl!.rating = Float(card.rating)
         
         FileManager.sharedInstance().downloadCardImage(self.cardId, immediately:false)
+        Database.sharedInstance().fetchCardRating(self.cardId)
         
         // set image
         let dict = Database.sharedInstance().inAppSettingsForSet(card.set.setId)
@@ -84,6 +97,18 @@ class ThumbCollectionViewCell: UICollectionViewCell {
             
             NSNotificationCenter.defaultCenter().removeObserver(self,
                 name:kCardDownloadCompleted,  object:nil)
+        }
+    }
+    
+    func parseSyncDone(sender: AnyObject)  {
+        let dict = sender.userInfo as Dictionary?
+        let cardId = dict?["cardId"] as! String
+    
+        if self.cardId == cardId {
+            let card = DTCard(forPrimaryKey: self.cardId)
+            _ratingControl!.rating = Float(card.rating)
+    
+            NSNotificationCenter.defaultCenter().removeObserver(self, name: kParseSyncDone, object: nil)
         }
     }
 }

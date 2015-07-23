@@ -325,7 +325,7 @@
     cell.userInteractionEnabled = YES;
     if (indexPath.section == 0)
     {
-        cell = (SearchResultsTableViewCell*)[tableView dequeueReusableCellWithIdentifier:@"Cell1"];
+        cell = [tableView dequeueReusableCellWithIdentifier:@"Cell1"];
         
         if (!cell)
         {
@@ -333,9 +333,9 @@
                                                      reuseIdentifier:@"Cell1"];
         }
         
-        [((SearchResultsTableViewCell*)cell) displayCard:self.cardId];
         tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         cell.userInteractionEnabled = NO;
+        [((SearchResultsTableViewCell*)cell) displayCard:self.cardId];
     }
     else if (indexPath.section == 2)
     {

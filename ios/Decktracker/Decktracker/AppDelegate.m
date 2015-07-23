@@ -43,9 +43,6 @@
     // Crashlytics
     [Crashlytics startWithAPIKey:kCrashlyticsAPIKey];
 
-    // Parse
-    [self setupParse:launchOptions];
-    
     // FileSystem
     [[FileManager sharedInstance] moveFilesInDocumentsToCaches];
     for (NSInteger i=FileSystemLocal; i<=FileSystemOneDrive; i++)
@@ -55,9 +52,10 @@
     }
     [[FileManager sharedInstance] syncFiles];
 
-    // MagicalRecord
-    [[Database sharedInstance ] setupDb];
-    [[Database sharedInstance ] updateParseCards];
+    // Database and Parse
+    [[Database sharedInstance] setupDb];
+    [[Database sharedInstance] setupParse:launchOptions];
+//    [[Database sharedInstance ] updateParseCards];
 
     // custom colors
     [[UINavigationBar appearance] setBarTintColor:[JJJUtil UIColorFromRGB:0x691F01]];
@@ -155,17 +153,6 @@
     return [FBAppCall handleOpenURL:url
                   sourceApplication:source
                         withSession:[PFFacebookUtils session]];
-}
-
--(void) setupParse:(NSDictionary *)launchOptions
-{
-    [Parse enableLocalDatastore];
-    [Parse setApplicationId:kParseID
-                  clientKey:kParseClientKey];
-    [PFFacebookUtils initializeFacebook];
-    [PFTwitterUtils initializeWithConsumerKey:kTwitterKey
-                               consumerSecret:kTwitterSecret];
-    [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
 }
 
 @end

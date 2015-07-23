@@ -349,6 +349,7 @@
 -(UITableViewCell*) createSearchResultsTableCell:(NSDictionary*) dict
 {
     SearchResultsTableViewCell *cell = [self.tblCards dequeueReusableCellWithIdentifier:@"Cell1"];
+    NSString *cardId = dict[@"cardId"];
     
     if (!cell)
     {
@@ -356,7 +357,7 @@
                                                  reuseIdentifier:@"Cell1"];
     }
     
-    [cell displayCard:dict[@"card"]];
+    [cell displayCard:cardId];
     [cell addBadge:[dict[@"qty"] intValue]];
     return cell;
 }

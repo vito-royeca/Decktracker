@@ -7,45 +7,33 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="SetCollectionViewCell" customModule="Decktracker" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="80" height="132"/>
+            <rect key="frame" x="0.0" y="4" width="80" height="128"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="80" height="132"/>
+                <rect key="frame" x="0.0" y="0.0" width="80" height="128"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sAh-Bq-S1I">
-                        <rect key="frame" x="4" y="4" width="72" height="72"/>
+                        <rect key="frame" x="8" y="0.0" width="64" height="64"/>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="foh-Nb-euL">
-                        <rect key="frame" x="4" y="78" width="72" height="15"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="foh-Nb-euL">
+                        <rect key="frame" x="4" y="64" width="72" height="64"/>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lye-kc-rD8">
-                        <rect key="frame" x="4" y="96" width="72" height="15"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n4b-f0-d6J">
-                        <rect key="frame" x="4" y="112" width="72" height="15"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UDM-iH-bER">
-                        <rect key="frame" x="4" y="52" width="24" height="24"/>
+                        <rect key="frame" x="8" y="40" width="24" height="24"/>
                     </imageView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
+            <size key="customSize" width="80" height="128"/>
             <connections>
                 <outlet property="imgLocked" destination="UDM-iH-bER" id="Dit-NZ-hk5"/>
                 <outlet property="imgSet" destination="sAh-Bq-S1I" id="DRj-ct-uUz"/>
-                <outlet property="lblNumberOfCards" destination="n4b-f0-d6J" id="QvK-cL-kIT"/>
-                <outlet property="lblReleaseDate" destination="lye-kc-rD8" id="4JC-tG-e2h"/>
                 <outlet property="lblSetName" destination="foh-Nb-euL" id="HKH-im-UN3"/>
             </connections>
+            <point key="canvasLocation" x="395" y="235"/>
         </collectionViewCell>
     </objects>
 </document>

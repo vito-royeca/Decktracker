@@ -36,10 +36,8 @@ class BannerCollectionViewCell: UICollectionViewCell {
         self.cardId = cardId
         let card = DTCard(forPrimaryKey: self.cardId)
         
-        NSNotificationCenter.defaultCenter().removeObserver(self,
-            name:kCardDownloadCompleted,  object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self,
-            selector:"loadCropImage:",  name:kCardDownloadCompleted, object:nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name:kCardDownloadCompleted,  object:nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector:"loadCropImage:",  name:kCardDownloadCompleted, object:nil)
         
         if card.modern {
             lblCardName.font = _8thEditionFont;
@@ -107,8 +105,7 @@ class BannerCollectionViewCell: UICollectionViewCell {
                     completion: nil)
             }
             
-            NSNotificationCenter.defaultCenter().removeObserver(self,
-                name:kCardDownloadCompleted,  object:nil)
+            NSNotificationCenter.defaultCenter().removeObserver(self, name:kCardDownloadCompleted,  object:nil)
         }
     }
 }

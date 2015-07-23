@@ -7,7 +7,7 @@
 #import <SystemConfiguration/SystemConfiguration.h>
 #import "CorePlot-CocoaTouch.h"
 #import "CSStickyHeaderFlowLayout.h"
-#import "ReaderViewController.h"
+#import "EDStarRating.h"
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"
 #import "GAIFields.h"
@@ -15,6 +15,7 @@
 #import <Parse/Parse.h>
 #import <ParseUI/ParseUI.h>
 #import "PureLayout.h"
+#import "ReaderViewController.h"
 #import <Realm/Realm.h>
 #import <JJJ/JJJUtil.h>
 

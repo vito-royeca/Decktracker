@@ -138,6 +138,9 @@ static Database *_me;
                 }
             }
             
+            // cleanup Parse LocalDataStore
+            [self cleanupParseLocalDataStore];
+            
             [[NSUserDefaults standardUserDefaults] setValue:jsonVersion forKey:@"JSON Version"];
             [[NSUserDefaults standardUserDefaults] setValue:imagesVersion forKey:@"Images Version"];
             [[NSUserDefaults standardUserDefaults] synchronize];
@@ -176,7 +179,6 @@ static Database *_me;
         }
     }
 #endif
-
 }
 
 -(void) migrateDb
@@ -211,6 +213,25 @@ static Database *_me;
         [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
     }
     [[RLMRealm defaultRealm] writeCopyToPath:path error:nil];
+}
+
+-(void) setupParse:(NSDictionary *)launchOptions
+{
+    [Parse enableLocalDatastore];
+//#ifdef DEBUG
+//    [Parse setApplicationId:kParseDevelopID
+//                  clientKey:kParseDevelopClientKey];
+//#else
+    [Parse setApplicationId:kParseID
+                  clientKey:kParseClientKey];
+//#endif
+
+#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
+    [PFFacebookUtils initializeFacebook];
+    [PFTwitterUtils initializeWithConsumerKey:kTwitterKey
+                               consumerSecret:kTwitterSecret];
+    [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+#endif
 }
 
 #pragma mark - Finders with FetchedResultsController
@@ -806,6 +827,7 @@ static Database *_me;
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"rating >= 0"];
     PFQuery *query = [PFQuery queryWithClassName:@"Card" predicate:predicate];
     [query orderByDescending:@"rating"];
+    [query addDescendingOrder:@"updatedAt"];
     [query addAscendingOrder:@"name"];
     [query whereKeyExists:@"rating"];
     [query includeKey:@"set"];
@@ -1525,13 +1547,31 @@ static Database *_me;
     [self processCurrentParseQueue];
 }
 
+-(void) cleanupParseQueue:(NSString*) cardId withCallbackName:(NSString*) callbackName
+{
+    NSMutableArray *duplicates = [[NSMutableArray alloc] init];
+    
+    for (NSArray *queue in _parseQueue)
+    {
+        if ([queue[0] isEqualToString:cardId] &&
+            [queue[2] isEqualToString:callbackName])
+        {
+            [duplicates addObject:queue];
+        }
+    }
+    [_parseQueue removeObjectsInArray:duplicates];
+}
+
 -(void) incrementCardView:(NSString*) cardId
 {
+    NSString *callbackName = @"callbackIncrementCard";
+    
+    [self cleanupParseQueue:cardId withCallbackName:callbackName];
+    
     void (^callbackIncrementCard)(PFObject *pfCard) = ^void(PFObject *pfCard) {
         
         __block DTCard *card = [DTCard objectForPrimaryKey:cardId];
         [pfCard incrementKey:@"numberOfViews"];
-        pfCard[@"number"] = card.number;
         
         [pfCard saveEventually:^(BOOL success, NSError *error) {
             card = [DTCard objectForPrimaryKey:cardId];
@@ -1543,18 +1583,22 @@ static Database *_me;
             
             [[NSNotificationCenter defaultCenter] postNotificationName:kParseSyncDone
                                                                 object:nil
-                                                              userInfo:@{@"card": card}];
+                                                              userInfo:@{@"cardId": cardId}];
             _currentParseQueue = nil;
             [self processQueue];
         }];
     };
     
-    [_parseQueue addObject:@[cardId, callbackIncrementCard]];
+    [_parseQueue addObject:@[cardId, callbackIncrementCard, callbackName]];
     [self processQueue];
 }
 
 -(void) rateCard:(NSString*) cardId withRating:(float) rating
 {
+    NSString *callbackName = @"callbackRateCard";
+    
+    [self cleanupParseQueue:cardId withCallbackName:callbackName];
+    
     void (^callbackRateCard)(PFObject *pfCard) = ^void(PFObject *pfCard) {
         PFObject *pfRating = [PFObject objectWithClassName:@"CardRating"];
         pfRating[@"rating"] = [NSNumber numberWithDouble:rating];
@@ -1599,7 +1643,7 @@ static Database *_me;
                     
                     [[NSNotificationCenter defaultCenter] postNotificationName:kParseSyncDone
                                                                         object:nil
-                                                                      userInfo:@{@"card": card}];
+                                                                      userInfo:@{@"cardId": cardId}];
                     _currentParseQueue = nil;
                     [self processQueue];
                 }];
@@ -1607,7 +1651,33 @@ static Database *_me;
         }];
     };
     
-    [_parseQueue addObject:@[cardId, callbackRateCard]];
+    [_parseQueue addObject:@[cardId, callbackRateCard, callbackName]];
+    [self processQueue];
+}
+
+-(void) fetchCardRating:(NSString*) cardId
+{
+    NSString *callbackName = @"callbackFetchCardRating";
+    
+    [self cleanupParseQueue:cardId withCallbackName:callbackName];
+    
+    void (^callbackFetchCardRating)(PFObject *pfCard) = ^void(PFObject *pfCard) {
+        
+        DTCard *card = [DTCard objectForPrimaryKey:cardId];
+        
+        RLMRealm *realm = [RLMRealm defaultRealm];
+        [realm beginWriteTransaction];
+        card.rating = [pfCard[@"rating"] doubleValue];
+        [realm commitWriteTransaction];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kParseSyncDone
+                                                            object:nil
+                                                          userInfo:@{@"cardId": cardId}];
+        _currentParseQueue = nil;
+        [self processQueue];
+    };
+    
+    [_parseQueue addObject:@[cardId, callbackFetchCardRating, callbackName]];
     [self processQueue];
 }
 
@@ -1800,12 +1870,16 @@ static Database *_me;
 #pragma mark Parse.com maintenance
 -(void) updateCard:(NSString*) cardId
 {
+    NSString *callbackName = @"callbackUpdateCard";
+    
+    [self cleanupParseQueue:cardId withCallbackName:callbackName];
+    
     void (^callbackUpdateCard)(PFObject *pfCard) = ^void(PFObject *pfCard) {
         _currentParseQueue = nil;
         [self processQueue];
     };
     
-    [_parseQueue addObject:@[cardId, callbackUpdateCard]];
+    [_parseQueue addObject:@[cardId, callbackUpdateCard, callbackName]];
     [self processQueue];
 }
 
@@ -1813,18 +1887,11 @@ static Database *_me;
 {
     for (DTSet *set in [[DTSet allObjects] sortedResultsUsingProperty:@"name" ascending:YES])
     {
-        // Done: LEA, LEB, DTK, FRF, KTK, M15, ORI, MM2, ORI, C14, DD3_DVD
-        // DD3_EVG, DD3_GVL, DD3_JVC, DDO, CPK, DDN, V14, CNS, VMA, BNG, C13, DDM
-        // DDL, JOU, V13, MD1, THS, DGM, DDK, M14, MMA, pWCQ, CM1, DDJ, V12, GTC, RTR
-        // AVR, DKA, DDI, M13, PCI, M13, PC2, AVR, DDI, DKA, DDH, V11, ISD, M12, PD3
-        // DDG, CMD, ME4, MBS, NPH, DDF, V10, M11, PD2, WWK, ROE, DPA, DDE, ARC
-        // ZEN, H09, HOP, ME3, DDD, ARB, CON, DDC, V09, M10, DD2, EVE, DRB, ME2, ALA
-        //
-        if ([set.code isEqualToString:@"SHM"] ||
-            [set.code isEqualToString:@"p15A"] ||
-            [set.code isEqualToString:@"MOR"] ||
-            [set.code isEqualToString:@"pLPA"] ||
-            [set.code isEqualToString:@"EVG"])
+        // MTGJSON v2.22.4
+        if ([set.code isEqualToString:@"CEI"] ||
+            [set.code isEqualToString:@"DKM"] ||
+            [set.code isEqualToString:@"ORI"] ||
+            [set.code isEqualToString:@"CPK"])
         {
             for (DTCard *card in [[DTCard objectsWithPredicate:[NSPredicate predicateWithFormat:@"set.code = %@", set.code]] sortedResultsUsingProperty:@"name" ascending:YES])
             {
@@ -1969,6 +2036,7 @@ static Database *_me;
          {
              __block PFObject *pfDt;
              __block DTArtist *innerDt = [DTArtist objectForPrimaryKey:dtId];
+             __block BOOL existing = YES;
              
              if (task.error)
              {
@@ -1983,12 +2051,13 @@ static Database *_me;
              if (!pfDt)
              {
                  pfDt = [PFObject objectWithClassName:@"Artist"];
+                 existing = NO;
              }
              pfDt[@"name"] = innerDt.name;
              
              [pfDt saveEventually:^(BOOL success, NSError *error) {
                  innerDt = [DTArtist objectForPrimaryKey:dtId];
-                 NSLog(@"+Artist: %@", innerDt.name);
+                 NSLog(@"%@Artist: %@", existing ? @"^": @"+", innerDt.name);
              }];
              
              return nil;
@@ -2009,6 +2078,7 @@ static Database *_me;
          {
              __block PFObject *pfDt;
              __block DTBlock *innerDt = [DTBlock objectForPrimaryKey:dtId];
+             __block BOOL existing = YES;
              
              if (task.error)
              {
@@ -2023,12 +2093,13 @@ static Database *_me;
              if (!pfDt)
              {
                  pfDt = [PFObject objectWithClassName:@"Block"];
+                 existing = NO;
              }
              pfDt[@"name"] = innerDt.name;
              
              [pfDt saveEventually:^(BOOL success, NSError *error) {
                  innerDt = [DTBlock objectForPrimaryKey:dtId];
-                 NSLog(@"+Block: %@", innerDt.name);
+                 NSLog(@"%@Block: %@", existing ? @"^": @"+", innerDt.name);
              }];
              
              return nil;
@@ -2049,6 +2120,7 @@ static Database *_me;
          {
              __block PFObject *pfDt;
              __block DTSetType *innerDt = [DTSetType objectForPrimaryKey:dtId];
+             __block BOOL existing = YES;
              
              if (task.error)
              {
@@ -2063,12 +2135,13 @@ static Database *_me;
              if (!pfDt)
              {
                  pfDt = [PFObject objectWithClassName:@"SetType"];
+                 existing = NO;
              }
              pfDt[@"name"] = innerDt.name;
              
              [pfDt saveEventually:^(BOOL success, NSError *error) {
                  innerDt = [DTSetType objectForPrimaryKey:dtId];
-                 NSLog(@"+SetType: %@", innerDt.name);
+                 NSLog(@"%@SetType: %@", existing ? @"^": @"+", innerDt.name);
              }];
              
              return nil;
@@ -2123,6 +2196,24 @@ static Database *_me;
         }
         return nil;
     }];
+}
+
+-(void) cleanupParseLocalDataStore
+{
+//    for (NSString *objectName in @[@"Card", @"CardRarity", @"CardRating", @"Set", @"Block", @"Artist", @"SetType"])
+//    {
+//        PFQuery *query = [PFQuery queryWithClassName:objectName];
+//        [query fromLocalDatastore];
+//
+//        [[query findObjectsInBackground] continueWithBlock:^id(BFTask *task)
+//        {
+//            for (PFObject *object in task.result)
+//            {
+//                [object unpinInBackground];
+//            }
+//            return nil;
+//        }];
+//    }
 }
 
 #endif

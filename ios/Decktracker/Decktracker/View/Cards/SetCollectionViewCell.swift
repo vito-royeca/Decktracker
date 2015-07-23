@@ -12,17 +12,14 @@ class SetCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var imgSet: UIImageView!
     @IBOutlet weak var lblSetName: UILabel!
-    @IBOutlet weak var lblReleaseDate: UILabel!
-    @IBOutlet weak var lblNumberOfCards: UILabel!
     @IBOutlet weak var imgLocked: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         
+        lblSetName.sizeToFit()
 //        lblSetName.adjustsFontSizeToFitWidth = true
-        lblReleaseDate.adjustsFontSizeToFitWidth = true
-        lblNumberOfCards.adjustsFontSizeToFitWidth = true
     }
 
     func displaySet(setId: String) {
@@ -55,7 +52,5 @@ class SetCollectionViewCell: UICollectionViewCell {
         
         let set = DTSet(forPrimaryKey: setId)
         lblSetName.text = set.name
-        lblReleaseDate.text = JJJUtil.formatDate(set.releaseDate, withFormat:"YYYY-MM-dd")
-        lblNumberOfCards.text = "\(set.numberOfCards) cards"
     }
 }
