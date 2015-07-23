@@ -16,13 +16,13 @@
 		<string>https://bitbucket.org/jovito/decktracker.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>DataSource/DataSource.xcworkspace</string>
+	<string>osx/DataSource/DataSource.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>660D3E71C9E58E5C4A23770105F172433B1EFB46</key>
-		<string>../../jjj</string>
+		<string>../../..osx/jjj</string>
 		<key>9E1CF28A30E48A07DF802E7FC1063A8BE5202279</key>
-		<string>../..</string>
+		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://bitbucket.org/jovito/decktracker.git</string>
@@ -38,7 +38,7 @@
 			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>9E1CF28A30E48A07DF802E7FC1063A8BE5202279</string>
 			<key>IDESourceControlWCCName</key>
-			<string>Decktracker</string>
+			<string>decktracker</string>
 		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>

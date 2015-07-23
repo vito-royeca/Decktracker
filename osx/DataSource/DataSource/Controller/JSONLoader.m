@@ -49,16 +49,7 @@
     {
         NSDictionary *dict = json[setName];
         DTSet *set = [self parseSet:dict];
-//        if (![set.code isEqualToString:@"LEA"] ||
-//            ![set.code isEqualToString:@"TMP"] ||
-//            ![set.code isEqualToString:@"TSP"] ||
-//            ![set.code isEqualToString:@"2ED"] ||
-//            ![set.code isEqualToString:@"LEB"] ||
-//            ![set.code isEqualToString:@"AVR"] ||
-//            ![set.code isEqualToString:@"FUT"] ||
-//            ![set.code isEqualToString:@"pJGP"] ||
-//            ![set.code isEqualToString:@"ONS"] ||
-//            ![set.code isEqualToString:@"pGPX"])
+//        if (![set.code isEqualToString:@"LEA"])
 //        {
 //            continue;
 //        }
