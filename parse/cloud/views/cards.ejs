@@ -1,8 +1,26 @@
 <script>
-	function loadTCGPrice(rank, tcgPlayerName, cardName) {
+	var kManaSymbols = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+    	        		"10", "11", "12", "13", "14", "15", "16", "17", "18", "19",
+        	    		"20", "100", "1000000",
+            			"W", "U", "B", "R", "G",
+            			"S", "X", "Y", "Z",
+            			"WU", "WB", "UB",
+	                    "UR", "BR", "BG", "RG", "RW", "GW", "GU", "2W",
+    	                "2U", "2B", "2R", "2G", "P", "PW", "PU", "PB",
+        	            "PR", "PG", "Infinity", "H", "HW", "HU", "HB",
+            	        "HR", "HG"];
 
-	    var urL = "cardPrice?tcgPlayerName="+tcgPlayerName+"&cardName="+cardName;
-	        	
+	var kCardTypeWithSymbols = ["Artifact", "Creature",
+                	            "Enchantment", "Instant", "Land",
+                    	        "Planeswalker", "Sorcery"];
+
+
+	var urlBase = "https://jovitoroyecacom.ipage.com/decktracker";
+	
+	function loadCardImage(id, magicCardsInfoCode, number, crop) {
+
+	    var url = "cardImage?magicCardsInfoCode="+magicCardsInfoCode+"&number="+number+"&crop="+crop;
+	    
 		var xmlhttp;
 		var txt,x,i;
 		// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -17,251 +35,474 @@
 		xmlhttp.onreadystatechange=function() {
 
   			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-    			xmlDoc=xmlhttp.responseXML;
-			    txt="<table>";
+    			
+    			xmlDoc=xmlhttp.responseText;
+				document.getElementById("cardImage"+id).src = "data:image/png;base64,"+xmlDoc;
+    		}
+  		}
+  		
+		xmlhttp.open("GET", url, true);
+		xmlhttp.send();
+	}
+	
+	function loadCardMana(id, text) {
+    	if (text == null || text == 'undefined') {
+			text = "";
+			
+		} else {
+			var arrSymbols = [];
+    		var curlyOpen = -1;
+		    var curlyClose = -1;
+
+		    for (i=0; i<text.length; i++) {
+        		if (text.charAt(i) == '{') {
+        	    	curlyOpen = i;
+    	    	}
+	        	if (text.charAt(i) == '}') {
+            		curlyClose = i;
+        		}
+        		if (curlyOpen != -1 && curlyClose != -1) {
+        	    	var symbol = text.substr(curlyOpen, (curlyClose-curlyOpen+1));
+		            arrSymbols.push(symbol);
+	    	        curlyOpen = -1;
+        	    	curlyClose = -1;
+        		}
+    		}
+			
+		    for (i=0; i<arrSymbols.length; i++) {
+	    		var symbol = arrSymbols[i];
+    	
+        		var bFound = false;
+	    	    var noCurlies = symbol.substr(1, symbol.length-2).replace("/", "");
+    		    var noCurliesReverse = noCurlies.split("").reverse().join("");
+	        	var pngSize = 0, width=0, height=0;
+
+	        	if (noCurlies == "100") {
+    		        width = 24;
+    	    	    height = 13;
+	            	pngSize = 48;
+	        	} else if (noCurlies == "1000000") {
+    		        width = 64;
+    	    	    height = 13;
+	            	pngSize = 96;
+	    	    } else {
+    		        width = 16;
+	        	    height = 16;
+            		pngSize = 32;
+        		}
+
+	    	    for (j=0; j<kManaSymbols.length; j++) {
+    		    	var mana = kManaSymbols[j];
+        			
+	        	    if (mana == noCurlies) {
+            		    text = text.replace(symbol, "<img src='"+urlBase+"/mana/"+noCurlies+"/"+pngSize+".png' width='"+width+"' height='"+height+"' />");
+            	    	bFound = true;
+                
+	    	        } else if (mana == noCurliesReverse) {
+    		            text = text.replace(symbol, "<img src='"+urlBase+"/mana/"+noCurliesReverse+"/"+pngSize+".png' width='"+width+"' height='"+height+"' />");
+	        	        bFound = true;
+                
+            		} else if (mana == "Infinity") {
+            	    	text = text.replace("{∞}", "<img src='"+urlBase+"/mana/Infinity/"+pngSize+".png' width='"+width+"' height='"+height+"' />");
+            	    	bFound = true;
+        	    	}
+    	    	}
+        
+		        if (!bFound) {
+    	        	for (j=0; j<kManaSymbols.length; j++) {
+        				var mana = kManaSymbols[j];
+        		
+        	    	    if (mana == noCurlies) {
+    	            	    text = text.replace(symbol, "<img src='"+urlBase+"/other/"+noCurlies+"/"+pngSize+".png' width='"+width+"' height='"+height+"' />");
+
+		                } else if (mana == noCurliesReverse) {
+    	            	    text = text.replace(symbol, "<img src='"+urlBase+"/other/"+noCurliesReverse+"/"+pngSize+".png' width='"+width+"' height='"+height+"' />");
+        	    	    }
+            		}
+	    	    }
+    		}
+			
+		    text = text.replace("(", "(<i>");
+    		text = text.replace(")", ")</i>");
+		    text = text.replace(/\r?\n/g, "<br />");
+		}
+
+		document.getElementById("cardMana"+id).innerHTML = text;
+	}
+
+	function loadTCGPrice(id, tcgPlayerName, cardName) {
+		if (tcgPlayerName == 'undefined') {
+			return;
+		}
+		
+	    var urL = "cardPrice?tcgPlayerName="+tcgPlayerName+"&cardName="+cardName;
+		var xmlhttp;
+		var txt,x,i;
+		// code for IE7+, Firefox, Chrome, Opera, Safari
+		if (window.XMLHttpRequest) {
+		  	xmlhttp=new XMLHttpRequest();
+		  	
+		// code for IE6, IE5  	
+  		} else {
+  			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  		}
+
+		xmlhttp.onreadystatechange=function() {
+
+  			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+    			var xmlDoc = xmlhttp.responseXML;
+    			var x = xmlDoc.getElementsByTagName("product");
+    			var low  = "";
+    			var mid  = "";
+    			var high = "";
+    			var foil = "";
+    			var link = "";
+    			var txt  = "";
+    			
+			    txt = "<table width='40%'>";
+			    txt = txt.concat("<tr>");
+			    txt = txt.concat("<td>Low</td>");
+			    txt = txt.concat("<td>Median</td>");
+			    txt = txt.concat("<td>High</td>");
+			    txt = txt.concat("<td>Foil</td>");
+			    txt = txt.concat("</tr>");
 			    
-			    x=xmlDoc.getElementsByTagName("product");
-			    
-			    for (i=0;i<x.length;i++)
+			    for (i=0;i <x.length; i++)
       			{
-      			  v = ""
+        		  	var xx = x[i].getElementsByTagName("foilavgprice");
+        		  	{
+        				try
+          				{
+          					foil = xx[0].firstChild.nodeValue == "0" ? "N.A." : ("$"+xx[0].firstChild.nodeValue);
+          				}
+        				catch (er)
+          				{
+          					foil = "";
+          				}
+        		  	}
         		  
-        		  xx=x[i].getElementsByTagName("foilavgprice");
-        		  {
-        			try
-          			{
-          				v = xx[0].firstChild.nodeValue == "0" ? "N.A." : ("$"+xx[0].firstChild.nodeValue);
-          			}
-        			catch (er)
-          			{
-          				v = ""
-          			}
-          			txt = txt + "<tr><td>Foil</td><td align='right'>" + v + "</td></tr>";
-        		  }
+        		  	xx = x[i].getElementsByTagName("hiprice");
+        		  	{
+        				try
+          				{
+          					high = xx[0].firstChild.nodeValue == "0" ? "N.A." : ("$"+xx[0].firstChild.nodeValue);
+          				}
+        				catch (er)
+          				{
+          					high = "";
+          				}
+        		  	}
         		  
-        		  xx=x[i].getElementsByTagName("hiprice");
-        		  {
-        			try
-          			{
-          				v = xx[0].firstChild.nodeValue == "0" ? "N.A." : ("$"+xx[0].firstChild.nodeValue);
-          			}
-        			catch (er)
-          			{
-          				v = ""
-          			}
-          			txt = txt + "<tr><td>High</td><td align='right'>" + v + "</td></tr>";
-        		  }
+        		  	xx = x[i].getElementsByTagName("avgprice");
+        		  	{	 
+        				try
+          				{
+          					mid = xx[0].firstChild.nodeValue == "0" ? "N.A." : ("$"+xx[0].firstChild.nodeValue);
+          				}
+        				catch (er)
+          				{
+          					mid = "";
+          				}
+        		  	}
         		  
-        		  xx=x[i].getElementsByTagName("avgprice");
-        		  {
-        			try
-          			{
-          				v = xx[0].firstChild.nodeValue == "0" ? "N.A." : ("$"+xx[0].firstChild.nodeValue);
-          			}
-        			catch (er)
-          			{
-          				v = ""
-          			}
-          			txt = txt + "<tr><td>Median</td><td align='right'>" + v + "</td></tr>";
-        		  }
+        		  	xx = x[i].getElementsByTagName("lowprice");
+        		  	{
+        				try
+          				{
+          					low = xx[0].firstChild.nodeValue == "0" ? "N.A." : ("$"+xx[0].firstChild.nodeValue);
+          				}
+        				catch (er)
+          				{
+          					low = "";
+          				}
+        		  	}
         		  
-        		  xx=x[i].getElementsByTagName("lowprice");
-        		  {
-        			try
-          			{
-          				v = xx[0].firstChild.nodeValue == "0" ? "N.A." : ("$"+xx[0].firstChild.nodeValue);
-          			}
-        			catch (er)
-          			{
-          				v = ""
-          			}
-          			txt = txt + "<tr><td>Low</td><td align='right'>" + v + "</td></tr>";
-        		  }
-        		  
-        		  xx=x[i].getElementsByTagName("link");
-        		  {
-        			try
-          			{
-          				v = xx[0].firstChild.nodeValue;
-          				txt = txt + "<tr><td colspan='2'>Buy this card at <a target='_blank' href='" + v + "'>TCGPlayer</a>.</td></tr>";
-          			}
-        			catch (er)
-          			{
-          				txt = txt + "<br/>";
-          			}
-        		  }
+        		  	xx = x[i].getElementsByTagName("link");
+        		  	{
+        				try
+          				{
+          					link = xx[0].firstChild.nodeValue;
+          				}
+        				catch (er)
+          				{
+          					link = "";
+          				}
+        		  	}
         		}
 				
-				document.getElementById("tcgPriceInfo"+rank).innerHTML=txt;
+				txt = txt.concat("<tr>");
+			    txt = txt.concat("<td>" + low + "</td>");
+			    txt = txt.concat("<td>" + mid + "</td>");
+			    txt = txt.concat("<td>" + high + "</td>");
+			    txt = txt.concat("<td>" + foil + "</td>");
+			    txt = txt.concat("</tr>");
+			    txt = txt.concat("<tr><td colspan='4'>Buy this card at <a target='_blank' href='" + link + "'>TCGPlayer</a>.</td></tr>");
+			    txt = txt.concat("</table>");
+			    
+				document.getElementById("tcgPriceInfo"+id).innerHTML = txt;
     		}
   		}
   		
 		xmlhttp.open("GET", urL, true);
 		xmlhttp.send();
 	}
+	
+	function loadCardRating(id, rating) {
+		var txt = "";
+		
+		if (rating != null) {
+		
+			for (i=0; i<5; i++) {
+				if (rating > i) {
+					if (rating > i && rating <= i+.5) {
+						txt = txt.concat("<img src='/assets/img/stars/starhalf.png' />");
+					
+					} else {
+						txt = txt.concat("<img src='/assets/img/stars/starhighlighted.png' />");
+					}
+					
+				} else {
+					txt = txt.concat("<img src='/assets/img/stars/star.png' />");
+				}
+			}
+		}
+		document.getElementById("cardRating"+id).innerHTML = txt;
+	}
 </script>
-
+	
 	<div id="centeredmenu">
 		<p>&nbsp;</p>
    		<ul>
-   			<% if (view == "topViewed") { %>
-      		<li><a href="/cards?view=topRated&pp=0">Top Rated</a></li>
-      		<li><a href="/cards?view=topViewed&pp=0" class="active">Top Viewed</a></li>
-      		<% } else { %>
-      		<li><a href="/cards?view=topRated" class="active">Top Rated</a></li>
-      		<li><a href="/cards?view=topViewed">Top Viewed</a></li>
-      		<% } %>
+   		<% if (view == "search" || view == "searchResults") { %>
+   			<li><a href="/cards" class="active">Search</a></li>
+      		<li><a href="/cardsTopRated?pp=0">Top Rated</a></li>
+      		<li><a href="/cardsTopViewed?pp=0">Top Viewed</a></li>
+   		<% } else if (view == "topRated") { %>
+      		<li><a href="/cards">Search</a></li>
+      		<li><a href="/cardsTopRated?pp=0" class="active">Top Rated</a></li>
+      		<li><a href="/cardsTopViewed?pp=0">Top Viewed</a></li>
+      	<% } else if (view == "topViewed") { %>
+      		<li><a href="/cards">Search</a></li>
+      		<li><a href="/cardsTopRated?pp=0">Top Rated</a></li>
+      		<li><a href="/cardsTopViewed?pp=0" class="active">Top Viewed</a></li>
+      	<% } else if (view == "details") { %>
+      		<li><a href="/cards">Search</a></li>
+      		<li><a href="/cardsTopRated?pp=0">Top Rated</a></li>
+      		<li><a href="/cardsTopViewed?pp=0">Top Viewed</a></li>
+      		<li><a href="/cardDetails?id=<%= cardObject.pfobject.id %>" class="active">Card</a></li>
+      	<% } %>
    		</ul>
 	</div>
 	
-<% if (cards.length > 0) { %>
-  <div class="cardBackground">
-  
-	<p>&nbsp;</p>
-	<div class="mytable">
-	  <% rank = pp*cards.length; %>  
-      <% _(cards).each(function(card) { %>	
-	  <div class="myrow">
-	    <span class="mycell myten">&nbsp;</span>
-	    <span class="mycell myforty">
-	    	<img class="cardImage"
-	    		 alt= "<=% card.get('name')%>"
-	    		src="http://magiccards.info/scans/en/<%= card.get('set').get('magicCardsInfoCode') %>/<%= card.get('number') %>.jpg" />
-	    </span>
-    	<span class="mycell myforty">
-    		<font class="td_normal"><%= rank+1 %>.</font>
-    		<% if (card.get('modern') != null && card.get('modern') == true) { %>
-    		<font class="td_modern"><%= card.get('name') %></font><br/>
-    		<% } else { %>
-    		<font class="td_classic"><%= card.get('name') %></font><br/>
-    		<% } %>
-		    <% if (card.get('rarity') != null) { %>
-	    	<img class="setImage" src="https://jovitoroyecacom.ipage.com/decktracker/set/<%= card.get('set').get('code') %>/<%= card.get('rarity').get('symbol') %>/32.png" />
-	        <% } %>
-	        <font class="td_normal"><%= card.get('set').get('name') %>
-	        <% if (card.get('rarity') != null) { %>
-	        (<%= card.get('rarity').get('name') %>)
-	        <% } %></font></br />
-	        <!-- -->
-	        <% if (card.get('rating') != null) { %>
-		        	<% if (card.get('rating') >= 0 && card.get('rating') < 0.5) { %>
-	            <img src="/assets/img/stars/star.png"/>
-	    		<img src="/assets/img/stars/star.png"/>
-        		<img src="/assets/img/stars/star.png"/>
-	    	    <img src="/assets/img/stars/star.png"/>
-	    		<img src="/assets/img/stars/star.png"/>
-		        	<% } else if (card.get('rating') >= 0.5 && card.get('rating') < 1) { %>
-	            <img src="/assets/img/stars/starhalf.png"/>
-	    		<img src="/assets/img/stars/star.png"/>
-        		<img src="/assets/img/stars/star.png"/>
-	    	    <img src="/assets/img/stars/star.png"/>
-	    		<img src="/assets/img/stars/star.png"/>
-		        	<% } else if (card.get('rating') >= 1 && card.get('rating') < 1.5) { %>
-	            <img src="/assets/img/stars/starhighlighted.png"/>
-	    		<img src="/assets/img/stars/star.png"/>
-	     		<img src="/assets/img/stars/star.png"/>
-	    	    <img src="/assets/img/stars/star.png"/>
-	        	<img src="/assets/img/stars/star.png"/>
-					<% } else if (card.get('rating') >= 1.5 && card.get('rating') < 2) { %>
-	            <img src="/assets/img/stars/starhighlighted.png"/>
-	    		<img src="/assets/img/stars/starhalf.png"/>
-		        <img src="/assets/img/stars/star.png"/>
-	    		<img src="/assets/img/stars/star.png"/>
-	        	<img src="/assets/img/stars/star.png"/>
-					<% } else if (card.get('rating') >= 2 && card.get('rating') < 2.5) { %>
-	            <img src="/assets/img/stars/starhighlighted.png"/>
-	    		<img src="/assets/img/stars/starhighlighted.png"/>
-		        <img src="/assets/img/stars/star.png"/>
-	    		<img src="/assets/img/stars/star.png"/>
-	        	<img src="/assets/img/stars/star.png"/>
-					<% } else if (card.get('rating') >= 2.5 && card.get('rating') < 3) { %>
-	            <img src="/assets/img/stars/starhighlighted.png"/>
-	    		<img src="/assets/img/stars/starhighlighted.png"/>
-		        <img src="/assets/img/stars/starhalf.png"/>
-	    		<img src="/assets/img/stars/star.png"/>
-	        	<img src="/assets/img/stars/star.png"/>
-					<% } else if (card.get('rating') >= 3 && card.get('rating') < 3.5) { %>
-	            <img src="/assets/img/stars/starhighlighted.png"/>
-	    		<img src="/assets/img/stars/starhighlighted.png"/>
-		        <img src="/assets/img/stars/starhighlighted.png"/>
-	      		<img src="/assets/img/stars/star.png"/>
-	        	<img src="/assets/img/stars/star.png"/>
-					<% } else if (card.get('rating') >= 3.5 && card.get('rating') < 4) { %>
-	            <img src="/assets/img/stars/starhighlighted.png"/>
-	    		<img src="/assets/img/stars/starhighlighted.png"/>
-		        <img src="/assets/img/stars/starhighlighted.png"/>
-	    		<img src="/assets/img/stars/starhalf.png"/>
-	        	<img src="/assets/img/stars/star.png"/>
-					<% } else if (card.get('rating') >= 4 && card.get('rating') < 4.5) { %>
-	            <img src="/assets/img/stars/starhighlighted.png"/>
-	    		<img src="/assets/img/stars/starhighlighted.png"/>
-		        <img src="/assets/img/stars/starhighlighted.png"/>
-	    		<img src="/assets/img/stars/starhighlighted.png"/>
-	        	<img src="/assets/img/stars/star.png"/>
-					<% } else if (card.get('rating') >= 4.5 && card.get('rating') < 5) { %>
-	            <img src="/assets/img/stars/starhighlighted.png"/>
-	    		<img src="/assets/img/stars/starhighlighted.png"/>
-		        <img src="/assets/img/stars/starhighlighted.png"/>
-	    		<img src="/assets/img/stars/starhighlighted.png"/>
-	        	<img src="/assets/img/stars/starhalf.png"/>
-					<% } else if (card.get('rating') >= 5) { %>
-	            <img src="/assets/img/stars/starhighlighted.png"/>
-	    		<img src="/assets/img/stars/starhighlighted.png"/>
-		        <img src="/assets/img/stars/starhighlighted.png"/>
-	    		<img src="/assets/img/stars/starhighlighted.png"/>
-	        	<img src="/assets/img/stars/starhighlighted.png"/>
-					<% } %>
-				<% } else { %>
-				<img src="/assets/img/stars/star.png"/>
-	    		<img src="/assets/img/stars/star.png"/>
-        		<img src="/assets/img/stars/star.png"/>
-	    	    <img src="/assets/img/stars/star.png"/>
-	    		<img src="/assets/img/stars/star.png"/>
-			<% } %><br />
+	<div class="cardBackground">
+		<p>&nbsp;</p>
 
-	        <font class="td_normal">Number of Views: <%= card.get('numberOfViews') %></font>
-	        <p>&nbsp;</p>
-	        <div class="td_normal" id="tcgPriceInfo<%= rank %>"></div>
-	        <script>
-	        	setTimeout(function() {
-	        		loadTCGPrice(<%= rank %>, '<%= card.get('set').get('tcgPlayerName') %>', '<%= card.get('name') %>');
-	        	 }, 1); 
-	        </script>
-	        
-    	</span>
-    	<span class="mycell myten">&nbsp;</span>
-      </div>
-      <div class="myrowfiller">
-      	<span class="mycell myfill">&nbsp;</span>	
-      </div>
-      	<% rank++; %>
-      <% }); %>
+<% if (view == "search" || view == "searchResults" || view == "topRated" || view == "topViewed") { %>
+	<% if (view == "search" || view == "searchResults") { %>
+		<div class="mytable">
+	  		<div class="myrow">
+	    		<span class="mycell twenty">&nbsp;</span>
+		    	<span class="mycellimage mysixty">
+		    		<form action="/cardsSearch" method="get">
+	    				<div class="form-group">
+					    	<input class="textboxinput" name="searchTerms" id="searchTerms" value="<%= searchTerms %>" type="text" placeHolder="Search Terms...">
+      					</div>
+                    	<!--<div class="form-group">
+					    	<input class="regular-checkbox big-checkbox" name="blackMana" id="blackMana" type="checkbox" checked="true" />
+							<img src="https://jovitoroyecacom.ipage.com/decktracker/mana/B/32.png" width="16" height="16" />
+				    	
+					    	<input class="regular-checkbox big-checkbox" name="blueMana"  id="blueMana"  type="checkbox" checked="true" />
+					    	<img src="https://jovitoroyecacom.ipage.com/decktracker/mana/U/32.png" width="16" height="16" />
+					    	
+						    <input class="regular-checkbox big-checkbox" name="greenMana" id="greenMana" type="checkbox" checked="true" />
+							<img src="https://jovitoroyecacom.ipage.com/decktracker/mana/G/32.png" width="16" height="16" />
+					    	
+				    		<input class="regular-checkbox big-checkbox" name="redMana"   id="redMana"   type="checkbox" checked="true" />
+				    		<img src="https://jovitoroyecacom.ipage.com/decktracker/mana/R/32.png" width="16" height="16" />
+					    	
+					    	<input class="regular-checkbox big-checkbox" name="whiteMana" id="whiteMana" type="checkbox" checked="true" />
+					    	<img src="https://jovitoroyecacom.ipage.com/decktracker/mana/W/32.png" width="16" height="16" />
+					    	
+						    <input class="regular-checkbox big-checkbox" name="colorlessMana" id="greenMana" type="checkbox" checked="true" />
+					    	<img src="https://jovitoroyecacom.ipage.com/decktracker/mana/Colorless/32.png" width="16" height="16" />
+      					</div>
+      					<div class="form-group">
+					    	Type:
+						    <select name="type"  id="type">
+						    	<option value="" selected></option>
+								<option value="volvo">Volvo</option>
+								<option value="saab">Saab</option>
+								<option value="mercedes">Mercedes</option>
+								<option value="audi">Audi</option>
+							</select> 
+						</div>
+						<div class="form-group">
+						    Set:
+						    <select name="set"  id="set">
+								<option value="" selected></option>
+								<option value="volvo">Volvo</option>
+								<option value="saab">Saab</option>
+								<option value="mercedes">Mercedes</option>
+								<option value="audi">Audi</option>
+							</select> 
+						</div>-->
+	    				<div class="form-group">
+					    	<input class="searchbutton" type="submit" value="Submit" />
+      					</div>
+					</form>
+		    	</span>
+	    	<span class="mycell twenty">&nbsp;</span>
+    	</div>
+    	<% if (view == "searchResults") { %>
+    	<div class="myrow">
+	    	<span class="mycell twenty">&nbsp;</span>
+			<span class="mycellimage mysixty">
+		    	<font class="td_normal"><%= resultCount %> result(s).</font>
+		    </span>
+		   	<span class="mycell twenty">&nbsp;</span>
+		</div>
+		<% } %>
     </div>
     <div class="myrowfiller">
       	<span class="mycell myfill">&nbsp;</span>	
-    </div>
-	<div class="mytable">
-  		<div class="myrow">
-  			<span class="mycell myten">&nbsp;</span>
-    		<span class="mycell">
-    		  <font class="td_normal">Page
-    			  <% for (i=0; i<10; i++) { %>
-	        		<% if (pp == i) { %>
-	        		<%= i+1 %>
-	        		<% } else { %>
-	        		<a href="/cards?view=<%= view %>&pp=<%= i %>"><%= i+1 %></a>&nbsp;
-	        		<% }  %>
-	    		  <% } %>
-	    	  </font>
+    </div>	
+	<% } %>
+		
+		<div class="mytable">
+		<% rank = (pp*20); %>  
+    	<% _(cardObjects).each(function(cardObject) { %>	
+	  	<div class="myrow">
+	    	<span class="mycell myten">&nbsp;</span>
+	    	<span class="mycellimage mytwenty">
+	    		<a href="/cardDetails?id=<%= cardObject.pfobject.id %>">
+	    		<img id="cardImage<%= cardObject.pfobject.id %>"
+	    	    	class="cardImage"
+	    		 	alt= "<%= cardObject.pfobject.get('name')%>"
+	    		 	src="" />
+	    		 </a>
+	    	</span>
+    		<span class="mycell mysixty">
+    			<font class="td_normal"><%= rank+1 %>.</font>
+	    		<% if (cardObject.pfobject.get('modern') != null && cardObject.pfobject.get('modern') == true) { %>
+    			<font class="td_modern">
+    			<% } else { %>
+    			<font class="td_classic">
+	    		<% } %>
+	    			<a href="/cardDetails?id=<%= cardObject.pfobject.id %>"><%= cardObject.pfobject.get('name') %></a>
+    			</font> &nbsp;&nbsp;&nbsp;<span id="cardMana<%= cardObject.pfobject.id %>"></span><br />
+    			<img class="setImage" src="https://jovitoroyecacom.ipage.com/decktracker/other/<%= cardObject.typeImage() %>/32.png" />
+	    	    <font class="td_normal"><%= cardObject.typeDetails() %></font></br />
+	    	    <% var rarity = cardObject.pfobject.get('rarity') != null ? cardObject.pfobject.get('rarity').get('symbol') : "C" %>
+	    		<img class="setImage" src="https://jovitoroyecacom.ipage.com/decktracker/set/<%= cardObject.pfobject.get('set').get('code') %>/<%= rarity %>/32.png" />
+		        <font class="td_normal"><%= cardObject.setDetails() %></font><br />
+		        <div id="cardRating<%= cardObject.pfobject.id %>"></div>
+	    	    <p>&nbsp;</p>
+	        	<div class="td_normal" id="tcgPriceInfo<%= cardObject.pfobject.id %>"></div>
+		        <script>
+		        	setTimeout(function() {
+	    	    		loadCardMana("<%= cardObject.pfobject.id %>", "<%= cardObject.pfobject.get('manaCost') %>");
+	        			loadCardRating("<%= cardObject.pfobject.id %>", <%= cardObject.pfobject.get('rating') %>);
+	        			loadTCGPrice("<%= cardObject.pfobject.id %>", "<%= cardObject.pfobject.get('set').get('tcgPlayerName') %>", "<%= cardObject.pfobject.get('name') %>");
+	        			loadCardImage("<%= cardObject.pfobject.id %>", "<%= cardObject.pfobject.get('set').get('magicCardsInfoCode') %>", "<%= cardObject.pfobject.get('number') %>", true);
+		        	 }, 1);
+		        </script>
     		</span>
-    		<span class="mycell myten">&nbsp;</span>
-  		</div>
-	</div>
-	<div class="myrowfiller">
-      	<span class="mycell myfill">&nbsp;</span>	
-    </div>
-  </div>
+	    	<span class="mycell myten">&nbsp;</span>
+    	</div>
+	    <div class="myrowfiller">
+      		<span class="mycell myfill">&nbsp;</span>	
+      	</div>
+      		<% rank++; %>
+      	<% }); %>
+    	</div>
+	    <div class="myrowfiller">
+    	  	<span class="mycell myfill">&nbsp;</span>	
+	    </div>
+	    <% if (view == "searchResults" || view == "topRated" || view == "topViewed") {%>
+		<div class="mytable">
+  			<div class="myrow">
+  				<span class="mycell mytwenty">&nbsp;</span>
+	    		<span class="mycell mysixty">
+    			  <font class="td_normal">Page
+    				  <% for (i=0; i<(resultCount/20); i++) { %>
+	        			<% if (pp == i) { %>
+	        			<%= i+1 %>
+	        			<% } else { %>
+	        				<% if (view == "searchResults") { %>
+		        		<a href="/cardsSearch?pp=<%= i %>&&searchTerms=<%= searchTerms%>"><%= i+1 %></a>&nbsp;
+		        			<% } else if (view == "topRated") { %>
+		        		<a href="/cardsTopRated?pp=<%= i %>"><%= i+1 %></a>&nbsp;
+		        			<% } else if (view == "topViewed") { %>
+		        		<a href="/cardsTopViewed?pp=<%= i %>"><%= i+1 %></a>&nbsp;
+		        			<% }  %>
+		        		<% }  %>
+	    			  <% } %>
+	    		  </font>
+	    		</span>
+    			<span class="mycell mytwenty">&nbsp;</span>
+  			</div>
+		</div>
+		<% } %>
+		<div class="myrowfiller">
+      		<span class="mycell myfill">&nbsp;</span>	
+	    </div>
+  
+<% } else if (view == "details") { %>
+		<div class="mytable">
+	  	<div class="myrow">
+	    	<span class="mycell myten">&nbsp;</span>
+	    	<span class="mycellimage mythirty">
+	    		<img id="cardImage<%= cardObject.pfobject.id %>"
+	    	    	class="cardImage"
+	    		 	alt= "<%= cardObject.pfobject.get('name')%>"
+	    		 	src="" />
+	    	</span>
+    		<span class="mycell myfifty">
+	    		<% if (cardObject.pfobject.get('modern') != null && cardObject.pfobject.get('modern') == true) { %>
+    			<font class="td_modern">
+    			<% } else { %>
+    			<font class="td_classic">
+	    		<% } %>
+	    			<%= cardObject.pfobject.get('name') %>
+    			</font> &nbsp;&nbsp;&nbsp;<span id="cardMana<%= cardObject.pfobject.id %>"></span><br />
+    			<img class="setImage" src="https://jovitoroyecacom.ipage.com/decktracker/other/<%= cardObject.typeImage() %>/32.png" />
+	    	    <font class="td_normal"><%= cardObject.typeDetails() %></font></br />
+	    	    <% var rarity = cardObject.pfobject.get('rarity') != null ? cardObject.pfobject.get('rarity').get('symbol') : "C" %>
+	    		<img class="setImage" src="https://jovitoroyecacom.ipage.com/decktracker/set/<%= cardObject.pfobject.get('set').get('code') %>/<%= rarity %>/32.png" />
+		        <font class="td_normal"><%= cardObject.setDetails() %></font><br />
+		        <div id="cardRating<%= cardObject.pfobject.id %>"></div>
+	    	    <p>&nbsp;</p>
+	        	<div class="td_normal" id="tcgPriceInfo<%= cardObject.pfobject.id %>"></div>
+		        <script>
+		        	setTimeout(function() {
+	    	    		loadCardMana("<%= cardObject.pfobject.id %>", "<%= cardObject.pfobject.get('manaCost') %>");
+	        			loadCardRating("<%= cardObject.pfobject.id %>", <%= cardObject.pfobject.get('rating') %>);
+	        			loadTCGPrice("<%= cardObject.pfobject.id %>", "<%= cardObject.pfobject.get('set').get('tcgPlayerName') %>", "<%= cardObject.pfobject.get('name') %>");
+	        			loadCardImage("<%= cardObject.pfobject.id %>", "<%= cardObject.pfobject.get('set').get('magicCardsInfoCode') %>", "<%= cardObject.pfobject.get('number') %>", false);
+		        	 }, 1);
+		        </script>
+		        
+		        <% if (versions.length > 0) { %>
+			        <p>&nbsp;</p>
+			        <font class="td_normal">Other Versions</font><br />
+			        <% _(versions).each(function(v) { %>
+			        	<a href="/cardDetails?id=<%= v.pfobject.id %>">
+				        <img class="setImage" src="https://jovitoroyecacom.ipage.com/decktracker/set/<%= v.pfobject.get('set').get('code') %>/<%= v.pfobject.get('rarity').get('symbol') %>/32.png" />
+			        	</a>
+			        	<font class="td_normal">
+			        		<%= v.pfobject.get('set').get('name') %><br />
+			        	</font>
+		        	<% }); %>
+		        <% } %>
+    		</span>
+	    	<span class="mycell myten">&nbsp;</span>
+    	</div>
+    	<div class="myrowfiller">
+      		<span class="mycell myfill">&nbsp;</span>	
+      	</div>
+    	</div>
 <% } %>
+	</div>
 
-	    
+		    
 

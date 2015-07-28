@@ -51,10 +51,25 @@ app.locals.facebookApplicationId = '341320496039341';
 // cards
 var cards = require('cloud/cards.js');
 app.get('/cards', function(req, res) {
-    cards.cards(req,res);
+    cards.root(req,res);
+});
+app.get('/cardsSearch', function(req, res) {
+    cards.search(req,res);
+});
+app.get('/cardsTopRated', function(req, res) {
+    cards.topRated(req,res);
+});
+app.get('/cardsTopViewed', function(req, res) {
+    cards.topViewed(req,res);
+});
+app.get('/cardDetails', function(req, res) {
+    cards.details(req,res);
 });
 app.get('/cardPrice', function(req, res) {
-    cards.cardPrice(req,res);
+    cards.price(req,res);
+});
+app.get('/cardImage', function(req, res) {
+    cards.image(req,res);
 });
 
 // decks
@@ -69,11 +84,13 @@ app.get('/cardquiz', function(req, res) {
     cardquiz.cardquiz(req,res);
 });
 
+// home
 app.get('/', function(req, res) {
 	res.render('home', { title: "",
 						 navbar: "1"});
 });
 
+// sign-in
 app.get('/sign-in', function(req, res) {
     res.render('sign-in', { title: "Sign In",
     						navbar: "5"});

@@ -41,14 +41,14 @@ html, body
 {
     font-family: Magic;
     font-size: 14pt;
-    color: #ffffff;
+    color: #c5c5c5;
 }
 
 .td_modern
 {
     font-family: Matrix;
     font-size: 14pt;
-    color: #ffffff;
+    color: #c5c5c5;
 }
 
 .td_normal
@@ -175,8 +175,7 @@ html, body
 
 .setImage
 {
-	width:auto;
-    max-width:50%;
+	width:24px;
     height:auto;
 }
 
@@ -209,13 +208,79 @@ html, body
   .myrow { display:table-row; }
   .myrowfiller { display:table-row; height:40px; }
   .mycell { display:table-cell; vertical-align: top; padding: 10px; }
-
+  .mycellimage { display:table-cell; vertical-align: top; padding: 10px; }
+  
   /* this is where the colspan tricks works. */
   span { width:100%; }
 
   /* this is the benefit of using table display, it is able 
      to set the width of it's child object to fill the rest of 
      the parent width as in table */
-  .myten { width: 10%; }   
-  .myforty { width: 40%; }
-  .myfill { width: 100%; }
+  .myten     { width: 10%; }
+  .mytwenty  { width: 20%; }
+  .mythirty  { width: 30%; }   
+  .myforty   { width: 40%; }
+  .myfifty   { width: 50%; }
+  .mysixty   { width: 60%; }
+  .myseventy { width: 70%; }
+  .myeighty  { width: 80%; }
+  .myninety  { width: 90%; }
+  .myfill    { width: 100%; }
+  
+/* forms */
+.textboxinput {
+    width: 400px;
+    height: 25px;
+    margin-left: -1px;
+    margin-top: -2px;
+    font-size: 0.9em;
+    font-weight: bold;
+    color: #4C4B4B;
+    border: medium none;
+    background-color: #C2C2C2;
+    position: relative;
+    top: 0px;
+    padding-left: 5px;
+}
+
+.searchbutton:hover {
+    background-color: #656565;
+}
+.searchbutton {
+    font-size: 12pt;
+    float: left;
+    width: 88px;
+    height: 29px;
+    border: 1px solid #191919;
+    font-weight: bold;
+    left: 0px;
+    background-color: #434343;
+    position: relative;
+    color: #FFF;
+    padding-top: 0px;
+}
+
+.big-checkbox + label {
+    padding: 12px;
+    vertical-align: middle;
+}
+.regular-checkbox + label {
+    background-color: #232323;
+    border: 0px none;
+    padding: 9px;
+    display: inline-block;
+    position: relative;
+}  
+
+label {
+    display: inline;
+}
+
+.intermediateSearchManaSymbols
+.SearchManaContainer {
+    float: left;
+    display: block;
+    height: 17px;
+    width: 20%;
+    margin: 0px 0px 5px;
+}
