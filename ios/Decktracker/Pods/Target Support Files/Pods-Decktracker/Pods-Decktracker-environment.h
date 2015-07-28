@@ -51,14 +51,14 @@
 // ActionSheetPicker-3.0
 #define COCOAPODS_POD_AVAILABLE_ActionSheetPicker_3_0
 #define COCOAPODS_VERSION_MAJOR_ActionSheetPicker_3_0 1
-#define COCOAPODS_VERSION_MINOR_ActionSheetPicker_3_0 6
-#define COCOAPODS_VERSION_PATCH_ActionSheetPicker_3_0 2
+#define COCOAPODS_VERSION_MINOR_ActionSheetPicker_3_0 7
+#define COCOAPODS_VERSION_PATCH_ActionSheetPicker_3_0 0
 
-// Appirater
-#define COCOAPODS_POD_AVAILABLE_Appirater
-#define COCOAPODS_VERSION_MAJOR_Appirater 2
-#define COCOAPODS_VERSION_MINOR_Appirater 0
-#define COCOAPODS_VERSION_PATCH_Appirater 5
+// Appirater_ios8
+#define COCOAPODS_POD_AVAILABLE_Appirater_ios8
+#define COCOAPODS_VERSION_MAJOR_Appirater_ios8 3
+#define COCOAPODS_VERSION_MINOR_Appirater_ios8 0
+#define COCOAPODS_VERSION_PATCH_Appirater_ios8 0
 
 // Bolts
 #define COCOAPODS_POD_AVAILABLE_Bolts
@@ -94,7 +94,7 @@
 #define COCOAPODS_POD_AVAILABLE_CSStickyHeaderFlowLayout
 #define COCOAPODS_VERSION_MAJOR_CSStickyHeaderFlowLayout 0
 #define COCOAPODS_VERSION_MINOR_CSStickyHeaderFlowLayout 2
-#define COCOAPODS_VERSION_PATCH_CSStickyHeaderFlowLayout 7
+#define COCOAPODS_VERSION_PATCH_CSStickyHeaderFlowLayout 8
 
 // CorePlot
 #define COCOAPODS_POD_AVAILABLE_CorePlot
@@ -123,8 +123,14 @@
 // GoogleAnalytics
 #define COCOAPODS_POD_AVAILABLE_GoogleAnalytics
 #define COCOAPODS_VERSION_MAJOR_GoogleAnalytics 3
-#define COCOAPODS_VERSION_MINOR_GoogleAnalytics 12
+#define COCOAPODS_VERSION_MINOR_GoogleAnalytics 13
 #define COCOAPODS_VERSION_PATCH_GoogleAnalytics 0
+
+// HMSegmentedControl
+#define COCOAPODS_POD_AVAILABLE_HMSegmentedControl
+#define COCOAPODS_VERSION_MAJOR_HMSegmentedControl 1
+#define COCOAPODS_VERSION_MINOR_HMSegmentedControl 5
+#define COCOAPODS_VERSION_PATCH_HMSegmentedControl 2
 
 // InAppSettingsKit
 #define COCOAPODS_POD_AVAILABLE_InAppSettingsKit
@@ -146,15 +152,17 @@
 
 // Parse
 #define COCOAPODS_POD_AVAILABLE_Parse
-#define COCOAPODS_VERSION_MAJOR_Parse 1
-#define COCOAPODS_VERSION_MINOR_Parse 7
-#define COCOAPODS_VERSION_PATCH_Parse 4
+// This library does not follow semantic-versioning,
+// so we were not able to define version macros.
+// Please contact the author.
+// Version: 1.7.5.3.
 
 // ParseFacebookUtils
 #define COCOAPODS_POD_AVAILABLE_ParseFacebookUtils
-#define COCOAPODS_VERSION_MAJOR_ParseFacebookUtils 1
-#define COCOAPODS_VERSION_MINOR_ParseFacebookUtils 7
-#define COCOAPODS_VERSION_PATCH_ParseFacebookUtils 4
+// This library does not follow semantic-versioning,
+// so we were not able to define version macros.
+// Please contact the author.
+// Version: 1.7.5.3.
 
 // ParseUI
 #define COCOAPODS_POD_AVAILABLE_ParseUI
@@ -176,8 +184,8 @@
 
 // XLForm
 #define COCOAPODS_POD_AVAILABLE_XLForm
-#define COCOAPODS_VERSION_MAJOR_XLForm 2
-#define COCOAPODS_VERSION_MINOR_XLForm 2
+#define COCOAPODS_VERSION_MAJOR_XLForm 3
+#define COCOAPODS_VERSION_MINOR_XLForm 0
 #define COCOAPODS_VERSION_PATCH_XLForm 0
 
 // hpple

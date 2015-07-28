@@ -1,0 +1,1 @@
+../../../Appirater_ios8/Appirater.h
