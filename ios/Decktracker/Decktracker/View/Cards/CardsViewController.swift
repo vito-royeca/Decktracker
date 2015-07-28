@@ -543,7 +543,7 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
         }
         
         view!.navigationItem.title = key
-        navigationController?.pushViewController(view!, animated:true)
+        navigationController?.pushViewController(view!, animated:false)
     }
     
 //    MARK: InAppPurchaseViewControllerDelegate

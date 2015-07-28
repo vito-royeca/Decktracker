@@ -22,7 +22,6 @@
 #import "DTSet.h"
 #import "Database.h"
 #import "FileManager.h"
-#import "SearchResultsTableViewCell.h"
 
 #import "Decktracker-Swift.h"
 
@@ -43,13 +42,23 @@
     float _newRating;
     NSString *_currentCardImage;
     NSString *_currentLanguage;
+    
+    CardPriceHeader *_cardPriceHeader;
+    MBProgressHUD *_hud;
 }
 
 -(void) setCardId:(NSString*) cardId
 {
     _cardId = cardId;
     _currentCardImage = [[FileManager sharedInstance] cardPath:_cardId forLanguage:_currentLanguage];
-    
+ 
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:kCardDownloadCompleted
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(loadCardImage:)
+                                                 name:kCardDownloadCompleted
+                                               object:nil];
     [[FileManager sharedInstance] downloadCardImage:_cardId forLanguage:_currentLanguage immediately:YES];
 
     if (self.cardIds)
@@ -79,9 +88,7 @@
         self.navigationItem.title = @"1 of 1";
     }
 
-//#ifndef DEBUG
     [[Database sharedInstance] incrementCardView:cardId];
-//#endif
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -105,17 +112,12 @@
     CGFloat dX = 0;
     CGFloat dY = 0;
     CGFloat dWidth = self.view.frame.size.width;
-    CGFloat dHeight = self.view.frame.size.height-44;
+    CGFloat dHeight = 30;
     
-    self.tblDetails = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)
-                                                   style:UITableViewStylePlain];
-    self.tblDetails.delegate = self;
-    self.tblDetails.dataSource = self;
-    [self.tblDetails registerNib:[UINib nibWithNibName:@"SearchResultsTableViewCell" bundle:nil]
-          forCellReuseIdentifier:@"Cell1"];
+    _cardPriceHeader = [[CardPriceHeader alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
     
     self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Card", @"Details"/*, @"Reviews"*/]];
-    self.segmentedControl.frame = CGRectMake(dX+10, dY+7, dWidth-20, 30);
+    self.segmentedControl.frame = CGRectMake(dX+10, dY+7, dWidth-20, dHeight);
     self.segmentedControl.selectedSegmentIndex = 0;
     [self.segmentedControl addTarget:self
                               action:@selector(switchView)
@@ -125,16 +127,27 @@
     _viewSegmented = [[UIView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
     _viewSegmented.backgroundColor = [UIColor whiteColor];
     [_viewSegmented addSubview:self.segmentedControl];
-    
-    dY = self.view.frame.size.height - dHeight;
+
+    dHeight = self.view.frame.size.height - 44;
+    self.tblDetails = [[UITableView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)
+                                                   style:UITableViewStylePlain];
+    self.tblDetails.delegate = self;
+    self.tblDetails.dataSource = self;
+
+    dHeight = 44;
+    dY = self.tblDetails.frame.origin.y+self.tblDetails.frame.size.height;
     self.bottomToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
 
     
+    NSMutableArray *arrButtons = [[NSMutableArray alloc] init];
+
+    // Action button
     self.btnAction = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
                                                                   target:self
                                                                   action:@selector(btnActionTapped:)];
-    NSMutableArray *arrButtons = [[NSMutableArray alloc] init];
     [arrButtons addObject:self.btnAction];
+    
+    // Rate button
     self.btnRate = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"rate.png"]
                                                     style:UIBarButtonItemStylePlain
                                                    target:self
@@ -144,6 +157,18 @@
                                                                         target:nil
                                                                         action:nil]];
     [arrButtons addObject:self.btnRate];
+    // Buy button
+    self.btnBuy = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"shopping_cart.png"]
+                                                    style:UIBarButtonItemStylePlain
+                                                   target:self
+                                                   action:@selector(btnBuyTapped:)];
+    
+    [arrButtons addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                        target:nil
+                                                                        action:nil]];
+    [arrButtons addObject:self.btnBuy];
+    
+    // Add button
     if (self.addButtonVisible)
     {
         self.btnAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
@@ -186,14 +211,30 @@
     
     _planeswalkerType = [[DTCardType objectsWithPredicate:[NSPredicate predicateWithFormat:@"name = %@", @"Planeswalker"]] firstObject];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:kCardDownloadCompleted
-                                                  object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(loadCardImage:)
-                                                 name:kCardDownloadCompleted
-                                               object:nil];
+//    [[NSNotificationCenter defaultCenter] removeObserver:self
+//                                                    name:kPriceUpdateDone
+//                                                  object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(priceUpdateDone:)
+//                                                 name:kPriceUpdateDone
+//                                               object:nil];
+//    [[Database sharedInstance] fetchTcgPlayerPriceForCard:_cardId];
 }
+
+//-(void) priceUpdateDone:(id) sender
+//{
+//    NSString *cardId = [sender userInfo][@"cardId"];
+//    
+//    if ([_cardId isEqualToString:cardId])
+//    {
+//        
+//        [_cardPriceHeader showCardPricing:_cardId];
+//        [self.tblDetails reloadData];
+//        [[NSNotificationCenter defaultCenter] removeObserver:self
+//                                                        name:kPriceUpdateDone
+//                                                      object:nil];
+//    }
+//}
 
 - (void)handleSwipe:(UISwipeGestureRecognizer *)swipe
 {
@@ -279,6 +320,70 @@
     };
     [contentView addSubview:ratingControl];
     [alertView show];
+}
+
+-(void) btnBuyTapped:(id) sender
+{
+    void (^handler)(UIAlertController*) = ^void(UIAlertController *alert) {
+        DTCard *card = [DTCard objectForPrimaryKey:self.cardId];
+        
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:kPriceUpdateDone
+                                                      object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(buyCard:)
+                                                     name:kPriceUpdateDone
+                                                   object:nil];
+        
+        if (card.tcgPlayerLink.length == 0)
+        {
+            _hud = [[MBProgressHUD alloc] initWithView:self.tblDetails];
+            [self.tblDetails addSubview:_hud];
+            _hud.delegate = self;
+            
+            [[Database sharedInstance] fetchTcgPlayerPriceForCard:self.cardId];
+            [_hud show:YES];
+        }
+        else
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:kPriceUpdateDone
+                                                                object:nil
+                                                              userInfo:@{@"cardId": self.cardId}];
+        }
+    };
+    
+    [JJJUtil alertWithTitle:@"Message"
+                    message:@"Buy this card at TCGPlayer?"
+          cancelButtonTitle:@"Cancel"
+          otherButtonTitles:@{@"Ok": handler}
+          textFieldHandlers:nil];
+}
+
+-(void) buyCard:(id) sender
+{
+    NSString *cardId = [sender userInfo][@"cardId"];
+    
+    if ([self.cardId isEqualToString:cardId])
+    {
+        [_hud removeFromSuperview];
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:kPriceUpdateDone
+                                                      object:nil];
+
+#ifndef DEBUG
+        // send to Google Analytics
+        id tracker = [[GAI sharedInstance] defaultTracker];
+        [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Buy Card"
+                                                              action:nil
+                                                               label:@"Buy Card"
+                                                               value:nil] build]];
+#endif
+        
+        DTCard *card = [DTCard objectForPrimaryKey:self.cardId];
+        NSURL *url = [NSURL URLWithString:card.tcgPlayerLink];
+        
+        [[UIApplication sharedApplication] openURL:url];
+    }
 }
 
 -(void) btnAddTapped:(id) sender
@@ -367,9 +472,9 @@
             [[_fbImageViewer tableView] reloadData];
         }
         
-//        [[NSNotificationCenter defaultCenter] removeObserver:self
-//                                                        name:kCardDownloadCompleted
-//                                                      object:nil];
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:kCardDownloadCompleted
+                                                      object:nil];
     }
 }
 
@@ -457,8 +562,14 @@
     {
         cardNameFont = @"cardNamePreEightEdition";
     }
+    if (card.manaCost.length > 0)
+    {
+        [html appendFormat:@"<tr><td colspan='2' align='right'>%@</td></tr>", [self replaceSymbolsInText:card.manaCost]];
+    }
     [html appendFormat:@"<tr><td colspan='2'><div class='%@'>%@</div></td></tr>", cardNameFont, card.name];
-
+    [html appendFormat:@"<tr><td colspan='2'>%@ %@</a></td>", [self composeSetImage:card], card.set.name];
+    [html appendFormat:@"<tr><td colspan='2'><div class='detailTextSmall'>Release Date: %@</div></td></tr>", card.releaseDate.length > 0 ? card.releaseDate : [JJJUtil formatDate:card.set.releaseDate withFormat:@"YYYY-MM-dd"]];
+    
     
     NSMutableString *text = [[NSMutableString alloc] init];
     if (card.originalType.length &&
@@ -504,6 +615,7 @@
     }
     if (text.length > 0)
     {
+        [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
         [html appendFormat:@"<tr><td colspan='2' align='center'><table class='textBox'><tr><td>%@</td></tr></table></td></tr>", text];
     }
     
@@ -624,30 +736,33 @@
         [html appendFormat:@"<td><div class='detailTextSmall'>%@</div></td></tr>", card.reserved ? @"No" : @"Yes"];
     }
 
-    [html appendFormat:@"<tr><td>&nbsp;</td>"];
-    [html appendFormat:@"<tr><td colspan='2'><div class='detailHeader'>Printings</div></td></tr>"];
-    [html appendFormat:@"<tr><td colspan='2'><table>"];
     NSMutableArray *sets = [[NSMutableArray alloc] init];
     for (DTSet *set in card.printings)
     {
-        [sets addObject:set];
-    }
-    for (DTSet *set in [sets sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"releaseDate" ascending:NO]]])
-    {
-        if (![[Database sharedInstance] isSetPurchased:set])
+        if ([set.code isEqualToString:card.set.code])
         {
             continue;
         }
-        
-        DTCard *kard = [[Database sharedInstance] findCard:card.name inSet:set.code];
-        NSString *link = [[NSString stringWithFormat:@"printings?cardId=%@", kard.cardId] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-
-        [html appendFormat:@"<tr><td><a href='%@'>%@</a></td>", link, [self composeSetImage:kard]];
-        [html appendFormat:@"<td><a href='%@'>%@</a></td></tr>", link, set.name];
-        [html appendFormat:@"<tr><td>&nbsp;</td>"];
-        [html appendFormat:@"<td><div class='detailTextSmall'>Release Date: %@</div></td></tr>", kard.releaseDate.length > 0 ? kard.releaseDate : [JJJUtil formatDate:set.releaseDate withFormat:@"YYYY-MM-dd"]];
+        [sets addObject:set];
     }
-    [html appendFormat:@"</table></td></tr>"];
+    if (sets.count > 0)
+    {
+        [html appendFormat:@"<tr><td>&nbsp;</td>"];
+        [html appendFormat:@"<tr><td colspan='2'><div class='detailHeader'>Other Printings</div></td></tr>"];
+        [html appendFormat:@"<tr><td colspan='2'><table>"];
+        for (DTSet *set in [sets sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"releaseDate" ascending:NO]]])
+        {
+            DTCard *kard = [[Database sharedInstance] findCard:card.name inSet:set.code];
+            
+            NSString *link = [[NSString stringWithFormat:@"printings?cardId=%@", kard.cardId] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            
+            [html appendFormat:@"<tr><td><a href='%@'>%@</a></td>", link, [self composeSetImage:kard]];
+            [html appendFormat:@"<td><a href='%@'>%@</a></td></tr>", link, set.name];
+            [html appendFormat:@"<tr><td>&nbsp;</td>"];
+            [html appendFormat:@"<td><div class='detailTextSmall'>Release Date: %@</div></td></tr>", kard.releaseDate.length > 0 ? kard.releaseDate : [JJJUtil formatDate:set.releaseDate withFormat:@"YYYY-MM-dd"]];
+        }
+        [html appendFormat:@"</table></td></tr>"];
+    }
     
     if (card.names.count > 0)
     {
@@ -761,12 +876,6 @@
         [html appendFormat:@"</table></td></tr>"];
     }
     
-    if (card.tcgPlayerLink)
-    {
-        [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
-        [html appendFormat:@"<tr><td colspan='2'>Buy this card at <a href=%@>TCGPlayer</a>.</td></tr>", card.tcgPlayerLink];
-        [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
-    }
     [html appendFormat:@"</table></body></html>"];
     
     return html;
@@ -774,7 +883,7 @@
 
 - (NSString*) composeSetImage:(DTCard*) card
 {
-    NSString *setPath = [[FileManager sharedInstance] cardSetPath:[NSString stringWithFormat:@"%tu", card.cardId]];
+    NSString *setPath = [[FileManager sharedInstance] cardSetPath:card.cardId];
     UIImage *image = [[UIImage alloc] initWithContentsOfFile:setPath];
     
     return [NSString stringWithFormat:@"<img src='%@' width='%f' height='%f' border='0' />", setPath, image.size.width/2, image.size.height/2];
@@ -847,6 +956,7 @@
             else if ([mana isEqualToString:@"Infinity"])
             {
                 text = [text stringByReplacingOccurrencesOfString:@"{∞}" withString:[NSString stringWithFormat:@"<img src='%@/images/mana/Infinity/%d.png' width='%d' height='%d' />", [[NSBundle mainBundle] bundlePath], pngSize, width, height]];
+                bFound = YES;
             }
         }
         
@@ -858,7 +968,7 @@
                 {
                     text = [text stringByReplacingOccurrencesOfString:symbol withString:[NSString stringWithFormat:@"<img src='%@/images/other/%@/%d.png' width='%d' height='%d' />", [[NSBundle mainBundle] bundlePath], noCurlies, pngSize, width, height]];
                 }
-                else if ([mana isEqualToString:noCurlies])
+                else if ([mana isEqualToString:noCurliesReverse])
                 {
                     text = [text stringByReplacingOccurrencesOfString:symbol withString:[NSString stringWithFormat:@"<img src='%@/images/other/%@/%d.png' width='%d' height='%d' />", [[NSBundle mainBundle] bundlePath], noCurliesReverse, pngSize, width, height]];
                 }
@@ -903,8 +1013,6 @@
              [path isEqualToString:@"variations"])
     {
         self.cardIds = nil;
-//        DTCard *card = [[DTCard objectsWithPredicate:[NSPredicate predicateWithFormat:@"set.code = %@ AND number = %@", kvPairs[@"set"], kvPairs[@"number"]]] firstObject];
-        
         self.cardId = kvPairs[@"cardId"];
         self.segmentedControl.selectedSegmentIndex = 0;
         [self switchView];
@@ -915,16 +1023,6 @@
         self.cardId = kvPairs[@"cardId"];
         self.segmentedControl.selectedSegmentIndex = 0;
         [self switchView];
-    }
-    
-    else
-    {
-        if ([[url host] isEqualToString:@"store.tcgplayer.com"])
-        {
-            [[UIApplication sharedApplication] openURL:[request URL]];
-
-            return NO;
-        }
     }
 
     return YES;
@@ -1003,69 +1101,27 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section == 1)
-    {
-        return 44;
-    }
-    else
-    {
-        return 0;
-    }
+    return _viewSegmented.frame.size.height;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if (section == 1)
-    {
-        return _viewSegmented;
-    }
-    else
-    {
-        return nil;
-    }
+    return _viewSegmented;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    int rows = 1;
-    
-    if (section != 0)
-    {
-        switch (self.segmentedControl.selectedSegmentIndex)
-        {
-            case 1:
-            {
-                return 1;
-            }
-            case 2:
-            {
-                return 1;
-            }
-        }
-    }
-    
-    return rows;
+    return 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    CGFloat height = 44;
-    
-    if (indexPath.section == 0)
-    {
-        height = SEARCH_RESULTS_CELL_HEIGHT;
-    }
-    else if (indexPath.section == 1)
-    {
-        height = self.view.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height - self.navigationController.navigationBar.frame.size.height - SEARCH_RESULTS_CELL_HEIGHT - _viewSegmented.frame.size.height - self.bottomToolbar.frame.size.height;
-    }
-    
-    return height;
+    return self.view.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height - self.navigationController.navigationBar.frame.size.height - _viewSegmented.frame.size.height - self.bottomToolbar.frame.size.height;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1074,70 +1130,51 @@
     CGFloat dX = 0;
     CGFloat dY = 0;
     CGFloat dWidth = self.view.frame.size.width;
-    CGFloat dHeight = self.view.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height - self.navigationController.navigationBar.frame.size.height - SEARCH_RESULTS_CELL_HEIGHT - _viewSegmented.frame.size.height - self.bottomToolbar.frame.size.height;
+    CGFloat dHeight = self.view.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height - self.navigationController.navigationBar.frame.size.height - _viewSegmented.frame.size.height - self.bottomToolbar.frame.size.height;
+
+    [self.webView removeFromSuperview];
+    [self.cardImage removeFromSuperview];
     
-    cell.userInteractionEnabled = YES;
-    if (indexPath.section == 0)
+    cell = [tableView dequeueReusableCellWithIdentifier:@"Cell2"];
+    if (cell == nil)
     {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"Cell1"];
-        
-        if (!cell)
-        {
-            cell = [[SearchResultsTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-                                                     reuseIdentifier:@"Cell1"];
-        }
-        
-        tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        cell.userInteractionEnabled = NO;
-        [((SearchResultsTableViewCell*)cell) displayCard:self.cardId];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Cell2"];
+        cell.accessoryType = UITableViewCellAccessoryNone;
     }
-
-    else
+    
+    switch (self.segmentedControl.selectedSegmentIndex)
     {
-        [self.webView removeFromSuperview];
-        [self.cardImage removeFromSuperview];
-
-        cell = [tableView dequeueReusableCellWithIdentifier:@"Cell2"];
-        if (cell == nil)
+        case 0:
         {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Cell2"];
-            cell.accessoryType = UITableViewCellAccessoryNone;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+            
+            self.cardImage = [[UIImageView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
+            UIImage *bgImage = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/images/Gray_Patterned_BG.jpg", [[NSBundle mainBundle] bundlePath]]];
+            self.cardImage.backgroundColor = [UIColor colorWithPatternImage:bgImage];
+            [self.cardImage setUserInteractionEnabled:YES];
+            UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
+            UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
+            [swipeLeft setDirection:UISwipeGestureRecognizerDirectionLeft];
+            [swipeRight setDirection:UISwipeGestureRecognizerDirectionRight];
+            [self.cardImage addGestureRecognizer:swipeLeft];
+            [self.cardImage addGestureRecognizer:swipeRight];
+            [cell.contentView addSubview:self.cardImage];
+            [self displayCard];
+            break;
         }
-        
-        switch (self.segmentedControl.selectedSegmentIndex)
+        case 1:
         {
-            case 0:
-            {
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-
-                self.cardImage = [[UIImageView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
-                UIImage *bgImage = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/images/Gray_Patterned_BG.jpg", [[NSBundle mainBundle] bundlePath]]];
-                self.cardImage.backgroundColor = [UIColor colorWithPatternImage:bgImage];
-                [self.cardImage setUserInteractionEnabled:YES];
-                UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
-                UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
-                [swipeLeft setDirection:UISwipeGestureRecognizerDirectionLeft];
-                [swipeRight setDirection:UISwipeGestureRecognizerDirectionRight];
-                [self.cardImage addGestureRecognizer:swipeLeft];
-                [self.cardImage addGestureRecognizer:swipeRight];
-                [cell.contentView addSubview:self.cardImage];
-                [self displayCard];
-                break;
-            }
-            case 1:
-            {
-                tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-                self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
-                self.webView.delegate = self;
-                [cell.contentView addSubview:self.webView];
-                
-                MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.webView];
-                [self.tblDetails addSubview:hud];
-                hud.delegate = self;
-                [hud showWhileExecuting:@selector(displayDetails) onTarget:self withObject:nil animated:NO];
-                break;
-            }
+            tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+            self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
+            self.webView.delegate = self;
+            [cell.contentView addSubview:self.webView];
+            
+            _hud = [[MBProgressHUD alloc] initWithView:self.tblDetails];
+            [self.tblDetails addSubview:_hud];
+            _hud.delegate = self;
+            [_hud showWhileExecuting:@selector(displayDetails) onTarget:self withObject:nil animated:NO];
+            break;
         }
     }
     

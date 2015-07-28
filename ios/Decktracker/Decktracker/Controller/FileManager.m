@@ -412,7 +412,7 @@ static FileManager *_me;
                                                @"path"   : path,
                                                @"symbol" : mana}];
                 }
-                else if ([mana isEqualToString:noCurlies])
+                else if ([mana isEqualToString:noCurliesReverse])
                 {
                     NSString *path = [NSString stringWithFormat:@"%@/images/other/%@/%d.png", [[NSBundle mainBundle] bundlePath], noCurliesReverse, pngSize];
                     

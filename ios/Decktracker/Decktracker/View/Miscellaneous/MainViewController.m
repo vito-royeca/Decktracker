@@ -35,18 +35,16 @@
     nc1.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Cards"
                                                    image:[UIImage imageNamed:@"cards.png"]
                                            selectedImage:nil];
-    
+
     UINavigationController *nc2 = [[UINavigationController alloc] init];
     UIViewController *vc2 = [[DecksViewController alloc] initWithNibName:nil bundle:nil];
     nc2.viewControllers = [NSArray arrayWithObjects:vc2, nil];
     nc2.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Decks"
                                                    image:[UIImage imageNamed:@"layers.png"]
                                            selectedImage:nil];
-    
-    UINavigationController *nc4 = [[UINavigationController alloc] init];
+
     UIViewController *vc4 = [[CardQuizHomeViewController alloc] initWithNibName:nil bundle:nil];
-    nc4.viewControllers = [NSArray arrayWithObjects:vc4, nil];
-    nc4.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Card Quiz"
+    vc4.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Card Quiz"
                                                    image:[UIImage imageNamed:@"questions.png"]
                                            selectedImage:nil];
     
@@ -55,8 +53,29 @@
     nc5.viewControllers = [NSArray arrayWithObjects:vc5, nil];
     nc5.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemMore tag:5];
     
-    self.viewControllers = @[nc1, nc2, nc4, nc5];
+    self.viewControllers = @[nc1, nc2, vc4, nc5];
     self.selectedViewController = nc1;
+
+//    UIViewController *vc1 = [[CardsViewController alloc] initWithNibName:nil bundle:nil];
+//    vc1.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Cards"
+//                                                   image:[UIImage imageNamed:@"cards.png"]
+//                                           selectedImage:nil];
+//
+//    UIViewController *vc2 = [[DecksViewController alloc] initWithNibName:nil bundle:nil];
+//    vc2.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Decks"
+//                                                   image:[UIImage imageNamed:@"layers.png"]
+//                                           selectedImage:nil];
+//    
+//    
+//    UIViewController *vc4 = [[CardQuizHomeViewController alloc] initWithNibName:nil bundle:nil];
+//    vc4.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Card Quiz"
+//                                                   image:[UIImage imageNamed:@"questions.png"]
+//                                           selectedImage:nil];
+//    
+//    UIViewController *vc5 = [[MoreViewController alloc] initWithNibName:nil bundle:nil];
+//    vc5.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemMore tag:5];
+//    
+//    self.viewControllers = @[vc1, vc2, vc4, vc5];
 }
 
 - (void)didReceiveMemoryWarning
@@ -65,11 +84,4 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void) addNavigationController:(UINavigationController*) navController atIndex:(int) index
-{
-    NSMutableArray *arrViewControllers = [[NSMutableArray alloc] initWithArray:self.viewControllers];
-    
-    [arrViewControllers insertObject:navController atIndex:index];
-    [self setViewControllers:arrViewControllers animated:NO];
-}
 @end

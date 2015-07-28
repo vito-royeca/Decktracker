@@ -12,8 +12,8 @@ class BannerCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var lblCardName: UILabel!
     @IBOutlet weak var imgCrop: UIImageView!
-
     @IBOutlet weak var imgSet: UIImageView!
+
     var cardId:String?
     var planeswalkerType:DTCardType?
     var _pre8thEditionFont:UIFont?

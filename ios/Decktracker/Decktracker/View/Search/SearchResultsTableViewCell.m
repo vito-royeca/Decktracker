@@ -98,14 +98,7 @@
                                              selector:@selector(parseSyncDone:)
                                                  name:kParseSyncDone
                                                object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:kPriceUpdateDone
-                                                  object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(updatePricing:)
-                                                 name:kPriceUpdateDone
-                                               object:nil];
-    
+
     DTCard *card = [DTCard objectForPrimaryKey:self.cardId];
     
     NSMutableString *type = [[NSMutableString alloc] initWithFormat:@"%@", card.type];
@@ -239,7 +232,6 @@
     }
     
     [self showCardPricing];
-    [[Database sharedInstance] fetchTcgPlayerPriceForCard:card.cardId];
 }
 
 -(void) addBadge:(int) badgeValue
@@ -280,20 +272,6 @@
     }
 }
 
--(void) updatePricing:(id) sender
-{
-    NSString *cardId = [sender userInfo][@"cardId"];
-    
-    if ([self.cardId isEqualToString:cardId])
-    {
-        [self showCardPricing];
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:kPriceUpdateDone
-                                                      object:nil];
-//        [self updateDisplay];
-    }
-}
-
 -(void) showCardPricing
 {
     NSNumberFormatter *formatter =  [[NSNumberFormatter alloc] init];
@@ -315,12 +293,12 @@
     self.lblMedianPrice.textColor = color;
     
     price = card.tcgPlayerHighPrice != 0 ? [formatter stringFromNumber:[NSNumber numberWithDouble:card.tcgPlayerHighPrice]] : @"N/A";
-    color = card.tcgPlayerHighPrice != 0 ? [self colorFromHexString:@"#008000"] : [UIColor lightGrayColor];
+    color = card.tcgPlayerHighPrice != 0 ? [JJJUtil colorFromHexString:@"#008000"] : [UIColor lightGrayColor];
     self.lblHighPrice.text = price;
     self.lblHighPrice.textColor = color;
     
     price = card.tcgPlayerFoilPrice != 0 ? [formatter stringFromNumber:[NSNumber numberWithDouble:card.tcgPlayerFoilPrice]] : @"N/A";
-    color = card.tcgPlayerFoilPrice != 0 ? [self colorFromHexString:@"#998100"] : [UIColor lightGrayColor];
+    color = card.tcgPlayerFoilPrice != 0 ? [JJJUtil colorFromHexString:@"#998100"] : [UIColor lightGrayColor];
     self.lblFoilPrice.text = price;
     self.lblFoilPrice.textColor = color;
 }
@@ -363,21 +341,7 @@
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:kParseSyncDone
                                                       object:nil];
-//        [self updateDisplay];
     }
 }
 
-// Assumes input like "#00FF00" (#RRGGBB).
-- (UIColor*)colorFromHexString:(NSString *)hexString
-{
-    unsigned rgbValue = 0;
-    NSScanner *scanner = [NSScanner scannerWithString:hexString];
-    [scanner setScanLocation:1]; // bypass '#' character
-    [scanner scanHexInt:&rgbValue];
-    
-    return [UIColor colorWithRed:((rgbValue & 0xFF0000) >> 16)/255.0
-                           green:((rgbValue & 0xFF00) >> 8)/255.0
-                            blue:(rgbValue & 0xFF)/255.0
-                           alpha:1.0];
-}
 @end

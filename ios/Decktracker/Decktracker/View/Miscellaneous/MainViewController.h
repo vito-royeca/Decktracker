@@ -10,6 +10,4 @@
 
 @interface MainViewController : UITabBarController<UITabBarControllerDelegate>
 
--(void) addNavigationController:(UINavigationController*) navController atIndex:(int) index;
-
 @end

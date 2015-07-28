@@ -69,7 +69,7 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
 //  MARK: UI code
     func setupBackground() {
         var dX = CGFloat(0)
-        var dY = UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height + 35
+        var dY = UIApplication.sharedApplication().statusBarFrame.size.height + /*self.navigationController!.navigationBar.frame.size.height +*/ 35
         var dWidth = self.view.frame.size.width
         var dHeight = CGFloat(40)
         var dFrame = CGRect(x:dX, y:dY, width:dWidth, height:dHeight)

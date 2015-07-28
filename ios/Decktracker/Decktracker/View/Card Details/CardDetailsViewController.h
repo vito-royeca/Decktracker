@@ -29,6 +29,7 @@
 @property(strong, nonatomic) UIBarButtonItem *btnNext;
 @property(strong, nonatomic) UIBarButtonItem *btnAction;
 @property(strong, nonatomic) UIBarButtonItem *btnRate;
+@property(strong, nonatomic) UIBarButtonItem *btnBuy;
 @property(strong, nonatomic) UIBarButtonItem *btnAdd;
 
 @property(nonatomic) BOOL addButtonVisible;

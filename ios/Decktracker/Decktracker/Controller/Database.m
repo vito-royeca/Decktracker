@@ -799,6 +799,19 @@ static Database *_me;
         });
 #endif
     }
+    
+    else
+    {
+#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
+        dispatch_async(dispatch_get_main_queue(), ^{
+#endif
+            [[NSNotificationCenter defaultCenter] postNotificationName:kPriceUpdateDone
+                                                                object:nil
+                                                              userInfo:@{@"cardId": cardId}];
+#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
+        });
+#endif
+    }
 }
 
 -(NSArray*) fetchSets:(int) howMany
@@ -939,6 +952,16 @@ static Database *_me;
       andPrintings:(NSArray*) pfPrintings
        andCallback:(void (^)(PFObject*)) callback
 {
+    
+#ifndef DEBUG
+    // don't update Parse if deployed in Production
+    if (existing)
+    {
+        callback(pfCard);
+        return;
+    }
+#endif
+    
     __block DTCard *card = [DTCard objectForPrimaryKey:cardId];
     
     if (card.border.length > 0)
@@ -1138,36 +1161,24 @@ static Database *_me;
         [pfCard removeObjectForKey:@"watermark"];
     }
     
+    PFRelation *relation = [pfCard relationForKey:@"printings"];
+    for (PFObject *pfSet2 in pfPrintings)
+    {
+        [relation addObject:pfSet2];
+    }
+    pfCard[@"set"] = pfSet;
+    pfCard[@"rarity"] = pfRarity;
+    pfCard[@"artist"] = pfArtist;
+
     [pfCard saveInBackgroundWithBlock:^(BOOL success, NSError *error) {
         if (success)
         {
-            PFRelation *relation = [pfCard relationForKey:@"printings"];
-            for (PFObject *pfSet2 in pfPrintings)
-            {
-                [relation addObject:pfSet2];
-            }
-            
-            pfCard[@"set"] = pfSet;
-            pfCard[@"rarity"] = pfRarity;
-            pfCard[@"artist"] = pfArtist;
-            [pfCard saveInBackgroundWithBlock:^(BOOL success, NSError *error) {
-                if (success)
-                {
-                    [pfCard pinInBackgroundWithBlock:^(BOOL success, NSError *error) {
+            [pfCard pinInBackgroundWithBlock:^(BOOL success, NSError *error) {
 #ifdef DEBUG
-                        DTCard *card = [DTCard objectForPrimaryKey:cardId];
-                        NSLog(@"%@Card: %@ [%@]", (existing ? @"^":@"+"), card.name, card.set.code);
+                DTCard *card = [DTCard objectForPrimaryKey:cardId];
+                NSLog(@"%@Parse: %@ [%@]", (existing ? @"^":@"+"), card.name, card.set.code);
 #endif
-                        callback(pfCard);
-                    }];
-                }
-                else
-                {
-#ifdef DEBUG
-                    card = [DTCard objectForPrimaryKey:cardId];
-                    NSLog(@"Error saving Card: %@ : %@", card.name, error.description);
-#endif
-                }
+                callback(pfCard);
             }];
         }
         else
@@ -1547,27 +1558,23 @@ static Database *_me;
     [self processCurrentParseQueue];
 }
 
--(void) cleanupParseQueue:(NSString*) cardId withCallbackName:(NSString*) callbackName
-{
-    NSMutableArray *duplicates = [[NSMutableArray alloc] init];
-    
-    for (NSArray *queue in _parseQueue)
-    {
-        if ([queue[0] isEqualToString:cardId] &&
-            [queue[2] isEqualToString:callbackName])
-        {
-            [duplicates addObject:queue];
-        }
-    }
-    [_parseQueue removeObjectsInArray:duplicates];
-}
+//-(void) cleanupParseQueue:(NSString*) cardId withCallbackName:(NSString*) callbackName
+//{
+//    NSMutableArray *duplicates = [[NSMutableArray alloc] init];
+//    
+//    for (NSArray *queue in _parseQueue)
+//    {
+//        if ([queue[0] isEqualToString:cardId] &&
+//            [queue[2] isEqualToString:callbackName])
+//        {
+//            [duplicates addObject:queue];
+//        }
+//    }
+//    [_parseQueue removeObjectsInArray:duplicates];
+//}
 
 -(void) incrementCardView:(NSString*) cardId
 {
-    NSString *callbackName = @"callbackIncrementCard";
-    
-    [self cleanupParseQueue:cardId withCallbackName:callbackName];
-    
     void (^callbackIncrementCard)(PFObject *pfCard) = ^void(PFObject *pfCard) {
         
         __block DTCard *card = [DTCard objectForPrimaryKey:cardId];
@@ -1589,16 +1596,12 @@ static Database *_me;
         }];
     };
     
-    [_parseQueue addObject:@[cardId, callbackIncrementCard, callbackName]];
+    [_parseQueue addObject:@[cardId, callbackIncrementCard]];
     [self processQueue];
 }
 
 -(void) rateCard:(NSString*) cardId withRating:(float) rating
 {
-    NSString *callbackName = @"callbackRateCard";
-    
-    [self cleanupParseQueue:cardId withCallbackName:callbackName];
-    
     void (^callbackRateCard)(PFObject *pfCard) = ^void(PFObject *pfCard) {
         PFObject *pfRating = [PFObject objectWithClassName:@"CardRating"];
         pfRating[@"rating"] = [NSNumber numberWithDouble:rating];
@@ -1651,16 +1654,12 @@ static Database *_me;
         }];
     };
     
-    [_parseQueue addObject:@[cardId, callbackRateCard, callbackName]];
+    [_parseQueue addObject:@[cardId, callbackRateCard]];
     [self processQueue];
 }
 
 -(void) fetchCardRating:(NSString*) cardId
 {
-    NSString *callbackName = @"callbackFetchCardRating";
-    
-    [self cleanupParseQueue:cardId withCallbackName:callbackName];
-    
     void (^callbackFetchCardRating)(PFObject *pfCard) = ^void(PFObject *pfCard) {
         
         DTCard *card = [DTCard objectForPrimaryKey:cardId];
@@ -1677,7 +1676,7 @@ static Database *_me;
         [self processQueue];
     };
     
-    [_parseQueue addObject:@[cardId, callbackFetchCardRating, callbackName]];
+    [_parseQueue addObject:@[cardId, callbackFetchCardRating]];
     [self processQueue];
 }
 
@@ -1870,16 +1869,14 @@ static Database *_me;
 #pragma mark Parse.com maintenance
 -(void) updateCard:(NSString*) cardId
 {
-    NSString *callbackName = @"callbackUpdateCard";
-    
-    [self cleanupParseQueue:cardId withCallbackName:callbackName];
-    
     void (^callbackUpdateCard)(PFObject *pfCard) = ^void(PFObject *pfCard) {
+        // do nothing here...
+        
         _currentParseQueue = nil;
         [self processQueue];
     };
     
-    [_parseQueue addObject:@[cardId, callbackUpdateCard, callbackName]];
+    [_parseQueue addObject:@[cardId, callbackUpdateCard]];
     [self processQueue];
 }
 
@@ -1887,11 +1884,7 @@ static Database *_me;
 {
     for (DTSet *set in [[DTSet allObjects] sortedResultsUsingProperty:@"name" ascending:YES])
     {
-        // MTGJSON v2.22.4
-        if ([set.code isEqualToString:@"CEI"] ||
-            [set.code isEqualToString:@"DKM"] ||
-            [set.code isEqualToString:@"ORI"] ||
-            [set.code isEqualToString:@"CPK"])
+        if ([set.code isEqualToString:@"pFNM"])
         {
             for (DTCard *card in [[DTCard objectsWithPredicate:[NSPredicate predicateWithFormat:@"set.code = %@", set.code]] sortedResultsUsingProperty:@"name" ascending:YES])
             {
