@@ -49,16 +49,16 @@ class ThumbCollectionViewCell: UICollectionViewCell {
         NSNotificationCenter.defaultCenter().removeObserver(self, name:kCardDownloadCompleted,  object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector:"loadCropImage:",  name:kCardDownloadCompleted, object:nil)
         
-        lblCardName.text = card.name
+        lblCardName.text = card!.name
         currentCropPath = FileManager.sharedInstance().cropPath(self.cardId)
         imgCrop.image = UIImage(contentsOfFile: currentCropPath!)
-        _ratingControl!.rating = Float(card.rating)
+        _ratingControl!.rating = Float(card!.rating)
         
         FileManager.sharedInstance().downloadCardImage(self.cardId, immediately:false)
         Database.sharedInstance().fetchCardRating(self.cardId)
         
         // set image
-        let dict = Database.sharedInstance().inAppSettingsForSet(card.set.setId)
+        let dict = Database.sharedInstance().inAppSettingsForSet(card!.set.setId)
         if dict != nil {
             imgSet.image = UIImage(named: "locked.png")
             
@@ -106,7 +106,7 @@ class ThumbCollectionViewCell: UICollectionViewCell {
     
         if self.cardId == cardId {
             let card = DTCard(forPrimaryKey: self.cardId)
-            _ratingControl!.rating = Float(card.rating)
+            _ratingControl!.rating = Float(card!.rating)
     
             NSNotificationCenter.defaultCenter().removeObserver(self, name: kParseSyncDone, object: nil)
         }

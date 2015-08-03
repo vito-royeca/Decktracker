@@ -16,12 +16,6 @@
     src: url('../fonts/MPlantin.ttf');
 }
 
-body, td
-{
-    font-family: Helvetica;
-    font-size: 12pt;
-}
-
 html, body
 {
     height: 100%;
@@ -40,14 +34,14 @@ html, body
 .td_classic
 {
     font-family: Magic;
-    font-size: 14pt;
+    font-size: 16pt;
     color: #c5c5c5;
 }
 
 .td_modern
 {
     font-family: Matrix;
-    font-size: 14pt;
+    font-size: 16pt;
     color: #c5c5c5;
 }
 
@@ -55,6 +49,12 @@ html, body
 {
     font-size: 12pt;
     color: #ffffff;
+}
+
+a, .td_label
+{
+    font-size: 12pt;
+    color: #c5c5c5;
 }
 
 .th_player, .th_rank
@@ -283,4 +283,36 @@ label {
     height: 17px;
     width: 20%;
     margin: 0px 0px 5px;
+}
+
+/* Card pricing*/
+
+.cardPriceLow
+{
+    font-size: 12pt;
+    color: #f00;
+}
+
+.cardPriceMid
+{
+    font-size: 12pt;
+    color: #00f;
+}
+
+.cardPriceHigh
+{
+    font-size: 12pt;
+    color: #008000;
+}
+
+.cardPriceFoil
+{
+    font-size: 12pt;
+    color: #998100;
+}
+
+.cardPriceNA
+{
+    font-size: 12pt;
+    color: #c5c5c5;
 }

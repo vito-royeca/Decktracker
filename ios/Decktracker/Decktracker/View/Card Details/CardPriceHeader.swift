@@ -108,23 +108,23 @@ class CardPriceHeader: UIView {
         formatter.numberStyle = NSNumberFormatterStyle.CurrencyStyle
         formatter.locale = NSLocale(localeIdentifier: "en_US")
         
-        var price = card.tcgPlayerLowPrice != 0 ? formatter.stringFromNumber(NSNumber(double:card.tcgPlayerLowPrice)) : "N/A"
-        var color = card.tcgPlayerLowPrice != 0 ? UIColor.redColor() : UIColor.lightGrayColor()
+        var price = card!.tcgPlayerLowPrice != 0 ? formatter.stringFromNumber(NSNumber(double:card!.tcgPlayerLowPrice)) : "N/A"
+        var color = card!.tcgPlayerLowPrice != 0 ? UIColor.redColor() : UIColor.lightGrayColor()
         lblLowPrice!.text = price
         lblLowPrice!.textColor = color
         
-        price = card.tcgPlayerMidPrice != 0 ? formatter.stringFromNumber(NSNumber(double:card.tcgPlayerMidPrice)) : "N/A"
-        color = card.tcgPlayerMidPrice != 0 ? UIColor.blueColor() : UIColor.lightGrayColor()
+        price = card!.tcgPlayerMidPrice != 0 ? formatter.stringFromNumber(NSNumber(double:card!.tcgPlayerMidPrice)) : "N/A"
+        color = card!.tcgPlayerMidPrice != 0 ? UIColor.blueColor() : UIColor.lightGrayColor()
         lblMidPrice!.text = price
         lblMidPrice!.textColor = color
         
-        price = card.tcgPlayerHighPrice != 0 ? formatter.stringFromNumber(NSNumber(double:card.tcgPlayerHighPrice)) : "N/A"
-        color = card.tcgPlayerHighPrice != 0 ? JJJUtil.colorFromHexString("#008000") : UIColor.lightGrayColor()
+        price = card!.tcgPlayerHighPrice != 0 ? formatter.stringFromNumber(NSNumber(double:card!.tcgPlayerHighPrice)) : "N/A"
+        color = card!.tcgPlayerHighPrice != 0 ? JJJUtil.colorFromHexString("#008000") : UIColor.lightGrayColor()
         lblHighPrice!.text = price
         lblHighPrice!.textColor = color
         
-        price = card.tcgPlayerFoilPrice != 0 ? formatter.stringFromNumber(NSNumber(double:card.tcgPlayerFoilPrice)) : "N/A"
-        color = card.tcgPlayerFoilPrice != 0 ? JJJUtil.colorFromHexString("#998100") : UIColor.lightGrayColor()
+        price = card!.tcgPlayerFoilPrice != 0 ? formatter.stringFromNumber(NSNumber(double:card!.tcgPlayerFoilPrice)) : "N/A"
+        color = card!.tcgPlayerFoilPrice != 0 ? JJJUtil.colorFromHexString("#998100") : UIColor.lightGrayColor()
         lblFoilPrice!.text = price
         lblFoilPrice!.textColor = color
     }

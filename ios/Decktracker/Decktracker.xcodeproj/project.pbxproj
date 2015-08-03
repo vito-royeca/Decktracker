@@ -9,9 +9,6 @@
 /* Begin PBXBuildFile section */
 		77D56A16A583FB0A4C860216 /* CardQuizHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D564E8D46C17B81D56F614 /* CardQuizHomeViewController.swift */; };
 		77D56A818E39E63A1D4A8453 /* CardQuizConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D560F3C5D2147D03F3F0C5 /* CardQuizConstants.swift */; };
-		8C00AC141B2ED4D600748A37 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C00AC131B2ED4D600748A37 /* Realm.framework */; };
-		8C00AC151B2ED4D600748A37 /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8C00AC131B2ED4D600748A37 /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		8C00AC171B2ED4F400748A37 /* RLMSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C00AC161B2ED4F400748A37 /* RLMSupport.swift */; };
 		8C0117171ADCAF230075A933 /* CardQuizLeaderboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0117161ADCAF230075A933 /* CardQuizLeaderboardViewController.swift */; };
 		8C01E0FD1ADB9A8800509DDB /* In-App Mana.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C01E0FC1ADB9A8800509DDB /* In-App Mana.plist */; };
 		8C057CED1AE01BAF0016E0F5 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C057CEC1AE01BAF0016E0F5 /* AVFoundation.framework */; };
@@ -127,6 +124,8 @@
 		8C3E948319E4207200C7EF21 /* AcknowledgementTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3E948119E4207200C7EF21 /* AcknowledgementTableViewCell.m */; };
 		8C3E948419E4207200C7EF21 /* AcknowledgementTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C3E948219E4207200C7EF21 /* AcknowledgementTableViewCell.xib */; };
 		8C45F0A41B1C4B8500C19C8F /* DTLanguage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C45F0A31B1C4B8500C19C8F /* DTLanguage.m */; };
+		8C4666A21B6F749F005A177E /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C4666A11B6F749F005A177E /* Realm.framework */; };
+		8C4666A41B6F74B8005A177E /* RLMSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4666A31B6F74B8005A177E /* RLMSupport.swift */; };
 		8C467CF019F1132600B27F05 /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C467CEF19F1132600B27F05 /* MoreViewController.swift */; };
 		8C49656719B0A01F001C7935 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C49656619B0A01E001C7935 /* Crashlytics.framework */; };
 		8C4A0BC21AD53985004754CB /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4A0BC11AD53985004754CB /* SignupViewController.swift */; };
@@ -225,7 +224,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				8C00AC151B2ED4D600748A37 /* Realm.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -235,8 +233,6 @@
 /* Begin PBXFileReference section */
 		77D560F3C5D2147D03F3F0C5 /* CardQuizConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardQuizConstants.swift; sourceTree = "<group>"; };
 		77D564E8D46C17B81D56F614 /* CardQuizHomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardQuizHomeViewController.swift; sourceTree = "<group>"; };
-		8C00AC131B2ED4D600748A37 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
-		8C00AC161B2ED4F400748A37 /* RLMSupport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RLMSupport.swift; sourceTree = "<group>"; };
 		8C0117161ADCAF230075A933 /* CardQuizLeaderboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardQuizLeaderboardViewController.swift; sourceTree = "<group>"; };
 		8C01E0FC1ADB9A8800509DDB /* In-App Mana.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "In-App Mana.plist"; sourceTree = "<group>"; };
 		8C057CEC1AE01BAF0016E0F5 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -401,6 +397,8 @@
 		8C3E948219E4207200C7EF21 /* AcknowledgementTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AcknowledgementTableViewCell.xib; sourceTree = "<group>"; };
 		8C45F0A21B1C4B8500C19C8F /* DTLanguage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTLanguage.h; sourceTree = "<group>"; };
 		8C45F0A31B1C4B8500C19C8F /* DTLanguage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTLanguage.m; sourceTree = "<group>"; };
+		8C4666A11B6F749F005A177E /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
+		8C4666A31B6F74B8005A177E /* RLMSupport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RLMSupport.swift; sourceTree = "<group>"; };
 		8C467CEF19F1132600B27F05 /* MoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
 		8C49656619B0A01E001C7935 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		8C4A0BC11AD53985004754CB /* SignupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
@@ -495,7 +493,6 @@
 				8C372C7B1A2DD908001D7EF3 /* Social.framework in Frameworks */,
 				8C372C771A2DD900001D7EF3 /* Accounts.framework in Frameworks */,
 				8C2A96D719F4D95C0094C97F /* MessageUI.framework in Frameworks */,
-				8C00AC141B2ED4D600748A37 /* Realm.framework in Frameworks */,
 				8C2A96D619F4D9510094C97F /* ImageIO.framework in Frameworks */,
 				8C6847B919EE426C0074960E /* libJJJ.a in Frameworks */,
 				8C6847B619EE42370074960E /* JJJ.xcodeproj in Frameworks */,
@@ -505,6 +502,7 @@
 				8CE7F2BE19C0A2D0004FBEA5 /* StoreKit.framework in Frameworks */,
 				8C2E13F51990741100023BAA /* UIKit.framework in Frameworks */,
 				8C2E13F11990741100023BAA /* Foundation.framework in Frameworks */,
+				8C4666A21B6F749F005A177E /* Realm.framework in Frameworks */,
 				8C49656719B0A01F001C7935 /* Crashlytics.framework in Frameworks */,
 				A3BBD6DCFB78C22CDF28574E /* libPods-Decktracker.a in Frameworks */,
 			);
@@ -678,7 +676,7 @@
 		8C2E13EF1990741100023BAA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				8C00AC131B2ED4D600748A37 /* Realm.framework */,
+				8C4666A11B6F749F005A177E /* Realm.framework */,
 				8C2094E01A5D1611008878D6 /* Accelerate.framework */,
 				8C372C761A2DD900001D7EF3 /* Accounts.framework */,
 				8CA317C719C56B73001F94F5 /* AdSupport.framework */,
@@ -842,7 +840,7 @@
 			isa = PBXGroup;
 			children = (
 				8C378DFD19A7433500B9367F /* MHFacebookImageViewer */,
-				8C00AC161B2ED4F400748A37 /* RLMSupport.swift */,
+				8C4666A31B6F74B8005A177E /* RLMSupport.swift */,
 				8C2A973E19F502720094C97F /* vfrReader */,
 			);
 			path = Libs;
@@ -1272,7 +1270,7 @@
 				8C2A97A019F5027B0094C97F /* ReaderDocument.m in Sources */,
 				8C2A97A919F5027B0094C97F /* ReaderThumbsView.m in Sources */,
 				8C325F3D1A5A60B200FA58E6 /* DecksTableViewCell.swift in Sources */,
-				8C00AC171B2ED4F400748A37 /* RLMSupport.swift in Sources */,
+				8C4666A41B6F74B8005A177E /* RLMSupport.swift in Sources */,
 				8C2A97A219F5027B0094C97F /* ReaderMainPagebar.m in Sources */,
 				8CD2E1EC19DACE1A00503ACC /* InAppPurchase.m in Sources */,
 				8C90A17F19C97ADF00F7278C /* Deck.m in Sources */,

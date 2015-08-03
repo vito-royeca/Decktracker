@@ -51,6 +51,6 @@ class SetCollectionViewCell: UICollectionViewCell {
         }
         
         let set = DTSet(forPrimaryKey: setId)
-        lblSetName.text = set.name
+        lblSetName.text = set!.name
     }
 }

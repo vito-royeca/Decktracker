@@ -263,7 +263,7 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
             if (name != nil) {
                 var cardIds = Array<String>()
                 
-                for y in cards.objectsWithPredicate(predicate) {
+                for y in cards.objectsWithPredicate(predicate!) {
                     let z = y as! DTCard
                     cardIds.append(z.cardId)
                 }
@@ -428,7 +428,7 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
         var cardId = cardIds![indexPath.row]
         let card = DTCard(forPrimaryKey: cardId)
 
-        let iaps = Database.sharedInstance().inAppSettingsForSet(card.set.setId)
+        let iaps = Database.sharedInstance().inAppSettingsForSet(card!.set.setId)
         if iaps != nil {
             return
         }
@@ -513,7 +513,7 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
         var cardId = cardIds![indexPath.row]
         let card = DTCard(forPrimaryKey: cardId)
         
-        let iaps = Database.sharedInstance().inAppSettingsForSet(card.set.setId)
+        let iaps = Database.sharedInstance().inAppSettingsForSet(card!.set.setId)
         if iaps != nil {
             return
         }

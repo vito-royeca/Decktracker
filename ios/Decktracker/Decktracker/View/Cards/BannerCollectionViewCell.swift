@@ -39,13 +39,13 @@ class BannerCollectionViewCell: UICollectionViewCell {
         NSNotificationCenter.defaultCenter().removeObserver(self, name:kCardDownloadCompleted,  object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector:"loadCropImage:",  name:kCardDownloadCompleted, object:nil)
         
-        if card.modern {
+        if card!.modern {
             lblCardName.font = _8thEditionFont;
         
         } else {
             lblCardName.font = _pre8thEditionFont;
         }
-        lblCardName.text = card.name
+        lblCardName.text = card!.name
         
         _currentCropPath = FileManager.sharedInstance().cropPath(self.cardId)
         var cropImage:UIImage?

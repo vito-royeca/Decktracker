@@ -202,7 +202,7 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let cardId = cardIds![indexPath.row]
         let card = DTCard(forPrimaryKey: cardId)
-        let dict = Database.sharedInstance().inAppSettingsForSet(card.set.setId)
+        let dict = Database.sharedInstance().inAppSettingsForSet(card!.set.setId)
         var view:UIViewController?
         
         if dict != nil {
@@ -242,7 +242,7 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let cardId = cardIds![indexPath.row]
         let card = DTCard(forPrimaryKey: cardId)
-        let dict = Database.sharedInstance().inAppSettingsForSet(card.set.setId)
+        let dict = Database.sharedInstance().inAppSettingsForSet(card!.set.setId)
         var view:UIViewController?
         
         if dict != nil {

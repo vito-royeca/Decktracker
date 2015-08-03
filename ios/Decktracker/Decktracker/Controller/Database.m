@@ -54,41 +54,11 @@ static Database *_me;
     NSString *cachePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject];
     NSString *storePath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", kDatabaseStore]];
     
-//    NSDictionary *arrCardUpdates = [dict objectForKey:@"Card Updates"];
-//    NSArray *sortedKeys = [[arrCardUpdates allKeys] sortedArrayUsingSelector: @selector(compare:)];
-//    for (NSString *ver in sortedKeys)
-//    {
-//        for (NSString *setCode in arrCardUpdates[ver])
-//        {
-//            NSString *key = [NSString stringWithFormat:@"%@-%@", ver, setCode];
-//            
-//            if (![[NSUserDefaults standardUserDefaults] boolForKey:key])
-//            {
-//                NSString *path = [cachePath stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/card/%@/", setCode]];
-//                
-//                if ([[NSFileManager defaultManager] fileExistsAtPath:path])
-//                {
-//                    for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil])
-//                    {
-//                        [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@", path, file] error:nil];
-//                    }
-//                }
-//                
-//                path = [cachePath stringByAppendingPathComponent:[NSString stringWithFormat:@"/images/crop/%@/", setCode]];
-//                
-//                if ([[NSFileManager defaultManager] fileExistsAtPath:path])
-//                {
-//                    for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil])
-//                    {
-//                        [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@", path, file] error:nil];
-//                    }
-//                }
-//            }
-//            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:key];
-//        }
-//        [[NSUserDefaults standardUserDefaults] synchronize];
-//    }
-    
+#ifdef DEBUG
+    NSLog(@"storePath=%@", storePath);
+#endif
+    [RLMRealm setDefaultRealmPath:storePath];
+
     // delete all cards from mtgimage.com
     NSString *mtgImageKey = @"mtgimage.com images";
     if (![[NSUserDefaults standardUserDefaults] boolForKey:mtgImageKey])
@@ -159,17 +129,10 @@ static Database *_me;
                                                        error:nil];
         }
     }
-#ifdef DEBUG
-    NSLog(@"storePath=%@", storePath);
-#endif
 
-    [RLMRealm setDefaultRealmPath:storePath];
-
-#endif
-
-#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
     [self loadInAppSets];
     
+    // ignore database and other files from iCloud backup
     for (NSString *file in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentPath error:nil])
     {
         if ([file hasPrefix:@"decktracker."])
@@ -201,7 +164,7 @@ static Database *_me;
 
 -(void) closeDb
 {
-//    [MagicalRecord cleanUp];
+
 }
 
 -(void) copyRealmDatabaseToHome
@@ -217,6 +180,7 @@ static Database *_me;
 
 -(void) setupParse:(NSDictionary *)launchOptions
 {
+#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
     [Parse enableLocalDatastore];
 //#ifdef DEBUG
 //    [Parse setApplicationId:kParseDevelopID
@@ -225,8 +189,7 @@ static Database *_me;
     [Parse setApplicationId:kParseID
                   clientKey:kParseClientKey];
 //#endif
-
-#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
+    
     [PFFacebookUtils initializeFacebook];
     [PFTwitterUtils initializeWithConsumerKey:kTwitterKey
                                consumerSecret:kTwitterSecret];
@@ -840,7 +803,6 @@ static Database *_me;
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"rating >= 0"];
     PFQuery *query = [PFQuery queryWithClassName:@"Card" predicate:predicate];
     [query orderByDescending:@"rating"];
-    [query addDescendingOrder:@"updatedAt"];
     [query addAscendingOrder:@"name"];
     [query whereKeyExists:@"rating"];
     [query includeKey:@"set"];
@@ -1558,21 +1520,6 @@ static Database *_me;
     [self processCurrentParseQueue];
 }
 
-//-(void) cleanupParseQueue:(NSString*) cardId withCallbackName:(NSString*) callbackName
-//{
-//    NSMutableArray *duplicates = [[NSMutableArray alloc] init];
-//    
-//    for (NSArray *queue in _parseQueue)
-//    {
-//        if ([queue[0] isEqualToString:cardId] &&
-//            [queue[2] isEqualToString:callbackName])
-//        {
-//            [duplicates addObject:queue];
-//        }
-//    }
-//    [_parseQueue removeObjectsInArray:duplicates];
-//}
-
 -(void) incrementCardView:(NSString*) cardId
 {
     void (^callbackIncrementCard)(PFObject *pfCard) = ^void(PFObject *pfCard) {
@@ -1884,7 +1831,11 @@ static Database *_me;
 {
     for (DTSet *set in [[DTSet allObjects] sortedResultsUsingProperty:@"name" ascending:YES])
     {
-        if ([set.code isEqualToString:@"pFNM"])
+        if ([set.code isEqualToString:@"ORI"] || // v2.22.3
+            [set.code isEqualToString:@"CPK"] || // v2.22.4
+            [set.code isEqualToString:@"POR"] || // v2.22.5
+            [set.code isEqualToString:@"S99"] || // v2.22.5
+            [set.code isEqualToString:@"CMD"])   // v2.22.6
         {
             for (DTCard *card in [[DTCard objectsWithPredicate:[NSPredicate predicateWithFormat:@"set.code = %@", set.code]] sortedResultsUsingProperty:@"name" ascending:YES])
             {
@@ -2191,22 +2142,61 @@ static Database *_me;
     }];
 }
 
+-(void) deleteDuplicateParseCards
+{
+    PFQuery *query = [PFQuery queryWithClassName:@"Card"];
+    [query whereKeyDoesNotExist:@"rarity"];
+    [query includeKey:@"set"];
+    [query orderByAscending:@"name"];
+    
+    [[query findObjectsInBackground] continueWithBlock:^id(BFTask *task)
+     {
+         for (PFObject *pfCard in task.result)
+         {
+             PFQuery *query2 = [PFQuery queryWithClassName:@"Card"];
+             [query2 whereKey:@"set" equalTo:pfCard[@"set"]];
+             [query2 whereKey:@"name" equalTo:pfCard[@"name"]];
+             
+             [[query2 findObjectsInBackground] continueWithBlock:^id(BFTask *task2)
+              {
+                  for (PFObject *pfCard2 in task2.result)
+                  {
+                      PFObject* pfSet2 = pfCard2[@"set"];
+                      
+                      NSLog(@"^Card: (%@)%@ [(%@)%@]", pfCard2.objectId, pfCard2[@"name"], pfSet2.objectId, pfSet2[@"name"]);
+                      [pfCard2 incrementKey:@"numberOfViews" byAmount:pfCard[@"numberOfViews"]];
+                      
+                      [pfCard2 saveEventually:^(BOOL success, NSError *error) {
+                          PFObject* pfSet = pfCard[@"set"];
+                          
+                          NSLog(@"-Card: (%@)%@ [(%@)%@]", pfCard.objectId, pfCard[@"name"], pfSet.objectId, pfSet[@"name"]);
+                          [pfCard deleteEventually];
+                      }];
+                  }
+                  
+                  return nil;
+              }];
+         }
+         return nil;
+     }];
+}
+
 -(void) cleanupParseLocalDataStore
 {
-//    for (NSString *objectName in @[@"Card", @"CardRarity", @"CardRating", @"Set", @"Block", @"Artist", @"SetType"])
-//    {
-//        PFQuery *query = [PFQuery queryWithClassName:objectName];
-//        [query fromLocalDatastore];
-//
-//        [[query findObjectsInBackground] continueWithBlock:^id(BFTask *task)
-//        {
-//            for (PFObject *object in task.result)
-//            {
-//                [object unpinInBackground];
-//            }
-//            return nil;
-//        }];
-//    }
+    for (NSString *objectName in @[@"Card", @"CardRarity", @"CardRating", @"Set", @"Block", @"Artist", @"SetType"])
+    {
+        PFQuery *query = [PFQuery queryWithClassName:objectName];
+        [query fromLocalDatastore];
+
+        [[query findObjectsInBackground] continueWithBlock:^id(BFTask *task)
+        {
+            for (PFObject *object in task.result)
+            {
+                [object unpinInBackground];
+            }
+            return nil;
+        }];
+    }
 }
 
 #endif

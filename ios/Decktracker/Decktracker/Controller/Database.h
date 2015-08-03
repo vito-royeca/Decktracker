@@ -88,6 +88,7 @@
 // Parse Maintenance
 -(void) updateParseCards;
 -(void) findDuplicateParseCards;
+-(void) deleteDuplicateParseCards;
 -(void) uploadArtists;
 -(void) uploadBlocks;
 -(void) uploadSetTypes;

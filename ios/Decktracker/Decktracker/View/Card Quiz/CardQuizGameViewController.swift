@@ -486,7 +486,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         // tokenize the answer
         arrAnswers = Array<Array<UILabel>>()
         var lines = [String]()
-        for word in card.name.componentsSeparatedByString(" ") {
+        for word in card!.name.componentsSeparatedByString(" ") {
             var line = lines.last != nil ? lines.last : word
             
             if word == line {
@@ -559,7 +559,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         FileManager.sharedInstance().downloadCardImage(self.cardIds!.first, immediately:true)
         
         // draw the quiz
-        let quiz = self.quizForCard(card)
+        let quiz = self.quizForCard(card!)
         index = 0
         arrQuizzes = Array()
         dWidth = self.view.frame.size.width/10
@@ -733,7 +733,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         } else {
             if cardIds!.count > 0 {
                 let card = DTCard(forPrimaryKey: cardIds!.first)
-                let value = card.set.code + "_" + card.number
+                let value = card!.set.code + "_" + card!.number
                 
                 NSUserDefaults.standardUserDefaults().setObject(value, forKey: key!)
                 NSUserDefaults.standardUserDefaults().synchronize()
@@ -815,7 +815,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         } else {
             // set up a new card
             let card = DTCard(forPrimaryKey: cardIds!.first)
-            let value = card.set.code + "_" + card.number
+            let value = card!.set.code + "_" + card!.number
             NSUserDefaults.standardUserDefaults().setObject(value, forKey: self.gameType!)
             NSUserDefaults.standardUserDefaults().synchronize()
         }
@@ -1194,7 +1194,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         if answer.rangeOfString("*") == nil {
             let card = DTCard(forPrimaryKey: cardIds!.first)
             
-            if answer.lowercaseString == card.name.lowercaseString {
+            if answer.lowercaseString == card!.name.lowercaseString {
 
                 for dict in FileManager.sharedInstance().manaImagesForCard(cardIds!.first) as! [NSDictionary] {
                     let symbol = dict["symbol"] as! String

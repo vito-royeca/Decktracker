@@ -54,7 +54,7 @@ PODS:
     - Parse (~> 1.7)
   - PureLayout (2.0.6)
   - RBBAnimation (0.3.0)
-  - XLForm (3.0.0)
+  - XLForm (3.0.1)
 
 DEPENDENCIES:
   - ActionSheetPicker-3.0
@@ -102,6 +102,6 @@ SPEC CHECKSUMS:
   ParseUI: d1228541b02a36a7354c8f47747f5f7a89cf1ff0
   PureLayout: f25f0bb904d5ccfe6e31da3cb869185259f02e0d
   RBBAnimation: cb6cb419f511434ce932f7d0fabf369612fafb4e
-  XLForm: 10fc7eb9e2d5df21a515fa3a794f4e26319abd0e
+  XLForm: 1a20da41c009e4f99e802e886a8eef5f2b086644
 
 COCOAPODS: 0.37.2

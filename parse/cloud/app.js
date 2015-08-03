@@ -29,11 +29,10 @@ app.locals._ = require('underscore');
 // app.locals.parseApplicationId = 'mKMQ9Hl7eGJJIwWb77WYyLfr7GpvsmuNKgGRRZyR';
 // app.locals.parseJavascriptKey = 'YCphnlQGSSAZnQYtZeDhvSz5aRj0djOi0zr2k4GZ';
 // app.locals.facebookApplicationId = '341320496039341';
-// production keys
+//// production keys
 app.locals.parseApplicationId = 'gWQ4zjHnoXHJK15ipFVgWLUSA979mqHaZ7sOlPU9';
 app.locals.parseJavascriptKey = 'c2IvVJIhJBCDFQcZtoEgST8g4SfmAvWRxdYoHJ3v';
 app.locals.facebookApplicationId = '341320496039341';
-
 
 // // Example reading from the request query string of an HTTP get request.
 // app.get('/test', function(req, res) {

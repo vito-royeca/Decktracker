@@ -256,7 +256,7 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
             var cardId = cardIds![indexPath.row]
             let card = DTCard(forPrimaryKey: cardId)
             
-            let iaps = Database.sharedInstance().inAppSettingsForSet(card.set.setId)
+            let iaps = Database.sharedInstance().inAppSettingsForSet(card!.set.setId)
             if iaps != nil {
                 return
             }
@@ -463,7 +463,7 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
             if collectionView.tag == 0 || collectionView.tag == 1 || collectionView.tag == 2 {
                 let cardId = dict[indexPath.row]
                 let card = DTCard(forPrimaryKey: cardId)
-                let dict = Database.sharedInstance().inAppSettingsForSet(card.set.setId)
+                let dict = Database.sharedInstance().inAppSettingsForSet(card!.set.setId)
                 
                 if dict != nil {
                     let view2 = InAppPurchaseViewController()
@@ -478,14 +478,14 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
                     let view2 = CardDetailsViewController()
                     
                     view2.addButtonVisible = true
-                    view2.cardId = card.cardId
+                    view2.cardId = card!.cardId
                     view = view2
                 }
                 
             } else if collectionView.tag == 3 { // Sets
                 let setId = dict[indexPath.row]
                 let set = DTSet(forPrimaryKey: setId)
-                let dict = Database.sharedInstance().inAppSettingsForSet(set.setId)
+                let dict = Database.sharedInstance().inAppSettingsForSet(set!.setId)
                 
                 if dict != nil {
                     let view2 = InAppPurchaseViewController()
@@ -497,10 +497,10 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
                     view = view2
                     
                 } else {
-                    let predicate = NSPredicate(format: "%K = %@", "set.name", set.name)
+                    let predicate = NSPredicate(format: "%K = %@", "set.name", set!.name)
                     let view2 = CardListViewController()
                     
-                    view2.navigationItem.title = set.name
+                    view2.navigationItem.title = set!.name
                     view2.predicate = predicate
                     view = view2
                 }

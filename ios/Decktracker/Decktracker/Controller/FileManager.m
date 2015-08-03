@@ -368,6 +368,14 @@ static FileManager *_me;
             height = 13;
             pngSize = 96;
         }
+        else if ([noCurlies isEqualToString:@"∞"] ||
+                 [noCurliesReverse isEqualToString:@"∞"])
+        {
+            noCurlies = @"Infinity";
+            width = 16;
+            height = 16;
+            pngSize = 32;
+        }
         else
         {
             width = 16;

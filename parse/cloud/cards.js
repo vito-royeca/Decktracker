@@ -16,6 +16,7 @@ var kCardTypeWithSymbols = ["Artifact", "Creature",
 
 var urlBase = "https://jovitoroyecacom.ipage.com/decktracker";
 var kLimit = 20;
+var kMaxTopFetch = 100;
 
 function CardObject(pfobject) {
 	this.pfobject = pfobject;
@@ -55,6 +56,12 @@ CardObject.prototype.typeDetails = function() {
     }
     
     return type;
+}
+
+CardObject.prototype.setImage = function() {
+	var rarity = this.pfobject.get('rarity') != null ? this.pfobject.get('rarity').get('symbol') : "C";
+	
+	return this.pfobject.get("set").get("code") + "/" + rarity;
 }
 
 CardObject.prototype.setDetails = function() {
@@ -100,49 +107,141 @@ exports.root = function(req, res) {
 				    	   view: "search",
 				    cardObjects: [],
 				    	     pp: 0,
-				    searchTerms: ""
+				    searchTerms: "",
+				   searchInName: true,
+				   searchInText: true,
+				 searchInFlavor: true,
+                     colorBlack: true,
+                      colorBlue: true,
+                     colorGreen: true,
+                       colorRed: true,
+                     colorWhite: true,
+                      colorless: true,
+                    matchColors: false
 	});
 }
 
 
 exports.search = function(req, res) {
-	var searchTerms = req.query.searchTerms;
-	
+	var searchTerms    = req.query.searchTerms;
+	var searchInName   = req.query.searchInName   == "on";
+	var searchInText   = req.query.searchInText   == "on";
+	var searchInFlavor = req.query.searchInFlavor == "on";
+    var colorBlack     = req.query.colorBlack     == "on";
+    var colorBlue      = req.query.colorBlue      == "on";
+    var colorGreen     = req.query.colorGreen     == "on";
+    var colorRed       = req.query.colorRed       == "on";
+    var colorWhite     = req.query.colorWhite     == "on";
+    var colorless      = req.query.colorless      == "on";
+    var matchColors    = req.query.matchColors    == "on";
+							
 	var pp = req.query.pp;
     if (pp == null) {
         pp = 0;
     }
     
     var query;
-	
+
+    // search terms
 	if (searchTerms.length == 1) {
-		var q = new Parse.Query("Card");
-		q.startsWith("name", searchTerms.toUpperCase());
-		subQueries.push(q);
+        query = new Parse.Query("Card");
+		query.startsWith("name", pSearchTerms.toUpperCase());
 		
-		query = Parse.Query.or(q);
 	} else {
-		var q1 = new Parse.Query("Card");
-		q1.matches("name", "(?)"+searchTerms, "i");
+		if (searchInName) {
+            query = new Parse.Query("Card");
+			query.matches("name", "(?)"+searchTerms, "i");
+		}
 		
-		var q2 = new Parse.Query("Card");
-		q2.matches("flavor", "(?)"+searchTerms, "i");
+		if (searchInText) {
+			var q1 = new Parse.Query("Card");
+			q1.matches("text", "(?)"+searchTerms, "i");
+            
+			var q2 = new Parse.Query("Card");
+			q2.matches("originalText", "(?)"+searchTerms, "i");
+            
+            if (query == null) {
+                query = Parse.Query.or(q1, q2);
+            } else {
+                query = Parse.Query.or(query, q1, q2);
+            }
+		}
 		
-		var q3 = new Parse.Query("Card");
-		q3.matches("text", "(?)"+searchTerms, "i");
-		
-		var q4 = new Parse.Query("Card");
-		q4.matches("originalText", "(?)"+searchTerms, "i");
-		
-		query = Parse.Query.or(q1, q2, q3, q4);
+		if (searchInFlavor) {
+			var q = new Parse.Query("Card");
+			q.matches("flavor", "(?)"+searchTerms, "i");
+            
+            if (query == null) {
+                query = q;
+            } else {
+                query = Parse.Query.or(query, q);
+            }
+		}
+        
+        if (query == null) {
+            query = new Parse.Query("Card");
+			query.matches("name", "(?)"+searchTerms, "i");    
+        }
 	}
 	
+    // colors
+    var regex = "";
+//    if (matchColors) {
+//        regex = "^{}BURGW0-9XYZ" //^[+\-{}B(). ]+$   
+//    }
+//    if (colorBlack) {
+//        regex = matchColors ? regex.replace("B", "") : regex.concat("B");    
+//    }
+//    if (colorBlue) {
+//        regex = matchColors ? regex.replace("U", "") : regex.concat("U");    
+//    }
+//    if (colorGreen) {
+//        regex = matchColors ? regex.replace("G", "") : regex.concat("G");    
+//    }
+//    if (colorRed) {
+//        regex = matchColors ? regex.replace("R", "") : regex.concat("R");    
+//    }
+//    if (colorWhite) {
+//        regex = matchColors ? regex.replace("W", "") : regex.concat("W");    
+//    }
+//    if (colorless) {
+//        regex = matchColors ? regex.replace("0-9XYZ", "") : regex.concat("0-9XYZ");
+//    }
+
+    if (colorBlack) {
+        regex = regex.concat("B");    
+    }
+    if (colorBlue) {
+        regex = regex.concat("U");    
+    }
+    if (colorGreen) {
+        regex = regex.concat("G");    
+    }
+    if (colorRed) {
+        regex = regex.concat("R");    
+    }
+    if (colorWhite) {
+        regex = regex.concat("W");    
+    }
+    if (colorless) {
+        regex = regex.concat("0-9XYZ");
+    }
+    //^[+\-{}BG(). ]+$
+    if (matchColors) {
+        regex = "^[+\\-{}"+regex+"(). ]+$";
+    } else {
+        regex = "["+regex+"]";
+    }
+    
+    query.matches("manaCost", regex, "i");
     query.include("set");
 	query.include("rarity");
+	query.exists("type"); // fix until mobile v1.5 is updated
 	query.ascending("name");
 	
 	query.count({
 	  	success: function(count) {
+            console.log("count="+count);
 			query.limit(kLimit);
 			query.skip(pp*kLimit);
 			query.find().then(function(objects) {
@@ -157,12 +256,22 @@ exports.search = function(req, res) {
 							    cardObjects: cardObjects,
 									  	 pp: pp,
 							    searchTerms: searchTerms,
+							   searchInName: searchInName,
+							   searchInText: searchInText,
+							 searchInFlavor: searchInFlavor,
+                                 colorBlack: colorBlack,
+                                  colorBlue: colorBlue,
+                                 colorGreen: colorGreen,
+                                   colorRed: colorRed,
+                                 colorWhite: colorWhite,
+                                  colorless: colorless,
+                                matchColors: matchColors,
 							    resultCount: count
 				});
 	    	});
   		},
 		error: function(error) {
-    	
+    	   console.log("count error:"+error.toString());
   		}
 	});
 }
@@ -180,23 +289,31 @@ exports.topRated = function(req, res) {
 // 		query.addDescending("updatedAt"); 
 	query.addAscending("name");
 	query.exists("rating");
+    query.exists("type"); // fix until mobile v1.5 is updated
     
-    query.limit(kLimit);
-	query.skip(pp*kLimit);
-    query.find().then(function(objects) {
-    	var cardObjects = [];
-		for (i=0; i<objects.length; i++) {
-    		cardObjects.push(new CardObject(objects[i]));
-    	}
+    query.count({
+        success: function(count) {
+            query.limit(kLimit);
+	        query.skip(pp*kLimit);
+            query.find().then(function(objects) {
+    	        var cardObjects = [];
+		        for (i=0; i<objects.length; i++) {
+    		        cardObjects.push(new CardObject(objects[i]));
+    	        }
     	
-		res.render("cards", { title: "Cards",
-	   		   			     navbar: "2",
-					    	   view: "topRated",
-				 		cardObjects: cardObjects,
-					  			 pp: pp,
-					  	resultCount: 100 // retrieve only the top 100
-		});
-	});	
+		        res.render("cards", { title: "Cards",
+                                     navbar: "2",
+					    	           view: "topRated",
+				 		        cardObjects: cardObjects,
+                                         pp: pp,
+					  	        resultCount: count > kMaxTopFetch ? kMaxTopFetch : count
+		        });
+	        });	
+   		},
+ 		error: function(error) {
+     		
+   		}
+ 	});
 }
 
 exports.topViewed = function(req, res) {
@@ -211,47 +328,31 @@ exports.topViewed = function(req, res) {
     query.descending("numberOfViews");
 	query.addAscending("name");
 	query.exists("numberOfViews");
+	query.exists("type"); // fix until mobile v1.5 is updated
     
-    query.limit(kLimit);
-	query.skip(pp*kLimit);
-    query.find().then(function(objects) {
-    	var cardObjects = [];
-		for (i=0; i<objects.length; i++) {
-    		cardObjects.push(new CardObject(objects[i]));
-    	}
+    query.count({
+        success: function(count) {
+            query.limit(kLimit);
+	        query.skip(pp*kLimit);
+            query.find().then(function(objects) {
+    	        var cardObjects = [];
+		        for (i=0; i<objects.length; i++) {
+    		        cardObjects.push(new CardObject(objects[i]));
+    	        }
     	
-		res.render("cards", { title: "Cards",
-	   		   			     navbar: "2",
-					    	   view: "topViewed",
-				 		cardObjects: cardObjects,
-					  			 pp: pp,
-					  	resultCount: 100 // retrieve only the top 100
-		});
-	});	
-		    
-    // query.count({
-// 	  	success: function(count) {
-// 	  		query.limit(kLimit);
-// 			query.skip(pp*kLimit);
-// 			query.find().then(function(objects) {
-//     			var cardObjects = [];
-// 		    	for (i=0; i<objects.length; i++) {
-//     				cardObjects.push(new CardObject(objects[i]));
-//     			}
-//     	
-// 			    res.render("cards", { title: "Cards",
-// 	   			    			     navbar: "2",
-// 							    	   view: "topViewed",
-// 					    		cardObjects: cardObjects,
-// 							  			 pp: pp,
-// 							  	resultCount: count
-// 				});
-// 		    });		
-//   		},
-// 		error: function(error) {
-//     		
-//   		}
-// 	});
+		        res.render("cards", { title: "Cards",
+                                     navbar: "2",
+					    	           view: "topViewed",
+				 		        cardObjects: cardObjects,
+                                         pp: pp,
+					  	        resultCount: count > kMaxTopFetch ? kMaxTopFetch : count
+		        });
+	        });	
+   		},
+ 		error: function(error) {
+     		
+   		}
+ 	});
 }
 
 exports.details = function(req, res) {
@@ -268,6 +369,7 @@ exports.details = function(req, res) {
 			query2.include("rarity");
 			query2.equalTo("name", card.get("name"));
 			query2.notEqualTo("objectId", card.id);
+			query2.exists("type"); // fix until mobile v1.5 is updated
 			
 			query2.find({
 			    success: function(objects) {
@@ -294,7 +396,7 @@ exports.details = function(req, res) {
   		},
   		error: function(object, error) {
     		// The object was not retrieved successfully.
-    		// error is a Parse.Error with an error code and message.
+    		// error is a Parse.Error with an error code and message
     		console.log("Can't retrieve card: " + id);
   		}
 	});
@@ -323,7 +425,7 @@ exports.price = function(req, res) {
 exports.image = function(req, res) {
 	var magicCardsInfoCode = req.query.magicCardsInfoCode;
     var number = req.query.number;
-    var crop = req.query.crop == 'true';
+    var crop = req.query.crop == "true";
 	var url = "http://magiccards.info/scans/en/"+magicCardsInfoCode+"/"+number+".jpg";
 	var Image = require("parse-image");
 	var base64;

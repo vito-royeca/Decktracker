@@ -17,7 +17,6 @@
 @property NSString * code;
 @property NSString * gathererCode;
 @property NSString * magicCardsInfoCode;
-@property BOOL imagesDownloaded;
 @property NSString * name;
 @property int numberOfCards;
 @property NSString * oldCode;
