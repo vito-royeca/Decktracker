@@ -549,7 +549,7 @@
         
         RLMRealm *realm = [RLMRealm defaultRealm];
         [realm beginWriteTransaction];
-        NSLog(@"+Card: %@ [%@] - %@", set.name, set.code, card.name);
+//        NSLog(@"+Card: %@ [%@] - %@", set.name, set.code, card.name);
         [realm addObject:card];
         [realm commitWriteTransaction];
         
@@ -559,7 +559,7 @@
         
         [cards addObject:card.cardId];
         
-//        [[Database sharedInstance] fetchTcgPlayerPriceForCard:card.cardId];
+        [[Database sharedInstance] fetchTcgPlayerPriceForCard:card.cardId];
     }
 
     return cards;

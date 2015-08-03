@@ -27,6 +27,7 @@
 #import "XLFormSectionDescriptor.h"
 #import "NSPredicate+XLFormAdditions.h"
 #import "NSString+XLFormAdditions.h"
+#import "UIView+XLFormAdditions.h"
 
 
 @interface XLFormDescriptor (_XLFormSectionDescriptor)
@@ -84,7 +85,6 @@
         if ([self canInsertUsingButton]){
             _multivaluedAddButton = [XLFormRowDescriptor formRowDescriptorWithTag:nil rowType:XLFormRowDescriptorTypeButton title:@"Add Item"];
             [_multivaluedAddButton.cellConfig setObject:@(NSTextAlignmentLeft) forKey:@"textLabel.textAlignment"];
-            [_multivaluedAddButton.cellConfig setObject:[UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0] forKey:@"textLabel.textColor"];
             _multivaluedAddButton.action.formSelector = NSSelectorFromString(@"multivaluedInsertButtonTapped:");
             [self insertObject:_multivaluedAddButton inFormRowsAtIndex:0];
             [self insertObject:_multivaluedAddButton inAllRowsAtIndex:0];
@@ -95,27 +95,27 @@
 
 +(instancetype)formSection
 {
-    return [self formSectionWithTitle:nil];
+    return [[self class] formSectionWithTitle:nil];
 }
 
 +(instancetype)formSectionWithTitle:(NSString *)title
 {
-    return [self formSectionWithTitle:title sectionOptions:XLFormSectionOptionNone];
+    return [[self class] formSectionWithTitle:title sectionOptions:XLFormSectionOptionNone];
 }
 
 +(instancetype)formSectionWithTitle:(NSString *)title multivaluedSection:(BOOL)multivaluedSection
 {
-    return [self formSectionWithTitle:title sectionOptions:(multivaluedSection ? XLFormSectionOptionCanInsert | XLFormSectionOptionCanDelete : XLFormSectionOptionNone)];
+    return [[self class] formSectionWithTitle:title sectionOptions:(multivaluedSection ? XLFormSectionOptionCanInsert | XLFormSectionOptionCanDelete : XLFormSectionOptionNone)];
 }
 
 +(instancetype)formSectionWithTitle:(NSString *)title sectionOptions:(XLFormSectionOptions)sectionOptions
 {
-    return [self formSectionWithTitle:title sectionOptions:sectionOptions sectionInsertMode:XLFormSectionInsertModeLastRow];
+    return [[self class] formSectionWithTitle:title sectionOptions:sectionOptions sectionInsertMode:XLFormSectionInsertModeLastRow];
 }
 
 +(instancetype)formSectionWithTitle:(NSString *)title sectionOptions:(XLFormSectionOptions)sectionOptions sectionInsertMode:(XLFormSectionInsertMode)sectionInsertMode
 {
-    return [[XLFormSectionDescriptor alloc] initWithTitle:title sectionOptions:sectionOptions sectionInsertMode:sectionInsertMode];
+    return [[[self class] alloc] initWithTitle:title sectionOptions:sectionOptions sectionInsertMode:sectionInsertMode];
 }
 
 -(BOOL)isMultivaluedSection
@@ -363,7 +363,18 @@
     else{
         self.hidePredicateCache = _hidden;
     }
-    [self.hidePredicateCache boolValue] ? [self.formDescriptor hideFormSection:self] : [self.formDescriptor showFormSection:self] ;
+    if ([self.hidePredicateCache boolValue]){
+        if ([self.formDescriptor.delegate isKindOfClass:[XLFormViewController class]]){
+            XLFormBaseCell* firtResponder = (XLFormBaseCell*) [((XLFormViewController*)self.formDescriptor.delegate).tableView findFirstResponder];
+            if ([firtResponder isKindOfClass:[XLFormBaseCell class]] && firtResponder.rowDescriptor.sectionDescriptor == self){
+                [firtResponder resignFirstResponder];
+            }
+        }
+        [self.formDescriptor hideFormSection:self];
+    }
+    else{
+        [self.formDescriptor showFormSection:self];
+    }
     return [self.hidePredicateCache boolValue];
 }
 

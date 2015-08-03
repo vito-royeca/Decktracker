@@ -10,7 +10,7 @@ Purpose
 
 XLForm is the most flexible and powerful iOS library to create dynamic table-view forms. The goal of the library is to get the same power of hand-made forms but spending 1/10 of the time.
 
-XLForm provides a very powerful DSL used to create a form. It keeps track of this specification on runtime, updating the UI on the fly.
+XLForm provides a very powerful DSL (Domain Specific Language) used to create a form. It keeps track of this specification on runtime, updating the UI on the fly.
 
 #####Let's see the iOS Calendar Event Form created using XLForm
 
@@ -23,7 +23,7 @@ What XLForm does
 
  * Loads a form based on a declarative [*form definition*](#how-to-create-a-form "form definition").
  * Keeps track of definition changes on runtime to update the form interface accordingly. Further information on [*Dynamic Forms*](#dynamic-forms---how-to-change-the-form-dynamically-at-runtime "Dynamic Forms") section of this readme.
- * Supports multivalued sections allowing us to create, delete or reorder rows. For further details see [*Multivalued Sections*](#multivalued-sections "Multivalued Sections") section bellow.
+ * Supports multivalued sections allowing us to create, delete or reorder rows. For further details see [*Multivalued Sections*](#multivalued-sections-insert-delete-reorder-rows "Multivalued Sections") section bellow.
  * Supports [*custom rows definition*](#how-to-create-a-custom-row).
  * Supports custom selectors. For further details of how to define your own selectors check [*Custom selectors*](#custom-selectors---selector-row-with-a-custom-selector-view-controller "Custom Selectors") section out.
  * Provides several inline selectors such as date picker and picker inline selectors and brings a way to create custom inline selectors.
@@ -325,27 +325,27 @@ static let time = "time"
 var form : XLFormDescriptor
 var section : XLFormSectionDescriptor
 var row : XLFormRowDescriptor
-        
+
 form = XLFormDescriptor(title: "Dates") as XLFormDescriptor
-        
+
 section = XLFormSectionDescriptor.formSectionWithTitle("Inline Dates") as XLFormSectionDescriptor
 form.addFormSection(section)
-        
+
 // Date
 row = XLFormRowDescriptor(tag: tag.date, rowType: XLFormRowDescriptorTypeDateInline, title:"Date")
 row.value = NSDate()
 section.addFormRow(row)
-        
+
 // Time
 row = XLFormRowDescriptor(tag: tag.time, rowType: XLFormRowDescriptorTypeTimeInline, title: "Time")
 row.value = NSDate()
 section.addFormRow(row)
-        
+
 // DateTime
 row = XLFormRowDescriptor(tag: tag.dateTime, rowType: XLFormRowDescriptorTypeDateTimeInline, title: "Date Time")
 row.value = NSDate()
 section.addFormRow(row)
-        
+
 self.form = form;
 
 ```
@@ -379,6 +379,18 @@ XLForms supports counting using UIStepper control:
 ```objc
 static NSString *const XLFormRowDescriptorTypeStepCounter = @"stepCounter";
 ```
+
+You can set the stepper paramaters easily:
+
+```objc
+	row = [XLFormRowDescriptor formRowDescriptorWithTag:kStepCounter rowType:XLFormRowDescriptorTypeStepCounter title:@"Step counter"];
+	row.value = @50;
+	[row.cellConfigAtConfigure setObject:@YES forKey:@"stepControl.wraps"];
+	[row.cellConfigAtConfigure setObject:@10 forKey:@"stepControl.stepValue"];
+	[row.cellConfigAtConfigure setObject:@10 forKey:@"stepControl.minimumValue"];
+	[row.cellConfigAtConfigure setObject:@100 forKey:@"stepControl.maximumValue"];
+```
+
 #####Slider
 
 XLForms supports counting using UISlider control:
@@ -687,7 +699,7 @@ To make the appearance and disappearance of rows and sections automatic, there i
 @property id hidden;
 ```
 
-This id object will normally be a NSPredicate or a NSNumber containing a BOOL. It can be set using  any of them or eventually a NSString from which a NSPredicate will be created. In order for this to work the string has to be sintactically correct.
+This id object will normally be a NSPredicate or a NSNumber containing a BOOL. It can be set using  any of them or eventually a NSString from which a NSPredicate will be created. In order for this to work the string has to be syntactically correct.
 
 For example, you could set the following string to a row (`second`) to make it disappear when a previous row (`first`) contains the value "hide".
 
@@ -873,6 +885,19 @@ if let fullName = form.formRowWithTag(tag.fullName).value as? String {
 }
 ```
 
+#### How to change UITextField length
+
+You can change the length of a UITextField using the `cellConfigAtConfigure` dictionary property. This value refers to the percentage in relation to the table view cell.
+
+**Objective C**
+```objc
+[row.cellConfigAtConfigure setObject:[NSNumber numberWithFloat:0.7] forKey:XLFormTextFieldLengthPercentage];
+```
+**Swift**
+```Swift
+row.cellConfigAtConfigure.setObject(0.7, forKey:XLFormTextFieldLengthPercentage)
+```
+
 #### How to change a UITableViewCell font
 
 You can change the font or any other table view cell property using the `cellConfig` dictionary property. XLForm will set up `cellConfig` dictionary values when the table view cell is about to be displayed.
@@ -902,12 +927,12 @@ Each XLFormDateCell has a `minimumDate` and a `maximumDate` property. To set a d
 ```objc
 [row.cellConfigAtConfigure setObject:[NSDate new] forKey:@"minimumDate"];
 [row.cellConfigAtConfigure setObject:[NSDate dateWithTimeIntervalSinceNow:(60*60*24*3)] forKey:@"maximumDate"];
-``` 
+```
 
 **Swift**
 ```Swift
 row.cellConfig.setObject(NSDate(), forKey: "maximumDate")
-```         
+```
 
 ####How to disable the entire form (read only mode).
 
@@ -927,6 +952,17 @@ That is all!
 The only thing that is not compatible with older versions is that the `disabled` property of the `XLFormRowDescriptor` is an `id` now. So you just have to add `@` before the values you set to it like this:
 ```objc
 row.disabled = @YES; // before: row.disabled = YES;
+```
+
+##### How to disable input accessory view (navigation view)
+
+Overriding `inputAccessoryViewForRowDescriptor:` `XLFormViewController` method.
+
+```obj-c
+- (UIView *)inputAccessoryViewForRowDescriptor:(XLFormRowDescriptor *)rowDescriptor {
+      return nil;
+      // You can use the rowDescriptor parameter to hide/customize the accessory view for a particular rowDescriptor type.
+}
 ```
 
 
@@ -966,12 +1002,32 @@ Requirements
 
 * ARC
 * iOS 7.0 and above
+* XCode 6.3+
 
 
 Release Notes
 --------------
 
-Version 3.0.0 (master)
+Version 3.0.1
+
+* Improvements and bug fixes.
+* Ability to left, right align textfields. Ability to set up a minimum textField width.
+* If form is being shown, assigning a new form automatically reload the tableview.
+* Update objective-c and swift example projects.
+* Swift compatibility fixes.
+* Long email validation added.
+* Fixed row copy issue, now valueTransformer value is copied.
+* Fixed step counter row layout issues.
+* Fixed issue "Last form field hides beneath enabled navigation controller's toolbar".
+* Fixed issue "Navigating between cells using bottom navigation buttons causes table cell dividers to disappear".
+* Use UIAlertController instead UIActionSheet/UIAlertView if possible.
+* Hidden and disabled rows resign first responder before changing state.
+* onChangeBlock added to rowDescriptor.
+* use tintColor as default button row color.
+* By default accessoryView is no longer shown for inline rows.
+* Fix NSBundle issues to use XLForm as dynamic framework.
+
+Version 3.0.0
 
 * `hidden`, `disable` properties added to `XLFormRowDescriptor`. `@YES` `@NO` or a `NSPredicate` can be used to hide, disable de row.
 * `hidden` property added to `XLFormSectionDescriptor`. `@YES` `@NO` or a `NSPredicate` can be used to hide the section.

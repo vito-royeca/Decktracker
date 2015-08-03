@@ -53,7 +53,9 @@
 
 
 @interface XLFormViewController()
-
+{
+    NSNumber *_oldBottomTableContentInset;
+}
 @property UITableViewStyle tableViewStyle;
 @property (nonatomic) XLFormRowNavigationAccessoryView * navigationAccessoryView;
 
@@ -137,6 +139,7 @@
     [self.tableView setEditing:YES animated:NO];
     self.tableView.allowsSelectionDuringEditing = YES;
     self.form.delegate = self;
+    _oldBottomTableContentInset = nil;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -304,7 +307,8 @@
     }
 }
 
--(void)updateAfterDependentRowChanged:(XLFormRowDescriptor *)formRow{
+-(void)updateAfterDependentRowChanged:(XLFormRowDescriptor *)formRow
+{
     NSMutableArray* revaluateHidden   = self.form.rowObservers[[formRow.tag formKeyForPredicateType:XLPredicateTypeHidden]];
     NSMutableArray* revaluateDisabled = self.form.rowObservers[[formRow.tag formKeyForPredicateType:XLPredicateTypeDisabled]];
     for (id object in revaluateDisabled) {
@@ -383,6 +387,9 @@
     if ((self.form.rowNavigationOptions & XLFormRowNavigationOptionEnabled) != XLFormRowNavigationOptionEnabled){
         return nil;
     }
+    if ([[[[self class] inlineRowDescriptorTypesForRowDescriptorTypes] allKeys] containsObject:rowDescriptor.rowType]) {
+        return nil;
+    }
     UITableViewCell<XLFormDescriptorCell> * cell = (UITableViewCell<XLFormDescriptorCell> *)[rowDescriptor cellForFormController:self];
     if (![cell formDescriptorCellCanBecomeFirstResponder]){
         return nil;
@@ -441,8 +448,32 @@
 
 -(void)showFormValidationError:(NSError *)error
 {
-    UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"XLFormViewController_ValidationErrorTitle", nil) message:error.localizedDescription delegate:self cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil];
+#if __IPHONE_OS_VERSION_MAX_ALLOWED < 80000
+    UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"XLFormViewController_ValidationErrorTitle", nil)
+                                                         message:error.localizedDescription
+                                                        delegate:self
+                                               cancelButtonTitle:NSLocalizedString(@"OK", nil)
+                                               otherButtonTitles:nil];
     [alertView show];
+#else
+    if ([UIAlertController class]){
+        UIAlertController * alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"XLFormViewController_ValidationErrorTitle", nil)
+                                                                                  message:error.localizedDescription
+                                                                           preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"OK"
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:nil]];
+        [self presentViewController:alertController animated:YES completion:nil];
+    }
+    else{
+        UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"XLFormViewController_ValidationErrorTitle", nil)
+                                                             message:error.localizedDescription
+                                                            delegate:self
+                                                   cancelButtonTitle:NSLocalizedString(@"OK", nil)
+                                                   otherButtonTitles:nil];
+        [alertView show];
+    }
+#endif
 }
 
 -(void)performFormSelector:(SEL)selector withObject:(id)sender
@@ -474,6 +505,7 @@
         if (newBottomInset > 0){
             UIEdgeInsets tableContentInset = self.tableView.contentInset;
             UIEdgeInsets tableScrollIndicatorInsets = self.tableView.scrollIndicatorInsets;
+            _oldBottomTableContentInset = _oldBottomTableContentInset ? : @(tableContentInset.bottom);
             tableContentInset.bottom = newBottomInset;
             tableScrollIndicatorInsets.bottom = tableContentInset.bottom;
             [UIView beginAnimations:nil context:nil];
@@ -496,8 +528,9 @@
         NSDictionary *keyboardInfo = [notification userInfo];
         UIEdgeInsets tableContentInset = self.tableView.contentInset;
         UIEdgeInsets tableScrollIndicatorInsets = self.tableView.scrollIndicatorInsets;
-        tableContentInset.bottom = 0;
+        tableContentInset.bottom = [_oldBottomTableContentInset floatValue];
         tableScrollIndicatorInsets.bottom = tableContentInset.bottom;
+        _oldBottomTableContentInset = nil;
         [UIView beginAnimations:nil context:nil];
         [UIView setAnimationDuration:[keyboardInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
         [UIView setAnimationCurve:[keyboardInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
@@ -888,10 +921,7 @@
         UITableViewCell<XLFormDescriptorCell> * cell = (UITableViewCell<XLFormDescriptorCell> *)[nextRow cellForFormController:self];
         if ([cell formDescriptorCellCanBecomeFirstResponder]){
             NSIndexPath * indexPath = [self.form indexPathOfFormRow:nextRow];
-            [self.tableView beginUpdates];
             [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionNone animated:NO];
-            [self.tableView endUpdates];
-            
             [cell formDescriptorCellBecomeFirstResponder];
         }
     }
@@ -933,9 +963,14 @@
 
 -(void)setForm:(XLFormDescriptor *)form
 {
+    _form.delegate = nil;
+    [self.tableView endEditing:YES];
     _form = form;
     _form.delegate = self;
     [_form forceEvaluate];
+    if ([self isViewLoaded]){
+        [self.tableView reloadData];
+    }
 }
 
 -(XLFormDescriptor *)form

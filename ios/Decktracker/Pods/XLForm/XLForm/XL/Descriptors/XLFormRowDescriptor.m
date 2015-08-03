@@ -63,7 +63,9 @@
 @synthesize hidden = _hidden;
 @synthesize hidePredicateCache = _hidePredicateCache;
 @synthesize disablePredicateCache = _disablePredicateCache;
-
+@synthesize cellConfig = _cellConfig;
+@synthesize cellConfigIfDisabled = _cellConfigIfDisabled;
+@synthesize cellConfigAtConfigure = _cellConfigAtConfigure;
 
 -(instancetype)init
 {
@@ -92,18 +94,19 @@
         [self addObserver:self forKeyPath:@"value" options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew context:0];
         [self addObserver:self forKeyPath:@"disablePredicateCache" options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew context:0];
         [self addObserver:self forKeyPath:@"hidePredicateCache" options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew context:0];
+        
     }
     return self;
 }
 
 +(instancetype)formRowDescriptorWithTag:(NSString *)tag rowType:(NSString *)rowType
 {
-    return [XLFormRowDescriptor formRowDescriptorWithTag:tag rowType:rowType title:nil];
+    return [[self class] formRowDescriptorWithTag:tag rowType:rowType title:nil];
 }
 
 +(instancetype)formRowDescriptorWithTag:(NSString *)tag rowType:(NSString *)rowType title:(NSString *)title
 {
-    return [[XLFormRowDescriptor alloc] initWithTag:tag rowType:rowType title:title];
+    return [[[self class] alloc] initWithTag:tag rowType:rowType title:title];
 }
 
 -(XLFormBaseCell *)cellForFormController:(XLFormViewController *)formController
@@ -112,8 +115,9 @@
         id cellClass = self.cellClass ?: [XLFormViewController cellClassesForRowDescriptorTypes][self.rowType];
         NSAssert(cellClass, @"Not defined XLFormRowDescriptorType: %@", self.rowType ?: @"");
         if ([cellClass isKindOfClass:[NSString class]]) {
-            if ([[NSBundle mainBundle] pathForResource:cellClass ofType:@"nib"]){
-                _cell = [[[NSBundle mainBundle] loadNibNamed:cellClass owner:nil options:nil] firstObject];
+            NSBundle *bundle = [NSBundle bundleForClass:NSClassFromString(cellClass)];
+            if ([bundle pathForResource:cellClass ofType:@"nib"]){
+                _cell = [[bundle loadNibNamed:cellClass owner:nil options:nil] firstObject];
             }
         } else {
             _cell = [[cellClass alloc] initWithStyle:self.cellStyle reuseIdentifier:nil];
@@ -175,29 +179,30 @@
 {
     XLFormRowDescriptor * rowDescriptorCopy = [XLFormRowDescriptor formRowDescriptorWithTag:nil rowType:[self.rowType copy] title:[self.title copy]];
     rowDescriptorCopy.cellClass = [self.cellClass copy];
-    rowDescriptorCopy.cellConfig = [self.cellConfig mutableCopy];
-    rowDescriptorCopy.cellConfigAtConfigure = [self.cellConfigAtConfigure mutableCopy];
+    [rowDescriptorCopy.cellConfig addEntriesFromDictionary:self.cellConfig];
+    [rowDescriptorCopy.cellConfigAtConfigure addEntriesFromDictionary:self.cellConfigAtConfigure];
+    rowDescriptorCopy.valueTransformer = [self.valueTransformer copy];
     rowDescriptorCopy->_hidden = _hidden;
     rowDescriptorCopy->_disabled = _disabled;
     rowDescriptorCopy.required = self.isRequired;
     rowDescriptorCopy.isDirtyDisablePredicateCache = YES;
     rowDescriptorCopy.isDirtyHidePredicateCache = YES;
-    
+
     // =====================
     // properties for Button
     // =====================
     rowDescriptorCopy.action = [self.action copy];
-    
-    
+
+
     // ===========================
     // property used for Selectors
     // ===========================
-    
+
     rowDescriptorCopy.noValueDisplayText = [self.noValueDisplayText copy];
     rowDescriptorCopy.selectorTitle = [self.selectorTitle copy];
     rowDescriptorCopy.selectorOptions = [self.selectorOptions copy];
     rowDescriptorCopy.leftRightSelectorLeftOptionSelected = [self.leftRightSelectorLeftOptionSelected copy];
-    
+
     return rowDescriptorCopy;
 }
 
@@ -230,6 +235,9 @@
             id oldValue = [change objectForKey:NSKeyValueChangeOldKey];
             if ([keyPath isEqualToString:@"value"]){
                 [self.sectionDescriptor.formDescriptor.delegate formRowDescriptorValueHasChanged:object oldValue:oldValue newValue:newValue];
+                if (self.onChangeBlock) {
+                    self.onChangeBlock(oldValue, newValue, self);
+                }
             }
             else{
                 [self.sectionDescriptor.formDescriptor.delegate formRowDescriptorPredicateHasChanged:object oldValue:oldValue newValue:newValue predicateType:([keyPath isEqualToString:@"hidePredicateCache"] ? XLPredicateTypeHidden : XLPredicateTypeDisabled)];
@@ -260,7 +268,7 @@
     if ([_disabled isKindOfClass:[NSPredicate class]]){
         [self.sectionDescriptor.formDescriptor addObserversOfObject:self predicateType:XLPredicateTypeDisabled];
     }
-    
+
     [self evaluateIsDisabled];
 }
 
@@ -277,6 +285,9 @@
     }
     else{
         self.disablePredicateCache = _disabled;
+    }
+    if ([self.disablePredicateCache boolValue]){
+        [self.cell resignFirstResponder];
     }
     return [self.disablePredicateCache boolValue];
 }
@@ -338,7 +349,13 @@
     else{
         self.hidePredicateCache = _hidden;
     }
-    [self.hidePredicateCache boolValue] ? [self.sectionDescriptor hideFormRow:self] : [self.sectionDescriptor showFormRow:self];
+    if ([self.hidePredicateCache boolValue]){
+        [self.cell resignFirstResponder];
+        [self.sectionDescriptor hideFormRow:self];
+    }
+    else{
+        [self.sectionDescriptor showFormRow:self];
+    }
     return [self.hidePredicateCache boolValue];
 }
 
@@ -367,7 +384,7 @@
 {
     if (validator == nil || ![validator conformsToProtocol:@protocol(XLFormValidatorProtocol)])
         return;
-    
+
     if(![self.validators containsObject:validator]) {
         [self.validators addObject:validator];
     }
@@ -377,7 +394,7 @@
 {
     if (validator == nil|| ![validator conformsToProtocol:@protocol(XLFormValidatorProtocol)])
         return;
-    
+
     if ([self.validators containsObject:validator]) {
         [self.validators removeObject:validator];
     }
@@ -391,7 +408,7 @@
 -(XLFormValidationStatus *)doValidation
 {
     XLFormValidationStatus *valStatus = nil;
-    
+
     if (self.required) {
         // do required validation here
         if ([self valueIsEmpty]) {
@@ -403,7 +420,7 @@
                 // default message for required msg
                 msg = NSLocalizedString(@"%@ can't be empty", nil);
             }
-            
+
             if (self.title != nil) {
                 valStatus.msg = [NSString stringWithFormat:msg, self.title];
             } else {
@@ -590,4 +607,3 @@
 }
 
 @end
-
