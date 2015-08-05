@@ -230,7 +230,7 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
         
         let hud = MBProgressHUD(view: view)
         view!.addSubview(hud)
-        hud.delegate = self;
+        hud.delegate = self
         hud.showWhileExecuting("doSearch", onTarget: self, withObject: nil, animated: true)
     }
     
@@ -352,9 +352,6 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
         let dict = sections![section]
         let key = dict.keys.array[0]
         return dict[key]!.count
-//        let key = sections!.keys.array[section]
-//        let cardIds = sections![key]
-//        return cardIds!.count
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {

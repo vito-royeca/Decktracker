@@ -38,10 +38,10 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
     var viewMode:String?
     var showMode:StartingHandShowMode?
     var deck:Deck?
-    var arrayDeck:[DTCard]?
-    var arrayHand:[DTCard]?
-    var arrayGraveyard:[DTCard]?
-    var arrayLibrary:[DTCard]?
+    var arrayDeck:[String]?
+    var arrayHand:[String]?
+    var arrayGraveyard:[String]?
+    var arrayLibrary:[String]?
     var viewLoadedOnce = true
     
     override func viewDidLoad() {
@@ -237,14 +237,14 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         
         // put cards from hand to library
         while arrayHand!.count > 0 {
-            let card = arrayHand!.removeLast()
-            arrayLibrary!.append(card)
+            let cardId = arrayHand!.removeLast()
+            arrayLibrary!.append(cardId)
         }
         
         // put cards from graveyard to library
         while arrayGraveyard!.count > 0 {
-            let card = arrayGraveyard!.removeLast()
-            arrayLibrary!.append(card)
+            let cardId = arrayGraveyard!.removeLast()
+            arrayLibrary!.append(cardId)
         }
         
         self.shuffleLibrary()
@@ -325,56 +325,59 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
 
         for dict in self.deck!.arrLands {
             let d = dict as! Dictionary<String, AnyObject>
-            let card = d["card"] as! DTCard
+            let cardId = d["cardId"] as! String
+            let card = DTCard(forPrimaryKey: cardId)
             let qty = d["qty"] as! NSNumber
             
             for var i=0; i<qty.integerValue; i++ {
-                arrayDeck!.append(card)
+                arrayDeck!.append(cardId)
             }
         }
         
         for dict in self.deck!.arrCreatures {
             let d = dict as! Dictionary<String, AnyObject>
-            let card = d["card"] as! DTCard
+            let cardId = d["cardId"] as! String
+            let card = DTCard(forPrimaryKey: cardId)
             let qty = d["qty"] as! NSNumber
             
             for var i=0; i<qty.integerValue; i++ {
-                arrayDeck!.append(card)
+                arrayDeck!.append(cardId)
             }
         }
         
         for dict in self.deck!.arrOtherSpells {
             let d = dict as! Dictionary<String, AnyObject>
-            let card = d["card"] as! DTCard
+            let cardId = d["cardId"] as! String
+            let card = DTCard(forPrimaryKey: cardId)
             let qty = d["qty"] as! NSNumber
             
             for var i=0; i<qty.integerValue; i++ {
-                arrayDeck!.append(card)
+                arrayDeck!.append(cardId)
             }
         }
     }
 
     func shuffleLibrary() {
-        var arrayTemp = [DTCard]()
+        var arrayTemp = [String]()
         
         // put cards from deck to library
         while arrayDeck!.count > 0 {
-            let card = arrayDeck!.removeLast()
-            arrayLibrary!.append(card)
+            let cardId = arrayDeck!.removeLast()
+            arrayLibrary!.append(cardId)
         }
         
         // put cards from library to temp
         while arrayLibrary!.count > 0 {
             var count = UInt32(arrayLibrary!.count)
             var random = Int(arc4random_uniform(count))
-            let card = arrayLibrary!.removeAtIndex(random)
-            arrayTemp.append(card)
+            let cardId = arrayLibrary!.removeAtIndex(random)
+            arrayTemp.append(cardId)
         }
         
         // put cards from temp to library
         while arrayTemp.count > 0 {
-            let card = arrayTemp.removeLast()
-            arrayLibrary!.append(card)
+            let cardId = arrayTemp.removeLast()
+            arrayLibrary!.append(cardId)
         }
     }
     
@@ -384,14 +387,14 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
                 return
             }
             
-            let card = arrayLibrary!.removeLast()
-            arrayHand!.append(card)
+            let cardId = arrayLibrary!.removeLast()
+            arrayHand!.append(cardId)
         }
     }
     
     func discardCard(index: Int) {
-        let card = arrayHand!.removeAtIndex(index)
-        arrayGraveyard!.append(card)
+        let cardId = arrayHand!.removeAtIndex(index)
+        arrayGraveyard!.append(cardId)
         
         if self.viewMode == kCardViewModeList {
             tblHand!.reloadData()
@@ -438,22 +441,22 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:UITableViewCell?
-        var card:DTCard?
+        var cardId:String?
         
         switch self.showMode! {
             case .ByHand:
                 if (self.arrayHand!.count > 0) {
-                    card = self.arrayHand![indexPath.row]
+                    cardId = self.arrayHand![indexPath.row]
                 }
             
             case .ByGraveyard:
                 if (self.arrayGraveyard!.count > 0) {
-                    card = self.arrayGraveyard![indexPath.row]
+                    cardId = self.arrayGraveyard![indexPath.row]
             }
             
             case .ByLibrary:
                 if (self.arrayLibrary!.count > 0) {
-                    card = self.arrayLibrary![indexPath.row]
+                    cardId = self.arrayLibrary![indexPath.row]
             }
         }
         
@@ -467,7 +470,7 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
             
         cell1!.accessoryType = UITableViewCellAccessoryType.None
         cell1!.selectionStyle = UITableViewCellSelectionStyle.None
-        cell1!.displayCard(card!.cardId)
+        cell1!.displayCard(cardId)
         cell = cell1;
         
         return cell!
@@ -500,28 +503,28 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        var card:DTCard?
+        var cardId:String?
         
         switch self.showMode! {
         case .ByHand:
             if (self.arrayHand!.count > 0) {
-                card = self.arrayHand![indexPath.row]
+                cardId = self.arrayHand![indexPath.row]
             }
             
         case .ByGraveyard:
             if (self.arrayGraveyard!.count > 0) {
-                card = self.arrayGraveyard![indexPath.row]
+                cardId = self.arrayGraveyard![indexPath.row]
             }
             
         case .ByLibrary:
             if (self.arrayLibrary!.count > 0) {
-                card = self.arrayLibrary![indexPath.row]
+                cardId = self.arrayLibrary![indexPath.row]
             }
         }
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Card", forIndexPath: indexPath) as! CardListCollectionViewCell
         
-        cell.displayCard(card!.cardId)
+        cell.displayCard(cardId!)
         return cell
     }
     

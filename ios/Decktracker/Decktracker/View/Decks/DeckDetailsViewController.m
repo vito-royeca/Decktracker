@@ -382,8 +382,8 @@
 {
     LimitedSearchViewController *view = [[LimitedSearchViewController alloc] init];
     
-//    view.predicate = predicate;
-//    view.deckName = self.deck.name;
+    view.predicate = predicate;
+    view.deckName = self.deck.name;
     [self.navigationController pushViewController:view animated:YES];
 }
 
@@ -729,7 +729,7 @@
         
         if (rows > 1)
         {
-            DTCard *card;
+            NSString *cardId;
             
             switch (indexPath.section)
             {
@@ -737,7 +737,7 @@
                 {
                     if (indexPath.row < self.deck.arrLands.count)
                     {
-                        card = self.deck.arrLands[indexPath.row][@"card"];
+                        cardId = self.deck.arrLands[indexPath.row][@"cardId"];
                     }
                     else
                     {
@@ -749,7 +749,7 @@
                 {
                     if (indexPath.row < self.deck.arrCreatures.count)
                     {
-                        card = self.deck.arrCreatures[indexPath.row][@"card"];
+                        cardId = self.deck.arrCreatures[indexPath.row][@"cardId"];
                     }
                     else
                     {
@@ -761,7 +761,7 @@
                 {
                     if (indexPath.row < self.deck.arrOtherSpells.count)
                     {
-                        card = self.deck.arrOtherSpells[indexPath.row][@"card"];
+                        cardId = self.deck.arrOtherSpells[indexPath.row][@"cardId"];
                     }
                     else
                     {
@@ -775,14 +775,15 @@
                 {
                     if (indexPath.row < self.deck.arrSideboard.count)
                     {
-                        card = self.deck.arrSideboard[indexPath.row][@"card"];
+                        cardId = self.deck.arrSideboard[indexPath.row][@"cardId"];
                     }
                     break;
                 }
             }
             
-            if (card)
+            if (cardId)
             {
+                DTCard *card = [DTCard objectForPrimaryKey:cardId];
                 UIViewController *view;
                 
                 NSDictionary *dict = [[Database sharedInstance] inAppSettingsForSet:card.set.setId];
@@ -802,7 +803,7 @@
                     
                     view2.arrDecks = [[NSMutableArray alloc] initWithArray:@[self.deck.name]];
                     
-                    [view2 setCardId:card.cardId];
+                    [view2 setCardId:cardId];
                     view2.createButtonVisible = NO;
                     view2.showCardButtonVisible = YES;
                     view2.segmentedControlIndex = 0;
@@ -972,39 +973,39 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    DTCard *card;
+    NSString *cardId;
     int badge = 0;
     
     switch (indexPath.section)
     {
         case 0:
         {
-            card = self.deck.arrLands[indexPath.row][@"card"];
+            cardId = self.deck.arrLands[indexPath.row][@"cardId"];
             badge = [self.deck.arrLands[indexPath.row][@"qty"] intValue];
             break;
         }
         case 1:
         {
-            card = self.deck.arrCreatures[indexPath.row][@"card"];
+            cardId = self.deck.arrCreatures[indexPath.row][@"cardId"];
             badge = [self.deck.arrCreatures[indexPath.row][@"qty"] intValue];
             break;
         }
         case 2:
         {
-            card = self.deck.arrOtherSpells[indexPath.row][@"card"];
+            cardId = self.deck.arrOtherSpells[indexPath.row][@"cardId"];
             badge = [self.deck.arrOtherSpells[indexPath.row][@"qty"] intValue];
             break;
         }
         case 3:
         {
-            card = self.deck.arrSideboard[indexPath.row][@"card"];
+            cardId = self.deck.arrSideboard[indexPath.row][@"cardId"];
             badge = [self.deck.arrSideboard[indexPath.row][@"qty"] intValue];
             break;
         }
     }
     
     CardListCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"Card" forIndexPath:indexPath];
-    [cell displayCard:card.cardId];
+    [cell displayCard:cardId];
     [cell addBadge:badge];
     
     return cell;
@@ -1082,34 +1083,35 @@
 #pragma mark - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    DTCard *card;
+    NSString *cardId;
     
     switch (indexPath.section)
     {
         case 0:
         {
-            card = self.deck.arrLands[indexPath.row][@"card"];
+            cardId = self.deck.arrLands[indexPath.row][@"cardId"];
             break;
         }
         case 1:
         {
-            card = self.deck.arrCreatures[indexPath.row][@"card"];
+            cardId = self.deck.arrCreatures[indexPath.row][@"cardId"];
             break;
         }
         case 2:
         {
-            card = self.deck.arrOtherSpells[indexPath.row][@"card"];
+            cardId = self.deck.arrOtherSpells[indexPath.row][@"cardId"];
             break;
         }
         case 3:
         {
-            card = self.deck.arrSideboard[indexPath.row][@"card"];
+            cardId = self.deck.arrSideboard[indexPath.row][@"cardId"];
             break;
         }
     }
     
-    if (card)
+    if (cardId)
     {
+        DTCard *card = [DTCard objectForPrimaryKey:cardId];
         UIViewController *view;
         
         NSDictionary *dict = [[Database sharedInstance] inAppSettingsForSet:card.set.setId];
@@ -1129,7 +1131,7 @@
             
             view2.arrDecks = [[NSMutableArray alloc] initWithArray:@[self.deck.name]];
             
-            [view2 setCardId:card.cardId];
+            [view2 setCardId:cardId];
             view2.createButtonVisible = NO;
             view2.showCardButtonVisible = YES;
             view2.segmentedControlIndex = 0;

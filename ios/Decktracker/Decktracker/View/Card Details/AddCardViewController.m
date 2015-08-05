@@ -229,7 +229,7 @@
     {
         DeckBoard deckboard = [key isEqualToString:@"mainBoard"] ? MainBoard : SideBoard;
         
-        int qty = [_currentDeck cards:card inBoard:deckboard];
+        int qty = [_currentDeck cards:card.cardId inBoard:deckboard];
         cell.txtQuantity.text = [NSString stringWithFormat:@"%d", qty];
         cell.stepper.value = qty;
     }
@@ -417,7 +417,7 @@
             case 0:
             {
                 [_currentDeck updateDeck:MainBoard
-                                withCard:card
+                                withCard:card.cardId
                                withValue:value];
                 cell.stepper.value = value;
                 cell.txtQuantity.text = [NSString stringWithFormat:@"%d", value];
@@ -426,7 +426,7 @@
             case 1:
             {
                 [_currentDeck updateDeck:SideBoard
-                                withCard:card
+                                withCard:card.cardId
                                withValue:value];
                 cell.stepper.value = value;
                 cell.txtQuantity.text = [NSString stringWithFormat:@"%d", value];

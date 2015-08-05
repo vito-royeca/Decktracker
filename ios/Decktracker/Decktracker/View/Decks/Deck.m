@@ -57,8 +57,8 @@
             
             if (card)
             {
-                pack = @{@"card" : card,
-                         @"set" : card.set ? card.set.code : @"",
+                pack = @{@"cardId" : card.cardId,
+                         @"setId" : card.set ? card.set.setId : @"",
                          @"multiverseID" : [NSNumber numberWithInt:card.multiverseID],
                          @"qty" : d[@"qty"]};
                 
@@ -100,7 +100,7 @@
             
             if (card)
             {
-                pack = @{@"card" : card,
+                pack = @{@"cardId" : card.cardId,
                          @"set" : card.set ? card.set.code : @"",
                          @"multiverseID" : [NSNumber numberWithInt:card.multiverseID],
                          @"qty" : d[@"qty"]};
@@ -126,7 +126,7 @@
     for (NSDictionary *dict in self.arrLands)
     {
         NSMutableDictionary *newDict = [[NSMutableDictionary alloc] initWithDictionary:dict];
-        DTCard *card = dict[@"card"];
+        DTCard *card = [DTCard objectForPrimaryKey:dict[@"cardId"]];
         
         [newDict setValue:card.name forKey:@"card"];
         [arrMainBoard addObject:newDict];
@@ -134,7 +134,7 @@
     for (NSDictionary *dict in self.arrCreatures)
     {
         NSMutableDictionary *newDict = [[NSMutableDictionary alloc] initWithDictionary:dict];
-        DTCard *card = dict[@"card"];
+        DTCard *card = [DTCard objectForPrimaryKey:dict[@"cardId"]];
         
         [newDict setValue:card.name forKey:@"card"];
         [arrMainBoard addObject:newDict];
@@ -142,7 +142,7 @@
     for (NSDictionary *dict in self.arrOtherSpells)
     {
         NSMutableDictionary *newDict = [[NSMutableDictionary alloc] initWithDictionary:dict];
-        DTCard *card = dict[@"card"];
+        DTCard *card = [DTCard objectForPrimaryKey:dict[@"cardId"]];
         
         [newDict setValue:card.name forKey:@"card"];
         [arrMainBoard addObject:newDict];
@@ -150,7 +150,7 @@
     for (NSDictionary *dict in self.arrSideboard)
     {
         NSMutableDictionary *newDict = [[NSMutableDictionary alloc] initWithDictionary:dict];
-        DTCard *card = dict[@"card"];
+        DTCard *card = [DTCard objectForPrimaryKey:dict[@"cardId"]];
         
         [newDict setValue:card.name forKey:@"card"];
         [arrSideBoard addObject:newDict];
@@ -167,10 +167,11 @@
     [[FileManager sharedInstance] saveData:dict atPath:filePath];
 }
 
--(void) updateDeck:(DeckBoard) board withCard:(DTCard*) card withValue:(int) newValue
+-(void) updateDeck:(DeckBoard) board withCard:(NSString*) cardId withValue:(int) newValue
 {
     NSMutableArray *arrBoard;
     NSDictionary *dictMain;
+    DTCard *card = [DTCard objectForPrimaryKey:cardId];
     
     switch (board)
     {
@@ -200,7 +201,7 @@
 
     for (NSDictionary *dict in arrBoard)
     {
-        DTCard *c = dict[@"card"];
+        DTCard *c = [DTCard objectForPrimaryKey:dict[@"cardId"]];
         
         if (([dict[@"multiverseID"] intValue] != 0 && ([dict[@"multiverseID"] intValue] == card.multiverseID)) ||
             ([c.name isEqualToString:card.name] && [c.set.code isEqualToString:card.set.code]))
@@ -224,15 +225,16 @@
     }
     else
     {
-        [arrBoard addObject:@{@"card" : card,
+        [arrBoard addObject:@{@"cardId" : card.cardId,
                               @"multiverseID" : [NSNumber numberWithInt:card.multiverseID],
                               @"set"  : card.set.code,
                               @"qty"  : [NSNumber numberWithInt:newValue]}];
     }
 }
 
--(int) cards:(DTCard*) card inBoard:(DeckBoard) deckboard
+-(int) cards:(NSString*) cardId inBoard:(DeckBoard) deckboard
 {
+    DTCard *card = [DTCard objectForPrimaryKey:cardId];
     NSMutableArray *arrBoard;
     int qty = 0;
     
@@ -263,7 +265,7 @@
     
     for (NSDictionary *dict in arrBoard)
     {
-        DTCard *c = dict[@"card"];
+        DTCard *c = [DTCard objectForPrimaryKey:dict[@"cardId"]];
         
         if (([dict[@"multiverseID"] intValue] != 0 && ([dict[@"multiverseID"] intValue] == card.multiverseID)) ||
             ([c.name isEqualToString:card.name] && [c.set.code isEqualToString:card.set.code]))
@@ -325,7 +327,7 @@
     
     for (NSDictionary *dict in self.arrLands)
     {
-        DTCard *card = dict[@"card"];
+        DTCard *card = [DTCard objectForPrimaryKey:dict[@"cardId"]];
         NSNumber *qty = dict[@"qty"];
         
         if (card.tcgPlayerMidPrice)
@@ -336,7 +338,7 @@
     
     for (NSDictionary *dict in self.arrCreatures)
     {
-        DTCard *card = dict[@"card"];
+        DTCard *card = [DTCard objectForPrimaryKey:dict[@"cardId"]];
         NSNumber *qty = dict[@"qty"];
         
         if (card.tcgPlayerMidPrice)
@@ -347,7 +349,7 @@
     
     for (NSDictionary *dict in self.arrOtherSpells)
     {
-        DTCard *card = dict[@"card"];
+        DTCard *card = [DTCard objectForPrimaryKey:dict[@"cardId"]];
         NSNumber *qty = dict[@"qty"];
         
         if (card.tcgPlayerMidPrice)
@@ -358,7 +360,7 @@
     
     for (NSDictionary *dict in self.arrSideboard)
     {
-        DTCard *card = dict[@"card"];
+        DTCard *card = [DTCard objectForPrimaryKey:dict[@"cardId"]];
         NSNumber *qty = dict[@"qty"];
         
         if (card.tcgPlayerMidPrice)
@@ -398,7 +400,7 @@
     {
         for (NSDictionary *dict in self.arrOtherSpells)
         {
-            DTCard *card = dict[@"card"];
+            DTCard *card = [DTCard objectForPrimaryKey:dict[@"cardId"]];
             int qty = [dict[@"qty"] intValue];
             
             for (NSString *type in CARD_TYPES)
@@ -455,7 +457,7 @@
     
     for (NSDictionary *dict in combinedArray)
     {
-        DTCard *card = dict[@"card"];
+        DTCard *card = [DTCard objectForPrimaryKey:dict[@"cardId"]];
         int qty = [dict[@"qty"] intValue];
         
         if (card.colors.count > 0)
@@ -530,7 +532,7 @@
     
     for (NSDictionary *dict in self.arrLands)
     {
-        DTCard *card = dict[@"card"];
+        DTCard *card = [DTCard objectForPrimaryKey:dict[@"cardId"]];
         int qty = [dict[@"qty"] intValue];
         
         if (card.colors.count > 0)
@@ -608,7 +610,7 @@
     
     for (NSDictionary *dict in combinedArray)
     {
-        DTCard *card = dict[@"card"];
+        DTCard *card = [DTCard objectForPrimaryKey:dict[@"cardId"]];
         
         if (card.colors.count > 0)
         {
@@ -664,7 +666,7 @@
     
     for (NSDictionary *dict in self.arrLands)
     {
-        DTCard *card = dict[@"card"];
+        DTCard *card = [DTCard objectForPrimaryKey:dict[@"cardId"]];
         
         if (card.colors.count > 0)
         {

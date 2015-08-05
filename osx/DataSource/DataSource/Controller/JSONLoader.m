@@ -115,7 +115,7 @@
 {
     NSMutableDictionary *dict = _dictMagicCardsInfo[card.set.magicCardsInfoCode];
     
-    if (!dict)
+    if (!dict && card.set.magicCardsInfoCode.length > 0)
     {
         NSString *url = [[NSString stringWithFormat:@"http://magiccards.info/%@/en.html", card.set.magicCardsInfoCode] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
@@ -362,204 +362,218 @@
     
     for (NSDictionary *dict in array)
     {
-        DTCard *card = [[DTCard alloc] init];
-        card.set = set;
+        DTCard *card;
+        int multiverseID = -1;
+        NSString *number = @"";
         
-        if (dict[@"border"] && [dict[@"border"] class] != [NSNull class])
-        {
-            card.border = dict[@"border"];
-        }
-        if (dict[@"cmc"] && [dict[@"cmc"] class] != [NSNull class])
-        {
-            card.cmc = [dict[@"cmc"] floatValue];
-        }
-        if (dict[@"flavor"] && [dict[@"flavor"] class] != [NSNull class])
-        {
-            card.flavor = dict[@"flavor"];
-        }
-        if (dict[@"hand"] && [dict[@"hand"] class] != [NSNull class])
-        {
-            card.handModifier = [dict[@"hand"] intValue];
-        }
-        if (dict[@"imageName"] && [dict[@"imageName"] class] != [NSNull class])
-        {
-            card.imageName = dict[@"imageName"];
-        }
-        if (dict[@"layout"] && [dict[@"layout"] class] != [NSNull class])
-        {
-            card.layout = dict[@"layout"];
-        }
-        if (dict[@"life"] && [dict[@"life"] class] != [NSNull class])
-        {
-            card.lifeModifier = [dict[@"life"] intValue];
-        }
-        if (dict[@"loyalty"] && [dict[@"loyalty"] class] != [NSNull class])
-        {
-            card.loyalty = [dict[@"loyalty"] intValue];
-        }
-        if (dict[@"manaCost"] && [dict[@"manaCost"] class] != [NSNull class])
-        {
-            card.manaCost = dict[@"manaCost"];
-        }
         if (dict[@"multiverseid"] && [dict[@"multiverseid"] class] != [NSNull class])
         {
-            card.multiverseID = [dict[@"multiverseid"] intValue];
+            multiverseID = [dict[@"multiverseid"] intValue];
+            card = [[DTCard objectsWithPredicate:[NSPredicate predicateWithFormat:@"multiverseID = %d", multiverseID]] firstObject];
         }
-        if (dict[@"name"] && [dict[@"name"] class] != [NSNull class])
+        else if (dict[@"number"] && [dict[@"number"] class] != [NSNull class])
         {
-            card.name = dict[@"name"];
-            card.sectionNameInitial = ([JJJUtil isAlphaStart:card.name] ?  [card.name substringToIndex:1] : @"#");
-        }
-        if (dict[@"number"] && [dict[@"number"] class] != [NSNull class])
-        {
-            card.number = dict[@"number"];
-        }
-        [self updateNumberOfCard:card];
-        if (dict[@"originalText"] && [dict[@"originalText"] class] != [NSNull class])
-        {
-            card.originalText = dict[@"originalText"];
-        }
-        if (dict[@"originalType"] && [dict[@"originalType"] class] != [NSNull class])
-        {
-            card.originalType = dict[@"originalType"];
-        }
-        if (dict[@"power"] && [dict[@"power"] class] != [NSNull class])
-        {
-            card.power = dict[@"power"];
-        }
-        
-        if (dict[@"releaseDate"] && [dict[@"releaseDate"] class] != [NSNull class])
-        {
-            card.releaseDate = dict[@"releaseDate"];
-            
-            NSString *format = @"YYYY-MM-dd";
-            NSString *tempReleaseDate;
-            NSDate *releaseDate;
-            
-            if (card.releaseDate.length == 4)
-            {
-                tempReleaseDate = [NSString stringWithFormat:@"%@-01-01", card.releaseDate];
-            }
-            else if (card.releaseDate.length == 7)
-            {
-                tempReleaseDate = [NSString stringWithFormat:@"%@-01", card.releaseDate];
-            }
-            releaseDate = [JJJUtil parseDate:(tempReleaseDate ? tempReleaseDate : card.releaseDate)
-                                  withFormat:format];
-
-            card.modern = [releaseDate compare:_8thEditionReleaseDate] == NSOrderedSame ||
-                          [releaseDate compare:_8thEditionReleaseDate] == NSOrderedDescending;
+            number = dict[@"number"];
+            card = [[DTCard objectsWithPredicate:[NSPredicate predicateWithFormat:@"set.code = %@ AND number = %@", set.code, number]] firstObject];
         }
         else
         {
-            NSDate *releaseDate = set.releaseDate;
-            card.modern = [releaseDate compare:_8thEditionReleaseDate] == NSOrderedSame ||
-            [releaseDate compare:_8thEditionReleaseDate] == NSOrderedDescending;
+            card = [[DTCard objectsWithPredicate:[NSPredicate predicateWithFormat:@"set.code = %@ AND name = %@", set.code, dict[@"name"]]] firstObject];
         }
-        if (dict[@"reserved"] && [dict[@"reserved"] class] != [NSNull class])
+        
+        if (!card)
         {
-            card.reserved = [dict[@"reserved"] boolValue];
-        }
-        if (dict[@"source"] && [dict[@"source"] class] != [NSNull class])
-        {
-            card.source = dict[@"source"];
-        }
-        if (dict[@"starter"] && [dict[@"starter"] class] != [NSNull class])
-        {
-            card.starter = [dict[@"starter"] boolValue];
-        }
-        if (dict[@"text"] && [dict[@"text"] class] != [NSNull class])
-        {
-            card.text = dict[@"text"];
-        }
-        if (dict[@"timeshifted"] && [dict[@"timeshifted"] class] != [NSNull class])
-        {
-            card.timeshifted = [dict[@"timeshifted"] boolValue];
-        }
-        if (dict[@"toughness"] && [dict[@"toughness"] class] != [NSNull class])
-        {
-            card.toughness = dict[@"toughness"];
-        }
-        if (dict[@"type"] && [dict[@"type"] class] != [NSNull class])
-        {
-            card.type = dict[@"type"];
-        }
-        if (dict[@"watermark"] && [dict[@"watermark"] class] != [NSNull class])
-        {
-            card.watermark = dict[@"watermark"];
-        }
-        [card.colors addObjects:[self findColors:dict[@"colors"]]];
-        if (!card.colors || card.colors.count == 0)
-        {
-            card.sectionColor = @"Colorless";
-        }
-        else if (card.colors.count > 1)
-        {
-            card.sectionColor = @"Multicolored";
-        }
-        else if (card.colors.count == 1)
-        {
-            DTCardColor *color = [card.colors firstObject];
-                             
-            for (NSString *colorName in CARD_COLORS)
+            card = [[DTCard alloc] init];
+            if (dict[@"border"] && [dict[@"border"] class] != [NSNull class])
             {
-                if ([color.name isEqualToString:colorName])
+                card.border = dict[@"border"];
+            }
+            if (dict[@"cmc"] && [dict[@"cmc"] class] != [NSNull class])
+            {
+                card.cmc = [dict[@"cmc"] floatValue];
+            }
+            if (dict[@"flavor"] && [dict[@"flavor"] class] != [NSNull class])
+            {
+                card.flavor = dict[@"flavor"];
+            }
+            if (dict[@"hand"] && [dict[@"hand"] class] != [NSNull class])
+            {
+                card.handModifier = [dict[@"hand"] intValue];
+            }
+            if (dict[@"imageName"] && [dict[@"imageName"] class] != [NSNull class])
+            {
+                card.imageName = dict[@"imageName"];
+            }
+            if (dict[@"layout"] && [dict[@"layout"] class] != [NSNull class])
+            {
+                card.layout = dict[@"layout"];
+            }
+            if (dict[@"life"] && [dict[@"life"] class] != [NSNull class])
+            {
+                card.lifeModifier = [dict[@"life"] intValue];
+            }
+            if (dict[@"loyalty"] && [dict[@"loyalty"] class] != [NSNull class])
+            {
+                card.loyalty = [dict[@"loyalty"] intValue];
+            }
+            if (dict[@"manaCost"] && [dict[@"manaCost"] class] != [NSNull class])
+            {
+                card.manaCost = dict[@"manaCost"];
+            }
+            card.multiverseID = multiverseID;
+            if (dict[@"name"] && [dict[@"name"] class] != [NSNull class])
+            {
+                card.name = dict[@"name"];
+                card.sectionNameInitial = ([JJJUtil isAlphaStart:card.name] ?  [card.name substringToIndex:1] : @"#");
+            }
+            card.number = number;
+            [self updateNumberOfCard:card];
+            if (dict[@"originalText"] && [dict[@"originalText"] class] != [NSNull class])
+            {
+                card.originalText = dict[@"originalText"];
+            }
+            if (dict[@"originalType"] && [dict[@"originalType"] class] != [NSNull class])
+            {
+                card.originalType = dict[@"originalType"];
+            }
+            if (dict[@"power"] && [dict[@"power"] class] != [NSNull class])
+            {
+                card.power = dict[@"power"];
+            }
+            
+            if (dict[@"releaseDate"] && [dict[@"releaseDate"] class] != [NSNull class])
+            {
+                card.releaseDate = dict[@"releaseDate"];
+                
+                NSString *format = @"YYYY-MM-dd";
+                NSString *tempReleaseDate;
+                NSDate *releaseDate;
+                
+                if (card.releaseDate.length == 4)
                 {
-                    card.sectionColor = color.name;
-                    break;
+                    tempReleaseDate = [NSString stringWithFormat:@"%@-01-01", card.releaseDate];
+                }
+                else if (card.releaseDate.length == 7)
+                {
+                    tempReleaseDate = [NSString stringWithFormat:@"%@-01", card.releaseDate];
+                }
+                releaseDate = [JJJUtil parseDate:(tempReleaseDate ? tempReleaseDate : card.releaseDate)
+                                      withFormat:format];
+                
+                card.modern = [releaseDate compare:_8thEditionReleaseDate] == NSOrderedSame ||
+                [releaseDate compare:_8thEditionReleaseDate] == NSOrderedDescending;
+            }
+            else
+            {
+                NSDate *releaseDate = set.releaseDate;
+                card.modern = [releaseDate compare:_8thEditionReleaseDate] == NSOrderedSame ||
+                [releaseDate compare:_8thEditionReleaseDate] == NSOrderedDescending;
+            }
+            if (dict[@"reserved"] && [dict[@"reserved"] class] != [NSNull class])
+            {
+                card.reserved = [dict[@"reserved"] boolValue];
+            }
+            card.set = set;
+            if (dict[@"source"] && [dict[@"source"] class] != [NSNull class])
+            {
+                card.source = dict[@"source"];
+            }
+            if (dict[@"starter"] && [dict[@"starter"] class] != [NSNull class])
+            {
+                card.starter = [dict[@"starter"] boolValue];
+            }
+            if (dict[@"text"] && [dict[@"text"] class] != [NSNull class])
+            {
+                card.text = dict[@"text"];
+            }
+            if (dict[@"timeshifted"] && [dict[@"timeshifted"] class] != [NSNull class])
+            {
+                card.timeshifted = [dict[@"timeshifted"] boolValue];
+            }
+            if (dict[@"toughness"] && [dict[@"toughness"] class] != [NSNull class])
+            {
+                card.toughness = dict[@"toughness"];
+            }
+            if (dict[@"type"] && [dict[@"type"] class] != [NSNull class])
+            {
+                card.type = dict[@"type"];
+            }
+            if (dict[@"watermark"] && [dict[@"watermark"] class] != [NSNull class])
+            {
+                card.watermark = dict[@"watermark"];
+            }
+            [card.colors addObjects:[self findColors:dict[@"colors"]]];
+            if (!card.colors || card.colors.count == 0)
+            {
+                card.sectionColor = @"Colorless";
+            }
+            else if (card.colors.count > 1)
+            {
+                card.sectionColor = @"Multicolored";
+            }
+            else if (card.colors.count == 1)
+            {
+                DTCardColor *color = [card.colors firstObject];
+                
+                for (NSString *colorName in CARD_COLORS)
+                {
+                    if ([color.name isEqualToString:colorName])
+                    {
+                        card.sectionColor = color.name;
+                        break;
+                    }
                 }
             }
-        }
-        if (dict[@"artist"] && [dict[@"artist"] class] != [NSNull class])
-        {
-            card.artist = [self findArtist:dict[@"artist"]];
-        }
-        [card.printings addObjects:[self findSets:dict[@"printingCodes"]]];
-        if (dict[@"rarity"] && [dict[@"rarity"] class] != [NSNull class])
-        {
-            card.rarity = [self findCardRarity:dict[@"rarity"]];
-        }
-        [card.subTypes addObjects:[self findTypes:dict[@"subtypes"]]];
-        [card.superTypes addObjects:[self findTypes:dict[@"supertypes"]]];
-        [card.types addObjects:[self findTypes:dict[@"types"]]];
-        for (DTCardType *type in card.types)
-        {
-            for (NSString *typeName in CARD_TYPES)
+            if (dict[@"artist"] && [dict[@"artist"] class] != [NSNull class])
             {
-                // done: fix Plane and Planeswalker types!!!
-                if ([typeName isEqualToString:type.name] || [typeName containsString:type.name])
+                card.artist = [self findArtist:dict[@"artist"]];
+            }
+            [card.printings addObjects:[self findSets:dict[@"printingCodes"]]];
+            if (dict[@"rarity"] && [dict[@"rarity"] class] != [NSNull class])
+            {
+                card.rarity = [self findCardRarity:dict[@"rarity"]];
+            }
+            [card.subTypes addObjects:[self findTypes:dict[@"subtypes"]]];
+            [card.superTypes addObjects:[self findTypes:dict[@"supertypes"]]];
+            [card.types addObjects:[self findTypes:dict[@"types"]]];
+            for (DTCardType *type in card.types)
+            {
+                for (NSString *typeName in CARD_TYPES)
                 {
-                    card.sectionType = typeName;
+                    // done: fix Plane and Planeswalker types!!!
+                    if ([typeName isEqualToString:type.name] || [typeName containsString:type.name])
+                    {
+                        card.sectionType = typeName;
+                        break;
+                    }
+                }
+                
+                if (card.sectionType)
+                {
                     break;
                 }
             }
             
-            if (card.sectionType)
+            NSArray *names = dict[@"names"];
+            NSArray *variations = dict[@"variations"];
+            if (names.count > 0 || variations.count > 0)
             {
-                break;
+                [self setNames:names andVariations:variations forCard:card];
             }
+            
+            RLMRealm *realm = [RLMRealm defaultRealm];
+            [realm beginWriteTransaction];
+            //        NSLog(@"+Card: %@ [%@] - %@", set.name, set.code, card.name);
+            [realm addObject:card];
+            [realm commitWriteTransaction];
+            
+            [self createRulingsForCard:card withRulings:dict[@"rulings"]];
+            [self createForeignNamesForCard:card withLanguages:dict[@"foreignNames"]];
+            [self createLegalitiesForCard:card withLegalities:dict[@"legalities"]];
+            [[Database sharedInstance] fetchTcgPlayerPriceForCard:card.cardId];
         }
-        
-        NSArray *names = dict[@"names"];
-        NSArray *variations = dict[@"variations"];
-        if (names.count > 0 || variations.count > 0)
-        {
-            [self setNames:names andVariations:variations forCard:card];
-        }
-        
-        RLMRealm *realm = [RLMRealm defaultRealm];
-        [realm beginWriteTransaction];
-//        NSLog(@"+Card: %@ [%@] - %@", set.name, set.code, card.name);
-        [realm addObject:card];
-        [realm commitWriteTransaction];
-        
-        [self createRulingsForCard:card withRulings:dict[@"rulings"]];
-        [self createForeignNamesForCard:card withLanguages:dict[@"foreignNames"]];
-        [self createLegalitiesForCard:card withLegalities:dict[@"legalities"]];
         
         [cards addObject:card.cardId];
-        
-        [[Database sharedInstance] fetchTcgPlayerPriceForCard:card.cardId];
     }
 
     return cards;
