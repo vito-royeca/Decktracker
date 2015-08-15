@@ -132,7 +132,6 @@
     // crop image
     _currentCropPath = [[FileManager sharedInstance] cropPath:cardId];
     self.imgCrop.image = [[UIImage alloc] initWithContentsOfFile:_currentCropPath];
-    
     [[FileManager sharedInstance] downloadCardImage:cardId immediately:NO];
     
     // type image
@@ -166,14 +165,7 @@
         if (path)
         {
             UIImage *setImage = [[UIImage alloc] initWithContentsOfFile:path];
-            self.imgSet.image = setImage;
-            // resize the image
-            CGSize itemSize = CGSizeMake(setImage.size.width/2, setImage.size.height/2);
-            UIGraphicsBeginImageContextWithOptions(itemSize, NO, UIScreen.mainScreen.scale);
-            CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
-            [setImage drawInRect:imageRect];
-            self.imgSet.image = UIGraphicsGetImageFromCurrentImageContext();
-            UIGraphicsEndImageContext();
+            self.imgSet.image = [JJJUtil imageWithImage:setImage scaledToSize:CGSizeMake(setImage.size.width/2, setImage.size.height/2)];
         }
         else
         {

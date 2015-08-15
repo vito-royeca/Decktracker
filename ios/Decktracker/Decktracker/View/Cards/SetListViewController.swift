@@ -24,8 +24,6 @@ enum SetSortMode: Printable  {
 
 class SetListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, InAppPurchaseViewControllerDelegate {
 
-    let kSearchResultsIdentifier = "kSearchResultsIdentifier"
-    
     var sortButton:UIBarButtonItem?
 //    var segmentedControl:UISegmentedControl?
     var tblSets:UITableView?
@@ -51,7 +49,6 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
         tblSets = UITableView(frame: frame, style: UITableViewStyle.Plain)
         tblSets!.delegate = self
         tblSets!.dataSource = self
-        tblSets!.registerNib(UINib(nibName: "SearchResultsTableViewCell", bundle: nil), forCellReuseIdentifier: kSearchResultsIdentifier)
 
         navigationItem.rightBarButtonItem = sortButton
         view.addSubview(tblSets!)

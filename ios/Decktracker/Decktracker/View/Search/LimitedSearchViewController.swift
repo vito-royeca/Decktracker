@@ -10,8 +10,6 @@ import UIKit
 
 class LimitedSearchViewController: UIViewController, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, MBProgressHUDDelegate
 {
-    let kSearchResultsIdentifier = "kSearchResultsIdentifier"
-    
     var deckName:String?
     var searchBar:UISearchBar?
     var tblResults:UITableView?
@@ -21,6 +19,7 @@ class LimitedSearchViewController: UIViewController, UISearchBarDelegate, UITabl
     var sectionName:String?
     var viewLoadedOnce = true
     var searchTimer:NSTimer?
+    var placeHolderTitle:String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,23 +33,23 @@ class LimitedSearchViewController: UIViewController, UISearchBarDelegate, UITabl
         self.searchBar = UISearchBar()
         self.searchBar!.autoresizingMask = UIViewAutoresizing.FlexibleWidth
         self.searchBar!.delegate = self;
-
-        self.tblResults = UITableView(frame: CGRectMake(dX, dY, dWidth, dHeight), style: UITableViewStyle.Plain)
-        self.tblResults!.delegate = self
-        self.tblResults!.dataSource = self
-        self.tblResults!.registerNib(UINib(nibName: kSearchResultsIdentifier, bundle: nil),  forCellReuseIdentifier: kSearchResultsIdentifier)
-        
         // Add a Done button in the keyboard
         let barButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self.searchBar, action: "resignFirstResponder")
         let toolbar = UIToolbar(frame: CGRectMake(0, 0, dWidth, 44))
         toolbar.items = [barButton]
         self.searchBar!.inputAccessoryView = toolbar
+        self.searchBar!.placeholder = placeHolderTitle;
+        
+        self.tblResults = UITableView(frame: CGRectMake(dX, dY, dWidth, dHeight), style: UITableViewStyle.Plain)
+        self.tblResults!.delegate = self
+        self.tblResults!.dataSource = self
 
         self.navigationItem.titleView = self.searchBar;
         self.view.addSubview(self.tblResults!)
         
         self.sectionName = "sectionNameInitial"
-//        self.loadData()
+        sections = Array<[String: [String]]>()
+        sectionIndexTitles = [String]()
         self.viewLoadedOnce = false
     }
 
@@ -71,7 +70,7 @@ class LimitedSearchViewController: UIViewController, UISearchBarDelegate, UITabl
         sections = Array<[String: [String]]>()
         sectionIndexTitles = [String]()
         
-        let cards = Database.sharedInstance().findCards(nil, withPredicate:self.predicate, withSortDescriptors: [RLMSortDescriptor(property: "name", ascending: true)], withSectionName:sectionName)
+        let cards = Database.sharedInstance().findCards(self.searchBar!.text, withPredicate:self.predicate, withSortDescriptors: [RLMSortDescriptor(property: "name", ascending: true)], withSectionName:sectionName)
         for x in cards {
             let card = x as! DTCard
             let name = card.sectionNameInitial
@@ -109,21 +108,47 @@ class LimitedSearchViewController: UIViewController, UISearchBarDelegate, UITabl
     
 //    MARK: UISearchBarDelegate
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchTimer!.valid {
+        if searchTimer != nil && searchTimer!.valid {
             searchTimer!.invalidate()
         }
-        searchTimer = NSTimer(timeInterval: 2.0, target: self, selector: "doSearch", userInfo: nil, repeats: false)
+        searchTimer = NSTimer(timeInterval: 1.0, target: self, selector: "handleSearchBarEndTyping", userInfo: nil, repeats: false)
         NSRunLoop.mainRunLoop().addTimer(searchTimer!, forMode:NSDefaultRunLoopMode)
 
     }
     
+    func handleSearchBarEndTyping() {
+        let hud = MBProgressHUD(view: view)
+        view!.addSubview(hud)
+        hud.delegate = self;
+        
+        if searchBar!.text.isEmpty {
+            sections = Array<[String: [String]]>()
+            sectionIndexTitles = [String]()
+            self.tblResults!.reloadData()
+            
+        } else {
+            hud.showWhileExecuting("loadData", onTarget: self, withObject: nil, animated: true)
+        }
+    }
+    
 //    MARK: UITableViewDelegate
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return CGFloat(SEARCH_RESULTS_CELL_HEIGHT)
+        return CGFloat(CARD_SUMMARY_VIEW_CELL_HEIGHT)
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let dict = sections![indexPath.section]
+        var key = dict.keys.array[0]
+        var cardIds = dict[key]
+        var cardId = cardIds![indexPath.row]
         
+        let view = AddCardViewController()
+        view.arrDecks = NSMutableArray(array: [self.deckName!])
+        view.cardId = cardId;
+        view.createButtonVisible = false
+        view.showCardButtonVisible = true
+        view.segmentedControlIndex = 0;
+        self.navigationController!.pushViewController(view, animated: true)
     }
 
 //    MARK : UITableViewDataSource
@@ -158,17 +183,28 @@ class LimitedSearchViewController: UIViewController, UISearchBarDelegate, UITabl
         let key = dict.keys.array[0]
         let cardIds = dict[key]
         let cardId = cardIds![indexPath.row]
-        let cell:SearchResultsTableViewCell?
+        var cell:UITableViewCell?
+        var cardSummaryView:CardSummaryView?
         
-        if let x = tableView.dequeueReusableCellWithIdentifier(kSearchResultsIdentifier) as? SearchResultsTableViewCell {
+        if let x = tableView.dequeueReusableCellWithIdentifier(kCardInfoViewIdentifier) as? UITableViewCell {
             cell = x
+            for subView in cell!.contentView.subviews {
+                if subView is CardSummaryView {
+                    cardSummaryView = subView as? CardSummaryView
+                    break
+                }
+            }
+            
         } else {
-            cell = SearchResultsTableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: kSearchResultsIdentifier)
+            cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: kCardInfoViewIdentifier)
+            cardSummaryView = NSBundle.mainBundle().loadNibNamed("CardSummaryView", owner: self, options: nil).first as? CardSummaryView
+            cardSummaryView!.frame = CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: CGFloat(CARD_SUMMARY_VIEW_CELL_HEIGHT))
+            cell!.contentView.addSubview(cardSummaryView!)
         }
         
         cell!.accessoryType = UITableViewCellAccessoryType.None
         cell!.selectionStyle = UITableViewCellSelectionStyle.None
-        cell!.displayCard(cardId)
+        cardSummaryView!.displayCard(cardId)
         
         return cell!
     }

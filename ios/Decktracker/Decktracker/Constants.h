@@ -42,6 +42,7 @@
 
 #define TCGPLAYER_PARTNER_KEY           @"DECKTRACKER"
 #define TCGPLAYER_FETCH_STORAGE         24*3 // 3 days
+#define PARSE_FETCH_STORAGE             24*3 // 3 days
 
 #define EIGHTH_EDITION_RELEASE          @"2003-07-28" //@"YYYY-MM-dd"
 
@@ -54,11 +55,14 @@ typedef NS_ENUM(NSInteger, EditMode)
     EditModeEdit
 };
 
+#define kCardInfoViewIdentifier          @"kCardInfoViewIdentifier"
+
 #define kCardViewMode                    @"kCardViewMode"
 #define kCardViewModeList                @"List"
 #define kCardViewModeGrid2x2             @"2x2"
 #define kCardViewModeGrid3x3             @"3x3"
 
+// Keys
 #define kAppID                           @"913992761"
 
 #define kCrashlyticsAPIKey               @"114b3dd82452ec2f4024140ec862698d331b8f3f"

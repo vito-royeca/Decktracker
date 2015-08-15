@@ -29,6 +29,7 @@
 @property NSString * number;
 @property NSString * originalText;
 @property NSString * originalType;
+@property NSDate * parseFetchDate;
 @property NSString * power;
 @property double rating;
 @property NSString * releaseDate;

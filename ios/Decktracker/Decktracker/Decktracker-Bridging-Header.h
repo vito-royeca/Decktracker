@@ -17,6 +17,7 @@
 #import "PureLayout.h"
 #import "ReaderViewController.h"
 #import <Realm/Realm.h>
+#import "XLForm.h"
 #import <JJJ/JJJUtil.h>
 
 #import "DTArtist.h"
@@ -36,7 +37,9 @@
 #import "DTSet.h"
 #import "DTSetType.h"
 
+#import "AddCardViewController.h"
 #import "CardDetailsViewController.h"
+#import "CardSummaryView.h"
 #import "Constants.h"
 #import "Database.h"
 #import "Deck.h"
@@ -44,6 +47,5 @@
 #import "InAppPurchase.h"
 #import "InAppPurchaseViewController.h"
 #import "MainViewController.h"
-#import "SearchResultsTableViewCell.h"
 #import "SettingsViewController.h"
 #import "UIImage+AverageColor.h"

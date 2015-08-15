@@ -30,33 +30,5 @@
 		<key>In-App Description</key>
 		<string>Cards from the Dragons of Tarkir set.</string>
 	</dict>
-	<dict>
-		<key>Name</key>
-		<string>Modern Masters 2015 Edition</string>
-		<key>Code</key>
-		<string>MM2</string>
-		<key>In-App Reference Name</key>
-		<string>com.jjj.decktracker.ModernMasters2015Edition_Ref</string>
-		<key>In-App Product ID</key>
-		<string>ModernMasters2015Edition_ID</string>
-		<key>In-App Display Name</key>
-		<string>Modern Masters 2015 Edition</string>
-		<key>In-App Description</key>
-		<string>Cards from the Modern Masters 2015 Edition set.</string>
-	</dict>
-	<dict>
-		<key>Name</key>
-		<string>Magic Origins</string>
-		<key>Code</key>
-		<string>ORI</string>
-		<key>In-App Reference Name</key>
-		<string>com.jjj.decktracker.MagicOrigins_Ref</string>
-		<key>In-App Product ID</key>
-		<string>MagicOrigins_ID</string>
-		<key>In-App Display Name</key>
-		<string>Magic Origins</string>
-		<key>In-App Description</key>
-		<string>Cards from the Magic Origins set.</string>
-	</dict>
 </array>
 </plist>

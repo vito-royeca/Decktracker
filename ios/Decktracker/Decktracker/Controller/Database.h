@@ -57,7 +57,7 @@
          withSectionName:(NSString*) sectionName;
 
 -(RLMResults*) advanceFindCards:(NSDictionary*)query
-                     withSorter:(NSDictionary*) sorter;
+                    withSorters:(NSArray*) sorters;
 
 -(void) loadInAppSets;
 -(NSDictionary*) inAppSettingsForSet:(NSString*) setId;
@@ -87,7 +87,6 @@
 -(void) fetchLeaderboard;
 // Parse Maintenance
 -(void) updateParseCards;
--(void) findDuplicateParseCards;
 -(void) deleteDuplicateParseCards;
 -(void) uploadArtists;
 -(void) uploadBlocks;

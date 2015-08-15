@@ -15,7 +15,7 @@
 #import "DecksViewController.h"
 #import "DTFormat.h"
 #import "FileManager.h"
-#import "SearchResultsTableViewCell.h"
+#import "CardSummaryView.h"
 
 #import "Decktracker-Swift.h"
 
@@ -90,8 +90,6 @@
                                                  style:UITableViewStylePlain];
     self.tblCards.delegate = self;
     self.tblCards.dataSource = self;
-    [self.tblCards registerNib:[UINib nibWithNibName:@"SearchResultsTableViewCell" bundle:nil]
-          forCellReuseIdentifier:@"Cell1"];
     
     self.navigationItem.leftBarButtonItem = self.btnBack;
     self.navigationItem.rightBarButtonItem = self.btnView;
@@ -305,8 +303,6 @@
                                                  style:UITableViewStylePlain];
     self.tblCards.delegate = self;
     self.tblCards.dataSource = self;
-    [self.tblCards registerNib:[UINib nibWithNibName:@"SearchResultsTableViewCell" bundle:nil]
-        forCellReuseIdentifier:@"Cell1"];
     
     if (self.colCards) {
         [self.colCards removeFromSuperview];
@@ -333,7 +329,7 @@
     self.colCards = [[UICollectionView alloc] initWithFrame:frame collectionViewLayout:layout];
     self.colCards.dataSource = self;
     self.colCards.delegate = self;
-    [self.colCards registerClass:[CardListCollectionViewCell class] forCellWithReuseIdentifier:@"Card"];
+    [self.colCards registerClass:[CardImageCollectionViewCell class] forCellWithReuseIdentifier:@"Card"];
     [self.colCards registerClass:[UICollectionReusableView class]
         forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
                withReuseIdentifier:@"Header"];
@@ -348,17 +344,32 @@
 
 -(UITableViewCell*) createSearchResultsTableCell:(NSDictionary*) dict
 {
-    SearchResultsTableViewCell *cell = [self.tblCards dequeueReusableCellWithIdentifier:@"Cell1"];
+    UITableViewCell *cell = [self.tblCards dequeueReusableCellWithIdentifier:@"Cell1"];
+    CardSummaryView *cardSummaryView;
     NSString *cardId = dict[@"cardId"];
     
-    if (!cell)
+    if (cell)
     {
-        cell = [[SearchResultsTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-                                                 reuseIdentifier:@"Cell1"];
+        for (UIView *subView in cell.contentView.subviews)
+        {
+            if ([subView isKindOfClass:[CardSummaryView class]])
+            {
+                cardSummaryView = (CardSummaryView*)subView;
+                break;
+            }
+        }
+    }
+    else
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                      reuseIdentifier:@"Cell1"];
+        cardSummaryView = [[[NSBundle mainBundle] loadNibNamed:@"CardSummaryView" owner:self options:nil] firstObject];
+        cardSummaryView.frame = CGRectMake(0, 0, self.tblCards.frame.size.width, CARD_SUMMARY_VIEW_CELL_HEIGHT);
+        [cell.contentView addSubview:cardSummaryView];
     }
     
-    [cell displayCard:cardId];
-    [cell addBadge:[dict[@"qty"] intValue]];
+    [cardSummaryView displayCard:cardId];
+    [cardSummaryView addBadge:[dict[@"qty"] intValue]];
     return cell;
 }
 
@@ -378,12 +389,13 @@
     return cell;
 }
 
--(void) showLimitedSearch:(NSPredicate*) predicate
+-(void) showLimitedSearchWithPredicate:(NSPredicate*) predicate andTitle:(NSString*) title
 {
     LimitedSearchViewController *view = [[LimitedSearchViewController alloc] init];
     
     view.predicate = predicate;
     view.deckName = self.deck.name;
+    view.placeHolderTitle = title;
     [self.navigationController pushViewController:view animated:YES];
 }
 
@@ -411,7 +423,7 @@
                 {
                     if (indexPath.row < self.deck.arrLands.count)
                     {
-                        return SEARCH_RESULTS_CELL_HEIGHT;
+                        return CARD_SUMMARY_VIEW_CELL_HEIGHT;
                     }
                     else
                     {
@@ -422,7 +434,7 @@
                 {
                     if (indexPath.row < self.deck.arrCreatures.count)
                     {
-                        return SEARCH_RESULTS_CELL_HEIGHT;
+                        return CARD_SUMMARY_VIEW_CELL_HEIGHT;
                     }
                     else
                     {
@@ -433,7 +445,7 @@
                 {
                     if (indexPath.row < self.deck.arrOtherSpells.count)
                     {
-                        return SEARCH_RESULTS_CELL_HEIGHT;
+                        return CARD_SUMMARY_VIEW_CELL_HEIGHT;
                     }
                     else
                     {
@@ -444,7 +456,7 @@
                 {
                     if (indexPath.row < self.deck.arrSideboard.count)
                     {
-                        return SEARCH_RESULTS_CELL_HEIGHT;
+                        return CARD_SUMMARY_VIEW_CELL_HEIGHT;
                     }
                     else
                     {
@@ -726,6 +738,7 @@
     {
         NSInteger rows = [self tableView:tableView numberOfRowsInSection:indexPath.section];
         NSPredicate *predicate;
+        NSString *title;
         
         if (rows > 1)
         {
@@ -742,6 +755,7 @@
                     else
                     {
                         predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"sectionType", @"Land"];
+                        title = @"Search for Lands";
                     }
                     break;
                 }
@@ -754,6 +768,7 @@
                     else
                     {
                         predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"sectionType", @"Creature"];
+                        title = @"Search for Creatures";
                     }
                     break;
                 }
@@ -768,6 +783,7 @@
                         NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"%K != %@", @"sectionType", @"Land"];
                         NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"%K != %@", @"sectionType", @"Creature"];
                         predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[pred1, pred2]];
+                        title = @"Search for Other Spells";
                     }
                     break;
                 }
@@ -818,7 +834,7 @@
             
             else
             {
-                [self showLimitedSearch:predicate];
+                [self showLimitedSearchWithPredicate:predicate andTitle:title];
             }
         }
         
@@ -833,11 +849,13 @@
                 case 1:
                 {
                     predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"sectionType", @"Land"];
+                    title = @"Search for Lands";
                     break;
                 }
                 case 2:
                 {
                     predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"sectionType", @"Creature"];
+                    title = @"Search for Creatures";
                     break;
                 }
                 case 3:
@@ -845,11 +863,12 @@
                     NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"%K != %@", @"sectionType", @"Land"];
                     NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"%K != %@", @"sectionType", @"Creature"];
                     predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[pred1, pred2]];
+                    title = @"Search for Other Spells";
                     break;
                 }
             }
             
-            [self showLimitedSearch:predicate];
+            [self showLimitedSearchWithPredicate:predicate andTitle:title];
         }
     }
     
@@ -974,39 +993,39 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *cardId;
-    int badge = 0;
+    int quantity = 0;
     
     switch (indexPath.section)
     {
         case 0:
         {
             cardId = self.deck.arrLands[indexPath.row][@"cardId"];
-            badge = [self.deck.arrLands[indexPath.row][@"qty"] intValue];
+            quantity = [self.deck.arrLands[indexPath.row][@"qty"] intValue];
             break;
         }
         case 1:
         {
             cardId = self.deck.arrCreatures[indexPath.row][@"cardId"];
-            badge = [self.deck.arrCreatures[indexPath.row][@"qty"] intValue];
+            quantity = [self.deck.arrCreatures[indexPath.row][@"qty"] intValue];
             break;
         }
         case 2:
         {
             cardId = self.deck.arrOtherSpells[indexPath.row][@"cardId"];
-            badge = [self.deck.arrOtherSpells[indexPath.row][@"qty"] intValue];
+            quantity = [self.deck.arrOtherSpells[indexPath.row][@"qty"] intValue];
             break;
         }
         case 3:
         {
             cardId = self.deck.arrSideboard[indexPath.row][@"cardId"];
-            badge = [self.deck.arrSideboard[indexPath.row][@"qty"] intValue];
+            quantity = [self.deck.arrSideboard[indexPath.row][@"qty"] intValue];
             break;
         }
     }
     
-    CardListCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"Card" forIndexPath:indexPath];
-    [cell displayCard:cardId];
-    [cell addBadge:badge];
+    CardImageCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"Card" forIndexPath:indexPath];
+    [cell displayCard:cardId cropped:NO showName:NO showSetIcon:NO];
+    [cell addQuantity:quantity];
     
     return cell;
 }

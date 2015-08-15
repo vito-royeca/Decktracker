@@ -10,8 +10,6 @@ import UIKit
 
 class TopListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, InAppPurchaseViewControllerDelegate {
 
-    let kSearchResultsIdentifier = "kSearchResultsIdentifier"
-    
     var viewButton:UIBarButtonItem?
     var tblList:UITableView?
     var colList:UICollectionView?
@@ -136,7 +134,6 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
         tblList = UITableView(frame: frame, style: UITableViewStyle.Plain)
         tblList!.delegate = self
         tblList!.dataSource = self
-        tblList!.registerNib(UINib(nibName: "SearchResultsTableViewCell", bundle: nil), forCellReuseIdentifier: kSearchResultsIdentifier)
         
         if colList != nil {
             colList!.removeFromSuperview()
@@ -161,7 +158,7 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
         colList = UICollectionView(frame: frame, collectionViewLayout: layout)
         colList!.dataSource = self
         colList!.delegate = self
-        colList!.registerClass(CardListCollectionViewCell.self, forCellWithReuseIdentifier: "Card")
+        colList!.registerClass(CardImageCollectionViewCell.self, forCellWithReuseIdentifier: "Card")
         colList!.backgroundColor = UIColor(patternImage: UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/Gray_Patterned_BG.jpg")!)
         
         if tblList != nil {
@@ -172,7 +169,7 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
     
 //    MARK: UITableViewDataSource
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return CGFloat(SEARCH_RESULTS_CELL_HEIGHT)
+        return CGFloat(CARD_SUMMARY_VIEW_CELL_HEIGHT)
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -186,15 +183,29 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     {
         let cardId = cardIds![indexPath.row]
-        var cell = tableView.dequeueReusableCellWithIdentifier(kSearchResultsIdentifier) as! SearchResultsTableViewCell?
-        if cell == nil {
-            cell = SearchResultsTableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: kSearchResultsIdentifier)
-        }
+        var cell:UITableViewCell?
+        var cardSummaryView:CardSummaryView?
         
+        if let x = tableView.dequeueReusableCellWithIdentifier(kCardInfoViewIdentifier) as? UITableViewCell {
+            cell = x
+            for subView in cell!.contentView.subviews {
+                if subView is CardSummaryView {
+                    cardSummaryView = subView as? CardSummaryView
+                    break
+                }
+            }
+            
+        } else {
+            cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: kCardInfoViewIdentifier)
+            cardSummaryView = NSBundle.mainBundle().loadNibNamed("CardSummaryView", owner: self, options: nil).first as? CardSummaryView
+            cardSummaryView!.frame = CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: CGFloat(CARD_SUMMARY_VIEW_CELL_HEIGHT))
+            cell!.contentView.addSubview(cardSummaryView!)
+        }
+
         cell!.accessoryType = UITableViewCellAccessoryType.None
         cell!.selectionStyle = UITableViewCellSelectionStyle.None
-        cell!.displayCard(cardId)
-        cell!.addRank(indexPath.row+1);
+        cardSummaryView!.displayCard(cardId)
+        cardSummaryView!.addRank(indexPath.row+1)
         
         return cell!
     }
@@ -231,9 +242,9 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cardId = cardIds![indexPath.row]
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Card", forIndexPath: indexPath) as! CardListCollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Card", forIndexPath: indexPath) as! CardImageCollectionViewCell
         
-        cell.displayCard(cardId)
+        cell.displayCard(cardId, cropped: false, showName: false, showSetIcon: false)
         cell.addRank(indexPath.row+1)
         return cell
     }

@@ -38,6 +38,7 @@
               @"number" : @"",
               @"originalText" : @"",
               @"originalType" : @"",
+              @"parseFetchDate" : [[NSDate alloc] initWithTimeIntervalSince1970:0],
               @"power" : @"",
               @"rating" : @0.0,
               @"releaseDate" : @"",

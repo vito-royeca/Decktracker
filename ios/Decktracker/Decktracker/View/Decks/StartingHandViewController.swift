@@ -24,7 +24,6 @@ enum StartingHandShowMode: Printable  {
 
 class StartingHandViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
 
-    let kSearchResultsIdentifier = "kSearchResultsIdentifier"
     var initialHand = 7
 
     var viewButton:UIBarButtonItem?
@@ -284,7 +283,6 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         tblHand = UITableView(frame: frame, style: UITableViewStyle.Plain)
         tblHand!.delegate = self
         tblHand!.dataSource = self
-        tblHand!.registerNib(UINib(nibName: "SearchResultsTableViewCell", bundle: nil), forCellReuseIdentifier: kSearchResultsIdentifier)
         
         if colHand != nil {
             colHand!.removeFromSuperview()
@@ -310,7 +308,7 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         colHand = UICollectionView(frame: frame, collectionViewLayout: layout)
         colHand!.dataSource = self
         colHand!.delegate = self
-        colHand!.registerClass(CardListCollectionViewCell.self, forCellWithReuseIdentifier: "Card")
+        colHand!.registerClass(CardImageCollectionViewCell.self, forCellWithReuseIdentifier: "Card")
         colHand!.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier:"Header")
         colHand!.backgroundColor = UIColor(patternImage: UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/Gray_Patterned_BG.jpg")!)
         
@@ -423,7 +421,7 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return CGFloat(SEARCH_RESULTS_CELL_HEIGHT)
+        return CGFloat(CARD_SUMMARY_VIEW_CELL_HEIGHT)
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -441,6 +439,7 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:UITableViewCell?
+        var cardSummaryView:CardSummaryView?
         var cardId:String?
         
         switch self.showMode! {
@@ -460,19 +459,25 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
             }
         }
         
-        var cell1:SearchResultsTableViewCell?
-        
-        if let x = tableView.dequeueReusableCellWithIdentifier(kSearchResultsIdentifier) as? SearchResultsTableViewCell {
-            cell1 = x
-        } else {
-            cell1 = SearchResultsTableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: kSearchResultsIdentifier)
-        }
+        if let x = tableView.dequeueReusableCellWithIdentifier(kCardInfoViewIdentifier) as? UITableViewCell {
+            cell = x
+            for subView in cell!.contentView.subviews {
+                if subView is CardSummaryView {
+                    cardSummaryView = subView as? CardSummaryView
+                    break
+                }
+            }
             
-        cell1!.accessoryType = UITableViewCellAccessoryType.None
-        cell1!.selectionStyle = UITableViewCellSelectionStyle.None
-        cell1!.displayCard(cardId)
-        cell = cell1;
+        } else {
+            cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: kCardInfoViewIdentifier)
+            cardSummaryView = NSBundle.mainBundle().loadNibNamed("CardSummaryView", owner: self, options: nil).first as? CardSummaryView
+            cardSummaryView!.frame = CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: CGFloat(CARD_SUMMARY_VIEW_CELL_HEIGHT))
+            cell!.contentView.addSubview(cardSummaryView!)
+        }
         
+        cell!.accessoryType = UITableViewCellAccessoryType.None
+        cell!.selectionStyle = UITableViewCellSelectionStyle.None
+        cardSummaryView!.displayCard(cardId)
         return cell!
     }
     
@@ -522,9 +527,9 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
             }
         }
         
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Card", forIndexPath: indexPath) as! CardListCollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Card", forIndexPath: indexPath) as! CardImageCollectionViewCell
         
-        cell.displayCard(cardId!)
+        cell.displayCard(cardId!, cropped: false, showName: false, showSetIcon: false)
         return cell
     }
     

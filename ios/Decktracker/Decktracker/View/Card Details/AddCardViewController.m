@@ -12,7 +12,7 @@
 #import "FileManager.h"
 #import "InAppPurchase.h"
 #import "MainViewController.h"
-#import "SearchResultsTableViewCell.h"
+#import "CardSummaryView.h"
 
 #ifndef DEBUG
 #import "GAI.h"
@@ -56,8 +56,6 @@
                                                  style:UITableViewStylePlain];
     self.tblAddTo.dataSource = self;
     self.tblAddTo.delegate = self;
-    [self.tblAddTo registerNib:[UINib nibWithNibName:@"SearchResultsTableViewCell" bundle:nil]
-        forCellReuseIdentifier:@"Cell1"];
     [self.tblAddTo registerNib:[UINib nibWithNibName:@"QuantityTableViewCell" bundle:nil]
         forCellReuseIdentifier:@"Cell2"];
     [self.tblAddTo registerNib:[UINib nibWithNibName:@"QuantityTableViewCell" bundle:nil]
@@ -284,7 +282,7 @@
 {
     if (indexPath.section == 0)
     {
-        return SEARCH_RESULTS_CELL_HEIGHT;
+        return CARD_SUMMARY_VIEW_CELL_HEIGHT;
     }
     else if (indexPath.section == 1)
     {
@@ -321,21 +319,36 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell;
+    CardSummaryView *cardSummaryView;
     
     cell.userInteractionEnabled = YES;
     if (indexPath.section == 0)
     {
         cell = [tableView dequeueReusableCellWithIdentifier:@"Cell1"];
         
-        if (!cell)
+        if (cell)
         {
-            cell = [[SearchResultsTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+            for (UIView *subView in cell.contentView.subviews)
+            {
+                if ([subView isKindOfClass:[CardSummaryView class]])
+                {
+                    cardSummaryView = (CardSummaryView*)subView;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                                      reuseIdentifier:@"Cell1"];
+            cardSummaryView = [[[NSBundle mainBundle] loadNibNamed:@"CardSummaryView" owner:self options:nil] firstObject];
+            cardSummaryView.frame = CGRectMake(0, 0, tableView.frame.size.width, CARD_SUMMARY_VIEW_CELL_HEIGHT);
+            [cell.contentView addSubview:cardSummaryView];
         }
         
         tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         cell.userInteractionEnabled = NO;
-        [((SearchResultsTableViewCell*)cell) displayCard:self.cardId];
+        [cardSummaryView displayCard:self.cardId];
     }
     else if (indexPath.section == 2)
     {

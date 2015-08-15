@@ -857,8 +857,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
                     completion: nil)
             }
             
-            NSNotificationCenter.defaultCenter().removeObserver(self,
-                name:kCardDownloadCompleted,  object:nil)
+            NSNotificationCenter.defaultCenter().removeObserver(self, name:kCardDownloadCompleted,  object:nil)
         }
     }
     
@@ -883,8 +882,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
                     completion: nil)
             }
             
-            NSNotificationCenter.defaultCenter().removeObserver(self,
-                name:kCardDownloadCompleted,  object:nil)
+            NSNotificationCenter.defaultCenter().removeObserver(self, name:kCardDownloadCompleted,  object:nil)
         }
     }
 

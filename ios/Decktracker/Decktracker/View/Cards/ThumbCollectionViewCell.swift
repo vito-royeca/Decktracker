@@ -46,7 +46,7 @@ class ThumbCollectionViewCell: UICollectionViewCell {
         
         NSNotificationCenter.defaultCenter().removeObserver(self, name: kParseSyncDone, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector:"parseSyncDone:", name: kParseSyncDone, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name:kCardDownloadCompleted,  object:nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name:kCardDownloadCompleted, object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector:"loadCropImage:",  name:kCardDownloadCompleted, object:nil)
         
         lblCardName.text = card!.name

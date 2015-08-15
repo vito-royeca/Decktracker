@@ -20,7 +20,7 @@ class BannerScrollTableViewCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         
-        collectionView.registerNib(UINib(nibName: "BannerCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: kBannerCellIdentifier)
+        collectionView.registerClass(CardImageCollectionViewCell.self, forCellWithReuseIdentifier: kBannerCellIdentifier)
         collectionView.allowsSelection = true
     }
 

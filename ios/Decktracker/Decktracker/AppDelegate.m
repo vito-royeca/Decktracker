@@ -53,9 +53,9 @@
     [[FileManager sharedInstance] syncFiles];
 
     // Database and Parse
-    [[Database sharedInstance] setupDb];
     [[Database sharedInstance] setupParse:launchOptions];
-//    [[Database sharedInstance ] updateParseCards];
+    [[Database sharedInstance] setupDb];
+//    [[Database sharedInstance ] deleteDuplicateParseCards];
 
     // custom colors
     [[UINavigationBar appearance] setBarTintColor:[JJJUtil UIColorFromRGB:0x691F01]];

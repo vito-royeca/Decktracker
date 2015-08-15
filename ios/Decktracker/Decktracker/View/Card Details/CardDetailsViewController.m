@@ -22,6 +22,7 @@
 #import "DTSet.h"
 #import "Database.h"
 #import "FileManager.h"
+#import "CardSummaryView.h"
 
 #import "Decktracker-Swift.h"
 
@@ -43,7 +44,7 @@
     NSString *_currentCardImage;
     NSString *_currentLanguage;
     
-    CardPriceHeader *_cardPriceHeader;
+    CardSummaryView *_cardSummaryView;
     MBProgressHUD *_hud;
 }
 
@@ -112,11 +113,13 @@
     CGFloat dX = 0;
     CGFloat dY = 0;
     CGFloat dWidth = self.view.frame.size.width;
-    CGFloat dHeight = 30;
+    CGFloat dHeight = CARD_SUMMARY_VIEW_CELL_HEIGHT;
     
-    _cardPriceHeader = [[CardPriceHeader alloc] initWithFrame:CGRectMake(dX, dY, dWidth, dHeight)];
-    [_cardPriceHeader showCardPricing:self.cardId];
+    _cardSummaryView = [[[NSBundle mainBundle] loadNibNamed:@"CardSummaryView" owner:self options:nil] firstObject];
+    _cardSummaryView.frame = CGRectMake(0, 0, dWidth, dHeight);
+    [_cardSummaryView displayCard:self.cardId];
 
+    dHeight = 30;
     self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Card", @"Details"/*, @"Reviews"*/]];
     self.segmentedControl.frame = CGRectMake(dX+10, dY+7, dWidth-20, dHeight);
     self.segmentedControl.selectedSegmentIndex = 0;
@@ -186,30 +189,6 @@
     [self.view addSubview:self.tblDetails];
     [self.view addSubview:self.bottomToolbar];
 
-    self.btnPrevious = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"up4.png"]
-                                                        style:UIBarButtonItemStylePlain
-                                                       target:self
-                                                       action:@selector(btnPreviousTapped:)];
-    self.btnNext = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"down4.png"]
-                                                    style:UIBarButtonItemStylePlain
-                                                   target:self
-                                                   action:@selector(btnNextTapped:)];
-    self.navigationItem.rightBarButtonItems = @[self.btnNext, self.btnPrevious];
-    
-    if (self.cardIds)
-    {
-        NSInteger index = [self.cardIds indexOfObject:self.cardId];
-        
-        if (index == 0)
-        {
-            self.btnPrevious.enabled = NO;
-        }
-        if (index == self.cardIds.count-1)
-        {
-            self.btnNext.enabled = NO;
-        }
-    }
-    
     _planeswalkerType = [[DTCardType objectsWithPredicate:[NSPredicate predicateWithFormat:@"name = %@", @"Planeswalker"]] firstObject];
 }
 
@@ -476,7 +455,6 @@
                                            onClose:^{ }];
     
     [[FileManager sharedInstance] downloadCardImage:self.cardId forLanguage:_currentLanguage immediately:YES];
-    [self updateNavigationButtons];
 }
 
 - (void) displayDetails
@@ -485,7 +463,6 @@
     NSURL *baseURL = [NSURL fileURLWithPath:path];
     
     [self.webView loadHTMLString:[self composeDetails] baseURL:baseURL];
-    [self updateNavigationButtons];
     
 #ifndef DEBUG
     // send to Google Analytics
@@ -495,30 +472,6 @@
                                                            label:nil
                                                            value:nil] build]];
 #endif
-}
-
-- (void) updateNavigationButtons
-{
-    if (self.cardIds)
-    {
-        NSInteger index = [self.cardIds indexOfObject:self.cardId];
-        
-        self.btnPrevious.enabled = YES;
-        self.btnNext.enabled = YES;
-        if (index == self.cardIds.count-1)
-        {
-            self.btnNext.enabled = NO;
-        }
-        if (index == 0)
-        {
-            self.btnPrevious.enabled = NO;
-        }
-    }
-    else
-    {
-        self.btnPrevious.enabled = NO;
-        self.btnNext.enabled = NO;
-    }
 }
 
 - (NSString*) composeDetails
@@ -1073,12 +1026,12 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return section == 0 ? _cardPriceHeader.frame.size.height : _viewSegmented.frame.size.height;
+    return section == 0 ? CARD_SUMMARY_VIEW_CELL_HEIGHT : _viewSegmented.frame.size.height;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    return section == 0 ? _cardPriceHeader : _viewSegmented;
+    return section == 0 ? _cardSummaryView : _viewSegmented;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -1093,7 +1046,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    return self.view.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height - self.navigationController.navigationBar.frame.size.height - _cardPriceHeader.frame.size.height - _viewSegmented.frame.size.height - self.bottomToolbar.frame.size.height;
+    return self.view.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height - self.navigationController.navigationBar.frame.size.height - _cardSummaryView.frame.size.height - _viewSegmented.frame.size.height - self.bottomToolbar.frame.size.height;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1105,10 +1058,10 @@
         CGFloat dX = 0;
         CGFloat dY = 0;
         CGFloat dWidth = self.view.frame.size.width;
-        CGFloat dHeight = self.view.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height - self.navigationController.navigationBar.frame.size.height - _cardPriceHeader.frame.size.height - _viewSegmented.frame.size.height - self.bottomToolbar.frame.size.height;
+        CGFloat dHeight = self.view.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height - self.navigationController.navigationBar.frame.size.height - _cardSummaryView.frame.size.height - _viewSegmented.frame.size.height - self.bottomToolbar.frame.size.height;
         
+//          [self.pageView removeFromSuperview];
         [self.webView removeFromSuperview];
-        [self.cardImage removeFromSuperview];
         
         cell = [tableView dequeueReusableCellWithIdentifier:@"Cell2"];
         if (cell == nil)
@@ -1116,7 +1069,6 @@
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Cell2"];
             cell.accessoryType = UITableViewCellAccessoryNone;
         }
-        
         
         switch (self.segmentedControl.selectedSegmentIndex)
         {

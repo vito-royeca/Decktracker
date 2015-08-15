@@ -14,8 +14,7 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
     let kHorizontalCellIdentifier   = "kHorizontalCellIdentifier"
     let kBannerCellIdentifier       = "kBannerCellIdentifier"
     let kDefaultCellIdentifier      = "kDefaultCellIdentifier"
-    let kSearchResultsIdentifier    = "kSearchResultsIdentifier"
-    
+
     var searchBar:UISearchBar?
     var tblFeatured:UITableView?
     var colBanner:UICollectionView?
@@ -32,11 +31,11 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
         let height = view.frame.size.height - tabBarController!.tabBar.frame.size.height
         var frame = CGRect(x:0, y:0, width:view.frame.width, height:height)
 
-        var btnAdvance = UIBarButtonItem(image: UIImage(named: "filter.png"), style: UIBarButtonItemStyle.Plain, target: self, action: "btnAdvanceTapped:")
+        var btnSearchFilter = UIBarButtonItem(image: UIImage(named: "filter.png"), style: UIBarButtonItemStyle.Plain, target: self, action: "btnSearchFilterTapped:")
         
         searchBar = UISearchBar()
         searchBar!.autoresizingMask = UIViewAutoresizing.FlexibleWidth
-        searchBar!.placeholder = "Search"
+        searchBar!.placeholder = "Search Terms"
         searchBar!.delegate = self
         // Add a Done button in the keyboard
         let barButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: searchBar, action: "resignFirstResponder")
@@ -49,10 +48,9 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
         tblFeatured!.dataSource = self
         tblFeatured!.registerNib(UINib(nibName: "BannerScrollTableViewCell", bundle: nil), forCellReuseIdentifier: kBannerCellIdentifier)
         tblFeatured!.registerNib(UINib(nibName: "HorizontalScrollTableViewCell", bundle: nil), forCellReuseIdentifier: kHorizontalCellIdentifier)
-        tblFeatured!.registerNib(UINib(nibName: "SearchResultsTableViewCell", bundle: nil), forCellReuseIdentifier: kSearchResultsIdentifier)
 
-        self.navigationItem.leftBarButtonItem = btnAdvance;
-        self.navigationItem.titleView = self.searchBar;
+        self.navigationItem.titleView = self.searchBar
+        self.navigationItem.rightBarButtonItem = btnSearchFilter
         view.addSubview(tblFeatured!)
         
         self.navigationItem.title = "Featured"
@@ -92,8 +90,9 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
         NSNotificationCenter.defaultCenter().removeObserver(self, name:kFetchTopViewedDone,  object:nil)
     }
     
-    func btnAdvanceTapped(sender: AnyObject) {
-        
+    func btnSearchFilterTapped(sender: AnyObject) {
+        let view = SearchFilterViewController(nibName: nil, bundle: nil)
+        self.navigationController?.pushViewController(view, animated:true)
     }
     
     func loadData() {
@@ -136,7 +135,19 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
         var unsortedSections = [String: [String]]()
         
         var sorter = RLMSortDescriptor(property: "name", ascending: true)
-        let cards = Database.sharedInstance().findCards(searchBar!.text,  withSortDescriptors:[sorter], withSectionName:nil)
+        var query = Dictionary<String, String>()
+        if NSUserDefaults.standardUserDefaults().objectForKey(SearchFilterViewController.Tags.SearchInName.rawValue) != nil {
+            query.updateValue(["Or": searchBar!.text], forKey: "Name")
+        }
+        if NSUserDefaults.standardUserDefaults().objectForKey(SearchFilterViewController.Tags.SearchInText.rawValue) != nil {
+            query.updateValue(["Or": searchBar!.text], forKey: "Text")
+        }
+        if NSUserDefaults.standardUserDefaults().objectForKey(SearchFilterViewController.Tags.SearchInFlavor.rawValue) != nil {
+            query.updateValue(["Or": searchBar!.text], forKey: "Flavor Text")
+        }
+        
+//        let cards = Database.sharedInstance().findCards(searchBar!.text,  withSortDescriptors:[sorter], withSectionName:nil)
+        let cards = Database.sharedInstance().advanceFindCards(nil, withSorters: [sorter])
         for x in cards {
             let card = x as! DTCard
             let name = card.sectionNameInitial
@@ -233,7 +244,7 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
 //    MARK: UITableViewDelegate
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if searchSections != nil {
-            return CGFloat(SEARCH_RESULTS_CELL_HEIGHT)
+            return CGFloat(CARD_SUMMARY_VIEW_CELL_HEIGHT)
             
         } else {
             if indexPath.row == 0 {
@@ -327,23 +338,33 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if searchSections != nil {
-            var cell:SearchResultsTableViewCell?
+            var cell:UITableViewCell?
             
             let dict = searchSections![indexPath.section]
             let key = dict.keys.array[0]
             let cardIds = dict[key]
             let cardId = cardIds![indexPath.row]
+            var cardSummaryView:CardSummaryView?
             
-            
-            if let x = tableView.dequeueReusableCellWithIdentifier(kSearchResultsIdentifier) as? SearchResultsTableViewCell {
+            if let x = tableView.dequeueReusableCellWithIdentifier(kCardInfoViewIdentifier) as? UITableViewCell {
                 cell = x
+                for subView in cell!.contentView.subviews {
+                    if subView is CardSummaryView {
+                        cardSummaryView = subView as? CardSummaryView
+                        break
+                    }
+                }
+                
             } else {
-                cell = SearchResultsTableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: kSearchResultsIdentifier)
+                cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: kCardInfoViewIdentifier)
+                cardSummaryView = NSBundle.mainBundle().loadNibNamed("CardSummaryView", owner: self, options: nil).first as? CardSummaryView
+                cardSummaryView!.frame = CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: CGFloat(CARD_SUMMARY_VIEW_CELL_HEIGHT))
+                cell!.contentView.addSubview(cardSummaryView!)
             }
             
             cell!.accessoryType = UITableViewCellAccessoryType.None
             cell!.selectionStyle = UITableViewCellSelectionStyle.None
-            cell!.displayCard(cardId)
+            cardSummaryView!.displayCard(cardId)
             return cell!
         
         } else {
@@ -430,8 +451,8 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
             
             if collectionView.tag == 0 {
                 let cardId = dict[indexPath.row]
-                var cell2 = collectionView.dequeueReusableCellWithReuseIdentifier(kBannerCellIdentifier, forIndexPath:indexPath) as! BannerCollectionViewCell
-                cell2.displayCard(cardId)
+                var cell2 = collectionView.dequeueReusableCellWithReuseIdentifier("kBannerCellIdentifier", forIndexPath:indexPath) as! CardImageCollectionViewCell
+                cell2.displayCard(cardId, cropped: true, showName: true, showSetIcon: true)
                 cell = cell2
                 
             } else if collectionView.tag == 1 || collectionView.tag == 2 {
