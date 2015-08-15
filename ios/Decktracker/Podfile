@@ -23,6 +23,7 @@ pod "LMAlertView"
 pod "MBProgressHUD"
 pod "Parse"
 pod "ParseFacebookUtils"
+pod "ParseTwitterUtils"
 pod "ParseUI"
 pod "PureLayout"
 #pod "vfrReader", '~> 2.8.5'

@@ -140,7 +140,7 @@
     {
         NSURL *verify = [NSURL URLWithString:@"https://api.twitter.com/1.1/account/verify_credentials.json"];
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:verify];
-        [[PFTwitterUtils twitter] signRequest:request];
+//        [[PFTwitterUtils twitter] signRequest:request];
         NSURLResponse *response = nil;
         NSError *error;
         NSData *data = [NSURLConnection sendSynchronousRequest:request

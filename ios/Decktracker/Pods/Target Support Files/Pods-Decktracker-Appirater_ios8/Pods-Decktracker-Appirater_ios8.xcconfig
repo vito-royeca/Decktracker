@@ -1,1 +1,0 @@
-PODS_DECKTRACKER_APPIRATER_IOS__OTHER_LDFLAGS = -framework "CFNetwork" -framework "SystemConfiguration" -weak_framework "StoreKit"

@@ -124,13 +124,12 @@
 		8C467CF019F1132600B27F05 /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C467CEF19F1132600B27F05 /* MoreViewController.swift */; };
 		8C49656719B0A01F001C7935 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C49656619B0A01E001C7935 /* Crashlytics.framework */; };
 		8C4A0BC21AD53985004754CB /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4A0BC11AD53985004754CB /* SignupViewController.swift */; };
+		8C4D776B1B7EEEE200AF8570 /* libJJJ.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C4D77681B7EEEC800AF8570 /* libJJJ.a */; };
 		8C5246E119A5137300B10147 /* FileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5246E019A5137300B10147 /* FileManager.m */; };
 		8C524A6519B81E9E005E697B /* DeckDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C524A6419B81E9E005E697B /* DeckDetailsViewController.m */; };
 		8C524A7019B82C01005E697B /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C524A6F19B82C01005E697B /* SettingsViewController.m */; };
 		8C5FF9E819AE2EE3003CE54C /* keywords.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C5FF9E719AE2EE3003CE54C /* keywords.plist */; };
 		8C66751119D30B8E00A90C03 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8C66751019D30B8E00A90C03 /* Settings.bundle */; };
-		8C6847B619EE42370074960E /* JJJ.xcodeproj in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C6847A919EE41FF0074960E /* JJJ.xcodeproj */; };
-		8C6847B919EE426C0074960E /* libJJJ.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C6847B019EE41FF0074960E /* libJJJ.a */; };
 		8C6A95781B78678D009FED90 /* CardInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6A95771B78678D009FED90 /* CardInfoTableViewCell.swift */; };
 		8C6A957C1B789101009FED90 /* CardImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6A957B1B789101009FED90 /* CardImageTableViewCell.swift */; };
 		8C74B82B1A10A2F3004A350F /* DeckIASKSettingsStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C74B82A1A10A2F3004A350F /* DeckIASKSettingsStore.m */; };
@@ -185,30 +184,16 @@
 			remoteGlobalIDString = 8C2E13EC1990741100023BAA;
 			remoteInfo = Decktracker;
 		};
-		8C6847AF19EE41FF0074960E /* PBXContainerItemProxy */ = {
+		8C4D77671B7EEEC800AF8570 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 8C6847A919EE41FF0074960E /* JJJ.xcodeproj */;
+			containerPortal = 8C4D77631B7EEEC700AF8570 /* JJJ.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 580E1D4C189E8DDA00336A44;
 			remoteInfo = JJJ;
 		};
-		8C6847B119EE41FF0074960E /* PBXContainerItemProxy */ = {
+		8C4D77691B7EEED600AF8570 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 8C6847A919EE41FF0074960E /* JJJ.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 580E1D5C189E8DDB00336A44;
-			remoteInfo = JJJTests;
-		};
-		8C6847B319EE41FF0074960E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8C6847A919EE41FF0074960E /* JJJ.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 580E1D79189E8F4000336A44;
-			remoteInfo = JJJBundle;
-		};
-		8C6847B719EE42650074960E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8C6847A919EE41FF0074960E /* JJJ.xcodeproj */;
+			containerPortal = 8C4D77631B7EEEC700AF8570 /* JJJ.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 580E1D4B189E8DDA00336A44;
 			remoteInfo = JJJ;
@@ -394,6 +379,7 @@
 		8C467CEF19F1132600B27F05 /* MoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
 		8C49656619B0A01E001C7935 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		8C4A0BC11AD53985004754CB /* SignupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
+		8C4D77631B7EEEC700AF8570 /* JJJ.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JJJ.xcodeproj; path = ../JJJ/JJJ/JJJ.xcodeproj; sourceTree = "<group>"; };
 		8C5246DF19A5137300B10147 /* FileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileManager.h; sourceTree = "<group>"; };
 		8C5246E019A5137300B10147 /* FileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileManager.m; sourceTree = "<group>"; };
 		8C524A6319B81E9E005E697B /* DeckDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeckDetailsViewController.h; sourceTree = "<group>"; };
@@ -403,7 +389,6 @@
 		8C5FF9E719AE2EE3003CE54C /* keywords.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = keywords.plist; sourceTree = "<group>"; };
 		8C66750B19D30AF800A90C03 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		8C66751019D30B8E00A90C03 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
-		8C6847A919EE41FF0074960E /* JJJ.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JJJ.xcodeproj; path = ../jjj/JJJ/JJJ.xcodeproj; sourceTree = "<group>"; };
 		8C6A95771B78678D009FED90 /* CardInfoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardInfoTableViewCell.swift; sourceTree = "<group>"; };
 		8C6A957B1B789101009FED90 /* CardImageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardImageTableViewCell.swift; sourceTree = "<group>"; };
 		8C74B8291A10A2F3004A350F /* DeckIASKSettingsStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeckIASKSettingsStore.h; sourceTree = "<group>"; };
@@ -480,6 +465,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C4D776B1B7EEEE200AF8570 /* libJJJ.a in Frameworks */,
 				8CF7F0A91B09A67A00ADBC01 /* libz.dylib in Frameworks */,
 				8CF7F0A51B09A67300ADBC01 /* SystemConfiguration.framework in Frameworks */,
 				8CF7F0991B099D3400ADBC01 /* libc++.dylib in Frameworks */,
@@ -490,8 +476,6 @@
 				8C372C771A2DD900001D7EF3 /* Accounts.framework in Frameworks */,
 				8C2A96D719F4D95C0094C97F /* MessageUI.framework in Frameworks */,
 				8C2A96D619F4D9510094C97F /* ImageIO.framework in Frameworks */,
-				8C6847B919EE426C0074960E /* libJJJ.a in Frameworks */,
-				8C6847B619EE42370074960E /* JJJ.xcodeproj in Frameworks */,
 				8CFA452A19E1C580000B5205 /* QuartzCore.framework in Frameworks */,
 				8C2E13F31990741100023BAA /* CoreGraphics.framework in Frameworks */,
 				8C2E13F71990741100023BAA /* CoreData.framework in Frameworks */,
@@ -645,10 +629,10 @@
 		8C2E13E41990741100023BAA = {
 			isa = PBXGroup;
 			children = (
+				8C4D77631B7EEEC700AF8570 /* JJJ.xcodeproj */,
 				8C2E13F81990741100023BAA /* Decktracker */,
 				8C2E14151990741200023BAA /* DecktrackerTests */,
 				8C2E13EF1990741100023BAA /* Frameworks */,
-				8C6847A919EE41FF0074960E /* JJJ.xcodeproj */,
 				8C89BD3E19DD33250070E4F5 /* Licenses */,
 				50EC372DB47B9E4079F0C629 /* Pods */,
 				8C2E13EE1990741100023BAA /* Products */,
@@ -855,6 +839,14 @@
 			path = More;
 			sourceTree = "<group>";
 		};
+		8C4D77641B7EEEC700AF8570 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8C4D77681B7EEEC800AF8570 /* libJJJ.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		8C524A6D19B82BD8005E697B /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -872,16 +864,6 @@
 				8CF3309E1A35B33D00B6301D /* UserAccountViewController.swift */,
 			);
 			path = Settings;
-			sourceTree = "<group>";
-		};
-		8C6847AA19EE41FF0074960E /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				8C6847B019EE41FF0074960E /* libJJJ.a */,
-				8C6847B219EE41FF0074960E /* JJJTests.xctest */,
-				8C6847B419EE41FF0074960E /* JJJBundle.bundle */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		8C89BD3E19DD33250070E4F5 /* Licenses */ = {
@@ -988,7 +970,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				8C6847B819EE42650074960E /* PBXTargetDependency */,
+				8C4D776A1B7EEED600AF8570 /* PBXTargetDependency */,
 			);
 			name = Decktracker;
 			productName = Decktracker;
@@ -1050,8 +1032,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 8C6847AA19EE41FF0074960E /* Products */;
-					ProjectRef = 8C6847A919EE41FF0074960E /* JJJ.xcodeproj */;
+					ProductGroup = 8C4D77641B7EEEC700AF8570 /* Products */;
+					ProjectRef = 8C4D77631B7EEEC700AF8570 /* JJJ.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -1063,25 +1045,11 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		8C6847B019EE41FF0074960E /* libJJJ.a */ = {
+		8C4D77681B7EEEC800AF8570 /* libJJJ.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libJJJ.a;
-			remoteRef = 8C6847AF19EE41FF0074960E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		8C6847B219EE41FF0074960E /* JJJTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = JJJTests.xctest;
-			remoteRef = 8C6847B119EE41FF0074960E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		8C6847B419EE41FF0074960E /* JJJBundle.bundle */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = JJJBundle.bundle;
-			remoteRef = 8C6847B319EE41FF0074960E /* PBXContainerItemProxy */;
+			remoteRef = 8C4D77671B7EEEC800AF8570 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1340,10 +1308,10 @@
 			target = 8C2E13EC1990741100023BAA /* Decktracker */;
 			targetProxy = 8C2E14131990741200023BAA /* PBXContainerItemProxy */;
 		};
-		8C6847B819EE42650074960E /* PBXTargetDependency */ = {
+		8C4D776A1B7EEED600AF8570 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = JJJ;
-			targetProxy = 8C6847B719EE42650074960E /* PBXContainerItemProxy */;
+			targetProxy = 8C4D77691B7EEED600AF8570 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

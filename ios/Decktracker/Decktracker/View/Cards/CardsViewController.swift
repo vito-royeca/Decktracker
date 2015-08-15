@@ -135,19 +135,20 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
         var unsortedSections = [String: [String]]()
         
         var sorter = RLMSortDescriptor(property: "name", ascending: true)
-        var query = Dictionary<String, String>()
-        if NSUserDefaults.standardUserDefaults().objectForKey(SearchFilterViewController.Tags.SearchInName.rawValue) != nil {
-            query.updateValue(["Or": searchBar!.text], forKey: "Name")
-        }
-        if NSUserDefaults.standardUserDefaults().objectForKey(SearchFilterViewController.Tags.SearchInText.rawValue) != nil {
-            query.updateValue(["Or": searchBar!.text], forKey: "Text")
-        }
-        if NSUserDefaults.standardUserDefaults().objectForKey(SearchFilterViewController.Tags.SearchInFlavor.rawValue) != nil {
-            query.updateValue(["Or": searchBar!.text], forKey: "Flavor Text")
-        }
+//        var query = Dictionary<String, String>()
+//        if NSUserDefaults.standardUserDefaults().objectForKey(SearchFilterViewController.Tags.SearchInName.rawValue) != nil {
+//            query.updateValue(["Or": searchBar!.text], forKey: "Name")
+//        }
+//        if NSUserDefaults.standardUserDefaults().objectForKey(SearchFilterViewController.Tags.SearchInText.rawValue) != nil {
+//            query.updateValue(["Or": searchBar!.text], forKey: "Text")
+//        }
+//        if NSUserDefaults.standardUserDefaults().objectForKey(SearchFilterViewController.Tags.SearchInFlavor.rawValue) != nil {
+//            query.updateValue(["Or": searchBar!.text], forKey: "Flavor Text")
+//        }
+//        let cards = Database.sharedInstance().advanceFindCards(nil, withSorters: [sorter])
         
-//        let cards = Database.sharedInstance().findCards(searchBar!.text,  withSortDescriptors:[sorter], withSectionName:nil)
-        let cards = Database.sharedInstance().advanceFindCards(nil, withSorters: [sorter])
+        let cards = Database.sharedInstance().findCards(searchBar!.text,  withSortDescriptors:[sorter], withSectionName:nil)
+        
         for x in cards {
             let card = x as! DTCard
             let name = card.sectionNameInitial

@@ -13,6 +13,7 @@
 #import "GAIFields.h"
 #import "MBProgressHUD.h"
 #import <Parse/Parse.h>
+#import <ParseTwitterUtils/PFTwitterUtils.h>
 #import <ParseUI/ParseUI.h>
 #import "PureLayout.h"
 #import "ReaderViewController.h"

@@ -10,7 +10,6 @@
 		8C1B4DCB198CF0C000B4C948 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C1B4DCA198CF0C000B4C948 /* Foundation.framework */; };
 		8C1B4DCE198CF0C000B4C948 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1B4DCD198CF0C000B4C948 /* main.m */; };
 		8C2427E01B02F3C3004D190A /* RulesLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2427DF1B02F3C3004D190A /* RulesLoader.m */; };
-		8C2E14B31B59367500CBE9C8 /* libJJJ.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2E14AE1B5935DC00CBE9C8 /* libJJJ.a */; };
 		8C3EE4321B38F8BB0037AF20 /* Database.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3EE4311B38F8BB0037AF20 /* Database.m */; };
 		8C3EE4551B38F8E60037AF20 /* DTArtist.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3EE4341B38F8E60037AF20 /* DTArtist.m */; };
 		8C3EE4561B38F8E60037AF20 /* DTBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3EE4361B38F8E60037AF20 /* DTBlock.m */; };
@@ -29,6 +28,7 @@
 		8C3EE4631B38F8E60037AF20 /* DTSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3EE4501B38F8E60037AF20 /* DTSet.m */; };
 		8C3EE4641B38F8E60037AF20 /* DTSetType.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3EE4521B38F8E60037AF20 /* DTSetType.m */; };
 		8C4B9D0E1A515D0B00F727E7 /* tcgplayer_sets.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C4B9D091A51384400F727E7 /* tcgplayer_sets.plist */; };
+		8C4D77771B7EF65100AF8570 /* libJJJ.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C4D77741B7EF63900AF8570 /* libJJJ.a */; };
 		8C5BADF91B4A9175007F2C44 /* libPods-DataSource.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AE7CCBA05B0E7E9D81A1C1F /* libPods-DataSource.a */; };
 		8C5BAE171B4A9695007F2C44 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CEF64DE1B0081260056450F /* libc++.dylib */; };
 		8C877F401B4D0BAB004302D2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF9CE4B199F982A008127E5 /* CoreGraphics.framework */; };
@@ -46,30 +46,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		8C2E14AD1B5935DC00CBE9C8 /* PBXContainerItemProxy */ = {
+		8C4D77731B7EF63900AF8570 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 8C2E14A71B5935DC00CBE9C8 /* JJJ.xcodeproj */;
+			containerPortal = 8C4D776F1B7EF63900AF8570 /* JJJ.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 580E1D4C189E8DDA00336A44;
 			remoteInfo = JJJ;
 		};
-		8C2E14AF1B5935DC00CBE9C8 /* PBXContainerItemProxy */ = {
+		8C4D77751B7EF64100AF8570 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 8C2E14A71B5935DC00CBE9C8 /* JJJ.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 580E1D5C189E8DDB00336A44;
-			remoteInfo = JJJTests;
-		};
-		8C2E14B11B5935DC00CBE9C8 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8C2E14A71B5935DC00CBE9C8 /* JJJ.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 580E1D79189E8F4000336A44;
-			remoteInfo = JJJBundle;
-		};
-		8C2E14B41B59369600CBE9C8 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8C2E14A71B5935DC00CBE9C8 /* JJJ.xcodeproj */;
+			containerPortal = 8C4D776F1B7EF63900AF8570 /* JJJ.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 580E1D4B189E8DDA00336A44;
 			remoteInfo = JJJ;
@@ -109,7 +95,6 @@
 		8C1B4DD0198CF0C000B4C948 /* DataSource-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DataSource-Prefix.pch"; sourceTree = "<group>"; };
 		8C2427DE1B02F3C3004D190A /* RulesLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RulesLoader.h; sourceTree = "<group>"; };
 		8C2427DF1B02F3C3004D190A /* RulesLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RulesLoader.m; sourceTree = "<group>"; };
-		8C2E14A71B5935DC00CBE9C8 /* JJJ.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JJJ.xcodeproj; path = ../jjj/JJJ/JJJ.xcodeproj; sourceTree = "<group>"; };
 		8C3EE42F1B38F8A70037AF20 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Constants.h; path = ../../../ios/Decktracker/Decktracker/Constants.h; sourceTree = "<group>"; };
 		8C3EE4301B38F8BB0037AF20 /* Database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Database.h; path = ../../../../ios/Decktracker/Decktracker/Controller/Database.h; sourceTree = "<group>"; };
 		8C3EE4311B38F8BB0037AF20 /* Database.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Database.m; path = ../../../../ios/Decktracker/Decktracker/Controller/Database.m; sourceTree = "<group>"; };
@@ -148,6 +133,7 @@
 		8C3EE4541B38F8E60037AF20 /* RLMArrays.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLMArrays.h; path = ../../../ios/Decktracker/Decktracker/Model/RLMArrays.h; sourceTree = "<group>"; };
 		8C4B9D091A51384400F727E7 /* tcgplayer_sets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = tcgplayer_sets.plist; sourceTree = "<group>"; };
 		8C4B9D0D1A51562F00F727E7 /* tcgplayer_sets.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tcgplayer_sets.txt; sourceTree = "<group>"; };
+		8C4D776F1B7EF63900AF8570 /* JJJ.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JJJ.xcodeproj; path = ../JJJ/JJJ/JJJ.xcodeproj; sourceTree = "<group>"; };
 		8C877F411B4D0BB2004302D2 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		8C877F431B4D0BBA004302D2 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		8C877F451B4D0BC4004302D2 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -173,7 +159,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8C2E14B31B59367500CBE9C8 /* libJJJ.a in Frameworks */,
+				8C4D77771B7EF65100AF8570 /* libJJJ.a in Frameworks */,
 				8C877F4E1B4D0BEC004302D2 /* libz.dylib in Frameworks */,
 				8C877F4C1B4D0BE4004302D2 /* libsqlite3.dylib in Frameworks */,
 				8C877F4A1B4D0BD8004302D2 /* SystemConfiguration.framework in Frameworks */,
@@ -195,7 +181,7 @@
 		8C1B4DBC198CF0C000B4C948 = {
 			isa = PBXGroup;
 			children = (
-				8C2E14A71B5935DC00CBE9C8 /* JJJ.xcodeproj */,
+				8C4D776F1B7EF63900AF8570 /* JJJ.xcodeproj */,
 				8C1B4DCC198CF0C000B4C948 /* DataSource */,
 				8C1B4DC7198CF0C000B4C948 /* Frameworks */,
 				8C1B4DC6198CF0C000B4C948 /* Products */,
@@ -293,16 +279,6 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
-		8C2E14A81B5935DC00CBE9C8 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				8C2E14AE1B5935DC00CBE9C8 /* libJJJ.a */,
-				8C2E14B01B5935DC00CBE9C8 /* JJJTests.xctest */,
-				8C2E14B21B5935DC00CBE9C8 /* JJJBundle.bundle */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		8C3E414219AE29850058FF67 /* Data */ = {
 			isa = PBXGroup;
 			children = (
@@ -313,6 +289,14 @@
 				8C877F571B4D5238004302D2 /* Investigate.txt */,
 			);
 			path = Data;
+			sourceTree = "<group>";
+		};
+		8C4D77701B7EF63900AF8570 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8C4D77741B7EF63900AF8570 /* libJJJ.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		8C80A0BF198D01AD00BADA6C /* Controller */ = {
@@ -354,7 +338,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				8C2E14B51B59369600CBE9C8 /* PBXTargetDependency */,
+				8C4D77761B7EF64100AF8570 /* PBXTargetDependency */,
 			);
 			name = DataSource;
 			productName = DataSource;
@@ -382,8 +366,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 8C2E14A81B5935DC00CBE9C8 /* Products */;
-					ProjectRef = 8C2E14A71B5935DC00CBE9C8 /* JJJ.xcodeproj */;
+					ProductGroup = 8C4D77701B7EF63900AF8570 /* Products */;
+					ProjectRef = 8C4D776F1B7EF63900AF8570 /* JJJ.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -394,25 +378,11 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		8C2E14AE1B5935DC00CBE9C8 /* libJJJ.a */ = {
+		8C4D77741B7EF63900AF8570 /* libJJJ.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libJJJ.a;
-			remoteRef = 8C2E14AD1B5935DC00CBE9C8 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		8C2E14B01B5935DC00CBE9C8 /* JJJTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = JJJTests.xctest;
-			remoteRef = 8C2E14AF1B5935DC00CBE9C8 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		8C2E14B21B5935DC00CBE9C8 /* JJJBundle.bundle */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = JJJBundle.bundle;
-			remoteRef = 8C2E14B11B5935DC00CBE9C8 /* PBXContainerItemProxy */;
+			remoteRef = 8C4D77731B7EF63900AF8570 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -481,10 +451,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		8C2E14B51B59369600CBE9C8 /* PBXTargetDependency */ = {
+		8C4D77761B7EF64100AF8570 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = JJJ;
-			targetProxy = 8C2E14B41B59369600CBE9C8 /* PBXContainerItemProxy */;
+			targetProxy = 8C4D77751B7EF64100AF8570 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
