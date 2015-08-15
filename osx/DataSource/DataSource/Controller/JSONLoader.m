@@ -23,13 +23,14 @@
 -(void) json2Database
 {
     NSString *filePath = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] resourcePath], @"Data/AllSets-x.json"];
+    NSLog(@"filePath=%@", filePath);
+    
     NSData *data = [NSData dataWithContentsOfFile:filePath];
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data
                                                          options:NSJSONReadingMutableContainers
                                                            error:nil];
     _dictMagicCardsInfo = [[NSMutableDictionary alloc] init];
     _8thEditionReleaseDate = [JJJUtil parseDate:EIGHTH_EDITION_RELEASE withFormat:@"YYYY-MM-dd"];
-    NSLog(@"filePath=%@", filePath);
 
     [[Database sharedInstance] setupDb];
     
@@ -369,21 +370,27 @@
         if (dict[@"multiverseid"] && [dict[@"multiverseid"] class] != [NSNull class])
         {
             multiverseID = [dict[@"multiverseid"] intValue];
-            card = [[DTCard objectsWithPredicate:[NSPredicate predicateWithFormat:@"multiverseID = %d", multiverseID]] firstObject];
+            card = [[DTCard objectsWithPredicate:[NSPredicate predicateWithFormat:@"multiverseID = %@", dict[@"multiverseid"]]] firstObject];
         }
-        else if (dict[@"number"] && [dict[@"number"] class] != [NSNull class])
+        if (dict[@"number"] && [dict[@"number"] class] != [NSNull class])
         {
             number = dict[@"number"];
-            card = [[DTCard objectsWithPredicate:[NSPredicate predicateWithFormat:@"set.code = %@ AND number = %@", set.code, number]] firstObject];
+            if (!card)
+            {
+                card = [[DTCard objectsWithPredicate:[NSPredicate predicateWithFormat:@"set.code = %@ AND number = %@", set.code, number]] firstObject];
+            }
         }
-        else
+        if (!card)
         {
             card = [[DTCard objectsWithPredicate:[NSPredicate predicateWithFormat:@"set.code = %@ AND name = %@", set.code, dict[@"name"]]] firstObject];
         }
-        
+
+        // create new card if not found
         if (!card)
         {
             card = [[DTCard alloc] init];
+            card.set = set;
+            
             if (dict[@"border"] && [dict[@"border"] class] != [NSNull class])
             {
                 card.border = dict[@"border"];
@@ -473,7 +480,6 @@
             {
                 card.reserved = [dict[@"reserved"] boolValue];
             }
-            card.set = set;
             if (dict[@"source"] && [dict[@"source"] class] != [NSNull class])
             {
                 card.source = dict[@"source"];

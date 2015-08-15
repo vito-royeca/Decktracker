@@ -44,14 +44,15 @@ PODS:
     - CAAnimationBlocks (~> 0.0.1)
     - RBBAnimation (~> 0.3.0)
   - MBProgressHUD (0.9.1)
-  - Parse (1.7.5.3):
+  - Parse (1.8.0):
     - Bolts/Tasks (>= 1.2.0)
-  - ParseFacebookUtils (1.7.5.3):
+  - ParseFacebookUtils (1.8.0):
     - Bolts/Tasks (>= 1.2.0)
     - Facebook-iOS-SDK (~> 3.23)
-    - Parse (~> 1.7.5.3)
-  - ParseUI (1.1.4):
-    - Parse (~> 1.7)
+    - Parse (~> 1.8.0)
+  - ParseUI (1.1.5):
+    - Bolts/Tasks (~> 1.2)
+    - Parse (~> 1.8)
   - PureLayout (2.0.6)
   - RBBAnimation (0.3.0)
   - XLForm (3.0.1)
@@ -97,9 +98,9 @@ SPEC CHECKSUMS:
   InAppSettingsKit: cc56d3ec45f11352a16d5b210da8a3fa1b9d05ed
   LMAlertView: fa4589ea2cb540b888636ff6739fc39b16ac1e4b
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
-  Parse: 373adbb1ad2e34d383542c3b28f678c49ebe4881
-  ParseFacebookUtils: 008a24dc35884519ed6a6750648beb5149f1fad9
-  ParseUI: d1228541b02a36a7354c8f47747f5f7a89cf1ff0
+  Parse: 6ea05adb378fbfd6f8726ab67ef74330d96fc903
+  ParseFacebookUtils: 2c310f4c65cce94e0d6059b09eebeeab27ec5835
+  ParseUI: 2c53621ed028ee793f5ab92a551b099689265525
   PureLayout: f25f0bb904d5ccfe6e31da3cb869185259f02e0d
   RBBAnimation: cb6cb419f511434ce932f7d0fabf369612fafb4e
   XLForm: 1a20da41c009e4f99e802e886a8eef5f2b086644

@@ -1,8 +1,8 @@
 PODS:
   - hpple (0.2.0)
-  - Realm (0.94.0):
-    - Realm/Headers (= 0.94.0)
-  - Realm/Headers (0.94.0)
+  - Realm (0.94.1):
+    - Realm/Headers (= 0.94.1)
+  - Realm/Headers (0.94.1)
 
 DEPENDENCIES:
   - hpple
@@ -10,6 +10,6 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   hpple: 3b765f96fc2cd56ad1a49aef6f7be5cb2aa64b57
-  Realm: a046149653e0ca220b65b5783da907aa5b74d86c
+  Realm: d999a6cf0b41577a077349c9cc9d496cc62a7d17
 
 COCOAPODS: 0.37.2
