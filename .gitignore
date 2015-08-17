@@ -38,3 +38,5 @@ build/
 *.swp
 *.un~
 
+# Pods
+**/Pods/*
