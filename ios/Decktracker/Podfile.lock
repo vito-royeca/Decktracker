@@ -46,7 +46,7 @@ PODS:
   - MBProgressHUD (0.9.1)
   - Parse (1.8.0):
     - Bolts/Tasks (>= 1.2.0)
-  - ParseFacebookUtils (1.8.0):
+  - ParseFacebookUtils (1.8.0.1):
     - Bolts/Tasks (>= 1.2.0)
     - Facebook-iOS-SDK (~> 3.23)
     - Parse (~> 1.8.0)
@@ -103,7 +103,7 @@ SPEC CHECKSUMS:
   LMAlertView: fa4589ea2cb540b888636ff6739fc39b16ac1e4b
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
   Parse: 6ea05adb378fbfd6f8726ab67ef74330d96fc903
-  ParseFacebookUtils: 2c310f4c65cce94e0d6059b09eebeeab27ec5835
+  ParseFacebookUtils: 5a4b02d12aa75a69ff02d7386c982b9dfef8279e
   ParseTwitterUtils: 916cee86789aab7505d67294cecca0b1175b7790
   ParseUI: 2c53621ed028ee793f5ab92a551b099689265525
   PureLayout: f25f0bb904d5ccfe6e31da3cb869185259f02e0d

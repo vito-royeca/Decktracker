@@ -1,6 +1,0 @@
-[submodule "osx/JJJ"]
-	path = osx/JJJ
-	url = https://github.com/jovito-royeca/JJJ.git
-[submodule "ios/JJJ"]
-	path = ios/JJJ
-	url = https://github.com/jovito-royeca/JJJ.git

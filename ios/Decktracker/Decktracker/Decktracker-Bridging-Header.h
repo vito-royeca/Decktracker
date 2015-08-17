@@ -3,7 +3,6 @@
 //
 
 #import "ActionSheetPicker.h"
-#import <CoreData/CoreData.h>
 #import <SystemConfiguration/SystemConfiguration.h>
 #import "CorePlot-CocoaTouch.h"
 #import "CSStickyHeaderFlowLayout.h"
@@ -13,6 +12,7 @@
 #import "GAIFields.h"
 #import "MBProgressHUD.h"
 #import <Parse/Parse.h>
+#import <ParseFacebookUtils/PFFacebookUtils.h>
 #import <ParseTwitterUtils/PFTwitterUtils.h>
 #import <ParseUI/ParseUI.h>
 #import "PureLayout.h"

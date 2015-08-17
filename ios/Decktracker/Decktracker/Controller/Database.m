@@ -191,8 +191,8 @@ static Database *_me;
 //#endif
     
     [PFFacebookUtils initializeFacebook];
-//    [PFTwitterUtils initializeWithConsumerKey:kTwitterKey
-//                               consumerSecret:kTwitterSecret];
+    [PFTwitterUtils initializeWithConsumerKey:kTwitterKey
+                               consumerSecret:kTwitterSecret];
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
 #endif
 }

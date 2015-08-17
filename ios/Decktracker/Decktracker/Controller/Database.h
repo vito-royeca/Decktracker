@@ -25,6 +25,7 @@
 #import "Bolts.h"
 #import <Parse/Parse.h>
 #import <ParseFacebookUtils/PFFacebookUtils.h>
+#import <ParseTwitterUtils/PFTwitterUtils.h>
 #endif
 
 #define kFetchBatchSize         100

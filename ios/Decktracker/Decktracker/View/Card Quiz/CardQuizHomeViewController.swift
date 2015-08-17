@@ -137,10 +137,10 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
                 })
                 
             } else if PFTwitterUtils.isLinkedWithUser(currentUser) {
-                let requestString = ""//"https://api.twitter.com/1.1/users/show.json?screen_name=\(PFTwitterUtils.twitter.screenName!)"
+                let requestString = "https://api.twitter.com/1.1/users/show.json?screen_name=\(PFTwitterUtils.twitter()?.screenName!)"
                 let verify = NSURL(string: requestString)
                 let request = NSMutableURLRequest(URL: verify!)
-//                PFTwitterUtils.twitter.signRequest(request)
+                PFTwitterUtils.twitter()?.signRequest(request)
                 var response:NSURLResponse?
                 var error:NSError?
                 let data = NSURLConnection.sendSynchronousRequest(request, returningResponse: &response, error: &error)
