@@ -68,10 +68,10 @@ class SubtitleTableViewCell: UITableViewCell {
             // Prevent the two UILabels from being compressed below their intrinsic content height
             // FIXME 7-Jun-14 Xcode 6b1: Apple Bug Report rdar://17220525: The UILayoutPriority enum is not compatible with Swift yet!
             // As a temporary workaround, we're using the raw value of UILayoutPriorityRequired = 1000
-            UIView.autoSetPriority(1000) {
-                self.titleLabel.autoSetContentCompressionResistancePriorityForAxis(.Vertical)
-                self.bodyLabel.autoSetContentCompressionResistancePriorityForAxis(.Vertical)
-            }
+//            UIView.autoSetPriority(1000) {
+//                self.titleLabel.autoSetContentCompressionResistancePriorityForAxis(.Vertical)
+//                self.bodyLabel.autoSetContentCompressionResistancePriorityForAxis(.Vertical)
+//            }
             
             titleLabel.autoPinEdgeToSuperviewEdge(.Top, withInset: kLabelVerticalInsets)
             titleLabel.autoPinEdgeToSuperviewEdge(.Leading, withInset: kLabelHorizontalInsets)

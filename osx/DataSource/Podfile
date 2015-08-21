@@ -1,12 +1,12 @@
 source 'https://github.com/CocoaPods/Specs.git'
 # Uncomment this line to define a global platform for your project
 # platform :ios, "6.0"
-`$(inherited)`
 #use_frameworks!
 
 target "DataSource" do
 pod "hpple"
-#pod "Parse-OSX"
+pod "JJJUtils/OSX"
+pod "Parse"
 pod "Realm"
 end
 

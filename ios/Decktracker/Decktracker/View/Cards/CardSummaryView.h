@@ -14,7 +14,7 @@
 #import "DTSet.h"
 #import "Database.h"
 
-#import "JJJ/JJJ.h"
+#import <JJJUtils/JJJ.h>
 
 #define CARD_SUMMARY_VIEW_CELL_HEIGHT            95
 

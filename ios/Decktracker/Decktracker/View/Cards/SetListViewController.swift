@@ -300,17 +300,10 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
             let path = FileManager.sharedInstance().setPath(set.setId, small: true)
             
             if path != nil && NSFileManager.defaultManager().fileExistsAtPath(path) {
-                let setImage = UIImage(contentsOfFile: path)
-                
-                cell!.imageView!.image = setImage
-                
-                // resize the image
-                let itemSize = CGSizeMake(setImage!.size.width/2, setImage!.size.height/2)
-                UIGraphicsBeginImageContextWithOptions(itemSize, false, UIScreen.mainScreen().scale)
-                let imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height)
-                setImage!.drawInRect(imageRect)
-                cell!.imageView!.image = UIGraphicsGetImageFromCurrentImageContext()
-                UIGraphicsEndImageContext()
+                if let setImage = UIImage(contentsOfFile: path) {
+                    let itemSize = CGSizeMake(setImage.size.width/2, setImage.size.height/2)
+                    cell!.imageView!.image = JJJUtil.imageWithImage(setImage, scaledToSize: itemSize)
+                }
                 
             } else {
                 cell!.imageView!.image = UIImage(named: "blank.png")

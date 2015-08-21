@@ -7,7 +7,6 @@
 //
 
 #import "DeckDetailsViewController.h"
-#import "JJJ/JJJ.h"
 #import "AddCardViewController.h"
 #import "CustomViewCell.h"
 #import "Database.h"
@@ -17,6 +16,7 @@
 #import "FileManager.h"
 #import "CardSummaryView.h"
 
+#import <JJJUtils/JJJ.h>
 #import "Decktracker-Swift.h"
 
 #import "ActionSheetStringPicker.h"

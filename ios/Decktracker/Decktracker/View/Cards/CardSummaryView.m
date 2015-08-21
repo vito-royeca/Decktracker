@@ -139,14 +139,9 @@
     if (path)
     {
         UIImage *typeImage = [[UIImage alloc] initWithContentsOfFile:path];
-        self.imgType.image = typeImage;
         // resize the image
         CGSize itemSize = CGSizeMake(typeImage.size.width/2, typeImage.size.height/2);
-        UIGraphicsBeginImageContextWithOptions(itemSize, NO, UIScreen.mainScreen.scale);
-        CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
-        [typeImage drawInRect:imageRect];
-        self.imgType.image = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
+        self.imgType.image = [JJJUtil imageWithImage:typeImage scaledToSize:itemSize];
     }
     else
     {

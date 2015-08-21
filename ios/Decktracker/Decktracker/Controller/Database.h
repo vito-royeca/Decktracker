@@ -17,7 +17,8 @@
 #import "DTSet.h"
 #import "DTSetType.h"
 
-#import "JJJ/JJJ.h"
+#import <JJJUtils/JJJ.h>
+
 #import <Realm/Realm.h>
 
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
@@ -25,7 +26,7 @@
 #import "Bolts.h"
 #import <Parse/Parse.h>
 #import <ParseFacebookUtils/PFFacebookUtils.h>
-#import <ParseTwitterUtils/PFTwitterUtils.h>
+#import <ParseTwitterUtils/ParseTwitterUtils.h>
 #endif
 
 #define kFetchBatchSize         100

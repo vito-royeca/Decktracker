@@ -1497,13 +1497,16 @@ static Database *_me;
         [pfCard incrementKey:@"numberOfViews"];
         
         [pfCard saveEventually:^(BOOL success, NSError *error) {
-            card = [DTCard objectForPrimaryKey:kardId];
-            
-            RLMRealm *realm = [RLMRealm defaultRealm];
-            [realm beginWriteTransaction];
-            card.rating = [pfCard[@"rating"] doubleValue];
-            card.parseFetchDate = [NSDate date];
-            [realm commitWriteTransaction];
+            if (pfCard[@"rating"])
+            {
+                card = [DTCard objectForPrimaryKey:kardId];
+                
+                RLMRealm *realm = [RLMRealm defaultRealm];
+                [realm beginWriteTransaction];
+                card.rating = [pfCard[@"rating"] doubleValue];
+                card.parseFetchDate = [NSDate date];
+                [realm commitWriteTransaction];
+            }
             
             [[NSNotificationCenter defaultCenter] postNotificationName:kParseSyncDone
                                                                 object:nil
@@ -1597,13 +1600,16 @@ static Database *_me;
     {
         void (^callbackFetchCardRating)(PFObject *pfCard, NSString* kardId) = ^void(PFObject *pfCard, NSString* kardId) {
             
-            DTCard *kard = [DTCard objectForPrimaryKey:kardId];
-            
-            RLMRealm *realm = [RLMRealm defaultRealm];
-            [realm beginWriteTransaction];
-            kard.rating = [pfCard[@"rating"] doubleValue];
-            kard.parseFetchDate = [NSDate date];
-            [realm commitWriteTransaction];
+            if (pfCard[@"rating"])
+            {
+                DTCard *kard = [DTCard objectForPrimaryKey:kardId];
+                
+                RLMRealm *realm = [RLMRealm defaultRealm];
+                [realm beginWriteTransaction];
+                kard.rating = [pfCard[@"rating"] doubleValue];
+                kard.parseFetchDate = [NSDate date];
+                [realm commitWriteTransaction];
+            }
             
             [[NSNotificationCenter defaultCenter] postNotificationName:kParseSyncDone
                                                                 object:nil

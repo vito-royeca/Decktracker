@@ -28,8 +28,6 @@
 		8C3EE4631B38F8E60037AF20 /* DTSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3EE4501B38F8E60037AF20 /* DTSet.m */; };
 		8C3EE4641B38F8E60037AF20 /* DTSetType.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3EE4521B38F8E60037AF20 /* DTSetType.m */; };
 		8C4B9D0E1A515D0B00F727E7 /* tcgplayer_sets.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C4B9D091A51384400F727E7 /* tcgplayer_sets.plist */; };
-		8C4D77771B7EF65100AF8570 /* libJJJ.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C4D77741B7EF63900AF8570 /* libJJJ.a */; };
-		8C5BADF91B4A9175007F2C44 /* libPods-DataSource.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AE7CCBA05B0E7E9D81A1C1F /* libPods-DataSource.a */; };
 		8C5BAE171B4A9695007F2C44 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CEF64DE1B0081260056450F /* libc++.dylib */; };
 		8C877F401B4D0BAB004302D2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF9CE4B199F982A008127E5 /* CoreGraphics.framework */; };
 		8C877F421B4D0BB2004302D2 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C877F411B4D0BB2004302D2 /* CFNetwork.framework */; };
@@ -43,24 +41,8 @@
 		8CE75CB41AB96DBB001EB70E /* MagicCompRules_20140926.htm in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C87AB321A7F1F6C00E901DE /* MagicCompRules_20140926.htm */; };
 		8CEF64DA1B007BB30056450F /* JSONLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEF64D61B007BB30056450F /* JSONLoader.m */; };
 		8CF9CE52199F9A22008127E5 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF9CE51199F9A22008127E5 /* AppKit.framework */; };
+		FF1CDF00AB4665E43538A432 /* libPods-DataSource.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 969839B9D323C69052940371 /* libPods-DataSource.a */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		8C4D77731B7EF63900AF8570 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8C4D776F1B7EF63900AF8570 /* JJJ.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 580E1D4C189E8DDA00336A44;
-			remoteInfo = JJJ;
-		};
-		8C4D77751B7EF64100AF8570 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8C4D776F1B7EF63900AF8570 /* JJJ.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 580E1D4B189E8DDA00336A44;
-			remoteInfo = JJJ;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		8C1B4DC3198CF0C000B4C948 /* CopyFiles */ = {
@@ -75,19 +57,12 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8CEF64E51B0083CE0056450F /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		4AE7CCBA05B0E7E9D81A1C1F /* libPods-DataSource.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DataSource.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C0ECBF81B81E85F005D5BEE /* libhpple.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libhpple.a; path = "../../../../Library/Developer/Xcode/DerivedData/DataSource-exunlzaqzgqgbjhgyhupklwxiowb/Build/Products/Debug/libhpple.a"; sourceTree = "<group>"; };
+		8C0ECBF91B81E85F005D5BEE /* libJJJUtils.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libJJJUtils.a; path = "../../../../Library/Developer/Xcode/DerivedData/DataSource-exunlzaqzgqgbjhgyhupklwxiowb/Build/Products/Debug/libJJJUtils.a"; sourceTree = "<group>"; };
+		8C0ECBFA1B81E85F005D5BEE /* libRealm.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRealm.a; path = "../../../../Library/Developer/Xcode/DerivedData/DataSource-exunlzaqzgqgbjhgyhupklwxiowb/Build/Products/Debug/libRealm.a"; sourceTree = "<group>"; };
 		8C1B4DC5198CF0C000B4C948 /* DataSource */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DataSource; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C1B4DC8198CF0C000B4C948 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		8C1B4DCA198CF0C000B4C948 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -133,7 +108,6 @@
 		8C3EE4541B38F8E60037AF20 /* RLMArrays.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLMArrays.h; path = ../../../ios/Decktracker/Decktracker/Model/RLMArrays.h; sourceTree = "<group>"; };
 		8C4B9D091A51384400F727E7 /* tcgplayer_sets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = tcgplayer_sets.plist; sourceTree = "<group>"; };
 		8C4B9D0D1A51562F00F727E7 /* tcgplayer_sets.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tcgplayer_sets.txt; sourceTree = "<group>"; };
-		8C4D776F1B7EF63900AF8570 /* JJJ.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JJJ.xcodeproj; path = ../JJJ/JJJ/JJJ.xcodeproj; sourceTree = "<group>"; };
 		8C877F411B4D0BB2004302D2 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		8C877F431B4D0BBA004302D2 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		8C877F451B4D0BC4004302D2 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -150,6 +124,7 @@
 		8CF9CE4B199F982A008127E5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		8CF9CE51199F9A22008127E5 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		8CFF719C1B020D6D002428D2 /* DataSource-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "DataSource-Info.plist"; sourceTree = "<group>"; };
+		969839B9D323C69052940371 /* libPods-DataSource.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DataSource.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD8211BD792C165D977F3102 /* Pods-DataSource.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DataSource.release.xcconfig"; path = "Pods/Target Support Files/Pods-DataSource/Pods-DataSource.release.xcconfig"; sourceTree = "<group>"; };
 		ECD2E97926F06FB12495ED6D /* Pods-DataSource.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DataSource.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DataSource/Pods-DataSource.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -159,7 +134,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8C4D77771B7EF65100AF8570 /* libJJJ.a in Frameworks */,
 				8C877F4E1B4D0BEC004302D2 /* libz.dylib in Frameworks */,
 				8C877F4C1B4D0BE4004302D2 /* libsqlite3.dylib in Frameworks */,
 				8C877F4A1B4D0BD8004302D2 /* SystemConfiguration.framework in Frameworks */,
@@ -169,9 +143,9 @@
 				8C877F421B4D0BB2004302D2 /* CFNetwork.framework in Frameworks */,
 				8C877F401B4D0BAB004302D2 /* CoreGraphics.framework in Frameworks */,
 				8C5BAE171B4A9695007F2C44 /* libc++.dylib in Frameworks */,
-				8C5BADF91B4A9175007F2C44 /* libPods-DataSource.a in Frameworks */,
 				8CF9CE52199F9A22008127E5 /* AppKit.framework in Frameworks */,
 				8C1B4DCB198CF0C000B4C948 /* Foundation.framework in Frameworks */,
+				FF1CDF00AB4665E43538A432 /* libPods-DataSource.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -181,7 +155,6 @@
 		8C1B4DBC198CF0C000B4C948 = {
 			isa = PBXGroup;
 			children = (
-				8C4D776F1B7EF63900AF8570 /* JJJ.xcodeproj */,
 				8C1B4DCC198CF0C000B4C948 /* DataSource */,
 				8C1B4DC7198CF0C000B4C948 /* Frameworks */,
 				8C1B4DC6198CF0C000B4C948 /* Products */,
@@ -200,6 +173,9 @@
 		8C1B4DC7198CF0C000B4C948 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8C0ECBF81B81E85F005D5BEE /* libhpple.a */,
+				8C0ECBF91B81E85F005D5BEE /* libJJJUtils.a */,
+				8C0ECBFA1B81E85F005D5BEE /* libRealm.a */,
 				8CF9CE51199F9A22008127E5 /* AppKit.framework */,
 				8C877F411B4D0BB2004302D2 /* CFNetwork.framework */,
 				8C1B4DC8198CF0C000B4C948 /* CoreData.framework */,
@@ -207,12 +183,12 @@
 				8C877F431B4D0BBA004302D2 /* CoreLocation.framework */,
 				8C1B4DCA198CF0C000B4C948 /* Foundation.framework */,
 				8CEF64DE1B0081260056450F /* libc++.dylib */,
-				4AE7CCBA05B0E7E9D81A1C1F /* libPods-DataSource.a */,
 				8C877F4B1B4D0BE4004302D2 /* libsqlite3.dylib */,
 				8C877F4D1B4D0BEC004302D2 /* libz.dylib */,
 				8C877F451B4D0BC4004302D2 /* QuartzCore.framework */,
 				8C877F471B4D0BCE004302D2 /* Security.framework */,
 				8C877F491B4D0BD8004302D2 /* SystemConfiguration.framework */,
+				969839B9D323C69052940371 /* libPods-DataSource.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -291,14 +267,6 @@
 			path = Data;
 			sourceTree = "<group>";
 		};
-		8C4D77701B7EF63900AF8570 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				8C4D77741B7EF63900AF8570 /* libJJJ.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		8C80A0BF198D01AD00BADA6C /* Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -333,12 +301,10 @@
 				8C1B4DC2198CF0C000B4C948 /* Frameworks */,
 				8C1B4DC3198CF0C000B4C948 /* CopyFiles */,
 				D12A9A43E3EF49278255A531 /* Copy Pods Resources */,
-				8CEF64E51B0083CE0056450F /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				8C4D77761B7EF64100AF8570 /* PBXTargetDependency */,
 			);
 			name = DataSource;
 			productName = DataSource;
@@ -364,28 +330,12 @@
 			mainGroup = 8C1B4DBC198CF0C000B4C948;
 			productRefGroup = 8C1B4DC6198CF0C000B4C948 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 8C4D77701B7EF63900AF8570 /* Products */;
-					ProjectRef = 8C4D776F1B7EF63900AF8570 /* JJJ.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				8C1B4DC4198CF0C000B4C948 /* DataSource */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		8C4D77741B7EF63900AF8570 /* libJJJ.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libJJJ.a;
-			remoteRef = 8C4D77731B7EF63900AF8570 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXShellScriptBuildPhase section */
 		00381D60CA314050AD95F3C3 /* Check Pods Manifest.lock */ = {
@@ -449,14 +399,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		8C4D77761B7EF64100AF8570 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = JJJ;
-			targetProxy = 8C4D77751B7EF64100AF8570 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		8C1B4DD6198CF0C000B4C948 /* Debug */ = {
@@ -537,9 +479,7 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/build/Debug/Pods-DataSource",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/ParseOSX.framework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DataSource/DataSource-Prefix.pch";
@@ -560,9 +500,7 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/build/Debug/Pods-DataSource",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/ParseOSX.framework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DataSource/DataSource-Prefix.pch";

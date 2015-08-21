@@ -8,6 +8,7 @@
 
 #import "RulesLoader.h"
 #import "Database.h"
+#import <JJJUtils/JJJ.h>
 
 #import "TFHpple.h"
 

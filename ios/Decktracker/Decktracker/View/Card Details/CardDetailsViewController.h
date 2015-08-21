@@ -13,7 +13,7 @@
 #import "MBProgressHUD.h"
 #import "MHFacebookImageViewer.h"
 
-#import "JJJ/JJJ.h"
+#import <JJJUtils/JJJ.h>
 
 @interface CardDetailsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIWebViewDelegate, MBProgressHUDDelegate, MHFacebookImageViewerDatasource, UIAlertViewDelegate>
 

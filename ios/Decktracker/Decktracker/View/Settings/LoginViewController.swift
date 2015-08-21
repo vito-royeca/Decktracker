@@ -35,7 +35,7 @@ public class LoginViewController: PFLogInViewController {
         // Do any additional setup after loading the view.
         hidesBottomBarWhenPushed = true
         
-        self.view.backgroundColor = JJJUtil.UIColorFromRGB(0x691F01)
+        self.view.backgroundColor = JJJUtil.colorFromRGB(0x691F01)
         
         let image = UIImage(named: "\(NSBundle.mainBundle().bundlePath)/images/AppIcon57x57.png")
         var imageView = UIImageView(frame: CGRectMake(0, 0, 57, 57))

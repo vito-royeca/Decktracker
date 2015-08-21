@@ -188,7 +188,7 @@ class CQManaChooserView: UIView {
             txtManaCount!.adjustsFontSizeToFitWidth = true
             txtManaCount!.textColor = CQTheme.kManaLabelColor
             txtManaCount!.tag = i
-            txtManaCount!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+            txtManaCount!.layer.borderColor = JJJUtil.colorFromRGB(CQTheme.kTileBorderColor).CGColor
             txtManaCount!.layer.borderWidth = 1
             addSubview(txtManaCount!)
             arrTxtMana!.append(txtManaCount!)
@@ -202,8 +202,8 @@ class CQManaChooserView: UIView {
             btnRemoveMana!.textAlignment = NSTextAlignment.Center
             btnRemoveMana!.font = CQTheme.kStepperFont
             btnRemoveMana!.textColor = removeEnabled ? CQTheme.kTileTextColor : CQTheme.kTileTextColorX
-            btnRemoveMana!.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
-            btnRemoveMana!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+            btnRemoveMana!.backgroundColor = JJJUtil.colorFromRGB(CQTheme.kTileColor)
+            btnRemoveMana!.layer.borderColor = JJJUtil.colorFromRGB(CQTheme.kTileBorderColor).CGColor
             btnRemoveMana!.layer.borderWidth = 1
             btnRemoveMana!.tag = i
             addSubview(btnRemoveMana!)
@@ -218,8 +218,8 @@ class CQManaChooserView: UIView {
             btnAddMana!.textAlignment = NSTextAlignment.Center
             btnAddMana!.font = CQTheme.kStepperFont
             btnAddMana!.textColor = addEnabled ? CQTheme.kTileTextColor : CQTheme.kTileTextColorX
-            btnAddMana!.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
-            btnAddMana!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+            btnAddMana!.backgroundColor = JJJUtil.colorFromRGB(CQTheme.kTileColor)
+            btnAddMana!.layer.borderColor = JJJUtil.colorFromRGB(CQTheme.kTileBorderColor).CGColor
             btnAddMana!.layer.borderWidth = 1
             btnAddMana!.tag = i
             addSubview(btnAddMana!)
@@ -232,7 +232,7 @@ class CQManaChooserView: UIView {
     
     func setupTitleAndButtons(title: String) {
         self.backgroundColor = UIColor(patternImage: UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/Gray_Patterned_BG.jpg")!)
-        self.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+        self.layer.borderColor = JJJUtil.colorFromRGB(CQTheme.kTileBorderColor).CGColor
         self.layer.borderWidth = 1
         
         var dX = CGFloat(0)
@@ -261,8 +261,8 @@ class CQManaChooserView: UIView {
         btnCancel!.textAlignment = NSTextAlignment.Center
         btnCancel!.font = CQTheme.kManaLabelFont
         btnCancel!.textColor = CQTheme.kTileTextColor
-        btnCancel!.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
-        btnCancel!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+        btnCancel!.backgroundColor = JJJUtil.colorFromRGB(CQTheme.kTileColor)
+        btnCancel!.layer.borderColor = JJJUtil.colorFromRGB(CQTheme.kTileBorderColor).CGColor
         btnCancel!.layer.borderWidth = 1
         addSubview(btnCancel!)
         
@@ -276,8 +276,8 @@ class CQManaChooserView: UIView {
         btnOk!.textAlignment = NSTextAlignment.Center
         btnOk!.font = CQTheme.kManaLabelFont
         btnOk!.textColor = CQTheme.kTileTextColor
-        btnOk!.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
-        btnOk!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+        btnOk!.backgroundColor = JJJUtil.colorFromRGB(CQTheme.kTileColor)
+        btnOk!.layer.borderColor = JJJUtil.colorFromRGB(CQTheme.kTileBorderColor).CGColor
         btnOk!.layer.borderWidth = 1
         addSubview(btnOk!)
     }

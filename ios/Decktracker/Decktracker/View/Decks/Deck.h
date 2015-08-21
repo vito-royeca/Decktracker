@@ -9,7 +9,8 @@
 @import Foundation;
 
 #import "DTCard.h"
-#import "JJJ/JJJ.h"
+
+#import <JJJUtils/JJJ.h>
 
 typedef NS_ENUM(NSInteger, DeckBoard)
 {

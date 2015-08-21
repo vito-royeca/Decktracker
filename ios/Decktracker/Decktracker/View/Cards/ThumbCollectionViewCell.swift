@@ -64,16 +64,9 @@ class ThumbCollectionViewCell: UICollectionViewCell {
             
         } else {
             let path = FileManager.sharedInstance().cardSetPath(self.cardId)
-            var setImage = UIImage(contentsOfFile: path)
-            imgSet.image = setImage
-            // resize the image
-            if setImage != nil {
-                let itemSize = CGSizeMake(setImage!.size.width/2, setImage!.size.height/2)
-                UIGraphicsBeginImageContextWithOptions(itemSize, false, UIScreen.mainScreen().scale)
-                let imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height)
-                setImage!.drawInRect(imageRect)
-                imgSet.image = UIGraphicsGetImageFromCurrentImageContext()
-                UIGraphicsEndImageContext()
+            if let setImage = UIImage(contentsOfFile: path) {
+                let itemSize = CGSizeMake(setImage.size.width/2, setImage.size.height/2)
+                imgSet.image = JJJUtil.imageWithImage(setImage, scaledToSize: itemSize)
             }
         }
     }

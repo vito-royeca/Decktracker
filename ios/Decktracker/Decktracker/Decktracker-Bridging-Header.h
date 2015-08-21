@@ -13,13 +13,13 @@
 #import "MBProgressHUD.h"
 #import <Parse/Parse.h>
 #import <ParseFacebookUtils/PFFacebookUtils.h>
-#import <ParseTwitterUtils/PFTwitterUtils.h>
+#import <ParseTwitterUtils/ParseTwitterUtils.h>
 #import <ParseUI/ParseUI.h>
 #import "PureLayout.h"
 #import "ReaderViewController.h"
 #import <Realm/Realm.h>
 #import "XLForm.h"
-#import <JJJ/JJJUtil.h>
+#import <JJJUtils/JJJ.h>
 
 #import "DTArtist.h"
 #import "DTBlock.h"
@@ -49,4 +49,3 @@
 #import "InAppPurchaseViewController.h"
 #import "MainViewController.h"
 #import "SettingsViewController.h"
-#import "UIImage+AverageColor.h"

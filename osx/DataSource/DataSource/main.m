@@ -10,7 +10,7 @@
 #import "JSONLoader.h"
 #import "RulesLoader.h"
 
-#import "JJJ/JJJ.h"
+#import <JJJUtils/JJJ.h>
 
 int main(int argc, const char * argv[])
 {

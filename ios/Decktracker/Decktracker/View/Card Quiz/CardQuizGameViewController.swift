@@ -272,8 +272,8 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         btnHelp!.textAlignment = NSTextAlignment.Center
         btnHelp!.font = CQTheme.kManaLabelFont
         btnHelp!.textColor = CQTheme.kTileTextColor
-        btnHelp!.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
-        btnHelp!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+        btnHelp!.backgroundColor = JJJUtil.colorFromRGB(CQTheme.kTileColor)
+        btnHelp!.layer.borderColor = JJJUtil.colorFromRGB(CQTheme.kTileBorderColor).CGColor
         btnHelp!.layer.borderWidth = 1
         self.view.addSubview(btnHelp!)
         
@@ -287,8 +287,8 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         btnBuy!.textAlignment = NSTextAlignment.Center
         btnBuy!.font = CQTheme.kManaLabelFont
         btnBuy!.textColor = CQTheme.kTileTextColor
-        btnBuy!.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
-        btnBuy!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+        btnBuy!.backgroundColor = JJJUtil.colorFromRGB(CQTheme.kTileColor)
+        btnBuy!.layer.borderColor = JJJUtil.colorFromRGB(CQTheme.kTileBorderColor).CGColor
         btnBuy!.layer.borderWidth = 1
         self.view.addSubview(btnBuy!)
         
@@ -301,8 +301,8 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         btnCast!.textAlignment = NSTextAlignment.Center
         btnCast!.font = CQTheme.kManaLabelFont
         btnCast!.textColor = CQTheme.kTileTextColorX
-        btnCast!.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
-        btnCast!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+        btnCast!.backgroundColor = JJJUtil.colorFromRGB(CQTheme.kTileColor)
+        btnCast!.layer.borderColor = JJJUtil.colorFromRGB(CQTheme.kTileBorderColor).CGColor
         btnCast!.layer.borderWidth = 1
         self.view.addSubview(btnCast!)
     }
@@ -523,8 +523,8 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
                     label.textAlignment = NSTextAlignment.Center
                     label.font = CQTheme.kTileAnswerFont
                     label.textColor = CQTheme.kTileTextColor
-                    label.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
-                    label.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+                    label.backgroundColor = JJJUtil.colorFromRGB(CQTheme.kTileColor)
+                    label.layer.borderColor = JJJUtil.colorFromRGB(CQTheme.kTileBorderColor).CGColor
                     label.layer.borderWidth = 1
                     label.tag = index
                 } else {
@@ -585,8 +585,8 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
             label.textAlignment = NSTextAlignment.Center
             label.font = CQTheme.kTileQuizFont
             label.textColor = CQTheme.kTileTextColor
-            label.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
-            label.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+            label.backgroundColor = JJJUtil.colorFromRGB(CQTheme.kTileColor)
+            label.layer.borderColor = JJJUtil.colorFromRGB(CQTheme.kTileBorderColor).CGColor
             label.layer.borderWidth = 1
             label.tag = index
             index++
@@ -651,8 +651,8 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         btnNextCard!.textAlignment = NSTextAlignment.Center
         btnNextCard!.font = CQTheme.kManaLabelFont
         btnNextCard!.textColor = CQTheme.kTileTextColor
-        btnNextCard!.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
-        btnNextCard!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+        btnNextCard!.backgroundColor = JJJUtil.colorFromRGB(CQTheme.kTileColor)
+        btnNextCard!.layer.borderColor = JJJUtil.colorFromRGB(CQTheme.kTileBorderColor).CGColor
         btnNextCard!.layer.borderWidth = 1
         self.view.addSubview(btnNextCard!)
         

@@ -29,7 +29,7 @@ class CardImageCollectionViewCell: UICollectionViewCell {
         var dX:CGFloat = 0
         var dY:CGFloat = 0
         var dWidth = frame.size.width
-        var dHeight = frame.size.height /*frame.size.height-(frame.size.height/5)*/
+        var dHeight = frame.size.height
         var dFrame = CGRectMake(dX, dY, dWidth, dHeight)
         imgCard = UIImageView(frame: dFrame)
         imgCard!.clipsToBounds = true
@@ -54,9 +54,9 @@ class CardImageCollectionViewCell: UICollectionViewCell {
         lblQuantity!.font = UIFont.systemFontOfSize(14)
         lblQuantity!.textAlignment = NSTextAlignment.Center
         
-        dX = 0
+        dX = 5
         dY = frame.size.height-25
-        dWidth = frame.size.width-24
+        dWidth = (frame.size.width-24)-5
         dHeight = 25
         dFrame = CGRectMake(dX, dY, dWidth, dHeight)
         lblName = UILabel(frame: dFrame)
@@ -69,6 +69,7 @@ class CardImageCollectionViewCell: UICollectionViewCell {
         dHeight = 24
         dFrame = CGRectMake(dX, dY, dWidth, dHeight)
         imgSetIcon = UIImageView(frame: dFrame)
+        imgSetIcon!.contentMode = UIViewContentMode.Center
         
         var planeswalkerType = DTCardType.objectsWithPredicate(NSPredicate(format: "name = %@", "Planeswalker")).firstObject() as! DTCardType?
         _pre8thEditionFont = UIFont(name: "Magic:the Gathering", size:25)
@@ -125,7 +126,11 @@ class CardImageCollectionViewCell: UICollectionViewCell {
         
         if showSetIcon {
             let path = FileManager.sharedInstance().cardSetPath(self.cardId)
-            imgSetIcon!.image = JJJUtil.imageWithImage(UIImage(contentsOfFile: path), scaledToSize: CGSize(width: 24, height: 24))
+            
+            if let image = UIImage(contentsOfFile: path) {
+                let itemSize = CGSizeMake(image.size.width/2, image.size.height/2)
+                imgSetIcon!.image = JJJUtil.imageWithImage(image, scaledToSize: itemSize)
+            }
         }
     }
     

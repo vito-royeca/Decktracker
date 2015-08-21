@@ -32,15 +32,10 @@ class SetCollectionViewCell: UICollectionViewCell {
             setImage = UIImage(named: "blank.png")
         }
         
-        imgSet.image = setImage
         // resize the image
         if setImage != nil {
             let itemSize = CGSizeMake(setImage!.size.width/2, setImage!.size.height/2)
-            UIGraphicsBeginImageContextWithOptions(itemSize, false, UIScreen.mainScreen().scale)
-            let imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height)
-            setImage!.drawInRect(imageRect)
-            imgSet.image = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
+            imgSet.image = JJJUtil.imageWithImage(setImage, scaledToSize: itemSize);
         }
         
         let dict = Database.sharedInstance().inAppSettingsForSet(setId)

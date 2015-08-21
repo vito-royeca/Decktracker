@@ -11,7 +11,7 @@
 #import "DTCard.h"
 #import "DTSet.h"
 
-#import "JJJ/JJJ.h"
+#import <JJJUtils/JJJ.h>
 
 #define kCardDownloadCompleted           @"kCardDownloadCompleted"
 #define kFolders                         @[@"Advance Search", @"Decks", @"Collections"]

@@ -346,15 +346,9 @@
                 if (path && [[NSFileManager defaultManager] fileExistsAtPath:path])
                 {
                     UIImage *imgSet = [[UIImage alloc] initWithContentsOfFile:path];
-                    cell.imageView.image = imgSet;
-                    
                     // resize the image
                     CGSize itemSize = CGSizeMake(imgSet.size.width/2, imgSet.size.height/2);
-                    UIGraphicsBeginImageContextWithOptions(itemSize, NO, UIScreen.mainScreen.scale);
-                    CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
-                    [cell.imageView.image drawInRect:imageRect];
-                    cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
-                    UIGraphicsEndImageContext();
+                    cell.imageView.image = [JJJUtil imageWithImage:imgSet scaledToSize:itemSize];
                 }
                 else
                 {
@@ -404,15 +398,9 @@
                 }
                 else
                 {
-                    cell.imageView.image = [[UIImage alloc] initWithContentsOfFile:path];
-                    
-                    // resize the image
+                    UIImage *img = [[UIImage alloc] initWithContentsOfFile:path];
                     CGSize itemSize = CGSizeMake(16, 16);
-                    UIGraphicsBeginImageContextWithOptions(itemSize, NO, UIScreen.mainScreen.scale);
-                    CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
-                    [cell.imageView.image drawInRect:imageRect];
-                    cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
-                    UIGraphicsEndImageContext();
+                    cell.imageView.image = [JJJUtil imageWithImage:img scaledToSize:itemSize];
                 }
                 
                 cell.textLabel.text = color.name;

@@ -58,13 +58,13 @@
 //    [[Database sharedInstance ] deleteDuplicateParseCards];
 
     // custom colors
-    [[UINavigationBar appearance] setBarTintColor:[JJJUtil UIColorFromRGB:0x691F01]];
+    [[UINavigationBar appearance] setBarTintColor:[JJJUtil colorFromRGB:0x691F01]];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
     [[UINavigationBar appearance] setTitleTextAttributes:@{
         NSForegroundColorAttributeName : [UIColor whiteColor]}];
-    [[UITabBar appearance] setBarTintColor:[JJJUtil  UIColorFromRGB:0x691F01]];
+    [[UITabBar appearance] setBarTintColor:[JJJUtil  colorFromRGB:0x691F01]];
     [[UITabBar appearance] setTintColor:[UIColor whiteColor]];
-    [[UISearchBar appearance] setTintColor:[JJJUtil  UIColorFromRGB:0x691F01]];
+    [[UISearchBar appearance] setTintColor:[JJJUtil  colorFromRGB:0x691F01]];
     [[UISegmentedControl appearance] setTintColor:[UIColor grayColor]];
     
     // remove the "Back" title in  back buttons

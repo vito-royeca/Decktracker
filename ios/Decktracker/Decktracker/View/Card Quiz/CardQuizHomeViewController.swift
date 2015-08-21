@@ -137,10 +137,10 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
                 })
                 
             } else if PFTwitterUtils.isLinkedWithUser(currentUser) {
-                let requestString = "https://api.twitter.com/1.1/users/show.json?screen_name=\(PFTwitterUtils.twitter()?.screenName!)"
+                let requestString = "https://api.twitter.com/1.1/users/show.json?screen_name=\(PFTwitterUtils.twitter()!.screenName!)"
                 let verify = NSURL(string: requestString)
                 let request = NSMutableURLRequest(URL: verify!)
-                PFTwitterUtils.twitter()?.signRequest(request)
+                PFTwitterUtils.twitter()!.signRequest(request)
                 var response:NSURLResponse?
                 var error:NSError?
                 let data = NSURLConnection.sendSynchronousRequest(request, returningResponse: &response, error: &error)
@@ -173,8 +173,8 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
             btnLogin!.textAlignment = NSTextAlignment.Center
             btnLogin!.font = CQTheme.kManaLabelFont
             btnLogin!.textColor = CQTheme.kTileTextColor
-            btnLogin!.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
-            btnLogin!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+            btnLogin!.backgroundColor = JJJUtil.colorFromRGB(CQTheme.kTileColor)
+            btnLogin!.layer.borderColor = JJJUtil.colorFromRGB(CQTheme.kTileBorderColor).CGColor
             btnLogin!.layer.borderWidth = 1
             self.view.addSubview(btnLogin!)
         } else  {
@@ -185,8 +185,8 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
             btnLogin!.textAlignment = NSTextAlignment.Center
             btnLogin!.font = CQTheme.kManaLabelFont
             btnLogin!.textColor = CQTheme.kTileTextColor
-            btnLogin!.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
-            btnLogin!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+            btnLogin!.backgroundColor = JJJUtil.colorFromRGB(CQTheme.kTileColor)
+            btnLogin!.layer.borderColor = JJJUtil.colorFromRGB(CQTheme.kTileBorderColor).CGColor
             btnLogin!.layer.borderWidth = 1
             self.view.addSubview(btnLogin!)
         }
@@ -200,8 +200,8 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         btnEasy!.textAlignment = NSTextAlignment.Center
         btnEasy!.font = CQTheme.kManaLabelFont
         btnEasy!.textColor = CQTheme.kTileTextColor
-        btnEasy!.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
-        btnEasy!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+        btnEasy!.backgroundColor = JJJUtil.colorFromRGB(CQTheme.kTileColor)
+        btnEasy!.layer.borderColor = JJJUtil.colorFromRGB(CQTheme.kTileBorderColor).CGColor
         btnEasy!.layer.borderWidth = 1
         self.view.addSubview(btnEasy!)
 
@@ -214,8 +214,8 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         btnModerate!.textAlignment = NSTextAlignment.Center
         btnModerate!.font = CQTheme.kManaLabelFont
         btnModerate!.textColor = CQTheme.kTileTextColor
-        btnModerate!.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
-        btnModerate!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+        btnModerate!.backgroundColor = JJJUtil.colorFromRGB(CQTheme.kTileColor)
+        btnModerate!.layer.borderColor = JJJUtil.colorFromRGB(CQTheme.kTileBorderColor).CGColor
         btnModerate!.layer.borderWidth = 1
         self.view.addSubview(btnModerate!)
 
@@ -228,8 +228,8 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         btnHard!.textAlignment = NSTextAlignment.Center
         btnHard!.font = CQTheme.kManaLabelFont
         btnHard!.textColor = CQTheme.kTileTextColor
-        btnHard!.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
-        btnHard!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+        btnHard!.backgroundColor = JJJUtil.colorFromRGB(CQTheme.kTileColor)
+        btnHard!.layer.borderColor = JJJUtil.colorFromRGB(CQTheme.kTileBorderColor).CGColor
         btnHard!.layer.borderWidth = 1
         self.view.addSubview(btnHard!)
 
@@ -242,8 +242,8 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         btnLeaderboard!.textAlignment = NSTextAlignment.Center
         btnLeaderboard!.font = CQTheme.kManaLabelFont
         btnLeaderboard!.textColor = CQTheme.kTileTextColor
-        btnLeaderboard!.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
-        btnLeaderboard!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+        btnLeaderboard!.backgroundColor = JJJUtil.colorFromRGB(CQTheme.kTileColor)
+        btnLeaderboard!.layer.borderColor = JJJUtil.colorFromRGB(CQTheme.kTileBorderColor).CGColor
         btnLeaderboard!.layer.borderWidth = 1
         self.view.addSubview(btnLeaderboard!)
         
@@ -256,8 +256,8 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
 //        btnExit!.textAlignment = NSTextAlignment.Center
 //        btnExit!.font = CQTheme.kManaLabelFont
 //        btnExit!.textColor = CQTheme.kTileTextColor
-//        btnExit!.backgroundColor = JJJUtil.UIColorFromRGB(CQTheme.kTileColor)
-//        btnExit!.layer.borderColor = JJJUtil.UIColorFromRGB(CQTheme.kTileBorderColor).CGColor
+//        btnExit!.backgroundColor = JJJUtil.colorFromRGB(CQTheme.kTileColor)
+//        btnExit!.layer.borderColor = JJJUtil.colorFromRGB(CQTheme.kTileBorderColor).CGColor
 //        btnExit!.layer.borderWidth = 1
 //        self.view.addSubview(btnExit!)
     }

@@ -9,7 +9,7 @@
 @import UIKit;
 @import CoreData;
 
-#import "JJJ/JJJ.h"
+#import <JJJUtils/JJJ.h>
 
 @protocol FilterInputViewControllerDelegate <NSObject>
 
