@@ -490,6 +490,15 @@
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/DataSource-exunlzaqzgqgbjhgyhupklwxiowb/Build/Products/Debug",
 				);
 				OTHER_CODE_SIGN_FLAGS = "";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"JJJUtils\"",
+					"-l\"c++\"",
+					"-l\"hpple\"",
+					"-l\"xml2\"",
+					"-l\"realm\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -511,6 +520,15 @@
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/DataSource-exunlzaqzgqgbjhgyhupklwxiowb/Build/Products/Debug",
 				);
 				OTHER_CODE_SIGN_FLAGS = "";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"JJJUtils\"",
+					"-l\"c++\"",
+					"-l\"hpple\"",
+					"-l\"xml2\"",
+					"-l\"realm\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

@@ -26,8 +26,8 @@ class CardImageCollectionViewCell: UICollectionViewCell {
         
         self.backgroundColor = UIColor(patternImage: UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/Gray_Patterned_BG.jpg")!)
         
-        var dX:CGFloat = 0
-        var dY:CGFloat = 0
+        var dX = CGFloat(0)
+        var dY = CGFloat(0)
         var dWidth = frame.size.width
         var dHeight = frame.size.height
         var dFrame = CGRectMake(dX, dY, dWidth, dHeight)
@@ -130,6 +130,9 @@ class CardImageCollectionViewCell: UICollectionViewCell {
             if let image = UIImage(contentsOfFile: path) {
                 let itemSize = CGSizeMake(image.size.width/2, image.size.height/2)
                 imgSetIcon!.image = JJJUtil.imageWithImage(image, scaledToSize: itemSize)
+                
+            } else {
+                imgSetIcon!.image = nil
             }
         }
     }

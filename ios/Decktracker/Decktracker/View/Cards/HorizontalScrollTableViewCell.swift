@@ -17,6 +17,8 @@ class HorizontalScrollTableViewCell: UITableViewCell {
     let kThumbCellIdentifier  = "kThumbCellIdentifier"
     let kSetCellIdentifier    = "kSetCellIdentifier"
     let kHorizontalCellHeight = 170
+    let kHorizontalItemCellWidth   = 95
+    let kHorizontalItemCellHeight  = 132
     
     var lblTitle: UILabel?
     var btnSeeAll: UIButton?
@@ -43,8 +45,8 @@ class HorizontalScrollTableViewCell: UITableViewCell {
         btnSeeAll!.addTarget(self, action: "seeAllTapped:", forControlEvents: .TouchUpInside)
         contentView.addSubview(btnSeeAll!)
         
-        dWidth = CGFloat(95)
-        dHeight = CGFloat(132)
+        dWidth = CGFloat(kHorizontalItemCellWidth)
+        dHeight = CGFloat(kHorizontalItemCellHeight)
         var flowLayout = UICollectionViewFlowLayout()
         flowLayout.itemSize = CGSize(width: dWidth, height: dHeight)
         flowLayout.headerReferenceSize = CGSize(width: CGFloat(0), height: CGFloat(0))
@@ -58,11 +60,12 @@ class HorizontalScrollTableViewCell: UITableViewCell {
         dY = CGFloat(btnSeeAll!.frame.origin.y+btnSeeAll!.frame.size.height)
         dWidth = self.contentView.frame.size.width
         collectionView = UICollectionView(frame: CGRect(x: dX, y: dY, width: dWidth, height: dHeight), collectionViewLayout: flowLayout)
-        collectionView!.registerNib(UINib(nibName: "ThumbCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: kThumbCellIdentifier)
-        collectionView!.registerNib(UINib(nibName: "SetCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: kSetCellIdentifier)
+        collectionView!.registerClass(ThumbCollectionViewCell.self, forCellWithReuseIdentifier: kThumbCellIdentifier)
+        collectionView!.registerClass(SetCollectionViewCell.self, forCellWithReuseIdentifier: kSetCellIdentifier)
         collectionView!.allowsSelection = true
         collectionView!.contentMode = UIViewContentMode.ScaleToFill
         collectionView!.backgroundColor = UIColor.whiteColor()
+        collectionView!.pagingEnabled = true
         self.contentView.addSubview(collectionView!)
         
         contentView.backgroundColor = UIColor.whiteColor()

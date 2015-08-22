@@ -10,36 +10,75 @@ import UIKit
 
 class ThumbCollectionViewCell: UICollectionViewCell {
 
-    @IBOutlet weak var imgCrop: UIImageView!
-    @IBOutlet weak var lblCardName: UILabel!
-    @IBOutlet weak var imgSet: UIImageView!
-    @IBOutlet weak var viewRating: UIView!
-    var _ratingControl: EDStarRating?
+    let kBannerCellIdentifier  = "kBannerCellIdentifier"
+    let kBannerCellWidth       = 95
+    let kBannerCellHeight      = 128
+    
+    var imgCrop: UIImageView?
+    var imgSet: UIImageView?
+    var lblCardName: UILabel?
+    var ratingControl: EDStarRating?
     
     var cardId:String?
     var currentCropPath:String?
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         
-        lblCardName.sizeToFit()
+        var dX = CGFloat(4)
+        var dY = CGFloat(0)
+        var dWidth  = CGFloat(87)
+        var dHeight = CGFloat(65)
+        var dFrame = CGRectMake(dX, dY, dWidth, dHeight)
         
-        imgCrop.layer.cornerRadius = 10.0
-        imgCrop.layer.masksToBounds = true
+        imgCrop = UIImageView(frame: dFrame)
+        imgCrop!.contentMode = UIViewContentMode.ScaleToFill
+        imgCrop!.layer.cornerRadius = 10.0
+        imgCrop!.layer.masksToBounds = true
+        contentView.addSubview(imgCrop!)
         
-        _ratingControl = EDStarRating(frame: self.viewRating.frame)
-        _ratingControl!.userInteractionEnabled = false
-        _ratingControl!.starImage = UIImage(named: "star.png")
-        _ratingControl!.starHighlightedImage = UIImage(named: "starhighlighted.png")
-        _ratingControl!.maxRating = 5
-        _ratingControl!.backgroundColor = UIColor.clearColor()
-        _ratingControl!.displayMode = UInt(EDStarRatingDisplayHalf)
+        dX = CGFloat(71)
+        dY = CGFloat(43)
+        dWidth  = CGFloat(24)
+        dHeight = CGFloat(24)
+        dFrame = CGRectMake(dX, dY, dWidth, dHeight)
         
-        self.viewRating!.removeFromSuperview()
-        self.addSubview(_ratingControl!)
+        imgSet = UIImageView(frame: dFrame)
+        imgSet!.contentMode = UIViewContentMode.Center
+        contentView.addSubview(imgSet!)
+        
+        dX = CGFloat(4)
+        dY = CGFloat(69)
+        dWidth  = CGFloat(87)
+        dHeight = CGFloat(40)
+        dFrame = CGRectMake(dX, dY, dWidth, dHeight)
+        
+        lblCardName = UILabel(frame: dFrame)
+        lblCardName!.font = UIFont.systemFontOfSize(12)
+        lblCardName!.numberOfLines = 0
+        lblCardName!.adjustsFontSizeToFitWidth = true
+        contentView.addSubview(lblCardName!)
+        
+        dX = CGFloat(0)
+        dY = lblCardName!.frame.origin.y + lblCardName!.frame.size.height
+        dWidth  = CGFloat(kBannerCellWidth)
+        dHeight = CGFloat(16)
+        dFrame = CGRectMake(dX, dY, dWidth, dHeight)
+        
+        ratingControl = EDStarRating(frame: dFrame)
+        ratingControl!.userInteractionEnabled = false
+        ratingControl!.starImage = UIImage(named: "star.png")
+        ratingControl!.starHighlightedImage = UIImage(named: "starhighlighted.png")
+        ratingControl!.maxRating = 5
+        ratingControl!.backgroundColor = UIColor.clearColor()
+        ratingControl!.displayMode = UInt(EDStarRatingDisplayHalf)
+        contentView.addSubview(ratingControl!)
     }
-
+    
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
     func displayCard(cardId: String) {
         self.cardId = cardId
         let card = DTCard(forPrimaryKey: self.cardId)
@@ -49,24 +88,26 @@ class ThumbCollectionViewCell: UICollectionViewCell {
         NSNotificationCenter.defaultCenter().removeObserver(self, name:kCardDownloadCompleted, object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector:"loadCropImage:",  name:kCardDownloadCompleted, object:nil)
         
-        lblCardName.text = card!.name
+        lblCardName!.text = card!.name
         currentCropPath = FileManager.sharedInstance().cropPath(self.cardId)
-        imgCrop.image = UIImage(contentsOfFile: currentCropPath!)
-        _ratingControl!.rating = Float(card!.rating)
+        imgCrop!.image = UIImage(contentsOfFile: currentCropPath!)
+        ratingControl!.rating = Float(card!.rating)
         
         FileManager.sharedInstance().downloadCardImage(self.cardId, immediately:false)
         Database.sharedInstance().fetchCardRating(self.cardId)
         
         // set image
-        let dict = Database.sharedInstance().inAppSettingsForSet(card!.set.setId)
-        if dict != nil {
-            imgSet.image = UIImage(named: "locked.png")
+        if let dict = Database.sharedInstance().inAppSettingsForSet(card!.set.setId) {
+            imgSet!.image = UIImage(named: "locked.png")
             
         } else {
             let path = FileManager.sharedInstance().cardSetPath(self.cardId)
             if let setImage = UIImage(contentsOfFile: path) {
                 let itemSize = CGSizeMake(setImage.size.width/2, setImage.size.height/2)
-                imgSet.image = JJJUtil.imageWithImage(setImage, scaledToSize: itemSize)
+                imgSet!.image = JJJUtil.imageWithImage(setImage, scaledToSize: itemSize)
+            
+            } else {
+                imgSet!.image = nil
             }
         }
     }
@@ -99,7 +140,7 @@ class ThumbCollectionViewCell: UICollectionViewCell {
     
         if self.cardId == cardId {
             let card = DTCard(forPrimaryKey: self.cardId)
-            _ratingControl!.rating = Float(card!.rating)
+            ratingControl!.rating = Float(card!.rating)
     
             NSNotificationCenter.defaultCenter().removeObserver(self, name: kParseSyncDone, object: nil)
         }

@@ -42,10 +42,8 @@
 		8C1FCDE21B2855D300754177 /* CardsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1FCDD11B2855D300754177 /* CardsViewController.swift */; };
 		8C1FCDE31B2855D300754177 /* HorizontalScrollTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1FCDD21B2855D300754177 /* HorizontalScrollTableViewCell.swift */; };
 		8C1FCDE51B2855D300754177 /* SetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1FCDD41B2855D300754177 /* SetCollectionViewCell.swift */; };
-		8C1FCDE61B2855D300754177 /* SetCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C1FCDD51B2855D300754177 /* SetCollectionViewCell.xib */; };
 		8C1FCDE71B2855D300754177 /* SetListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1FCDD61B2855D300754177 /* SetListViewController.swift */; };
 		8C1FCDE81B2855D300754177 /* ThumbCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1FCDD71B2855D300754177 /* ThumbCollectionViewCell.swift */; };
-		8C1FCDE91B2855D300754177 /* ThumbCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C1FCDD81B2855D300754177 /* ThumbCollectionViewCell.xib */; };
 		8C1FCDEA1B2855D300754177 /* TopListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1FCDD91B2855D300754177 /* TopListViewController.swift */; };
 		8C2094E11A5D1611008878D6 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2094E01A5D1611008878D6 /* Accelerate.framework */; };
 		8C26A67B19A63FAC00FE00E7 /* FilterInputViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C26A67419A63FAC00FE00E7 /* FilterInputViewController.m */; };
@@ -248,10 +246,8 @@
 		8C1FCDD11B2855D300754177 /* CardsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardsViewController.swift; sourceTree = "<group>"; };
 		8C1FCDD21B2855D300754177 /* HorizontalScrollTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HorizontalScrollTableViewCell.swift; sourceTree = "<group>"; };
 		8C1FCDD41B2855D300754177 /* SetCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetCollectionViewCell.swift; sourceTree = "<group>"; };
-		8C1FCDD51B2855D300754177 /* SetCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SetCollectionViewCell.xib; sourceTree = "<group>"; };
 		8C1FCDD61B2855D300754177 /* SetListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetListViewController.swift; sourceTree = "<group>"; };
 		8C1FCDD71B2855D300754177 /* ThumbCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbCollectionViewCell.swift; sourceTree = "<group>"; };
-		8C1FCDD81B2855D300754177 /* ThumbCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThumbCollectionViewCell.xib; sourceTree = "<group>"; };
 		8C1FCDD91B2855D300754177 /* TopListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopListViewController.swift; sourceTree = "<group>"; };
 		8C2094E01A5D1611008878D6 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		8C26A67319A63FAC00FE00E7 /* FilterInputViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterInputViewController.h; sourceTree = "<group>"; };
@@ -498,10 +494,8 @@
 				8C1FCDD11B2855D300754177 /* CardsViewController.swift */,
 				8C1FCDD21B2855D300754177 /* HorizontalScrollTableViewCell.swift */,
 				8C1FCDD41B2855D300754177 /* SetCollectionViewCell.swift */,
-				8C1FCDD51B2855D300754177 /* SetCollectionViewCell.xib */,
 				8C1FCDD61B2855D300754177 /* SetListViewController.swift */,
 				8C1FCDD71B2855D300754177 /* ThumbCollectionViewCell.swift */,
-				8C1FCDD81B2855D300754177 /* ThumbCollectionViewCell.xib */,
 				8C1FCDD91B2855D300754177 /* TopListViewController.swift */,
 			);
 			path = Cards;
@@ -1007,7 +1001,6 @@
 				8CEE14C01B79E45200F9B113 /* CardSummaryView.xib in Resources */,
 				8C89BD5119DD4FD70070E4F5 /* hpple.license in Resources */,
 				8C12CD2F1B1D47ED00B817A3 /* images in Resources */,
-				8C1FCDE61B2855D300754177 /* SetCollectionViewCell.xib in Resources */,
 				8C2A979119F5027B0094C97F /* Reader-Export.png in Resources */,
 				8C5FF9E819AE2EE3003CE54C /* keywords.plist in Resources */,
 				8C89BD5319DD4FFE0070E4F5 /* InAppSettingsKit.license in Resources */,
@@ -1039,7 +1032,6 @@
 				8C2A978E19F5027B0094C97F /* Reader-Button-N@2x.png in Resources */,
 				8C89BD5719DD50340070E4F5 /* MBProgressHUD.license in Resources */,
 				8C89BD4B19DD3D110070E4F5 /* CorePlot.license in Resources */,
-				8C1FCDE91B2855D300754177 /* ThumbCollectionViewCell.xib in Resources */,
 				8C2A979A19F5027B0094C97F /* Reader-Thumbs@2x.png in Resources */,
 				8C2A978F19F5027B0094C97F /* Reader-Email.png in Resources */,
 				8C2A978D19F5027B0094C97F /* Reader-Button-N.png in Resources */,

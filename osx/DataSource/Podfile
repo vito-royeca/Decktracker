@@ -6,8 +6,8 @@ source 'https://github.com/CocoaPods/Specs.git'
 target "DataSource" do
 pod "hpple"
 pod "JJJUtils/OSX"
-pod "Parse"
-pod "Realm"
+#pod "Parse"
+pod "Realm", '0.94.0' 
 end
 
 

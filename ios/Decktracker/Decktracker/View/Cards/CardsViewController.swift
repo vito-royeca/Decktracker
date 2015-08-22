@@ -48,7 +48,6 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
         tblFeatured!.dataSource = self
         tblFeatured!.registerClass(BannerScrollTableViewCell.self, forCellReuseIdentifier: kBannerCellIdentifier)
         tblFeatured!.registerClass(HorizontalScrollTableViewCell.self, forCellReuseIdentifier: kHorizontalCellIdentifier)
-//        tblFeatured!.registerNib(UINib(nibName: "HorizontalScrollTableViewCell", bundle: nil), forCellReuseIdentifier: kHorizontalCellIdentifier)
 
         self.navigationItem.titleView = self.searchBar
         self.navigationItem.rightBarButtonItem = btnSearchFilter

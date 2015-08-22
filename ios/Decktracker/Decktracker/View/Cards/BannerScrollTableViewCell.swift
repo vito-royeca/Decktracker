@@ -37,6 +37,7 @@ class BannerScrollTableViewCell: UITableViewCell {
         collectionView!.registerClass(CardImageCollectionViewCell.self, forCellWithReuseIdentifier: kBannerCellIdentifier)
         collectionView!.allowsSelection = true
         collectionView!.contentMode = UIViewContentMode.ScaleToFill
+        collectionView!.pagingEnabled = true
         self.contentView.addSubview(collectionView!)
     }
     
