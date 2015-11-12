@@ -19,12 +19,12 @@
 
 #import <JJJUtils/JJJ.h>
 
+#import "Bolts.h"
+#import <Parse/Parse.h>
 #import <Realm/Realm.h>
 
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
 #import "InAppPurchase.h"
-#import "Bolts.h"
-#import <Parse/Parse.h>
 #import <ParseFacebookUtils/PFFacebookUtils.h>
 #import <ParseTwitterUtils/ParseTwitterUtils.h>
 #endif
@@ -43,12 +43,14 @@
 
 + (id)sharedInstance;
 
+#pragma mark - Setup
 -(void) setupDb;
 -(void) migrateDb;
 -(void) closeDb;
 -(void) copyRealmDatabaseToHome;
 -(void) setupParse:(NSDictionary *)launchOptions;
 
+#pragma mark - Finders
 -(RLMResults*) findCards:(NSString*) query
      withSortDescriptors:(NSArray*) sorters
          withSectionName:(NSString*) sectionName;
@@ -61,6 +63,15 @@
 -(RLMResults*) advanceFindCards:(NSDictionary*)query
                     withSorters:(NSArray*) sorters;
 
+-(NSArray*) fetchRandomCardsFromFormats:(NSArray*) formats
+                         excludeFormats:(NSArray*) excludeFormats
+                                howMany:(int) howMany;
+
+-(void) fetchTcgPlayerPriceForCard:(NSString*) cardId;
+-(NSArray*) fetchSets:(int) howMany;
+
+#pragma mark - In App Purchase
+#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
 -(void) loadInAppSets;
 -(NSDictionary*) inAppSettingsForSet:(NSString*) setId;
 -(NSArray*) inAppSetCodes;
@@ -68,16 +79,9 @@
 -(NSArray*) fetchRandomCards:(int) howMany
                withPredicate:(NSPredicate*) predicate
         includeInAppPurchase:(BOOL) inAppPurchase;
--(NSArray*) fetchRandomCardsFromFormats:(NSArray*) formats
-                         excludeFormats:(NSArray*) excludeFormats
-                                howMany:(int) howMany;
+#endif
 
--(DTCard*) findCard:(NSString*) card inSet:(NSString*) setCode;
--(DTCard*) findCardByMultiverseID:(NSString*) multiverseID;
--(void) fetchTcgPlayerPriceForCard:(NSString*) cardId;
--(NSArray*) fetchSets:(int) howMany;
-
-#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
+#pragma mark - Parse methods
 -(void) fetchTopRated:(int) limit skip:(int) skip;
 -(void) fetchTopViewed:(int) limit skip:(int) skip;
 -(void) incrementCardView:(NSString*) cardId;
@@ -87,13 +91,15 @@
 -(void) saveUserMana:(PFObject*) userMana;
 -(void) deleteUserManaLocally;
 -(void) fetchLeaderboard;
-// Parse Maintenance
--(void) updateParseCards;
+
+#pragma mark - Parse maintenance
+-(void) transferCardsFromSet:(NSString*) sourceSetId toSet:(NSString*) destSetId;
 -(void) deleteDuplicateParseCards;
+-(void) updateParseCards;
+-(void) uploadSets;
 -(void) uploadArtists;
 -(void) uploadBlocks;
 -(void) uploadSetTypes;
--(void) uploadSets;
-#endif
+
 
 @end

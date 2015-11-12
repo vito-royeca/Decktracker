@@ -8,7 +8,7 @@
 
 import UIKit
 
-enum SetSortMode: Printable  {
+enum SetSortMode: CustomStringConvertible  {
     case ByReleaseDate
     case ByName
     case ByType
@@ -42,7 +42,7 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
         hidesBottomBarWhenPushed = true
         
         let height = view.frame.size.height
-        var frame = CGRect(x:0, y:0, width:view.frame.width, height:height)
+        let frame = CGRect(x:0, y:0, width:view.frame.width, height:height)
         
         sortButton = UIBarButtonItem(image: UIImage(named: "generic_sorting.png"), style: UIBarButtonItemStyle.Plain, target: self, action: "sortButtonTapped")
         
@@ -78,8 +78,6 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
             initialSelection = 1
         case .ByType:
             initialSelection = 2
-        default:
-            break
         }
         
         let doneBlock = { (picker: ActionSheetStringPicker?, selectedIndex: NSInteger, selectedValue: AnyObject?) -> Void in
@@ -113,7 +111,7 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
         
         switch sortMode! {
         case .ByReleaseDate:
-            arrayData!.sort({ ($0.releaseDate as NSDate).compare($1.releaseDate as NSDate) == NSComparisonResult.OrderedDescending })
+            arrayData!.sortInPlace({ ($0.releaseDate as NSDate).compare($1.releaseDate as NSDate) == NSComparisonResult.OrderedDescending })
             let formatter = NSDateFormatter()
             formatter.dateFormat = "yyyy"
             
@@ -123,7 +121,7 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
                 
                 let year = formatter.stringFromDate(set.releaseDate)
                 
-                if contains(keys, year) {
+                if keys.contains(year) {
                     sets = sections![year] as? [DTSet]
                 } else {
                     sets = [DTSet]()
@@ -133,22 +131,23 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
             }
             
         case .ByName:
-            arrayData!.sort{ $0.name < $1.name }
+            arrayData!.sortInPlace{ $0.name < $1.name }
             
             for set in arrayData! as! [DTSet] {
                 let keys = Array(sections!.keys)
                 var sets:[DTSet]?
                 
-                var letter = set.name.substringWithRange(Range(start: set.name.startIndex, end: advance(set.name.startIndex, 1)))
+//                var letter = set.name.substringWithRange(Range(start: set.name.startIndex, end: advanceBy(set.name.startIndex, 1)))
+                var letter = String(set.name[set.name.startIndex.advancedBy(1)])
                 let formatter = NSNumberFormatter()
                 if formatter.numberFromString(letter) != nil {
                     letter = "#"
                 }
-                if !contains(sectionIndexTitles!, letter) {
+                if !sectionIndexTitles!.contains(letter) {
                     sectionIndexTitles!.append(letter)
                 }
                 
-                if contains(keys, letter) {
+                if keys.contains(letter) {
                     sets = sections![letter] as? [DTSet]
                 } else {
                     sets = [DTSet]()
@@ -158,7 +157,7 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
             }
             
         case .ByType:
-            arrayData!.sort{ $0.name < $1.name }
+            arrayData!.sortInPlace{ $0.name < $1.name }
             
             for setType in DTSetType.allObjects().sortedResultsUsingProperty("name", ascending: true) {
                 let st = setType as! DTSetType
@@ -168,7 +167,7 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
                         let keys = Array(sections!.keys)
                         var sets:[DTSet]?
                         
-                        if contains(keys, st.name) {
+                        if keys.contains(st.name) {
                             sets = sections![st.name] as? [DTSet]
                         } else {
                             sets = [DTSet]()
@@ -176,16 +175,14 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
                         sets!.append(set)
                         sections!.updateValue(sets!, forKey: st.name)
                         
-                        let letter = st.name.substringWithRange(Range(start: st.name.startIndex, end: advance(st.name.startIndex, 1)))
-                        if !contains(sectionIndexTitles!, letter) {
+//                        let letter = st.name.substringWithRange(Range(start: st.name.startIndex, end: advance(st.name.startIndex, 1)))
+                        let letter = String(st.name[st.name.startIndex.advancedBy(1)])
+                        if !sectionIndexTitles!.contains(letter) {
                             sectionIndexTitles!.append(letter)
                         }
                     }
                 }
             }
-            
-        default:
-            break
         }
     }
 
@@ -204,13 +201,11 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
         
         switch self.sortMode! {
         case .ByReleaseDate:
-            keys = Array(sections!.keys).sorted(>)
+            keys = Array(sections!.keys).sort(>)
         case .ByName:
-            keys = Array(sections!.keys).sorted(<)
+            keys = Array(sections!.keys).sort(<)
         case .ByType:
-            keys = Array(sections!.keys).sorted(<)
-        default:
-            break
+            keys = Array(sections!.keys).sort(<)
         }
         
         let key = keys![section]
@@ -227,13 +222,11 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
         
         switch self.sortMode! {
         case .ByReleaseDate:
-            keys = Array(sections!.keys).sorted(>)
+            keys = Array(sections!.keys).sort(>)
         case .ByName:
-            keys = Array(sections!.keys).sorted(<)
+            keys = Array(sections!.keys).sort(<)
         case .ByType:
-            keys = Array(sections!.keys).sorted(<)
-        default:
-            break
+            keys = Array(sections!.keys).sort(<)
         }
         
         let key = keys![section]
@@ -242,16 +235,15 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
         return "\(key) (\(sets!.count) \(setsString))"
     }
     
-    func sectionIndexTitlesForTableView(tableView: UITableView) -> [AnyObject]! {
+    func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
         return sectionIndexTitles
     }
 
     func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int {
         var section = -1
+        let keys = Array(sections!.keys).sort(<)
         
-        let keys = Array(sections!.keys).sorted(<)
-        
-        for (i, value) in enumerate(keys) {
+        for (i, value) in keys.enumerate() {
             if value.hasPrefix(title) {
                 section = i
                 break
@@ -262,19 +254,17 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("Default") as! UITableViewCell?
+        var cell = tableView.dequeueReusableCellWithIdentifier("Default") as UITableViewCell!
         
         var keys:[String]?
         
         switch self.sortMode! {
         case .ByReleaseDate:
-            keys = Array(sections!.keys).sorted(>)
+            keys = Array(sections!.keys).sort(>)
         case .ByName:
-            keys = Array(sections!.keys).sorted(<)
+            keys = Array(sections!.keys).sort(<)
         case .ByType:
-            keys = Array(sections!.keys).sorted(<)
-        default:
-            break
+            keys = Array(sections!.keys).sort(<)
         }
         
         let key = keys![indexPath.section]
@@ -319,13 +309,11 @@ class SetListViewController: UIViewController, UITableViewDataSource, UITableVie
         
         switch self.sortMode! {
         case .ByReleaseDate:
-            keys = Array(sections!.keys).sorted(>)
+            keys = Array(sections!.keys).sort(>)
         case .ByName:
-            keys = Array(sections!.keys).sorted(<)
+            keys = Array(sections!.keys).sort(<)
         case .ByType:
-            keys = Array(sections!.keys).sorted(<)
-        default:
-            break
+            keys = Array(sections!.keys).sort(<)
         }
         let key = keys![indexPath.section]
         let sets = sections![key] as? [DTSet]

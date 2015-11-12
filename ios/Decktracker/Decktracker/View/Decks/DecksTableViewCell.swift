@@ -39,7 +39,7 @@ class DecksTableViewCell: UITableViewCell, CPTPlotDataSource {
         self.conciseColors = self.deck!.cardColors(false) as? Array<String>
         
         lblName.text = deck.name
-        lblCreator.text = deck.originalDesigner != nil && count(deck.originalDesigner) > 0 ? "by \(deck.originalDesigner)" : ""
+        lblCreator.text = deck.originalDesigner != nil && deck.originalDesigner.characters.count > 0 ? "by \(deck.originalDesigner)" : ""
         lblFormat.text = deck.format
         lblPrice.text = deck.averagePrice()
         
@@ -50,12 +50,12 @@ class DecksTableViewCell: UITableViewCell, CPTPlotDataSource {
             self.configureHost()
             self.configureGraph()
             self.configureChart()
-            self.hostView!.hostedGraph.reloadData()
+            self.hostView!.hostedGraph!.reloadData()
             
             let graph = self.hostView!.hostedGraph
-            image = graph.imageOfLayer()
-            let png = UIImagePNGRepresentation(image)
-            png.writeToFile(imgPath, atomically: true)
+            image = graph!.imageOfLayer()
+            let png = UIImagePNGRepresentation(image!)
+            png!.writeToFile(imgPath, atomically: true)
             self.hostView!.removeFromSuperview()
 
         }
@@ -82,7 +82,7 @@ class DecksTableViewCell: UITableViewCell, CPTPlotDataSource {
         graph.axisSet = nil
         
         graph.applyTheme(CPTTheme(named: kCPTPlainWhiteTheme))
-        graph.plotAreaFrame.borderLineStyle = nil
+        graph.plotAreaFrame!.borderLineStyle = nil
     }
     
     func configureChart() {
@@ -105,7 +105,7 @@ class DecksTableViewCell: UITableViewCell, CPTPlotDataSource {
         pieChart.overlayFill = CPTFill(gradient: overlayGradient)
         
         // 4 - Add chart to graph
-        graph.addPlot(pieChart)
+        graph!.addPlot(pieChart)
     }
     
     // CPTPlotDataSource methods
@@ -113,8 +113,7 @@ class DecksTableViewCell: UITableViewCell, CPTPlotDataSource {
         return UInt(conciseData!.count)
     }
     
-//    func numberForPlot(plot: CPTPlot, field fieldEnum: UInt, recordIndex index: UInt) -> NSNumber {
-    func numberForPlot(plot: CPTPlot, field fieldEnum:UInt, recordIndex index: UInt) -> AnyObject {
+    func numberForPlot(plot: CPTPlot, field fieldEnum:UInt, recordIndex index: UInt) -> AnyObject? {
         let dict = conciseData![Int(index)]
         let keys = dict.keys
         let part = Double(dict[keys.first!]!)
@@ -131,7 +130,7 @@ class DecksTableViewCell: UITableViewCell, CPTPlotDataSource {
     }
     
     func sliceFillForPieChart(pieChart: CPTPieChart, recordIndex idx: UInt) -> CPTFill {
-        var fill:CPTFill?
+//        var fill:CPTFill?
         var colors = conciseColors
         
         if colors != nil {

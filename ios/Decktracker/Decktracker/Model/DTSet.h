@@ -27,7 +27,7 @@
 @property NSString * setId;
 @property NSString * tcgPlayerName;
 @property DTBlock *block;
-@property RLMArray<DTLanguage> *languages;
+//@property RLMArray<DTLanguage> *languages;
 @property DTSetType *type;
 
 @end

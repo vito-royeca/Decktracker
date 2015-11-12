@@ -26,10 +26,10 @@ class LimitedSearchViewController: UIViewController, UISearchBarDelegate, UITabl
 
         // Do any additional setup after loading the view.
         
-        var dX = CGFloat(0)
-        var dY = CGFloat(0)
-        var dWidth = self.view.frame.size.width
-        var dHeight = self.view.frame.size.height
+        let dX = CGFloat(0)
+        let dY = CGFloat(0)
+        let dWidth = self.view.frame.size.width
+        let dHeight = self.view.frame.size.height
         self.searchBar = UISearchBar()
         self.searchBar!.autoresizingMask = UIViewAutoresizing.FlexibleWidth
         self.searchBar!.delegate = self;
@@ -74,7 +74,7 @@ class LimitedSearchViewController: UIViewController, UISearchBarDelegate, UITabl
         for x in cards {
             let card = x as! DTCard
             let name = card.sectionNameInitial
-            var predicate = NSPredicate(format: "%K = %@", sectionName!, name!)
+            let predicate = NSPredicate(format: "%K = %@", sectionName!, name!)
             
             if (name != nil) {
                 var cardIds = Array<String>()
@@ -84,7 +84,7 @@ class LimitedSearchViewController: UIViewController, UISearchBarDelegate, UITabl
                     cardIds.append(z.cardId)
                 }
                 
-                let index = advance(name!.startIndex, 1)
+                let index = name!.startIndex.advancedBy(1)
                 var indexTitle = name!.substringToIndex(index)
                 
                 if name == "Blue" {
@@ -92,13 +92,13 @@ class LimitedSearchViewController: UIViewController, UISearchBarDelegate, UITabl
                 }
                 
                 unsortedSections.updateValue(cardIds, forKey: name!)
-                if !contains(sectionIndexTitles!, indexTitle) {
+                if !sectionIndexTitles!.contains(indexTitle) {
                     sectionIndexTitles!.append(indexTitle)
                 }
             }
         }
         
-        for k in unsortedSections.keys.array.sorted(<) {
+        for k in unsortedSections.keys.sort(<) {
             let dict = [k: unsortedSections[k]!]
             sections!.append(dict)
         }
@@ -121,7 +121,7 @@ class LimitedSearchViewController: UIViewController, UISearchBarDelegate, UITabl
         view!.addSubview(hud)
         hud.delegate = self;
         
-        if searchBar!.text.isEmpty {
+        if searchBar!.text!.isEmpty {
             sections = Array<[String: [String]]>()
             sectionIndexTitles = [String]()
             self.tblResults!.reloadData()
@@ -138,9 +138,9 @@ class LimitedSearchViewController: UIViewController, UISearchBarDelegate, UITabl
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let dict = sections![indexPath.section]
-        var key = dict.keys.array[0]
-        var cardIds = dict[key]
-        var cardId = cardIds![indexPath.row]
+        let key = dict.keys.first
+        var cardIds = dict[key!]
+        let cardId = cardIds![indexPath.row]
         
         let view = AddCardViewController()
         view.arrDecks = NSMutableArray(array: [self.deckName!])
@@ -158,13 +158,13 @@ class LimitedSearchViewController: UIViewController, UISearchBarDelegate, UITabl
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         let dict = sections![section]
-        let key = dict.keys.array[0]
-        let cardIds = dict[key]
+        let key = dict.keys.first
+        let cardIds = dict[key!]
         let cardsString = cardIds!.count > 1 ? "cards" : "card"
         return "\(key) (\(cardIds!.count) \(cardsString))"
     }
     
-    func sectionIndexTitlesForTableView(tableView: UITableView) -> [AnyObject]! {
+    func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
         return sectionIndexTitles
     }
     
@@ -174,19 +174,19 @@ class LimitedSearchViewController: UIViewController, UISearchBarDelegate, UITabl
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let dict = sections![section]
-        let key = dict.keys.array[0]
-        return dict[key]!.count
+        let key = dict.keys.first
+        return dict[key!]!.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let dict = sections![indexPath.section]
-        let key = dict.keys.array[0]
-        let cardIds = dict[key]
+        let key = dict.keys.first
+        let cardIds = dict[key!]
         let cardId = cardIds![indexPath.row]
         var cell:UITableViewCell?
         var cardSummaryView:CardSummaryView?
         
-        if let x = tableView.dequeueReusableCellWithIdentifier(kCardInfoViewIdentifier) as? UITableViewCell {
+        if let x = tableView.dequeueReusableCellWithIdentifier(kCardInfoViewIdentifier) as UITableViewCell! {
             cell = x
             for subView in cell!.contentView.subviews {
                 if subView is CardSummaryView {

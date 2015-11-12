@@ -76,7 +76,7 @@ class ThumbCollectionViewCell: UICollectionViewCell {
     }
     
     required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        super.init(coder: aDecoder)!
     }
     
     func displayCard(cardId: String) {
@@ -97,7 +97,7 @@ class ThumbCollectionViewCell: UICollectionViewCell {
         Database.sharedInstance().fetchCardRating(self.cardId)
         
         // set image
-        if let dict = Database.sharedInstance().inAppSettingsForSet(card!.set.setId) {
+        if let _ = Database.sharedInstance().inAppSettingsForSet(card!.set.setId) {
             imgSet!.image = UIImage(named: "locked.png")
             
         } else {
@@ -113,8 +113,8 @@ class ThumbCollectionViewCell: UICollectionViewCell {
     }
     
     func loadCropImage(sender: AnyObject) {
-        let dict = sender.userInfo as Dictionary?
-        let cardID = dict?["cardId"] as! String
+//        let dict = sender.userInfo as Dictionary?
+//        let cardID = dict?["cardId"] as! String
         
         if self.cardId == cardId {
             let path = FileManager.sharedInstance().cropPath(self.cardId)

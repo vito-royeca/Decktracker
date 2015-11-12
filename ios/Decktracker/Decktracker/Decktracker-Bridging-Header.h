@@ -4,7 +4,8 @@
 
 #import "ActionSheetPicker.h"
 #import <SystemConfiguration/SystemConfiguration.h>
-#import "CorePlot-CocoaTouch.h"
+//#import "CorePlot-CocoaTouch.h"
+#import <CorePlot/ios/CorePlot.h>
 #import "CSStickyHeaderFlowLayout.h"
 #import "EDStarRating.h"
 #import "GAI.h"

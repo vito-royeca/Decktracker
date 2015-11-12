@@ -41,9 +41,9 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
             let dict = data[key]
             
             for term in dict! {
-                let letter = term.substringWithRange(Range(start: term.startIndex, end: advance(term.startIndex, 1)))
+                let letter = String(term[term.startIndex.advancedBy(1)])
                 
-                if !contains(sections!.keys, letter) {
+                if !sections!.keys.contains(letter) {
                     sections!.updateValue([String](), forKey: letter)
                 }
                 
@@ -60,9 +60,8 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
         self.path = path
     }
     
-    required init(coder aDecoder: NSCoder)
-    {
-        super.init(coder: aDecoder)
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)!
     }
     
     override func viewDidLoad() {
@@ -71,9 +70,9 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
         hidesBottomBarWhenPushed = true
         
         let height = view.frame.size.height //- tabBarController!.tabBar.frame.size.height
-        var frame = CGRect(x:0, y:0, width:view.frame.width, height:height)
+        let frame = CGRect(x:0, y:0, width:view.frame.width, height:height)
         
-        if let oData = data {
+        if let _ = data {
             tblRules = UITableView(frame: frame, style: UITableViewStyle.Plain)
             
             tblRules!.delegate = self
@@ -88,7 +87,7 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
             
             webView!.delegate = self
             view.addSubview(webView!)
-            webView!.loadRequest(NSURLRequest(URL: NSURL(fileURLWithPath: oPath)!))
+            webView!.loadRequest(NSURLRequest(URL: NSURL(fileURLWithPath: oPath)))
         }
         
 #if !DEBUG
@@ -124,7 +123,7 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
 //    MARK: UITableViewDataSource
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if showSections {
-            let keys = Array(sections!.keys).sorted(<)
+            let keys = Array(sections!.keys).sort(<)
             let key = keys[section]
             let values = sections![key]
             return values!.count
@@ -144,16 +143,16 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
         return 1
     }
     
-    func sectionIndexTitlesForTableView(tableView: UITableView) -> [AnyObject]! {
+    func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
         if showSections {
-            return Array(sections!.keys).sorted(<)
+            return Array(sections!.keys).sort(<)
         }
         return nil
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if showSections {
-            let keys = Array(sections!.keys).sorted(<)
+            let keys = Array(sections!.keys).sort(<)
             return keys[section]
         }
         return nil
@@ -163,9 +162,9 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
         var section = -1
         
         if showSections {
-            let keys = Array(sections!.keys).sorted(<)
+            let keys = Array(sections!.keys).sort(<)
             
-            for (i, value) in enumerate(keys) {
+            for (i, value) in keys.enumerate() {
                 if title == value {
                     section = i
                 }
@@ -180,7 +179,7 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
         var value:String?
         
         if showSections {
-            let keys = Array(sections!.keys).sorted(<)
+            let keys = Array(sections!.keys).sort(<)
             key = keys[indexPath.section]
             let values = sections![key!]
             value = values![indexPath.row]
@@ -200,7 +199,7 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
             
             if key == "Rules" {
                 var number:NSString = value!
-                var range:NSRange = number.rangeOfString(" ")
+                let range:NSRange = number.rangeOfString(" ")
                 number = number.substringToIndex(range.location-1)
                 if let rule = DTComprehensiveRule.objectsWithPredicate(NSPredicate(format:"number = %@", number)).firstObject() as? DTComprehensiveRule {
                     if rule.children.count == 0 {
@@ -232,7 +231,7 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
         var value:String?
         
         if showSections {
-            let keys = Array(sections!.keys).sorted(<)
+            let keys = Array(sections!.keys).sort(<)
             key = keys[indexPath.section]
             let values = sections![key!]
             value = values![indexPath.row]
@@ -266,7 +265,7 @@ class ComprehensiveRulesViewController: UIViewController, UITableViewDataSource,
         } else {
             if key == "Table Of Contents" || key == "Rules" {
                 var number:NSString = value!
-                var range:NSRange = number.rangeOfString(" ")
+                let range:NSRange = number.rangeOfString(" ")
                 number = number.substringToIndex(range.location-1)
                 let rule = DTComprehensiveRule.objectsWithPredicate(NSPredicate(format:"number = %@", number)).firstObject() as! DTComprehensiveRule
                 

@@ -20,7 +20,6 @@
 
 static Database *_me;
 
-#pragma mark: Setup code
 +(id) sharedInstance
 {
     if (!_me)
@@ -41,6 +40,7 @@ static Database *_me;
     return self;
 }
 
+#pragma mark - Setup code
 -(void) setupDb
 {
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
@@ -57,7 +57,10 @@ static Database *_me;
 #ifdef DEBUG
     NSLog(@"storePath=%@", storePath);
 #endif
-    [RLMRealm setDefaultRealmPath:storePath];
+//    [RLMRealm setDefaultRealmPath:storePath];
+    RLMRealmConfiguration *config = [[RLMRealmConfiguration alloc] init];
+    [config setPath:storePath];
+    [RLMRealmConfiguration setDefaultConfiguration:config];
 
     // delete all cards from mtgimage.com
     NSString *mtgImageKey = @"mtgimage.com images";
@@ -141,11 +144,23 @@ static Database *_me;
             [JJJUtil addSkipBackupAttributeToItemAtURL:url];
         }
     }
+    
+#else
+    NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+    NSString *storePath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", kDatabaseStore]];
+    
+#ifdef DEBUG
+    NSLog(@"storePath=%@", storePath);
+#endif
+    RLMRealmConfiguration *config = [[RLMRealmConfiguration alloc] init];
+    [config setPath:storePath];
+    [RLMRealmConfiguration setDefaultConfiguration:config];
 #endif
 }
 
 -(void) migrateDb
 {
+    /*
     [RLMRealm setSchemaVersion:1
                 forRealmAtPath:[RLMRealm defaultRealmPath]
             withMigrationBlock:^(RLMMigration *migration, uint64_t oldSchemaVersion)
@@ -159,7 +174,7 @@ static Database *_me;
 //                newObject[@"fullName"] = [NSString stringWithFormat:@"%@ %@", oldObject[@"firstName"], oldObject[@"lastName"]];
 //            }];
         }
-    }];
+    }];*/
 }
 
 -(void) closeDb
@@ -180,16 +195,11 @@ static Database *_me;
 
 -(void) setupParse:(NSDictionary *)launchOptions
 {
-#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
     [Parse enableLocalDatastore];
-//#ifdef DEBUG
-//    [Parse setApplicationId:kParseDevelopID
-//                  clientKey:kParseDevelopClientKey];
-//#else
     [Parse setApplicationId:kParseID
                   clientKey:kParseClientKey];
-//#endif
-    
+
+#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
     [PFFacebookUtils initializeFacebook];
     [PFTwitterUtils initializeWithConsumerKey:kTwitterKey
                                consumerSecret:kTwitterSecret];
@@ -197,7 +207,25 @@ static Database *_me;
 #endif
 }
 
-#pragma mark - Finders with FetchedResultsController
+-(void) cleanupParseLocalDataStore
+{
+    for (NSString *objectName in @[@"Card", @"CardRarity", @"CardRating", @"Set", @"Block", @"Artist", @"SetType"])
+    {
+        PFQuery *query = [PFQuery queryWithClassName:objectName];
+        [query fromLocalDatastore];
+        
+        [[query findObjectsInBackground] continueWithBlock:^id(BFTask *task)
+         {
+             for (PFObject *object in task.result)
+             {
+                 [object unpinInBackground];
+             }
+             return nil;
+         }];
+    }
+}
+
+#pragma mark - Finders
 -(RLMResults*) findCards:(NSString*) query
      withSortDescriptors:(NSArray*) sorters
          withSectionName:(NSString*) sectionName
@@ -222,13 +250,15 @@ static Database *_me;
     }
     
     // to do: exclude In-App Sets
+#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
     NSArray *inAppSetCodes = [self inAppSetCodes];
     if (inAppSetCodes.count > 0)
     {
         NSPredicate *predInAppSets = [NSPredicate predicateWithFormat:@"NOT (set.code IN %@)", inAppSetCodes];
         predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, predInAppSets]];
     }
-    
+#endif
+
     return [[DTCard objectsWithPredicate:predicate] sortedResultsUsingDescriptors:sorters];
 }
 
@@ -268,13 +298,16 @@ static Database *_me;
     }
     
     NSPredicate *pred = predicate2 ? predicate2 : predicate;
+    
     // to do: exclude In-App Sets
+#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
     NSArray *inAppSetCodes = [self inAppSetCodes];
     if (inAppSetCodes.count > 0)
     {
         NSPredicate *predInAppSets = [NSPredicate predicateWithFormat:@"NOT (set.code IN %@)", inAppSetCodes];
         pred = [NSCompoundPredicate andPredicateWithSubpredicates:@[pred, predInAppSets]];
     }
+#endif
     
     return [[DTCard objectsWithPredicate:pred] sortedResultsUsingDescriptors:sorters];
 }
@@ -466,16 +499,174 @@ static Database *_me;
     }
     
     // to do: exclude In-App Sets
+#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
     NSArray *inAppSetCodes = [self inAppSetCodes];
     if (inAppSetCodes.count > 0)
     {
         NSPredicate *predInAppSets = [NSPredicate predicateWithFormat:@"NOT (set.code IN %@)", inAppSetCodes];
         predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, predInAppSets]];
     }
+#endif
     
     return [[DTCard objectsWithPredicate:predicate] sortedResultsUsingDescriptors:sorters];
 }
 
+
+-(NSArray*) fetchRandomCardsFromFormats:(NSArray*) formats
+                         excludeFormats:(NSArray*) excludeFormats
+                                howMany:(int) howMany
+{
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"format.name IN %@ AND NOT (format.name IN %@) AND card.set.magicCardsInfoCode != %@ AND (card.cmc >= 1 AND card.cmc <= 15)", formats, excludeFormats, @""];
+        
+    RLMResults *results = [DTCardLegality objectsWithPredicate:predicate];
+        
+    if (results.count > 0)
+    {
+        for (int i=0; i<howMany; i++)
+        {
+            int random = arc4random() % (results.count - 1) + 1;
+            DTCardLegality *legality = [results objectAtIndex:random+1];
+            [array addObject:legality.card];
+        }
+    }
+        
+    return array;
+}
+ 
+-(void) fetchTcgPlayerPriceForCard:(NSString*) cardId
+{
+    __block DTCard *card = [DTCard objectForPrimaryKey:cardId];
+    BOOL bWillFetch = NO;
+        
+    NSDate *today = [NSDate date];
+    NSCalendar *gregorian = [[NSCalendar alloc]initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSDateComponents *components = [gregorian components:NSCalendarUnitHour
+                                                fromDate:card.tcgPlayerFetchDate
+                                                  toDate:today
+                                                 options:0];
+    if ([components hour] >= TCGPLAYER_FETCH_STORAGE)
+    {
+        bWillFetch = YES;
+    }
+        
+    if (card.set.tcgPlayerName.length <= 0)
+    {
+        bWillFetch = NO;
+    }
+        
+    if (bWillFetch)
+    {
+#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
+            card = [DTCard objectForPrimaryKey:cardId];
+#endif
+            NSString *tcgPricing = [[NSString stringWithFormat:@"http://partner.tcgplayer.com/x3/phl.asmx/p?pk=%@&s=%@&p=%@", TCGPLAYER_PARTNER_KEY, card.set.tcgPlayerName, card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            if (!card.set.tcgPlayerName)
+            {
+                tcgPricing = [[NSString stringWithFormat:@"http://partner.tcgplayer.com/x3/phl.asmx/p?pk=%@&p=%@", TCGPLAYER_PARTNER_KEY, card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            }
+                
+            NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:tcgPricing]];
+            TFHpple *parser = [TFHpple hppleWithHTMLData:data];
+            NSString *low, *mid, *high, *foil, *link;
+                
+            NSArray *nodes = [parser searchWithXPathQuery:@"//product"];
+            for (TFHppleElement *element in nodes)
+            {
+                if ([element hasChildren])
+                {
+                    BOOL linkIsNext = NO;
+                        
+                    for (TFHppleElement *child in element.children)
+                    {
+                        if ([[child tagName] isEqualToString:@"hiprice"])
+                        {
+                            high = [[child firstChild] content];
+                        }
+                        else if ([[child tagName] isEqualToString:@"avgprice"])
+                        {
+                            mid = [[child firstChild] content];
+                        }
+                        else if ([[child tagName] isEqualToString:@"lowprice"])
+                        {
+                            low = [[child firstChild] content];
+                        }
+                        else if ([[child tagName] isEqualToString:@"foilavgprice"])
+                        {
+                            foil = [[child firstChild] content];
+                        }
+                        else if ([[child tagName] isEqualToString:@"link"])
+                        {
+                            linkIsNext = YES;
+                        }
+                        else if ([[child tagName] isEqualToString:@"text"] && linkIsNext)
+                        {
+                            link = [child content];
+                        }
+                    }
+                }
+            }
+#ifdef DEBUG
+            NSLog(@"^TCGPlayer: %@ [%@] - %@", card.set.name, card.set.code, card.name);
+#endif
+                
+            RLMRealm *realm = [RLMRealm defaultRealm];
+            [realm beginWriteTransaction];
+                
+            card.tcgPlayerHighPrice = high ? [high doubleValue] : card.tcgPlayerHighPrice;
+            card.tcgPlayerMidPrice  = mid  ? [mid doubleValue]  : card.tcgPlayerMidPrice;
+            card.tcgPlayerLowPrice  = low  ? [low doubleValue]  : card.tcgPlayerLowPrice;
+            card.tcgPlayerFoilPrice = foil ? [foil doubleValue] : card.tcgPlayerFoilPrice;
+            card.tcgPlayerLink = link ? [JJJUtil trim:link] : card.tcgPlayerLink;
+            card.tcgPlayerFetchDate = [NSDate date];
+            [realm commitWriteTransaction];
+                
+#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
+            dispatch_async(dispatch_get_main_queue(), ^{
+#endif
+                [[NSNotificationCenter defaultCenter] postNotificationName:kPriceUpdateDone
+                                                                    object:nil
+                                                                  userInfo:@{@"cardId": cardId}];
+#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
+            });
+        });
+#endif
+    }
+        
+    else
+    {
+#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
+        dispatch_async(dispatch_get_main_queue(), ^{
+#endif
+            [[NSNotificationCenter defaultCenter] postNotificationName:kPriceUpdateDone
+                                                                object:nil
+                                                              userInfo:@{@"cardId": cardId}];
+#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
+        });
+#endif
+    }
+}
+     
+-(NSArray*) fetchSets:(int) howMany
+{
+    RLMSortDescriptor *sortDescriptor1 = [RLMSortDescriptor sortDescriptorWithProperty:@"releaseDate"
+                                                                             ascending:NO];
+    RLMSortDescriptor *sortDescriptor2 = [RLMSortDescriptor  sortDescriptorWithProperty:@"name"
+                                                                              ascending:YES];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"magicCardsInfoCode != %@", @""];
+        
+    NSMutableArray *arrResults = [[NSMutableArray alloc] init];
+    RLMResults *sets = [[DTSet objectsWithPredicate:predicate] sortedResultsUsingDescriptors:@[sortDescriptor1, sortDescriptor2]];
+        
+    for (int i=0; i<howMany; i++)
+    {
+        DTSet *set = [sets objectAtIndex:i];
+        [arrResults addObject:set.setId];
+    }
+    return arrResults;
+}
+     
 #if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
 -(void) loadInAppSets
 {
@@ -534,7 +725,6 @@ static Database *_me;
     
     return YES;
 }
-#endif
 
 -(NSArray*) fetchRandomCards:(int) howMany
                withPredicate:(NSPredicate*) predicate
@@ -572,201 +762,9 @@ static Database *_me;
     
     return array;
 }
-
--(NSArray*) fetchRandomCardsFromFormats:(NSArray*) formats
-               excludeFormats:(NSArray*) excludeFormats
-                howMany:(int) howMany
-{
-    NSMutableArray *array = [[NSMutableArray alloc] init];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"format.name IN %@ AND NOT (format.name IN %@) AND card.set.magicCardsInfoCode != %@ AND (card.cmc >= 1 AND card.cmc <= 15)", formats, excludeFormats, @""];
-    
-    RLMResults *results = [DTCardLegality objectsWithPredicate:predicate];
-    
-    if (results.count > 0)
-    {
-        for (int i=0; i<howMany; i++)
-        {
-            int random = arc4random() % (results.count - 1) + 1;
-            DTCardLegality *legality = [results objectAtIndex:random+1];
-            [array addObject:legality.card];
-        }
-    }
-    
-    return array;
-}
-
-
-#pragma mark - Finders
--(DTCard*) findCard:(NSString*) cardName inSet:(NSString*) setCode
-{
-    NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"name == %@", cardName];
-    NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"set.code == %@", setCode];
-    NSPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[pred1, pred2]];
-    
-    // to do: exclude In-App Sets
-#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
-    NSArray *inAppSetCodes = [self inAppSetCodes];
-    if (inAppSetCodes.count > 0)
-    {
-        NSPredicate *predInAppSets = [NSPredicate predicateWithFormat:@"NOT (set.code IN %@)", inAppSetCodes];
-        predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, predInAppSets]];
-    }
 #endif
-    return [[DTCard objectsWithPredicate:predicate] firstObject];
-}
-
--(DTCard*) findCardByMultiverseID:(NSString*) multiverseID
-{
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"multiverseID == %@", multiverseID];
-
-#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
-    // to do: exclude In-App Sets
-    NSArray *inAppSetCodes = [self inAppSetCodes];
-    if (inAppSetCodes.count > 0)
-    {
-        NSPredicate *predInAppSets = [NSPredicate predicateWithFormat:@"NOT (set.code IN %@)", inAppSetCodes];
-        predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, predInAppSets]];
-    }
-#endif
-
-    return [[DTCard objectsWithPredicate:predicate] firstObject];
-}
-
--(void) fetchTcgPlayerPriceForCard:(NSString*) cardId
-{
-    __block DTCard *card = [DTCard objectForPrimaryKey:cardId];
-    BOOL bWillFetch = NO;
-    
-    NSDate *today = [NSDate date];
-    NSCalendar *gregorian = [[NSCalendar alloc]initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-    NSDateComponents *components = [gregorian components:NSCalendarUnitHour
-                                                fromDate:card.tcgPlayerFetchDate
-                                                  toDate:today
-                                                 options:0];
-    if ([components hour] >= TCGPLAYER_FETCH_STORAGE)
-    {
-        bWillFetch = YES;
-    }
-    
-    if (card.set.tcgPlayerName.length <= 0)
-    {
-        bWillFetch = NO;
-    }
-    
-    if (bWillFetch)
-    {
-#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
-            card = [DTCard objectForPrimaryKey:cardId];
-#endif
-            NSString *tcgPricing = [[NSString stringWithFormat:@"http://partner.tcgplayer.com/x3/phl.asmx/p?pk=%@&s=%@&p=%@", TCGPLAYER_PARTNER_KEY, card.set.tcgPlayerName, card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-            if (!card.set.tcgPlayerName)
-            {
-                tcgPricing = [[NSString stringWithFormat:@"http://partner.tcgplayer.com/x3/phl.asmx/p?pk=%@&p=%@", TCGPLAYER_PARTNER_KEY, card.name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-            }
-            
-            NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:tcgPricing]];
-            TFHpple *parser = [TFHpple hppleWithHTMLData:data];
-            NSString *low, *mid, *high, *foil, *link;
-            
-            NSArray *nodes = [parser searchWithXPathQuery:@"//product"];
-            for (TFHppleElement *element in nodes)
-            {
-                if ([element hasChildren])
-                {
-                    BOOL linkIsNext = NO;
-                    
-                    for (TFHppleElement *child in element.children)
-                    {
-                        if ([[child tagName] isEqualToString:@"hiprice"])
-                        {
-                            high = [[child firstChild] content];
-                        }
-                        else if ([[child tagName] isEqualToString:@"avgprice"])
-                        {
-                            mid = [[child firstChild] content];
-                        }
-                        else if ([[child tagName] isEqualToString:@"lowprice"])
-                        {
-                            low = [[child firstChild] content];
-                        }
-                        else if ([[child tagName] isEqualToString:@"foilavgprice"])
-                        {
-                            foil = [[child firstChild] content];
-                        }
-                        else if ([[child tagName] isEqualToString:@"link"])
-                        {
-                            linkIsNext = YES;
-                        }
-                        else if ([[child tagName] isEqualToString:@"text"] && linkIsNext)
-                        {
-                            link = [child content];
-                        }
-                    }
-                }
-            }
-#ifdef DEBUG
-            NSLog(@"^TCGPlayer: %@ [%@] - %@", card.set.name, card.set.code, card.name);
-#endif
-        
-            RLMRealm *realm = [RLMRealm defaultRealm];
-            [realm beginWriteTransaction];
-
-            card.tcgPlayerHighPrice = high ? [high doubleValue] : card.tcgPlayerHighPrice;
-            card.tcgPlayerMidPrice  = mid  ? [mid doubleValue]  : card.tcgPlayerMidPrice;
-            card.tcgPlayerLowPrice  = low  ? [low doubleValue]  : card.tcgPlayerLowPrice;
-            card.tcgPlayerFoilPrice = foil ? [foil doubleValue] : card.tcgPlayerFoilPrice;
-            card.tcgPlayerLink = link ? [JJJUtil trim:link] : card.tcgPlayerLink;
-            card.tcgPlayerFetchDate = [NSDate date];
-            [realm commitWriteTransaction];
-            
-#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
-            dispatch_async(dispatch_get_main_queue(), ^{
-#endif
-                [[NSNotificationCenter defaultCenter] postNotificationName:kPriceUpdateDone
-                                                                    object:nil
-                                                                  userInfo:@{@"cardId": cardId}];
-#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
-            });
-        });
-#endif
-    }
-    
-    else
-    {
-#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
-        dispatch_async(dispatch_get_main_queue(), ^{
-#endif
-            [[NSNotificationCenter defaultCenter] postNotificationName:kPriceUpdateDone
-                                                                object:nil
-                                                              userInfo:@{@"cardId": cardId}];
-#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
-        });
-#endif
-    }
-}
-
--(NSArray*) fetchSets:(int) howMany
-{
-    RLMSortDescriptor *sortDescriptor1 = [RLMSortDescriptor sortDescriptorWithProperty:@"releaseDate"
-                                                                             ascending:NO];
-    RLMSortDescriptor *sortDescriptor2 = [RLMSortDescriptor  sortDescriptorWithProperty:@"name"
-                                                                              ascending:YES];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"magicCardsInfoCode != %@", @""];
-
-    NSMutableArray *arrResults = [[NSMutableArray alloc] init];
-    RLMResults *sets = [[DTSet objectsWithPredicate:predicate] sortedResultsUsingDescriptors:@[sortDescriptor1, sortDescriptor2]];
-
-    for (int i=0; i<howMany; i++)
-    {
-        DTSet *set = [sets objectAtIndex:i];
-        [arrResults addObject:set.setId];
-    }
-    return arrResults;
-}
-
-#pragma mark - Parse
-#if defined(_OS_IPHONE) || defined(_OS_IPHONE_SIMULATOR)
+     
+#pragma mark - Parse methods
 -(void) fetchTopRated:(int) limit skip:(int) skip
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"rating >= 0"];
@@ -874,6 +872,253 @@ static Database *_me;
     }];
 }
 
+-(void) incrementCardView:(NSString*) cardId
+{
+    void (^callbackIncrementCard)(PFObject *pfCard, NSString* kardId) = ^void(PFObject *pfCard, NSString* kardId) {
+        
+        __block DTCard *card = [DTCard objectForPrimaryKey:kardId];
+        [pfCard incrementKey:@"numberOfViews"];
+        
+        [pfCard saveEventually:^(BOOL success, NSError *error) {
+            if (pfCard[@"rating"])
+            {
+                card = [DTCard objectForPrimaryKey:kardId];
+                
+                RLMRealm *realm = [RLMRealm defaultRealm];
+                [realm beginWriteTransaction];
+                card.rating = [pfCard[@"rating"] doubleValue];
+                card.parseFetchDate = [NSDate date];
+                [realm commitWriteTransaction];
+            }
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:kParseSyncDone
+                                                                object:nil
+                                                              userInfo:@{@"cardId": kardId}];
+            
+            _currentParseQueue = nil;
+            [self processQueue];
+        }];
+    };
+    
+    [_parseQueue addObject:@[cardId, callbackIncrementCard]];
+    [self processQueue];
+}
+
+-(void) rateCard:(NSString*) cardId withRating:(float) rating
+{
+    void (^callbackRateCard)(PFObject *pfCard, NSString* kardId) = ^void(PFObject *pfCard, NSString* kardId) {
+        PFObject *pfRating = [PFObject objectWithClassName:@"CardRating"];
+        pfRating[@"rating"] = [NSNumber numberWithDouble:rating];
+        pfRating[@"card"] = pfCard;
+        
+        [pfRating saveEventually:^(BOOL success, NSError *error) {
+            PFQuery *query = [PFQuery queryWithClassName:@"CardRating"];
+            [query whereKey:@"card" equalTo:pfCard];
+            
+            [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+                __block DTCard *card = [DTCard objectForPrimaryKey:kardId];
+                double totalRating = 0;
+                double averageRating = 0;
+                
+                for (PFObject *object in objects)
+                {
+                    RLMRealm *realm = [RLMRealm defaultRealm];
+                    [realm beginWriteTransaction];
+                    DTCardRating *rating = [[DTCardRating alloc] init];
+                    rating.rating = [object[@"rating"] floatValue];
+                    rating.card = card;
+                    [realm addObject:rating];
+                    [realm commitWriteTransaction];
+                    
+                    totalRating += [object[@"rating"] doubleValue];
+                }
+                
+                averageRating = totalRating/objects.count;
+                if (isnan(averageRating))
+                {
+                    averageRating = 0;
+                }
+                
+                pfCard[@"rating"] = [NSNumber numberWithDouble:averageRating];
+                [pfCard saveEventually:^(BOOL success, NSError *error) {
+                    card = [DTCard objectForPrimaryKey:kardId];
+                    
+                    RLMRealm *realm = [RLMRealm defaultRealm];
+                    [realm beginWriteTransaction];
+                    card.rating = averageRating;
+                    card.parseFetchDate = [NSDate date];
+                    [realm commitWriteTransaction];
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kParseSyncDone
+                                                                        object:nil
+                                                                      userInfo:@{@"cardId": kardId}];
+                    _currentParseQueue = nil;
+                    [self processQueue];
+                }];
+            }];
+        }];
+    };
+    
+    [_parseQueue addObject:@[cardId, callbackRateCard]];
+    [self processQueue];
+}
+
+-(void) fetchCardRating:(NSString*) cardId
+{
+    DTCard *card = [DTCard objectForPrimaryKey:cardId];
+    BOOL bWillFetch = NO;
+    
+    NSDate *today = [NSDate date];
+    NSCalendar *gregorian = [[NSCalendar alloc]initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSDateComponents *components = [gregorian components:NSCalendarUnitHour
+                                                fromDate:card.parseFetchDate
+                                                  toDate:today
+                                                 options:0];
+    if ([components hour] >= PARSE_FETCH_STORAGE)
+    {
+        bWillFetch = YES;
+    }
+    
+    if (bWillFetch)
+    {
+        void (^callbackFetchCardRating)(PFObject *pfCard, NSString* kardId) = ^void(PFObject *pfCard, NSString* kardId) {
+            
+            if (pfCard[@"rating"])
+            {
+                DTCard *kard = [DTCard objectForPrimaryKey:kardId];
+                
+                RLMRealm *realm = [RLMRealm defaultRealm];
+                [realm beginWriteTransaction];
+                kard.rating = [pfCard[@"rating"] doubleValue];
+                kard.parseFetchDate = [NSDate date];
+                [realm commitWriteTransaction];
+            }
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:kParseSyncDone
+                                                                object:nil
+                                                              userInfo:@{@"cardId": kardId}];
+            _currentParseQueue = nil;
+            [self processQueue];
+        };
+        
+        [_parseQueue addObject:@[cardId, callbackFetchCardRating]];
+    }
+    
+    [self processQueue];
+}
+
+-(void) fetchUserMana
+{
+    PFUser *currentUser = [PFUser currentUser];
+    
+    if (!currentUser)
+    {
+        [self mergeLocalUserManaWithRemote:nil];
+    }
+    else
+    {
+        // find remotely first
+        __block PFQuery *query = [PFQuery queryWithClassName:@"UserMana"];
+        [query whereKey:@"user" equalTo:currentUser];
+        
+        [[query findObjectsInBackground] continueWithSuccessBlock:^id(BFTask *task)
+        {
+            return [[PFObject unpinAllObjectsInBackgroundWithName:@"UserMana"] continueWithSuccessBlock:^id(BFTask *ignored)
+            {
+                NSArray *results = task.result;
+                         
+                if (results.count > 0)
+                {
+                    // found remotely
+                    PFObject *remoteUserMana = task.result[0];
+                    [self mergeLocalUserManaWithRemote:remoteUserMana];
+                }
+                else
+                {
+                    // not found remotely
+                    [self mergeLocalUserManaWithRemote:nil];
+                }
+                 
+                return task;
+             }];
+        }];
+    }
+}
+
+-(void) saveUserMana:(PFObject*) userMana
+{
+    PFUser *currentUser = [PFUser currentUser];
+    
+    if (!currentUser)
+    {
+        [userMana pinInBackgroundWithBlock:^void(BOOL succeeded, NSError *error) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:kParseUserManaDone
+                                                                object:nil
+                                                              userInfo:@{@"userMana": userMana}];
+        }];
+    }
+    else
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kParseUserManaDone
+                                                            object:nil
+                                                          userInfo:@{@"userMana": userMana}];
+        
+        if (userMana)
+        {
+            userMana[@"user"] = currentUser;
+            [userMana saveEventually];
+        }
+        [self deleteUserManaLocally];
+    }
+}
+
+-(void) deleteUserManaLocally
+{
+    __block PFQuery *query = [PFQuery queryWithClassName:@"UserMana"];
+    [query fromLocalDatastore];
+    
+    [[query findObjectsInBackground] continueWithBlock:^id(BFTask *task)
+     {
+         PFObject *pfUserMana;
+         
+         if (task.error)
+         {
+             return task;
+         }
+         
+         for (PFObject *object in task.result)
+         {
+             pfUserMana = object;
+             [pfUserMana unpinInBackground];
+         }
+         return task;
+     }];
+}
+
+-(void) fetchLeaderboard
+{
+    NSMutableArray *arrResults = [[NSMutableArray alloc] init];
+    PFQuery *query = [PFQuery queryWithClassName:@"UserMana"];
+    query.limit = 15;
+    
+    [query includeKey:@"user"];
+    [query orderByDescending:@"totalCMC"];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error)
+        {
+            [arrResults addObjectsFromArray:objects];
+        }
+        else
+        {
+            NSLog(@"%@", error);
+        }
+        [[NSNotificationCenter defaultCenter] postNotificationName:kParseLeaderboardDone
+                                                            object:nil
+                                                          userInfo:@{@"leaderboard": arrResults}];
+    }];
+}
+
+#pragma mark - Parse Queue
 -(void) updateCard:(PFObject*) pfCard
           existing:(BOOL) existing
         withCardId:(NSString*) cardId
@@ -1100,8 +1345,16 @@ static Database *_me;
     pfCard[@"set"] = pfSet;
     pfCard[@"rarity"] = pfRarity;
     pfCard[@"artist"] = pfArtist;
-
+    
     [pfCard saveInBackgroundWithBlock:^(BOOL success, NSError *error) {
+#ifdef DEBUG
+        if (error)
+        {
+            card = [DTCard objectForPrimaryKey:cardId];
+            NSLog(@"Error saving Card: %@ : %@", card.name, error.description);
+        }
+#endif
+        
         if (success)
         {
             [pfCard pinInBackgroundWithBlock:^(BOOL success, NSError *error) {
@@ -1114,10 +1367,8 @@ static Database *_me;
         }
         else
         {
-#ifdef DEBUG
-            card = [DTCard objectForPrimaryKey:cardId];
-            NSLog(@"Error saving Card: %@ : %@", card.name, error.description);
-#endif
+            _currentParseQueue = nil;
+            [self processQueue];
         }
     }];
 }
@@ -1209,14 +1460,14 @@ static Database *_me;
                           andPrintings:pfPrintings
                            andCallback:callbackTask];
                       
-                    return task;
+                      return task;
                   }];
              }
              
              return task;
          }];
     };
-
+    
     void (^callbackFindPrintings)(NSString *cardId, PFObject *pfSet, PFObject *pfCardRarity, PFObject *pfArtist) = ^void(NSString *cardId, PFObject *pfSet, PFObject *pfCardRarity, PFObject *pfArtist)
     {
         
@@ -1262,26 +1513,26 @@ static Database *_me;
                  [query whereKey:@"name" containedIn:arrSetNames];
                  
                  [[query findObjectsInBackground] continueWithSuccessBlock:^id(BFTask *task)
-                 {
-                     pfPrintings = [[NSMutableArray alloc] init];
-                     
-                     for (PFObject *object in task.result)
-                     {
-                         [pfPrintings addObject:object];
-                     }
-                     
-                     for (int i=0; i<pfPrintings.count; i++)
-                     {
-                         [pfPrintings[i] pinInBackgroundWithBlock:^(BOOL success, NSError *error)
-                          {
-                              if (i == pfPrintings.count -1)
-                              {
-                                  callbackFindCard(cardId, pfSet, pfCardRarity, pfArtist, pfPrintings);
-                              }
-                          }];
-                     }
-                     
-                     return task;
+                  {
+                      pfPrintings = [[NSMutableArray alloc] init];
+                      
+                      for (PFObject *object in task.result)
+                      {
+                          [pfPrintings addObject:object];
+                      }
+                      
+                      for (int i=0; i<pfPrintings.count; i++)
+                      {
+                          [pfPrintings[i] pinInBackgroundWithBlock:^(BOOL success, NSError *error)
+                           {
+                               if (i == pfPrintings.count -1)
+                               {
+                                   callbackFindCard(cardId, pfSet, pfCardRarity, pfArtist, pfPrintings);
+                               }
+                           }];
+                      }
+                      
+                      return task;
                   }];
              }
              
@@ -1341,9 +1592,9 @@ static Database *_me;
                       }
                       
                       [pfSet pinInBackgroundWithBlock:^(BOOL success, NSError *error)
-                      {
-                          callbackFindPrintings(cardId, pfSet, pfCardRarity, pfArtist);
-                      }];
+                       {
+                           callbackFindPrintings(cardId, pfSet, pfCardRarity, pfArtist);
+                       }];
                       
                       return task;
                   }];
@@ -1402,9 +1653,9 @@ static Database *_me;
                       }
                       
                       [pfArtist pinInBackgroundWithBlock:^(BOOL success, NSError *error)
-                      {
-                          callbackFindSet(cardId, pfCardRarity, pfArtist);
-                      }];
+                       {
+                           callbackFindSet(cardId, pfCardRarity, pfArtist);
+                       }];
                       return task;
                   }];
              }
@@ -1463,9 +1714,9 @@ static Database *_me;
                       }
                       
                       [pfCardRarity pinInBackgroundWithBlock:^(BOOL success, NSError *error)
-                      {
-                          callbackFindArtist(cardId, pfCardRarity);
-                      }];
+                       {
+                           callbackFindArtist(cardId, pfCardRarity);
+                       }];
                       return task;
                   }];
              }
@@ -1473,7 +1724,7 @@ static Database *_me;
              return task;
          }];
     };
-
+    
     callbackFindCardRarity(cardId);
 }
 
@@ -1489,354 +1740,204 @@ static Database *_me;
     [self processCurrentParseQueue];
 }
 
--(void) incrementCardView:(NSString*) cardId
+#pragma mark - Parse maintenance
+-(void) transferCardsFromSet:(NSString*) sourceSetId toSet:(NSString*) destSetId
 {
-    void (^callbackIncrementCard)(PFObject *pfCard, NSString* kardId) = ^void(PFObject *pfCard, NSString* kardId) {
-        
-        __block DTCard *card = [DTCard objectForPrimaryKey:kardId];
-        [pfCard incrementKey:@"numberOfViews"];
-        
-        [pfCard saveEventually:^(BOOL success, NSError *error) {
-            if (pfCard[@"rating"])
-            {
-                card = [DTCard objectForPrimaryKey:kardId];
-                
-                RLMRealm *realm = [RLMRealm defaultRealm];
-                [realm beginWriteTransaction];
-                card.rating = [pfCard[@"rating"] doubleValue];
-                card.parseFetchDate = [NSDate date];
-                [realm commitWriteTransaction];
-            }
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:kParseSyncDone
-                                                                object:nil
-                                                              userInfo:@{@"cardId": kardId}];
-            
-            _currentParseQueue = nil;
-            [self processQueue];
+    __block PFQuery *query = [PFQuery queryWithClassName:@"Set"];
+    
+    void (^callbackUpdateRating)(PFObject *src, PFObject *dest) = ^void(PFObject *src, PFObject *dest)
+    {
+        PFQuery *q = [PFQuery queryWithClassName:@"CardRating"];
+        [q includeKey:@"card"];
+        [q whereKey:@"card" equalTo:src];
+        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error)
+        {
+             if (!error)
+             {
+                 for (PFObject *object in objects)
+                 {
+                     object[@"card"] = dest;
+                     
+                     [object saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error)
+                     {
+                         if (succeeded)
+                         {
+#ifdef DEBUG
+                             DTCard *card = [[DTCard objectsWithPredicate:[NSPredicate predicateWithFormat:@"name = %@ AND set.code = %@", src[@"name"], src[@"set"][@"code"]]] firstObject];
+                             
+                             NSLog(@"^Parse CardRating: %@ [%@]", card.name, card.set.code);
+#endif
+                         }
+                     }];
+                 }
+             }
         }];
     };
     
-    [_parseQueue addObject:@[cardId, callbackIncrementCard]];
-    [self processQueue];
-}
-
--(void) rateCard:(NSString*) cardId withRating:(float) rating
-{
-    void (^callbackRateCard)(PFObject *pfCard, NSString* kardId) = ^void(PFObject *pfCard, NSString* kardId) {
-        PFObject *pfRating = [PFObject objectWithClassName:@"CardRating"];
-        pfRating[@"rating"] = [NSNumber numberWithDouble:rating];
-        pfRating[@"card"] = pfCard;
-        
-        [pfRating saveEventually:^(BOOL success, NSError *error) {
-            PFQuery *query = [PFQuery queryWithClassName:@"CardRating"];
-            [query whereKey:@"card" equalTo:pfCard];
+    void (^callbackTransferCards)(NSArray *pfSource, NSArray *pfDest) = ^void(NSArray *pfSource, NSArray *pfDest)
+    {
+        for (PFObject *src in pfSource)
+        {
+            PFObject *target;
             
-            [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-                __block DTCard *card = [DTCard objectForPrimaryKey:kardId];
-                double totalRating = 0;
-                double averageRating = 0;
-                
-                for (PFObject *object in objects)
+            for (PFObject *dest in pfDest)
+            {
+                if ([src[@"name"] isEqualToString:dest[@"name"]] &&
+                    [src[@"number"] isEqualToString:dest[@"number"]])
                 {
-                    RLMRealm *realm = [RLMRealm defaultRealm];
-                    [realm beginWriteTransaction];
-                    DTCardRating *rating = [[DTCardRating alloc] init];
-                    rating.rating = [object[@"rating"] floatValue];
-                    rating.card = card;
-                    [realm addObject:rating];
-                    [realm commitWriteTransaction];
-                    
-                    totalRating += [object[@"rating"] doubleValue];
+                    target = dest;
+                    break;
                 }
+            }
+            
+            if (target)
+            {
+                [target incrementKey:@"numberOfViews" byAmount:src[@"numberOfViews"]];
+                [target incrementKey:@"rating" byAmount:src[@"rating"]];
+                [target saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error)
+                 {
+                     if (succeeded)
+                     {
+#ifdef DEBUG
+                         DTCard *card = [[DTCard objectsWithPredicate:[NSPredicate predicateWithFormat:@"name = %@ AND set.code = %@", target[@"name"], target[@"set"][@"code"]]] firstObject];
+                         NSLog(@"^Parse: %@ [%@]", card.name, card.set.code);
+#endif
+                         if (src[@"rating"])
+                         {
+                             callbackUpdateRating(src, target);
+                         }
+                     }
+                 }];
+            }
+            else
+            {
+                DTCard *card = [[DTCard objectsWithPredicate:[NSPredicate predicateWithFormat:@"name = %@ AND set.code = %@", src[@"name"], src[@"set"][@"code"]]] firstObject];
                 
-                averageRating = totalRating/objects.count;
-                if (isnan(averageRating))
+                void (^callbackUpdateCard)(PFObject *pfCard) = ^void(PFObject *pfCard)
                 {
-                    averageRating = 0;
-                }
-                
-                pfCard[@"rating"] = [NSNumber numberWithDouble:averageRating];
-                [pfCard saveEventually:^(BOOL success, NSError *error) {
-                    card = [DTCard objectForPrimaryKey:kardId];
+                    if (src[@"rating"])
+                    {
+                        callbackUpdateRating(src, pfCard);
+                    }
                     
-                    RLMRealm *realm = [RLMRealm defaultRealm];
-                    [realm beginWriteTransaction];
-                    card.rating = averageRating;
-                    card.parseFetchDate = [NSDate date];
-                    [realm commitWriteTransaction];
-                    
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kParseSyncDone
-                                                                        object:nil
-                                                                      userInfo:@{@"cardId": kardId}];
                     _currentParseQueue = nil;
                     [self processQueue];
-                }];
-            }];
-        }];
+                };
+                
+                [_parseQueue addObject:@[card.cardId, callbackUpdateCard]];
+                [self processQueue];
+            }
+        }
     };
     
-    [_parseQueue addObject:@[cardId, callbackRateCard]];
-    [self processQueue];
-}
-
--(void) fetchCardRating:(NSString*) cardId
-{
-    DTCard *card = [DTCard objectForPrimaryKey:cardId];
-    BOOL bWillFetch = NO;
-    
-    NSDate *today = [NSDate date];
-    NSCalendar *gregorian = [[NSCalendar alloc]initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-    NSDateComponents *components = [gregorian components:NSCalendarUnitHour
-                                                fromDate:card.parseFetchDate
-                                                  toDate:today
-                                                 options:0];
-    if ([components hour] >= PARSE_FETCH_STORAGE)
+    [query getObjectInBackgroundWithId:sourceSetId block:^(PFObject *src, NSError *error)
     {
-        bWillFetch = YES;
-    }
-    
-    if (bWillFetch)
-    {
-        void (^callbackFetchCardRating)(PFObject *pfCard, NSString* kardId) = ^void(PFObject *pfCard, NSString* kardId) {
+        PFObject *srcSet = src;
+        
+        query = [PFQuery queryWithClassName:@"Set"];
+        [query getObjectInBackgroundWithId:destSetId block:^(PFObject *dest, NSError *error)
+        {
+            PFObject *destSet = dest;
             
-            if (pfCard[@"rating"])
+            query = [PFQuery queryWithClassName:@"Card"];
+            [query includeKey:@"set"];
+            [query whereKey:@"set" equalTo:srcSet];
+            [query orderByAscending:@"name"];
+            [query findObjectsInBackgroundWithBlock:^(NSArray *srcObjects, NSError *error)
             {
-                DTCard *kard = [DTCard objectForPrimaryKey:kardId];
-                
-                RLMRealm *realm = [RLMRealm defaultRealm];
-                [realm beginWriteTransaction];
-                kard.rating = [pfCard[@"rating"] doubleValue];
-                kard.parseFetchDate = [NSDate date];
-                [realm commitWriteTransaction];
-            }
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:kParseSyncDone
-                                                                object:nil
-                                                              userInfo:@{@"cardId": kardId}];
-            _currentParseQueue = nil;
-            [self processQueue];
-        };
-        
-        [_parseQueue addObject:@[cardId, callbackFetchCardRating]];
-    }
-    
-    [self processQueue];
-}
-
--(void) fetchUserMana
-{
-    PFUser *currentUser = [PFUser currentUser];
-    
-    if (!currentUser)
-    {
-        [self mergeLocalUserManaWithRemote:nil];
-    }
-    else
-    {
-        // find remotely first
-        __block PFQuery *query = [PFQuery queryWithClassName:@"UserMana"];
-        [query whereKey:@"user" equalTo:currentUser];
-        
-        [[query findObjectsInBackground] continueWithSuccessBlock:^id(BFTask *task)
-        {
-            return [[PFObject unpinAllObjectsInBackgroundWithName:@"UserMana"] continueWithSuccessBlock:^id(BFTask *ignored)
-            {
-                NSArray *results = task.result;
-                         
-                if (results.count > 0)
+                if (!error)
                 {
-                    // found remotely
-                    PFObject *remoteUserMana = task.result[0];
-                    [self mergeLocalUserManaWithRemote:remoteUserMana];
+                    query = [PFQuery queryWithClassName:@"Card"];
+                    [query includeKey:@"set"];
+                    [query whereKey:@"set" equalTo:destSet];
+                    [query orderByAscending:@"name"];
+                    [query findObjectsInBackgroundWithBlock:^(NSArray *destObjects, NSError *error)
+                    {
+                        if (!error)
+                        {
+                            callbackTransferCards(srcObjects, destObjects);
+                        }
+                    }];
                 }
-                else
-                {
-                    // not found remotely
-                    [self mergeLocalUserManaWithRemote:nil];
-                }
-                 
-                return task;
-             }];
+            }];
         }];
-    }
-}
-
--(void) mergeLocalUserManaWithRemote:(PFObject*) remoteUserMana
-{
-    __block PFQuery *query = [PFQuery queryWithClassName:@"UserMana"];
-    [query fromLocalDatastore];
-    
-    [[query findObjectsInBackground] continueWithBlock:^id(BFTask *task)
-     {
-         PFObject *localUserMana;
-         
-         if (task.error)
-         {
-             return task;
-         }
-         
-         for (PFObject *object in task.result)
-         {
-             localUserMana = object;
-         }
-         
-         if (localUserMana)
-         {
-             if (remoteUserMana)
-             {
-                 remoteUserMana[@"black"] = @([remoteUserMana[@"black"] integerValue] + [localUserMana[@"black"] integerValue]);
-                 remoteUserMana[@"blue"] = @([remoteUserMana[@"blue"] integerValue] + [localUserMana[@"blue"] integerValue]);
-                 remoteUserMana[@"green"] = @([remoteUserMana[@"green"] integerValue] + [localUserMana[@"green"] integerValue]);
-                 remoteUserMana[@"red"] = @([remoteUserMana[@"red"] integerValue] + [localUserMana[@"red"] integerValue]);
-                 remoteUserMana[@"white"] = @([remoteUserMana[@"white"] integerValue] + [localUserMana[@"white"] integerValue]);
-                 remoteUserMana[@"colorless"] = @([remoteUserMana[@"colorless"] integerValue] + [localUserMana[@"colorless"] integerValue]);
-                 remoteUserMana[@"totalCMC"] = @([remoteUserMana[@"black"] integerValue] +
-                    [remoteUserMana[@"blue"] integerValue] +
-                    [remoteUserMana[@"green"] integerValue] +
-                    [remoteUserMana[@"red"] integerValue] +
-                    [remoteUserMana[@"white"] integerValue] +
-                    [remoteUserMana[@"colorless"] integerValue]);
-                 [self saveUserMana:remoteUserMana];
-             }
-             else
-             {
-                 [self saveUserMana:localUserMana];
-             }
-         }
-         else
-         {
-             if (remoteUserMana)
-             {
-                 [[NSNotificationCenter defaultCenter] postNotificationName:kParseUserManaDone
-                                                                     object:nil
-                                                                   userInfo:@{@"userMana": remoteUserMana}];
-             }
-             else
-             {
-                 // not found in local store, create new one
-                 localUserMana = [PFObject objectWithClassName:@"UserMana"];
-                 localUserMana[@"black"]     = @0;
-                 localUserMana[@"blue"]      = @0;
-                 localUserMana[@"green"]     = @0;
-                 localUserMana[@"red"]       = @0;
-                 localUserMana[@"white"]     = @0;
-                 localUserMana[@"colorless"] = @0;
-                 localUserMana[@"totalCMC"]  = @0;
-                 
-                 [localUserMana pinInBackgroundWithBlock:^void(BOOL succeeded, NSError *error) {
-                     [[NSNotificationCenter defaultCenter] postNotificationName:kParseUserManaDone
-                                                                         object:nil
-                                                                       userInfo:@{@"userMana": localUserMana}];
-                 }];
-             }
-             
-         }
-         
-         return task;
-     }];
-}
-
--(void) saveUserMana:(PFObject*) userMana
-{
-    PFUser *currentUser = [PFUser currentUser];
-    
-    if (!currentUser)
-    {
-        [userMana pinInBackgroundWithBlock:^void(BOOL succeeded, NSError *error) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:kParseUserManaDone
-                                                                object:nil
-                                                              userInfo:@{@"userMana": userMana}];
-        }];
-    }
-    else
-    {
-        [[NSNotificationCenter defaultCenter] postNotificationName:kParseUserManaDone
-                                                            object:nil
-                                                          userInfo:@{@"userMana": userMana}];
-        
-        if (userMana)
-        {
-            userMana[@"user"] = currentUser;
-            [userMana saveEventually];
-        }
-        [self deleteUserManaLocally];
-    }
-}
-
--(void) deleteUserManaLocally
-{
-    __block PFQuery *query = [PFQuery queryWithClassName:@"UserMana"];
-    [query fromLocalDatastore];
-    
-    [[query findObjectsInBackground] continueWithBlock:^id(BFTask *task)
-    {
-        PFObject *pfUserMana;
-         
-        if (task.error)
-        {
-            return task;
-        }
-         
-        for (PFObject *object in task.result)
-        {
-            pfUserMana = object;
-            [pfUserMana unpinInBackground];
-        }
-        return task;
-     }];
-}
-
--(void) fetchLeaderboard
-{
-    NSMutableArray *arrResults = [[NSMutableArray alloc] init];
-    PFQuery *query = [PFQuery queryWithClassName:@"UserMana"];
-    query.limit = 15;
-    
-    [query includeKey:@"user"];
-    [query orderByDescending:@"totalCMC"];
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        if (!error)
-        {
-            [arrResults addObjectsFromArray:objects];
-        }
-        else
-        {
-            NSLog(@"%@", error);
-        }
-        [[NSNotificationCenter defaultCenter] postNotificationName:kParseLeaderboardDone
-                                                            object:nil
-                                                          userInfo:@{@"leaderboard": arrResults}];
     }];
 }
 
-#pragma mark Parse.com maintenance
--(void) updateCard:(NSString*) cardId
+-(void) deleteDuplicateParseCards
 {
-    void (^callbackUpdateCard)(PFObject *pfCard) = ^void(PFObject *pfCard) {
-        // do nothing here...
-        
-        _currentParseQueue = nil;
-        [self processQueue];
-    };
+    PFQuery *query = [PFQuery queryWithClassName:@"Card"];
+    [query whereKeyDoesNotExist:@"rarity"];
+    [query includeKey:@"set"];
+    [query orderByAscending:@"name"];
     
-    [_parseQueue addObject:@[cardId, callbackUpdateCard]];
-    [self processQueue];
+//#if !defined(_OS_IPHONE)
+//    dispatch_semaphore_t sema = dispatch_semaphore_create(0);
+//#endif
+    
+    [[query findObjectsInBackground] continueWithBlock:^id(BFTask *task)
+     {
+         for (PFObject *pfCard in task.result)
+         {
+             PFQuery *query2 = [PFQuery queryWithClassName:@"Card"];
+             [query2 whereKey:@"set" equalTo:pfCard[@"set"]];
+             [query2 whereKey:@"name" equalTo:pfCard[@"name"]];
+             
+             [[query2 findObjectsInBackground] continueWithBlock:^id(BFTask *task2)
+              {
+                  for (PFObject *pfCard2 in task2.result)
+                  {
+                      PFObject* pfSet2 = pfCard2[@"set"];
+                      
+                      NSLog(@"^Card: (%@)%@ [(%@)%@]", pfCard2.objectId, pfCard2[@"name"], pfSet2.objectId, pfSet2[@"name"]);
+                      [pfCard2 incrementKey:@"numberOfViews" byAmount:pfCard[@"numberOfViews"]];
+                      if (pfCard[@"rating"])
+                      {
+                          [pfCard2 incrementKey:@"rating" byAmount:pfCard[@"rating"]];
+                      }
+                      
+                      [pfCard2 saveEventually:^(BOOL success, NSError *error) {
+                          PFObject* pfSet = pfCard[@"set"];
+                          
+                          NSLog(@"-Card: (%@)%@ [(%@)%@]", pfCard.objectId, pfCard[@"name"], pfSet.objectId, pfSet[@"name"]);
+                          [pfCard deleteEventually];
+                          
+//#if !defined(_OS_IPHONE)
+//                          dispatch_semaphore_signal(sema);
+//#endif
+                      }];
+                  }
+                  
+                  return nil;
+              }];
+         }
+         return nil;
+     }];
+    
+//#if !defined(_OS_IPHONE)
+//    dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
+//#endif
 }
 
 -(void) updateParseCards
 {
     for (DTSet *set in [[DTSet allObjects] sortedResultsUsingProperty:@"name" ascending:YES])
     {
-        if ([set.code isEqualToString:@"ORI"] || // v2.22.3
-            [set.code isEqualToString:@"CPK"] || // v2.22.4
-            [set.code isEqualToString:@"POR"] || // v2.22.5
-            [set.code isEqualToString:@"S99"] || // v2.22.5
-            [set.code isEqualToString:@"CMD"])   // v2.22.6
+        if ([set.code isEqualToString:@"WWK"] ||
+            [set.code isEqualToString:@"ZEN"])
         {
             for (DTCard *card in [[DTCard objectsWithPredicate:[NSPredicate predicateWithFormat:@"set.code = %@", set.code]] sortedResultsUsingProperty:@"name" ascending:YES])
             {
-                [self updateCard:card.cardId];
+                void (^callbackUpdateCard)(PFObject *pfCard) = ^void(PFObject *pfCard) {
+                    // do nothing here...
+                    
+                    _currentParseQueue = nil;
+                    [self processQueue];
+                };
+                
+                [_parseQueue addObject:@[card.cardId, callbackUpdateCard]];
+                [self processQueue];
+
             }
         }
     }
@@ -2090,67 +2191,79 @@ static Database *_me;
     }
 }
 
--(void) deleteDuplicateParseCards
+#pragma mark - Unused
+-(void) mergeLocalUserManaWithRemote:(PFObject*) remoteUserMana
 {
-    PFQuery *query = [PFQuery queryWithClassName:@"Card"];
-    [query whereKeyDoesNotExist:@"rarity"];
-    [query includeKey:@"set"];
-    [query orderByAscending:@"name"];
+    __block PFQuery *query = [PFQuery queryWithClassName:@"UserMana"];
+    [query fromLocalDatastore];
     
     [[query findObjectsInBackground] continueWithBlock:^id(BFTask *task)
      {
-         for (PFObject *pfCard in task.result)
+         PFObject *localUserMana;
+         
+         if (task.error)
          {
-             PFQuery *query2 = [PFQuery queryWithClassName:@"Card"];
-             [query2 whereKey:@"set" equalTo:pfCard[@"set"]];
-             [query2 whereKey:@"name" equalTo:pfCard[@"name"]];
-             
-             [[query2 findObjectsInBackground] continueWithBlock:^id(BFTask *task2)
-              {
-                  for (PFObject *pfCard2 in task2.result)
-                  {
-                      PFObject* pfSet2 = pfCard2[@"set"];
-                      
-                      NSLog(@"^Card: (%@)%@ [(%@)%@]", pfCard2.objectId, pfCard2[@"name"], pfSet2.objectId, pfSet2[@"name"]);
-                      [pfCard2 incrementKey:@"numberOfViews" byAmount:pfCard[@"numberOfViews"]];
-                      if (pfCard[@"rating"])
-                      {
-                          [pfCard2 incrementKey:@"rating" byAmount:pfCard[@"rating"]];
-                      }
-                      
-                      [pfCard2 saveEventually:^(BOOL success, NSError *error) {
-                          PFObject* pfSet = pfCard[@"set"];
-                          
-                          NSLog(@"-Card: (%@)%@ [(%@)%@]", pfCard.objectId, pfCard[@"name"], pfSet.objectId, pfSet[@"name"]);
-                          [pfCard deleteEventually];
-                      }];
-                  }
-                  
-                  return nil;
-              }];
+             return task;
          }
-         return nil;
+         
+         for (PFObject *object in task.result)
+         {
+             localUserMana = object;
+         }
+         
+         if (localUserMana)
+         {
+             if (remoteUserMana)
+             {
+                 remoteUserMana[@"black"] = @([remoteUserMana[@"black"] integerValue] + [localUserMana[@"black"] integerValue]);
+                 remoteUserMana[@"blue"] = @([remoteUserMana[@"blue"] integerValue] + [localUserMana[@"blue"] integerValue]);
+                 remoteUserMana[@"green"] = @([remoteUserMana[@"green"] integerValue] + [localUserMana[@"green"] integerValue]);
+                 remoteUserMana[@"red"] = @([remoteUserMana[@"red"] integerValue] + [localUserMana[@"red"] integerValue]);
+                 remoteUserMana[@"white"] = @([remoteUserMana[@"white"] integerValue] + [localUserMana[@"white"] integerValue]);
+                 remoteUserMana[@"colorless"] = @([remoteUserMana[@"colorless"] integerValue] + [localUserMana[@"colorless"] integerValue]);
+                 remoteUserMana[@"totalCMC"] = @([remoteUserMana[@"black"] integerValue] +
+                 [remoteUserMana[@"blue"] integerValue] +
+                 [remoteUserMana[@"green"] integerValue] +
+                 [remoteUserMana[@"red"] integerValue] +
+                 [remoteUserMana[@"white"] integerValue] +
+                 [remoteUserMana[@"colorless"] integerValue]);
+                 [self saveUserMana:remoteUserMana];
+             }
+             else
+             {
+                 [self saveUserMana:localUserMana];
+             }
+         }
+         else
+         {
+             if (remoteUserMana)
+             {
+                 [[NSNotificationCenter defaultCenter] postNotificationName:kParseUserManaDone
+                                                                     object:nil
+                                                                   userInfo:@{@"userMana": remoteUserMana}];
+             }
+             else
+             {
+                 // not found in local store, create new one
+                 localUserMana = [PFObject objectWithClassName:@"UserMana"];
+                 localUserMana[@"black"]     = @0;
+                 localUserMana[@"blue"]      = @0;
+                 localUserMana[@"green"]     = @0;
+                 localUserMana[@"red"]       = @0;
+                 localUserMana[@"white"]     = @0;
+                 localUserMana[@"colorless"] = @0;
+                 localUserMana[@"totalCMC"]  = @0;
+                 
+                 [localUserMana pinInBackgroundWithBlock:^void(BOOL succeeded, NSError *error) {
+                     [[NSNotificationCenter defaultCenter] postNotificationName:kParseUserManaDone
+                                                                         object:nil
+                                                                       userInfo:@{@"userMana": localUserMana}];
+                 }];
+             }
+             
+         }
+         
+         return task;
      }];
 }
-
--(void) cleanupParseLocalDataStore
-{
-    for (NSString *objectName in @[@"Card", @"CardRarity", @"CardRating", @"Set", @"Block", @"Artist", @"SetType"])
-    {
-        PFQuery *query = [PFQuery queryWithClassName:objectName];
-        [query fromLocalDatastore];
-
-        [[query findObjectsInBackground] continueWithBlock:^id(BFTask *task)
-        {
-            for (PFObject *object in task.result)
-            {
-                [object unpinInBackground];
-            }
-            return nil;
-        }];
-    }
-}
-
-#endif
-
 @end

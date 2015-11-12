@@ -19,8 +19,8 @@ class CardPriceHeader: UIView {
         
         var dX = CGFloat(0)
         var dY = CGFloat(0)
-        var dWidth = frame.width / 4
-        var dHeight = frame.height / 2
+        let dWidth = frame.width / 4
+        let dHeight = frame.height / 2
         
         var label = UILabel(frame: CGRect(x: dX, y: dY, width: dWidth, height: dHeight))
         label.textColor = UIColor.lightGrayColor()
@@ -102,7 +102,7 @@ class CardPriceHeader: UIView {
     func showCardPricing(cardId: String) {
         let card = DTCard(forPrimaryKey: cardId)
         
-        var formatter =  NSNumberFormatter()
+        let formatter =  NSNumberFormatter()
         formatter.maximumFractionDigits = 2
         formatter.roundingMode = NSNumberFormatterRoundingMode.RoundCeiling
         formatter.numberStyle = NSNumberFormatterStyle.CurrencyStyle

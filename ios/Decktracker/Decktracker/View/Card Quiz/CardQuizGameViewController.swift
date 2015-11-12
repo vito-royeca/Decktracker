@@ -64,25 +64,31 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         NSNotificationCenter.defaultCenter().addObserver(self, selector:"fetchUserManaDone:",  name:kParseUserManaDone, object:nil)
         
         // load the sounds
-        backgroundSoundPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("/audio/cardquiz_game", ofType: "caf")!), error: nil)
-        backgroundSoundPlayer!.prepareToPlay()
-        backgroundSoundPlayer!.volume = 1.0
+//        backgroundSoundPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("/audio/cardquiz_game", ofType: "caf")!), error: nil)
         
-        successSoundPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("/audio/cardquiz_success", ofType: "caf")!), error: nil)
-        successSoundPlayer!.prepareToPlay()
-        successSoundPlayer!.volume = 1.0
+//        do {
+//            try {
         
-        failSoundPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("/audio/cardquiz_fail", ofType: "caf")!), error: nil)
-        failSoundPlayer!.prepareToPlay()
-        failSoundPlayer!.volume = 1.0
         
-        answerDeleteSoundPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("/audio/cardquiz_answer_delete", ofType: "caf")!), error: nil)
-        answerDeleteSoundPlayer!.prepareToPlay()
-        answerDeleteSoundPlayer!.volume = 1.0
+        self.backgroundSoundPlayer = try? AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("/audio/cardquiz_game", ofType: "caf")!), fileTypeHint: AVFileTypeCoreAudioFormat)
+        self.backgroundSoundPlayer!.prepareToPlay()
+        self.backgroundSoundPlayer!.volume = 1.0
         
-        castSoundPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("/audio/cardquiz_cast", ofType: "caf")!), error: nil)
-        castSoundPlayer!.prepareToPlay()
-        castSoundPlayer!.volume = 1.0
+        self.successSoundPlayer = try? AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("/audio/cardquiz_success", ofType: "caf")!), fileTypeHint: AVFileTypeCoreAudioFormat)
+        self.successSoundPlayer!.prepareToPlay()
+        self.successSoundPlayer!.volume = 1.0
+        
+        self.failSoundPlayer = try? AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("/audio/cardquiz_fail", ofType: "caf")!), fileTypeHint: AVFileTypeCoreAudioFormat)
+        self.failSoundPlayer!.prepareToPlay()
+        self.failSoundPlayer!.volume = 1.0
+        
+        self.answerDeleteSoundPlayer = try? AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("/audio/cardquiz_answer_delete", ofType: "caf")!), fileTypeHint: AVFileTypeCoreAudioFormat)
+        self.answerDeleteSoundPlayer!.prepareToPlay()
+        self.answerDeleteSoundPlayer!.volume = 1.0
+        
+        self.castSoundPlayer = try? AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("/audio/cardquiz_cast", ofType: "caf")!), fileTypeHint: AVFileTypeCoreAudioFormat)
+        self.castSoundPlayer!.prepareToPlay()
+        self.castSoundPlayer!.volume = 1.0
         
         setupBackground()
         setupManaPoints()
@@ -155,7 +161,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         let manaLabelHeight = manaImageHeight+2
         
         var dX:CGFloat = 10
-        var dY = btnClose!.frame.origin.y + btnClose!.frame.size.height + 10
+        let dY = btnClose!.frame.origin.y + btnClose!.frame.size.height + 10
         var dFrame = CGRect(x:dX, y:dY, width:manaImageWidth, height:manaImageHeight)
         var imageView = UIImageView(frame: dFrame)
         imageView.image = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/mana/B/32.png")
@@ -247,11 +253,11 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
     }
     
     func setupCastingCost() {
-        var dWidth = self.view.frame.size.width * 0.70
-        var dX = (self.view.frame.size.width - dWidth) / 2
-        var dY = lblColorless!.frame.origin.y + lblColorless!.frame.size.height + 10
-        var dHeight = CGFloat(16)
-        var dFrame = CGRect(x:dX, y:dY, width:dWidth, height:dHeight)
+        let dWidth = self.view.frame.size.width * 0.70
+        let dX = (self.view.frame.size.width - dWidth) / 2
+        let dY = lblColorless!.frame.origin.y + lblColorless!.frame.size.height + 10
+        let dHeight = CGFloat(16)
+        let dFrame = CGRect(x:dX, y:dY, width:dWidth, height:dHeight)
         
         viewCastingCost = UIView(frame: dFrame)
         self.view.addSubview(viewCastingCost!)
@@ -259,9 +265,9 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
     
     func setupFunctionButtons() {
         var dX = CGFloat(0)
-        var dY = self.view.frame.height - 120
-        var dWidth = self.view.frame.size.width/3
-        var dHeight = CGFloat(40)
+        let dY = self.view.frame.height - 120
+        let dWidth = self.view.frame.size.width/3
+        let dHeight = CGFloat(40)
         var dFrame = CGRect(x: dX, y: dY, width: dWidth, height: dHeight)
         
         // draw the ask button
@@ -309,12 +315,12 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
 
     func updateManaPool() {
         if let mana = userMana {
-            manaBlack     = mana["black"]!.integerValue
-            manaBlue      = mana["blue"]!.integerValue
-            manaGreen     = mana["green"]!.integerValue
-            manaRed       = mana["red"]!.integerValue
-            manaWhite     = mana["white"]!.integerValue
-            manaColorless = mana["colorless"]!.integerValue
+            manaBlack     = mana.objectForKey("black")!.integerValue
+            manaBlue      = mana.objectForKey("blue")!.integerValue
+            manaGreen     = mana.objectForKey("green")!.integerValue
+            manaRed       = mana.objectForKey("red")!.integerValue
+            manaWhite     = mana.objectForKey("white")!.integerValue
+            manaColorless = mana.objectForKey("colorless")!.integerValue
         }
         
         lblBlack!.text     = " \(manaBlack)"
@@ -327,7 +333,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         if canCastCard() && btnCast != nil {
             if let recognizers = btnCast!.gestureRecognizers {
                 for recognizer in recognizers {
-                    btnCast!.removeGestureRecognizer(recognizer as! UIGestureRecognizer)
+                    btnCast!.removeGestureRecognizer(recognizer)
                 }
             }
             btnCast!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "castTapped:"))
@@ -338,7 +344,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
 
     func animateManaLabels() {
         // black
-        var mana = lblBlack!.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()).toInt()!
+        var mana = Int(lblBlack!.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()))
         var color:UIColor?
         lblBlack!.text     = " \(manaBlack)"
         if mana < manaBlack {
@@ -354,7 +360,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         color = nil
         
         // blue
-        mana = lblBlue!.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()).toInt()!
+        mana = Int(lblBlue!.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()))
         lblBlue!.text     = " \(manaBlue)"
         if mana < manaBlue {
             color = UIColor.greenColor()
@@ -369,7 +375,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         color = nil
         
         // green
-        mana = lblGreen!.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()).toInt()!
+        mana = Int(lblGreen!.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()))
         lblGreen!.text     = " \(manaGreen)"
         if mana < manaGreen {
             color = UIColor.greenColor()
@@ -384,7 +390,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         color = nil
 
         // red
-        mana = lblRed!.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()).toInt()!
+        mana = Int(lblRed!.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()))
         lblRed!.text     = " \(manaRed)"
         if mana < manaRed {
             color = UIColor.greenColor()
@@ -399,7 +405,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         color = nil
 
         // white
-        mana = lblWhite!.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()).toInt()!
+        mana = Int(lblWhite!.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()))
         lblWhite!.text     = " \(manaWhite)"
         if mana < manaWhite {
             color = UIColor.greenColor()
@@ -414,7 +420,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         color = nil
         
         // colorless
-        mana = lblColorless!.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()).toInt()!
+        mana = Int(lblColorless!.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()))
         lblColorless!.text     = " \(manaColorless)"
         if mana < manaColorless {
             color = UIColor.greenColor()
@@ -493,7 +499,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
                 lines.append(word)
                 
             } else {
-                if (count(line!) + count(word) + 1) <= 12 {
+                if (line!.characters.count + word.characters.count + 1) <= 12 {
                     lines.removeLast()
                     line = line! + " " + word
                     lines.append(line!)
@@ -511,8 +517,8 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
             
             dWidth = self.view.frame.size.width/12
             dHeight = 30
-            dX = (self.view.frame.width - (dWidth*CGFloat(count(line))))/2
-            for character in line {
+            dX = (self.view.frame.width - (dWidth*CGFloat(line.characters.count)))/2
+            for character in line.characters {
                 dFrame = CGRect(x: dX, y: dY, width: dWidth, height: dHeight)
                 let label = UILabel(frame: dFrame!)
                 
@@ -573,8 +579,8 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
             dFrame = CGRect(x: dX, y: dY, width: dWidth, height: dHeight)
             
             var text:String?
-            if i <= count(quiz)-1 {
-                let quizIndex = advance(quiz.startIndex, i)
+            if i <= quiz.characters.count-1 {
+                let quizIndex = quiz.startIndex.advancedBy(i)
                 text = String(quiz[quizIndex])
             }
             
@@ -601,13 +607,13 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         NSNotificationCenter.defaultCenter().removeObserver(self, name:kCardDownloadCompleted,  object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector:"loadCardImage:",  name:kCardDownloadCompleted, object:nil)
         
-        var dWidth = self.view.frame.size.width * 0.90
-        var dX = (self.view.frame.size.width - dWidth) / 2
-        var dY = viewCastingCost!.frame.origin.y + viewCastingCost!.frame.size.height + 10
-        var dHeight = self.view.frame.height - 160
+        let dWidth = self.view.frame.size.width * 0.90
+        let dX = (self.view.frame.size.width - dWidth) / 2
+        let dY = viewCastingCost!.frame.origin.y + viewCastingCost!.frame.size.height + 10
+        let dHeight = self.view.frame.height - 160
         
-        var viewImageFrame = CGRect(x: dX, y: dY, width: dWidth, height: dHeight)
-        var btnNextCardFrame = CGRect(x: btnBuy!.frame.origin.x, y: btnBuy!.frame.origin.y+80, width: btnBuy!.frame.size.width, height: btnBuy!.frame.size.height)
+        let viewImageFrame = CGRect(x: dX, y: dY, width: dWidth, height: dHeight)
+        let btnNextCardFrame = CGRect(x: btnBuy!.frame.origin.x, y: btnBuy!.frame.origin.y+80, width: btnBuy!.frame.size.width, height: btnBuy!.frame.size.height)
         
         // clean up
         viewImage!.removeFromSuperview()
@@ -718,7 +724,9 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         }
         
         if value != nil {
-            let array = split(value!) {$0 == "_"}
+//            let array = split(value!) {$0 == "_"}
+            // Swift 2: Xcode 7
+            let array = value!.characters.split{$0 == " "}.map(String.init)
             let code = array[0]
             let number = array[1]
             let pred = NSPredicate(format: "set.code = %@ AND number = %@", code, number)
@@ -746,13 +754,13 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         
         // exclude cards with more than 12 characters in it's name
         for word in card.name.componentsSeparatedByString(" ") {
-            if count(word) > 12 {
+            if word.characters.count > 12 {
                 return false
             }
         }
         
         // exclude cards with more than 20 characters in it's name
-        if count(card.name) > 20 {
+        if card.name.characters.count > 20 {
             return false
         }
 
@@ -829,13 +837,13 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
             manaWhite +
         manaColorless;
         
-        userMana!["black"]     = NSNumber(integer: manaBlack)
-        userMana!["blue"]      = NSNumber(integer: manaBlue)
-        userMana!["green"]     = NSNumber(integer: manaGreen)
-        userMana!["red"]       = NSNumber(integer: manaRed)
-        userMana!["white"]     = NSNumber(integer: manaWhite)
-        userMana!["colorless"] = NSNumber(integer: manaColorless)
-        userMana!["totalCMC"]  = NSNumber(integer: totalCMC)
+        userMana!.setObject(NSNumber(integer: manaBlack), forKey:"black")
+        userMana!.setObject(NSNumber(integer: manaBlue), forKey:"blue")
+        userMana!.setObject(NSNumber(integer: manaGreen), forKey:"green")
+        userMana!.setObject(NSNumber(integer: manaRed), forKey:"red")
+        userMana!.setObject(NSNumber(integer: manaWhite), forKey:"white")
+        userMana!.setObject(NSNumber(integer: manaColorless), forKey:"colorless")
+        userMana!.setObject(NSNumber(integer: totalCMC), forKey:"totalCMC")
         
         Database.sharedInstance().saveUserMana(userMana!)
     }
@@ -1020,7 +1028,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         
         // get screenshot
         UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, self.view.opaque, 0.0)
-        self.view.layer.renderInContext(UIGraphicsGetCurrentContext())
+        self.view.layer.renderInContext(UIGraphicsGetCurrentContext()!)
         let screenshot = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext();
         
@@ -1029,7 +1037,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         
         let activityController = UIActivityViewController(activityItems:sharingItems, applicationActivities:nil)
         activityController.excludedActivityTypes = [UIActivityTypeAirDrop, UIActivityTypeAddToReadingList, UIActivityTypeAssignToContact, UIActivityTypeCopyToPasteboard, UIActivityTypePrint]
-        activityController.completionWithItemsHandler = {(activityType: String!, completed: Bool, returnedItems: [AnyObject]!, activityError: NSError!) -> Void in
+        activityController.completionWithItemsHandler = {(activityType: String?, completed: Bool, returnedItems: [AnyObject]?, activityError: NSError?) -> Void in
             
             if (completed) {
                 JJJUtil.alertWithTitle("Help", andMessage:"Help sent.")
@@ -1069,10 +1077,9 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
             self.presentViewController(view2, animated: false, completion: nil)
         }
         
-        let cancelBlock = { (picker: ActionSheetStringPicker? ) -> Void in
-            self.backgroundSoundPlayer!.play()
-        
-        }
+//        let cancelBlock = { (picker: ActionSheetStringPicker? ) -> Void in
+//            self.backgroundSoundPlayer!.play()
+//        }
         
         ActionSheetStringPicker.showPickerWithTitle("Buy Mana",
             rows: ["18 Mana", "60 Mana", "100 Mana"],
@@ -1256,11 +1263,11 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
     }
     
     func quizForCard(card: DTCard) -> String {
-        let xcount = count(card.name)
+        let xcount = card.name.characters.count
         var quiz = String()
-        var name = Array(card.name)
+        var name = Array(arrayLiteral: card.name)
         
-        for i in 0...xcount-1 {
+        for _ in 0...xcount-1 {
             let random = Int(arc4random_uniform(UInt32(name.count-1)))
             let letter = String(name[random])
             if letter != " " {
@@ -1271,15 +1278,15 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         
         // add random spaces
         var jumble = String()
-        var countQuiz = count(quiz)
-        var countSpaces = 20 - countQuiz
+        let countQuiz = quiz.characters.count
+        let countSpaces = 20 - countQuiz
         var iQuiz = 0
         var iSpaces = 0
-        for i in 0...19 {
+        for _ in 0...19 {
             switch Int(arc4random_uniform(UInt32(2))) {
             case 0:
                 if iQuiz <= countQuiz-1 {
-                    let index = advance(quiz.startIndex, iQuiz)
+                    let index = quiz.startIndex.advancedBy(iQuiz)
                     let letter = String(quiz[index])
                     jumble += letter
                     iQuiz++
@@ -1296,7 +1303,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
                     iSpaces++
 
                 } else if iQuiz <= countQuiz-1 {
-                    let index = advance(quiz.startIndex, iQuiz)
+                    let index = quiz.startIndex.advancedBy(iQuiz)
                     let letter = String(quiz[index])
                     jumble += letter
                     iQuiz++
@@ -1309,7 +1316,7 @@ class CardQuizGameViewController: UIViewController, MBProgressHUDDelegate, InApp
         }
         
 #if DEBUG
-        println("\(card.name)")
+        print("\(card.name)")
 #endif
         return jumble
     }

@@ -65,8 +65,6 @@ typedef NS_ENUM(NSInteger, EditMode)
 // Keys
 #define kAppID                           @"913992761"
 
-#define kCrashlyticsAPIKey               @"114b3dd82452ec2f4024140ec862698d331b8f3f"
-
 #define kDropboxID                       @"v57bkxsnzi3gxt3"
 #define kDropBoxSecret                   @"qbyj5znuytk3ljj"
 

@@ -62,7 +62,6 @@
 /* Begin PBXFileReference section */
 		8C0ECBF81B81E85F005D5BEE /* libhpple.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libhpple.a; path = "../../../../Library/Developer/Xcode/DerivedData/DataSource-exunlzaqzgqgbjhgyhupklwxiowb/Build/Products/Debug/libhpple.a"; sourceTree = "<group>"; };
 		8C0ECBF91B81E85F005D5BEE /* libJJJUtils.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libJJJUtils.a; path = "../../../../Library/Developer/Xcode/DerivedData/DataSource-exunlzaqzgqgbjhgyhupklwxiowb/Build/Products/Debug/libJJJUtils.a"; sourceTree = "<group>"; };
-		8C0ECBFA1B81E85F005D5BEE /* libRealm.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRealm.a; path = "../../../../Library/Developer/Xcode/DerivedData/DataSource-exunlzaqzgqgbjhgyhupklwxiowb/Build/Products/Debug/libRealm.a"; sourceTree = "<group>"; };
 		8C1B4DC5198CF0C000B4C948 /* DataSource */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DataSource; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C1B4DC8198CF0C000B4C948 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		8C1B4DCA198CF0C000B4C948 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -175,7 +174,6 @@
 			children = (
 				8C0ECBF81B81E85F005D5BEE /* libhpple.a */,
 				8C0ECBF91B81E85F005D5BEE /* libJJJUtils.a */,
-				8C0ECBFA1B81E85F005D5BEE /* libRealm.a */,
 				8CF9CE51199F9A22008127E5 /* AppKit.framework */,
 				8C877F411B4D0BB2004302D2 /* CFNetwork.framework */,
 				8C1B4DC8198CF0C000B4C948 /* CoreData.framework */,
@@ -483,6 +481,13 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DataSource/DataSource-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(SDKROOT)/usr/include/libxml2",
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/JJJUtils\"",
+					"\"${PODS_ROOT}/Headers/Public/hpple\"",
+				);
 				INFOPLIST_FILE = "DataSource/DataSource-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) '@executable_path/../Frameworks' '@loader_path/Frameworks'";
 				LIBRARY_SEARCH_PATHS = (
@@ -497,7 +502,6 @@
 					"-l\"c++\"",
 					"-l\"hpple\"",
 					"-l\"xml2\"",
-					"-l\"realm\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -513,6 +517,13 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DataSource/DataSource-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(SDKROOT)/usr/include/libxml2",
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/JJJUtils\"",
+					"\"${PODS_ROOT}/Headers/Public/hpple\"",
+				);
 				INFOPLIST_FILE = "DataSource/DataSource-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) '@executable_path/../Frameworks' '@loader_path/Frameworks'";
 				LIBRARY_SEARCH_PATHS = (
@@ -527,7 +538,6 @@
 					"-l\"c++\"",
 					"-l\"hpple\"",
 					"-l\"xml2\"",
-					"-l\"realm\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

@@ -150,7 +150,7 @@
                                                             options:kNilOptions
                                                                error:&error];
         NSString *fullName = json[@"name"];
-        NSString *pictureURL= json[@"profile_image_url"];
+//        NSString *pictureURL= json[@"profile_image_url"];
         
         [[NSUserDefaults standardUserDefaults] setValue:fullName forKey:@"User_FullName"];
         [[NSUserDefaults standardUserDefaults] synchronize];

@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "9E1CF28A30E48A07DF802E7FC1063A8BE5202279",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "9E1CF28A30E48A07DF802E7FC1063A8BE5202279" : 0,
+    "660D3E71C9E58E5C4A23770105F172433B1EFB46" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "D50F7050-7EB9-459B-B230-C41480A9727D",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "9E1CF28A30E48A07DF802E7FC1063A8BE5202279" : "decktracker",
+    "660D3E71C9E58E5C4A23770105F172433B1EFB46" : "decktrackerosx\/jjj"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "DataSource",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "osx\/DataSource\/DataSource.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/bitbucket.org\/jovito\/jjj.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "660D3E71C9E58E5C4A23770105F172433B1EFB46"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/bitbucket.org\/jovito\/decktracker.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "9E1CF28A30E48A07DF802E7FC1063A8BE5202279"
+    }
+  ]
+}

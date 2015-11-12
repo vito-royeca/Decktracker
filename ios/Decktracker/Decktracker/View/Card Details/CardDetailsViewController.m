@@ -682,7 +682,7 @@
         [html appendFormat:@"<tr><td colspan='2'><table>"];
         for (DTSet *set in [sets sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"releaseDate" ascending:NO]]])
         {
-            DTCard *kard = [[Database sharedInstance] findCard:card.name inSet:set.code];
+            DTCard *kard = [[DTCard objectsWithPredicate:[NSPredicate predicateWithFormat:@"name = %@ AND set.code = %@", card.name, set.code]] firstObject];
             
             NSString *link = [[NSString stringWithFormat:@"printings?cardId=%@", kard.cardId] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             
@@ -778,33 +778,33 @@
         [html appendFormat:@"</table></td></tr>"];
     }
     
-    RLMResults *foreignNames = [[DTCardForeignName objectsWithPredicate:[NSPredicate predicateWithFormat:@"card.cardId = %@", self.cardId]] sortedResultsUsingProperty:@"name" ascending:YES];
-    if (foreignNames.count > 0)
-    {
-        [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
-        [html appendFormat:@"<tr><td colspan='2'><div class='detailHeader'>Languages</div></td></tr>"];
-        [html appendFormat:@"<tr><td colspan='2'><table width='100%%'>"];
-        
-        DTCard *card = [DTCard objectForPrimaryKey:self.cardId];
-        NSMutableArray *array = [[NSMutableArray alloc] init];
-        for (DTLanguage *language in [card.set.languages sortedResultsUsingProperty:@"name" ascending:YES])
-        {
-            for (DTCardForeignName *foreignName in foreignNames)
-            {
-                if ([foreignName.language.name isEqualToString:language.name])
-                {
-                    [array addObject:foreignName];
-                }
-            }
-        }
-        
-        for (DTCardForeignName *foreignName in array)
-        {
-            [html appendFormat:@"<tr><td width='50%%'><div class='detailTextSmall'>%@</div></td>", foreignName.language.name];
-            [html appendFormat:@"<td><div class='detailTextSmall'>%@</div></td></tr>", foreignName.name];
-        }
-        [html appendFormat:@"</table></td></tr>"];
-    }
+//    RLMResults *foreignNames = [[DTCardForeignName objectsWithPredicate:[NSPredicate predicateWithFormat:@"card.cardId = %@", self.cardId]] sortedResultsUsingProperty:@"name" ascending:YES];
+//    if (foreignNames.count > 0)
+//    {
+//        [html appendFormat:@"<tr><td>&nbsp;</td></tr>"];
+//        [html appendFormat:@"<tr><td colspan='2'><div class='detailHeader'>Languages</div></td></tr>"];
+//        [html appendFormat:@"<tr><td colspan='2'><table width='100%%'>"];
+//        
+//        DTCard *card = [DTCard objectForPrimaryKey:self.cardId];
+//        NSMutableArray *array = [[NSMutableArray alloc] init];
+//        for (DTLanguage *language in [card.set.languages sortedResultsUsingProperty:@"name" ascending:YES])
+//        {
+//            for (DTCardForeignName *foreignName in foreignNames)
+//            {
+//                if ([foreignName.language.name isEqualToString:language.name])
+//                {
+//                    [array addObject:foreignName];
+//                }
+//            }
+//        }
+//        
+//        for (DTCardForeignName *foreignName in array)
+//        {
+//            [html appendFormat:@"<tr><td width='50%%'><div class='detailTextSmall'>%@</div></td>", foreignName.language.name];
+//            [html appendFormat:@"<td><div class='detailTextSmall'>%@</div></td></tr>", foreignName.name];
+//        }
+//        [html appendFormat:@"</table></td></tr>"];
+//    }
     
     [html appendFormat:@"</table></body></html>"];
     

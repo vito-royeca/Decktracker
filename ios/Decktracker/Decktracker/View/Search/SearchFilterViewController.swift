@@ -23,7 +23,7 @@ class SearchFilterViewController: XLFormViewController {
     }
     
     required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        super.init(coder: aDecoder)!
         self.initializeForm()
     }
     
@@ -123,15 +123,15 @@ class SearchFilterViewController: XLFormViewController {
         row.cellConfig["imageView.image"] = JJJUtil.imageWithImage(manaImage, scaledToSize:CGSize(width: manaImage!.size.width/2, height:manaImage!.size.height/2))
         section.addFormRow(row)
         
-        row = XLFormRowDescriptor(tag: Tags.SearchColorless.rawValue, rowType: XLFormRowDescriptorTypeBooleanSwitch, title: "Colorless")
-        userKey = NSUserDefaults.standardUserDefaults().objectForKey(Tags.SearchColorless.rawValue)
-        row.value = userKey != nil ? userKey!.boolValue : 1
-        row.onChangeBlock = { (oldValue: AnyObject?, newValue: AnyObject?, rowDescriptor: XLFormRowDescriptor?) -> Void in
-            NSUserDefaults.standardUserDefaults().setBool(newValue!.boolValue, forKey: Tags.SearchColorless.rawValue)
-        }
-        manaImage = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/mana/Colorless/32.png");
-        row.cellConfig["imageView.image"] = JJJUtil.imageWithImage(manaImage, scaledToSize:CGSize(width: manaImage!.size.width/2, height:manaImage!.size.height/2))
-        section.addFormRow(row)
+//        row = XLFormRowDescriptor(tag: Tags.SearchColorless.rawValue, rowType: XLFormRowDescriptorTypeBooleanSwitch, title: "Colorless")
+//        userKey = NSUserDefaults.standardUserDefaults().objectForKey(Tags.SearchColorless.rawValue)
+//        row.value = userKey != nil ? userKey!.boolValue : 1
+//        row.onChangeBlock = { (oldValue: AnyObject?, newValue: AnyObject?, rowDescriptor: XLFormRowDescriptor?) -> Void in
+//            NSUserDefaults.standardUserDefaults().setBool(newValue!.boolValue, forKey: Tags.SearchColorless.rawValue)
+//        }
+//        manaImage = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/mana/Colorless/32.png");
+//        row.cellConfig["imageView.image"] = JJJUtil.imageWithImage(manaImage, scaledToSize:CGSize(width: manaImage!.size.width/2, height:manaImage!.size.height/2))
+//        section.addFormRow(row)
         
         self.form = form
     }

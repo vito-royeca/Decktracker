@@ -71,7 +71,7 @@ class CardImageCollectionViewCell: UICollectionViewCell {
         imgSetIcon = UIImageView(frame: dFrame)
         imgSetIcon!.contentMode = UIViewContentMode.Center
         
-        var planeswalkerType = DTCardType.objectsWithPredicate(NSPredicate(format: "name = %@", "Planeswalker")).firstObject() as! DTCardType?
+//        var planeswalkerType = DTCardType.objectsWithPredicate(NSPredicate(format: "name = %@", "Planeswalker")).firstObject() as! DTCardType?
         _pre8thEditionFont = UIFont(name: "Magic:the Gathering", size:25)
         _8thEditionFont = UIFont(name: "Matrix-Bold", size:25)
         
@@ -83,7 +83,7 @@ class CardImageCollectionViewCell: UICollectionViewCell {
     }
     
     required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        super.init(coder: aDecoder)!
     }
     
     func displayCard(cardId: String, cropped: Bool, showName: Bool, showSetIcon: Bool) {
@@ -119,7 +119,7 @@ class CardImageCollectionViewCell: UICollectionViewCell {
             }
             lblName!.text = card!.name
             
-            var averageColor = self.imgCard!.image!.averageColor()
+            let averageColor = self.imgCard!.image!.averageColor()
             lblName!.shadowColor = self.imgCard!.image!.patternColor(averageColor)
             lblName!.textColor = averageColor
         }

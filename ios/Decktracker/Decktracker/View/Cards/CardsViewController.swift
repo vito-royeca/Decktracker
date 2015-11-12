@@ -29,9 +29,9 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
 
         // Do any additional setup after loading the view.
         let height = view.frame.size.height - tabBarController!.tabBar.frame.size.height
-        var frame = CGRect(x:0, y:0, width:view.frame.width, height:height)
+        let frame = CGRect(x:0, y:0, width:view.frame.size.width, height:height)
 
-        var btnSearchFilter = UIBarButtonItem(image: UIImage(named: "filter.png"), style: UIBarButtonItemStyle.Plain, target: self, action: "btnSearchFilterTapped:")
+        let btnSearchFilter = UIBarButtonItem(image: UIImage(named: "filter.png"), style: UIBarButtonItemStyle.Plain, target: self, action: "btnSearchFilterTapped:")
         
         searchBar = UISearchBar()
         searchBar!.autoresizingMask = UIViewAutoresizing.FlexibleWidth
@@ -134,7 +134,7 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
         searchSectionIndexTitles = [String]()
         var unsortedSections = [String: [String]]()
         
-        var sorter = RLMSortDescriptor(property: "name", ascending: true)
+        let sorter = RLMSortDescriptor(property: "name", ascending: true)
 //        var query = Dictionary<String, String>()
 //        if NSUserDefaults.standardUserDefaults().objectForKey(SearchFilterViewController.Tags.SearchInName.rawValue) != nil {
 //            query.updateValue(["Or": searchBar!.text], forKey: "Name")
@@ -161,7 +161,7 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
                 cardIds.append(z.cardId)
             }
             
-            let index = advance(name!.startIndex, 1)
+            let index = name!.startIndex.advancedBy(1)
             var indexTitle = name!.substringToIndex(index)
             
             if name == "Blue" {
@@ -169,12 +169,12 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
             }
             
             unsortedSections.updateValue(cardIds, forKey: name!)
-            if !contains(searchSectionIndexTitles!, indexTitle) {
+            if !searchSectionIndexTitles!.contains(indexTitle) {
                 searchSectionIndexTitles!.append(indexTitle)
             }
         }
         
-        for k in unsortedSections.keys.array.sorted(<) {
+        for k in unsortedSections.keys.sort(<) {
             let dict = [k: unsortedSections[k]!]
             searchSections!.append(dict)
         }
@@ -202,7 +202,7 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
         
         var i = 0
         for y in arrayData! {
-            for (k, value) in y {
+            for (k, _) in y {
                 if k == key {
                     arrayData!.removeAtIndex(i)
                     arrayData!.insert(newRow, atIndex: i)
@@ -225,10 +225,10 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
     
     func handleSearchBarEndTyping() {
         let hud = MBProgressHUD(view: view)
+        hud.delegate = self
         view!.addSubview(hud)
-        hud.delegate = self;
         
-        if searchBar!.text.isEmpty {
+        if searchBar!.text!.isEmpty {
             hud.showWhileExecuting("loadData", onTarget: self, withObject: nil, animated: true)
             if bannerCell != nil {
                 bannerCell!.startSlideShow()
@@ -263,9 +263,9 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if searchSections != nil {
             let dict = searchSections![indexPath.section]
-            var key = dict.keys.array[0]
-            var cardIds = dict[key]
-            var cardId = cardIds![indexPath.row]
+            var key = dict.keys.first
+            var cardIds = dict[key!]
+            let cardId = cardIds![indexPath.row]
             let card = DTCard(forPrimaryKey: cardId)
             
             let iaps = Database.sharedInstance().inAppSettingsForSet(card!.set.setId)
@@ -275,8 +275,8 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
             
             cardIds = Array()
             for d in searchSections! {
-                key = d.keys.array[0]
-                for cardId in d[key]! {
+                key = d.keys.first
+                for cardId in d[key!]! {
                     cardIds!.append(cardId)
                 }
             }
@@ -295,7 +295,7 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
         return index
     }
     
-    func sectionIndexTitlesForTableView(tableView: UITableView) -> [AnyObject]! {
+    func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
         if searchSections != nil {
             return searchSectionIndexTitles
         
@@ -307,8 +307,8 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if searchSections != nil {
             let dict = searchSections![section]
-            let key = dict.keys.array[0]
-            let cardIds = dict[key]
+            let key = dict.keys.first
+            let cardIds = dict[key!]
             let cardsString = cardIds!.count > 1 ? "cards" : "card"
             return "\(key) (\(cardIds!.count) \(cardsString))"
         
@@ -329,8 +329,8 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if searchSections != nil {
             let dict = searchSections![section]
-            let key = dict.keys.array[0]
-            return dict[key]!.count
+            let key = dict.keys.first
+            return dict[key!]!.count
         
         } else {
             return arrayData!.count
@@ -342,12 +342,12 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
             var cell:UITableViewCell?
             
             let dict = searchSections![indexPath.section]
-            let key = dict.keys.array[0]
-            let cardIds = dict[key]
+            let key = dict.keys.first
+            let cardIds = dict[key!]
             let cardId = cardIds![indexPath.row]
             var cardSummaryView:CardSummaryView?
             
-            if let x = tableView.dequeueReusableCellWithIdentifier(kCardInfoViewIdentifier) as? UITableViewCell {
+            if let x = tableView.dequeueReusableCellWithIdentifier(kCardInfoViewIdentifier) as UITableViewCell! {
                 cell = x
                 for subView in cell!.contentView.subviews {
                     if subView is CardSummaryView {
@@ -452,19 +452,19 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
             
             if collectionView.tag == 0 {
                 let cardId = dict[indexPath.row]
-                var cell2 = collectionView.dequeueReusableCellWithReuseIdentifier("kBannerCellIdentifier", forIndexPath:indexPath) as! CardImageCollectionViewCell
+                let cell2 = collectionView.dequeueReusableCellWithReuseIdentifier("kBannerCellIdentifier", forIndexPath:indexPath) as! CardImageCollectionViewCell
                 cell2.displayCard(cardId, cropped: true, showName: true, showSetIcon: true)
                 cell = cell2
                 
             } else if collectionView.tag == 1 || collectionView.tag == 2 {
                 let cardId = dict[indexPath.row]
-                var cell2 = collectionView.dequeueReusableCellWithReuseIdentifier("kThumbCellIdentifier", forIndexPath:indexPath) as! ThumbCollectionViewCell
+                let cell2 = collectionView.dequeueReusableCellWithReuseIdentifier("kThumbCellIdentifier", forIndexPath:indexPath) as! ThumbCollectionViewCell
                 cell2.displayCard(cardId)
                 cell = cell2
                 
             }  else if collectionView.tag == 3 {
                 let setId = dict[indexPath.row]
-                var cell2 = collectionView.dequeueReusableCellWithReuseIdentifier("kSetCellIdentifier", forIndexPath:indexPath) as! SetCollectionViewCell
+                let cell2 = collectionView.dequeueReusableCellWithReuseIdentifier("kSetCellIdentifier", forIndexPath:indexPath) as! SetCollectionViewCell
                 cell2.displaySet(setId)
                 cell = cell2
             }
@@ -561,7 +561,7 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
             view2.arrayData = arrayData
             view = view2;
         default:
-            println("tag = \(tag)")
+            print("tag = \(tag)")
         }
         
         view!.navigationItem.title = key
@@ -573,8 +573,7 @@ class CardsViewController: UIViewController, UISearchBarDelegate, UITableViewDat
         // empty implementation
     }
     
-    func productPurchaseSucceeded(productID: String)
-    {
+    func productPurchaseSucceeded(productID: String) {
         Database.sharedInstance().loadInAppSets()
         arrayData!.removeLast()
         arrayData!.append(["Sets": Database.sharedInstance().fetchSets(10) as! [String]])

@@ -8,7 +8,7 @@
 
 import UIKit
 
-enum StartingHandShowMode: Printable  {
+enum StartingHandShowMode: CustomStringConvertible  {
     case ByHand
     case ByGraveyard
     case ByLibrary
@@ -49,9 +49,9 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         // Do any additional setup after loading the view.
         hidesBottomBarWhenPushed = true
 
-        var dX:CGFloat = 0
+        let dX:CGFloat = 0
         var dY:CGFloat = 0
-        var dWidth = self.view.frame.size.width
+        let dWidth = self.view.frame.size.width
         var dHeight = self.view.frame.size.height-44
         var frame:CGRect?
         
@@ -171,8 +171,6 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
                 initialSelection = 1
             case .ByLibrary:
                 initialSelection = 2
-            default:
-                break
         }
         
         let doneBlock = { (picker: ActionSheetStringPicker?, selectedIndex: NSInteger, selectedValue: AnyObject?) -> Void in
@@ -324,7 +322,7 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         for dict in self.deck!.arrLands {
             let d = dict as! Dictionary<String, AnyObject>
             let cardId = d["cardId"] as! String
-            let card = DTCard(forPrimaryKey: cardId)
+//            let card = DTCard(forPrimaryKey: cardId)
             let qty = d["qty"] as! NSNumber
             
             for var i=0; i<qty.integerValue; i++ {
@@ -335,7 +333,7 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         for dict in self.deck!.arrCreatures {
             let d = dict as! Dictionary<String, AnyObject>
             let cardId = d["cardId"] as! String
-            let card = DTCard(forPrimaryKey: cardId)
+//            let card = DTCard(forPrimaryKey: cardId)
             let qty = d["qty"] as! NSNumber
             
             for var i=0; i<qty.integerValue; i++ {
@@ -346,7 +344,7 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         for dict in self.deck!.arrOtherSpells {
             let d = dict as! Dictionary<String, AnyObject>
             let cardId = d["cardId"] as! String
-            let card = DTCard(forPrimaryKey: cardId)
+//            let card = DTCard(forPrimaryKey: cardId)
             let qty = d["qty"] as! NSNumber
             
             for var i=0; i<qty.integerValue; i++ {
@@ -366,8 +364,8 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         
         // put cards from library to temp
         while arrayLibrary!.count > 0 {
-            var count = UInt32(arrayLibrary!.count)
-            var random = Int(arc4random_uniform(count))
+            let count = UInt32(arrayLibrary!.count)
+            let random = Int(arc4random_uniform(count))
             let cardId = arrayLibrary!.removeAtIndex(random)
             arrayTemp.append(cardId)
         }
@@ -459,7 +457,7 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
             }
         }
         
-        if let x = tableView.dequeueReusableCellWithIdentifier(kCardInfoViewIdentifier) as? UITableViewCell {
+        if let x = tableView.dequeueReusableCellWithIdentifier(kCardInfoViewIdentifier) as UITableViewCell! {
             cell = x
             for subView in cell!.contentView.subviews {
                 if subView is CardSummaryView {
@@ -485,7 +483,7 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
         return self.showMode == .ByHand
     }
     
-    func tableView(tableView: UITableView, titleForDeleteConfirmationButtonForRowAtIndexPath indexPath: NSIndexPath) -> String! {
+    func tableView(tableView: UITableView, titleForDeleteConfirmationButtonForRowAtIndexPath indexPath: NSIndexPath) -> String? {
         return "Discard"
     }
     
@@ -557,7 +555,7 @@ class StartingHandViewController: UIViewController, UITableViewDataSource, UITab
             label.backgroundColor = UIColor.whiteColor()
             label.font = UIFont.boldSystemFontOfSize(18)
             
-            view = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier:"Header", forIndexPath:indexPath) as? UICollectionReusableView
+            view = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier:"Header", forIndexPath:indexPath) as UICollectionReusableView!
             
             if view == nil {
                 view = UICollectionReusableView(frame: CGRect(x:0, y:0, width:self.view.frame.size.width, height:22))

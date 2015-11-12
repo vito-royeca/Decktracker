@@ -27,7 +27,7 @@ class SubtitleTableViewCell: UITableViewCell {
     }
     
     required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        super.init(coder: aDecoder)!
         
         setupViews()
     }
@@ -90,10 +90,9 @@ class SubtitleTableViewCell: UITableViewCell {
         super.updateConstraints()
     }
     
-    func updateFonts()
-    {
+    func updateFonts() {
         if let text = bodyLabel.text {
-            if count(text) > 0 {
+            if text.characters.count > 0 {
                 titleLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
             }
         }

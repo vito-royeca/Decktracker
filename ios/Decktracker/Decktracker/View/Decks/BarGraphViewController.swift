@@ -36,7 +36,7 @@ class BarGraphViewController: UIViewController, CPTBarPlotDataSource {
     
 
     func initPlot() {
-        var parentRect = self.view.bounds
+        let parentRect = self.view.bounds
         self.hostView = CPTGraphHostingView(frame: parentRect)
         self.hostView!.allowPinchScaling = false
         self.view.addSubview(self.hostView!)
@@ -49,7 +49,7 @@ class BarGraphViewController: UIViewController, CPTBarPlotDataSource {
     func configureGraph() {
         // 1 - Create the graph
         let graph = CPTXYGraph(frame: self.hostView!.bounds)
-        graph.plotAreaFrame.masksToBorder = false
+        graph.plotAreaFrame!.masksToBorder = false
         self.hostView!.hostedGraph = graph;
         
         // 2 - Configure the graph
@@ -72,11 +72,11 @@ class BarGraphViewController: UIViewController, CPTBarPlotDataSource {
         graph.titleDisplacement = CGPoint(x:0, y:-80)
         
         // 5 - Set up plot space
-        let xMin = 0
-        let xMax = 10
-        let yMin = 0
-        let yMax = 20
-        let plotSpace = graph.defaultPlotSpace as! CPTXYPlotSpace
+//        let xMin = 0
+//        let xMax = 10
+//        let yMin = 0
+//        let yMax = 20
+//        let plotSpace = graph.defaultPlotSpace as! CPTXYPlotSpace
 //        var xRange = plotSpace.xRange.mutableCopy() as CPTMutablePlotRange
 //        var yRange = plotSpace.yRange.mutableCopy() as CPTMutablePlotRange
 //        xRange.setLengthFloat(10)
@@ -111,10 +111,13 @@ class BarGraphViewController: UIViewController, CPTBarPlotDataSource {
         for plot in plots {
             plot.dataSource = self;
             plot.delegate = self;
-            plot.barWidthScale = 0.25
-            plot.barOffsetScale = barX
+//            MARK: 
+//            MARK: what to do here???
+//            plot.barWidthScale = 0.25
+//            plot.barOffsetScale = barX
+//            MARK: 
             plot.lineStyle = barLineStyle
-            graph.addPlot(plot, toPlotSpace: graph.defaultPlotSpace)
+            graph!.addPlot(plot, toPlotSpace: graph!.defaultPlotSpace)
             barX += 0.25
         }
     }
@@ -130,21 +133,21 @@ class BarGraphViewController: UIViewController, CPTBarPlotDataSource {
         axisLineStyle.lineColor = CPTColor.blackColor().colorWithAlphaComponent(1)
         
         // 2 - Get the graph's axis set
-        let axisSet = self.hostView!.hostedGraph.axisSet as! CPTXYAxisSet
+        let axisSet = self.hostView!.hostedGraph!.axisSet as! CPTXYAxisSet
         
         // 3 - Configure the x-axis
 //        axisSet.xAxis.labelingPolicy = CPTAxisLabelingPolicyFixedInterval
-        axisSet.xAxis.title = "Converted Mana Cost"
-        axisSet.xAxis.titleTextStyle = axisTitleStyle
-        axisSet.xAxis.titleOffset = 25
-        axisSet.xAxis.axisLineStyle = axisLineStyle
+        axisSet.xAxis!.title = "Converted Mana Cost"
+        axisSet.xAxis!.titleTextStyle = axisTitleStyle
+        axisSet.xAxis!.titleOffset = 25
+        axisSet.xAxis!.axisLineStyle = axisLineStyle
         
         // 4 - Configure the y-axis
 //        axisSet.yAxis.labelingPolicy = CPTAxisLabelingPolicyNone
-        axisSet.yAxis.title = "Count"
-        axisSet.yAxis.titleTextStyle = axisTitleStyle
-        axisSet.yAxis.titleOffset = 25
-        axisSet.yAxis.axisLineStyle = axisLineStyle
+        axisSet.yAxis!.title = "Count"
+        axisSet.yAxis!.titleTextStyle = axisTitleStyle
+        axisSet.yAxis!.titleOffset = 25
+        axisSet.yAxis!.axisLineStyle = axisLineStyle
     }
     
 //    MARK: CPTPlotDataSource
@@ -152,8 +155,7 @@ class BarGraphViewController: UIViewController, CPTBarPlotDataSource {
         return 2
     }
     
-//    func numberForPlot(plot: CPTPlot, field fieldEnum:UInt, recordIndex index: UInt) -> NSNumber {
-    func numberForPlot(plot: CPTPlot, field fieldEnum:UInt, recordIndex index: UInt) -> AnyObject {
+    func numberForPlot(plot: CPTPlot, field fieldEnum:UInt, recordIndex index: UInt) -> AnyObject? {
 //        if fieldEnum == CPTBarPlotFieldBarTip &&
 //        (index < [[[CPDStockPriceStore sharedInstance] datesInWeek] count])) {
 //            if ([plot.identifier isEqual:CPDTickerSymbolAAPL]) {

@@ -13,6 +13,7 @@
 #import "MainViewController.h"
 
 #import "Appirater.h"
+#import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
 #import <Dropbox/Dropbox.h>
 #import <FacebookSDK/FacebookSDK.h>
@@ -40,8 +41,8 @@
     [[GAI sharedInstance] trackerWithTrackingId:kGAITrackingID];
 #endif
 
-    // Crashlytics
-    [Crashlytics startWithAPIKey:kCrashlyticsAPIKey];
+    // Fabric / Crashlytics
+    [Fabric with:@[[Crashlytics class]]];
 
     // FileSystem
     [[FileManager sharedInstance] moveFilesInDocumentsToCaches];

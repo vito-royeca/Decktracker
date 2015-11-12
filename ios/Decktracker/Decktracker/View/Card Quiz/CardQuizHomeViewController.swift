@@ -31,12 +31,10 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         NSNotificationCenter.defaultCenter().removeObserver(self, name:kParseUserManaDone,  object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector:"fetchUserManaDone:",  name:kParseUserManaDone, object:nil)
         
-        var error:NSError?
-        var success = AVAudioSession.sharedInstance().setCategory(
+        if let _ = try? AVAudioSession.sharedInstance().setCategory(
             AVAudioSessionCategoryPlayback,
-            withOptions: .DefaultToSpeaker, error: &error)
-        if !success {
-            NSLog("Failed to set audio session category.  Error: \(error)")
+            withOptions: AVAudioSessionCategoryOptions.DefaultToSpeaker) {
+            NSLog("Set audio session category ok.")
         }
         
         setupBackground()
@@ -68,9 +66,9 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
     
 //  MARK: UI code
     func setupBackground() {
-        var dX = CGFloat(0)
+        let dX = CGFloat(0)
         var dY = UIApplication.sharedApplication().statusBarFrame.size.height + /*self.navigationController!.navigationBar.frame.size.height +*/ 35
-        var dWidth = self.view.frame.size.width
+        let dWidth = self.view.frame.size.width
         var dHeight = CGFloat(40)
         var dFrame = CGRect(x:dX, y:dY, width:dWidth, height:dHeight)
         
@@ -102,10 +100,10 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         btnLeaderboard?.removeFromSuperview()
 //        btnExit?.removeFromSuperview()
         
-        var dX = self.view.frame.size.width/8
+        let dX = self.view.frame.size.width/8
         var dY = lblTitle!.frame.origin.y + lblTitle!.frame.size.height + 5
-        var dWidth = self.view.frame.size.width*(3/4)
-        var dHeight = CGFloat(40)
+        let dWidth = self.view.frame.size.width*(3/4)
+        let dHeight = CGFloat(40)
         var dFrame = CGRect(x: dX, y: dY, width: dWidth, height: dHeight)
 
         if let currentUser = PFUser.currentUser() {
@@ -114,7 +112,7 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
             lblAccount!.adjustsFontSizeToFitWidth = true
             lblAccount!.textColor = CQTheme.kManaLabelColor
             lblAccount!.textAlignment = NSTextAlignment.Center
-            lblAccount!.text = currentUser["name"] as? String
+            lblAccount!.text = currentUser.objectForKey("name") as? String
             self.view.addSubview(lblAccount!)
             
             if PFFacebookUtils.isLinkedWithUser(currentUser) {
@@ -124,11 +122,11 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
                     if error == nil {
                         let userData = result as! NSDictionary
                         
-                        let name = userData["name"] as? String
+                        let name = userData["name"] as! String
                         self.lblAccount!.text = name
                         
-                        if name != currentUser["name"] as? String {
-                            currentUser["name"] = name
+                        if name != currentUser.objectForKey("name") as? String {
+                            currentUser.setObject(name, forKey: "name")
                             currentUser.saveInBackgroundWithBlock({ (success: Bool, error: NSError?) -> Void in
                                 
                             })
@@ -142,18 +140,14 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
                 let request = NSMutableURLRequest(URL: verify!)
                 PFTwitterUtils.twitter()!.signRequest(request)
                 var response:NSURLResponse?
-                var error:NSError?
-                let data = NSURLConnection.sendSynchronousRequest(request, returningResponse: &response, error: &error)
-                
-                
-                if error == nil {
-                    let result = NSJSONSerialization.JSONObjectWithData(data!, options:NSJSONReadingOptions.AllowFragments, error:&error) as! NSDictionary
-                    let name = result["name"] as! String
+                if let data = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: &response) {
+                    let result = try? NSJSONSerialization.JSONObjectWithData(data, options:NSJSONReadingOptions.AllowFragments) as! NSDictionary
+                    let name = result!["name"] as! String
                     
                     self.lblAccount!.text = name
                     
-                    if name != currentUser["name"] as? String {
-                        currentUser["name"] = name
+                    if name != currentUser.objectForKey("name") as? String {
+                        currentUser.setObject(name, forKey: "name")
                         currentUser.saveInBackgroundWithBlock({ (success: Bool, error: NSError?) -> Void in
                             
                         })
@@ -271,7 +265,7 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
 //   MARK: Event handlers
     func loginTapped(sender: AnyObject) {
         
-        if let currentUser = PFUser.currentUser() {
+        if let _ = PFUser.currentUser() {
             PFUser.logOut()
             Database.sharedInstance().deleteUserManaLocally()
             Database.sharedInstance().fetchUserMana()
@@ -290,7 +284,7 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
         if let currentUser = PFUser.currentUser() {
             if !PFFacebookUtils.isLinkedWithUser(currentUser) &&
                !PFTwitterUtils.isLinkedWithUser(currentUser) &&
-               currentUser["emailVerified"] == nil {
+               currentUser.objectForKey("emailVerified") == nil {
                 
                 JJJUtil.alertWithTitle("Email Verification", andMessage: "You may need to verify your email address. We have sent you a verification email. Logout first and then login again after verifying your email.")
                 return
@@ -335,7 +329,7 @@ class CardQuizHomeViewController : UIViewController, MBProgressHUDDelegate, PFLo
     }
     
     func leaderboardTapped(sender: AnyObject) {
-        var leaderboard = CardQuizLeaderboardViewController()
+        let leaderboard = CardQuizLeaderboardViewController()
         self.presentViewController(leaderboard, animated: false, completion: nil)
     }
 

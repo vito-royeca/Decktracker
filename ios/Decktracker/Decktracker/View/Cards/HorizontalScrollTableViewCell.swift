@@ -47,7 +47,7 @@ class HorizontalScrollTableViewCell: UITableViewCell {
         
         dWidth = CGFloat(kHorizontalItemCellWidth)
         dHeight = CGFloat(kHorizontalItemCellHeight)
-        var flowLayout = UICollectionViewFlowLayout()
+        let flowLayout = UICollectionViewFlowLayout()
         flowLayout.itemSize = CGSize(width: dWidth, height: dHeight)
         flowLayout.headerReferenceSize = CGSize(width: CGFloat(0), height: CGFloat(0))
         flowLayout.footerReferenceSize = CGSize(width: CGFloat(0), height: CGFloat(0))
@@ -72,7 +72,7 @@ class HorizontalScrollTableViewCell: UITableViewCell {
     }
     
     required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        super.init(coder: aDecoder)!
     }
     
     override func setSelected(selected: Bool, animated: Bool) {

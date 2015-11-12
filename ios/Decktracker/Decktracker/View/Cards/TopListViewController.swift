@@ -129,7 +129,7 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
     func showTableView() {
         let y = viewLoadedOnce ? 0 : UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height
         let height = view.frame.size.height - y
-        var frame = CGRect(x:0, y:y, width:view.frame.width, height:height)
+        let frame = CGRect(x:0, y:y, width:view.frame.width, height:height)
         
         tblList = UITableView(frame: frame, style: UITableViewStyle.Plain)
         tblList!.delegate = self
@@ -145,7 +145,7 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
         let y = viewLoadedOnce ? 0 : UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height
         let height = view.frame.size.height - y
         let divisor:CGFloat = viewMode == kCardViewModeGrid2x2 ? 2 : 3
-        var frame = CGRect(x:0, y:y, width:view.frame.width, height:height)
+        let frame = CGRect(x:0, y:y, width:view.frame.width, height:height)
         
         
         let layout = CSStickyHeaderFlowLayout()
@@ -186,7 +186,7 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
         var cell:UITableViewCell?
         var cardSummaryView:CardSummaryView?
         
-        if let x = tableView.dequeueReusableCellWithIdentifier(kCardInfoViewIdentifier) as? UITableViewCell {
+        if let x = tableView.dequeueReusableCellWithIdentifier(kCardInfoViewIdentifier) as UITableViewCell! {
             cell = x
             for subView in cell!.contentView.subviews {
                 if subView is CardSummaryView {
@@ -303,7 +303,7 @@ class TopListViewController: UIViewController, UITableViewDataSource, UITableVie
         var paths = [NSIndexPath]()
 
         for cardId in kardIds {
-            if !contains(cardIds!, cardId) {
+            if !cardIds!.contains(cardId) {
                 cardIds!.append(cardId)
                 paths.append(NSIndexPath(forRow: cardIds!.count-1, inSection: 0))
                 FileManager.sharedInstance().downloadCardImage(cardId, immediately:false)

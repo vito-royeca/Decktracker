@@ -24,6 +24,7 @@
 @implementation FileManager
 {
     NSMutableArray *_downloadQueue;
+    NSMutableArray *_filesNotFound;
     int _cuncurrentDownloads;
 }
 
@@ -44,6 +45,7 @@ static FileManager *_me;
     if (self = [super init])
     {
         _downloadQueue = [[NSMutableArray alloc] init];
+        _filesNotFound = [[NSMutableArray alloc] init];
         _cuncurrentDownloads = 0;
     }
     
@@ -155,6 +157,11 @@ static FileManager *_me;
                immediately:(BOOL) immediately
 {
     if (!cardId)
+    {
+        return;
+    }
+
+    if ([_filesNotFound containsObject:cardId])
     {
         return;
     }
@@ -299,7 +306,8 @@ static FileManager *_me;
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"File not found: %@", [error userInfo][@"NSErrorFailingURLKey"]);
-        
+        [_filesNotFound addObject:cardId];
+
         [[NSNotificationCenter defaultCenter] postNotificationName:kCardDownloadCompleted
                                                             object:nil
                                                           userInfo:@{@"cardId":cardId}];

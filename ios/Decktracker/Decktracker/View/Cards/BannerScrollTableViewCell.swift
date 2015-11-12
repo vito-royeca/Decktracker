@@ -20,11 +20,11 @@ class BannerScrollTableViewCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        var dX = CGFloat(0)
-        var dY = CGFloat(0)
-        var dWidth = self.contentView.frame.size.width
-        var dHeight = CGFloat(kBannerCellHeight)
-        var flowLayout = UICollectionViewFlowLayout()
+        let dX = CGFloat(0)
+        let dY = CGFloat(0)
+        let dWidth = self.contentView.frame.size.width
+        let dHeight = CGFloat(kBannerCellHeight)
+        let flowLayout = UICollectionViewFlowLayout()
         
         flowLayout.itemSize = CGSize(width: self.contentView.frame.size.width, height: dHeight)
         flowLayout.headerReferenceSize = CGSize(width: CGFloat(0), height: CGFloat(0))
@@ -42,7 +42,7 @@ class BannerScrollTableViewCell: UITableViewCell {
     }
     
     required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        super.init(coder: aDecoder)!
     }
     
     override func setSelected(selected: Bool, animated: Bool) {
@@ -60,9 +60,9 @@ class BannerScrollTableViewCell: UITableViewCell {
 
     func showSlide() {
         if (collectionView!.indexPathsForVisibleItems().count > 0) {
-            let indexPath = collectionView!.indexPathsForVisibleItems()[0] as! NSIndexPath
+            let indexPath = collectionView!.indexPathsForVisibleItems().first
             let rows = collectionView!.dataSource?.collectionView(collectionView!, numberOfItemsInSection: 0)
-            var row = indexPath.row
+            var row = indexPath!.row
             var newIndexPath:NSIndexPath?
             var bWillSlide = true
             

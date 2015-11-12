@@ -17,7 +17,7 @@ class SignupViewController: PFSignUpViewController {
         self.view.backgroundColor = JJJUtil.colorFromRGB(0x691F01)
         
         let image = UIImage(named: "\(NSBundle.mainBundle().bundlePath)/images/AppIcon57x57.png")
-        var imageView = UIImageView(frame: CGRectMake(0, 0, 57, 57))
+        let imageView = UIImageView(frame: CGRectMake(0, 0, 57, 57))
         imageView.image = image
         self.signUpView!.logo = imageView
         

@@ -8,7 +8,7 @@
 
 import UIKit
 
-enum CardSortMode: Printable  {
+enum CardSortMode: CustomStringConvertible  {
     case ByName
     case ByColor
     case ByType
@@ -158,8 +158,6 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
             initialSelection = 3
         case .ByPrice:
             initialSelection = 4
-        default:
-            break
         }
         
         let doneBlock = { (picker: ActionSheetStringPicker?, selectedIndex: NSInteger, selectedValue: AnyObject?) -> Void in
@@ -215,8 +213,6 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
         case .ByPrice:
             self.sorters = [RLMSortDescriptor(property: "tcgPlayerMidPrice", ascending: false),
                             RLMSortDescriptor(property: "name", ascending: true)]
-        default:
-            break
         }
         
         var view:UIView?
@@ -266,7 +262,7 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
                     cardIds.append(z.cardId)
                 }
                 
-                let index = advance(name!.startIndex, 1)
+                let index = name!.startIndex.advancedBy(1)
                 var indexTitle = name!.substringToIndex(index)
                 
                 if name == "Blue" {
@@ -274,13 +270,13 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
                 }
                 
                 unsortedSections.updateValue(cardIds, forKey: name!)
-                if !contains(sectionIndexTitles!, indexTitle) {
+                if !sectionIndexTitles!.contains(indexTitle) {
                     sectionIndexTitles!.append(indexTitle)
                 }
             }
         }
         
-        for k in unsortedSections.keys.array.sorted(<) {
+        for k in Array(unsortedSections.keys).sort(<) {
             let dict = [k: unsortedSections[k]!]
             sections!.append(dict)
         }
@@ -296,7 +292,7 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
     func showTableView() {
         let y = viewLoadedOnce ? 0 : UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height
         let height = view.frame.size.height - y
-        var frame = CGRect(x:0, y:y, width:view.frame.width, height:height)
+        let frame = CGRect(x:0, y:y, width:view.frame.width, height:height)
         
         tblSets = UITableView(frame: frame, style: UITableViewStyle.Plain)
         tblSets!.delegate = self
@@ -312,7 +308,7 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
         let y = viewLoadedOnce ? 0 : UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height
         let height = view.frame.size.height - y
         let divisor:CGFloat = viewMode == kCardViewModeGrid2x2 ? 2 : 3
-        var frame = CGRect(x:0, y:y, width:view.frame.width, height:height)
+        let frame = CGRect(x:0, y:y, width:view.frame.width, height:height)
         
         
         let layout = CSStickyHeaderFlowLayout()
@@ -347,8 +343,8 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let dict = sections![section]
-        let key = dict.keys.array[0]
-        return dict[key]!.count
+        let key = dict.keys.first
+        return dict[key!]!.count
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -361,14 +357,14 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
             
         } else {
             let dict = sections![section]
-            let key = dict.keys.array[0]
-            let cardIds = dict[key]
+            let key = dict.keys.first
+            let cardIds = dict[key!]
             let cardsString = cardIds!.count > 1 ? "cards" : "card"
             return "\(key) (\(cardIds!.count) \(cardsString))"
         }
     }
     
-    func sectionIndexTitlesForTableView(tableView: UITableView) -> [AnyObject]! {
+    func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
         return sectionIndexTitles
     }
     
@@ -397,13 +393,13 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let dict = sections![indexPath.section]
-        let key = dict.keys.array[0]
-        let cardIds = dict[key]
+        let key = dict.keys.first
+        let cardIds = dict[key!]
         let cardId = cardIds![indexPath.row]
         var cell:UITableViewCell?
         var cardSummaryView:CardSummaryView?
         
-        if let x = tableView.dequeueReusableCellWithIdentifier(kCardInfoViewIdentifier) as? UITableViewCell {
+        if let x = tableView.dequeueReusableCellWithIdentifier(kCardInfoViewIdentifier) as UITableViewCell! {
             cell = x
             for subView in cell!.contentView.subviews {
                 if subView is CardSummaryView {
@@ -427,9 +423,9 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let dict = sections![indexPath.section]
-        var key = dict.keys.array[0]
-        var cardIds = dict[key]
-        var cardId = cardIds![indexPath.row]
+        var key = dict.keys.first
+        var cardIds = dict[key!]
+        let cardId = cardIds![indexPath.row]
         let card = DTCard(forPrimaryKey: cardId)
 
         let iaps = Database.sharedInstance().inAppSettingsForSet(card!.set.setId)
@@ -439,8 +435,8 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
         
         cardIds = Array()
         for d in sections! {
-            key = d.keys.array[0]
-            for cardId in d[key]! {
+            key = d.keys.first
+            for cardId in d[key!]! {
                 cardIds!.append(cardId)
             }
         }
@@ -460,14 +456,14 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let dict = sections![section]
-        let key = dict.keys.array[0]
-        return dict[key]!.count
+        let key = dict.keys.first
+        return dict[key!]!.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let dict = sections![indexPath.section]
-        let key = dict.keys.array[0]
-        let cardIds = dict[key]
+        let key = dict.keys.first
+        let cardIds = dict[key!]
         let cardId = cardIds![indexPath.row]
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Card", forIndexPath: indexPath) as! CardImageCollectionViewCell
@@ -485,10 +481,8 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
                 
             } else {
                 let dict = sections![indexPath.section]
-                let key = dict.keys.array[0]
-                let cardIds = dict[key]
-//                let key = sections!.keys.array[indexPath.section]
-//                let cardIds = sections![key]
+                let key = dict.keys.first
+                let cardIds = dict[key!]
                 let cardsString = cardIds!.count > 1 ? "cards" : "card"
                 let text =  "  \(key) (\(cardIds!.count) \(cardsString))"
                 
@@ -497,7 +491,7 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
                 label.backgroundColor = UIColor.whiteColor()
                 label.font = UIFont.boldSystemFontOfSize(18)
                 
-                view = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier:"Header", forIndexPath:indexPath) as? UICollectionReusableView
+                view = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier:"Header", forIndexPath:indexPath) as UICollectionReusableView!
                 
                 if view == nil {
                     view = UICollectionReusableView(frame: CGRect(x:0, y:0, width:self.view.frame.size.width, height:22))
@@ -512,9 +506,9 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
 //    MARK: UICollectionViewDelegate
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let dict = sections![indexPath.section]
-        var key = dict.keys.array[0]
-        var cardIds = dict[key]
-        var cardId = cardIds![indexPath.row]
+        var key = dict.keys.first
+        var cardIds = dict[key!]
+        let cardId = cardIds![indexPath.row]
         let card = DTCard(forPrimaryKey: cardId)
         
         let iaps = Database.sharedInstance().inAppSettingsForSet(card!.set.setId)
@@ -524,8 +518,8 @@ class CardListViewController: UIViewController, UITableViewDataSource, UITableVi
         
         cardIds = Array()
         for d in sections! {
-            key = d.keys.array[0]
-            for cardId in d[key]! {
+            key = d.keys.first
+            for cardId in d[key!]! {
                 cardIds!.append(cardId)
             }
         }

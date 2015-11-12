@@ -51,7 +51,7 @@ class CQManaChooserView: UIView {
     }
     
     required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        super.init(coder: aDecoder)!
     }
 
 //  MARK: UI code
@@ -66,8 +66,8 @@ class CQManaChooserView: UIView {
         
         var dX = CGFloat(10)
         var dY = 10 + lblTitle!.frame.origin.y + lblTitle!.frame.size.height + space
-        var dHeight = (self.frame.size.height - dY - (space*7) - 40) / 6
-        var dWidth = self.frame.size.width - dHeight - (space*2)
+        let dHeight = (self.frame.size.height - dY - (space*7) - 40) / 6
+        let dWidth = self.frame.size.width - dHeight - (space*2)
         
         
         
@@ -91,7 +91,7 @@ class CQManaChooserView: UIView {
             
             switch i {
             case 0:
-                manaColorless = userMana!["colorless"]!.integerValue
+                manaColorless = userMana!.objectForKey("colorless")!.integerValue
                 if manaColorless > 0 {
                     manaImage = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/mana/Colorless/64.png")
                     currentMana += self.castingCostOfCard(card!, forColor: "1")
@@ -116,7 +116,7 @@ class CQManaChooserView: UIView {
                 }
                 
             case 1:
-                manaBlack = userMana!["black"]!.integerValue
+                manaBlack = userMana!.objectForKey("black")!.integerValue
                 if manaBlack > 0 {
                     manaImage = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/mana/B/64.png")
                     currentMana = self.castingCostOfCard(card!, forColor: "B")
@@ -127,7 +127,7 @@ class CQManaChooserView: UIView {
                 }
                 
             case 2:
-                manaBlue = userMana!["blue"]!.integerValue
+                manaBlue = userMana!.objectForKey("blue")!.integerValue
                 if manaBlue > 0 {
                     manaImage = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/mana/U/64.png")
                     currentMana = self.castingCostOfCard(card!, forColor: "U")
@@ -138,7 +138,7 @@ class CQManaChooserView: UIView {
                 }
                 
             case 3:
-                manaGreen = userMana!["green"]!.integerValue
+                manaGreen = userMana!.objectForKey("green")!.integerValue
                 if manaGreen > 0 {
                     manaImage = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/mana/G/64.png")
                     currentMana = self.castingCostOfCard(card!, forColor: "G")
@@ -149,7 +149,7 @@ class CQManaChooserView: UIView {
                 }
                 
             case 4:
-                manaRed = userMana!["red"]!.integerValue
+                manaRed = userMana!.objectForKey("red")!.integerValue
                 if manaRed > 0 {
                     manaImage = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/mana/R/64.png")
                     currentMana = self.castingCostOfCard(card!, forColor: "R")
@@ -160,7 +160,7 @@ class CQManaChooserView: UIView {
                 }
                 
             case 5:
-                manaWhite = userMana!["white"]!.integerValue
+                manaWhite = userMana!.objectForKey("white")!.integerValue
                 if manaWhite > 0 {
                     manaImage = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/mana/W/64.png")
                     currentMana = self.castingCostOfCard(card!, forColor: "W")
@@ -288,8 +288,8 @@ class CQManaChooserView: UIView {
         
         for txt in arrTxtMana! {
             if txt.tag == button.tag {
-                var mana = txt.text!.toInt()!
-                mana -= 1
+                var mana = Int(txt.text!)
+                mana! -= 1
                 txt.text = "\(mana)"
                 
                 if mana <= 0 {
@@ -307,32 +307,32 @@ class CQManaChooserView: UIView {
                     if btn.tag == txt.tag {
                         switch txt.tag {
                         case 0:
-                            if mana < userMana!["colorless"]!.integerValue {
+                            if mana < userMana!.objectForKey("colorless")!.integerValue {
                                 btn.textColor = CQTheme.kTileTextColor
                                 btn.userInteractionEnabled = true
                             }
                         case 1:
-                            if mana < userMana!["black"]!.integerValue {
+                            if mana < userMana!.objectForKey("black")!.integerValue {
                                 btn.textColor = CQTheme.kTileTextColor
                                 btn.userInteractionEnabled = true
                             }
                         case 2:
-                            if mana < userMana!["blue"]!.integerValue {
+                            if mana < userMana!.objectForKey("blue")!.integerValue {
                                 btn.textColor = CQTheme.kTileTextColor
                                 btn.userInteractionEnabled = true
                             }
                         case 3:
-                            if mana < userMana!["green"]!.integerValue {
+                            if mana < userMana!.objectForKey("green")!.integerValue {
                                 btn.textColor = CQTheme.kTileTextColor
                                 btn.userInteractionEnabled = true
                             }
                         case 4:
-                            if mana < userMana!["red"]!.integerValue {
+                            if mana < userMana!.objectForKey("red")!.integerValue {
                                 btn.textColor = CQTheme.kTileTextColor
                                 btn.userInteractionEnabled = true
                             }
                         case 5:
-                            if mana < userMana!["white"]!.integerValue {
+                            if mana < userMana!.objectForKey("white")!.integerValue {
                                 btn.textColor = CQTheme.kTileTextColor
                                 btn.userInteractionEnabled = true
                             }
@@ -357,8 +357,8 @@ class CQManaChooserView: UIView {
         
         for txt in arrTxtMana! {
             if txt.tag == button.tag {
-                var mana = txt.text!.toInt()!
-                mana += 1
+                var mana = Int(txt.text!)
+                mana! += 1
                 txt.text = "\(mana)"
                 
                 if mana > 0 {
@@ -376,32 +376,32 @@ class CQManaChooserView: UIView {
                     if btn.tag == txt.tag {
                         switch txt.tag {
                         case 0:
-                            if mana >= userMana!["colorless"]!.integerValue {
+                            if mana >= userMana!.objectForKey("colorless")!.integerValue {
                                 btn.textColor = CQTheme.kTileTextColorX
                                 btn.userInteractionEnabled = false
                             }
                         case 1:
-                            if mana >= userMana!["black"]!.integerValue {
+                            if mana >= userMana!.objectForKey("black")!.integerValue {
                                 btn.textColor = CQTheme.kTileTextColorX
                                 btn.userInteractionEnabled = false
                             }
                         case 2:
-                            if mana >= userMana!["blue"]!.integerValue {
+                            if mana >= userMana!.objectForKey("blue")!.integerValue {
                                 btn.textColor = CQTheme.kTileTextColorX
                                 btn.userInteractionEnabled = false
                             }
                         case 3:
-                            if mana >= userMana!["green"]!.integerValue {
+                            if mana >= userMana!.objectForKey("green")!.integerValue {
                                 btn.textColor = CQTheme.kTileTextColorX
                                 btn.userInteractionEnabled = false
                             }
                         case 4:
-                            if mana >= userMana!["red"]!.integerValue {
+                            if mana >= userMana!.objectForKey("red")!.integerValue {
                                 btn.textColor = CQTheme.kTileTextColorX
                                 btn.userInteractionEnabled = false
                             }
                         case 5:
-                            if mana >= userMana!["white"]!.integerValue {
+                            if mana >= userMana!.objectForKey("white")!.integerValue {
                                 btn.textColor = CQTheme.kTileTextColorX
                                 btn.userInteractionEnabled = false
                             }
@@ -435,22 +435,22 @@ class CQManaChooserView: UIView {
         var totalCMC = 0
         
         for txt in arrTxtMana! {
-            var mana = txt.text!.toInt()!
-            totalCMC += mana
+            let mana = Int(txt.text!)
+            totalCMC += mana!
             
             switch txt.tag {
             case 0:
-                dict["colorless"] = NSNumber(integer: mana)
+                dict["colorless"] = NSNumber(integer: mana!)
             case 1:
-                dict["black"] = NSNumber(integer: mana)
+                dict["black"] = NSNumber(integer: mana!)
             case 2:
-                dict["blue"] = NSNumber(integer: mana)
+                dict["blue"] = NSNumber(integer: mana!)
             case 3:
-                dict["green"] = NSNumber(integer: mana)
+                dict["green"] = NSNumber(integer: mana!)
             case 4:
-                dict["red"] = NSNumber(integer: mana)
+                dict["red"] = NSNumber(integer: mana!)
             case 5:
-                dict["white"] = NSNumber(integer: mana)
+                dict["white"] = NSNumber(integer: mana!)
             default:
                 break
             }
@@ -484,7 +484,7 @@ class CQManaChooserView: UIView {
                    symbol == "14" ||
                    symbol == "15" {
                 
-                    castingCost += symbol.toInt()!
+                    castingCost += Int(symbol)!
                     
                 } else {
                     castingCost++

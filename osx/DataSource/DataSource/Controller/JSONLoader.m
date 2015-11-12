@@ -243,7 +243,6 @@
         {
             set.block = [self findBlock:dict[@"block"]];
         }
-        [set.languages addObjects:[self findLanguages:dict[@"languagesPrinted"]]];
         if (dict[@"type"] && [dict[@"type"] class] != [NSNull class])
         {
             set.type = [self findSetType:dict[@"type"]];
@@ -390,6 +389,7 @@
         {
             card = [[DTCard alloc] init];
             card.set = set;
+            card.cardId = dict[@"id"];
             
             if (dict[@"border"] && [dict[@"border"] class] != [NSNull class])
             {
@@ -434,7 +434,10 @@
                 card.sectionNameInitial = ([JJJUtil isAlphaStart:card.name] ?  [card.name substringToIndex:1] : @"#");
             }
             card.number = number;
-            [self updateNumberOfCard:card];
+            if (card.number.length == 0)
+            {
+                [self updateNumberOfCard:card];
+            }
             if (dict[@"originalText"] && [dict[@"originalText"] class] != [NSNull class])
             {
                 card.originalText = dict[@"originalText"];
@@ -534,7 +537,7 @@
             {
                 card.artist = [self findArtist:dict[@"artist"]];
             }
-            [card.printings addObjects:[self findSets:dict[@"printingCodes"]]];
+            [card.printings addObjects:[self findSets:dict[@"printings"]]];
             if (dict[@"rarity"] && [dict[@"rarity"] class] != [NSNull class])
             {
                 card.rarity = [self findCardRarity:dict[@"rarity"]];
@@ -756,17 +759,7 @@
         {
             if ([key isEqualToString:@"language"])
             {
-                DTLanguage * language = [[self findLanguages:@[dict[key]]] firstObject];
-                
-                for (DTLanguage *l in card.set.languages)
-                {
-                    if ([l.name isEqualToString:language.name])
-                    {
-                        foreignName.language = language;
-                        break;
-                    }
-                }
-                
+                foreignName.language = [[self findLanguages:@[dict[key]]] firstObject];
             }
             else if ([key isEqualToString:@"name"])
             {
@@ -774,16 +767,13 @@
             }
         }
         
-        if (foreignName.language)
-        {
-            RLMRealm *realm = [RLMRealm defaultRealm];
-            [realm beginWriteTransaction];
-//            NSLog(@"+ForeignName: %@", foreignName.name);
-            [realm addObject:foreignName];
-            [realm commitWriteTransaction];
+        RLMRealm *realm = [RLMRealm defaultRealm];
+        [realm beginWriteTransaction];
+        //            NSLog(@"+ForeignName: %@", foreignName.name);
+        [realm addObject:foreignName];
+        [realm commitWriteTransaction];
         
-            [foreignNames addObject:foreignName];
-        }
+        [foreignNames addObject:foreignName];
     }
     
     return foreignNames;
@@ -818,30 +808,33 @@
     [card.variations addObjects:arrVariations];
 }
 
--(NSArray*) createLegalitiesForCard:(DTCard*)card withLegalities:(NSDictionary*) dict
+-(NSArray*) createLegalitiesForCard:(DTCard*)card withLegalities:(NSArray*) arr
 {
-    if (!dict || dict.count <= 0)
+    if (!arr || arr.count <= 0)
     {
         return nil;
     }
     
     NSMutableArray *legalities = [[NSMutableArray alloc] init];
     
-    for (NSString *key in [dict allKeys])
+    for (NSDictionary *dict in arr)
     {
-        DTCardLegality *legality = [[DTCardLegality alloc] init];
-        
-        legality.card = card;
-        legality.name = dict[key];
-        legality.format = [self findFormat:key];
-        
-        RLMRealm *realm = [RLMRealm defaultRealm];
-        [realm beginWriteTransaction];
-//        NSLog(@"+CardLegality: %@", legality.name);
-        [realm addObject:legality];
-        [realm commitWriteTransaction];
-        
-        [legalities addObject:legality];
+        for (NSString *key in [dict allKeys])
+        {
+            DTCardLegality *legality = [[DTCardLegality alloc] init];
+            
+            legality.card = card;
+            legality.name = dict[key];
+            legality.format = [self findFormat:key];
+            
+            RLMRealm *realm = [RLMRealm defaultRealm];
+            [realm beginWriteTransaction];
+//            NSLog(@"+CardLegality: %@", legality.name);
+            [realm addObject:legality];
+            [realm commitWriteTransaction];
+            
+            [legalities addObject:legality];
+        }
     }
     return legalities;
 }

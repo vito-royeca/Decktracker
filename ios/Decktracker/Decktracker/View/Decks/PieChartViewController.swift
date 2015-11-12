@@ -55,11 +55,11 @@ class PieChartViewController: UIViewController, CPTPlotDataSource {
         detailsEnabled = !detailsEnabled
         detailsButton!.image = detailsEnabled ? UIImage(named: "zoom_out.png") : UIImage(named: "zoom_in.png")
         
-        self.hostView!.hostedGraph.reloadData()
+        self.hostView!.hostedGraph!.reloadData()
     }
     
     func configureHost() {
-        var parentRect = self.view.bounds
+        let parentRect = self.view.bounds
         self.hostView = CPTGraphHostingView(frame: parentRect)
         self.hostView!.allowPinchScaling = false
         self.view.addSubview(self.hostView!)
@@ -88,7 +88,7 @@ class PieChartViewController: UIViewController, CPTPlotDataSource {
         graph.titleDisplacement = CGPoint(x:0, y:-80)
         
         graph.applyTheme(CPTTheme(named: kCPTPlainWhiteTheme))
-        graph.plotAreaFrame.borderLineStyle = nil
+        graph.plotAreaFrame!.borderLineStyle = nil
     }
     
     func configureChart() {
@@ -100,7 +100,7 @@ class PieChartViewController: UIViewController, CPTPlotDataSource {
         pieChart.dataSource = self
         pieChart.delegate = self
         pieChart.pieRadius = (self.hostView!.bounds.size.width * 0.7) / 2
-        pieChart.identifier = graph.title
+        pieChart.identifier = graph!.title
         pieChart.startAngle = CGFloat(M_PI_4)
         pieChart.sliceDirection = CPTPieDirection.Clockwise
         
@@ -112,7 +112,7 @@ class PieChartViewController: UIViewController, CPTPlotDataSource {
         pieChart.overlayFill = CPTFill(gradient: overlayGradient)
         
         // 4 - Add chart to graph
-        graph.addPlot(pieChart)
+        graph!.addPlot(pieChart)
     }
     
     func configureLegend() {
@@ -129,10 +129,10 @@ class PieChartViewController: UIViewController, CPTPlotDataSource {
         theLegend.cornerRadius = 5.0
         
         // 4 - Add legend to graph
-        graph.legend = theLegend
-        graph.legendAnchor = CPTRectAnchor.BottomRight
+        graph!.legend = theLegend
+        graph!.legendAnchor = CPTRectAnchor.BottomRight
 //        let legendPadding = -(self.view.bounds.size.width / 8)
-        graph.legendDisplacement = CGPoint(x: 0, y: 0)
+        graph!.legendDisplacement = CGPoint(x: 0, y: 0)
     }
 
 //    MARK: CPTPlotDataSource
@@ -142,7 +142,7 @@ class PieChartViewController: UIViewController, CPTPlotDataSource {
     }
     
 //    func numberForPlot(plot: CPTPlot, field fieldEnum: UInt, recordIndex index: UInt) -> NSNumber {
-    func numberForPlot(plot: CPTPlot, field fieldEnum:UInt, recordIndex index: UInt) -> AnyObject {
+    func numberForPlot(plot: CPTPlot, field fieldEnum:UInt, recordIndex index: UInt) -> AnyObject? {
         let dict = detailsEnabled ? detailedData![Int(index)] : conciseData![Int(index)]
         let keys = dict.keys
         let part = Double(dict[keys.first!]!)
@@ -158,7 +158,7 @@ class PieChartViewController: UIViewController, CPTPlotDataSource {
         return (part / Double(totalCount))*100
     }
     
-    func dataLabelForPlot(plot: CPTPlot, recordIndex index: UInt) -> CPTLayer {
+    func dataLabelForPlot(plot: CPTPlot, recordIndex index: UInt) -> CPTLayer? {
         var labelText: CPTMutableTextStyle?
         
         if labelText == nil {
@@ -198,7 +198,7 @@ class PieChartViewController: UIViewController, CPTPlotDataSource {
     }
     
     func sliceFillForPieChart(pieChart: CPTPieChart, recordIndex idx: UInt) -> CPTFill {
-        var fill:CPTFill?
+//        var fill:CPTFill?
         var colors = detailsEnabled ? detailedColors : conciseColors
         
         if colors != nil {

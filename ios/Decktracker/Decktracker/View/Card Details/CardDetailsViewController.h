@@ -21,7 +21,6 @@
 @property(strong, nonatomic) NSArray *cardIds;
 
 @property(strong, nonatomic) UISegmentedControl *segmentedControl;
-//@property(strong, nonatomic) UIPageViewController *pageView;
 @property(strong, nonatomic) UIImageView *cardImage;
 @property(strong, nonatomic) UIWebView *webView;
 @property(strong, nonatomic) UITableView *tblDetails;

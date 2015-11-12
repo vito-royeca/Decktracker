@@ -55,7 +55,7 @@ class SetCollectionViewCell: UICollectionViewCell {
     }
     
     required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        super.init(coder: aDecoder)!
     }
     
     func displaySet(setId: String) {
@@ -74,7 +74,7 @@ class SetCollectionViewCell: UICollectionViewCell {
             imgSet!.image = JJJUtil.imageWithImage(setImage, scaledToSize: itemSize);
         }
         
-        if let dict = Database.sharedInstance().inAppSettingsForSet(setId) {
+        if let _ = Database.sharedInstance().inAppSettingsForSet(setId) {
             imgLocked!.image = UIImage(named: "locked.png")
         } else {
             imgLocked!.image = UIImage(named: "blank.png")

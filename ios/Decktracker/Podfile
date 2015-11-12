@@ -14,6 +14,8 @@ pod "CorePlot"
 pod "CSStickyHeaderFlowLayout"
 pod "Dropbox-Sync-API-SDK"
 pod "EDStarRating"
+pod 'Fabric'
+pod 'Crashlytics'
 pod "Facebook-iOS-SDK"
 pod "GoogleAnalytics"
 pod "HMSegmentedControl"

@@ -27,7 +27,7 @@ class CardQuizLeaderboardViewController: UIViewController, MBProgressHUDDelegate
         NSNotificationCenter.defaultCenter().addObserver(self, selector:"fetchLeaderboardDone:",  name:kParseLeaderboardDone, object:nil)
 
         // load the sounds
-        backgroundSoundPlayer = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("/audio/cardquiz_leaderboard", ofType: "caf")!), error: nil)
+        backgroundSoundPlayer = try? AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("/audio/cardquiz_leaderboard", ofType: "caf")!), fileTypeHint: AVFileTypeCoreAudioFormat)
         backgroundSoundPlayer!.prepareToPlay()
         backgroundSoundPlayer!.volume = 1.0
         
@@ -112,25 +112,25 @@ class CardQuizLeaderboardViewController: UIViewController, MBProgressHUDDelegate
         let dict = sender.userInfo as Dictionary?
         let leaderboard = dict?["leaderboard"] as? Array<PFObject>
         let baseURL = NSURL(fileURLWithPath: "\(NSBundle.mainBundle().bundlePath)/web")
-        var html = NSString(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/web/leaderboard.html", encoding: NSUTF8StringEncoding, error: nil)
+        var html = try? NSString(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/web/leaderboard.html", encoding: NSUTF8StringEncoding)
         var frag = String()
         var i = 1
         
         for leader in leaderboard! {
-            let user      = leader["user"] as! PFUser
-            let black     = leader["black"] as! NSNumber
-            let blue      = leader["blue"] as! NSNumber
-            let green     = leader["green"] as! NSNumber
-            let red       = leader["red"] as! NSNumber
-            let white     = leader["white"] as! NSNumber
-            let colorless = leader["colorless"] as! NSNumber
-            let totalCMC  = leader["totalCMC"] as! NSNumber
+            let user      = leader.objectForKey("user") as! PFUser
+            let black     = leader.objectForKey("black") as! NSNumber
+            let blue      = leader.objectForKey("blue") as! NSNumber
+            let green     = leader.objectForKey("green") as! NSNumber
+            let red       = leader.objectForKey("red") as! NSNumber
+            let white     = leader.objectForKey("white") as! NSNumber
+            let colorless = leader.objectForKey("colorless") as! NSNumber
+            let totalCMC  = leader.objectForKey("totalCMC") as! NSNumber
             var name:String?
             
-            if let x = user["name"] as? String {
+            if let x = user.objectForKey("name") as? String {
                 name = x
             } else {
-                name = user["username"] as? String
+                name = user.objectForKey("username") as? String
             }
             
             frag += "<tr><td class='td_rank'>\(i)</td><td class='td_player' colspan='12'>\(name!)</td></tr>"

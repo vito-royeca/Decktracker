@@ -18,16 +18,21 @@ int main(int argc, const char * argv[])
     {
         NSDate *dateStart = [NSDate date];
         
-        /* Step 1 */
+        // Step 1
         JSONLoader *jsonLoader = [[JSONLoader alloc] init];
         [jsonLoader json2Database];
         
-        /* Step 2 */
+        // Step 2
         RulesLoader *rulesLoader = [[RulesLoader alloc] init];
         [rulesLoader json2Database];
 
+        // Step 3
         [[Database sharedInstance] copyRealmDatabaseToHome];
-
+        
+        // Step 4: Parse Maintenance (Optional)
+//        [[Database sharedInstance] setupParse:nil];
+//        [[Database sharedInstance] setupDb];
+//        [[Database sharedInstance] deleteDuplicateParseCards];
         
         NSDate *dateEnd = [NSDate date];
         NSTimeInterval timeDifference = [dateEnd timeIntervalSinceDate:dateStart];

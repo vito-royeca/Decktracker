@@ -45,6 +45,9 @@
 		8C1FCDE71B2855D300754177 /* SetListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1FCDD61B2855D300754177 /* SetListViewController.swift */; };
 		8C1FCDE81B2855D300754177 /* ThumbCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1FCDD71B2855D300754177 /* ThumbCollectionViewCell.swift */; };
 		8C1FCDEA1B2855D300754177 /* TopListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1FCDD91B2855D300754177 /* TopListViewController.swift */; };
+		8C2038801BEE1C04009D32AF /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C20387F1BEE1C04009D32AF /* Realm.framework */; };
+		8C2038821BEE1C17009D32AF /* RLMSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2038811BEE1C17009D32AF /* RLMSupport.swift */; };
+		8C2038831BEE1CD0009D32AF /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8C20387F1BEE1C04009D32AF /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8C2094E11A5D1611008878D6 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2094E01A5D1611008878D6 /* Accelerate.framework */; };
 		8C26A67B19A63FAC00FE00E7 /* FilterInputViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C26A67419A63FAC00FE00E7 /* FilterInputViewController.m */; };
 		8C2A96D619F4D9510094C97F /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2A96D519F4D9510094C97F /* ImageIO.framework */; };
@@ -114,7 +117,6 @@
 		8C3E948419E4207200C7EF21 /* AcknowledgementTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C3E948219E4207200C7EF21 /* AcknowledgementTableViewCell.xib */; };
 		8C45F0A41B1C4B8500C19C8F /* DTLanguage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C45F0A31B1C4B8500C19C8F /* DTLanguage.m */; };
 		8C467CF019F1132600B27F05 /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C467CEF19F1132600B27F05 /* MoreViewController.swift */; };
-		8C49656719B0A01F001C7935 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C49656619B0A01E001C7935 /* Crashlytics.framework */; };
 		8C4A0BC21AD53985004754CB /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4A0BC11AD53985004754CB /* SignupViewController.swift */; };
 		8C5246E119A5137300B10147 /* FileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5246E019A5137300B10147 /* FileManager.m */; };
 		8C524A6519B81E9E005E697B /* DeckDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C524A6419B81E9E005E697B /* DeckDetailsViewController.m */; };
@@ -154,9 +156,6 @@
 		8CE6E0AA1ADA00E700EE2C79 /* database.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8CE6E09F1ADA00E700EE2C79 /* database.xcdatamodeld */; };
 		8CE7F2BE19C0A2D0004FBEA5 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CE7F2BD19C0A2D0004FBEA5 /* StoreKit.framework */; };
 		8CEAD8B11AE552DE00F72D3B /* CQManaChooserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEAD8B01AE552DE00F72D3B /* CQManaChooserView.swift */; };
-		8CEB34E91B849C07009A3F12 /* RLMSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEB34E81B849C07009A3F12 /* RLMSupport.swift */; };
-		8CEB34EE1B84A181009A3F12 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CEB34EA1B849DC6009A3F12 /* Realm.framework */; };
-		8CEB34EF1B84A181009A3F12 /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8CEB34EA1B849DC6009A3F12 /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8CEE14BF1B79E45200F9B113 /* CardSummaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEE14BD1B79E45200F9B113 /* CardSummaryView.m */; };
 		8CEE14C01B79E45200F9B113 /* CardSummaryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CEE14BE1B79E45200F9B113 /* CardSummaryView.xib */; };
 		8CF14BF41A2E199600BEC434 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF14BF31A2E199600BEC434 /* LoginViewController.swift */; };
@@ -187,7 +186,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				8CEB34EF1B84A181009A3F12 /* Realm.framework in Embed Frameworks */,
+				8C2038831BEE1CD0009D32AF /* Realm.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -249,6 +248,8 @@
 		8C1FCDD61B2855D300754177 /* SetListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetListViewController.swift; sourceTree = "<group>"; };
 		8C1FCDD71B2855D300754177 /* ThumbCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbCollectionViewCell.swift; sourceTree = "<group>"; };
 		8C1FCDD91B2855D300754177 /* TopListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopListViewController.swift; sourceTree = "<group>"; };
+		8C20387F1BEE1C04009D32AF /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
+		8C2038811BEE1C17009D32AF /* RLMSupport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RLMSupport.swift; sourceTree = "<group>"; };
 		8C2094E01A5D1611008878D6 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		8C26A67319A63FAC00FE00E7 /* FilterInputViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterInputViewController.h; sourceTree = "<group>"; };
 		8C26A67419A63FAC00FE00E7 /* FilterInputViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterInputViewController.m; sourceTree = "<group>"; };
@@ -349,7 +350,6 @@
 		8C45F0A21B1C4B8500C19C8F /* DTLanguage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTLanguage.h; sourceTree = "<group>"; };
 		8C45F0A31B1C4B8500C19C8F /* DTLanguage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTLanguage.m; sourceTree = "<group>"; };
 		8C467CEF19F1132600B27F05 /* MoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
-		8C49656619B0A01E001C7935 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		8C4A0BC11AD53985004754CB /* SignupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
 		8C5246DF19A5137300B10147 /* FileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileManager.h; sourceTree = "<group>"; };
 		8C5246E019A5137300B10147 /* FileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileManager.m; sourceTree = "<group>"; };
@@ -413,8 +413,6 @@
 		8CE7F2BD19C0A2D0004FBEA5 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		8CE7F2C219C0A2F7004FBEA5 /* Decktracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Decktracker.entitlements; sourceTree = "<group>"; };
 		8CEAD8B01AE552DE00F72D3B /* CQManaChooserView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CQManaChooserView.swift; sourceTree = "<group>"; };
-		8CEB34E81B849C07009A3F12 /* RLMSupport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RLMSupport.swift; sourceTree = "<group>"; };
-		8CEB34EA1B849DC6009A3F12 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
 		8CEE14BC1B79E45200F9B113 /* CardSummaryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardSummaryView.h; sourceTree = "<group>"; };
 		8CEE14BD1B79E45200F9B113 /* CardSummaryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardSummaryView.m; sourceTree = "<group>"; };
 		8CEE14BE1B79E45200F9B113 /* CardSummaryView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CardSummaryView.xib; sourceTree = "<group>"; };
@@ -437,6 +435,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C2038801BEE1C04009D32AF /* Realm.framework in Frameworks */,
 				8CF7F0A91B09A67A00ADBC01 /* libz.dylib in Frameworks */,
 				8CF7F0A51B09A67300ADBC01 /* SystemConfiguration.framework in Frameworks */,
 				8CF7F0991B099D3400ADBC01 /* libc++.dylib in Frameworks */,
@@ -453,9 +452,7 @@
 				8CE7F2BE19C0A2D0004FBEA5 /* StoreKit.framework in Frameworks */,
 				8C2E13F51990741100023BAA /* UIKit.framework in Frameworks */,
 				8C2E13F11990741100023BAA /* Foundation.framework in Frameworks */,
-				8C49656719B0A01F001C7935 /* Crashlytics.framework in Frameworks */,
 				A3BBD6DCFB78C22CDF28574E /* libPods-Decktracker.a in Frameworks */,
-				8CEB34EE1B84A181009A3F12 /* Realm.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -616,14 +613,12 @@
 		8C2E13EF1990741100023BAA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				8CEB34EA1B849DC6009A3F12 /* Realm.framework */,
 				8C2094E01A5D1611008878D6 /* Accelerate.framework */,
 				8C372C761A2DD900001D7EF3 /* Accounts.framework */,
 				8CA317C719C56B73001F94F5 /* AdSupport.framework */,
 				8C057CEC1AE01BAF0016E0F5 /* AVFoundation.framework */,
 				8C2E13F61990741100023BAA /* CoreData.framework */,
 				8C2E13F21990741100023BAA /* CoreGraphics.framework */,
-				8C49656619B0A01E001C7935 /* Crashlytics.framework */,
 				8C2E13F01990741100023BAA /* Foundation.framework */,
 				8C2A96D519F4D9510094C97F /* ImageIO.framework */,
 				8CF7F0981B099D3400ADBC01 /* libc++.dylib */,
@@ -632,6 +627,7 @@
 				8CF7F0A81B09A67A00ADBC01 /* libz.dylib */,
 				8C66750B19D30AF800A90C03 /* MessageUI.framework */,
 				8CFA452919E1C580000B5205 /* QuartzCore.framework */,
+				8C20387F1BEE1C04009D32AF /* Realm.framework */,
 				8C372C7A1A2DD908001D7EF3 /* Social.framework */,
 				8CE7F2BD19C0A2D0004FBEA5 /* StoreKit.framework */,
 				8CF7F0A41B09A67300ADBC01 /* SystemConfiguration.framework */,
@@ -777,7 +773,7 @@
 		8C378DF919A742D800B9367F /* Libs */ = {
 			isa = PBXGroup;
 			children = (
-				8CEB34E81B849C07009A3F12 /* RLMSupport.swift */,
+				8C2038811BEE1C17009D32AF /* RLMSupport.swift */,
 				8C378DFD19A7433500B9367F /* MHFacebookImageViewer */,
 				8C2A973E19F502720094C97F /* vfrReader */,
 			);
@@ -921,6 +917,8 @@
 				8C1DFDD3199135C300174054 /* ShellScript */,
 				8CEB34F01B84A182009A3F12 /* Embed Frameworks */,
 				8CEB34F11B84A1B0009A3F12 /* ShellScript */,
+				8C324C391B9BF13000D9A4CE /* ShellScript */,
+				629118F106F77686128A61B6 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -955,6 +953,7 @@
 		8C2E13E51990741100023BAA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Jovito Royeca";
 				TargetAttributes = {
@@ -1072,6 +1071,21 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Decktracker/Pods-Decktracker-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		629118F106F77686128A61B6 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Decktracker/Pods-Decktracker-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		8C1DFDD3199135C300174054 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1083,7 +1097,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "bN=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbN=$((0x$bN))\nbN=$(($bN + 1))\nbN=$(printf \"%X\" $bN)\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $bN\" \"$INFOPLIST_FILE\"\naN=$(/usr/libexec/PlistBuddy -c \"Print CFBundleShortVersionString\" \"$INFOPLIST_FILE\")\n/usr/libexec/PlistBuddy \"$SRCROOT/Settings.bundle/Root~iphone.inApp.plist\" -c \"Set PreferenceSpecifiers:7:DefaultValue $aN\"\n/usr/libexec/PlistBuddy \"$SRCROOT/Settings.bundle/Root~iphone.plist\" -c \"Set PreferenceSpecifiers:2:DefaultValue $aN\"\n./Crashlytics.framework/run 114b3dd82452ec2f4024140ec862698d331b8f3f e633393678a7e8c4f2e8be609515f7ad0ff6dd85c474c001fea74fde0273c2e4";
+			shellScript = "bN=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbN=$((0x$bN))\nbN=$(($bN + 1))\nbN=$(printf \"%X\" $bN)\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $bN\" \"$INFOPLIST_FILE\"\naN=$(/usr/libexec/PlistBuddy -c \"Print CFBundleShortVersionString\" \"$INFOPLIST_FILE\")\n/usr/libexec/PlistBuddy \"$SRCROOT/Settings.bundle/Root~iphone.inApp.plist\" -c \"Set PreferenceSpecifiers:7:DefaultValue $aN\"\n/usr/libexec/PlistBuddy \"$SRCROOT/Settings.bundle/Root~iphone.plist\" -c \"Set PreferenceSpecifiers:2:DefaultValue $aN\"\n";
+		};
+		8C324C391B9BF13000D9A4CE /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/Fabric.framework/run\" 114b3dd82452ec2f4024140ec862698d331b8f3f e633393678a7e8c4f2e8be609515f7ad0ff6dd85c474c001fea74fde0273c2e4";
 		};
 		8C89BD4519DD38AD0070E4F5 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1168,9 +1195,9 @@
 				8C467CF019F1132600B27F05 /* MoreViewController.swift in Sources */,
 				8CF79A6519A8BFA300BE4246 /* DecksViewController.m in Sources */,
 				8C069C3C1B044E7E004C92E2 /* DTCardForeignName.m in Sources */,
+				8C2038821BEE1C17009D32AF /* RLMSupport.swift in Sources */,
 				8C069C421B044E7E004C92E2 /* DTComprehensiveGlossary.m in Sources */,
 				8C45F0A41B1C4B8500C19C8F /* DTLanguage.m in Sources */,
-				8CEB34E91B849C07009A3F12 /* RLMSupport.swift in Sources */,
 				8C069C431B044E7E004C92E2 /* DTComprehensiveRule.m in Sources */,
 				8C2A97A819F5027B0094C97F /* ReaderThumbRequest.m in Sources */,
 				8CCE99691A6A80D400ECCA1C /* QuantityTableViewCell.m in Sources */,
@@ -1353,20 +1380,18 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					"/Users/tontonsevilla/workspace/decktracker/osx/DataSource/Pods/Parse-OSX",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Decktracker/Decktracker-Prefix.pch";
+				GCC_WARN_INHIBIT_ALL_WARNINGS = YES;
 				INFOPLIST_FILE = "Decktracker/Decktracker-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Pods/GoogleAnalytics-iOS-SDK",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1388,9 +1413,7 @@
 					"-l\"MBProgressHUD\"",
 					"-l\"Parse\"",
 					"-l\"ParseFacebookUtils\"",
-					"-l\"ParseFacebookUtilsLib\"",
 					"-l\"ParseTwitterUtils\"",
-					"-l\"ParseTwitterUtilsLib\"",
 					"-l\"ParseUI\"",
 					"-l\"PureLayout\"",
 					"-l\"RBBAnimation\"",
@@ -1473,20 +1496,18 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					"/Users/tontonsevilla/workspace/decktracker/osx/DataSource/Pods/Parse-OSX",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Decktracker/Decktracker-Prefix.pch";
+				GCC_WARN_INHIBIT_ALL_WARNINGS = YES;
 				INFOPLIST_FILE = "Decktracker/Decktracker-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Pods/GoogleAnalytics-iOS-SDK",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1508,9 +1529,7 @@
 					"-l\"MBProgressHUD\"",
 					"-l\"Parse\"",
 					"-l\"ParseFacebookUtils\"",
-					"-l\"ParseFacebookUtilsLib\"",
 					"-l\"ParseTwitterUtils\"",
-					"-l\"ParseTwitterUtilsLib\"",
 					"-l\"ParseUI\"",
 					"-l\"PureLayout\"",
 					"-l\"RBBAnimation\"",

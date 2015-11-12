@@ -13,20 +13,20 @@ public class LoginViewController: PFLogInViewController {
     init() {
         super.init(nibName:nil,bundle:nil)
         
-        self.fields = (PFLogInFields.DismissButton |
-                    PFLogInFields.UsernameAndPassword |
-                    PFLogInFields.LogInButton |
-                    PFLogInFields.SignUpButton |
-                    PFLogInFields.PasswordForgotten |
-                    PFLogInFields.Facebook |
-                    PFLogInFields.Twitter)
+//        self.fields = PFLogInFieldsDismissButton |
+//                    PFLogInFieldsUsernameAndPassword |
+//                    PFLogInFieldsLogInButton |
+//                    PFLogInFieldsSignUpButton |
+//                    PFLogInFieldsPasswordForgotten |
+//                    PFLogInFieldsFacebook |
+//                    PFLogInFieldsTwitter
         
         self.signUpController = SignupViewController()
     }
     
     // the following is also required if implementing an initializer
     required public init(coder:NSCoder) {
-        super.init(coder:coder)
+        super.init(coder:coder)!
     }
     
     public override func viewDidLoad() {
@@ -38,7 +38,7 @@ public class LoginViewController: PFLogInViewController {
         self.view.backgroundColor = JJJUtil.colorFromRGB(0x691F01)
         
         let image = UIImage(named: "\(NSBundle.mainBundle().bundlePath)/images/AppIcon57x57.png")
-        var imageView = UIImageView(frame: CGRectMake(0, 0, 57, 57))
+        let imageView = UIImageView(frame: CGRectMake(0, 0, 57, 57))
         imageView.image = image
         self.logInView!.logo = imageView
 
