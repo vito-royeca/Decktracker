@@ -1,0 +1,2 @@
+data/AllSets-x.json filter=lfs diff=lfs merge=lfs -text
+data/decktracker.realm filter=lfs diff=lfs merge=lfs -text
