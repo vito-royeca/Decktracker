@@ -654,7 +654,7 @@ static Database *_me;
                                                                              ascending:NO];
     RLMSortDescriptor *sortDescriptor2 = [RLMSortDescriptor  sortDescriptorWithProperty:@"name"
                                                                               ascending:YES];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"magicCardsInfoCode != %@", @""];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"magicCardsInfoCode != nil"];
         
     NSMutableArray *arrResults = [[NSMutableArray alloc] init];
     RLMResults *sets = [[DTSet objectsWithPredicate:predicate] sortedResultsUsingDescriptors:@[sortDescriptor1, sortDescriptor2]];

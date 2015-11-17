@@ -56,6 +56,7 @@
     // Database and Parse
     [[Database sharedInstance] setupParse:launchOptions];
     [[Database sharedInstance] setupDb];
+//    [[Database sharedInstance] uploadSets];
 //    [[Database sharedInstance ] deleteDuplicateParseCards];
 
     // custom colors
