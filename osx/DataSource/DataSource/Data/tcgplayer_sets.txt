@@ -1,3 +1,5 @@
+#List of Sets From TCGPlayer with no corrsponding MTGJSON set
+
 Astral
 Box Sets
 Clash Pack

@@ -55,7 +55,7 @@
 //            continue;
 //        }
         
-        NSArray *cards = [self parseCards:dict[@"cards"] forSet:set];
+        NSArray *cards = [self parseCards:dict[@"cards"] forSet:set fetchTcgPrices:NO];
         
         RLMRealm *realm = [RLMRealm defaultRealm];
         [realm beginWriteTransaction];
@@ -356,7 +356,7 @@
 }
 
 #pragma mark - Cards parsing
--(NSArray*) parseCards:(NSArray*) array forSet:(DTSet*) set
+-(NSArray*) parseCards:(NSArray*) array forSet:(DTSet*) set fetchTcgPrices:(BOOL) fetchTcgPrices
 {
     NSMutableArray *cards = [[NSMutableArray alloc] init];
     
@@ -579,7 +579,15 @@
             [self createRulingsForCard:card withRulings:dict[@"rulings"]];
             [self createForeignNamesForCard:card withLanguages:dict[@"foreignNames"]];
             [self createLegalitiesForCard:card withLegalities:dict[@"legalities"]];
-            [[Database sharedInstance] fetchTcgPlayerPriceForCard:card.cardId];
+            
+            if (fetchTcgPrices)
+            {
+                [[Database sharedInstance] fetchTcgPlayerPriceForCard:card.cardId];
+            }
+            else
+            {
+                NSLog(@"%@ [%@] - %@", card.set.name, card.set.code, card.name);
+            }
         }
         
         [cards addObject:card.cardId];

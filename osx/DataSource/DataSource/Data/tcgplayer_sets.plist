@@ -24,6 +24,8 @@
 	<string>APAC Lands</string>
 	<key>Avacyn Restored</key>
 	<string>Avacyn Restored</string>
+	<key>Battle for Zendikar</key>
+	<string>Battle for Zendikar</string>
 	<key>Battle Royale Box Set</key>
 	<string>Battle Royale Box Set</string>
 	<key>Beatdown Box Set</key>
@@ -54,6 +56,8 @@
 	<string>Commander 2013</string>
 	<key>Commander 2014</key>
 	<string>Commander 2014</string>
+	<key>Commander 2015</key>
+	<string>Commander 2015</string>
 	<key>Commander&apos;s Arsenal</key>
 	<string>Commander&apos;s Arsenal</string>
 	<key>Conflux</key>
@@ -364,5 +368,7 @@
 	<string>Worldwake</string>
 	<key>Zendikar</key>
 	<string>Zendikar</string>
+	<key>Zendikar Expeditions</key>
+	<string></string>
 </dict>
 </plist>

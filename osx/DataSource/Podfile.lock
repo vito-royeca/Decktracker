@@ -1,9 +1,9 @@
 PODS:
-  - Bolts/Tasks (1.4.0)
+  - Bolts/Tasks (1.5.0)
   - hpple (0.2.0)
   - JJJUtils/OSX (0.2.7)
-  - Parse (1.9.1):
-    - Bolts/Tasks (>= 1.4.0)
+  - Parse (1.10.0):
+    - Bolts/Tasks (~> 1.5)
   - Realm (0.96.2):
     - Realm/Headers (= 0.96.2)
   - Realm/Headers (0.96.2)
@@ -15,10 +15,10 @@ DEPENDENCIES:
   - Realm
 
 SPEC CHECKSUMS:
-  Bolts: 0e9bce58b9b9f5e8a7a4d47b16d2fabec289072b
+  Bolts: 722ab9a4f8b50fc4ed1b9998a5a7a2b3f16d80b4
   hpple: 3b765f96fc2cd56ad1a49aef6f7be5cb2aa64b57
   JJJUtils: 212c8b5c36ba436fe337af2e44698945d5e56424
-  Parse: 54a965c8c19a6dde90284ab654dbcc77ef8c001b
+  Parse: 90b2544822200f84b18bfacc4e8b0a3a6c3584a2
   Realm: 3ce8448151c571e90b85002d984d7f93f54fc8a3
 
-COCOAPODS: 0.38.2
+COCOAPODS: 0.39.0
