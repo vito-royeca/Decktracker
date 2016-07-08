@@ -1,5 +1,5 @@
 //
-//  CardSource.swift
+//  Source.swift
 //  DataSource
 //
 //  Created by Jovit Royeca on 29/06/2016.
@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 
 
-class CardSource: NSManagedObject {
+class Source: NSManagedObject {
 
     struct Keys {
         static let Name = "source"
@@ -21,7 +21,7 @@ class CardSource: NSManagedObject {
     }
     
     init(dictionary: [String : AnyObject], context: NSManagedObjectContext) {
-        let entity =  NSEntityDescription.entityForName("CardSource", inManagedObjectContext: context)!
+        let entity =  NSEntityDescription.entityForName("Source", inManagedObjectContext: context)!
         super.init(entity: entity,insertIntoManagedObjectContext: context)
         
         update(dictionary)

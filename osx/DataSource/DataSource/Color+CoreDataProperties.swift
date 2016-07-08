@@ -12,9 +12,10 @@
 import Foundation
 import CoreData
 
-extension CardColor {
+extension Color {
 
     @NSManaged var name: String?
+    @NSManaged var symbol: String?
     @NSManaged var cards: NSSet?
     @NSManaged var identities: NSSet?
 

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6252" systemVersion="14C109" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="DTArtist" representedClassName="DTArtist" syncable="YES">
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DTCard" inverseName="artist" inverseEntity="DTCard" syncable="YES"/>
+    </entity>
+    <entity name="DTBlock" representedClassName="DTBlock" syncable="YES">
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <relationship name="sets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DTSet" inverseName="block" inverseEntity="DTSet" syncable="YES"/>
+    </entity>
+    <entity name="DTCard" representedClassName="DTCard" syncable="YES">
+        <attribute name="border" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="cardID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="cmc" optional="YES" attributeType="Float" defaultValueString="0" syncable="YES"/>
+        <attribute name="flavor" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="handModifier" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="imageName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="layout" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lifeModifier" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="loyalty" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="manaCost" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="multiverseID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="number" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="originalText" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="originalType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="power" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="rating" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="releaseDate" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="reserved" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="sectionColor" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sectionNameInitial" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sectionType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="source" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="starter" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="tcgPlayerFetchDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="tcgPlayerFoilPrice" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="tcgPlayerHighPrice" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="tcgPlayerLink" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tcgPlayerLowPrice" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="tcgPlayerMidPrice" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="timeshifted" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="toughness" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="watermark" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="artist" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DTArtist" inverseName="cards" inverseEntity="DTArtist" syncable="YES"/>
+        <relationship name="colors" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DTCardColor" inverseName="cards" inverseEntity="DTCardColor" syncable="YES"/>
+        <relationship name="foreignNames" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DTCardForeignName" inverseName="card" inverseEntity="DTCardForeignName" syncable="YES"/>
+        <relationship name="legalities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DTCardLegality" inverseName="card" inverseEntity="DTCardLegality" syncable="YES"/>
+        <relationship name="names" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DTCard" inverseName="names" inverseEntity="DTCard" syncable="YES"/>
+        <relationship name="printings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DTSet" inverseName="printings" inverseEntity="DTSet" syncable="YES"/>
+        <relationship name="rarity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DTCardRarity" inverseName="cards" inverseEntity="DTCardRarity" syncable="YES"/>
+        <relationship name="ratings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DTCardRating" inverseName="card" inverseEntity="DTCardRating" syncable="YES"/>
+        <relationship name="rulings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DTCardRuling" inverseName="card" inverseEntity="DTCardRuling" syncable="YES"/>
+        <relationship name="set" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DTSet" inverseName="cards" inverseEntity="DTSet" syncable="YES"/>
+        <relationship name="subTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DTCardType" inverseName="cardSubTypes" inverseEntity="DTCardType" syncable="YES"/>
+        <relationship name="superTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DTCardType" inverseName="cardSuperTypes" inverseEntity="DTCardType" syncable="YES"/>
+        <relationship name="types" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DTCardType" inverseName="cardTypes" inverseEntity="DTCardType" syncable="YES"/>
+        <relationship name="variations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DTCard" inverseName="variations" inverseEntity="DTCard" syncable="YES"/>
+    </entity>
+    <entity name="DTCardColor" representedClassName="DTCardColor" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DTCard" inverseName="colors" inverseEntity="DTCard" syncable="YES"/>
+    </entity>
+    <entity name="DTCardForeignName" representedClassName="DTCardForeignName" syncable="YES">
+        <attribute name="language" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DTCard" inverseName="foreignNames" inverseEntity="DTCard" syncable="YES"/>
+    </entity>
+    <entity name="DTCardLegality" representedClassName="DTCardLegality" syncable="YES">
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DTCard" inverseName="legalities" inverseEntity="DTCard" syncable="YES"/>
+        <relationship name="format" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DTFormat" inverseName="legalities" inverseEntity="DTFormat" syncable="YES"/>
+    </entity>
+    <entity name="DTCardRarity" representedClassName="DTCardRarity" syncable="YES">
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DTCard" inverseName="rarity" inverseEntity="DTCard" syncable="YES"/>
+    </entity>
+    <entity name="DTCardRating" representedClassName="DTCardRating" syncable="YES">
+        <attribute name="rating" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DTCard" inverseName="ratings" inverseEntity="DTCard" syncable="YES"/>
+    </entity>
+    <entity name="DTCardRuling" representedClassName="DTCardRuling" syncable="YES">
+        <attribute name="date" attributeType="Date" syncable="YES"/>
+        <attribute name="text" attributeType="String" syncable="YES"/>
+        <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DTCard" inverseName="rulings" inverseEntity="DTCard" syncable="YES"/>
+    </entity>
+    <entity name="DTCardType" representedClassName="DTCardType" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="cardSubTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DTCard" inverseName="subTypes" inverseEntity="DTCard" syncable="YES"/>
+        <relationship name="cardSuperTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DTCard" inverseName="superTypes" inverseEntity="DTCard" syncable="YES"/>
+        <relationship name="cardTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DTCard" inverseName="types" inverseEntity="DTCard" syncable="YES"/>
+    </entity>
+    <entity name="DTComprehensiveGlossary" representedClassName="DTComprehensiveGlossary" syncable="YES">
+        <attribute name="definition" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="term" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="rules" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DTComprehensiveRule" inverseName="glossary" inverseEntity="DTComprehensiveRule" syncable="YES"/>
+    </entity>
+    <entity name="DTComprehensiveRule" representedClassName="DTComprehensiveRule" syncable="YES">
+        <attribute name="number" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="rule" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="children" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DTComprehensiveRule" inverseName="parent" inverseEntity="DTComprehensiveRule" syncable="YES"/>
+        <relationship name="glossary" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DTComprehensiveGlossary" inverseName="rules" inverseEntity="DTComprehensiveGlossary" syncable="YES"/>
+        <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DTComprehensiveRule" inverseName="children" inverseEntity="DTComprehensiveRule" syncable="YES"/>
+    </entity>
+    <entity name="DTFormat" representedClassName="DTFormat" syncable="YES">
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <relationship name="legalities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DTCardLegality" inverseName="format" inverseEntity="DTCardLegality" syncable="YES"/>
+    </entity>
+    <entity name="DTSet" representedClassName="DTSet" syncable="YES">
+        <attribute name="border" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="code" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="gathererCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imagesDownloaded" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="magicCardsCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="numberOfCards" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="oldCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="onlineOnly" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="releaseDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="sectionNameInitial" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sectionType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sectionYear" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tcgPlayerName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="block" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DTBlock" inverseName="sets" inverseEntity="DTBlock" syncable="YES"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DTCard" inverseName="set" inverseEntity="DTCard" syncable="YES"/>
+        <relationship name="printings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DTCard" inverseName="printings" inverseEntity="DTCard" syncable="YES"/>
+        <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DTSetType" inverseName="sets" inverseEntity="DTSetType" syncable="YES"/>
+    </entity>
+    <entity name="DTSetType" representedClassName="DTSetType" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="sets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DTSet" inverseName="type" inverseEntity="DTSet" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="DTArtist" positionX="-18" positionY="90" width="128" height="75"/>
+        <element name="DTBlock" positionX="-36" positionY="9" width="128" height="75"/>
+        <element name="DTCard" positionX="-63" positionY="-18" width="128" height="780"/>
+        <element name="DTCardColor" positionX="-18" positionY="135" width="128" height="75"/>
+        <element name="DTCardForeignName" positionX="-9" positionY="171" width="128" height="90"/>
+        <element name="DTCardLegality" positionX="0" positionY="162" width="128" height="90"/>
+        <element name="DTCardRarity" positionX="27" positionY="180" width="128" height="75"/>
+        <element name="DTCardRating" positionX="-18" positionY="135" width="128" height="75"/>
+        <element name="DTCardRuling" positionX="-9" positionY="162" width="128" height="90"/>
+        <element name="DTCardType" positionX="-18" positionY="135" width="128" height="105"/>
+        <element name="DTComprehensiveGlossary" positionX="-9" positionY="144" width="128" height="90"/>
+        <element name="DTComprehensiveRule" positionX="-18" positionY="135" width="128" height="120"/>
+        <element name="DTFormat" positionX="27" positionY="189" width="128" height="75"/>
+        <element name="DTSet" positionX="-54" positionY="-9" width="128" height="313"/>
+        <element name="DTSetType" positionX="-18" positionY="135" width="128" height="73"/>
+    </elements>
+</model>

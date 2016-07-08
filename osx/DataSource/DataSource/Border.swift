@@ -1,5 +1,5 @@
 //
-//  SetBorder.swift
+//  Border.swift
 //  DataSource
 //
 //  Created by Jovit Royeca on 29/06/2016.
@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 
 
-class SetBorder: NSManagedObject {
+class Border: NSManagedObject {
 
     struct Keys {
         static let Name = "border"
@@ -21,7 +21,7 @@ class SetBorder: NSManagedObject {
     }
     
     init(dictionary: [String : AnyObject], context: NSManagedObjectContext) {
-        let entity =  NSEntityDescription.entityForName("SetBorder", inManagedObjectContext: context)!
+        let entity =  NSEntityDescription.entityForName("Border", inManagedObjectContext: context)!
         super.init(entity: entity,insertIntoManagedObjectContext: context)
         
         update(dictionary)

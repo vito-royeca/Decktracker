@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 
 
-class CardColor: NSManagedObject {
+class Color: NSManagedObject {
 
     struct Keys {
         static let Name = "name"
@@ -21,7 +21,7 @@ class CardColor: NSManagedObject {
     }
     
     init(dictionary: [String : AnyObject], context: NSManagedObjectContext) {
-        let entity =  NSEntityDescription.entityForName("CardColor", inManagedObjectContext: context)!
+        let entity =  NSEntityDescription.entityForName("Color", inManagedObjectContext: context)!
         super.init(entity: entity,insertIntoManagedObjectContext: context)
         
         update(dictionary)
@@ -29,6 +29,20 @@ class CardColor: NSManagedObject {
     
     func update(dictionary: [String : AnyObject]) {
         name = dictionary[Keys.Name] as? String
+        
+        if let name = name {
+            if name == "Black" {
+                symbol = "B"
+            } else if name == "Blue" {
+                symbol = "U"
+            } else if name == "Green" {
+                symbol = "G"
+            } else if name == "Red" {
+                symbol = "R"
+            } else if name == "White" {
+                symbol = "W"
+            }
+        }
     }
 
 }

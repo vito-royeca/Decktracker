@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6252" systemVersion="14A389" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Artist" representedClassName="Artist" syncable="YES">
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="artist" inverseEntity="Card" syncable="YES"/>
+    </entity>
+    <entity name="Block" representedClassName="Block" syncable="YES">
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <relationship name="sets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Set" inverseName="block" inverseEntity="Set" syncable="YES"/>
+    </entity>
+    <entity name="Card" representedClassName="Card" syncable="YES">
+        <attribute name="border" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="cmc" optional="YES" attributeType="Float" defaultValueString="0" syncable="YES"/>
+        <attribute name="flavor" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="handModifier" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="imageName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="layout" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lifeModifier" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="loyalty" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="manaCost" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="multiverseID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="number" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="originalText" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="originalType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="power" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="releaseDate" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="reserved" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="source" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tcgPlayerFetchDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="tcgPlayerFoilPrice" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="tcgPlayerHighPrice" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="tcgPlayerLink" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tcgPlayerLowPrice" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="tcgPlayerMidPrice" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="timeshifted" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="toughness" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="watermark" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="artist" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Artist" inverseName="cards" inverseEntity="Artist" syncable="YES"/>
+        <relationship name="colors" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CardColor" inverseName="cards" inverseEntity="CardColor" syncable="YES"/>
+        <relationship name="foreignNames" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CardForeignName" inverseName="card" inverseEntity="CardForeignName" syncable="YES"/>
+        <relationship name="legalities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CardLegality" inverseName="card" inverseEntity="CardLegality" syncable="YES"/>
+        <relationship name="names" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="names" inverseEntity="Card" syncable="YES"/>
+        <relationship name="printings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Set" inverseName="printings" inverseEntity="Set" syncable="YES"/>
+        <relationship name="rarity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CardRarity" inverseName="cards" inverseEntity="CardRarity" syncable="YES"/>
+        <relationship name="rulings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CardRuling" inverseName="card" inverseEntity="CardRuling" syncable="YES"/>
+        <relationship name="set" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Set" inverseName="cards" inverseEntity="Set" syncable="YES"/>
+        <relationship name="subTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CardType" inverseName="cardSubTypes" inverseEntity="CardType" syncable="YES"/>
+        <relationship name="superTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CardType" inverseName="cardSuperTypes" inverseEntity="CardType" syncable="YES"/>
+        <relationship name="types" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CardType" inverseName="cardTypes" inverseEntity="CardType" syncable="YES"/>
+        <relationship name="variations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="variations" inverseEntity="Card" syncable="YES"/>
+    </entity>
+    <entity name="CardColor" representedClassName="CardColor" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="colors" inverseEntity="Card" syncable="YES"/>
+    </entity>
+    <entity name="CardForeignName" representedClassName="CardForeignName" syncable="YES">
+        <attribute name="language" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Card" inverseName="foreignNames" inverseEntity="Card" syncable="YES"/>
+    </entity>
+    <entity name="CardLegality" representedClassName="CardLegality" syncable="YES">
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Card" inverseName="legalities" inverseEntity="Card" syncable="YES"/>
+        <relationship name="format" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Format" inverseName="legalities" inverseEntity="Format" syncable="YES"/>
+    </entity>
+    <entity name="CardRarity" representedClassName="CardRarity" syncable="YES">
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="rarity" inverseEntity="Card" syncable="YES"/>
+    </entity>
+    <entity name="CardRuling" representedClassName="CardRuling" syncable="YES">
+        <attribute name="date" attributeType="Date" syncable="YES"/>
+        <attribute name="text" attributeType="String" syncable="YES"/>
+        <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Card" inverseName="rulings" inverseEntity="Card" syncable="YES"/>
+    </entity>
+    <entity name="CardType" representedClassName="CardType" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="cardSubTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="subTypes" inverseEntity="Card" syncable="YES"/>
+        <relationship name="cardSuperTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="superTypes" inverseEntity="Card" syncable="YES"/>
+        <relationship name="cardTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="types" inverseEntity="Card" syncable="YES"/>
+    </entity>
+    <entity name="ComprehensiveGlossary" representedClassName="ComprehensiveGlossary" syncable="YES">
+        <attribute name="definition" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="term" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="rules" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ComprehensiveRule" inverseName="glossary" inverseEntity="ComprehensiveRule" syncable="YES"/>
+    </entity>
+    <entity name="ComprehensiveRule" representedClassName="ComprehensiveRule" syncable="YES">
+        <attribute name="number" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="rule" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="children" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ComprehensiveRule" inverseName="parent" inverseEntity="ComprehensiveRule" syncable="YES"/>
+        <relationship name="glossary" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ComprehensiveGlossary" inverseName="rules" inverseEntity="ComprehensiveGlossary" syncable="YES"/>
+        <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ComprehensiveRule" inverseName="children" inverseEntity="ComprehensiveRule" syncable="YES"/>
+    </entity>
+    <entity name="Format" representedClassName="Format" syncable="YES">
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <relationship name="legalities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CardLegality" inverseName="format" inverseEntity="CardLegality" syncable="YES"/>
+    </entity>
+    <entity name="Set" representedClassName="Set" syncable="YES">
+        <attribute name="border" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="code" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="gathererCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imagesDownloaded" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="numberOfCards" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="oldCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="onlineOnly" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="releaseDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="tcgPlayerName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="block" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Block" inverseName="sets" inverseEntity="Block" syncable="YES"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="set" inverseEntity="Card" syncable="YES"/>
+        <relationship name="printings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="printings" inverseEntity="Card" syncable="YES"/>
+        <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SetType" inverseName="sets" inverseEntity="SetType" syncable="YES"/>
+    </entity>
+    <entity name="SetType" representedClassName="SetType" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="sets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Set" inverseName="type" inverseEntity="Set" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Artist" positionX="-18" positionY="90" width="128" height="73"/>
+        <element name="Block" positionX="-36" positionY="9" width="128" height="75"/>
+        <element name="Card" positionX="-63" positionY="-18" width="128" height="675"/>
+        <element name="CardColor" positionX="-18" positionY="135" width="128" height="73"/>
+        <element name="CardForeignName" positionX="-9" positionY="171" width="128" height="88"/>
+        <element name="CardLegality" positionX="0" positionY="162" width="128" height="88"/>
+        <element name="CardRarity" positionX="27" positionY="180" width="128" height="73"/>
+        <element name="CardRuling" positionX="-9" positionY="162" width="128" height="88"/>
+        <element name="CardType" positionX="-18" positionY="135" width="128" height="103"/>
+        <element name="ComprehensiveGlossary" positionX="-9" positionY="144" width="128" height="88"/>
+        <element name="ComprehensiveRule" positionX="-18" positionY="135" width="128" height="120"/>
+        <element name="Format" positionX="27" positionY="189" width="128" height="73"/>
+        <element name="Set" positionX="-54" positionY="-9" width="128" height="255"/>
+        <element name="SetType" positionX="-18" positionY="135" width="128" height="73"/>
+    </elements>
+</model>

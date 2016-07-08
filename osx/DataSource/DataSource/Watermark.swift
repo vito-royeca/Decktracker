@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 
 
-class CardWatermark: NSManagedObject {
+class Watermark: NSManagedObject {
 
     struct Keys {
         static let Name = "watermark"
@@ -21,7 +21,7 @@ class CardWatermark: NSManagedObject {
     }
     
     init(dictionary: [String : AnyObject], context: NSManagedObjectContext) {
-        let entity =  NSEntityDescription.entityForName("CardWatermark", inManagedObjectContext: context)!
+        let entity =  NSEntityDescription.entityForName("Watermark", inManagedObjectContext: context)!
         super.init(entity: entity,insertIntoManagedObjectContext: context)
         
         update(dictionary)

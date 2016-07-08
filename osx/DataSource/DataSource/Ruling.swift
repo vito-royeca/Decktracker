@@ -1,5 +1,5 @@
 //
-//  CardRuling.swift
+//  Ruling.swift
 //  DataSource
 //
 //  Created by Jovit Royeca on 29/06/2016.
@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 
 
-class CardRuling: NSManagedObject {
+class Ruling: NSManagedObject {
 
     struct Keys {
         static let Text = "text"
@@ -22,7 +22,7 @@ class CardRuling: NSManagedObject {
     }
     
     init(dictionary: [String : AnyObject], context: NSManagedObjectContext) {
-        let entity =  NSEntityDescription.entityForName("CardRuling", inManagedObjectContext: context)!
+        let entity =  NSEntityDescription.entityForName("Ruling", inManagedObjectContext: context)!
         super.init(entity: entity,insertIntoManagedObjectContext: context)
         
         update(dictionary)

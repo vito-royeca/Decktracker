@@ -1,5 +1,5 @@
 //
-//  CardForeignName.swift
+//  ForeignName.swift
 //  DataSource
 //
 //  Created by Jovit Royeca on 29/06/2016.
@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 
 
-class CardForeignName: NSManagedObject {
+class ForeignName: NSManagedObject {
 
     struct Keys {
         static let Name = "name"
@@ -21,7 +21,7 @@ class CardForeignName: NSManagedObject {
     }
     
     init(dictionary: [String : AnyObject], context: NSManagedObjectContext) {
-        let entity =  NSEntityDescription.entityForName("CardForeignName", inManagedObjectContext: context)!
+        let entity =  NSEntityDescription.entityForName("ForeignName", inManagedObjectContext: context)!
         super.init(entity: entity,insertIntoManagedObjectContext: context)
         
         update(dictionary)

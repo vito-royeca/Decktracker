@@ -1,5 +1,5 @@
 //
-//  CardWatermark+CoreDataProperties.swift
+//  Watermark+CoreDataProperties.swift
 //  DataSource
 //
 //  Created by Jovit Royeca on 29/06/2016.
@@ -12,7 +12,7 @@
 import Foundation
 import CoreData
 
-extension CardWatermark {
+extension Watermark {
 
     @NSManaged var name: String?
     @NSManaged var cards: NSSet?

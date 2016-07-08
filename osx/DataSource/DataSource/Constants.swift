@@ -7,3 +7,9 @@
 //
 
 import Foundation
+
+struct Constants {
+    // Core Data
+    static let CoreDataSQLiteFile       = "Decktracker.sqlite"
+    static let CoreDataModelFile        = "Decktracker.momd"
+}

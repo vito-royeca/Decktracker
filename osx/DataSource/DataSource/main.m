@@ -6,11 +6,9 @@
 //  Copyright (c) 2014 Jovito Royeca. All rights reserved.
 //
 
-#import "Database.h"
-#import "JSONLoader.h"
-#import "RulesLoader.h"
 
 #import <JJJUtils/JJJ.h>
+#import "DataSource-Swift.h"
 
 int main(int argc, const char * argv[])
 {
@@ -23,11 +21,11 @@ int main(int argc, const char * argv[])
         [jsonLoader json2Database];
         
         // Step 2
-        RulesLoader *rulesLoader = [[RulesLoader alloc] init];
-        [rulesLoader json2Database];
+//        RulesLoader *rulesLoader = [[RulesLoader alloc] init];
+//        [rulesLoader json2Database];
 
         // Step 3
-        [[Database sharedInstance] copyRealmDatabaseToHome];
+//        [[Database sharedInstance] copyRealmDatabaseToHome];
         
         // Step 4: Parse Maintenance (Optional)
 //        [[Database sharedInstance] setupParse:nil];

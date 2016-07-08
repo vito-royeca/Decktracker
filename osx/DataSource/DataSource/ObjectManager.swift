@@ -6,10 +6,7 @@
 //  Copyright © 2016 Jovito Royeca. All rights reserved.
 //
 
-import UIKit
-import APTimeZones
 import CoreData
-import CoreLocation
 
 class ObjectManager: NSObject {
 
@@ -25,79 +22,153 @@ class ObjectManager: NSObject {
     }
     
     // Mark: Custom methods
-    func findCurrentWeather(cityID: NSNumber) -> Weather? {
-        let sorter = NSSortDescriptor(key: "displayTime", ascending: true)
-        let predicate = NSPredicate(format: "city.cityID = %@ AND current = %@", cityID, NSNumber(bool: true))
-        
-        return ObjectManager.sharedInstance.findObjects("Weather", predicate: predicate, sorters: [sorter]).first as? Weather
-    }
-    
-    func forecastFetchRequest(cityID: NSNumber, date: NSDate) -> NSFetchRequest {
-        let calendar = NSCalendar.currentCalendar()
-        let components = calendar.components([.Year, .Month, .Day, .Hour, .Minute, .Second], fromDate: date)
-        components.timeZone = NSTimeZone(name: "UTC")
-        components.hour = 0
-        components.minute = 0
-        components.second = 0
-        let minDisplayTime = calendar.dateFromComponents(components)
-        
-        components.hour = 23
-        components.minute = 59
-        components.second = 59
-        let maxDisplayTime = calendar.dateFromComponents(components)
-        
-        let sorter = NSSortDescriptor(key: "displayTime", ascending: true)
-        let predicate = NSPredicate(format: "city.cityID = %@ AND current = %@ AND (displayTime >= %@ AND displayTime <= %@)", cityID, NSNumber(bool: false), minDisplayTime!, maxDisplayTime!)
-        
-        let fetchRequest = NSFetchRequest(entityName: "Weather")
-        fetchRequest.sortDescriptors = [sorter]
-        fetchRequest.predicate = predicate
-
-        return fetchRequest
-    }
-    
-    func findOrCreateWeather(dict: [String: AnyObject], cityID: NSNumber) -> Weather {
-        let initializer = { (dict: [String: AnyObject], context: NSManagedObjectContext) -> Weather in
-            return Weather(dictionary: dict, context: context)
+    func findOrCreateColor(dict: [String: AnyObject]) -> Color {
+        let initializer = { (dict: [String: AnyObject], context: NSManagedObjectContext) -> Color in
+            return Color(dictionary: dict, context: context)
         }
         
-        var displayTime:NSDate?
-        if let d = dict[Weather.Keys.DisplayTime] as? NSNumber {
-            displayTime = NSDate(timeIntervalSince1970: d.doubleValue)
-        }
-        return findOrCreateObject(dict, entityName: "Weather", objectFinder: ["displayTime": displayTime!, "city.cityID": cityID], initializer: initializer) as! Weather
+        return findOrCreateObject(dict, entityName: "Color", objectFinder: ["name": dict[Color.Keys.Name]!], initializer: initializer) as! Color
     }
     
-    func findOrCreateWeatherCondition(dict: [String: AnyObject]) -> WeatherCondition {
-        let initializer = { (dict: [String: AnyObject], context: NSManagedObjectContext) -> WeatherCondition in
-            return WeatherCondition(dictionary: dict, context: context)
+    func findOrCreateSet(dict: [String: AnyObject]) -> Set {
+        let initializer = { (dict: [String: AnyObject], context: NSManagedObjectContext) -> Set in
+            return Set(dictionary: dict, context: context)
         }
         
-        return findOrCreateObject(dict, entityName: "WeatherCondition", objectFinder: ["weatherConditionID": dict[WeatherCondition.Keys.WeatherConditionID]!], initializer: initializer) as! WeatherCondition
+        return findOrCreateObject(dict, entityName: "Set", objectFinder: ["name": dict[Set.Keys.Name]!], initializer: initializer) as! Set
     }
     
-    func findOrCreateCity(dict: [String: AnyObject]) -> City {
-        let initializer = { (dict: [String: AnyObject], context: NSManagedObjectContext) -> City in
-            return City(dictionary: dict, context: context)
+    func findOrCreateBlock(dict: [String: AnyObject]) -> Block {
+        let initializer = { (dict: [String: AnyObject], context: NSManagedObjectContext) -> Block in
+            return Block(dictionary: dict, context: context)
         }
         
-        return findOrCreateObject(dict, entityName: "City", objectFinder: ["cityID": dict[City.Keys.CityID]!], initializer: initializer) as! City
+        return findOrCreateObject(dict, entityName: "Block", objectFinder: ["name": dict[Block.Keys.Name]!], initializer: initializer) as! Block
     }
     
-    func findOrCreateCountry(dict: [String: AnyObject]) -> Country {
-        let initializer = { (dict: [String: AnyObject], context: NSManagedObjectContext) -> Country in
-            return Country(dictionary: dict, context: context)
+    func findOrCreateSetType(dict: [String: AnyObject]) -> SetType {
+        let initializer = { (dict: [String: AnyObject], context: NSManagedObjectContext) -> SetType in
+            return SetType(dictionary: dict, context: context)
         }
         
-        return findOrCreateObject(dict, entityName: "Country", objectFinder: ["countryCode" : dict[Country.Keys.CountryCode]!], initializer: initializer) as! Country
+        return findOrCreateObject(dict, entityName: "SetType", objectFinder: ["name": dict[SetType.Keys.Name]!], initializer: initializer) as! SetType
     }
     
-    func findOrCreatePhoto(dict: [String: AnyObject]) -> Photo {
-        let initializer = { (dict: [String: AnyObject], context: NSManagedObjectContext) -> Photo in
-            return Photo(dictionary: dict, context: context)
+    func findOrCreateBorder(dict: [String: AnyObject]) -> Border {
+        let initializer = { (dict: [String: AnyObject], context: NSManagedObjectContext) -> Border in
+            return Border(dictionary: dict, context: context)
         }
         
-        return findOrCreateObject(dict, entityName: "Photo", objectFinder: ["photoID": dict[Photo.Keys.PhotoID]!], initializer: initializer) as! Photo
+        return findOrCreateObject(dict, entityName: "Border", objectFinder: ["name": dict[Border.Keys.Name]!], initializer: initializer) as! Border
+    }
+    
+    func findOrCreateCard(dict: [String: AnyObject]) -> Card {
+        let initializer = { (dict: [String: AnyObject], context: NSManagedObjectContext) -> Card in
+            return Card(dictionary: dict, context: context)
+        }
+        
+        return findOrCreateObject(dict, entityName: "Card", objectFinder: ["cardID": dict[Card.Keys.CardID]!], initializer: initializer) as! Card
+    }
+    
+    func findOrCreateLayout(dict: [String: AnyObject]) -> Layout {
+        let initializer = { (dict: [String: AnyObject], context: NSManagedObjectContext) -> Layout in
+            return Layout(dictionary: dict, context: context)
+        }
+        
+        return findOrCreateObject(dict, entityName: "Layout", objectFinder: ["name": dict[Layout.Keys.Name]!], initializer: initializer) as! Layout
+    }
+    
+    func findOrCreateCardType(dict: [String: AnyObject]) -> CardType {
+        let initializer = { (dict: [String: AnyObject], context: NSManagedObjectContext) -> CardType in
+            return CardType(dictionary: dict, context: context)
+        }
+        
+        return findOrCreateObject(dict, entityName: "CardType", objectFinder: ["name": dict[CardType.Keys.Name]!], initializer: initializer) as! CardType
+    }
+    
+    func findOrCreateRarity(dict: [String: AnyObject]) -> Rarity {
+        let initializer = { (dict: [String: AnyObject], context: NSManagedObjectContext) -> Rarity in
+            return Rarity(dictionary: dict, context: context)
+        }
+        
+        return findOrCreateObject(dict, entityName: "Rarity", objectFinder: ["name": dict[Rarity.Keys.Name]!], initializer: initializer) as! Rarity
+    }
+    
+    func findOrCreateArtist(dict: [String: AnyObject]) -> Artist {
+        let initializer = { (dict: [String: AnyObject], context: NSManagedObjectContext) -> Artist in
+            return Artist(dictionary: dict, context: context)
+        }
+        
+        return findOrCreateObject(dict, entityName: "Artist", objectFinder: ["name": dict[Artist.Keys.Name]!], initializer: initializer) as! Artist
+    }
+    
+    func findOrCreateWatermark(dict: [String: AnyObject]) -> Watermark {
+        let initializer = { (dict: [String: AnyObject], context: NSManagedObjectContext) -> Watermark in
+            return Watermark(dictionary: dict, context: context)
+        }
+        
+        return findOrCreateObject(dict, entityName: "Watermark", objectFinder: ["name": dict[Watermark.Keys.Name]!], initializer: initializer) as! Watermark
+    }
+    
+    func findOrCreateSource(dict: [String: AnyObject]) -> Source {
+        let initializer = { (dict: [String: AnyObject], context: NSManagedObjectContext) -> Source in
+            return Source(dictionary: dict, context: context)
+        }
+        
+        return findOrCreateObject(dict, entityName: "Source", objectFinder: ["name": dict[Source.Keys.Name]!], initializer: initializer) as! Source
+    }
+    
+    func findOrCreateFormat(dict: [String: AnyObject]) -> Format {
+        let initializer = { (dict: [String: AnyObject], context: NSManagedObjectContext) -> Format in
+            return Format(dictionary: dict, context: context)
+        }
+        
+        return findOrCreateObject(dict, entityName: "Format", objectFinder: ["name": dict[Format.Keys.Name]!], initializer: initializer) as! Format
+    }
+    
+    func findOrCreateLegality(dict: [String: AnyObject]) -> Legality {
+        let initializer = { (dict: [String: AnyObject], context: NSManagedObjectContext) -> Legality in
+            return Legality(dictionary: dict, context: context)
+        }
+        
+        return findOrCreateObject(dict, entityName: "Legality", objectFinder: ["name": dict[Legality.Keys.Name]!], initializer: initializer) as! Legality
+    }
+    
+    func findOrCreateRuling(dict: [String: AnyObject]) -> Ruling {
+        let initializer = { (dict: [String: AnyObject], context: NSManagedObjectContext) -> Ruling in
+            return Ruling(dictionary: dict, context: context)
+        }
+        
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "YYYY-MM-dd"
+        let date = formatter.dateFromString(dict[Ruling.Keys.Date] as! String)
+        
+        return findOrCreateObject(dict, entityName: "Ruling", objectFinder: ["date": date!, "text": dict[Ruling.Keys.Text]!], initializer: initializer) as! Ruling
+    }
+    
+    func findOrCreateCardLegality(card: Card, dict: [String: AnyObject]) -> CardLegality {
+        let cardLegality = CardLegality(context: privateContext)
+        cardLegality.card = card
+        cardLegality.format = findOrCreateFormat(dict)
+        cardLegality.legality = findOrCreateLegality(dict)
+        
+        return cardLegality
+    }
+    
+    func findOrCreateLanguage(dict: [String: AnyObject]) -> Language {
+        let initializer = { (dict: [String: AnyObject], context: NSManagedObjectContext) -> Language in
+            return Language(dictionary: dict, context: context)
+        }
+        
+        return findOrCreateObject(dict, entityName: "Language", objectFinder: ["name": dict[Language.Keys.Name]!], initializer: initializer) as! Language
+    }
+    
+    func findOrCreateForeignName(card: Card, dict: [String: AnyObject]) -> ForeignName {
+        let cardForeignName = ForeignName(dictionary: dict, context: privateContext)
+        cardForeignName.card = card
+        cardForeignName.language = findOrCreateLanguage(dict)
+        
+        return cardForeignName
     }
     
     // MARK: Core methods
@@ -185,32 +256,6 @@ class ObjectManager: NSObject {
         } catch let error as NSError {
             print("Error in fetch \(error), \(error.userInfo)")
         }
-    }
-    
-    func batchUpdate(entityName: String, propertiesToUpdate: [String: AnyObject], predicate: NSPredicate) {
-        // code adapted from: http://code.tutsplus.com/tutorials/core-data-and-swift-batch-updates--cms-25120
-        // Initialize Batch Update Request
-        let batchUpdateRequest = NSBatchUpdateRequest(entityName: entityName)
-        
-        // Configure Batch Update Request
-        batchUpdateRequest.resultType = .UpdatedObjectIDsResultType
-        batchUpdateRequest.propertiesToUpdate = propertiesToUpdate
-        batchUpdateRequest.predicate = predicate
-        
-        do {
-            // Execute Batch Request
-            let batchUpdateResult = try privateContext.executeRequest(batchUpdateRequest) as! NSBatchUpdateResult
-            
-            // Extract Object IDs
-            let objectIDs = batchUpdateResult.result as! [NSManagedObjectID]
-            
-            for objectID in objectIDs {
-                let managedObject = privateContext.objectWithID(objectID)
-                privateContext.refreshObject(managedObject, mergeChanges: false)
-            }
-            NSNotificationCenter.defaultCenter().postNotificationName(ObjectManager.BatchUpdateNotification, object: nil, userInfo: nil)
-            
-        } catch {}
     }
     
     // MARK: - Shared Instance

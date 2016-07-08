@@ -12,6 +12,23 @@ import CoreData
 
 class Block: NSManagedObject {
 
-// Insert code here to add functionality to your managed object subclass
+    struct Keys {
+        static let Name = "block"
+    }
+    
+    override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
+        super.init(entity: entity, insertIntoManagedObjectContext: context)
+    }
+    
+    init(dictionary: [String : AnyObject], context: NSManagedObjectContext) {
+        let entity =  NSEntityDescription.entityForName("Block", inManagedObjectContext: context)!
+        super.init(entity: entity,insertIntoManagedObjectContext: context)
+        
+        update(dictionary)
+    }
+    
+    func update(dictionary: [String : AnyObject]) {
+        name = dictionary[Keys.Name] as? String
+    }
 
 }

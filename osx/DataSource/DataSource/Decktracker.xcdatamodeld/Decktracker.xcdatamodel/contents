@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10171" systemVersion="15F34" minimumToolsVersion="Xcode 7.0">
+    <entity name="Artist" representedClassName=".Artist" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="artist" inverseEntity="Card" syncable="YES"/>
+    </entity>
+    <entity name="Block" representedClassName=".Block" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="sets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Set" inverseName="block" inverseEntity="Set" syncable="YES"/>
+    </entity>
+    <entity name="Border" representedClassName=".Border" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="border" inverseEntity="Card" syncable="YES"/>
+        <relationship name="sets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Set" inverseName="border" inverseEntity="Set" syncable="YES"/>
+    </entity>
+    <entity name="Card" representedClassName=".Card" syncable="YES">
+        <attribute name="cardID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="cmc" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="flavor" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="hand" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="imageName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="life" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="loyalty" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="manaCost" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="modern" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="multiverseID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="number" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="originalText" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="power" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="rating" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="releaseDate" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="reserved" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="starter" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="timeshifted" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="toughness" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="artist" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Artist" inverseName="cards" inverseEntity="Artist" syncable="YES"/>
+        <relationship name="border" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Border" inverseName="cards" inverseEntity="Border" syncable="YES"/>
+        <relationship name="colorIdentities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Color" inverseName="identities" inverseEntity="Color" syncable="YES"/>
+        <relationship name="colors" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Color" inverseName="cards" inverseEntity="Color" syncable="YES"/>
+        <relationship name="foreignNames" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ForeignName" inverseName="card" inverseEntity="ForeignName" syncable="YES"/>
+        <relationship name="layout" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Layout" inverseName="cards" inverseEntity="Layout" syncable="YES"/>
+        <relationship name="legalities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CardLegality" inverseName="card" inverseEntity="CardLegality" syncable="YES"/>
+        <relationship name="originalType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CardType" inverseName="originalCards" inverseEntity="CardType" syncable="YES"/>
+        <relationship name="printings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Set" inverseName="printings" inverseEntity="Set" syncable="YES"/>
+        <relationship name="rarity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Rarity" inverseName="cards" inverseEntity="Rarity" syncable="YES"/>
+        <relationship name="ratings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Rating" inverseName="card" inverseEntity="Rating" syncable="YES"/>
+        <relationship name="rulings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Ruling" inverseName="cards" inverseEntity="Ruling" syncable="YES"/>
+        <relationship name="set" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Set" inverseName="cards" inverseEntity="Set" syncable="YES"/>
+        <relationship name="source" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Source" inverseName="cards" inverseEntity="Source" syncable="YES"/>
+        <relationship name="subtypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CardType" inverseName="subtypes" inverseEntity="CardType" syncable="YES"/>
+        <relationship name="supertypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CardType" inverseName="supertypes" inverseEntity="CardType" syncable="YES"/>
+        <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CardType" inverseName="cards" inverseEntity="CardType" syncable="YES"/>
+        <relationship name="types" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CardType" inverseName="types" inverseEntity="CardType" syncable="YES"/>
+        <relationship name="variations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="variations" inverseEntity="Card" syncable="YES"/>
+        <relationship name="watermark" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Watermark" inverseName="cards" inverseEntity="Watermark" syncable="YES"/>
+    </entity>
+    <entity name="CardLegality" representedClassName=".CardLegality" syncable="YES">
+        <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Card" inverseName="legalities" inverseEntity="Card" syncable="YES"/>
+        <relationship name="format" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Format" inverseName="legalities" inverseEntity="Format" syncable="YES"/>
+        <relationship name="legality" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Legality" inverseName="legalities" inverseEntity="Legality" syncable="YES"/>
+    </entity>
+    <entity name="CardType" representedClassName=".CardType" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="type" inverseEntity="Card" syncable="YES"/>
+        <relationship name="originalCards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="originalType" inverseEntity="Card" syncable="YES"/>
+        <relationship name="subtypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="subtypes" inverseEntity="Card" syncable="YES"/>
+        <relationship name="supertypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="supertypes" inverseEntity="Card" syncable="YES"/>
+        <relationship name="types" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="types" inverseEntity="Card" syncable="YES"/>
+    </entity>
+    <entity name="Color" representedClassName=".Color" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="symbol" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="colors" inverseEntity="Card" syncable="YES"/>
+        <relationship name="identities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="colorIdentities" inverseEntity="Card" syncable="YES"/>
+    </entity>
+    <entity name="ForeignName" representedClassName=".ForeignName" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Card" inverseName="foreignNames" inverseEntity="Card" syncable="YES"/>
+        <relationship name="language" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Language" inverseName="cards" inverseEntity="Language" syncable="YES"/>
+    </entity>
+    <entity name="Format" representedClassName=".Format" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="legalities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CardLegality" inverseName="format" inverseEntity="CardLegality" syncable="YES"/>
+    </entity>
+    <entity name="Language" representedClassName=".Language" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ForeignName" inverseName="language" inverseEntity="ForeignName" syncable="YES"/>
+    </entity>
+    <entity name="Layout" representedClassName=".Layout" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="layout" inverseEntity="Card" syncable="YES"/>
+    </entity>
+    <entity name="Legality" representedClassName=".Legality" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="legalities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CardLegality" inverseName="legality" inverseEntity="CardLegality" syncable="YES"/>
+    </entity>
+    <entity name="Rarity" representedClassName=".Rarity" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="symbol" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="rarity" inverseEntity="Card" syncable="YES"/>
+    </entity>
+    <entity name="Rating" representedClassName=".Rating" syncable="YES">
+        <attribute name="rating" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Card" inverseName="ratings" inverseEntity="Card" syncable="YES"/>
+    </entity>
+    <entity name="Ruling" representedClassName=".Ruling" syncable="YES">
+        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="rulings" inverseEntity="Card" syncable="YES"/>
+    </entity>
+    <entity name="Set" representedClassName=".Set" syncable="YES">
+        <attribute name="code" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="gathererCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="magicCardsInfoCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="numberOfCards" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="oldCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="onlineOnly" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="releaseDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="tcgPlayerName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="block" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Block" inverseName="sets" inverseEntity="Block" syncable="YES"/>
+        <relationship name="border" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Border" inverseName="sets" inverseEntity="Border" syncable="YES"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="set" inverseEntity="Card" syncable="YES"/>
+        <relationship name="printings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="printings" inverseEntity="Card" syncable="YES"/>
+        <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SetType" inverseName="sets" inverseEntity="SetType" syncable="YES"/>
+    </entity>
+    <entity name="SetType" representedClassName=".SetType" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="sets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Set" inverseName="type" inverseEntity="Set" syncable="YES"/>
+    </entity>
+    <entity name="Source" representedClassName=".Source" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="source" inverseEntity="Card" syncable="YES"/>
+    </entity>
+    <entity name="Watermark" representedClassName=".Watermark" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="watermark" inverseEntity="Card" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Artist" positionX="-63" positionY="-18" width="128" height="75"/>
+        <element name="Block" positionX="-54" positionY="-9" width="128" height="75"/>
+        <element name="Border" positionX="9" positionY="54" width="128" height="90"/>
+        <element name="Card" positionX="-36" positionY="9" width="128" height="660"/>
+        <element name="CardLegality" positionX="-9" positionY="135" width="128" height="90"/>
+        <element name="CardType" positionX="9" positionY="54" width="128" height="135"/>
+        <element name="Color" positionX="-18" positionY="27" width="128" height="105"/>
+        <element name="ForeignName" positionX="0" positionY="45" width="128" height="90"/>
+        <element name="Format" positionX="36" positionY="81" width="128" height="75"/>
+        <element name="Language" positionX="45" positionY="90" width="128" height="75"/>
+        <element name="Layout" positionX="-9" positionY="108" width="128" height="75"/>
+        <element name="Legality" positionX="18" positionY="63" width="128" height="75"/>
+        <element name="Rarity" positionX="36" positionY="81" width="128" height="90"/>
+        <element name="Rating" positionX="-9" positionY="36" width="128" height="75"/>
+        <element name="Ruling" positionX="0" positionY="45" width="128" height="90"/>
+        <element name="Set" positionX="-9" positionY="36" width="128" height="255"/>
+        <element name="SetType" positionX="0" positionY="45" width="128" height="75"/>
+        <element name="Source" positionX="18" positionY="162" width="128" height="75"/>
+        <element name="Watermark" positionX="0" positionY="144" width="128" height="75"/>
+    </elements>
+</model>

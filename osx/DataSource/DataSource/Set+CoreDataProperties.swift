@@ -14,16 +14,17 @@ import CoreData
 
 extension Set {
 
-    @NSManaged var code: NSDate?
+    @NSManaged var code: String?
     @NSManaged var gathererCode: String?
     @NSManaged var magicCardsInfoCode: String?
     @NSManaged var name: String?
+    @NSManaged var numberOfCards: NSNumber?
     @NSManaged var oldCode: String?
     @NSManaged var onlineOnly: NSNumber?
-    @NSManaged var releaseDate: String?
+    @NSManaged var releaseDate: NSDate?
     @NSManaged var tcgPlayerName: String?
     @NSManaged var block: Block?
-    @NSManaged var border: SetBorder?
+    @NSManaged var border: Border?
     @NSManaged var cards: NSSet?
     @NSManaged var type: SetType?
     @NSManaged var printings: NSSet?

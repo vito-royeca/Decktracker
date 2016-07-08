@@ -1,5 +1,5 @@
 //
-//  CardLayout.swift
+//  Layout.swift
 //  DataSource
 //
 //  Created by Jovit Royeca on 29/06/2016.
@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 
 
-class CardLayout: NSManagedObject {
+class Layout: NSManagedObject {
 
     struct Keys {
         static let Name = "layout"
@@ -21,7 +21,7 @@ class CardLayout: NSManagedObject {
     }
     
     init(dictionary: [String : AnyObject], context: NSManagedObjectContext) {
-        let entity =  NSEntityDescription.entityForName("CardLayout", inManagedObjectContext: context)!
+        let entity =  NSEntityDescription.entityForName("Layout", inManagedObjectContext: context)!
         super.init(entity: entity,insertIntoManagedObjectContext: context)
         
         update(dictionary)

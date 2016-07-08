@@ -7,26 +7,50 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8C0D16681D2375DA00165F3A /* Watermark+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D16421D2375DA00165F3A /* Watermark+CoreDataProperties.swift */; };
+		8C0D16691D2375DA00165F3A /* Watermark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D16431D2375DA00165F3A /* Watermark.swift */; };
+		8C0D166A1D2375DA00165F3A /* Card+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D16441D2375DA00165F3A /* Card+CoreDataProperties.swift */; };
+		8C0D166B1D2375DA00165F3A /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D16451D2375DA00165F3A /* Card.swift */; };
+		8C0D166E1D2375DA00165F3A /* CardType+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D16481D2375DA00165F3A /* CardType+CoreDataProperties.swift */; };
+		8C0D166F1D2375DA00165F3A /* CardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D16491D2375DA00165F3A /* CardType.swift */; };
+		8C0D16701D2375DA00165F3A /* Border+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D164A1D2375DA00165F3A /* Border+CoreDataProperties.swift */; };
+		8C0D16711D2375DA00165F3A /* Border.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D164B1D2375DA00165F3A /* Border.swift */; };
+		8C0D16721D2375DA00165F3A /* ForeignName+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D164C1D2375DA00165F3A /* ForeignName+CoreDataProperties.swift */; };
+		8C0D16731D2375DA00165F3A /* ForeignName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D164D1D2375DA00165F3A /* ForeignName.swift */; };
+		8C0D16741D2375DA00165F3A /* Block+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D164E1D2375DA00165F3A /* Block+CoreDataProperties.swift */; };
+		8C0D16751D2375DA00165F3A /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D164F1D2375DA00165F3A /* Block.swift */; };
+		8C0D16761D2375DA00165F3A /* Rarity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D16501D2375DA00165F3A /* Rarity+CoreDataProperties.swift */; };
+		8C0D16771D2375DA00165F3A /* Rarity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D16511D2375DA00165F3A /* Rarity.swift */; };
+		8C0D16781D2375DA00165F3A /* Legality+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D16521D2375DA00165F3A /* Legality+CoreDataProperties.swift */; };
+		8C0D16791D2375DA00165F3A /* Legality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D16531D2375DA00165F3A /* Legality.swift */; };
+		8C0D167A1D2375DA00165F3A /* SetType+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D16541D2375DA00165F3A /* SetType+CoreDataProperties.swift */; };
+		8C0D167B1D2375DA00165F3A /* SetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D16551D2375DA00165F3A /* SetType.swift */; };
+		8C0D167C1D2375DA00165F3A /* Layout+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D16561D2375DA00165F3A /* Layout+CoreDataProperties.swift */; };
+		8C0D167D1D2375DA00165F3A /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D16571D2375DA00165F3A /* Layout.swift */; };
+		8C0D167E1D2375DA00165F3A /* Rating+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D16581D2375DA00165F3A /* Rating+CoreDataProperties.swift */; };
+		8C0D167F1D2375DA00165F3A /* Rating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D16591D2375DA00165F3A /* Rating.swift */; };
+		8C0D16801D2375DA00165F3A /* Ruling+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D165A1D2375DA00165F3A /* Ruling+CoreDataProperties.swift */; };
+		8C0D16811D2375DA00165F3A /* Ruling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D165B1D2375DA00165F3A /* Ruling.swift */; };
+		8C0D16821D2375DA00165F3A /* Source+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D165C1D2375DA00165F3A /* Source+CoreDataProperties.swift */; };
+		8C0D16831D2375DA00165F3A /* Source.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D165D1D2375DA00165F3A /* Source.swift */; };
+		8C0D16841D2375DA00165F3A /* Language+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D165E1D2375DA00165F3A /* Language+CoreDataProperties.swift */; };
+		8C0D16851D2375DA00165F3A /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D165F1D2375DA00165F3A /* Language.swift */; };
+		8C0D16861D2375DA00165F3A /* Artist+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D16601D2375DA00165F3A /* Artist+CoreDataProperties.swift */; };
+		8C0D16871D2375DA00165F3A /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D16611D2375DA00165F3A /* Artist.swift */; };
+		8C0D16881D2375DA00165F3A /* Format+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D16621D2375DA00165F3A /* Format+CoreDataProperties.swift */; };
+		8C0D16891D2375DA00165F3A /* Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D16631D2375DA00165F3A /* Format.swift */; };
+		8C0D168A1D2375DA00165F3A /* Color+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D16641D2375DA00165F3A /* Color+CoreDataProperties.swift */; };
+		8C0D168B1D2375DA00165F3A /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D16651D2375DA00165F3A /* Color.swift */; };
+		8C0D168C1D2375DA00165F3A /* Set+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D16661D2375DA00165F3A /* Set+CoreDataProperties.swift */; };
+		8C0D168D1D2375DA00165F3A /* Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D16671D2375DA00165F3A /* Set.swift */; };
+		8C0D16941D2376A300165F3A /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D168F1D2376A300165F3A /* CoreDataManager.swift */; };
+		8C0D16971D2376A300165F3A /* ObjectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D16921D2376A300165F3A /* ObjectManager.swift */; };
+		8C0D169A1D2376EB00165F3A /* JSONLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D16991D2376EB00165F3A /* JSONLoader.swift */; };
+		8C0D169C1D23A2F600165F3A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D169B1D23A2F600165F3A /* Constants.swift */; };
 		8C1B4DCB198CF0C000B4C948 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C1B4DCA198CF0C000B4C948 /* Foundation.framework */; };
 		8C1B4DCE198CF0C000B4C948 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1B4DCD198CF0C000B4C948 /* main.m */; };
-		8C2427E01B02F3C3004D190A /* RulesLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2427DF1B02F3C3004D190A /* RulesLoader.m */; };
-		8C3EE4321B38F8BB0037AF20 /* Database.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3EE4311B38F8BB0037AF20 /* Database.m */; };
-		8C3EE4551B38F8E60037AF20 /* DTArtist.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3EE4341B38F8E60037AF20 /* DTArtist.m */; };
-		8C3EE4561B38F8E60037AF20 /* DTBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3EE4361B38F8E60037AF20 /* DTBlock.m */; };
-		8C3EE4571B38F8E60037AF20 /* DTCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3EE4381B38F8E60037AF20 /* DTCard.m */; };
-		8C3EE4581B38F8E60037AF20 /* DTCardColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3EE43A1B38F8E60037AF20 /* DTCardColor.m */; };
-		8C3EE4591B38F8E60037AF20 /* DTCardForeignName.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3EE43C1B38F8E60037AF20 /* DTCardForeignName.m */; };
-		8C3EE45A1B38F8E60037AF20 /* DTCardLegality.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3EE43E1B38F8E60037AF20 /* DTCardLegality.m */; };
-		8C3EE45B1B38F8E60037AF20 /* DTCardRarity.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3EE4401B38F8E60037AF20 /* DTCardRarity.m */; };
-		8C3EE45C1B38F8E60037AF20 /* DTCardRating.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3EE4421B38F8E60037AF20 /* DTCardRating.m */; };
-		8C3EE45D1B38F8E60037AF20 /* DTCardRuling.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3EE4441B38F8E60037AF20 /* DTCardRuling.m */; };
-		8C3EE45E1B38F8E60037AF20 /* DTCardType.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3EE4461B38F8E60037AF20 /* DTCardType.m */; };
-		8C3EE45F1B38F8E60037AF20 /* DTComprehensiveGlossary.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3EE4481B38F8E60037AF20 /* DTComprehensiveGlossary.m */; };
-		8C3EE4601B38F8E60037AF20 /* DTComprehensiveRule.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3EE44A1B38F8E60037AF20 /* DTComprehensiveRule.m */; };
-		8C3EE4611B38F8E60037AF20 /* DTFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3EE44C1B38F8E60037AF20 /* DTFormat.m */; };
-		8C3EE4621B38F8E60037AF20 /* DTLanguage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3EE44E1B38F8E60037AF20 /* DTLanguage.m */; };
-		8C3EE4631B38F8E60037AF20 /* DTSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3EE4501B38F8E60037AF20 /* DTSet.m */; };
-		8C3EE4641B38F8E60037AF20 /* DTSetType.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C3EE4521B38F8E60037AF20 /* DTSetType.m */; };
+		8C22BA3A1D26B95E00FD8702 /* CardLegality+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C22BA381D26B95E00FD8702 /* CardLegality+CoreDataProperties.swift */; };
+		8C22BA3B1D26B95E00FD8702 /* CardLegality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C22BA391D26B95E00FD8702 /* CardLegality.swift */; };
 		8C4B9D0E1A515D0B00F727E7 /* tcgplayer_sets.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C4B9D091A51384400F727E7 /* tcgplayer_sets.plist */; };
 		8C5BAE171B4A9695007F2C44 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CEF64DE1B0081260056450F /* libc++.dylib */; };
 		8C877F401B4D0BAB004302D2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF9CE4B199F982A008127E5 /* CoreGraphics.framework */; };
@@ -37,11 +61,11 @@
 		8C877F4A1B4D0BD8004302D2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C877F491B4D0BD8004302D2 /* SystemConfiguration.framework */; };
 		8C877F4C1B4D0BE4004302D2 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C877F4B1B4D0BE4004302D2 /* libsqlite3.dylib */; };
 		8C877F4E1B4D0BEC004302D2 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C877F4D1B4D0BEC004302D2 /* libz.dylib */; };
+		8C9AC1621D0F89F600E302F6 /* Decktracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8C9AC1601D0F89F600E302F6 /* Decktracker.xcdatamodeld */; };
 		8CE75CB01AB96D40001EB70E /* AllSets-x.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C87AB311A7F1F6C00E901DE /* AllSets-x.json */; };
 		8CE75CB41AB96DBB001EB70E /* MagicCompRules_20140926.htm in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C87AB321A7F1F6C00E901DE /* MagicCompRules_20140926.htm */; };
-		8CEF64DA1B007BB30056450F /* JSONLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEF64D61B007BB30056450F /* JSONLoader.m */; };
 		8CF9CE52199F9A22008127E5 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF9CE51199F9A22008127E5 /* AppKit.framework */; };
-		FF1CDF00AB4665E43538A432 /* libPods-DataSource.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 969839B9D323C69052940371 /* libPods-DataSource.a */; };
+		FB29A922BB5139A9E96A1FF9 /* libPods-DataSource.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C8EB644CB2D973D1DD06991A /* libPods-DataSource.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -60,6 +84,49 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		31170834C1641D094C1CA93C /* Pods-DataSource.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DataSource.release.xcconfig"; path = "Pods/Target Support Files/Pods-DataSource/Pods-DataSource.release.xcconfig"; sourceTree = "<group>"; };
+		64B79FD59377268181433708 /* Pods-DataSource.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DataSource.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DataSource/Pods-DataSource.debug.xcconfig"; sourceTree = "<group>"; };
+		8C0D16411D2375DA00165F3A /* DataSource-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DataSource-Bridging-Header.h"; sourceTree = "<group>"; };
+		8C0D16421D2375DA00165F3A /* Watermark+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Watermark+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8C0D16431D2375DA00165F3A /* Watermark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Watermark.swift; sourceTree = "<group>"; };
+		8C0D16441D2375DA00165F3A /* Card+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Card+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8C0D16451D2375DA00165F3A /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
+		8C0D16481D2375DA00165F3A /* CardType+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CardType+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8C0D16491D2375DA00165F3A /* CardType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardType.swift; sourceTree = "<group>"; };
+		8C0D164A1D2375DA00165F3A /* Border+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Border+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8C0D164B1D2375DA00165F3A /* Border.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Border.swift; sourceTree = "<group>"; };
+		8C0D164C1D2375DA00165F3A /* ForeignName+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ForeignName+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8C0D164D1D2375DA00165F3A /* ForeignName.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForeignName.swift; sourceTree = "<group>"; };
+		8C0D164E1D2375DA00165F3A /* Block+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Block+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8C0D164F1D2375DA00165F3A /* Block.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
+		8C0D16501D2375DA00165F3A /* Rarity+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Rarity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8C0D16511D2375DA00165F3A /* Rarity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rarity.swift; sourceTree = "<group>"; };
+		8C0D16521D2375DA00165F3A /* Legality+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Legality+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8C0D16531D2375DA00165F3A /* Legality.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Legality.swift; sourceTree = "<group>"; };
+		8C0D16541D2375DA00165F3A /* SetType+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SetType+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8C0D16551D2375DA00165F3A /* SetType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetType.swift; sourceTree = "<group>"; };
+		8C0D16561D2375DA00165F3A /* Layout+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Layout+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8C0D16571D2375DA00165F3A /* Layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
+		8C0D16581D2375DA00165F3A /* Rating+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Rating+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8C0D16591D2375DA00165F3A /* Rating.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rating.swift; sourceTree = "<group>"; };
+		8C0D165A1D2375DA00165F3A /* Ruling+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Ruling+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8C0D165B1D2375DA00165F3A /* Ruling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ruling.swift; sourceTree = "<group>"; };
+		8C0D165C1D2375DA00165F3A /* Source+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Source+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8C0D165D1D2375DA00165F3A /* Source.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Source.swift; sourceTree = "<group>"; };
+		8C0D165E1D2375DA00165F3A /* Language+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Language+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8C0D165F1D2375DA00165F3A /* Language.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
+		8C0D16601D2375DA00165F3A /* Artist+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Artist+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8C0D16611D2375DA00165F3A /* Artist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Artist.swift; sourceTree = "<group>"; };
+		8C0D16621D2375DA00165F3A /* Format+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Format+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8C0D16631D2375DA00165F3A /* Format.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Format.swift; sourceTree = "<group>"; };
+		8C0D16641D2375DA00165F3A /* Color+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Color+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8C0D16651D2375DA00165F3A /* Color.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		8C0D16661D2375DA00165F3A /* Set+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Set+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8C0D16671D2375DA00165F3A /* Set.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Set.swift; sourceTree = "<group>"; };
+		8C0D168F1D2376A300165F3A /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		8C0D16921D2376A300165F3A /* ObjectManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectManager.swift; sourceTree = "<group>"; };
+		8C0D16991D2376EB00165F3A /* JSONLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONLoader.swift; sourceTree = "<group>"; };
+		8C0D169B1D23A2F600165F3A /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		8C0ECBF81B81E85F005D5BEE /* libhpple.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libhpple.a; path = "../../../../Library/Developer/Xcode/DerivedData/DataSource-exunlzaqzgqgbjhgyhupklwxiowb/Build/Products/Debug/libhpple.a"; sourceTree = "<group>"; };
 		8C0ECBF91B81E85F005D5BEE /* libJJJUtils.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libJJJUtils.a; path = "../../../../Library/Developer/Xcode/DerivedData/DataSource-exunlzaqzgqgbjhgyhupklwxiowb/Build/Products/Debug/libJJJUtils.a"; sourceTree = "<group>"; };
 		8C1B4DC5198CF0C000B4C948 /* DataSource */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DataSource; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -67,46 +134,9 @@
 		8C1B4DCA198CF0C000B4C948 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		8C1B4DCD198CF0C000B4C948 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8C1B4DD0198CF0C000B4C948 /* DataSource-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DataSource-Prefix.pch"; sourceTree = "<group>"; };
-		8C2427DE1B02F3C3004D190A /* RulesLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RulesLoader.h; sourceTree = "<group>"; };
-		8C2427DF1B02F3C3004D190A /* RulesLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RulesLoader.m; sourceTree = "<group>"; };
-		8C3EE42F1B38F8A70037AF20 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Constants.h; path = ../../../ios/Decktracker/Decktracker/Constants.h; sourceTree = "<group>"; };
-		8C3EE4301B38F8BB0037AF20 /* Database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Database.h; path = ../../../../ios/Decktracker/Decktracker/Controller/Database.h; sourceTree = "<group>"; };
-		8C3EE4311B38F8BB0037AF20 /* Database.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Database.m; path = ../../../../ios/Decktracker/Decktracker/Controller/Database.m; sourceTree = "<group>"; };
-		8C3EE4331B38F8E60037AF20 /* DTArtist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTArtist.h; path = ../../../ios/Decktracker/Decktracker/Model/DTArtist.h; sourceTree = "<group>"; };
-		8C3EE4341B38F8E60037AF20 /* DTArtist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTArtist.m; path = ../../../ios/Decktracker/Decktracker/Model/DTArtist.m; sourceTree = "<group>"; };
-		8C3EE4351B38F8E60037AF20 /* DTBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTBlock.h; path = ../../../ios/Decktracker/Decktracker/Model/DTBlock.h; sourceTree = "<group>"; };
-		8C3EE4361B38F8E60037AF20 /* DTBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTBlock.m; path = ../../../ios/Decktracker/Decktracker/Model/DTBlock.m; sourceTree = "<group>"; };
-		8C3EE4371B38F8E60037AF20 /* DTCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTCard.h; path = ../../../ios/Decktracker/Decktracker/Model/DTCard.h; sourceTree = "<group>"; };
-		8C3EE4381B38F8E60037AF20 /* DTCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTCard.m; path = ../../../ios/Decktracker/Decktracker/Model/DTCard.m; sourceTree = "<group>"; };
-		8C3EE4391B38F8E60037AF20 /* DTCardColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTCardColor.h; path = ../../../ios/Decktracker/Decktracker/Model/DTCardColor.h; sourceTree = "<group>"; };
-		8C3EE43A1B38F8E60037AF20 /* DTCardColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTCardColor.m; path = ../../../ios/Decktracker/Decktracker/Model/DTCardColor.m; sourceTree = "<group>"; };
-		8C3EE43B1B38F8E60037AF20 /* DTCardForeignName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTCardForeignName.h; path = ../../../ios/Decktracker/Decktracker/Model/DTCardForeignName.h; sourceTree = "<group>"; };
-		8C3EE43C1B38F8E60037AF20 /* DTCardForeignName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTCardForeignName.m; path = ../../../ios/Decktracker/Decktracker/Model/DTCardForeignName.m; sourceTree = "<group>"; };
-		8C3EE43D1B38F8E60037AF20 /* DTCardLegality.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTCardLegality.h; path = ../../../ios/Decktracker/Decktracker/Model/DTCardLegality.h; sourceTree = "<group>"; };
-		8C3EE43E1B38F8E60037AF20 /* DTCardLegality.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTCardLegality.m; path = ../../../ios/Decktracker/Decktracker/Model/DTCardLegality.m; sourceTree = "<group>"; };
-		8C3EE43F1B38F8E60037AF20 /* DTCardRarity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTCardRarity.h; path = ../../../ios/Decktracker/Decktracker/Model/DTCardRarity.h; sourceTree = "<group>"; };
-		8C3EE4401B38F8E60037AF20 /* DTCardRarity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTCardRarity.m; path = ../../../ios/Decktracker/Decktracker/Model/DTCardRarity.m; sourceTree = "<group>"; };
-		8C3EE4411B38F8E60037AF20 /* DTCardRating.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTCardRating.h; path = ../../../ios/Decktracker/Decktracker/Model/DTCardRating.h; sourceTree = "<group>"; };
-		8C3EE4421B38F8E60037AF20 /* DTCardRating.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTCardRating.m; path = ../../../ios/Decktracker/Decktracker/Model/DTCardRating.m; sourceTree = "<group>"; };
-		8C3EE4431B38F8E60037AF20 /* DTCardRuling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTCardRuling.h; path = ../../../ios/Decktracker/Decktracker/Model/DTCardRuling.h; sourceTree = "<group>"; };
-		8C3EE4441B38F8E60037AF20 /* DTCardRuling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTCardRuling.m; path = ../../../ios/Decktracker/Decktracker/Model/DTCardRuling.m; sourceTree = "<group>"; };
-		8C3EE4451B38F8E60037AF20 /* DTCardType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTCardType.h; path = ../../../ios/Decktracker/Decktracker/Model/DTCardType.h; sourceTree = "<group>"; };
-		8C3EE4461B38F8E60037AF20 /* DTCardType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTCardType.m; path = ../../../ios/Decktracker/Decktracker/Model/DTCardType.m; sourceTree = "<group>"; };
-		8C3EE4471B38F8E60037AF20 /* DTComprehensiveGlossary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTComprehensiveGlossary.h; path = ../../../ios/Decktracker/Decktracker/Model/DTComprehensiveGlossary.h; sourceTree = "<group>"; };
-		8C3EE4481B38F8E60037AF20 /* DTComprehensiveGlossary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTComprehensiveGlossary.m; path = ../../../ios/Decktracker/Decktracker/Model/DTComprehensiveGlossary.m; sourceTree = "<group>"; };
-		8C3EE4491B38F8E60037AF20 /* DTComprehensiveRule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTComprehensiveRule.h; path = ../../../ios/Decktracker/Decktracker/Model/DTComprehensiveRule.h; sourceTree = "<group>"; };
-		8C3EE44A1B38F8E60037AF20 /* DTComprehensiveRule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTComprehensiveRule.m; path = ../../../ios/Decktracker/Decktracker/Model/DTComprehensiveRule.m; sourceTree = "<group>"; };
-		8C3EE44B1B38F8E60037AF20 /* DTFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTFormat.h; path = ../../../ios/Decktracker/Decktracker/Model/DTFormat.h; sourceTree = "<group>"; };
-		8C3EE44C1B38F8E60037AF20 /* DTFormat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTFormat.m; path = ../../../ios/Decktracker/Decktracker/Model/DTFormat.m; sourceTree = "<group>"; };
-		8C3EE44D1B38F8E60037AF20 /* DTLanguage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTLanguage.h; path = ../../../ios/Decktracker/Decktracker/Model/DTLanguage.h; sourceTree = "<group>"; };
-		8C3EE44E1B38F8E60037AF20 /* DTLanguage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTLanguage.m; path = ../../../ios/Decktracker/Decktracker/Model/DTLanguage.m; sourceTree = "<group>"; };
-		8C3EE44F1B38F8E60037AF20 /* DTSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTSet.h; path = ../../../ios/Decktracker/Decktracker/Model/DTSet.h; sourceTree = "<group>"; };
-		8C3EE4501B38F8E60037AF20 /* DTSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTSet.m; path = ../../../ios/Decktracker/Decktracker/Model/DTSet.m; sourceTree = "<group>"; };
-		8C3EE4511B38F8E60037AF20 /* DTSetType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTSetType.h; path = ../../../ios/Decktracker/Decktracker/Model/DTSetType.h; sourceTree = "<group>"; };
-		8C3EE4521B38F8E60037AF20 /* DTSetType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTSetType.m; path = ../../../ios/Decktracker/Decktracker/Model/DTSetType.m; sourceTree = "<group>"; };
-		8C3EE4541B38F8E60037AF20 /* RLMArrays.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RLMArrays.h; path = ../../../ios/Decktracker/Decktracker/Model/RLMArrays.h; sourceTree = "<group>"; };
+		8C22BA381D26B95E00FD8702 /* CardLegality+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CardLegality+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8C22BA391D26B95E00FD8702 /* CardLegality.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardLegality.swift; sourceTree = "<group>"; };
 		8C4B9D091A51384400F727E7 /* tcgplayer_sets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = tcgplayer_sets.plist; sourceTree = "<group>"; };
-		8C4B9D0D1A51562F00F727E7 /* tcgplayer_sets.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tcgplayer_sets.txt; sourceTree = "<group>"; };
 		8C877F411B4D0BB2004302D2 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		8C877F431B4D0BBA004302D2 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		8C877F451B4D0BC4004302D2 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -117,15 +147,12 @@
 		8C877F571B4D5238004302D2 /* Investigate.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Investigate.txt; sourceTree = "<group>"; };
 		8C87AB311A7F1F6C00E901DE /* AllSets-x.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "AllSets-x.json"; path = "../../../../data/AllSets-x.json"; sourceTree = "<group>"; };
 		8C87AB321A7F1F6C00E901DE /* MagicCompRules_20140926.htm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = MagicCompRules_20140926.htm; path = ../../../../data/MagicCompRules_20140926.htm; sourceTree = "<group>"; };
-		8CEF64D51B007BB30056450F /* JSONLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONLoader.h; sourceTree = "<group>"; };
-		8CEF64D61B007BB30056450F /* JSONLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONLoader.m; sourceTree = "<group>"; };
+		8C9AC1611D0F89F600E302F6 /* Decktracker.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Decktracker.xcdatamodel; sourceTree = "<group>"; };
 		8CEF64DE1B0081260056450F /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		8CF9CE4B199F982A008127E5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		8CF9CE51199F9A22008127E5 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		8CFF719C1B020D6D002428D2 /* DataSource-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "DataSource-Info.plist"; sourceTree = "<group>"; };
-		969839B9D323C69052940371 /* libPods-DataSource.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DataSource.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		CD8211BD792C165D977F3102 /* Pods-DataSource.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DataSource.release.xcconfig"; path = "Pods/Target Support Files/Pods-DataSource/Pods-DataSource.release.xcconfig"; sourceTree = "<group>"; };
-		ECD2E97926F06FB12495ED6D /* Pods-DataSource.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DataSource.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DataSource/Pods-DataSource.debug.xcconfig"; sourceTree = "<group>"; };
+		C8EB644CB2D973D1DD06991A /* libPods-DataSource.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DataSource.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,20 +171,30 @@
 				8C5BAE171B4A9695007F2C44 /* libc++.dylib in Frameworks */,
 				8CF9CE52199F9A22008127E5 /* AppKit.framework in Frameworks */,
 				8C1B4DCB198CF0C000B4C948 /* Foundation.framework in Frameworks */,
-				FF1CDF00AB4665E43538A432 /* libPods-DataSource.a in Frameworks */,
+				FB29A922BB5139A9E96A1FF9 /* libPods-DataSource.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8C0D168E1D2375E700165F3A /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				8C0D168F1D2376A300165F3A /* CoreDataManager.swift */,
+				8C0D16991D2376EB00165F3A /* JSONLoader.swift */,
+				8C0D16921D2376A300165F3A /* ObjectManager.swift */,
+			);
+			name = Utilities;
+			sourceTree = "<group>";
+		};
 		8C1B4DBC198CF0C000B4C948 = {
 			isa = PBXGroup;
 			children = (
 				8C1B4DCC198CF0C000B4C948 /* DataSource */,
 				8C1B4DC7198CF0C000B4C948 /* Frameworks */,
 				8C1B4DC6198CF0C000B4C948 /* Products */,
-				C18BEA94B7AEA3E81F7EC0B3 /* Pods */,
+				ECF465179B92C3C85709F404 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -186,7 +223,7 @@
 				8C877F451B4D0BC4004302D2 /* QuartzCore.framework */,
 				8C877F471B4D0BCE004302D2 /* Security.framework */,
 				8C877F491B4D0BD8004302D2 /* SystemConfiguration.framework */,
-				969839B9D323C69052940371 /* libPods-DataSource.a */,
+				C8EB644CB2D973D1DD06991A /* libPods-DataSource.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -194,12 +231,14 @@
 		8C1B4DCC198CF0C000B4C948 /* DataSource */ = {
 			isa = PBXGroup;
 			children = (
-				8C3EE42F1B38F8A70037AF20 /* Constants.h */,
+				8C0D169B1D23A2F600165F3A /* Constants.swift */,
 				8C80A0BF198D01AD00BADA6C /* Controller */,
 				8C3E414219AE29850058FF67 /* Data */,
+				8C0D16411D2375DA00165F3A /* DataSource-Bridging-Header.h */,
 				8C1B4DCD198CF0C000B4C948 /* main.m */,
 				8C21506E1993C5FF00B0128C /* Model */,
 				8C1B4DCF198CF0C000B4C948 /* Supporting Files */,
+				8C0D168E1D2375E700165F3A /* Utilities */,
 			);
 			path = DataSource;
 			sourceTree = "<group>";
@@ -216,39 +255,45 @@
 		8C21506E1993C5FF00B0128C /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				8C3EE4331B38F8E60037AF20 /* DTArtist.h */,
-				8C3EE4341B38F8E60037AF20 /* DTArtist.m */,
-				8C3EE4351B38F8E60037AF20 /* DTBlock.h */,
-				8C3EE4361B38F8E60037AF20 /* DTBlock.m */,
-				8C3EE4371B38F8E60037AF20 /* DTCard.h */,
-				8C3EE4381B38F8E60037AF20 /* DTCard.m */,
-				8C3EE4391B38F8E60037AF20 /* DTCardColor.h */,
-				8C3EE43A1B38F8E60037AF20 /* DTCardColor.m */,
-				8C3EE43B1B38F8E60037AF20 /* DTCardForeignName.h */,
-				8C3EE43C1B38F8E60037AF20 /* DTCardForeignName.m */,
-				8C3EE43D1B38F8E60037AF20 /* DTCardLegality.h */,
-				8C3EE43E1B38F8E60037AF20 /* DTCardLegality.m */,
-				8C3EE43F1B38F8E60037AF20 /* DTCardRarity.h */,
-				8C3EE4401B38F8E60037AF20 /* DTCardRarity.m */,
-				8C3EE4411B38F8E60037AF20 /* DTCardRating.h */,
-				8C3EE4421B38F8E60037AF20 /* DTCardRating.m */,
-				8C3EE4431B38F8E60037AF20 /* DTCardRuling.h */,
-				8C3EE4441B38F8E60037AF20 /* DTCardRuling.m */,
-				8C3EE4451B38F8E60037AF20 /* DTCardType.h */,
-				8C3EE4461B38F8E60037AF20 /* DTCardType.m */,
-				8C3EE4471B38F8E60037AF20 /* DTComprehensiveGlossary.h */,
-				8C3EE4481B38F8E60037AF20 /* DTComprehensiveGlossary.m */,
-				8C3EE4491B38F8E60037AF20 /* DTComprehensiveRule.h */,
-				8C3EE44A1B38F8E60037AF20 /* DTComprehensiveRule.m */,
-				8C3EE44B1B38F8E60037AF20 /* DTFormat.h */,
-				8C3EE44C1B38F8E60037AF20 /* DTFormat.m */,
-				8C3EE44D1B38F8E60037AF20 /* DTLanguage.h */,
-				8C3EE44E1B38F8E60037AF20 /* DTLanguage.m */,
-				8C3EE44F1B38F8E60037AF20 /* DTSet.h */,
-				8C3EE4501B38F8E60037AF20 /* DTSet.m */,
-				8C3EE4511B38F8E60037AF20 /* DTSetType.h */,
-				8C3EE4521B38F8E60037AF20 /* DTSetType.m */,
-				8C3EE4541B38F8E60037AF20 /* RLMArrays.h */,
+				8C0D16611D2375DA00165F3A /* Artist.swift */,
+				8C0D16601D2375DA00165F3A /* Artist+CoreDataProperties.swift */,
+				8C0D164F1D2375DA00165F3A /* Block.swift */,
+				8C0D164E1D2375DA00165F3A /* Block+CoreDataProperties.swift */,
+				8C0D164B1D2375DA00165F3A /* Border.swift */,
+				8C0D164A1D2375DA00165F3A /* Border+CoreDataProperties.swift */,
+				8C0D16451D2375DA00165F3A /* Card.swift */,
+				8C0D16441D2375DA00165F3A /* Card+CoreDataProperties.swift */,
+				8C22BA391D26B95E00FD8702 /* CardLegality.swift */,
+				8C22BA381D26B95E00FD8702 /* CardLegality+CoreDataProperties.swift */,
+				8C0D16491D2375DA00165F3A /* CardType.swift */,
+				8C0D16481D2375DA00165F3A /* CardType+CoreDataProperties.swift */,
+				8C0D16651D2375DA00165F3A /* Color.swift */,
+				8C0D16641D2375DA00165F3A /* Color+CoreDataProperties.swift */,
+				8C9AC1601D0F89F600E302F6 /* Decktracker.xcdatamodeld */,
+				8C0D164D1D2375DA00165F3A /* ForeignName.swift */,
+				8C0D164C1D2375DA00165F3A /* ForeignName+CoreDataProperties.swift */,
+				8C0D16631D2375DA00165F3A /* Format.swift */,
+				8C0D16621D2375DA00165F3A /* Format+CoreDataProperties.swift */,
+				8C0D165F1D2375DA00165F3A /* Language.swift */,
+				8C0D165E1D2375DA00165F3A /* Language+CoreDataProperties.swift */,
+				8C0D16571D2375DA00165F3A /* Layout.swift */,
+				8C0D16561D2375DA00165F3A /* Layout+CoreDataProperties.swift */,
+				8C0D16531D2375DA00165F3A /* Legality.swift */,
+				8C0D16521D2375DA00165F3A /* Legality+CoreDataProperties.swift */,
+				8C0D16511D2375DA00165F3A /* Rarity.swift */,
+				8C0D16501D2375DA00165F3A /* Rarity+CoreDataProperties.swift */,
+				8C0D16591D2375DA00165F3A /* Rating.swift */,
+				8C0D16581D2375DA00165F3A /* Rating+CoreDataProperties.swift */,
+				8C0D165B1D2375DA00165F3A /* Ruling.swift */,
+				8C0D165A1D2375DA00165F3A /* Ruling+CoreDataProperties.swift */,
+				8C0D16671D2375DA00165F3A /* Set.swift */,
+				8C0D16661D2375DA00165F3A /* Set+CoreDataProperties.swift */,
+				8C0D16551D2375DA00165F3A /* SetType.swift */,
+				8C0D16541D2375DA00165F3A /* SetType+CoreDataProperties.swift */,
+				8C0D165D1D2375DA00165F3A /* Source.swift */,
+				8C0D165C1D2375DA00165F3A /* Source+CoreDataProperties.swift */,
+				8C0D16431D2375DA00165F3A /* Watermark.swift */,
+				8C0D16421D2375DA00165F3A /* Watermark+CoreDataProperties.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -259,7 +304,6 @@
 				8C87AB311A7F1F6C00E901DE /* AllSets-x.json */,
 				8C87AB321A7F1F6C00E901DE /* MagicCompRules_20140926.htm */,
 				8C4B9D091A51384400F727E7 /* tcgplayer_sets.plist */,
-				8C4B9D0D1A51562F00F727E7 /* tcgplayer_sets.txt */,
 				8C877F571B4D5238004302D2 /* Investigate.txt */,
 			);
 			path = Data;
@@ -268,21 +312,15 @@
 		8C80A0BF198D01AD00BADA6C /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				8C3EE4301B38F8BB0037AF20 /* Database.h */,
-				8C3EE4311B38F8BB0037AF20 /* Database.m */,
-				8CEF64D51B007BB30056450F /* JSONLoader.h */,
-				8CEF64D61B007BB30056450F /* JSONLoader.m */,
-				8C2427DE1B02F3C3004D190A /* RulesLoader.h */,
-				8C2427DF1B02F3C3004D190A /* RulesLoader.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
 		};
-		C18BEA94B7AEA3E81F7EC0B3 /* Pods */ = {
+		ECF465179B92C3C85709F404 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				ECD2E97926F06FB12495ED6D /* Pods-DataSource.debug.xcconfig */,
-				CD8211BD792C165D977F3102 /* Pods-DataSource.release.xcconfig */,
+				64B79FD59377268181433708 /* Pods-DataSource.debug.xcconfig */,
+				31170834C1641D094C1CA93C /* Pods-DataSource.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -294,11 +332,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8C1B4DD8198CF0C000B4C948 /* Build configuration list for PBXNativeTarget "DataSource" */;
 			buildPhases = (
-				00381D60CA314050AD95F3C3 /* Check Pods Manifest.lock */,
+				6C30EC0F1451E54475D6822F /* [CP] Check Pods Manifest.lock */,
 				8C1B4DC1198CF0C000B4C948 /* Sources */,
 				8C1B4DC2198CF0C000B4C948 /* Frameworks */,
 				8C1B4DC3198CF0C000B4C948 /* CopyFiles */,
-				D12A9A43E3EF49278255A531 /* Copy Pods Resources */,
+				6E7EB98E3232D3DF3E78D32D /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -315,7 +353,8 @@
 		8C1B4DBD198CF0C000B4C948 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastSwiftUpdateCheck = 0730;
+				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = "Jovito Royeca";
 			};
 			buildConfigurationList = 8C1B4DC0198CF0C000B4C948 /* Build configuration list for PBXProject "DataSource" */;
@@ -336,14 +375,14 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		00381D60CA314050AD95F3C3 /* Check Pods Manifest.lock */ = {
+		6C30EC0F1451E54475D6822F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -351,14 +390,14 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		D12A9A43E3EF49278255A531 /* Copy Pods Resources */ = {
+		6E7EB98E3232D3DF3E78D32D /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -373,26 +412,50 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8C3EE45C1B38F8E60037AF20 /* DTCardRating.m in Sources */,
-				8C3EE4571B38F8E60037AF20 /* DTCard.m in Sources */,
-				8C3EE4581B38F8E60037AF20 /* DTCardColor.m in Sources */,
-				8C3EE45B1B38F8E60037AF20 /* DTCardRarity.m in Sources */,
-				8C3EE4641B38F8E60037AF20 /* DTSetType.m in Sources */,
-				8CEF64DA1B007BB30056450F /* JSONLoader.m in Sources */,
-				8C3EE4611B38F8E60037AF20 /* DTFormat.m in Sources */,
+				8C0D16681D2375DA00165F3A /* Watermark+CoreDataProperties.swift in Sources */,
+				8C0D16841D2375DA00165F3A /* Language+CoreDataProperties.swift in Sources */,
+				8C0D16891D2375DA00165F3A /* Format.swift in Sources */,
+				8C0D168D1D2375DA00165F3A /* Set.swift in Sources */,
+				8C0D166B1D2375DA00165F3A /* Card.swift in Sources */,
+				8C0D169A1D2376EB00165F3A /* JSONLoader.swift in Sources */,
+				8C0D16751D2375DA00165F3A /* Block.swift in Sources */,
+				8C0D168A1D2375DA00165F3A /* Color+CoreDataProperties.swift in Sources */,
+				8C0D168B1D2375DA00165F3A /* Color.swift in Sources */,
+				8C0D16791D2375DA00165F3A /* Legality.swift in Sources */,
+				8C0D16821D2375DA00165F3A /* Source+CoreDataProperties.swift in Sources */,
+				8C0D16941D2376A300165F3A /* CoreDataManager.swift in Sources */,
+				8C0D16711D2375DA00165F3A /* Border.swift in Sources */,
+				8C0D16781D2375DA00165F3A /* Legality+CoreDataProperties.swift in Sources */,
+				8C22BA3A1D26B95E00FD8702 /* CardLegality+CoreDataProperties.swift in Sources */,
+				8C0D16721D2375DA00165F3A /* ForeignName+CoreDataProperties.swift in Sources */,
+				8C0D16691D2375DA00165F3A /* Watermark.swift in Sources */,
+				8C0D16881D2375DA00165F3A /* Format+CoreDataProperties.swift in Sources */,
+				8C22BA3B1D26B95E00FD8702 /* CardLegality.swift in Sources */,
+				8C0D167A1D2375DA00165F3A /* SetType+CoreDataProperties.swift in Sources */,
+				8C0D167F1D2375DA00165F3A /* Rating.swift in Sources */,
+				8C0D167C1D2375DA00165F3A /* Layout+CoreDataProperties.swift in Sources */,
+				8C0D16741D2375DA00165F3A /* Block+CoreDataProperties.swift in Sources */,
+				8C0D16771D2375DA00165F3A /* Rarity.swift in Sources */,
+				8C9AC1621D0F89F600E302F6 /* Decktracker.xcdatamodeld in Sources */,
+				8C0D169C1D23A2F600165F3A /* Constants.swift in Sources */,
+				8C0D16731D2375DA00165F3A /* ForeignName.swift in Sources */,
+				8C0D16761D2375DA00165F3A /* Rarity+CoreDataProperties.swift in Sources */,
+				8C0D167E1D2375DA00165F3A /* Rating+CoreDataProperties.swift in Sources */,
+				8C0D16861D2375DA00165F3A /* Artist+CoreDataProperties.swift in Sources */,
+				8C0D167B1D2375DA00165F3A /* SetType.swift in Sources */,
+				8C0D168C1D2375DA00165F3A /* Set+CoreDataProperties.swift in Sources */,
 				8C1B4DCE198CF0C000B4C948 /* main.m in Sources */,
-				8C3EE4621B38F8E60037AF20 /* DTLanguage.m in Sources */,
-				8C3EE45A1B38F8E60037AF20 /* DTCardLegality.m in Sources */,
-				8C3EE45E1B38F8E60037AF20 /* DTCardType.m in Sources */,
-				8C3EE4601B38F8E60037AF20 /* DTComprehensiveRule.m in Sources */,
-				8C3EE4631B38F8E60037AF20 /* DTSet.m in Sources */,
-				8C3EE4551B38F8E60037AF20 /* DTArtist.m in Sources */,
-				8C3EE45D1B38F8E60037AF20 /* DTCardRuling.m in Sources */,
-				8C3EE4561B38F8E60037AF20 /* DTBlock.m in Sources */,
-				8C3EE4591B38F8E60037AF20 /* DTCardForeignName.m in Sources */,
-				8C3EE45F1B38F8E60037AF20 /* DTComprehensiveGlossary.m in Sources */,
-				8C2427E01B02F3C3004D190A /* RulesLoader.m in Sources */,
-				8C3EE4321B38F8BB0037AF20 /* Database.m in Sources */,
+				8C0D166A1D2375DA00165F3A /* Card+CoreDataProperties.swift in Sources */,
+				8C0D166E1D2375DA00165F3A /* CardType+CoreDataProperties.swift in Sources */,
+				8C0D16701D2375DA00165F3A /* Border+CoreDataProperties.swift in Sources */,
+				8C0D16811D2375DA00165F3A /* Ruling.swift in Sources */,
+				8C0D167D1D2375DA00165F3A /* Layout.swift in Sources */,
+				8C0D16851D2375DA00165F3A /* Language.swift in Sources */,
+				8C0D16801D2375DA00165F3A /* Ruling+CoreDataProperties.swift in Sources */,
+				8C0D16871D2375DA00165F3A /* Artist.swift in Sources */,
+				8C0D16971D2376A300165F3A /* ObjectManager.swift in Sources */,
+				8C0D166F1D2375DA00165F3A /* CardType.swift in Sources */,
+				8C0D16831D2375DA00165F3A /* Source.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -404,7 +467,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -416,6 +479,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -443,7 +507,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -473,8 +537,10 @@
 		};
 		8C1B4DD9198CF0C000B4C948 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = ECD2E97926F06FB12495ED6D /* Pods-DataSource.debug.xcconfig */;
+			baseConfigurationReference = 64B79FD59377268181433708 /* Pods-DataSource.debug.xcconfig */;
 			buildSettings = {
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -496,21 +562,23 @@
 				);
 				OTHER_CODE_SIGN_FLAGS = "";
 				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-ObjC",
 					"-l\"JJJUtils\"",
 					"-l\"c++\"",
 					"-l\"hpple\"",
 					"-l\"xml2\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "DataSource/DataSource-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		8C1B4DDA198CF0C000B4C948 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CD8211BD792C165D977F3102 /* Pods-DataSource.release.xcconfig */;
+			baseConfigurationReference = 31170834C1641D094C1CA93C /* Pods-DataSource.release.xcconfig */;
 			buildSettings = {
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -532,14 +600,13 @@
 				);
 				OTHER_CODE_SIGN_FLAGS = "";
 				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-ObjC",
 					"-l\"JJJUtils\"",
 					"-l\"c++\"",
 					"-l\"hpple\"",
 					"-l\"xml2\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "DataSource/DataSource-Bridging-Header.h";
 			};
 			name = Release;
 		};
@@ -565,6 +632,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		8C9AC1601D0F89F600E302F6 /* Decktracker.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				8C9AC1611D0F89F600E302F6 /* Decktracker.xcdatamodel */,
+			);
+			currentVersion = 8C9AC1611D0F89F600E302F6 /* Decktracker.xcdatamodel */;
+			path = Decktracker.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 8C1B4DBD198CF0C000B4C948 /* Project object */;
 }

@@ -15,5 +15,5 @@ import CoreData
 extension Language {
 
     @NSManaged var name: String?
-
+    @NSManaged var cards: NSSet?
 }

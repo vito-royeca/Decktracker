@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>15th Anniversary</key>
-	<string></string>
 	<key>Alara Reborn</key>
 	<string>Alara Reborn</string>
 	<key>Alliances</key>
@@ -70,8 +68,6 @@
 	<string>Deckmasters Garfield vs Finkel</string>
 	<key>Dissension</key>
 	<string>Dissension</string>
-	<key>Dragon Con</key>
-	<string></string>
 	<key>Dragon&apos;s Maze</key>
 	<string>Dragon&apos;s Maze</string>
 	<key>Dragons of Tarkir</key>
@@ -80,6 +76,8 @@
 	<string>Duel Decks: Ajani vs. Nicol Bolas</string>
 	<key>Duel Decks Anthology, Divine vs. Demonic</key>
 	<string>Duel Decks: Divine vs. Demonic</string>
+	<key>Duel Decks: Blessed vs. Cursed</key>
+	<string>Duel Decks: Blessed vs. Cursed</string>
 	<key>Duel Decks: Divine vs. Demonic</key>
 	<string>Duel Decks: Divine vs. Demonic</string>
 	<key>Duel Decks: Elspeth vs. Kiora</key>
@@ -114,10 +112,14 @@
 	<string>Duel Decks: Speed vs Cunning</string>
 	<key>Duel Decks: Venser vs. Koth</key>
 	<string>Duel Decks: Venser vs Koth</string>
+	<key>Duel Decks: Zendikar vs. Eldrazi</key>
+	<string>Duel Decks: Zendikar vs. Eldrazi</string>
 	<key>Duels of the Planeswalkers</key>
 	<string>Duels of the Planeswalkers</string>
 	<key>Eighth Edition</key>
 	<string>8th Edition</string>
+	<key>Eternal Masters</key>
+	<string>Eternal Masters</string>
 	<key>European Land Program</key>
 	<string>European Lands</string>
 	<key>Eventide</key>
@@ -136,6 +138,8 @@
 	<string>Fourth Edition</string>
 	<key>Friday Night Magic</key>
 	<string>FNM Promos</string>
+	<key>From the Vault: Angels</key>
+	<string>From the Vault: Angels</string>
 	<key>From the Vault: Annihilation (2014)</key>
 	<string>From the Vault: Annihilation</string>
 	<key>From the Vault: Dragons</key>
@@ -160,8 +164,6 @@
 	<string>Guildpact</string>
 	<key>Guru</key>
 	<string>Guru Lands</string>
-	<key>Happy Holidays</key>
-	<string></string>
 	<key>Homelands</key>
 	<string>Homelands</string>
 	<key>Ice Age</key>
@@ -170,8 +172,6 @@
 	<string>Innistrad</string>
 	<key>International Collector&apos;s Edition</key>
 	<string>International Edition</string>
-	<key>Introductory Two-Player Set</key>
-	<string></string>
 	<key>Invasion</key>
 	<string>Invasion</string>
 	<key>Journey into Nyx</key>
@@ -184,8 +184,6 @@
 	<string>Khans of Tarkir</string>
 	<key>Launch Parties</key>
 	<string>Launch Party Cards</string>
-	<key>Legend Membership</key>
-	<string></string>
 	<key>Legends</key>
 	<string>Legends</string>
 	<key>Legions</key>
@@ -218,14 +216,6 @@
 	<string>Commander</string>
 	<key>Magic: The Gathering—Conspiracy</key>
 	<string>Conspiracy</string>
-	<key>Masters Edition</key>
-	<string></string>
-	<key>Masters Edition II</key>
-	<string></string>
-	<key>Masters Edition III</key>
-	<string></string>
-	<key>Masters Edition IV</key>
-	<string></string>
 	<key>Media Inserts</key>
 	<string>Media Promos</string>
 	<key>Mercadian Masques</key>
@@ -244,14 +234,14 @@
 	<string>Modern Masters 2015</string>
 	<key>Morningtide</key>
 	<string>Morningtide</string>
-	<key>Multiverse Gift Box</key>
-	<string></string>
 	<key>Nemesis</key>
 	<string>Nemesis</string>
 	<key>New Phyrexia</key>
 	<string>New Phyrexia</string>
 	<key>Ninth Edition</key>
 	<string>9th Edition</string>
+	<key>Oath of the Gatewatch</key>
+	<string>Oath of the Gatewatch</string>
 	<key>Odyssey</key>
 	<string>Odyssey</string>
 	<key>Onslaught</key>
@@ -266,8 +256,6 @@
 	<string>Planeshift</string>
 	<key>Portal</key>
 	<string>Portal</string>
-	<key>Portal Demo Game</key>
-	<string></string>
 	<key>Portal Second Age</key>
 	<string>Portal Second Age</string>
 	<key>Portal Three Kingdoms</key>
@@ -294,8 +282,6 @@
 	<string>Revised Edition</string>
 	<key>Rise of the Eldrazi</key>
 	<string>Rise of the Eldrazi</string>
-	<key>Rivals Quick Start Set</key>
-	<string></string>
 	<key>Saviors of Kamigawa</key>
 	<string>Saviors of Kamigawa</string>
 	<key>Scars of Mirrodin</key>
@@ -306,6 +292,8 @@
 	<string>7th Edition</string>
 	<key>Shadowmoor</key>
 	<string>Shadowmoor</string>
+	<key>Shadows over Innistrad</key>
+	<string>Shadows over Innistrad</string>
 	<key>Shards of Alara</key>
 	<string>Shards of Alara</string>
 	<key>Starter 1999</key>
@@ -314,10 +302,6 @@
 	<string>Starter 2000</string>
 	<key>Stronghold</key>
 	<string>Stronghold</string>
-	<key>Summer of Magic</key>
-	<string></string>
-	<key>Super Series</key>
-	<string></string>
 	<key>Tempest</key>
 	<string>Tempest</string>
 	<key>Tenth Edition</key>
@@ -332,8 +316,6 @@
 	<string>Timeshifted</string>
 	<key>Torment</key>
 	<string>Torment</string>
-	<key>Two-Headed Giant Tournament</key>
-	<string></string>
 	<key>Ugin&apos;s Fate promos</key>
 	<string>Ugin&apos;s Fate Promos</string>
 	<key>Unglued</key>
@@ -350,25 +332,17 @@
 	<string>Urza&apos;s Saga</string>
 	<key>Vanguard</key>
 	<string>Vanguard</string>
-	<key>Vintage Masters</key>
-	<string></string>
 	<key>Visions</key>
 	<string>Visions</string>
-	<key>WPN and Gateway</key>
-	<string></string>
 	<key>Weatherlight</key>
 	<string>Weatherlight</string>
-	<key>Wizards of the Coast Online Store</key>
-	<string></string>
-	<key>World Magic Cup Qualifiers</key>
-	<string></string>
-	<key>Worlds</key>
-	<string></string>
+	<key>Welcome Deck 2016</key>
+	<string>Welcome Deck 2016</string>
 	<key>Worldwake</key>
 	<string>Worldwake</string>
 	<key>Zendikar</key>
 	<string>Zendikar</string>
 	<key>Zendikar Expeditions</key>
-	<string></string>
+	<string>Zendikar Expeditions</string>
 </dict>
 </plist>

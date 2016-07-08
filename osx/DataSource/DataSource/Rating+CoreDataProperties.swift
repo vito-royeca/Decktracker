@@ -1,5 +1,5 @@
 //
-//  CardRating+CoreDataProperties.swift
+//  Rating+CoreDataProperties.swift
 //  DataSource
 //
 //  Created by Jovit Royeca on 29/06/2016.
@@ -12,7 +12,7 @@
 import Foundation
 import CoreData
 
-extension CardRating {
+extension Rating {
 
     @NSManaged var rating: NSNumber?
     @NSManaged var card: Card?

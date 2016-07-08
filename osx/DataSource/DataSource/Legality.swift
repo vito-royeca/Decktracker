@@ -1,5 +1,5 @@
 //
-//  CardLegality.swift
+//  Legality.swift
 //  DataSource
 //
 //  Created by Jovit Royeca on 29/06/2016.
@@ -10,10 +10,10 @@ import Foundation
 import CoreData
 
 
-class CardLegality: NSManagedObject {
+class Legality: NSManagedObject {
 
     struct Keys {
-        static let Legality = "legality"
+        static let Name = "legality"
     }
     
     override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
@@ -21,14 +21,14 @@ class CardLegality: NSManagedObject {
     }
     
     init(dictionary: [String : AnyObject], context: NSManagedObjectContext) {
-        let entity =  NSEntityDescription.entityForName("CardLegality", inManagedObjectContext: context)!
+        let entity =  NSEntityDescription.entityForName("Legality", inManagedObjectContext: context)!
         super.init(entity: entity,insertIntoManagedObjectContext: context)
         
         update(dictionary)
     }
     
     func update(dictionary: [String : AnyObject]) {
-        legality = dictionary[Keys.Legality] as? String
+        name = dictionary[Keys.Name] as? String
     }
 
 }

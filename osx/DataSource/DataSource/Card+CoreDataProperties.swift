@@ -34,25 +34,26 @@ extension Card {
     @NSManaged var starter: NSNumber?
     @NSManaged var originalText: String?
     @NSManaged var rating: NSNumber?
-    @NSManaged var set: NSManagedObject?
-    @NSManaged var layout: NSManagedObject?
+    @NSManaged var modern: NSNumber?
+    @NSManaged var set: Set?
+    @NSManaged var layout: Layout?
     @NSManaged var colors: NSSet?
-    @NSManaged var colorIdentity: NSSet?
-    @NSManaged var type: NSManagedObject?
+    @NSManaged var colorIdentities: NSSet?
+    @NSManaged var type: CardType?
     @NSManaged var supertypes: NSSet?
     @NSManaged var subtypes: NSSet?
     @NSManaged var types: NSSet?
-    @NSManaged var rarity: NSManagedObject?
-    @NSManaged var artist: NSManagedObject?
+    @NSManaged var rarity: Rarity?
+    @NSManaged var artist: Artist?
     @NSManaged var variations: NSSet?
-    @NSManaged var watermark: CardWatermark?
-    @NSManaged var border: NSManagedObject?
+    @NSManaged var watermark: Watermark?
+    @NSManaged var border: Border?
     @NSManaged var rulings: NSSet?
     @NSManaged var foreignNames: NSSet?
     @NSManaged var printings: NSSet?
-    @NSManaged var originalType: NSManagedObject?
+    @NSManaged var originalType: CardType?
     @NSManaged var legalities: NSSet?
-    @NSManaged var source: NSManagedObject?
+    @NSManaged var source: Source?
     @NSManaged var ratings: NSSet?
 
 }

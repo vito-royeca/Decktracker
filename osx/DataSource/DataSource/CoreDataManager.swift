@@ -38,6 +38,19 @@ class CoreDataManager: NSObject {
                 }
             }
         }
+        
+        // ignore the database and other files from iCloud backup
+        let files = NSFileManager.defaultManager().enumeratorAtPath(documentPath!)
+        while let file = files?.nextObject() {
+            if file.hasPrefix(sqliteFile) {
+                let url = NSURL(fileURLWithPath: "\(documentPath!)/\(file)")
+                do {
+                    try url.setResourceValue(NSNumber(bool: true), forKey: NSURLIsExcludedFromBackupKey)
+                } catch {
+                    print("Error...")
+                }
+            }
+        }
     }
     
     // MARK: - The Core Data stack. The code has been moved, unaltered, from the AppDelegate.

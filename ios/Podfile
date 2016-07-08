@@ -1,0 +1,35 @@
+source 'https://github.com/CocoaPods/Specs.git'
+
+# Uncomment this line to define a global platform for your project
+# platform :ios, "6.0"
+use_frameworks!
+
+target "Decktracker" do
+pod "ActionSheetPicker"
+pod "AFNetworking"
+pod "Appirater"
+pod "CAAnimationBlocks"
+pod "CAAnimation-EasingEquations"
+pod "CorePlot"
+pod "CSStickyHeaderFlowLayout"
+pod "EDStarRating"
+pod 'Eureka'
+pod 'Fabric'
+pod 'Crashlytics'
+pod "HMSegmentedControl"
+pod 'IDMPhotoBrowser'
+pod "hpple"
+pod "InAppSettingsKit"
+pod "JJJUtils"
+pod "LMAlertView"
+pod "MBProgressHUD"
+pod "PureLayout"
+pod 'SDWebImage'
+pod 'SimulatorStatusMagic', :configurations => ['Debug']
+pod 'TwitterKit'
+pod 'TwitterCore'
+#pod "vfrReader", '~> 2.8.5'
+
+end
+
+

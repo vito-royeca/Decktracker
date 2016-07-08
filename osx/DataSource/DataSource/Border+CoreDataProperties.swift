@@ -12,9 +12,10 @@
 import Foundation
 import CoreData
 
-extension SetBorder {
+extension Border {
 
     @NSManaged var name: String?
+    @NSManaged var cards: NSSet?
     @NSManaged var sets: NSSet?
 
 }

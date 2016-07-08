@@ -1,5 +1,5 @@
 //
-//  CardLegality+CoreDataProperties.swift
+//  Legality+CoreDataProperties.swift
 //  DataSource
 //
 //  Created by Jovit Royeca on 29/06/2016.
@@ -12,10 +12,8 @@
 import Foundation
 import CoreData
 
-extension CardLegality {
+extension Legality {
 
-    @NSManaged var legality: String?
-    @NSManaged var card: Card?
-    @NSManaged var format: Format?
-
+    @NSManaged var name: String?
+    @NSManaged var legalities: NSSet?
 }

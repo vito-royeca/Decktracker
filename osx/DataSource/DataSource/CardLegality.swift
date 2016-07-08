@@ -12,6 +12,13 @@ import CoreData
 
 class CardLegality: NSManagedObject {
 
-// Insert code here to add functionality to your managed object subclass
+    override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
+        super.init(entity: entity, insertIntoManagedObjectContext: context)
+    }
+    
+    init(context: NSManagedObjectContext) {
+        let entity =  NSEntityDescription.entityForName("CardLegality", inManagedObjectContext: context)!
+        super.init(entity: entity,insertIntoManagedObjectContext: context)
+    }
 
 }
