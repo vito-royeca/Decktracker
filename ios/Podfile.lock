@@ -35,13 +35,9 @@ PODS:
   - InAppSettingsKit (2.7.1)
   - JJJUtils (0.3.2):
     - JJJUtils/OSX (= 0.3.2)
-  - LMAlertView (1.1.0):
-    - CAAnimationBlocks (~> 0.0.1)
-    - RBBAnimation (~> 0.3.0)
   - MBProgressHUD (0.9.2)
   - pop (1.0.9)
   - PureLayout (3.0.2)
-  - RBBAnimation (0.3.0)
   - SDWebImage (3.8.1):
     - SDWebImage/Core (= 3.8.1)
   - SDWebImage/Core (3.8.1)
@@ -68,7 +64,6 @@ DEPENDENCIES:
   - IDMPhotoBrowser
   - InAppSettingsKit
   - JJJUtils
-  - LMAlertView
   - MBProgressHUD
   - PureLayout
   - SDWebImage
@@ -94,16 +89,14 @@ SPEC CHECKSUMS:
   IDMPhotoBrowser: b574fe3229754e701f32df271afbc4ac7e4e1997
   InAppSettingsKit: 2b9fcdb82cdff2f99c51cae544e9f4df0df7afbf
   JJJUtils: 5abcb911388dc05e24cecdde9d4a3e18f1b1510e
-  LMAlertView: fa4589ea2cb540b888636ff6739fc39b16ac1e4b
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
   pop: f667631a5108a2e60d9e8797c9b32ddaf2080bce
   PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
-  RBBAnimation: cb6cb419f511434ce932f7d0fabf369612fafb4e
   SDWebImage: 35f9627a3e44b4f292a8a8ce6a531fa488239b91
   SimulatorStatusMagic: 4dbf0faa0208e9ac0d56cea06eaa5f7a5f3d02fb
   TwitterCore: 817eae3e291fa4125b47789e26a4f6f024115c1f
   TwitterKit: 8a383da8d9c21b0423716381ea8bbfce20622d91
 
-PODFILE CHECKSUM: 57a19b4e15feeba598e4c62f4670e63ab93e7453
+PODFILE CHECKSUM: e202191ac45d58490a97f75fc21bce612d0ba2b5
 
 COCOAPODS: 1.0.1

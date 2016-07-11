@@ -8,23 +8,14 @@
 
 #import "AppDelegate.h"
 #import "Constants.h"
-#import "Database.h"
-#import "FileManager.h"
-#import "MainViewController.h"
 
 #import "Appirater.h"
-#import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
-#import <Dropbox/Dropbox.h>
-#import <FacebookSDK/FacebookSDK.h>
-#import <Parse/Parse.h>
-#import <ParseFacebookUtils/PFFacebookUtils.h>
+#import <Fabric/Fabric.h>
+#import "JJJUtils/JJJ.h"
 
-#ifndef DEBUG
-#import "GAI.h"
-#endif
 
-#import "Decktracker-Swift.h"
+//#import "Decktracker-Swift.h"
 
 @implementation AppDelegate
 
@@ -33,31 +24,21 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
 
-#ifndef DEBUG
-    // Google Analytics
-    [GAI sharedInstance].trackUncaughtExceptions = YES;
-    [GAI sharedInstance].dispatchInterval = 20;
-    [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelWarning];
-    [[GAI sharedInstance] trackerWithTrackingId:kGAITrackingID];
-#endif
-
     // Fabric / Crashlytics
     [Fabric with:@[[Crashlytics class]]];
 
     // FileSystem
-    [[FileManager sharedInstance] moveFilesInDocumentsToCaches];
-    for (NSInteger i=FileSystemLocal; i<=FileSystemOneDrive; i++)
-    {
-        [[FileManager sharedInstance] setupFilesystem:i];
-        [[FileManager sharedInstance] initFilesystem:i];
-    }
-    [[FileManager sharedInstance] syncFiles];
+//    [[FileManager sharedInstance] moveFilesInDocumentsToCaches];
+//    for (NSInteger i=FileSystemLocal; i<=FileSystemOneDrive; i++)
+//    {
+//        [[FileManager sharedInstance] setupFilesystem:i];
+//        [[FileManager sharedInstance] initFilesystem:i];
+//    }
+//    [[FileManager sharedInstance] syncFiles];
 
     // Database and Parse
-    [[Database sharedInstance] setupParse:launchOptions];
-    [[Database sharedInstance] setupDb];
-//    [[Database sharedInstance] uploadSets];
-//    [[Database sharedInstance ] deleteDuplicateParseCards];
+//    [[Database sharedInstance] setupParse:launchOptions];
+//    [[Database sharedInstance] setupDb];
 
     // custom colors
     [[UINavigationBar appearance] setBarTintColor:[JJJUtil colorFromRGB:0x691F01]];
@@ -77,7 +58,7 @@
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone ||
         [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
     {
-        viewController = [[MainViewController alloc] init];
+//        viewController = [[MainViewController alloc] init];
     }
     
     self.window.rootViewController = viewController;
@@ -115,13 +96,13 @@
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     
 //    [FBAppEvents activateApp];
-    [FBAppCall handleDidBecomeActiveWithSession:[PFFacebookUtils session]];
+//    [FBAppCall handleDidBecomeActiveWithSession:[PFFacebookUtils session]];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    [[Database sharedInstance] closeDb];
-    [[PFFacebookUtils session] close];
+//    [[Database sharedInstance] closeDb];
+//    [[PFFacebookUtils session] close];
 }
 
 // Dropbox handler after authenticating
@@ -130,31 +111,11 @@
   sourceApplication:(NSString *)source
          annotation:(id)annotation
 {
-    if ([[url scheme] hasPrefix:@"db-"])
-    {
-        DBAccount *account = [[DBAccountManager sharedManager] handleOpenURL:url];
-        
-        if (account)
-        {
-            [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:YES] forKey:@"dropbox_preference"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-            [[FileManager sharedInstance] initFilesystem:FileSystemDropbox];
-            [[FileManager sharedInstance] syncFiles];
-            return YES;
-        }
-        else
-        {
-            [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:NO] forKey:@"dropbox_preference"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-            [[FileManager sharedInstance] disconnectFromFileSystem:FileSystemDropbox];
-            return NO;
-        }
-    }
-    
     // attempt to extract a token from the url
-    return [FBAppCall handleOpenURL:url
-                  sourceApplication:source
-                        withSession:[PFFacebookUtils session]];
+//    return [FBAppCall handleOpenURL:url
+//                  sourceApplication:source
+//                        withSession:[PFFacebookUtils session]];
+    return YES;
 }
 
 @end
