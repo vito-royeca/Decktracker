@@ -39,10 +39,14 @@ build/
 *.un~
 
 # Pods
-**/Pods/*
 parse/certs/CSR.txt
 parse/certs/combined.cer
 parse/certs/intermediate1.cer
 parse/certs/intermediate2.cer
 parse/certs/private.txt
 parse/certs/public.cer
+#**/Pods/*
+fastlane/screenshots/en-US/*.png
+*.ipa
+*.app.dSYM.zip
+Preview.html

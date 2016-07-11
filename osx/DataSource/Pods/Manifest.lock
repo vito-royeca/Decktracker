@@ -1,0 +1,15 @@
+PODS:
+  - hpple (0.2.0)
+  - JJJUtils/OSX (0.3.2)
+
+DEPENDENCIES:
+  - hpple
+  - JJJUtils/OSX
+
+SPEC CHECKSUMS:
+  hpple: 3b765f96fc2cd56ad1a49aef6f7be5cb2aa64b57
+  JJJUtils: 5abcb911388dc05e24cecdde9d4a3e18f1b1510e
+
+PODFILE CHECKSUM: 53084dc7abc13b3c5b1c2819d3bb7f4a0b5d7ac4
+
+COCOAPODS: 1.0.1

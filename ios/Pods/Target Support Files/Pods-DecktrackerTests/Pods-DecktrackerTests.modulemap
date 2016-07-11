@@ -1,0 +1,6 @@
+framework module Pods_DecktrackerTests {
+  umbrella header "Pods-DecktrackerTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

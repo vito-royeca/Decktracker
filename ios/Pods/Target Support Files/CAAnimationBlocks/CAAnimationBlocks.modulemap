@@ -1,0 +1,6 @@
+framework module CAAnimationBlocks {
+  umbrella header "CAAnimationBlocks-umbrella.h"
+
+  export *
+  module * { export * }
+}
