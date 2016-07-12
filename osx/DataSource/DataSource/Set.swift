@@ -42,10 +42,45 @@ class Set: NSManagedObject {
         onlineOnly = dictionary[Keys.OnlineOnly] as? NSNumber
 
         if let rd = dictionary[Keys.ReleaseDate] as? String {
-            let dateFormatter = NSDateFormatter()
-            dateFormatter.dateFormat = "YYYY-MM-dd"
-            releaseDate = dateFormatter.dateFromString(rd)
+            let formatter = NSDateFormatter()
+            formatter.dateFormat = "YYYY-MM-dd"
+            releaseDate = formatter.dateFromString(rd)
         }
     }
 
+    var nameInitial: String? {
+        if let name = name {
+            let letters = NSCharacterSet.letterCharacterSet()
+            
+            for initial in name.unicodeScalars {
+                if letters.longCharacterIsMember(initial.value) {
+                    return "\(name[name.startIndex])".uppercaseString
+                    
+                } else {
+                    return "#"
+                }
+            }
+        }
+        
+        return nil
+    }
+    
+    var typeInitial: String? {
+        if let type = type {
+            return type.name!.capitalizedString
+        }
+        
+        return nil
+    }
+    
+    var yearInitial: String? {
+        if let releaseDate = releaseDate {
+            let formatter = NSDateFormatter()
+            formatter.dateFormat = "YYYY"
+            
+            return formatter.stringFromDate(releaseDate)
+        }
+        
+        return nil
+    }
 }

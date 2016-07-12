@@ -1,0 +1,6 @@
+framework module CSStickyHeaderFlowLayout {
+  umbrella header "CSStickyHeaderFlowLayout-iOS9.0-umbrella.h"
+
+  export *
+  module * { export * }
+}

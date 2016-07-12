@@ -11,7 +11,6 @@
 		1447AB728B2B6900A31BB15E /* Pods_Decktracker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16D53CAB5B96C4D377914F42 /* Pods_Decktracker.framework */; };
 		3ABF3ED6BD773B3D49787A9C /* Pods_DecktrackerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29C483C12F51AC78B8095853 /* Pods_DecktrackerTests.framework */; };
 		8CE7B7191D334684008BBB53 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE7B7181D334684008BBB53 /* AppDelegate.swift */; };
-		8CE7B71B1D334684008BBB53 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE7B71A1D334684008BBB53 /* ViewController.swift */; };
 		8CE7B71E1D334684008BBB53 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CE7B71C1D334684008BBB53 /* Main.storyboard */; };
 		8CE7B7201D334684008BBB53 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8CE7B71F1D334684008BBB53 /* Assets.xcassets */; };
 		8CE7B7231D334684008BBB53 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CE7B7211D334684008BBB53 /* LaunchScreen.storyboard */; };
@@ -73,6 +72,31 @@
 		8CE7B7AE1D336186008BBB53 /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE7B7AD1D336186008BBB53 /* MoreViewController.swift */; };
 		8CE7B7AF1D336186008BBB53 /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE7B7AD1D336186008BBB53 /* MoreViewController.swift */; };
 		8CE7B7B01D336186008BBB53 /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE7B7AD1D336186008BBB53 /* MoreViewController.swift */; };
+		8CEC11741D33C99F009D3B2D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEC11731D33C99F009D3B2D /* Constants.swift */; };
+		8CEC11751D33C99F009D3B2D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEC11731D33C99F009D3B2D /* Constants.swift */; };
+		8CEC11761D33C99F009D3B2D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEC11731D33C99F009D3B2D /* Constants.swift */; };
+		8CEC118E1D33E2A0009D3B2D /* SetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEC118C1D33E2A0009D3B2D /* SetCollectionViewCell.swift */; };
+		8CEC118F1D33E2A0009D3B2D /* SetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEC118C1D33E2A0009D3B2D /* SetCollectionViewCell.swift */; };
+		8CEC11901D33E2A0009D3B2D /* SetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEC118C1D33E2A0009D3B2D /* SetCollectionViewCell.swift */; };
+		8CEC11911D33E2A0009D3B2D /* SetCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CEC118D1D33E2A0009D3B2D /* SetCollectionViewCell.xib */; };
+		8CEC11921D33E2A0009D3B2D /* SetCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CEC118D1D33E2A0009D3B2D /* SetCollectionViewCell.xib */; };
+		8CEC11931D33E2A0009D3B2D /* SetCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CEC118D1D33E2A0009D3B2D /* SetCollectionViewCell.xib */; };
+		8CEC11951D33E642009D3B2D /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CEC11941D33E642009D3B2D /* CoreData.framework */; };
+		8CEC11971D33F1CF009D3B2D /* Decktracker.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 8CEC11961D33F1CF009D3B2D /* Decktracker.sqlite */; };
+		8CEC11981D33F1CF009D3B2D /* Decktracker.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 8CEC11961D33F1CF009D3B2D /* Decktracker.sqlite */; };
+		8CEC11991D33F1CF009D3B2D /* Decktracker.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 8CEC11961D33F1CF009D3B2D /* Decktracker.sqlite */; };
+		8CEC119B1D33F792009D3B2D /* images in Resources */ = {isa = PBXBuildFile; fileRef = 8CEC119A1D33F792009D3B2D /* images */; };
+		8CEC119C1D33F792009D3B2D /* images in Resources */ = {isa = PBXBuildFile; fileRef = 8CEC119A1D33F792009D3B2D /* images */; };
+		8CEC119D1D33F792009D3B2D /* images in Resources */ = {isa = PBXBuildFile; fileRef = 8CEC119A1D33F792009D3B2D /* images */; };
+		8CEFCEB31D3492AE0046184F /* ThumbnailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEFCEB11D3492AE0046184F /* ThumbnailTableViewCell.swift */; };
+		8CEFCEB41D3492AE0046184F /* ThumbnailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEFCEB11D3492AE0046184F /* ThumbnailTableViewCell.swift */; };
+		8CEFCEB51D3492AE0046184F /* ThumbnailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEFCEB11D3492AE0046184F /* ThumbnailTableViewCell.swift */; };
+		8CEFCEB61D3492AE0046184F /* ThumbnailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CEFCEB21D3492AE0046184F /* ThumbnailTableViewCell.xib */; };
+		8CEFCEB71D3492AE0046184F /* ThumbnailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CEFCEB21D3492AE0046184F /* ThumbnailTableViewCell.xib */; };
+		8CEFCEB81D3492AE0046184F /* ThumbnailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CEFCEB21D3492AE0046184F /* ThumbnailTableViewCell.xib */; };
+		8CEFCEBA1D34A7E40046184F /* SetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEFCEB91D34A7E40046184F /* SetsViewController.swift */; };
+		8CEFCEBB1D34A7E40046184F /* SetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEFCEB91D34A7E40046184F /* SetsViewController.swift */; };
+		8CEFCEBC1D34A7E40046184F /* SetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEFCEB91D34A7E40046184F /* SetsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,7 +126,6 @@
 		6E6EEC4246D26FF61A40E0F5 /* Pods_DecktrackerUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DecktrackerUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CE7B7151D334684008BBB53 /* Decktracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Decktracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CE7B7181D334684008BBB53 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		8CE7B71A1D334684008BBB53 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		8CE7B71D1D334684008BBB53 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8CE7B71F1D334684008BBB53 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8CE7B7221D334684008BBB53 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -159,6 +182,15 @@
 		8CE7B7A51D336169008BBB53 /* CollectionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionsViewController.swift; sourceTree = "<group>"; };
 		8CE7B7A91D336177008BBB53 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		8CE7B7AD1D336186008BBB53 /* MoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
+		8CEC11731D33C99F009D3B2D /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		8CEC118C1D33E2A0009D3B2D /* SetCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetCollectionViewCell.swift; sourceTree = "<group>"; };
+		8CEC118D1D33E2A0009D3B2D /* SetCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SetCollectionViewCell.xib; sourceTree = "<group>"; };
+		8CEC11941D33E642009D3B2D /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		8CEC11961D33F1CF009D3B2D /* Decktracker.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = Decktracker.sqlite; path = ../../data/Decktracker.sqlite; sourceTree = "<group>"; };
+		8CEC119A1D33F792009D3B2D /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; name = images; path = ../../data/images; sourceTree = "<group>"; };
+		8CEFCEB11D3492AE0046184F /* ThumbnailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbnailTableViewCell.swift; sourceTree = "<group>"; };
+		8CEFCEB21D3492AE0046184F /* ThumbnailTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThumbnailTableViewCell.xib; sourceTree = "<group>"; };
+		8CEFCEB91D34A7E40046184F /* SetsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetsViewController.swift; sourceTree = "<group>"; };
 		DA479E7310A2FEB68BF39E4D /* Pods-Decktracker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Decktracker.release.xcconfig"; path = "Pods/Target Support Files/Pods-Decktracker/Pods-Decktracker.release.xcconfig"; sourceTree = "<group>"; };
 		E6D9893BF8A2DE2CC33F762C /* Pods-DecktrackerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DecktrackerTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DecktrackerTests/Pods-DecktrackerTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -168,6 +200,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8CEC11951D33E642009D3B2D /* CoreData.framework in Frameworks */,
 				1447AB728B2B6900A31BB15E /* Pods_Decktracker.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -194,6 +227,7 @@
 		5365F6D6B07D5D27968D041A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8CEC11941D33E642009D3B2D /* CoreData.framework */,
 				16D53CAB5B96C4D377914F42 /* Pods_Decktracker.framework */,
 				29C483C12F51AC78B8095853 /* Pods_DecktrackerTests.framework */,
 				6E6EEC4246D26FF61A40E0F5 /* Pods_DecktrackerUITests.framework */,
@@ -228,12 +262,13 @@
 			children = (
 				8CE7B7181D334684008BBB53 /* AppDelegate.swift */,
 				8CE7B71F1D334684008BBB53 /* Assets.xcassets */,
+				8CEC11731D33C99F009D3B2D /* Constants.swift */,
 				8CE7B7481D334931008BBB53 /* Controller */,
+				8CEC117F1D33E160009D3B2D /* Data */,
 				8CE7B7241D334684008BBB53 /* Info.plist */,
 				8CE7B7461D334920008BBB53 /* Model */,
 				8CE7B7981D334D69008BBB53 /* Utilities */,
 				8CE7B7471D334925008BBB53 /* View */,
-				8CE7B71A1D334684008BBB53 /* ViewController.swift */,
 			);
 			path = Decktracker;
 			sourceTree = "<group>";
@@ -307,6 +342,10 @@
 			children = (
 				8CE7B7211D334684008BBB53 /* LaunchScreen.storyboard */,
 				8CE7B71C1D334684008BBB53 /* Main.storyboard */,
+				8CEC118C1D33E2A0009D3B2D /* SetCollectionViewCell.swift */,
+				8CEC118D1D33E2A0009D3B2D /* SetCollectionViewCell.xib */,
+				8CEFCEB11D3492AE0046184F /* ThumbnailTableViewCell.swift */,
+				8CEFCEB21D3492AE0046184F /* ThumbnailTableViewCell.xib */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -319,6 +358,7 @@
 				8CE7B79D1D336138008BBB53 /* FeaturedViewController.swift */,
 				8CE7B7AD1D336186008BBB53 /* MoreViewController.swift */,
 				8CE7B7A91D336177008BBB53 /* SearchViewController.swift */,
+				8CEFCEB91D34A7E40046184F /* SetsViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -330,6 +370,15 @@
 				8CE7B79A1D334D93008BBB53 /* ObjectManager.swift */,
 			);
 			name = Utilities;
+			sourceTree = "<group>";
+		};
+		8CEC117F1D33E160009D3B2D /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				8CEC11961D33F1CF009D3B2D /* Decktracker.sqlite */,
+				8CEC119A1D33F792009D3B2D /* images */,
+			);
+			name = Data;
 			sourceTree = "<group>";
 		};
 		9CFDB0204CF7119D75639E61 /* Pods */ = {
@@ -356,6 +405,8 @@
 				8CE7B7111D334684008BBB53 /* Sources */,
 				8CE7B7121D334684008BBB53 /* Frameworks */,
 				8CE7B7131D334684008BBB53 /* Resources */,
+				8CA83B8A1D337771001118FD /* Fabric Run Script */,
+				8CA83B881D33763E001118FD /* Version Run Script */,
 				D628E0B678843F853B158946 /* [CP] Embed Pods Frameworks */,
 				3B8C34A5DD01F7289362BA5F /* [CP] Copy Pods Resources */,
 			);
@@ -459,6 +510,10 @@
 			files = (
 				8CE7B7231D334684008BBB53 /* LaunchScreen.storyboard in Resources */,
 				8CE7B7201D334684008BBB53 /* Assets.xcassets in Resources */,
+				8CEC11971D33F1CF009D3B2D /* Decktracker.sqlite in Resources */,
+				8CEC11911D33E2A0009D3B2D /* SetCollectionViewCell.xib in Resources */,
+				8CEFCEB61D3492AE0046184F /* ThumbnailTableViewCell.xib in Resources */,
+				8CEC119B1D33F792009D3B2D /* images in Resources */,
 				8CE7B71E1D334684008BBB53 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -467,6 +522,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8CEC119C1D33F792009D3B2D /* images in Resources */,
+				8CEC11981D33F1CF009D3B2D /* Decktracker.sqlite in Resources */,
+				8CEFCEB71D3492AE0046184F /* ThumbnailTableViewCell.xib in Resources */,
+				8CEC11921D33E2A0009D3B2D /* SetCollectionViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -474,6 +533,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8CEC119D1D33F792009D3B2D /* images in Resources */,
+				8CEC11991D33F1CF009D3B2D /* Decktracker.sqlite in Resources */,
+				8CEFCEB81D3492AE0046184F /* ThumbnailTableViewCell.xib in Resources */,
+				8CEC11931D33E2A0009D3B2D /* SetCollectionViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -524,6 +587,34 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
+		};
+		8CA83B881D33763E001118FD /* Version Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Version Run Script";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "bN=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbN=$((0x$bN))\nbN=$(($bN + 1))\nbN=$(printf \"%X\" $bN)\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $bN\" \"$INFOPLIST_FILE\"\n";
+		};
+		8CA83B8A1D337771001118FD /* Fabric Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Fabric Run Script";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" 114b3dd82452ec2f4024140ec862698d331b8f3f e633393678a7e8c4f2e8be609515f7ad0ff6dd85c474c001fea74fde0273c2e4";
 		};
 		9CE567AB35AF90A971D53ECC /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -614,6 +705,7 @@
 				8CE7B7801D334D55008BBB53 /* ForeignName.swift in Sources */,
 				8CE7B7951D334D55008BBB53 /* Source+CoreDataProperties.swift in Sources */,
 				8CE7B7971D334D55008BBB53 /* Watermark+CoreDataProperties.swift in Sources */,
+				8CEFCEBA1D34A7E40046184F /* SetsViewController.swift in Sources */,
 				8CE7B7781D334D55008BBB53 /* Card+CoreDataProperties.swift in Sources */,
 				8CE7B7AA1D336177008BBB53 /* SearchViewController.swift in Sources */,
 				8CE7B7891D334D55008BBB53 /* Legality+CoreDataProperties.swift in Sources */,
@@ -630,6 +722,7 @@
 				8CE7B7961D334D55008BBB53 /* Watermark.swift in Sources */,
 				8CE7B7AE1D336186008BBB53 /* MoreViewController.swift in Sources */,
 				8CE7B7921D334D55008BBB53 /* SetType.swift in Sources */,
+				8CEC11741D33C99F009D3B2D /* Constants.swift in Sources */,
 				8CE7B78F1D334D55008BBB53 /* Ruling+CoreDataProperties.swift in Sources */,
 				8CE7B77C1D334D55008BBB53 /* CardType+CoreDataProperties.swift in Sources */,
 				8CE7B78C1D334D55008BBB53 /* Rating.swift in Sources */,
@@ -644,8 +737,9 @@
 				8CE7B7731D334D55008BBB53 /* Block.swift in Sources */,
 				8CE7B7791D334D55008BBB53 /* CardLegality.swift in Sources */,
 				8CE7B7871D334D55008BBB53 /* Layout+CoreDataProperties.swift in Sources */,
+				8CEC118E1D33E2A0009D3B2D /* SetCollectionViewCell.swift in Sources */,
 				8CE7B7931D334D55008BBB53 /* SetType+CoreDataProperties.swift in Sources */,
-				8CE7B71B1D334684008BBB53 /* ViewController.swift in Sources */,
+				8CEFCEB31D3492AE0046184F /* ThumbnailTableViewCell.swift in Sources */,
 				8CE7B78E1D334D55008BBB53 /* Ruling.swift in Sources */,
 				8CE7B7A61D336169008BBB53 /* CollectionsViewController.swift in Sources */,
 				8CE7B7191D334684008BBB53 /* AppDelegate.swift in Sources */,
@@ -665,7 +759,11 @@
 				8CE7B7AB1D336177008BBB53 /* SearchViewController.swift in Sources */,
 				8CE7B7A71D336169008BBB53 /* CollectionsViewController.swift in Sources */,
 				8CE7B79F1D336138008BBB53 /* FeaturedViewController.swift in Sources */,
+				8CEFCEBB1D34A7E40046184F /* SetsViewController.swift in Sources */,
+				8CEC118F1D33E2A0009D3B2D /* SetCollectionViewCell.swift in Sources */,
+				8CEFCEB41D3492AE0046184F /* ThumbnailTableViewCell.swift in Sources */,
 				8CE7B7AF1D336186008BBB53 /* MoreViewController.swift in Sources */,
+				8CEC11751D33C99F009D3B2D /* Constants.swift in Sources */,
 				8CE7B72E1D334684008BBB53 /* DecktrackerTests.swift in Sources */,
 				8CE7B7A31D336151008BBB53 /* DecksViewController.swift in Sources */,
 			);
@@ -678,7 +776,11 @@
 				8CE7B7AC1D336177008BBB53 /* SearchViewController.swift in Sources */,
 				8CE7B7A81D336169008BBB53 /* CollectionsViewController.swift in Sources */,
 				8CE7B7A01D336138008BBB53 /* FeaturedViewController.swift in Sources */,
+				8CEFCEBC1D34A7E40046184F /* SetsViewController.swift in Sources */,
+				8CEC11901D33E2A0009D3B2D /* SetCollectionViewCell.swift in Sources */,
+				8CEFCEB51D3492AE0046184F /* ThumbnailTableViewCell.swift in Sources */,
 				8CE7B7B01D336186008BBB53 /* MoreViewController.swift in Sources */,
+				8CEC11761D33C99F009D3B2D /* Constants.swift in Sources */,
 				8CE7B7391D334684008BBB53 /* DecktrackerUITests.swift in Sources */,
 				8CE7B7A41D336151008BBB53 /* DecksViewController.swift in Sources */,
 			);
@@ -810,6 +912,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Decktracker/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jjj.decktracker.Decktracker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -822,6 +925,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Decktracker/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jjj.decktracker.Decktracker;
 				PRODUCT_NAME = "$(TARGET_NAME)";

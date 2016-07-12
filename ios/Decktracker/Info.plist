@@ -15,11 +15,36 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>2.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>1DB6</string>
+	<key>Fabric</key>
+	<dict>
+		<key>APIKey</key>
+		<string>114b3dd82452ec2f4024140ec862698d331b8f3f</string>
+		<key>Kits</key>
+		<array>
+			<dict>
+				<key>KitInfo</key>
+				<dict/>
+				<key>KitName</key>
+				<string>Crashlytics</string>
+			</dict>
+			<dict>
+				<key>KitInfo</key>
+				<dict>
+					<key>consumerKey</key>
+					<string>Jj4SuIikvQYgQgcqoAsAv1z5S</string>
+					<key>consumerSecret</key>
+					<string>RG7yYc6uhqE0zFotjjrkZrJfKAyy8Psx37Fp02oOhiUC5bHhMc</string>
+				</dict>
+				<key>KitName</key>
+				<string>Twitter</string>
+			</dict>
+		</array>
+	</dict>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
