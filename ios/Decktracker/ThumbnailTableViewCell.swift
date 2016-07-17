@@ -11,7 +11,7 @@ import CoreData
 
 protocol ThumbnailDelegate : NSObjectProtocol {
     func seeAllAction(tag: Int)
-//    func didSelectItem(tag: Int, displayable: ThumbnailDisplayable, path: NSIndexPath)
+    func didSelectItem(tag: Int, objectID: NSManagedObjectID, path: NSIndexPath)
 }
 
 
@@ -129,7 +129,13 @@ extension ThumbnailTableViewCell: UICollectionViewDataSource {
 
 // MARK: UICollectionViewDelegate
 extension ThumbnailTableViewCell: UICollectionViewDelegate {
-    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        if let delegate = delegate,
+            let object = fetchedResultsController.objectAtIndexPath(indexPath) as? NSManagedObject {
+            
+            delegate.didSelectItem(self.tag, objectID: object.objectID, path: indexPath)
+        }
+    }
 }
 
 // MARK: NSFetchedResultsControllerDelegate

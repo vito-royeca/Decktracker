@@ -40,21 +40,21 @@ class SetsViewController: UIViewController {
                 // force reset the fetchedResultsController
                 if let _fetchRequest = _fetchRequest {
                     let context = CoreDataManager.sharedInstance.mainObjectContext
-                    var sectionNameKeyPath = "yearInitial"
+                    var sectionNameKeyPath:String?
                     var sorters:[NSSortDescriptor]?
                     
                     switch NSUserDefaults.standardUserDefaults().integerForKey("setSortMode") {
                     case 0:
-                        sectionNameKeyPath = "yearInitial"
+                        sectionNameKeyPath = "yearKeyPath"
                         sorters = [NSSortDescriptor(key: "releaseDate", ascending: false)]
                     case 1:
-                        sectionNameKeyPath = "nameInitial"
+                        sectionNameKeyPath = "nameKeyPath"
                         sorters = [NSSortDescriptor(key: "name", ascending: true)]
                     case 2:
-                        sectionNameKeyPath = "typeInitial"
+                        sectionNameKeyPath = "typeKeyPath"
                         sorters = [NSSortDescriptor(key: "type.name", ascending: true)]
                     default:
-                        sectionNameKeyPath = "yearInitial"
+                        sectionNameKeyPath = "yearKeyPath"
                         sorters = [NSSortDescriptor(key: "releaseDate", ascending: false)]
                     }
                     
@@ -69,25 +69,19 @@ class SetsViewController: UIViewController {
     }
     lazy var fetchedResultsController: NSFetchedResultsController = {
         let context = CoreDataManager.sharedInstance.mainObjectContext
-        var sectionNameKeyPath = "yearInitial"
-        var sorters:[NSSortDescriptor]?
+        var sectionNameKeyPath:String?
         
         switch NSUserDefaults.standardUserDefaults().integerForKey("setSortMode") {
         case 0:
-            sectionNameKeyPath = "yearInitial"
-            sorters = [NSSortDescriptor(key: "releaseDate", ascending: false)]
+            sectionNameKeyPath = "yearKeyPath"
         case 1:
-            sectionNameKeyPath = "nameInitial"
-            sorters = [NSSortDescriptor(key: "name", ascending: true)]
+            sectionNameKeyPath = "nameKeyPath"
         case 2:
-            sectionNameKeyPath = "typeInitial"
-            sorters = [NSSortDescriptor(key: "type.name", ascending: true)]
+            sectionNameKeyPath = "typeKeyPath"
         default:
-            sectionNameKeyPath = "yearInitial"
-            sorters = [NSSortDescriptor(key: "releaseDate", ascending: false)]
+            sectionNameKeyPath = "yearKeyPath"
         }
         
-        self.fetchRequest!.sortDescriptors = sorters
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: self.fetchRequest!,
                                                                   managedObjectContext: context,
                                                                   sectionNameKeyPath: sectionNameKeyPath,
@@ -105,7 +99,9 @@ class SetsViewController: UIViewController {
     
     // MARK: Actions
     @IBAction func sortAction(sender: UIBarButtonItem) {
-        let sortOptions = [SetSortMode.ByReleaseDate.description, SetSortMode.ByName.description, SetSortMode.ByType.description]
+        let sortOptions = [SetSortMode.ByReleaseDate.description,
+                           SetSortMode.ByName.description,
+                           SetSortMode.ByType.description]
         var initialSelection = 0
         
         switch sortMode! {
@@ -118,24 +114,20 @@ class SetsViewController: UIViewController {
         }
         
         let doneBlock = { (picker: ActionSheetStringPicker?, selectedIndex: NSInteger, selectedValue: AnyObject?) -> Void in
-            
             switch selectedIndex {
             case 0:
                 self.sortMode = .ByReleaseDate
-                NSUserDefaults.standardUserDefaults().setInteger(0, forKey: "setSortMode")
             case 1:
                 self.sortMode = .ByName
-                NSUserDefaults.standardUserDefaults().setInteger(1, forKey: "setSortMode")
             case 2:
                 self.sortMode = .ByType
-                NSUserDefaults.standardUserDefaults().setInteger(2, forKey: "setSortMode")
             default:
                 ()
             }
             
-            self.loadSets(nil)
-            self.tableView.reloadData()
+            NSUserDefaults.standardUserDefaults().setInteger(selectedIndex, forKey: "setSortMode")
             NSUserDefaults.standardUserDefaults().synchronize()
+            self.loadSets(nil)
         }
         
         ActionSheetStringPicker.showPickerWithTitle("Sort By",
@@ -145,7 +137,7 @@ class SetsViewController: UIViewController {
                                                     cancelBlock: nil,
                                                     origin: view)
     }
-    
+
     // MARK: Overrides
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -178,16 +170,30 @@ class SetsViewController: UIViewController {
         
         loadSets(nil)
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+
+//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+//        if segue.identifier == "showCardDetails" {
+//            
+//            if let indexPath = tableView.indexPathForSelectedRow,
+//                let _ = fetchRequest {
+//                
+//                let sections = fetchedResultsController.sections
+//                let sectionInfo = sections![indexPath.section]
+//                
+//                if let objects = sectionInfo.objects {
+//                    if let set = objects[indexPath.row] as? Set {
+//                        
+//                        let detailsVC = (segue.destinationViewController as! UINavigationController).topViewController as! SetDetailsViewController
+//                        detailsVC.setOID = set.objectID
+//                        detailsVC.navigationController!.title = set.name!
+//                    }
+//                }
+//            }
+//        }
+//    }
     
     // MARK: Custom methods
     func loadSets(predicate: NSPredicate?) {
-        fetchRequest = NSFetchRequest(entityName: "Set")
-        fetchRequest!.predicate = predicate
         var sorters:[NSSortDescriptor]?
         
         switch sortMode! {
@@ -198,16 +204,19 @@ class SetsViewController: UIViewController {
         case .ByType:
             sorters = [NSSortDescriptor(key: "type.name", ascending: true)]
         }
-        fetchRequest!.sortDescriptors = sorters
         
+        fetchRequest = NSFetchRequest(entityName: "Set")
+        fetchRequest!.predicate = predicate
+        fetchRequest!.sortDescriptors = sorters
+
         do {
-            try self.fetchedResultsController.performFetch()
+            try fetchedResultsController.performFetch()
         } catch {}
-        self.fetchedResultsController.delegate = self
+        fetchedResultsController.delegate = self
         
         tableView.reloadData()
     }
-    
+
     func doSearch() {
         var predicate:NSPredicate?
         
@@ -245,7 +254,7 @@ class SetsViewController: UIViewController {
             }
         }
     }
-    
+
     func setIconPath(set: Set) -> String? {
         let sorter = NSSortDescriptor(key: "symbol", ascending: true)
         
@@ -261,6 +270,7 @@ class SetsViewController: UIViewController {
         
         return nil
     }
+
 }
 
 // MARK: UITableViewDataSource
@@ -288,21 +298,23 @@ extension SetsViewController: UITableViewDataSource {
     
     func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
         if fetchRequest != nil,
-           let sections = fetchedResultsController.sections {
+            let sections = fetchedResultsController.sections {
             
             switch sortMode! {
-            case .ByReleaseDate, .ByType:
-                return nil
             case .ByName:
                 var indexTitles = [String]()
                     
                 for sectionInfo in sections {
                     if let indexTitle = sectionInfo.indexTitle {
-                        indexTitles.append(indexTitle)
+                        if !indexTitles.contains(indexTitle) {
+                            indexTitles.append(indexTitle)
+                        }
                     }
                 }
-                
                 return indexTitles
+                
+            default:
+                return nil
             }
             
         } else {
@@ -316,11 +328,9 @@ extension SetsViewController: UITableViewDataSource {
             let sectionInfo = sections[section]
             
             switch sortMode! {
-            case .ByReleaseDate:
-                return sectionInfo.name
             case .ByName:
                 return sectionInfo.indexTitle
-            case .ByType:
+            default:
                 return sectionInfo.name
             }
             
@@ -341,6 +351,26 @@ extension SetsViewController: UITableViewDataSource {
 extension SetsViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+//        performSegueWithIdentifier("showCardDetails", sender: indexPath)
+        if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("SetDetailsViewController") as? SetDetailsViewController,
+            let navigationController = navigationController,
+            let _ = fetchRequest {
+            
+            let sections = fetchedResultsController.sections
+            let sectionInfo = sections![indexPath.section]
+            
+            if let objects = sectionInfo.objects {
+                if let set = objects[indexPath.row] as? Set {
+                    
+                    controller.setOID = set.objectID
+                    controller.navigationItem.title = set.name!
+                    navigationController.pushViewController(controller, animated: true)
+                }
+            }
+        }
     }
 }
 

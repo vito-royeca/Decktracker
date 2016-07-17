@@ -31,11 +31,6 @@ class FeaturedViewController: UIViewController {
         loadSets()
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     // MARK: Custom methods
     func loadSets() {
         setsFetchRequest = NSFetchRequest(entityName: "Set")
@@ -87,6 +82,23 @@ extension FeaturedViewController : ThumbnailDelegate {
                 let navigationController = navigationController {
                 navigationController.pushViewController(controller, animated: true)
             }
+        default:
+            ()
+        }
+    }
+    
+    func didSelectItem(tag: Int, objectID: NSManagedObjectID, path: NSIndexPath) {
+        switch tag {
+        case 0: // Sets
+            if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("SetDetailsViewController") as? SetDetailsViewController,
+                let navigationController = navigationController {
+                let set = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(objectID) as! Set
+                
+                controller.setOID = objectID
+                controller.navigationItem.title = set.name!
+                navigationController.pushViewController(controller, animated: true)
+            }
+            
         default:
             ()
         }

@@ -21,33 +21,7 @@ class SetCollectionViewCell: UICollectionViewCell {
             if (_setOID != newValue) {
                 _setOID = newValue
                 
-                // force reset the fetchedResultsController
-                if let _setOID = _setOID {
-                    let set = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(_setOID) as! Set
-                    let sorter = NSSortDescriptor(key: "symbol", ascending: true)
-                    
-                    for r in ObjectManager.sharedInstance.findObjects("Rarity", predicate: nil, sorters: [sorter]) {
-                        if let rarity = r as? Rarity {
-                            let path = "\(NSBundle.mainBundle().bundlePath)/images/set/\(set.code!)/\(rarity.symbol!)/48.png"
-                            
-                            if NSFileManager.defaultManager().fileExistsAtPath(path) {
-                                let image = UIImage(contentsOfFile: path)
-                                setImage.image = image
-                                setImage.contentMode = .ScaleAspectFit
-                                break
-                            } else {
-                                setImage.image = nil
-                            }
-                        }
-                    }
-
-                    nameLabel.text = set.name
-//                    if let releaseDate = set.releaseDate,
-//                        let formatter = formatter {
-//                        releaseDateLabel.text = formatter.stringFromDate(releaseDate)
-//                    }
-                    countLabel.text = "\(set.numberOfCards!) cards"
-                }
+                displaySet()
             }
         }
         
@@ -69,4 +43,34 @@ class SetCollectionViewCell: UICollectionViewCell {
         nameLabel.sizeToFit()
     }
 
+    // MARK: Custom methods
+    func displaySet() {
+        if let _setOID = _setOID {
+            let set = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(_setOID) as! Set
+            let sorter = NSSortDescriptor(key: "symbol", ascending: true)
+            
+            for r in ObjectManager.sharedInstance.findObjects("Rarity", predicate: nil, sorters: [sorter]) {
+                if let rarity = r as? Rarity {
+                    let path = "\(NSBundle.mainBundle().bundlePath)/images/set/\(set.code!)/\(rarity.symbol!)/48.png"
+                    
+                    if NSFileManager.defaultManager().fileExistsAtPath(path) {
+                        let image = UIImage(contentsOfFile: path)
+                        setImage.image = image
+                        setImage.contentMode = .ScaleAspectFit
+                        break
+                    } else {
+                        setImage.image = nil
+                    }
+                }
+            }
+            
+            nameLabel.text = set.name
+            countLabel.text = "\(set.numberOfCards!) cards"
+            
+        } else {
+            setImage.image = nil
+            nameLabel.text = nil
+            countLabel.text = nil
+        }
+    }
 }
