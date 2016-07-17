@@ -66,5 +66,76 @@ class Card: NSManagedObject {
         starter = dictionary[Keys.Starter] as? NSNumber
         originalText = dictionary[Keys.OrginalText] as? String
     }
+    
+    var nameKeyPath: String? {
+        if let name = name {
+            let letters = NSCharacterSet.letterCharacterSet()
+            
+            for initial in name.unicodeScalars {
+                if letters.longCharacterIsMember(initial.value) {
+                    return "\(name[name.startIndex])".uppercaseString
+                    
+                } else {
+                    return "#"
+                }
+            }
+        }
+        
+        return nil
+    }
 
+    var colorKeyPath: String? {
+        if let colorSection = colorSection {
+            return colorSection.name!.capitalizedString
+        }
+        
+        return nil
+    }
+    
+    var typeKeyPath: String? {
+        if let type = type {
+            return type.name!.capitalizedString
+        }
+        
+        return nil
+    }
+    
+    var rarityKeyPath: String? {
+        if let rarity = rarity {
+            return rarity.name!.capitalizedString
+        }
+        
+        return nil
+    }
+    
+    var cropPath: NSURL? {
+        let paths = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)
+        let cacheDirectory = paths.first
+        let path = "\(cacheDirectory!)/images/crop/\(set!.code!)/\(cardID!).crop.hq.jpg"
+        return NSURL(string: path)
+    }
+    
+    var typePath: NSURL? {
+        if let type = type {
+            var path:String?
+            
+            for t in CardType.CardTypesWithSymbol {
+                if type.name!.hasPrefix(t) || type.name!.containsString(t) {
+                    path = t.lowercaseString
+                }
+            }
+            return NSURL(string: "\(NSBundle.mainBundle().bundlePath)/images/other/\(path!)/32.png")
+        }
+        
+        return nil
+    }
+    
+    var urlPath: NSURL? {
+        if let magicCardsInfoCode = set!.magicCardsInfoCode,
+            let number = number {
+            return NSURL(string: "http://magiccards.info/scans/en/\(magicCardsInfoCode)/\(number).jpg")!
+        }
+        
+        return nil
+    }
 }

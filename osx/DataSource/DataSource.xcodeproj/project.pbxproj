@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		402B0ABB55F3241F9175B39B /* libPods-DataSource.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C2200240B896DDF15B5ED1C9 /* libPods-DataSource.a */; };
 		8C0D16681D2375DA00165F3A /* Watermark+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D16421D2375DA00165F3A /* Watermark+CoreDataProperties.swift */; };
 		8C0D16691D2375DA00165F3A /* Watermark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D16431D2375DA00165F3A /* Watermark.swift */; };
 		8C0D166A1D2375DA00165F3A /* Card+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0D16441D2375DA00165F3A /* Card+CoreDataProperties.swift */; };
@@ -53,6 +54,8 @@
 		8C22BA3B1D26B95E00FD8702 /* CardLegality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C22BA391D26B95E00FD8702 /* CardLegality.swift */; };
 		8C4B9D0E1A515D0B00F727E7 /* tcgplayer_sets.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C4B9D091A51384400F727E7 /* tcgplayer_sets.plist */; };
 		8C5BAE171B4A9695007F2C44 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CEF64DE1B0081260056450F /* libc++.dylib */; };
+		8C5D4D331D373312008E6B2B /* TCGPlayerPricing+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5D4D311D373312008E6B2B /* TCGPlayerPricing+CoreDataProperties.swift */; };
+		8C5D4D341D373312008E6B2B /* TCGPlayerPricing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5D4D321D373312008E6B2B /* TCGPlayerPricing.swift */; };
 		8C877F401B4D0BAB004302D2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF9CE4B199F982A008127E5 /* CoreGraphics.framework */; };
 		8C877F421B4D0BB2004302D2 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C877F411B4D0BB2004302D2 /* CFNetwork.framework */; };
 		8C877F441B4D0BBA004302D2 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C877F431B4D0BBA004302D2 /* CoreLocation.framework */; };
@@ -65,7 +68,6 @@
 		8CE75CB01AB96D40001EB70E /* AllSets-x.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C87AB311A7F1F6C00E901DE /* AllSets-x.json */; };
 		8CE75CB41AB96DBB001EB70E /* MagicCompRules_20140926.htm in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C87AB321A7F1F6C00E901DE /* MagicCompRules_20140926.htm */; };
 		8CF9CE52199F9A22008127E5 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF9CE51199F9A22008127E5 /* AppKit.framework */; };
-		FB29A922BB5139A9E96A1FF9 /* libPods-DataSource.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C8EB644CB2D973D1DD06991A /* libPods-DataSource.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -137,6 +139,8 @@
 		8C22BA381D26B95E00FD8702 /* CardLegality+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CardLegality+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		8C22BA391D26B95E00FD8702 /* CardLegality.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardLegality.swift; sourceTree = "<group>"; };
 		8C4B9D091A51384400F727E7 /* tcgplayer_sets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = tcgplayer_sets.plist; sourceTree = "<group>"; };
+		8C5D4D311D373312008E6B2B /* TCGPlayerPricing+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TCGPlayerPricing+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8C5D4D321D373312008E6B2B /* TCGPlayerPricing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TCGPlayerPricing.swift; sourceTree = "<group>"; };
 		8C877F411B4D0BB2004302D2 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		8C877F431B4D0BBA004302D2 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		8C877F451B4D0BC4004302D2 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -152,7 +156,7 @@
 		8CF9CE4B199F982A008127E5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		8CF9CE51199F9A22008127E5 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		8CFF719C1B020D6D002428D2 /* DataSource-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "DataSource-Info.plist"; sourceTree = "<group>"; };
-		C8EB644CB2D973D1DD06991A /* libPods-DataSource.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DataSource.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C2200240B896DDF15B5ED1C9 /* libPods-DataSource.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DataSource.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,7 +175,7 @@
 				8C5BAE171B4A9695007F2C44 /* libc++.dylib in Frameworks */,
 				8CF9CE52199F9A22008127E5 /* AppKit.framework in Frameworks */,
 				8C1B4DCB198CF0C000B4C948 /* Foundation.framework in Frameworks */,
-				FB29A922BB5139A9E96A1FF9 /* libPods-DataSource.a in Frameworks */,
+				402B0ABB55F3241F9175B39B /* libPods-DataSource.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -223,7 +227,7 @@
 				8C877F451B4D0BC4004302D2 /* QuartzCore.framework */,
 				8C877F471B4D0BCE004302D2 /* Security.framework */,
 				8C877F491B4D0BD8004302D2 /* SystemConfiguration.framework */,
-				C8EB644CB2D973D1DD06991A /* libPods-DataSource.a */,
+				C2200240B896DDF15B5ED1C9 /* libPods-DataSource.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -292,6 +296,8 @@
 				8C0D16541D2375DA00165F3A /* SetType+CoreDataProperties.swift */,
 				8C0D165D1D2375DA00165F3A /* Source.swift */,
 				8C0D165C1D2375DA00165F3A /* Source+CoreDataProperties.swift */,
+				8C5D4D321D373312008E6B2B /* TCGPlayerPricing.swift */,
+				8C5D4D311D373312008E6B2B /* TCGPlayerPricing+CoreDataProperties.swift */,
 				8C0D16431D2375DA00165F3A /* Watermark.swift */,
 				8C0D16421D2375DA00165F3A /* Watermark+CoreDataProperties.swift */,
 			);
@@ -435,8 +441,10 @@
 				8C0D167F1D2375DA00165F3A /* Rating.swift in Sources */,
 				8C0D167C1D2375DA00165F3A /* Layout+CoreDataProperties.swift in Sources */,
 				8C0D16741D2375DA00165F3A /* Block+CoreDataProperties.swift in Sources */,
+				8C5D4D331D373312008E6B2B /* TCGPlayerPricing+CoreDataProperties.swift in Sources */,
 				8C0D16771D2375DA00165F3A /* Rarity.swift in Sources */,
 				8C9AC1621D0F89F600E302F6 /* Decktracker.xcdatamodeld in Sources */,
+				8C5D4D341D373312008E6B2B /* TCGPlayerPricing.swift in Sources */,
 				8C0D169C1D23A2F600165F3A /* Constants.swift in Sources */,
 				8C0D16731D2375DA00165F3A /* ForeignName.swift in Sources */,
 				8C0D16761D2375DA00165F3A /* Rarity+CoreDataProperties.swift in Sources */,

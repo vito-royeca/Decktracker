@@ -17,6 +17,7 @@ extension Color {
     @NSManaged var name: String?
     @NSManaged var symbol: String?
     @NSManaged var cards: NSSet?
+    @NSManaged var colorSections: NSSet?
     @NSManaged var identities: NSSet?
 
 }

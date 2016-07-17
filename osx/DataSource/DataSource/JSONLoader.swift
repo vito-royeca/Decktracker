@@ -12,6 +12,7 @@ class JSONLoader: NSObject {
 
     let eightEditionRelease = "2003-07-28"
     var eightEditionReleaseDate:NSDate?
+    var magicCardInfoSets = [String: AnyObject]()
     
     func json2Database() {
         let filePath = "\(NSBundle.mainBundle().resourcePath!)/Data/AllSets-x.json"
@@ -26,6 +27,7 @@ class JSONLoader: NSObject {
         // Create additional CardColors
         ObjectManager.sharedInstance.findOrCreateColor(["name": "Colorless"])
         ObjectManager.sharedInstance.findOrCreateColor(["name": "Multicolored"])
+        CoreDataManager.sharedInstance.saveMainContext()
 
         if let data = NSData(contentsOfFile: filePath) {
             do {
@@ -57,22 +59,78 @@ class JSONLoader: NSObject {
                     }
                     
                     // parse extra info
+                    var dateStart = NSDate()
+                    print("Start parsing variations...")
                     for setName in dict.keys {
                         if let dictSets = dict[setName] as? [String: AnyObject] {
                             if let dictCards = dictSets["cards"] as? [[String: AnyObject]] {
                                 parseVariations(dictCards)
+                            }
+                        }
+                    }
+                    var dateEnd = NSDate()
+                    var timeDifference = dateEnd.timeIntervalSinceDate(dateStart)
+                    print("Time Elapsed: \(JJJUtil.formatInterval(timeDifference))")
+                    
+                    dateStart = NSDate()
+                    print("Start parsing rulings...")
+                    for setName in dict.keys {
+                        if let dictSets = dict[setName] as? [String: AnyObject] {
+                            if let dictCards = dictSets["cards"] as? [[String: AnyObject]] {
                                 parseRulings(dictCards)
+                            }
+                        }
+                    }
+                    dateEnd = NSDate()
+                    timeDifference = dateEnd.timeIntervalSinceDate(dateStart)
+                    print("Time Elapsed: \(JJJUtil.formatInterval(timeDifference))")
+                    
+                    dateStart = NSDate()
+                    print("Start parsing legalities...")
+                    for setName in dict.keys {
+                        if let dictSets = dict[setName] as? [String: AnyObject] {
+                            if let dictCards = dictSets["cards"] as? [[String: AnyObject]] {
                                 parseLegalities(dictCards)
+                            }
+                        }
+                    }
+                    dateEnd = NSDate()
+                    timeDifference = dateEnd.timeIntervalSinceDate(dateStart)
+                    print("Time Elapsed: \(JJJUtil.formatInterval(timeDifference))")
+                    
+                    dateStart = NSDate()
+                    print("Start parsing foreign names...")
+                    for setName in dict.keys {
+                        if let dictSets = dict[setName] as? [String: AnyObject] {
+                            if let dictCards = dictSets["cards"] as? [[String: AnyObject]] {
                                 parseForeignNames(dictCards)
                             }
                         }
                     }
+                    dateEnd = NSDate()
+                    timeDifference = dateEnd.timeIntervalSinceDate(dateStart)
+                    print("Time Elapsed: \(JJJUtil.formatInterval(timeDifference))")
                 }
             } catch {
                 
             }
         }
         
+        CoreDataManager.sharedInstance.saveMainContext()
+    }
+    
+    func updateCardNumbers() {
+        CoreDataManager.sharedInstance.setup(Constants.CoreDataSQLiteFile, modelFile: Constants.CoreDataModelFile)
+        
+        // update the card numbers
+//        let predicate = NSPredicate(format: "number == nil")
+        let predicate = NSPredicate(format: "set.name == %@", "Alliances")
+        let sorters = [NSSortDescriptor(key: "set.releaseDate", ascending: true),
+                       NSSortDescriptor(key: "name", ascending: true)]
+        for card in ObjectManager.sharedInstance.findObjects("Card", predicate: predicate, sorters: sorters) {
+            let c = card as! Card
+            updateNumberOfCard(c)
+        }
         CoreDataManager.sharedInstance.saveMainContext()
     }
     
@@ -118,12 +176,25 @@ class JSONLoader: NSObject {
             }
             if let dictColors = dictCard["colors"] as? [String] {
                 let colors = card.mutableSetValueForKey("colors")
+                var multicolored = false
+                var currentColor:Color?
                 
                 for color in dictColors {
                     let cardColor = ObjectManager.sharedInstance.findOrCreateColor([Color.Keys.Name: color])
                     colors.addObject(cardColor)
+                    
+                    if cardColor.name != "Colorless" &&
+                        currentColor != nil &&
+                        cardColor.objectID != currentColor!.objectID {
+                        multicolored = true
+                    }
+                    currentColor = cardColor
                 }
+                card.colorSection = multicolored ? ObjectManager.sharedInstance.findOrCreateColor([Color.Keys.Name: "Multicolor"]) : (currentColor != nil ? currentColor : ObjectManager.sharedInstance.findOrCreateColor([Color.Keys.Name: "Colorless"]))
+            } else {
+                card.colorSection = ObjectManager.sharedInstance.findOrCreateColor([Color.Keys.Name: "Colorless"])
             }
+            
             if let dictColorIdentity = dictCard["colorIdentity"] as? [String] {
                 let colorIdentities = card.mutableSetValueForKey("colors")
                 
@@ -234,18 +305,17 @@ class JSONLoader: NSObject {
                 let card = ObjectManager.sharedInstance.findOrCreateCard(dictCard)
                 let variations = card.mutableSetValueForKey("variations")
         
-                print("\(card.name!)")
+//                print("\(card.name!)")
                 for variation in dictVariations {
                     let predicate = NSPredicate(format: "multiverseID == %@", variation)
                     
                     if let cardVariation = ObjectManager.sharedInstance.findObjects("Card", predicate: predicate, sorters: [NSSortDescriptor(key: "multiverseID", ascending: true)]).first {
                         variations.addObject(cardVariation)
-                        print("\t\(card.set!.code!)")
+//                        print("\t\(card.set!.code!)")
                     }
                 }
             }
         }
-        
         
         CoreDataManager.sharedInstance.savePrivateContext()
     }
@@ -258,11 +328,11 @@ class JSONLoader: NSObject {
                 let formatter = NSDateFormatter()
                 
                 formatter.dateFormat = "YYYY-MM-dd"
-                print("\(card.name!)")
+//                print("\(card.name!)")
                 for ruling in dictRulings {
                     let cardRuling = ObjectManager.sharedInstance.findOrCreateRuling(ruling)
                     rulings.addObject(cardRuling)
-                    print("\t\(ruling["date"]!)")
+//                    print("\t\(ruling["date"]!)")
                 }
             }
         }
@@ -276,11 +346,11 @@ class JSONLoader: NSObject {
                 let card = ObjectManager.sharedInstance.findOrCreateCard(dictCard)
                 let legalities = card.mutableSetValueForKey("legalities")
                 
-                print("\(card.name!)")
+//                print("\(card.name!)")
                 for legality in dictLegalities {
                     let cardLegality = ObjectManager.sharedInstance.findOrCreateCardLegality(card, dict: legality)
                     legalities.addObject(cardLegality)
-                    print("\t\(cardLegality.format!.name!): \(cardLegality.legality!.name!)")
+//                    print("\t\(cardLegality.format!.name!): \(cardLegality.legality!.name!)")
                 }
             }
         }
@@ -294,11 +364,11 @@ class JSONLoader: NSObject {
                 let card = ObjectManager.sharedInstance.findOrCreateCard(dictCard)
                 let foreignNames = card.mutableSetValueForKey("foreignNames")
                 
-                print("\(card.name!)")
+//                print("\(card.name!)")
                 for foreignName in dictForeignNames {
                     let cardForeignName = ObjectManager.sharedInstance.findOrCreateForeignName(card, dict: foreignName)
                     foreignNames.addObject(cardForeignName)
-                    print("\t\(cardForeignName.language!.name!): \(cardForeignName.name!)")
+//                    print("\t\(cardForeignName.language!.name!): \(cardForeignName.name!)")
                 }
             }
         }
@@ -306,6 +376,80 @@ class JSONLoader: NSObject {
         CoreDataManager.sharedInstance.savePrivateContext()
     }
     
-    // MARK: Utility methods
-
+    func updateNumberOfCard(card: Card) {
+        if let magicCardsInfoCode = card.set!.magicCardsInfoCode {
+            var dict:NSMutableDictionary?
+            
+            if let d = magicCardInfoSets[card.set!.code!] as? NSMutableDictionary {
+                dict = d
+            } else {
+                let url = NSURL(string: "http://magiccards.info/\(magicCardsInfoCode)/en.html")
+                let data = NSData(contentsOfURL: url!)
+                let parser = TFHpple(HTMLData: data!)
+                dict = NSMutableDictionary()
+                
+                dict!.addEntriesFromDictionary(parseCardNumber(parser.searchWithXPathQuery("//tr[@class='even']")) as [NSObject : AnyObject])
+                dict!.addEntriesFromDictionary(parseCardNumber(parser.searchWithXPathQuery("//tr[@class='odd']")) as [NSObject : AnyObject])
+                
+                magicCardInfoSets[card.set!.code!] = dict
+            }
+            
+            for (key,value) in dict! {
+                if let name = card.name,
+                    let key = key as? String,
+                    let value = value as? String{
+                    
+                    if name.lowercaseString == value.lowercaseString {
+                        print("\(card.name!) (\(card.set!.code!))")
+                        card.number = key
+                        CoreDataManager.sharedInstance.savePrivateContext()
+                        
+                        dict!.removeObjectForKey(key)
+                        break
+                    }
+                }
+            }
+            
+            if dict!.count == 0 {
+                magicCardInfoSets[card.set!.code!] = nil
+            }
+            
+        } else {
+            return
+        }
+    }
+    
+    func parseCardNumber(nodes: NSArray) -> NSDictionary {
+        let dict = NSMutableDictionary()
+     
+        for node in nodes {
+            let tr = node as! TFHppleElement
+            var number:String?
+            var name:String?
+            
+            for td in tr.children {
+                if td.tagName == "td" {
+                    if number == nil {
+                        if let firstChild = td.firstChild {
+                            number = firstChild.content
+                        }
+                    }
+                    if name == nil {
+                        for elem in td.children {
+                            if let firstChild = elem.firstChild {
+                                name = firstChild?.content
+                            }
+                        }
+                    }
+                }
+                
+                if let number = number,
+                    let name = name {
+                    dict.setObject(name, forKey: number)
+                }
+            }
+        }
+        
+        return dict
+    }
 }

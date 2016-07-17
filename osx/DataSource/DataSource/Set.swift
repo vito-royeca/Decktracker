@@ -48,7 +48,7 @@ class Set: NSManagedObject {
         }
     }
 
-    var nameInitial: String? {
+    var nameKeyPath: String? {
         if let name = name {
             let letters = NSCharacterSet.letterCharacterSet()
             
@@ -65,7 +65,7 @@ class Set: NSManagedObject {
         return nil
     }
     
-    var typeInitial: String? {
+    var typeKeyPath: String? {
         if let type = type {
             return type.name!.capitalizedString
         }
@@ -73,7 +73,7 @@ class Set: NSManagedObject {
         return nil
     }
     
-    var yearInitial: String? {
+    var yearKeyPath: String? {
         if let releaseDate = releaseDate {
             let formatter = NSDateFormatter()
             formatter.dateFormat = "YYYY"

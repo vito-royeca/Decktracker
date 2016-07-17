@@ -12,6 +12,13 @@ import CoreData
 
 class CardType: NSManagedObject {
 
+    static let CardTypesWithSymbol      = ["Artifact",
+                                           "Creature",
+                                           "Enchantment",
+                                           "Instant",
+                                           "Land",
+                                           "Planeswalker",
+                                           "Sorcery"]
     struct Keys {
         static let Name = "name"
         static let Type = "type"

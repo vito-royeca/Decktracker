@@ -37,6 +37,7 @@ extension Card {
     @NSManaged var modern: NSNumber?
     @NSManaged var set: Set?
     @NSManaged var layout: Layout?
+    @NSManaged var colorSection: Color?
     @NSManaged var colors: NSSet?
     @NSManaged var colorIdentities: NSSet?
     @NSManaged var type: CardType?
@@ -55,5 +56,5 @@ extension Card {
     @NSManaged var legalities: NSSet?
     @NSManaged var source: Source?
     @NSManaged var ratings: NSSet?
-
+    @NSManaged var pricings: NSSet?
 }

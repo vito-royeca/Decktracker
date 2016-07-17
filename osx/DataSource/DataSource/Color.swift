@@ -41,6 +41,8 @@ class Color: NSManagedObject {
                 symbol = "R"
             } else if name == "White" {
                 symbol = "W"
+            } else if name == "Colorless" {
+                symbol = "C"
             }
         }
     }

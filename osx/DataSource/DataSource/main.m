@@ -18,7 +18,8 @@ int main(int argc, const char * argv[])
         
         // Step 1
         JSONLoader *jsonLoader = [[JSONLoader alloc] init];
-        [jsonLoader json2Database];
+//        [jsonLoader json2Database];
+        [jsonLoader updateCardNumbers];
         
         // Step 2
 //        RulesLoader *rulesLoader = [[RulesLoader alloc] init];

@@ -39,10 +39,12 @@
         <relationship name="border" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Border" inverseName="cards" inverseEntity="Border" syncable="YES"/>
         <relationship name="colorIdentities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Color" inverseName="identities" inverseEntity="Color" syncable="YES"/>
         <relationship name="colors" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Color" inverseName="cards" inverseEntity="Color" syncable="YES"/>
+        <relationship name="colorSection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Color" inverseName="cardSections" inverseEntity="Color" syncable="YES"/>
         <relationship name="foreignNames" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ForeignName" inverseName="card" inverseEntity="ForeignName" syncable="YES"/>
         <relationship name="layout" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Layout" inverseName="cards" inverseEntity="Layout" syncable="YES"/>
         <relationship name="legalities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CardLegality" inverseName="card" inverseEntity="CardLegality" syncable="YES"/>
         <relationship name="originalType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CardType" inverseName="originalCards" inverseEntity="CardType" syncable="YES"/>
+        <relationship name="pricings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TCGPlayerPricing" inverseName="card" inverseEntity="TCGPlayerPricing" syncable="YES"/>
         <relationship name="printings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Set" inverseName="printings" inverseEntity="Set" syncable="YES"/>
         <relationship name="rarity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Rarity" inverseName="cards" inverseEntity="Rarity" syncable="YES"/>
         <relationship name="ratings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Rating" inverseName="card" inverseEntity="Rating" syncable="YES"/>
@@ -73,6 +75,7 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="symbol" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="colors" inverseEntity="Card" syncable="YES"/>
+        <relationship name="cardSections" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="colorSection" inverseEntity="Card" syncable="YES"/>
         <relationship name="identities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="colorIdentities" inverseEntity="Card" syncable="YES"/>
     </entity>
     <entity name="ForeignName" representedClassName=".ForeignName" syncable="YES">
@@ -134,6 +137,15 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="source" inverseEntity="Card" syncable="YES"/>
     </entity>
+    <entity name="TCGPlayerPricing" representedClassName="TCGPlayerPricing" syncable="YES">
+        <attribute name="fetchDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="foilPrice" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="highPrice" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="link" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lowPrice" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="midPrice" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Card" inverseName="pricings" inverseEntity="Card" syncable="YES"/>
+    </entity>
     <entity name="Watermark" representedClassName=".Watermark" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="watermark" inverseEntity="Card" syncable="YES"/>
@@ -142,10 +154,10 @@
         <element name="Artist" positionX="-63" positionY="-18" width="128" height="75"/>
         <element name="Block" positionX="-54" positionY="-9" width="128" height="75"/>
         <element name="Border" positionX="9" positionY="54" width="128" height="90"/>
-        <element name="Card" positionX="-36" positionY="9" width="128" height="660"/>
+        <element name="Card" positionX="-36" positionY="9" width="128" height="690"/>
         <element name="CardLegality" positionX="-9" positionY="135" width="128" height="90"/>
         <element name="CardType" positionX="9" positionY="54" width="128" height="135"/>
-        <element name="Color" positionX="-18" positionY="27" width="128" height="105"/>
+        <element name="Color" positionX="-18" positionY="27" width="128" height="120"/>
         <element name="ForeignName" positionX="0" positionY="45" width="128" height="90"/>
         <element name="Format" positionX="36" positionY="81" width="128" height="75"/>
         <element name="Language" positionX="45" positionY="90" width="128" height="75"/>
@@ -157,6 +169,7 @@
         <element name="Set" positionX="-9" positionY="36" width="128" height="255"/>
         <element name="SetType" positionX="0" positionY="45" width="128" height="75"/>
         <element name="Source" positionX="18" positionY="162" width="128" height="75"/>
+        <element name="TCGPlayerPricing" positionX="-9" positionY="135" width="128" height="150"/>
         <element name="Watermark" positionX="0" positionY="144" width="128" height="75"/>
     </elements>
 </model>
