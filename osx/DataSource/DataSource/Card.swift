@@ -8,10 +8,24 @@
 
 import Foundation
 import CoreData
-
+import JJJUtils
 
 class Card: NSManagedObject {
 
+    static let ManaSymbols  = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+                               "10", "11", "12", "13", "14", "15", "16", "17",
+                               "18", "19", "20", "100", "1000000", "W", "U", "B",
+                               "R", "G", "S", "X", "Y", "Z", "WU", "WB", "UB",
+                               "UR", "BR", "BG", "RG", "RW", "GW", "GU", "2W",
+                               "2U", "2B", "2R", "2G", "P", "PW", "PU", "PB",
+                               "PR", "PG", "Infinity", "H", "HW", "HU", "HB",
+                               "HR", "HG"]
+    
+    static let OtherSymbols = ["T", "Q", "C", "artifact", "creature",
+                               "enchantment", "instant", "land", "multiple",
+                               "planeswalker", "sorcery", "power", "toughness",
+                               "chaosdice", "planeswalk", "forwardslash", "tombstone"]
+    
     struct Keys {
         static let CardID = "id"
         static let Name = "name"
@@ -139,5 +153,88 @@ class Card: NSManagedObject {
         }
         
         return nil
+    }
+    
+    var manaImages: [[String: AnyObject]] {
+        var arrManaImages = [[String: AnyObject]]()
+        var arrSymbols = [AnyObject]()
+        
+        if let manaCost = manaCost {
+            var temp = manaCost.stringByReplacingOccurrencesOfString("{", withString: "")
+            temp = temp.stringByReplacingOccurrencesOfString("}", withString: " ")
+            temp = JJJUtil.trim(temp)
+            arrSymbols = temp.componentsSeparatedByString(" ")
+        }
+
+        for s in arrSymbols {
+            
+            let symbol = s as! String
+            var noCurlies = symbol.stringByReplacingOccurrencesOfString("/", withString: "")
+            let noCurliesReverse = JJJUtil.reverseString(noCurlies)
+            
+            var bFound = false
+            var width:Float = 0.0
+            var height:Float = 0.0
+            var pngSize = 0
+            
+            if noCurlies == "100" {
+                width = 24.0
+                height = 13.0
+                pngSize = 48
+            } else if noCurlies == "1000000" {
+                width = 64.0
+                height = 13.0
+                pngSize = 96
+            } else if noCurlies == "∞" || noCurliesReverse == "∞" {
+                noCurlies = "Infinity"
+                width = 16.0
+                height = 16.0
+                pngSize = 32
+            } else {
+                width = 16.0
+                height = 16.0
+                pngSize = 32
+            }
+            
+            for mana in Card.ManaSymbols {
+                if mana == noCurlies {
+                    let path = "\(NSBundle.mainBundle().bundlePath)/images/mana/\(noCurlies)/\(pngSize).png"
+                    arrManaImages.append(["width": NSNumber(float: width),
+                                          "height": NSNumber(float: height),
+                                          "path": path,
+                                          "symbol": mana])
+                    bFound = true
+                } else if mana == noCurliesReverse {
+                    let path = "\(NSBundle.mainBundle().bundlePath)/images/mana/\(noCurliesReverse)/\(pngSize).png"
+                    arrManaImages.append(["width": NSNumber(float: width),
+                                          "height": NSNumber(float: height),
+                                          "path": path,
+                                          "symbol": mana])
+                    bFound = true
+                }
+            }
+            
+            if !bFound {
+                for mana in Card.OtherSymbols {
+                    if mana == noCurlies {
+                        let path = "\(NSBundle.mainBundle().bundlePath)/images/other/\(noCurlies)/\(pngSize).png"
+                        arrManaImages.append(["width": NSNumber(float: width),
+                            "height": NSNumber(float: height),
+                            "path": path,
+                            "symbol": mana])
+                        bFound = true
+                    } else if mana == noCurliesReverse {
+                        let path = "\(NSBundle.mainBundle().bundlePath)/images/other/\(noCurliesReverse)/\(pngSize).png"
+                        arrManaImages.append(["width": NSNumber(float: width),
+                            "height": NSNumber(float: height),
+                            "path": path,
+                            "symbol": mana])
+                        bFound = true
+                    }
+                }
+            }
+        }
+    
+        return arrManaImages
     }
 }

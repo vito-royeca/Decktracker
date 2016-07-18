@@ -15,8 +15,8 @@ class CardSummaryTableViewCell: UITableViewCell {
 
     // MARK: Constants
     static let CellHeight = CGFloat(80)
-    let preEightEditionFont = UIFont(name: "Magic:the Gathering", size: 20.0)
-    let eightEditionFont = UIFont(name: "Matrix-Bold", size: 18.0)
+    let preEightEditionFont = UIFont(name: "Magic:the Gathering", size: 17.0)
+    let eightEditionFont = UIFont(name: "Matrix-Bold", size: 17.0)
     
     // MARK: Variables
     private var _cardOID: NSManagedObjectID?
@@ -79,6 +79,11 @@ class CardSummaryTableViewCell: UITableViewCell {
     
     // MARK: Custom methods
     func displayCard() {
+        // remove first
+        for v in castingCostView.subviews {
+            v.removeFromSuperview()
+        }
+        
         if let _cardOID = _cardOID {
             let card = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(_cardOID) as! Card
             
@@ -155,6 +160,40 @@ class CardSummaryTableViewCell: UITableViewCell {
             } else {
                 setImage.image = nil
                 setLabel.text = nil
+            }
+            
+            // mana cost
+            let arrManaImages = card.manaImages
+            var dX:CGFloat = 0.0
+            var dY:CGFloat = 0.0
+            var index = 0
+            
+            // recalculate the width
+            var newWidth = CGFloat(0)
+            for dict in arrManaImages {
+                if let dWidth = dict["width"] as? NSNumber {
+                    newWidth += CGFloat(dWidth.floatValue)
+                }
+            }
+            castingCostView.removeFromSuperview()
+            castingCostView.frame = CGRectMake(contentView.frame.size.width-4-newWidth, nameLabel.frame.origin.y, newWidth, castingCostView.frame.size.height)
+            addSubview(castingCostView)
+            
+            // then add the manas
+            for dict in arrManaImages {
+                if let dWidth = dict["width"] as? NSNumber,
+                    let dHeight = dict["height"] as? NSNumber,
+                    let path = dict["path"] as? String {
+                    
+                    let image = UIImage(contentsOfFile: path)
+                    dX = contentView.frame.size.width-4-(CGFloat((arrManaImages.count-index)) * CGFloat(dWidth.floatValue))
+                    dY = nameLabel.frame.origin.y
+                    let manaImage = UIImageView(frame: CGRect(x: dX, y: dY, width: CGFloat(dWidth.floatValue), height: CGFloat(dHeight.floatValue)))
+                    manaImage.contentMode = .ScaleAspectFit
+                    manaImage.image = image
+                    castingCostView.addSubview(manaImage)
+                    index += 1
+                }
             }
             
         } else {

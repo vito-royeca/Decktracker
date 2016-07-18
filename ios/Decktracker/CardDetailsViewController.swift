@@ -208,7 +208,12 @@ extension CardDetailsViewController: UITableViewDataSource {
             if setsFetchRequest != nil,
                 let sections = setsFetchedResultsController.sections {
                 let sectionInfo = sections[section-1]
-                return "Other Sets (\(sectionInfo.numberOfObjects))"
+                var count = 0
+                if let objects = sectionInfo.objects {
+                    count = objects.count
+                }
+                
+                return "Other Sets (\(count) \(count > 1 ? "items" : "item"))"
                 
             } else {
                 return "Other Sets - None"
@@ -217,9 +222,9 @@ extension CardDetailsViewController: UITableViewDataSource {
         case 2:
             let card = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(cardOID!) as! Card
             if let variations = card.variations {
-                return "Variations (\(variations.count))"
+                return "Variations (\(variations.count) \(variations.count > 1 ? "items" : "item"))"
             } else {
-                return "Variations - None"
+                return "Variations (0 item)"
             }
             
         default:

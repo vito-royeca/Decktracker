@@ -334,12 +334,16 @@ extension SetsViewController: UITableViewDataSource {
         if fetchRequest != nil,
             let sections = fetchedResultsController.sections {
             let sectionInfo = sections[section]
+            var count = 0
+            if let objects = sectionInfo.objects {
+                count = objects.count
+            }
             
             switch sortMode! {
             case .ByName:
-                return sectionInfo.indexTitle
+                return "\(sectionInfo.indexTitle!) (\(count) \(count > 1 ? "items" : "item"))"
             default:
-                return sectionInfo.name
+                return "\(sectionInfo.name) (\(count) \(count > 1 ? "items" : "item"))"
             }
             
         } else {
