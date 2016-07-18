@@ -55,32 +55,32 @@ class CardImageTableViewCell: UITableViewCell {
             
             
             if let urlPath = card.urlPath {
-//                if let cachedImage = SDImageCache.sharedImageCache().imageFromDiskCacheForKey(urlPath.path!) {
-//                    cardImage.image = cachedImage
-//                } else {
-//                    cardImage.image = cardBackImage
-//                    
-//                    let completedBlock = { (image: UIImage?, data: NSData?, error: NSError?, finished: Bool) -> Void in
-//                        if let image = image {
-//                            
-//                            performUIUpdatesOnMain {
-//                                UIView.transitionWithView(self.cardImage, duration: 1.0, options: .TransitionFlipFromRight, animations: {
-//                                        self.cardImage.image = image
-//                                    }, completion: nil)
-//                            }
-//                        }
-//                    }
-//                    
-//                    let downloader = SDWebImageDownloader.sharedDownloader()
-//                    downloader.downloadImageWithURL(urlPath, options: .UseNSURLCache, progress: nil, completed: completedBlock)
-//                }
-                
-                let completionBlock = { (image: UIImage?, error: NSError?, cacheType: SDImageCacheType, imageURL: NSURL?) -> Void in
-                    if let image = image {
-                        self.cardImage.image = image
+                if let cachedImage = SDImageCache.sharedImageCache().imageFromDiskCacheForKey(urlPath.path!) {
+                    cardImage.image = cachedImage
+                } else {
+                    cardImage.image = cardBackImage
+                    
+                    let completedBlock = { (image: UIImage?, data: NSData?, error: NSError?, finished: Bool) -> Void in
+                        if let image = image {
+                            
+                            performUIUpdatesOnMain {
+                                UIView.transitionWithView(self.cardImage, duration: 1.0, options: .TransitionFlipFromRight, animations: {
+                                        self.cardImage.image = image
+                                    }, completion: nil)
+                            }
+                        }
                     }
+                    
+                    let downloader = SDWebImageDownloader.sharedDownloader()
+                    downloader.downloadImageWithURL(urlPath, options: .UseNSURLCache, progress: nil, completed: completedBlock)
                 }
-                cardImage.sd_setImageWithURL(urlPath, placeholderImage: cardBackImage, completed: completionBlock)
+                
+//                let completionBlock = { (image: UIImage?, error: NSError?, cacheType: SDImageCacheType, imageURL: NSURL?) -> Void in
+//                    if let image = image {
+//                        self.cardImage.image = image
+//                    }
+//                }
+//                cardImage.sd_setImageWithURL(urlPath, placeholderImage: cardBackImage, completed: completionBlock)
             }
             
         } else {

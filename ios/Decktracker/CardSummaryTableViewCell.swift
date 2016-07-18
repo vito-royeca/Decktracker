@@ -81,6 +81,7 @@ class CardSummaryTableViewCell: UITableViewCell {
     func displayCard() {
         if let _cardOID = _cardOID {
             let card = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(_cardOID) as! Card
+            
             if let cropPath = card.cropPath {
                 if NSFileManager.defaultManager().fileExistsAtPath(cropPath.path!) {
                     cropImage.image = UIImage(contentsOfFile: cropPath.path!)
@@ -89,6 +90,7 @@ class CardSummaryTableViewCell: UITableViewCell {
                     
                     if let urlPath = card.urlPath {
                         let completedBlock = { (image: UIImage?, data: NSData?, error: NSError?, finished: Bool) -> Void in
+                            
                             if let image = image {
                                 let croppedImage = self.createCardCropForImage(card, image: image)
                                 
@@ -109,9 +111,7 @@ class CardSummaryTableViewCell: UITableViewCell {
             nameLabel.text = card.name
             nameLabel.font = card.modern!.boolValue ? eightEditionFont : preEightEditionFont
             
-            
-            if let type = card.type,
-                let typePath = card.typePath {
+            if let typePath = card.typePath {
                 if NSFileManager.defaultManager().fileExistsAtPath(typePath.path!) {
                     let image = UIImage(contentsOfFile: typePath.path!)
                     typeImage.image = image
@@ -119,8 +119,13 @@ class CardSummaryTableViewCell: UITableViewCell {
                 } else {
                     typeImage.image = nil
                 }
-                
+            } else {
+                typeImage.image = nil
+            }
+            
+            if let type = card.type {
                 var text = type.name!
+                
                 if let power = card.power,
                     let toughness = card.toughness {
                     text = "\(text) (\(power)/\(toughness))"
@@ -131,6 +136,8 @@ class CardSummaryTableViewCell: UITableViewCell {
                     }
                 }
                 typeLabel.text = text
+            } else {
+                typeLabel.text = nil
             }
             
             if let rarity = card.rarity {
@@ -145,6 +152,9 @@ class CardSummaryTableViewCell: UITableViewCell {
                 }
                 
                 setLabel.text = "\(card.set!.name!) (\(rarity.name!))"
+            } else {
+                setImage.image = nil
+                setLabel.text = nil
             }
             
         } else {
@@ -157,7 +167,20 @@ class CardSummaryTableViewCell: UITableViewCell {
     }
     
     func createCardCropForImage(card: Card, image: UIImage) -> UIImage? {
+        // write the image to disk first
+        let path = SDImageCache.sharedImageCache().defaultCachePathForKey(card.urlPath!.path!)
+        var parentPath = NSURL(string: path)!.URLByDeletingLastPathComponent
+        if !NSFileManager.defaultManager().fileExistsAtPath(parentPath!.path!) {
+            do {
+                try NSFileManager.defaultManager().createDirectoryAtPath(parentPath!.path!,
+                                                                         withIntermediateDirectories: true,
+                                                                         attributes: nil)
+            } catch {}
+            
+        }
+        UIImageJPEGRepresentation(image, 1.0)!.writeToFile(path, atomically: true)
         
+        // then create a cropped image
         if let cropPath = card.cropPath {
             let width = image.size.width*3/4
             let rect = CGRect(x: (image.size.width-width)/2,
@@ -169,8 +192,8 @@ class CardSummaryTableViewCell: UITableViewCell {
             let croppedImage = UIImage(CGImage: imageRef!, scale: image.scale, orientation: image.imageOrientation)
             
             
-            // write to file
-            let parentPath = cropPath.URLByDeletingLastPathComponent
+            // write the cropped image to disk
+            parentPath = cropPath.URLByDeletingLastPathComponent
             if !NSFileManager.defaultManager().fileExistsAtPath(parentPath!.path!) {
                 do {
                     try NSFileManager.defaultManager().createDirectoryAtPath(parentPath!.path!,

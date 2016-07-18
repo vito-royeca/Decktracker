@@ -130,12 +130,20 @@ class SetsViewController: UIViewController {
             self.loadSets(nil)
         }
         
+        var originView:AnyObject?
+        
+        if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
+            originView = view
+        } else if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            originView = sender
+        }
+        
         ActionSheetStringPicker.showPickerWithTitle("Sort By",
                                                     rows: sortOptions,
                                                     initialSelection: initialSelection,
                                                     doneBlock: doneBlock,
                                                     cancelBlock: nil,
-                                                    origin: view)
+                                                    origin: originView)
     }
 
     // MARK: Overrides

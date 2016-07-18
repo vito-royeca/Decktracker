@@ -12,6 +12,39 @@ class CardDetailsViewController: UIViewController {
 
     // MARK: Variables
     var cardOID:NSManagedObjectID?
+    var swiperFetchRequest:NSFetchRequest?
+    
+    private var _setsFetchRequest:NSFetchRequest? = nil
+    var setsFetchRequest:NSFetchRequest? {
+        get {
+            return _setsFetchRequest
+        }
+        set (aNewValue) {
+            
+            if (_setsFetchRequest != aNewValue) {
+                _setsFetchRequest = aNewValue
+                
+                // force reset the fetchedResultsController
+                if let _setsFetchRequest = _setsFetchRequest {
+                    let context = CoreDataManager.sharedInstance.mainObjectContext
+                    _setsFetchRequest.sortDescriptors = [NSSortDescriptor(key: "set.releaseDate", ascending: true)]
+                    setsFetchedResultsController = NSFetchedResultsController(fetchRequest: _setsFetchRequest,
+                                                                          managedObjectContext: context,
+                                                                          sectionNameKeyPath: nil,
+                                                                          cacheName: nil)
+                }
+            }
+        }
+    }
+    lazy var setsFetchedResultsController: NSFetchedResultsController = {
+        let context = CoreDataManager.sharedInstance.mainObjectContext
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: self.setsFetchRequest!,
+                                                                  managedObjectContext: context,
+                                                                  sectionNameKeyPath: nil,
+                                                                  cacheName: nil)
+        
+        return fetchedResultsController
+    }()
     
     // MARK: Outlets
     @IBOutlet weak var tableView: UITableView!
@@ -22,7 +55,17 @@ class CardDetailsViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         tableView.registerNib(UINib(nibName: "CardSummaryTableViewCell", bundle: nil), forCellReuseIdentifier: "summaryCell")
+        tableView.registerNib(UINib(nibName: "PricingTableViewCell", bundle: nil), forCellReuseIdentifier: "pricingCell")
         tableView.registerNib(UINib(nibName: "CardImageTableViewCell", bundle: nil), forCellReuseIdentifier: "imageCell")
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "textsCell")
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "artistCell")
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "legalitiesCell")
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "rulingsCell")
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "foreignNamesCell")
+        tableView.registerNib(UINib(nibName: "CardSummaryTableViewCell", bundle: nil), forCellReuseIdentifier: "setsCell")
+        tableView.registerNib(UINib(nibName: "CardSummaryTableViewCell", bundle: nil), forCellReuseIdentifier: "variationsCell")
+
+        loadSets()
     }
 
     override func didReceiveMemoryWarning() {
@@ -30,33 +73,196 @@ class CardDetailsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    // MARK: Custom methods
+    func loadSets() {
+        let card = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(cardOID!) as! Card
+        let sorters = [NSSortDescriptor(key: "set.releaseDate", ascending: true)]
+        
+        setsFetchRequest = NSFetchRequest(entityName: "Card")
+        setsFetchRequest!.predicate = NSPredicate(format: "name == %@ AND cardID != %@ AND set.code != %@", card.name!, card.cardID!, card.set!.code!)
+        setsFetchRequest!.sortDescriptors = sorters
+        
+        do {
+            try setsFetchedResultsController.performFetch()
+        } catch {}
+        setsFetchedResultsController.delegate = self
+        
+        tableView.reloadData()
+    }
+
+    func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
+        cell.accessoryType = .None
+        cell.selectionStyle = .None
+        
+        switch indexPath.section {
+        case 0:
+            switch indexPath.row {
+            case 0:
+                if let c = cell as? CardSummaryTableViewCell {
+                    c.cardOID = cardOID
+                }
+            case 1:
+                if let c = cell as? PricingTableViewCell {
+                    c.cardOID = cardOID
+                    cell.accessoryType = .DisclosureIndicator
+                    cell.selectionStyle = .Default
+                }
+            case 2:
+                if let c = cell as? CardImageTableViewCell {
+                    c.cardOID = cardOID
+                }
+            case 3:
+                cell.textLabel?.text = "Texts"
+                cell.accessoryType = .DisclosureIndicator
+                cell.selectionStyle = .Default
+            case 4:
+                let card = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(cardOID!) as! Card
+                cell.textLabel?.text = card.artist!.name
+                cell.detailTextLabel?.text = "Artist"
+                cell.accessoryType = .DisclosureIndicator
+                cell.selectionStyle = .Default
+            case 5:
+                cell.textLabel?.text = "Legalities"
+                cell.accessoryType = .DisclosureIndicator
+                cell.selectionStyle = .Default
+            case 6:
+                cell.textLabel?.text = "Rulings"
+                cell.accessoryType = .DisclosureIndicator
+                cell.selectionStyle = .Default
+            case 7:
+                cell.textLabel?.text = "Foreign Names"
+                cell.accessoryType = .DisclosureIndicator
+                cell.selectionStyle = .Default
+            default:
+                ()
+            }
+        case 1:
+            if setsFetchRequest != nil,
+                let sections = setsFetchedResultsController.sections,
+                let c = cell as? CardSummaryTableViewCell {
+                let sectionInfo = sections[indexPath.section-1]
+                
+                if let objects = sectionInfo.objects {
+                    if let card = objects[indexPath.row] as? Card {
+                        c.cardOID = card.objectID
+                    }
+                }
+                cell.accessoryType = .DisclosureIndicator
+                cell.selectionStyle = .Default
+            }
+        case 2:
+            let card = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(cardOID!) as! Card
+            if let variations = card.variations,
+                let c = cell as? CardSummaryTableViewCell {
+                
+                if variations.count > 0 {
+                    if let variation = variations.allObjects[indexPath.row] as? Card {
+                        c.cardOID = variation.objectID
+                    }
+                }
+                cell.accessoryType = .DisclosureIndicator
+                cell.selectionStyle = .Default
+            }
+        default:
+            ()
+        }
+    }
 }
 
 // MARK: UITableViewDataSource
 extension CardDetailsViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch section {
+        case 0:
+            return 8
+        case 1:
+            if setsFetchRequest != nil,
+                let sections = setsFetchedResultsController.sections {
+                let sectionInfo = sections[section-1]
+                return sectionInfo.numberOfObjects
+                
+            } else {
+                return 0
+            }
+        case 2:
+            let card = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(cardOID!) as! Card
+            if let variations = card.variations {
+                return variations.count
+            } else {
+                return 0
+            }
+        default:
+            return 0
+        }
+    }
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 3
+    }
+    
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch section {
+        case 0:
+            return nil
+        case 1:
+            if setsFetchRequest != nil,
+                let sections = setsFetchedResultsController.sections {
+                let sectionInfo = sections[section-1]
+                return "Other Sets (\(sectionInfo.numberOfObjects))"
+                
+            } else {
+                return "Other Sets - None"
+            }
+            
+        case 2:
+            let card = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(cardOID!) as! Card
+            if let variations = card.variations {
+                return "Variations (\(variations.count))"
+            } else {
+                return "Variations - None"
+            }
+            
+        default:
+            return nil
+        }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:UITableViewCell?
         
-        switch indexPath.row {
+        switch indexPath.section {
         case 0:
-            if let c = tableView.dequeueReusableCellWithIdentifier("summaryCell", forIndexPath: indexPath) as? CardSummaryTableViewCell {
-                c.cardOID = cardOID
-                cell = c
+            switch indexPath.row {
+            case 0:
+                cell = tableView.dequeueReusableCellWithIdentifier("summaryCell", forIndexPath: indexPath)
+            case 1:
+                cell = tableView.dequeueReusableCellWithIdentifier("pricingCell", forIndexPath: indexPath)
+            case 2:
+                cell = tableView.dequeueReusableCellWithIdentifier("imageCell", forIndexPath: indexPath)
+            case 3:
+                cell = UITableViewCell(style: .Subtitle, reuseIdentifier: "textsCell")
+            case 4:
+                cell = UITableViewCell(style: .Subtitle, reuseIdentifier: "artistCell")
+            case 5:
+                cell = UITableViewCell(style: .Subtitle, reuseIdentifier: "legalitiesCell")
+            case 6:
+                cell = UITableViewCell(style: .Subtitle, reuseIdentifier: "rulingsCell")
+            case 7:
+                cell = UITableViewCell(style: .Subtitle, reuseIdentifier: "foreignNamesCell")
+            default:
+                ()
             }
+        case 1:
+            cell = tableView.dequeueReusableCellWithIdentifier("setsCell", forIndexPath: indexPath)
         case 2:
-            if let c = tableView.dequeueReusableCellWithIdentifier("imageCell", forIndexPath: indexPath) as? CardImageTableViewCell {
-                c.cardOID = cardOID
-                cell = c
-            }
+            cell = tableView.dequeueReusableCellWithIdentifier("variationsCell", forIndexPath: indexPath)
         default:
-            cell = tableView.dequeueReusableCellWithIdentifier("segmentedCell", forIndexPath: indexPath)
+            ()
         }
         
-        
+        if let cell = cell {
+            configureCell(cell, indexPath: indexPath)
+        }
         return cell!
     }
 }
@@ -64,19 +270,133 @@ extension CardDetailsViewController: UITableViewDataSource {
 // MARK: UITableVIewDelegate
 extension CardDetailsViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        switch indexPath.row {
+        switch indexPath.section {
         case 0:
-            return CardSummaryTableViewCell.CellHeight
-        case 2:
-            var height = tableView.frame.size.height - CardSummaryTableViewCell.CellHeight - UITableViewAutomaticDimension
-            if let navigationController = navigationController {
-                height -= navigationController.navigationBar.frame.size.height
-            }
             
-            return height // - UIApplication.sharedApplication().statusBarFrame.size.height
+            switch indexPath.row {
+            case 0:
+                return CardSummaryTableViewCell.CellHeight
+            case 1:
+                return UITableViewAutomaticDimension
+            case 2:
+                var height = tableView.frame.size.height -
+                    CardSummaryTableViewCell.CellHeight -
+                    UITableViewAutomaticDimension//PricingTableViewCell.CellHeight
+                
+                if let navigationController = navigationController {
+                    height -= navigationController.navigationBar.frame.size.height
+                }
+                return height // - UIApplication.sharedApplication().statusBarFrame.size.height
+                
+            default:
+                return UITableViewAutomaticDimension
+            }
+        case 1, 2:
+            return CardSummaryTableViewCell.CellHeight
             
         default:
             return UITableViewAutomaticDimension
         }
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        switch indexPath.section {
+        case 0:
+            
+            switch indexPath.row {
+            case 1:
+                () // TODO: TCGPlayer pricing
+            case 3:
+                () // TODO: Texts
+            case 4:
+                () // TODO: Artist
+            case 5:
+                () // TODO: Legalities
+            case 6:
+                () // TODO: Rulings
+            case 7:
+                () // TODO: Foreign names
+            default:
+                ()
+            }
+            
+        case 1:
+            if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("CardDetailsViewController") as? CardDetailsViewController,
+                let navigationController = navigationController {
+                
+                let sections = setsFetchedResultsController.sections
+                let sectionInfo = sections![indexPath.section-1]
+                
+                if let objects = sectionInfo.objects {
+                    if let card = objects[indexPath.row] as? Card {
+                        
+                        controller.cardOID = card.objectID
+                        navigationController.pushViewController(controller, animated: true)
+                    }
+                }
+            }
+            
+        case 2:
+            let card = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(cardOID!) as! Card
+            if let variations = card.variations,
+                let controller = self.storyboard!.instantiateViewControllerWithIdentifier("CardDetailsViewController") as? CardDetailsViewController,
+                let navigationController = navigationController {
+                
+                if variations.count > 0 {
+                    if let variation = variations.allObjects[indexPath.row] as? Card {
+                        controller.cardOID = variation.objectID
+                        navigationController.pushViewController(controller, animated: true)
+                    }
+                }
+            }
+            
+        default:
+            ()
+        }
+    }
+}
+
+// MARK: NSFetchedResultsControllerDelegate
+extension CardDetailsViewController : NSFetchedResultsControllerDelegate {
+    func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
+        
+        switch type {
+        case .Insert:
+            tableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Automatic)
+            
+        case .Delete:
+            tableView.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Automatic)
+            
+        case .Update:
+            tableView.reloadSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Automatic)
+            
+        default:
+            return
+        }
+    }
+    
+    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+        
+        switch type {
+        case .Insert:
+            tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: newIndexPath!.row, inSection: newIndexPath!.section)], withRowAnimation: .Automatic)
+            
+        case .Delete:
+            tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: indexPath!.row, inSection: indexPath!.section)], withRowAnimation: .Automatic)
+            
+        case .Update:
+            if let indexPath = indexPath {
+                if let cell = tableView.cellForRowAtIndexPath(indexPath) {
+                    configureCell(cell, indexPath: indexPath)
+                }
+            }
+            
+        case .Move:
+            return
+        }
+    }
+    
+    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+        tableView.reloadData()
     }
 }
