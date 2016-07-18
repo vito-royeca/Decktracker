@@ -1,14 +1,328 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<!--
-   mtgsalvation_sets.plist
-   DataSource
-
-   Created by Jovit Royeca on 18/07/2016.
-   Copyright (c) 2016 Jovito Royeca. All rights reserved.
--->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-    <dict>
-    
-    </dict>
+<dict>
+	<key>LEA</key>
+	<string>Alpha</string>
+	<key>LEB</key>
+	<string>Beta</string>
+	<key>2ED</key>
+	<string>Unlimited_Edition</string>
+	<key>ARN</key>
+	<string>Arabian_Nights</string>
+	<key>ATQ</key>
+	<string>Antiquities</string>
+	<key>3ED</key>
+	<string>Revised_Edition</string>
+	<key>LEG</key>
+	<string>Legends</string>
+	<key>DRK</key>
+	<string>The_Dark</string>
+	<key>FEM</key>
+	<string>Fallen_Empires</string>
+	<key>4ED</key>
+	<string>4th_Edition</string>
+	<key>ICE</key>
+	<string>Ice_Age</string>
+
+<key>CHR</key>
+<string>Chronicles</string>
+<key>HML</key>
+<string>Homelands</string>
+<key>ALL</key>
+<string>Alliances</string>
+<key>MIR</key>
+<string>Mirage</string>
+<key>VIS</key>
+<string>Visions</string>
+<key>5ED</key>
+<string>5th_Edition</string>
+<key>POR</key>
+<string>Portal</string>
+<key>WTH</key>
+<string>Weatherlight</string>
+<key>TMP</key>
+<string>Tempest</string>
+<key>STH</key>
+<string>Stronghold</string>
+<key>EXO</key>
+<string>Exodus</string>
+<key>P02</key>
+<string>Portal_Second_Age</string>
+<key>UGL</key>
+<string>Unglued</string>
+<key>USG</key>
+<string>Urza%27s_Saga</string>
+<key>ATH</key>
+<string>Anthologies</string>
+<key>ULG</key>
+<string>Urza%27s_Legacy</string>
+<key>6ED</key>
+<string>6th_Edition</string>
+<key>UDS</key>
+<string>Urza%27s_Destiny</string>
+<key>PTK</key>
+<string>Portal_Three_Kingdoms</string>
+<key>S99</key>
+<string>Starter_1999</string>
+<key>MMQ</key>
+<string>Mercadian_Masques</string>
+<key>BRB</key>
+<string>Battle_Royale</string>
+<key>NEM</key>
+<string>Nemesis</string>
+<key>S00</key>
+<string>Starter_2000</string>
+<key>PCY</key>
+<string>Prophecy</string>
+<!--
+
+<string>Invasion</string>
+<key>INV (IN)</key>
+<string>Beatdown</string>
+<key>BTD</key>
+<string>Planeshift</string>
+<key>PLS (PL)</key>
+<string>7th_Edition</string>
+<key>7ED (7E)</key>
+<string>Apocalypse</string>
+<key>APC (AP)</key>
+<string>Odyssey</string>
+<key>ODY (OD)</key>
+<string>Deckmasters_2001</string>
+<key>DKM</key>
+<string>Torment</string>
+<key>TOR (TO)</key>
+<string>Judgment</string>
+<key>JUD (JU)</key>
+<string>Onslaught</string>
+<key>ONS (ON)</key>
+<string>Legions</string>
+<key>LGN (LE)</key>
+<string>Scourge</string>
+<td>SCG (SC)</key>
+<string>8th_Edition</string>
+<key>8ED (8E)</key>
+<string>Mirrodin</string>
+<key>MRD</key>
+<string>Darksteel</string>
+<key>DST</key>
+<string>Fifth_Dawn</string>
+<key>5DN</key>
+<string>Champions_of_Kamigawa</string>
+<key>CHK</key>
+<string>Unhinged</string>
+<key>UNH</key>
+<string>Betrayers_of_Kamigawa</string>
+<key>BOK</key>
+<string>Saviors_of_Kamigawa</string>
+<key>SOK</key>
+<string>9th_Edition</string>
+<key>9ED</key>
+<string>Ravnica:_City_of_Guilds</string>
+<key>RAV</key>
+<string>Guildpact</string>
+<key>GPT</key>
+<string>Dissension</string>
+<key>DIS</key>
+<string>Coldsnap</string>
+<key>CSP</key>
+<string>Time_Spiral</string>
+<key>TSP/TSB</key>
+<string>Planar_Chaos</string>
+<key>PLC</key>
+<string>Future_Sight</string>
+<key>FUT</key>
+<string>10th_Edition</string>
+<key>10E</key>
+<string>Masters_Edition</string>
+<key>MED</key>
+<string>Lorwyn</string>
+<key>LRW</key>
+<string>Duel_Decks:_Elves_vs._Goblins</string>
+<key>EVG</key>
+<string>Morningtide</string>
+<key>MOR</key>
+<string>Shadowmoor</string>
+<key>SHM</key>
+<string>Eventide</string>
+<key>EVE</key>
+<string>From_the_Vault:_Dragons</string>
+<key>DRB</key>
+<string>Masters_Edition_II</string>
+<key>ME2</key>
+<string>Shards_of_Alara</string>
+<key>ALA</key>
+<string>Duel_Decks:_Jace_vs._Chandra</string>
+<key>DD2</key>
+<string>Conflux</string>
+<key>CON</key>
+<string>Duel_Decks:_Divine_vs._Demonic</string>
+<key>DDC</key>
+<string>Alara_Reborn</string>
+<key>ARB</key>
+<string>Magic_2010</string>
+<key>M10</key>
+<string>From_the_Vault:_Exiled</string>
+<key>V09</key>
+<string>Planechase_(2009)</string>
+<key>HOP</key>
+<string>Masters_Edition_III</string>
+<key>ME3</key>
+<string>Zendikar</string>
+<key>ZEN</key>
+<string>Duel_Decks:_Garruk_vs._Liliana</string>
+<key>DDD</key>
+<string>Premium_Deck_Series:_Slivers</string>
+<key>H09</key>
+<string>Worldwake</string>
+<key>WWK</key>
+<string>Duel_Decks:_Phyrexia_vs._The_Coalition" title="Duel Decks: Phyrexia vs. The Coalition">Duel Decks: Phyrexia vs. The Coalition
+<key>DDE</key>
+<string>Rise_of_the_Eldrazi" title="Rise of the Eldrazi">Rise of the Eldrazi
+<key>ROE</key>
+<string>Deck_Builder%27s_Toolkit_(2010)" title="Deck Builder's Toolkit (2010)">Deck Builder's Toolkit (2010)
+<string>Duels_of_the_Planeswalkers_(decks)" title="Duels of the Planeswalkers (decks)">Duels of the Planeswalkers
+<key>DPA</key>
+<string>Archenemy" title="Archenemy">Archenemy
+<key>ARC</key>
+<string>Magic_2011" title="Magic 2011">Magic 2011
+<key>M11</key>
+<string>From_the_Vault:_Relics" title="From the Vault: Relics">From the Vault: Relics
+<key>V10</key>
+<string>Duel_Decks:_Elspeth_vs._Tezzeret" title="Duel Decks: Elspeth vs. Tezzeret">Duel Decks: Elspeth vs. Tezzeret
+<key>DDF</key>
+<string>Scars_of_Mirrodin" title="Scars of Mirrodin">Scars of Mirrodin
+<key>SOM</key>
+<string>Premium_Deck_Series:_Fire_%26_Lightning" title="Premium Deck Series: Fire &amp; Lightning">Premium Deck Series: Fire &amp; Lightning
+<key>PD2</key>
+<string>Masters_Edition_IV" title="Masters Edition IV">Masters Edition IV
+<key>ME4</key>
+<string>Mirrodin_Besieged" title="Mirrodin Besieged">Mirrodin Besieged
+<key>MBS</key>
+<string>Duel_Decks:_Knights_vs._Dragons" title="Duel Decks: Knights vs. Dragons">Duel Decks: Knights vs. Dragons
+<key>DDG</key>
+<string>New_Phyrexia" title="New Phyrexia">New Phyrexia
+<key>NPH</key>
+<string>Commander_(2011)" title="Commander (2011)">Commander (2011)
+<key>CMD</key>
+<string>Magic_2012" title="Magic 2012">Magic 2012
+<key>M12</key>
+<string>From_the_Vault:_Legends" title="From the Vault: Legends">From the Vault: Legends
+<key>V11</key>
+<string>Duel_Decks:_Ajani_vs._Nicol_Bolas" title="Duel Decks: Ajani vs. Nicol Bolas">Duel Decks: Ajani vs. Nicol Bolas
+<key>DDH</key>
+<string>Innistrad" title="Innistrad">Innistrad
+<key>ISD</key>
+<string>Premium_Deck_Series:_Graveborn" title="Premium Deck Series: Graveborn">Premium Deck Series: Graveborn
+<key>PD3</key>
+<string>Dark_Ascension" title="Dark Ascension">Dark Ascension
+<key>DKA</key>
+<string>Duel_Decks:_Venser_vs._Koth" title="Duel Decks: Venser vs. Koth">Duel Decks: Venser vs. Koth
+<key>DDI</key>
+<string>Avacyn_Restored" title="Avacyn Restored">Avacyn Restored
+<key>AVR</key>
+<string>Planechase_2012" title="Planechase 2012">Planechase 2012
+<key>PC2</key>
+<string>Magic_2013" title="Magic 2013">Magic 2013
+<key>M13</key>
+<string>From_the_Vault:_Realms" title="From the Vault: Realms">From the Vault: Realms
+<key>V12</key>
+<string>Duel_Decks:_Izzet_vs._Golgari" title="Duel Decks: Izzet vs. Golgari">Duel Decks: Izzet vs. Golgari
+<key>DDJ</key>
+<string>Return_to_Ravnica" title="Return to Ravnica">Return to Ravnica
+<key>RTR</key>
+<string>Commander%27s_Arsenal" title="Commander's Arsenal">Commander's Arsenal
+<key>CMA</key>
+<string>Gatecrash" title="Gatecrash">Gatecrash
+<key>GTC</key>
+<string>Duel_Decks:_Sorin_vs._Tibalt" title="Duel Decks: Sorin vs. Tibalt">Duel Decks: Sorin vs. Tibalt
+<key>DDK</key>
+<string>Dragon%27s_Maze" title="Dragon's Maze">Dragon's Maze
+<key>DGM</key>
+<string>Modern_Masters_(2013)" title="Modern Masters (2013)">Modern Masters (2013)
+<key>MMA</key>
+<string>Magic_2014" title="Magic 2014">Magic 2014
+<key>M14</key>
+<string>From_the_Vault:_Twenty" title="From the Vault: Twenty">From the Vault: Twenty
+<key>V13</key>
+<string>Duel_Decks:_Heroes_vs._Monsters" title="Duel Decks: Heroes vs. Monsters">Duel Decks: Heroes vs. Monsters
+<key>HVM</key>
+<string>Theros" title="Theros">Theros
+<key>THS</key>
+<string>Commander_2013" title="Commander 2013">Commander 2013</a> </i></key>
+<key>C13</key>
+<string>Born_of_the_Gods" title="Born of the Gods">Born of the Gods
+<key>BNG</key>
+<string>Duel_Decks:_Jace_vs._Vraska" title="Duel Decks: Jace vs. Vraska">Duel Decks: Jace vs. Vraska
+<key>DDM</key>
+<string>Journey_into_Nyx" title="Journey into Nyx">Journey into Nyx
+<key>JOU</key>
+<string>Modern_Event_Deck" title="Modern Event Deck">Modern Event Deck
+<key>MD1</key>
+<string>Conspiracy" title="Conspiracy">Conspiracy
+<key>CNS</key>
+<string>Vintage_Masters" title="Vintage Masters">Vintage Masters
+<key>VMA</key>
+<string>Magic_2015" title="Magic 2015">Magic 2015
+<key>M15</key>
+<string>From_the_Vault:_Annihilation" title="From the Vault: Annihilation">From the Vault: Annihilation
+<key>V14</td>
+<string>Duel_Decks:_Speed_vs._Cunning" title="Duel Decks: Speed vs. Cunning">Duel Decks: Speed vs. Cunning
+<key>DDN</key>
+<string>Khans_of_Tarkir" title="Khans of Tarkir">Khans of Tarkir</a> </i></td>
+<key>KTK</key>
+<string>Commander_2014" title="Commander 2014">Commander 2014
+<key>C14</key>
+<string>Duel_Decks_Anthology" title="Duel Decks Anthology">Duel Decks Anthology
+<key>DD3</key>
+<string>Fate_Reforged" title="Fate Reforged">Fate Reforged
+<key>FRF</key>
+<string>Duel_Decks:_Elspeth_vs._Kiora" title="Duel Decks: Elspeth vs. Kiora">Duel Decks: Elspeth vs. Kiora
+<key>DDO</key>
+<string>Dragons_of_Tarkir" title="Dragons of Tarkir">Dragons of Tarkir</a> </i></td>
+<key>DTK</key>
+<string>Tempest_Remastered" title="Tempest Remastered">Tempest Remastered
+<key>TPR</key>
+<string>Modern_Masters_2015" title="Modern Masters 2015">Modern Masters 2015
+<key>MM2</key>
+<string>Magic_Origins" title="Magic Origins">Magic Origins
+<key>ORI</key>
+<string>From_the_Vault:_Angels" title="From the Vault: Angels">From the Vault: Angels
+<key>V15</key>
+<string>Duel_Decks:_Zendikar_vs._Eldrazi" title="Duel Decks: Zendikar vs. Eldrazi">Duel Decks: Zendikar vs. Eldrazi
+<key>DDP</key>
+<string>Battle_for_Zendikar" title="Battle for Zendikar">Battle for Zendikar
+<key>BFZ</key>
+<string>Zendikar_Expeditions" title="Zendikar Expeditions">Zendikar Expeditions
+<key>EXP</key>
+<string>Commander_2015" title="Commander 2015">Commander 2015
+<key>C15</key>
+<string>Oath_of_the_Gatewatch" title="Oath of the Gatewatch">Oath of the Gatewatch
+<key>OGW</key>
+<string>Duel_Decks:_Blessed_vs._Cursed" title="Duel Decks: Blessed vs. Cursed">Duel Decks: Blessed vs. Cursed
+<key>DDQ</key>
+<string>Shadows_over_Innistrad" title="Shadows over Innistrad">Shadows over Innistrad
+<key>SOI</key>
+<string>Eternal_Masters" title="Eternal Masters">Eternal Masters
+<key>EMA</key>
+<string>Eldritch_Moon" title="Eldritch Moon">Eldritch Moon
+<key>EMN</key>
+<string>From_the_Vault:_Lore" title="From the Vault: Lore">From the Vault: Lore
+<key>V16</key>
+<string>Conspiracy:_Take_the_Crown" title="Conspiracy: Take the Crown">Conspiracy: Take the Crown
+<key>CN2</key>
+<string>Duel_Decks:_Nissa_vs._Ob_Nixilis" title="Duel Decks: Nissa vs. Ob Nixilis">Duel Decks: Nissa vs. Ob Nixilis
+<key>DDR</key>
+<string>Kaladesh" title="Kaladesh">Kaladesh
+<key>KLD</key>
+<string>Commander_2016" title="Commander 2016">Commander 2016
+<key>C16</key>
+<string>Planechase_Anthology" title="Planechase Anthology">Planechase Anthology
+<key>PCA</key>
+<string>Aether_Revolt" title="Aether Revolt">Aether Revolt
+<key>AER</key>
+-->
+
+</dict>
 </plist>

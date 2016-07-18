@@ -124,7 +124,9 @@ class Card: NSManagedObject {
                     path = t.lowercaseString
                 }
             }
-            return NSURL(string: "\(NSBundle.mainBundle().bundlePath)/images/other/\(path!)/32.png")
+            if let path = path {
+                return NSURL(string: "\(NSBundle.mainBundle().bundlePath)/images/other/\(path)/32.png")
+            }
         }
         
         return nil

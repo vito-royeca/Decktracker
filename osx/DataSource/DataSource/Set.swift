@@ -83,4 +83,19 @@ class Set: NSManagedObject {
         
         return nil
     }
+    
+    var nameSnakeCase: String? {
+        if let name = name,
+            let code = code {
+            if code == "LEA" {
+                return "Alpha"
+            } else if code == "LEB" {
+                return "Beta"
+            } else {
+                return name.stringByReplacingOccurrencesOfString(" ", withString: "_")
+            }
+        }
+        
+        return nil
+    }
 }

@@ -123,8 +123,8 @@ class JSONLoader: NSObject {
         CoreDataManager.sharedInstance.setup(Constants.CoreDataSQLiteFile, modelFile: Constants.CoreDataModelFile)
         
         // update the card numbers
-//        let predicate = NSPredicate(format: "number == nil")
-        let predicate = NSPredicate(format: "set.name == %@", "Alliances")
+        let predicate = NSPredicate(format: "number == nil")
+//        let predicate = NSPredicate(format: "set.name == %@", "Alliances")
         let sorters = [NSSortDescriptor(key: "set.releaseDate", ascending: true),
                        NSSortDescriptor(key: "name", ascending: true)]
         for card in ObjectManager.sharedInstance.findObjects("Card", predicate: predicate, sorters: sorters) {
@@ -305,13 +305,11 @@ class JSONLoader: NSObject {
                 let card = ObjectManager.sharedInstance.findOrCreateCard(dictCard)
                 let variations = card.mutableSetValueForKey("variations")
         
-//                print("\(card.name!)")
                 for variation in dictVariations {
                     let predicate = NSPredicate(format: "multiverseID == %@", variation)
                     
                     if let cardVariation = ObjectManager.sharedInstance.findObjects("Card", predicate: predicate, sorters: [NSSortDescriptor(key: "multiverseID", ascending: true)]).first {
                         variations.addObject(cardVariation)
-//                        print("\t\(card.set!.code!)")
                     }
                 }
             }
@@ -328,11 +326,9 @@ class JSONLoader: NSObject {
                 let formatter = NSDateFormatter()
                 
                 formatter.dateFormat = "YYYY-MM-dd"
-//                print("\(card.name!)")
                 for ruling in dictRulings {
                     let cardRuling = ObjectManager.sharedInstance.findOrCreateRuling(ruling)
                     rulings.addObject(cardRuling)
-//                    print("\t\(ruling["date"]!)")
                 }
             }
         }
@@ -346,11 +342,9 @@ class JSONLoader: NSObject {
                 let card = ObjectManager.sharedInstance.findOrCreateCard(dictCard)
                 let legalities = card.mutableSetValueForKey("legalities")
                 
-//                print("\(card.name!)")
                 for legality in dictLegalities {
                     let cardLegality = ObjectManager.sharedInstance.findOrCreateCardLegality(card, dict: legality)
                     legalities.addObject(cardLegality)
-//                    print("\t\(cardLegality.format!.name!): \(cardLegality.legality!.name!)")
                 }
             }
         }
@@ -364,11 +358,9 @@ class JSONLoader: NSObject {
                 let card = ObjectManager.sharedInstance.findOrCreateCard(dictCard)
                 let foreignNames = card.mutableSetValueForKey("foreignNames")
                 
-//                print("\(card.name!)")
                 for foreignName in dictForeignNames {
                     let cardForeignName = ObjectManager.sharedInstance.findOrCreateForeignName(card, dict: foreignName)
                     foreignNames.addObject(cardForeignName)
-//                    print("\t\(cardForeignName.language!.name!): \(cardForeignName.name!)")
                 }
             }
         }

@@ -35,6 +35,7 @@
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timeshifted" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="toughness" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="views" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <relationship name="artist" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Artist" inverseName="cards" inverseEntity="Artist" syncable="YES"/>
         <relationship name="border" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Border" inverseName="cards" inverseEntity="Border" syncable="YES"/>
         <relationship name="colorIdentities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Color" inverseName="identities" inverseEntity="Color" syncable="YES"/>
@@ -154,7 +155,7 @@
         <element name="Artist" positionX="-63" positionY="-18" width="128" height="75"/>
         <element name="Block" positionX="-54" positionY="-9" width="128" height="75"/>
         <element name="Border" positionX="9" positionY="54" width="128" height="90"/>
-        <element name="Card" positionX="-36" positionY="9" width="128" height="690"/>
+        <element name="Card" positionX="-36" positionY="9" width="128" height="705"/>
         <element name="CardLegality" positionX="-9" positionY="135" width="128" height="90"/>
         <element name="CardType" positionX="9" positionY="54" width="128" height="135"/>
         <element name="Color" positionX="-18" positionY="27" width="128" height="120"/>

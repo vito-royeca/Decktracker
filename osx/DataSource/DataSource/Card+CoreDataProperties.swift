@@ -35,6 +35,7 @@ extension Card {
     @NSManaged var originalText: String?
     @NSManaged var rating: NSNumber?
     @NSManaged var modern: NSNumber?
+    @NSManaged var views: NSNumber?
     @NSManaged var set: Set?
     @NSManaged var layout: Layout?
     @NSManaged var colorSection: Color?
