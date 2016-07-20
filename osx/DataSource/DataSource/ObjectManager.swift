@@ -21,7 +21,7 @@ class ObjectManager: NSObject {
         return CoreDataManager.sharedInstance.mainObjectContext
     }
     
-    // Mark: Custom methods
+    // Mark: Finder methods
     func findOrCreateColor(dict: [String: AnyObject]) -> Color {
         let initializer = { (dict: [String: AnyObject], context: NSManagedObjectContext) -> Color in
             return Color(dictionary: dict, context: context)
@@ -169,6 +169,14 @@ class ObjectManager: NSObject {
         cardForeignName.language = findOrCreateLanguage(dict)
         
         return cardForeignName
+    }
+    
+    func findOrCreateTCGPlayerPricing(card: Card, dict: [String: AnyObject]) -> TCGPlayerPricing {
+        let initializer = { (dict: [String: AnyObject], context: NSManagedObjectContext) -> TCGPlayerPricing in
+            return TCGPlayerPricing(dictionary: dict, context: context)
+        }
+        
+        return findOrCreateObject(dict, entityName: "TCGPlayerPricing", objectFinder: ["card.cardID": card.cardID!], initializer: initializer) as! TCGPlayerPricing
     }
     
     // MARK: Core methods

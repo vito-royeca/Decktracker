@@ -28,6 +28,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         CoreDataManager.sharedInstance.setup(Constants.CoreDataSQLiteFile, modelFile: Constants.CoreDataModelFile)
         print("sqlite = \(CoreDataManager.sharedInstance.applicationDocumentsDirectory)\(Constants.CoreDataSQLiteFile)")
         
+        // TCGPlayer Pricing
+        TCGPlayerManager.sharedInstance.setup(Constants.TCGPlayerPartnerKey)
+        
         return true
     }
 

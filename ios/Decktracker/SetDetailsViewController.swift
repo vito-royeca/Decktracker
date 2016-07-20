@@ -297,6 +297,26 @@ class SetDetailsViewController: UIViewController {
         tableView.reloadData()
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "showCardDetails" {
+            
+            if let indexPath = tableView.indexPathForSelectedRow,
+                let _ = fetchRequest {
+                
+                let sections = fetchedResultsController.sections
+                let sectionInfo = sections![indexPath.section-1]
+                
+                if let objects = sectionInfo.objects {
+                    if let card = objects[indexPath.row] as? Card,
+                        let detailsVC = segue.destinationViewController as? CardDetailsViewController {
+                        
+                        detailsVC.cardOID = card.objectID
+                    }
+                }
+            }
+        }
+    }
+    
     // MARK: Custom methods
     func loadCards(predicate: NSPredicate?) {
         var cardPredicate:NSPredicate?
@@ -540,24 +560,8 @@ extension SetDetailsViewController: UITableViewDelegate {
         default:
             switch segmentedControl.selectedSegmentIndex {
             case 0:
-                if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("CardDetailsViewController") as? CardDetailsViewController,
-                    let navigationController = navigationController,
-                    let _ = fetchRequest {
-                    
-                    let sections = fetchedResultsController.sections
-                    let sectionInfo = sections![indexPath.section-1]
-                    
-                    if let objects = sectionInfo.objects {
-                        if let card = objects[indexPath.row] as? Card {
-                            
-                            controller.cardOID = card.objectID
-                            navigationController.pushViewController(controller, animated: true)
-                        }
-                    }
-                }
+                performSegueWithIdentifier("showCardDetails", sender: indexPath.row)
                 
-            case 1:
-                return
             default:
                 return
             }

@@ -156,7 +156,6 @@ class SetsViewController: UIViewController {
         searchController.searchBar.delegate = self
         definesPresentationContext = true
         tableView.tableHeaderView = searchController.searchBar
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         
         formatter = NSDateFormatter()
         formatter!.dateFormat = "YYYY-MM-dd"
@@ -179,26 +178,26 @@ class SetsViewController: UIViewController {
         loadSets(nil)
     }
 
-//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-//        if segue.identifier == "showCardDetails" {
-//            
-//            if let indexPath = tableView.indexPathForSelectedRow,
-//                let _ = fetchRequest {
-//                
-//                let sections = fetchedResultsController.sections
-//                let sectionInfo = sections![indexPath.section]
-//                
-//                if let objects = sectionInfo.objects {
-//                    if let set = objects[indexPath.row] as? Set {
-//                        
-//                        let detailsVC = (segue.destinationViewController as! UINavigationController).topViewController as! SetDetailsViewController
-//                        detailsVC.setOID = set.objectID
-//                        detailsVC.navigationController!.title = set.name!
-//                    }
-//                }
-//            }
-//        }
-//    }
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "showSetDetails" {
+            
+            if let indexPath = tableView.indexPathForSelectedRow,
+                let _ = fetchRequest {
+                
+                let sections = fetchedResultsController.sections
+                let sectionInfo = sections![indexPath.section]
+                
+                if let objects = sectionInfo.objects {
+                    if let set = objects[indexPath.row] as? Set,
+                        let detailsVC = segue.destinationViewController as? SetDetailsViewController {
+                        
+                        detailsVC.setOID = set.objectID
+                        detailsVC.navigationItem.title = set.name!
+                    }
+                }
+            }
+        }
+    }
     
     // MARK: Custom methods
     func loadSets(predicate: NSPredicate?) {
@@ -352,7 +351,7 @@ extension SetsViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
         configureCell(cell, indexPath: indexPath)
         
         return cell
@@ -363,26 +362,6 @@ extension SetsViewController: UITableViewDataSource {
 extension SetsViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
-    }
-    
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        performSegueWithIdentifier("showCardDetails", sender: indexPath)
-        if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("SetDetailsViewController") as? SetDetailsViewController,
-            let navigationController = navigationController,
-            let _ = fetchRequest {
-            
-            let sections = fetchedResultsController.sections
-            let sectionInfo = sections![indexPath.section]
-            
-            if let objects = sectionInfo.objects {
-                if let set = objects[indexPath.row] as? Set {
-                    
-                    controller.setOID = set.objectID
-                    controller.navigationItem.title = set.name!
-                    navigationController.pushViewController(controller, animated: true)
-                }
-            }
-        }
     }
 }
 

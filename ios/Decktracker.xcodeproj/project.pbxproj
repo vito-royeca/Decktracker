@@ -57,6 +57,12 @@
 		8CAE828D1D38C45800569778 /* GCDBlackBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAE828C1D38C45800569778 /* GCDBlackBox.swift */; };
 		8CAE828E1D38C45800569778 /* GCDBlackBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAE828C1D38C45800569778 /* GCDBlackBox.swift */; };
 		8CAE828F1D38C45800569778 /* GCDBlackBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAE828C1D38C45800569778 /* GCDBlackBox.swift */; };
+		8CCD10CE1D3DB14F003B7484 /* TCGPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCD10CD1D3DB14F003B7484 /* TCGPlayerManager.swift */; };
+		8CCD10CF1D3DB14F003B7484 /* TCGPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCD10CD1D3DB14F003B7484 /* TCGPlayerManager.swift */; };
+		8CCD10D01D3DB14F003B7484 /* TCGPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCD10CD1D3DB14F003B7484 /* TCGPlayerManager.swift */; };
+		8CCD10D21D3DBD80003B7484 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCD10D11D3DBD80003B7484 /* NetworkManager.swift */; };
+		8CCD10D31D3DBD80003B7484 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCD10D11D3DBD80003B7484 /* NetworkManager.swift */; };
+		8CCD10D41D3DBD80003B7484 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCD10D11D3DBD80003B7484 /* NetworkManager.swift */; };
 		8CE7B7191D334684008BBB53 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE7B7181D334684008BBB53 /* AppDelegate.swift */; };
 		8CE7B71E1D334684008BBB53 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CE7B71C1D334684008BBB53 /* Main.storyboard */; };
 		8CE7B7201D334684008BBB53 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8CE7B71F1D334684008BBB53 /* Assets.xcassets */; };
@@ -190,6 +196,9 @@
 		8CAE82811D3886E000569778 /* CardSummaryTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CardSummaryTableViewCell.xib; sourceTree = "<group>"; };
 		8CAE82881D38B21E00569778 /* web */ = {isa = PBXFileReference; lastKnownFileType = folder; name = web; path = ../../data/web; sourceTree = "<group>"; };
 		8CAE828C1D38C45800569778 /* GCDBlackBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCDBlackBox.swift; sourceTree = "<group>"; };
+		8CC0EACD1D3D948C00BF38CB /* Jul 19, 2016.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Jul 19, 2016.xcdatamodel"; sourceTree = "<group>"; };
+		8CCD10CD1D3DB14F003B7484 /* TCGPlayerManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TCGPlayerManager.swift; sourceTree = "<group>"; };
+		8CCD10D11D3DBD80003B7484 /* NetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		8CE7B7151D334684008BBB53 /* Decktracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Decktracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CE7B7181D334684008BBB53 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8CE7B71D1D334684008BBB53 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -448,7 +457,9 @@
 			children = (
 				8CE7B7991D334D93008BBB53 /* CoreDataManager.swift */,
 				8CAE828C1D38C45800569778 /* GCDBlackBox.swift */,
+				8CCD10D11D3DBD80003B7484 /* NetworkManager.swift */,
 				8CE7B79A1D334D93008BBB53 /* ObjectManager.swift */,
+				8CCD10CD1D3DB14F003B7484 /* TCGPlayerManager.swift */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -844,6 +855,7 @@
 				8CE7B7731D334D55008BBB53 /* Block.swift in Sources */,
 				8C24C0581D3A6AA400B56373 /* CardImageTableViewCell.swift in Sources */,
 				8CE7B7791D334D55008BBB53 /* CardLegality.swift in Sources */,
+				8CCD10D21D3DBD80003B7484 /* NetworkManager.swift in Sources */,
 				8CE7B7871D334D55008BBB53 /* Layout+CoreDataProperties.swift in Sources */,
 				8CEC118E1D33E2A0009D3B2D /* SetCollectionViewCell.swift in Sources */,
 				8CE7B7931D334D55008BBB53 /* SetType+CoreDataProperties.swift in Sources */,
@@ -858,6 +870,7 @@
 				8C5D4D3A1D37336A008E6B2B /* TCGPlayerPricing+CoreDataProperties.swift in Sources */,
 				8C24C0681D3BE09900B56373 /* BrowserTableViewCell.swift in Sources */,
 				8CE7B77B1D334D55008BBB53 /* CardType.swift in Sources */,
+				8CCD10CE1D3DB14F003B7484 /* TCGPlayerManager.swift in Sources */,
 				8CE7B7811D334D55008BBB53 /* ForeignName+CoreDataProperties.swift in Sources */,
 				8CE7B7841D334D55008BBB53 /* Language.swift in Sources */,
 			);
@@ -867,6 +880,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8CCD10D31D3DBD80003B7484 /* NetworkManager.swift in Sources */,
 				8C5D4D381D37336A008E6B2B /* TCGPlayerPricing.swift in Sources */,
 				8CE7B7AB1D336177008BBB53 /* SearchViewController.swift in Sources */,
 				8C5D4D3B1D37336A008E6B2B /* TCGPlayerPricing+CoreDataProperties.swift in Sources */,
@@ -884,6 +898,7 @@
 				8CE7B7AF1D336186008BBB53 /* MoreViewController.swift in Sources */,
 				8CAE82831D3886E000569778 /* CardSummaryTableViewCell.swift in Sources */,
 				8CEC11751D33C99F009D3B2D /* Constants.swift in Sources */,
+				8CCD10CF1D3DB14F003B7484 /* TCGPlayerManager.swift in Sources */,
 				8CE7B72E1D334684008BBB53 /* DecktrackerTests.swift in Sources */,
 				8CE7B7A31D336151008BBB53 /* DecksViewController.swift in Sources */,
 				8C24C0591D3A6AA400B56373 /* CardImageTableViewCell.swift in Sources */,
@@ -895,6 +910,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8CCD10D41D3DBD80003B7484 /* NetworkManager.swift in Sources */,
 				8C5D4D391D37336A008E6B2B /* TCGPlayerPricing.swift in Sources */,
 				8CE7B7AC1D336177008BBB53 /* SearchViewController.swift in Sources */,
 				8C5D4D3C1D37336A008E6B2B /* TCGPlayerPricing+CoreDataProperties.swift in Sources */,
@@ -912,6 +928,7 @@
 				8CE7B7B01D336186008BBB53 /* MoreViewController.swift in Sources */,
 				8CAE82841D3886E000569778 /* CardSummaryTableViewCell.swift in Sources */,
 				8CEC11761D33C99F009D3B2D /* Constants.swift in Sources */,
+				8CCD10D01D3DB14F003B7484 /* TCGPlayerManager.swift in Sources */,
 				8CE7B7391D334684008BBB53 /* DecktrackerUITests.swift in Sources */,
 				8CE7B7A41D336151008BBB53 /* DecksViewController.swift in Sources */,
 				8C24C05A1D3A6AA400B56373 /* CardImageTableViewCell.swift in Sources */,
@@ -1160,10 +1177,11 @@
 		8CE7B7571D334D55008BBB53 /* Decktracker.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				8CC0EACD1D3D948C00BF38CB /* Jul 19, 2016.xcdatamodel */,
 				8C1A2AC51D3C953A007C8A4B /* Jul 18, 2016.xcdatamodel */,
 				8CE7B7581D334D55008BBB53 /* Decktracker.xcdatamodel */,
 			);
-			currentVersion = 8C1A2AC51D3C953A007C8A4B /* Jul 18, 2016.xcdatamodel */;
+			currentVersion = 8CC0EACD1D3D948C00BF38CB /* Jul 19, 2016.xcdatamodel */;
 			name = Decktracker.xcdatamodeld;
 			path = ../../osx/DataSource/DataSource/Decktracker.xcdatamodeld;
 			sourceTree = "<group>";

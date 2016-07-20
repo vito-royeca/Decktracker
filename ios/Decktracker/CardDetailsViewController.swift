@@ -8,6 +8,8 @@
 
 import UIKit
 import CoreData
+import SafariServices
+
 class CardDetailsViewController: UIViewController {
 
     // MARK: Variables
@@ -61,7 +63,6 @@ class CardDetailsViewController: UIViewController {
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "artistCell")
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "legalitiesCell")
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "rulingsCell")
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "foreignNamesCell")
         tableView.registerNib(UINib(nibName: "CardSummaryTableViewCell", bundle: nil), forCellReuseIdentifier: "setsCell")
         tableView.registerNib(UINib(nibName: "CardSummaryTableViewCell", bundle: nil), forCellReuseIdentifier: "variationsCell")
 
@@ -129,10 +130,6 @@ class CardDetailsViewController: UIViewController {
                 cell.textLabel?.text = "Rulings"
                 cell.accessoryType = .DisclosureIndicator
                 cell.selectionStyle = .Default
-            case 7:
-                cell.textLabel?.text = "Foreign Names"
-                cell.accessoryType = .DisclosureIndicator
-                cell.selectionStyle = .Default
             default:
                 ()
             }
@@ -174,7 +171,7 @@ extension CardDetailsViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return 8
+            return 7
         case 1:
             if setsFetchRequest != nil,
                 let sections = setsFetchedResultsController.sections {
@@ -252,8 +249,6 @@ extension CardDetailsViewController: UITableViewDataSource {
                 cell = UITableViewCell(style: .Subtitle, reuseIdentifier: "legalitiesCell")
             case 6:
                 cell = UITableViewCell(style: .Subtitle, reuseIdentifier: "rulingsCell")
-            case 7:
-                cell = UITableViewCell(style: .Subtitle, reuseIdentifier: "foreignNamesCell")
             default:
                 ()
             }
@@ -286,7 +281,8 @@ extension CardDetailsViewController: UITableViewDelegate {
             case 2:
                 var height = tableView.frame.size.height -
                     CardSummaryTableViewCell.CellHeight -
-                    UITableViewAutomaticDimension//PricingTableViewCell.CellHeight
+                    UITableViewAutomaticDimension -
+                    22 // visual clue for the user to scroll down
                 
                 if let navigationController = navigationController {
                     height -= navigationController.navigationBar.frame.size.height
@@ -311,6 +307,19 @@ extension CardDetailsViewController: UITableViewDelegate {
             switch indexPath.row {
             case 1:
                 () // TODO: TCGPlayer pricing
+                let card = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(cardOID!) as! Card
+                if let pricing = card.pricing,
+                    let navigationController = navigationController {
+                    
+                    if let link = pricing.link {
+                        if let url = NSURL(string: link) {
+                            let svc = SFSafariViewController(URL: url, entersReaderIfAvailable: true)
+                            svc.delegate = self
+                            navigationController.presentViewController(svc, animated: true, completion: nil)
+                        }
+                    }
+                }
+                
             case 3:
                 () // TODO: Texts
             case 4:
@@ -319,8 +328,6 @@ extension CardDetailsViewController: UITableViewDelegate {
                 () // TODO: Legalities
             case 6:
                 () // TODO: Rulings
-            case 7:
-                () // TODO: Foreign names
             default:
                 ()
             }
@@ -403,5 +410,12 @@ extension CardDetailsViewController : NSFetchedResultsControllerDelegate {
     
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         tableView.reloadData()
+    }
+}
+
+// MARK: SFSafariViewControllerDelegate
+extension CardDetailsViewController : SFSafariViewControllerDelegate {
+    func safariViewControllerDidFinish(controller: SFSafariViewController) {
+        controller.dismissViewControllerAnimated(true, completion: nil)
     }
 }

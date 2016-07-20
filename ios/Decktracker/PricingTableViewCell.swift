@@ -8,12 +8,11 @@
 
 import UIKit
 import CoreData
+import JJJUtils
+import MBProgressHUD
 
 class PricingTableViewCell: UITableViewCell {
 
-    // MARK: Constants
-    static let CellHeight = CGFloat(44)
-    
     // MARK: Variables
     private var _cardOID: NSManagedObjectID?
     var cardOID : NSManagedObjectID? {
@@ -59,9 +58,78 @@ class PricingTableViewCell: UITableViewCell {
     
     // MARK: Custom Methods
     func displayPricing() {
-        lowPriceLabel.text = "$0.0"
-        midPriceLabel.text = "$0.0"
-        highPriceLabel.text = "$0.0"
-        foilPriceLabel.text = "$0.0"
+        if let _cardOID = _cardOID {
+            let card = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(_cardOID) as! Card
+        
+            let completion = { (cardID: String, error: NSError?) in
+                performUIUpdatesOnMain {
+                    MBProgressHUD.hideHUDForView(self.contentView, animated: true)
+                    
+                    if let _ = error {
+                        self.setNAValues()
+                        
+                    } else {
+                        if let pricing = card.pricing {
+                            if let lowPrice = pricing.lowPrice {
+                                self.lowPriceLabel.text = "$\(lowPrice.doubleValue)"
+                                self.lowPriceLabel.textColor = UIColor.redColor()
+                            } else {
+                                self.lowPriceLabel.text = "N/A"
+                                self.lowPriceLabel.textColor = UIColor.lightGrayColor()
+                            }
+                            
+                            if let midPrice = pricing.midPrice {
+                                self.midPriceLabel.text = "$\(midPrice.doubleValue)"
+                                self.midPriceLabel.textColor = UIColor.blueColor()
+                            } else {
+                                self.midPriceLabel.text = "N/A"
+                                self.midPriceLabel.textColor = UIColor.lightGrayColor()
+                            }
+                            
+                            if let highPrice = pricing.highPrice {
+                                self.highPriceLabel.text = "$\(highPrice.doubleValue)"
+                                self.highPriceLabel.textColor = JJJUtil.colorFromHexString("#008000")
+                            } else {
+                                self.highPriceLabel.text = "N/A"
+                                self.highPriceLabel.textColor = UIColor.lightGrayColor()
+                            }
+                            
+                            if let foilPrice = pricing.foilPrice {
+                                self.foilPriceLabel.text = "$\(foilPrice.doubleValue)"
+                                self.foilPriceLabel.textColor = JJJUtil.colorFromHexString("#998100")
+                            } else {
+                                self.foilPriceLabel.text = "N/A"
+                                self.foilPriceLabel.textColor = UIColor.lightGrayColor()
+                            }
+                            
+                        } else {
+                            self.setNAValues()
+                        }
+                    }
+                }
+            }
+            
+            do {
+                MBProgressHUD.showHUDAddedTo(contentView, animated: true)
+                try TCGPlayerManager.sharedInstance.hiMidLowPrices(card.cardID!, completion: completion)
+                
+            } catch {
+                MBProgressHUD.hideHUDForView(contentView, animated: true)
+            }
+            
+        } else {
+            setNAValues()
+        }
+    }
+    
+    func setNAValues() {
+        lowPriceLabel.text = "N/A"
+        lowPriceLabel.textColor = UIColor.lightGrayColor()
+        midPriceLabel.text = "N/A"
+        midPriceLabel.textColor = UIColor.lightGrayColor()
+        highPriceLabel.text = "N/A"
+        highPriceLabel.textColor = UIColor.lightGrayColor()
+        foilPriceLabel.text = "N/A"
+        foilPriceLabel.textColor = UIColor.lightGrayColor()
     }
 }

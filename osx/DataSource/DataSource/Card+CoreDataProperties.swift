@@ -57,5 +57,5 @@ extension Card {
     @NSManaged var legalities: NSSet?
     @NSManaged var source: Source?
     @NSManaged var ratings: NSSet?
-    @NSManaged var pricings: NSSet?
+    @NSManaged var pricing: TCGPlayerPricing?
 }

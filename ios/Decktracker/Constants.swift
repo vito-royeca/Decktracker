@@ -12,6 +12,7 @@ struct Constants {
     // Web Service keys
     static let TwitterAPIKey            = "M9SYMK8TAvUxFVpa6qVOAH8Bb"
     static let TwitterAPISecret         = "xOlE7XZgtTeM8LVmXYZ5xtxvOZXBrupYNYLOzHtkIuZpCzEWBf"
+    static let TCGPlayerPartnerKey      = "DECKTRACKER"
     
     // iTunes Connect App IDs
     static let WTHRM8_AppID             = "1122411144"
