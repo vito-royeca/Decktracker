@@ -294,7 +294,12 @@ class SetDetailsViewController: UIViewController {
     
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         
-        tableView.reloadData()
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
+            tableView.reloadData()
+        default:
+            ()
+        }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

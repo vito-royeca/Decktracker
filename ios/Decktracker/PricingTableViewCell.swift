@@ -61,64 +61,74 @@ class PricingTableViewCell: UITableViewCell {
         if let _cardOID = _cardOID {
             let card = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(_cardOID) as! Card
         
-            let completion = { (cardID: String, error: NSError?) in
-                performUIUpdatesOnMain {
-                    MBProgressHUD.hideHUDForView(self.contentView, animated: true)
-                    
-                    if let _ = error {
-                        self.setNAValues()
+            if TCGPlayerManager.sharedInstance.needsToFetchTCGPlayerPricing(card) {
+                let completion = { (cardID: String, error: NSError?) in
+                    performUIUpdatesOnMain {
+                        MBProgressHUD.hideHUDForView(self.contentView, animated: true)
                         
-                    } else {
-                        if let pricing = card.pricing {
-                            if let lowPrice = pricing.lowPrice {
-                                self.lowPriceLabel.text = "$\(lowPrice.doubleValue)"
-                                self.lowPriceLabel.textColor = UIColor.redColor()
-                            } else {
-                                self.lowPriceLabel.text = "N/A"
-                                self.lowPriceLabel.textColor = UIColor.lightGrayColor()
-                            }
-                            
-                            if let midPrice = pricing.midPrice {
-                                self.midPriceLabel.text = "$\(midPrice.doubleValue)"
-                                self.midPriceLabel.textColor = UIColor.blueColor()
-                            } else {
-                                self.midPriceLabel.text = "N/A"
-                                self.midPriceLabel.textColor = UIColor.lightGrayColor()
-                            }
-                            
-                            if let highPrice = pricing.highPrice {
-                                self.highPriceLabel.text = "$\(highPrice.doubleValue)"
-                                self.highPriceLabel.textColor = JJJUtil.colorFromHexString("#008000")
-                            } else {
-                                self.highPriceLabel.text = "N/A"
-                                self.highPriceLabel.textColor = UIColor.lightGrayColor()
-                            }
-                            
-                            if let foilPrice = pricing.foilPrice {
-                                self.foilPriceLabel.text = "$\(foilPrice.doubleValue)"
-                                self.foilPriceLabel.textColor = JJJUtil.colorFromHexString("#998100")
-                            } else {
-                                self.foilPriceLabel.text = "N/A"
-                                self.foilPriceLabel.textColor = UIColor.lightGrayColor()
-                            }
+                        if let _ = error {
+                            self.setNAValues()
                             
                         } else {
-                            self.setNAValues()
+                            if let pricing = card.pricing {
+                                self.setValues(pricing)
+                            } else {
+                                self.setNAValues()
+                            }
                         }
                     }
                 }
-            }
-            
-            do {
-                MBProgressHUD.showHUDAddedTo(contentView, animated: true)
-                try TCGPlayerManager.sharedInstance.hiMidLowPrices(card.cardID!, completion: completion)
                 
-            } catch {
-                MBProgressHUD.hideHUDForView(contentView, animated: true)
+                do {
+                    MBProgressHUD.showHUDAddedTo(contentView, animated: true)
+                    try TCGPlayerManager.sharedInstance.hiMidLowPrices(card.cardID!, completion: completion)
+                    
+                } catch {
+                    MBProgressHUD.hideHUDForView(contentView, animated: true)
+                }
+                
+            } else {
+                if let pricing = card.pricing {
+                    self.setValues(pricing)
+                }
             }
             
         } else {
             setNAValues()
+        }
+    }
+    
+    func setValues(pricing: TCGPlayerPricing) {
+        if let lowPrice = pricing.lowPrice {
+            self.lowPriceLabel.text = "$\(lowPrice.doubleValue)"
+            self.lowPriceLabel.textColor = UIColor.redColor()
+        } else {
+            self.lowPriceLabel.text = "N/A"
+            self.lowPriceLabel.textColor = UIColor.lightGrayColor()
+        }
+        
+        if let midPrice = pricing.midPrice {
+            self.midPriceLabel.text = "$\(midPrice.doubleValue)"
+            self.midPriceLabel.textColor = UIColor.blueColor()
+        } else {
+            self.midPriceLabel.text = "N/A"
+            self.midPriceLabel.textColor = UIColor.lightGrayColor()
+        }
+        
+        if let highPrice = pricing.highPrice {
+            self.highPriceLabel.text = "$\(highPrice.doubleValue)"
+            self.highPriceLabel.textColor = JJJUtil.colorFromHexString("#008000")
+        } else {
+            self.highPriceLabel.text = "N/A"
+            self.highPriceLabel.textColor = UIColor.lightGrayColor()
+        }
+        
+        if let foilPrice = pricing.foilPrice {
+            self.foilPriceLabel.text = "$\(foilPrice.doubleValue)"
+            self.foilPriceLabel.textColor = JJJUtil.colorFromHexString("#998100")
+        } else {
+            self.foilPriceLabel.text = "N/A"
+            self.foilPriceLabel.textColor = UIColor.lightGrayColor()
         }
     }
     

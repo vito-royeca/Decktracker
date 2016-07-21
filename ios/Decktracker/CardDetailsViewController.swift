@@ -74,6 +74,22 @@ class CardDetailsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "showTexts" {
+            if let detailsVC = segue.destinationViewController as? TextsViewController {
+                
+                detailsVC.cardOID = cardOID
+//                detailsVC.navigationItem.title = set.name!
+            }
+        } else if segue.identifier == "showArtist" {
+            
+        } else if segue.identifier == "showLegalities" {
+            
+        } else if segue.identifier == "showRulings" {
+            
+        }
+    }
+    
     // MARK: Custom methods
     func loadSets() {
         let card = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(cardOID!) as! Card
@@ -321,13 +337,13 @@ extension CardDetailsViewController: UITableViewDelegate {
                 }
                 
             case 3:
-                () // TODO: Texts
+                performSegueWithIdentifier("showTexts", sender: self)
             case 4:
-                () // TODO: Artist
+                performSegueWithIdentifier("showArtist", sender: self)
             case 5:
-                () // TODO: Legalities
+                performSegueWithIdentifier("showLegalities", sender: self)
             case 6:
-                () // TODO: Rulings
+                performSegueWithIdentifier("showRulings", sender: self)
             default:
                 ()
             }

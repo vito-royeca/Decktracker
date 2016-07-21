@@ -42,7 +42,7 @@ class TCGPlayerManager: NSObject {
         
         let card = ObjectManager.sharedInstance.findObjects("Card", predicate: NSPredicate(format: "cardID == %@", cardID), sorters: [NSSortDescriptor(key: "name", ascending: true)]).first as! Card
 
-        if needToFetchTCGPlayerPricing(card) {
+        if needsToFetchTCGPlayerPricing(card) {
             var setName = ""
             if let tcgPlayerName = card.set!.tcgPlayerName {
                 setName = tcgPlayerName
@@ -53,6 +53,8 @@ class TCGPlayerManager: NSObject {
             let parameters = ["pk": apiKey!,
                               "s": setName,
                               "p": card.name!]
+            
+            var dict = [String: AnyObject]()
             
             let success = { (results: AnyObject!) in
                 if let data = results as? NSData {
@@ -94,7 +96,6 @@ class TCGPlayerManager: NSObject {
                         }
                     }
                     
-                    var dict = [String: AnyObject]()
                     if let low = low {
                         if low != "0" {
                             dict[TCGPlayerPricing.Keys.LowPrice] = NSNumber(double: (low as NSString).doubleValue)
@@ -129,6 +130,12 @@ class TCGPlayerManager: NSObject {
             }
             
             let failure = { (error: NSError?) -> Void in
+                dict[TCGPlayerPricing.Keys.FetchDate] = NSDate()
+                
+                let pricing = ObjectManager.sharedInstance.findOrCreateTCGPlayerPricing(card, dict: dict)
+                pricing.update(dict)
+                pricing.card = card
+                CoreDataManager.sharedInstance.savePrivateContext()
                 completion(cardID: cardID, error: error)
             }
             
@@ -139,7 +146,7 @@ class TCGPlayerManager: NSObject {
         }
     }
     
-    func needToFetchTCGPlayerPricing(card: Card) -> Bool {
+    func needsToFetchTCGPlayerPricing(card: Card) -> Bool {
         if let pricing = card.pricing {
             if let fetchDate = pricing.fetchDate {
                 let today = NSDate()

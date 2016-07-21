@@ -314,11 +314,163 @@
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="JfU-n5-dTH" id="IVG-Hu-Csf"/>
+                        <segue destination="oed-Y5-8Fh" kind="show" identifier="showTexts" id="jCx-xt-Thy"/>
+                        <segue destination="3nq-Gl-wUp" kind="show" identifier="showArtist" id="7L6-MA-lti"/>
+                        <segue destination="hBG-jd-pof" kind="show" identifier="showLegalities" id="QoN-ea-QFB"/>
+                        <segue destination="joh-3B-onB" kind="show" identifier="showRulings" id="0S3-7y-U19"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oXm-6m-A22" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3815" y="-432"/>
+        </scene>
+        <!--Texts View Controller-->
+        <scene sceneID="tOZ-Jk-Pvb">
+            <objects>
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="oed-Y5-8Fh" customClass="TextsViewController" customModule="Decktracker" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="9qr-Au-i7t"/>
+                        <viewControllerLayoutGuide type="bottom" id="nbT-uO-wbp"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="J4I-6M-O82">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="gTe-Ot-TE5">
+                                <rect key="frame" x="0.0" y="64" width="600" height="487"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="oed-Y5-8Fh" id="tYb-mc-XBK"/>
+                                    <outlet property="delegate" destination="oed-Y5-8Fh" id="mrd-Dz-Aek"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="gTe-Ot-TE5" firstAttribute="top" secondItem="9qr-Au-i7t" secondAttribute="bottom" id="4XK-6Y-MRG"/>
+                            <constraint firstItem="gTe-Ot-TE5" firstAttribute="leading" secondItem="J4I-6M-O82" secondAttribute="leading" id="RPh-J3-CYa"/>
+                            <constraint firstItem="gTe-Ot-TE5" firstAttribute="bottom" secondItem="nbT-uO-wbp" secondAttribute="top" id="VNU-8y-3NC"/>
+                            <constraint firstAttribute="trailing" secondItem="gTe-Ot-TE5" secondAttribute="trailing" id="zqu-fY-ATD"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="gTe-Ot-TE5" id="YZs-64-n4x"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rHS-po-g9C" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4789" y="-1507"/>
+        </scene>
+        <!--Artist View Controller-->
+        <scene sceneID="T2d-zp-JhN">
+            <objects>
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="3nq-Gl-wUp" customClass="ArtistViewController" customModule="Decktracker" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="AfC-uc-KKH"/>
+                        <viewControllerLayoutGuide type="bottom" id="Oql-cg-Aox"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="i8O-Ob-K0r">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Dja-r0-gaq">
+                                <rect key="frame" x="0.0" y="64" width="600" height="487"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="3nq-Gl-wUp" id="RBm-as-pL4"/>
+                                    <outlet property="delegate" destination="3nq-Gl-wUp" id="0Wo-hV-RR3"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Dja-r0-gaq" firstAttribute="leading" secondItem="i8O-Ob-K0r" secondAttribute="leading" id="6p7-pj-2dA"/>
+                            <constraint firstItem="Dja-r0-gaq" firstAttribute="bottom" secondItem="Oql-cg-Aox" secondAttribute="top" id="JKN-2z-wao"/>
+                            <constraint firstItem="Dja-r0-gaq" firstAttribute="top" secondItem="AfC-uc-KKH" secondAttribute="bottom" id="ga3-2e-JBM"/>
+                            <constraint firstAttribute="trailing" secondItem="Dja-r0-gaq" secondAttribute="trailing" id="lxg-Ha-KZz"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="Dja-r0-gaq" id="rwb-Gq-MCw"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1YA-NK-j8q" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4789" y="-806"/>
+        </scene>
+        <!--Legalities View Controller-->
+        <scene sceneID="j3E-oe-Axv">
+            <objects>
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="hBG-jd-pof" customClass="LegalitiesViewController" customModule="Decktracker" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="s2J-SI-7Et"/>
+                        <viewControllerLayoutGuide type="bottom" id="Vk8-z9-IJ6"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="kOW-eT-vl8">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="o8U-D4-cn2">
+                                <rect key="frame" x="0.0" y="64" width="600" height="487"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="hBG-jd-pof" id="wvB-HZ-jXn"/>
+                                    <outlet property="delegate" destination="hBG-jd-pof" id="gIb-Vx-rHE"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="o8U-D4-cn2" firstAttribute="top" secondItem="s2J-SI-7Et" secondAttribute="bottom" id="3eB-nE-Ipf"/>
+                            <constraint firstAttribute="trailing" secondItem="o8U-D4-cn2" secondAttribute="trailing" id="DdV-0u-3ii"/>
+                            <constraint firstItem="o8U-D4-cn2" firstAttribute="leading" secondItem="kOW-eT-vl8" secondAttribute="leading" id="fBQ-Os-drT"/>
+                            <constraint firstItem="o8U-D4-cn2" firstAttribute="bottom" secondItem="Vk8-z9-IJ6" secondAttribute="top" id="kCb-yH-4c7"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="o8U-D4-cn2" id="jRA-9I-KIY"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="J9o-ry-gaw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4789" y="-128"/>
+        </scene>
+        <!--Rulings View Controller-->
+        <scene sceneID="dVU-db-zbk">
+            <objects>
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="joh-3B-onB" customClass="RulingsViewController" customModule="Decktracker" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="bpv-Qo-xK5"/>
+                        <viewControllerLayoutGuide type="bottom" id="l9A-er-QEG"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="wVc-Ns-TSs">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="edN-kA-fey">
+                                <rect key="frame" x="0.0" y="64" width="600" height="487"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="joh-3B-onB" id="1SB-XF-lX5"/>
+                                    <outlet property="delegate" destination="joh-3B-onB" id="AFY-hc-d9K"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="edN-kA-fey" firstAttribute="bottom" secondItem="l9A-er-QEG" secondAttribute="top" id="9cg-ge-HEB"/>
+                            <constraint firstItem="edN-kA-fey" firstAttribute="leading" secondItem="wVc-Ns-TSs" secondAttribute="leading" id="X7B-x9-3wl"/>
+                            <constraint firstItem="edN-kA-fey" firstAttribute="top" secondItem="bpv-Qo-xK5" secondAttribute="bottom" id="bE7-Lf-ygm"/>
+                            <constraint firstAttribute="trailing" secondItem="edN-kA-fey" secondAttribute="trailing" id="dmR-Rl-Tc7"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="edN-kA-fey" id="aLc-dE-v40"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PhQ-29-bwz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4789" y="718"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="JmQ-iI-le8">

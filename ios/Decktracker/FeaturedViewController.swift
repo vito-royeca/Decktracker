@@ -90,10 +90,6 @@ extension FeaturedViewController : ThumbnailDelegate {
     func seeAllAction(tag: Int) {
         switch tag {
         case 0: // Sets
-//            if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("SetsViewController") as? SetsViewController,
-//                let navigationController = navigationController {
-//                navigationController.pushViewController(controller, animated: true)
-//            }
             performSegueWithIdentifier("showSets", sender: self)
         default:
             ()
