@@ -144,9 +144,9 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="2007" y="-432"/>
+            <point key="canvasLocation" x="1991" y="-432"/>
         </scene>
-        <!--Set Details View Controller-->
+        <!--Set Details-->
         <scene sceneID="u9z-hb-tFU">
             <objects>
                 <viewController storyboardIdentifier="SetDetailsViewController" automaticallyAdjustsScrollViewInsets="NO" hidesBottomBarWhenPushed="YES" id="Mwt-EV-PEA" customClass="SetDetailsViewController" customModule="Decktracker" customModuleProvider="target" sceneMemberID="viewController">
@@ -162,12 +162,28 @@
                                 <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="segmentedCell" id="uxs-93-5pL" userLabel="segmented">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="wikiCell" textLabel="rDc-TM-gBm" detailTextLabel="ky4-bU-aUd" style="IBUITableViewCellStyleSubtitle" id="rhV-7y-qFX">
                                         <rect key="frame" x="0.0" y="28" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uxs-93-5pL" id="AaF-Hx-shO">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rhV-7y-qFX" id="ag9-wW-c8h">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="rDc-TM-gBm">
+                                                    <rect key="frame" x="15" y="5" width="32" height="20"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ky4-bU-aUd">
+                                                    <rect key="frame" x="15" y="25" width="41" height="14"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
@@ -185,7 +201,7 @@
                             <constraint firstItem="5NE-bp-YTZ" firstAttribute="top" secondItem="m0f-mA-rMS" secondAttribute="bottom" id="em6-nd-vjf"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="VS4-FV-k10">
+                    <navigationItem key="navigationItem" title="Set Details" id="VS4-FV-k10">
                         <rightBarButtonItems>
                             <barButtonItem image="sortOptions" id="vZl-eB-Q0N">
                                 <connections>
@@ -201,25 +217,80 @@
                     </navigationItem>
                     <connections>
                         <outlet property="displayButton" destination="MqZ-j2-VVc" id="Mxi-fN-Kkg"/>
-                        <outlet property="segmentedControl" destination="mTM-ae-bl5" id="Blv-0I-Sv3"/>
                         <outlet property="sortButton" destination="vZl-eB-Q0N" id="egV-lw-BEI"/>
                         <outlet property="tableView" destination="5NE-bp-YTZ" id="d2c-oM-py7"/>
                         <segue destination="SZ3-8U-pUv" kind="show" identifier="showCardDetails" id="X8Z-oj-C2J"/>
+                        <segue destination="KcJ-iv-BdV" kind="show" identifier="showSetWiki" id="b7M-Sw-uu3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1fj-7o-PcK" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <segmentedControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="mTM-ae-bl5">
-                    <rect key="frame" x="0.0" y="0.0" width="227" height="30"/>
-                    <segments>
-                        <segment title="Cards"/>
-                        <segment title="Info"/>
-                    </segments>
-                    <connections>
-                        <action selector="segmentedAction:" destination="Mwt-EV-PEA" eventType="valueChanged" id="QhQ-Vd-vxd"/>
-                    </connections>
-                </segmentedControl>
             </objects>
-            <point key="canvasLocation" x="2870" y="-432"/>
+            <point key="canvasLocation" x="2806" y="-432"/>
+        </scene>
+        <!--Browser-->
+        <scene sceneID="fxo-wU-oZp">
+            <objects>
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="KcJ-iv-BdV" customClass="BrowserViewController" customModule="Decktracker" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="cqi-zc-erd"/>
+                        <viewControllerLayoutGuide type="bottom" id="Cei-gd-tdX"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="INg-iz-lo2">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NIu-l6-JrF">
+                                <rect key="frame" x="0.0" y="64" width="600" height="487"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="deviceRGB"/>
+                                <connections>
+                                    <outlet property="delegate" destination="KcJ-iv-BdV" id="Je5-pW-6lU"/>
+                                </connections>
+                            </webView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pe3-Gn-q8N">
+                                <rect key="frame" x="0.0" y="507" width="600" height="44"/>
+                                <items>
+                                    <barButtonItem image="back" id="N5N-Ei-AyQ">
+                                        <connections>
+                                            <action selector="backAction:" destination="KcJ-iv-BdV" id="cBl-rX-Xg3"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem image="forward" id="2x7-J4-eVb">
+                                        <connections>
+                                            <action selector="forwardAction:" destination="KcJ-iv-BdV" id="uN5-KQ-1sT"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="3Ly-BS-5mD"/>
+                                    <barButtonItem systemItem="refresh" id="9Lw-sS-va1">
+                                        <connections>
+                                            <action selector="refreshAction:" destination="KcJ-iv-BdV" id="SsB-gp-XU6"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="NIu-l6-JrF" firstAttribute="bottom" secondItem="Cei-gd-tdX" secondAttribute="top" id="5fs-cB-Zac"/>
+                            <constraint firstItem="NIu-l6-JrF" firstAttribute="top" secondItem="cqi-zc-erd" secondAttribute="bottom" id="CDM-FV-H4M"/>
+                            <constraint firstItem="NIu-l6-JrF" firstAttribute="leading" secondItem="INg-iz-lo2" secondAttribute="leading" id="CZf-Hc-TAZ"/>
+                            <constraint firstAttribute="trailing" secondItem="NIu-l6-JrF" secondAttribute="trailing" id="OEL-oD-Osv"/>
+                            <constraint firstItem="Pe3-Gn-q8N" firstAttribute="bottom" secondItem="Cei-gd-tdX" secondAttribute="top" id="P86-3W-jwl"/>
+                            <constraint firstItem="NIu-l6-JrF" firstAttribute="trailing" secondItem="Pe3-Gn-q8N" secondAttribute="trailing" id="pr6-kE-HI1"/>
+                            <constraint firstItem="NIu-l6-JrF" firstAttribute="leading" secondItem="Pe3-Gn-q8N" secondAttribute="leading" id="uDT-0P-RY2"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Browser" id="1Bw-Vf-APy"/>
+                    <connections>
+                        <outlet property="backButton" destination="N5N-Ei-AyQ" id="CXP-XU-EoB"/>
+                        <outlet property="forwardButton" destination="2x7-J4-eVb" id="uV3-fI-RlP"/>
+                        <outlet property="refreshButton" destination="9Lw-sS-va1" id="97Z-cM-0Yh"/>
+                        <outlet property="toolBar" destination="Pe3-Gn-q8N" id="FI1-cu-IJw"/>
+                        <outlet property="webView" destination="NIu-l6-JrF" id="Jpe-hn-8gV"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gdd-it-aLX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2806" y="462"/>
         </scene>
         <!--Card Details-->
         <scene sceneID="sdM-77-EfC">
@@ -322,54 +393,17 @@
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="JfU-n5-dTH" id="IVG-Hu-Csf"/>
-                        <segue destination="oed-Y5-8Fh" kind="show" identifier="showTexts" id="jCx-xt-Thy"/>
                         <segue destination="3nq-Gl-wUp" kind="show" identifier="showArtist" id="7L6-MA-lti"/>
                         <segue destination="hBG-jd-pof" kind="show" identifier="showLegalities" id="QoN-ea-QFB"/>
                         <segue destination="joh-3B-onB" kind="show" identifier="showRulings" id="0S3-7y-U19"/>
+                        <segue destination="KcJ-iv-BdV" kind="show" identifier="showCardTexts" id="iYG-Jn-xTg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oXm-6m-A22" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3815" y="-432"/>
+            <point key="canvasLocation" x="3731" y="-432"/>
         </scene>
-        <!--Texts View Controller-->
-        <scene sceneID="tOZ-Jk-Pvb">
-            <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="oed-Y5-8Fh" customClass="TextsViewController" customModule="Decktracker" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="9qr-Au-i7t"/>
-                        <viewControllerLayoutGuide type="bottom" id="nbT-uO-wbp"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="J4I-6M-O82">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="gTe-Ot-TE5">
-                                <rect key="frame" x="0.0" y="64" width="600" height="487"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <outlet property="dataSource" destination="oed-Y5-8Fh" id="tYb-mc-XBK"/>
-                                    <outlet property="delegate" destination="oed-Y5-8Fh" id="mrd-Dz-Aek"/>
-                                </connections>
-                            </tableView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="gTe-Ot-TE5" firstAttribute="top" secondItem="9qr-Au-i7t" secondAttribute="bottom" id="4XK-6Y-MRG"/>
-                            <constraint firstItem="gTe-Ot-TE5" firstAttribute="leading" secondItem="J4I-6M-O82" secondAttribute="leading" id="RPh-J3-CYa"/>
-                            <constraint firstItem="gTe-Ot-TE5" firstAttribute="bottom" secondItem="nbT-uO-wbp" secondAttribute="top" id="VNU-8y-3NC"/>
-                            <constraint firstAttribute="trailing" secondItem="gTe-Ot-TE5" secondAttribute="trailing" id="zqu-fY-ATD"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="tableView" destination="gTe-Ot-TE5" id="YZs-64-n4x"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="rHS-po-g9C" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4789" y="-1507"/>
-        </scene>
-        <!--Artist View Controller-->
+        <!--Artist Details-->
         <scene sceneID="T2d-zp-JhN">
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="3nq-Gl-wUp" customClass="ArtistViewController" customModule="Decktracker" customModuleProvider="target" sceneMemberID="viewController">
@@ -381,7 +415,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Dja-r0-gaq">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Dja-r0-gaq">
                                 <rect key="frame" x="0.0" y="64" width="600" height="487"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
@@ -398,15 +432,18 @@
                             <constraint firstAttribute="trailing" secondItem="Dja-r0-gaq" secondAttribute="trailing" id="lxg-Ha-KZz"/>
                         </constraints>
                     </view>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Artist Details" id="jU8-NG-mXK"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="tableView" destination="Dja-r0-gaq" id="rwb-Gq-MCw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1YA-NK-j8q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4789" y="-806"/>
+            <point key="canvasLocation" x="4629" y="-1190"/>
         </scene>
-        <!--Legalities View Controller-->
+        <!--Legalities-->
         <scene sceneID="j3E-oe-Axv">
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="hBG-jd-pof" customClass="LegalitiesViewController" customModule="Decktracker" customModuleProvider="target" sceneMemberID="viewController">
@@ -454,15 +491,16 @@
                             <constraint firstItem="o8U-D4-cn2" firstAttribute="bottom" secondItem="Vk8-z9-IJ6" secondAttribute="top" id="kCb-yH-4c7"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" title="Legalities" id="q5J-fd-hGe"/>
                     <connections>
                         <outlet property="tableView" destination="o8U-D4-cn2" id="jRA-9I-KIY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="J9o-ry-gaw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4789" y="-128"/>
+            <point key="canvasLocation" x="4629" y="-432"/>
         </scene>
-        <!--Rulings View Controller-->
+        <!--Rulings-->
         <scene sceneID="dVU-db-zbk">
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="joh-3B-onB" customClass="RulingsViewController" customModule="Decktracker" customModuleProvider="target" sceneMemberID="viewController">
@@ -510,13 +548,14 @@
                             <constraint firstAttribute="trailing" secondItem="edN-kA-fey" secondAttribute="trailing" id="dmR-Rl-Tc7"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" title="Rulings" id="BMj-2l-9Hu"/>
                     <connections>
                         <outlet property="tableView" destination="edN-kA-fey" id="aLc-dE-v40"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PhQ-29-bwz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4789" y="718"/>
+            <point key="canvasLocation" x="4629" y="462"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="JmQ-iI-le8">
@@ -736,10 +775,15 @@
         </scene>
     </scenes>
     <resources>
+        <image name="back" width="25" height="25"/>
         <image name="collections" width="25" height="25"/>
         <image name="decks" width="25" height="25"/>
+        <image name="forward" width="25" height="25"/>
         <image name="list" width="25" height="25"/>
         <image name="sortOptions" width="25" height="25"/>
         <image name="upload" width="25" height="25"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="iYG-Jn-xTg"/>
+    </inferredMetricsTieBreakers>
 </document>

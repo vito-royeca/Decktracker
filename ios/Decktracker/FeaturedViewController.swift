@@ -31,18 +31,6 @@ class FeaturedViewController: UIViewController {
         loadSets()
     }
     
-//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-//        if segue.identifier == "showSets" {
-//            
-//            if let detailsVC = (segue.destinationViewController as! UINavigationController).topViewController as? SetsViewController {
-//                
-//                detailsVC.setOID = set.objectID
-//                detailsVC.navigationItem.title = set.name!
-//                detailsVC.navigationItem.leftItemsSupplementBackButton = true
-//            }
-//        }
-//    }
-    
     // MARK: Custom methods
     func loadSets() {
         setsFetchRequest = NSFetchRequest(entityName: "Set")
@@ -104,7 +92,6 @@ extension FeaturedViewController : ThumbnailDelegate {
                 let set = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(objectID) as! Set
                 
                 controller.setOID = objectID
-                controller.navigationItem.title = set.name!
                 navigationController.pushViewController(controller, animated: true)
             }
             

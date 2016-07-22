@@ -190,9 +190,7 @@ class SetsViewController: UIViewController {
                 if let objects = sectionInfo.objects {
                     if let set = objects[indexPath.row] as? Set,
                         let detailsVC = segue.destinationViewController as? SetDetailsViewController {
-                        
                         detailsVC.setOID = set.objectID
-                        detailsVC.navigationItem.title = set.name!
                     }
                 }
             }

@@ -121,26 +121,9 @@ class SetDetailsViewController: UIViewController {
     // MARK: Outlets
     @IBOutlet weak var displayButton: UIBarButtonItem!
     @IBOutlet weak var sortButton: UIBarButtonItem!
-    @IBOutlet var segmentedControl: UISegmentedControl!
     @IBOutlet weak var tableView: UITableView!
     
     // MARK: Actions
-    @IBAction func segmentedAction(sender: UISegmentedControl) {
-        switch segmentedControl.selectedSegmentIndex {
-        case 0:
-            displayButton.enabled = true
-            sortButton.enabled = true
-            tableView.scrollEnabled = true
-        case 1:
-            displayButton.enabled = false
-            sortButton.enabled = false
-            tableView.scrollEnabled = false
-        default:
-            ()
-        }
-        tableView.reloadData()
-    }
-    
     @IBAction func displayAction(sender: UIBarButtonItem) {
         let displayOptions = [SetDetailsDisplayMode.List.description,
                               SetDetailsDisplayMode.TwoByTwo.description,
@@ -250,8 +233,9 @@ class SetDetailsViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "wikiCell")
         tableView.registerNib(UINib(nibName: "CardSummaryTableViewCell", bundle: nil), forCellReuseIdentifier: "summaryCell")
-        tableView.registerNib(UINib(nibName: "BrowserTableViewCell", bundle: nil), forCellReuseIdentifier: "browserCell")
+        
         
         switch NSUserDefaults.standardUserDefaults().integerForKey("setDetailsDisplayMode") {
         case 0:
@@ -284,26 +268,24 @@ class SetDetailsViewController: UIViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        switch segmentedControl.selectedSegmentIndex {
-        case 0:
-            loadCards(nil)
-        default:
-            ()
-        }
+        loadCards(nil)
     }
     
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         
-        switch segmentedControl.selectedSegmentIndex {
-        case 0:
-            tableView.reloadData()
-        default:
-            ()
-        }
+        tableView.reloadData()
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "showCardDetails" {
+        if segue.identifier == "showSetWiki" {
+            if let detailsVC = segue.destinationViewController as? BrowserViewController {
+                let set = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(setOID!) as! Set
+                let urlString = "http://mtgsalvation.gamepedia.com/\(set.nameSnakeCase!)"
+                detailsVC.urlString = urlString
+                detailsVC.navigationTitle = set.name
+            }
+            
+        } else if segue.identifier == "showCardDetails" {
             
             if let indexPath = tableView.indexPathForSelectedRow,
                 let _ = fetchRequest {
@@ -314,7 +296,6 @@ class SetDetailsViewController: UIViewController {
                 if let objects = sectionInfo.objects {
                     if let card = objects[indexPath.row] as? Card,
                         let detailsVC = segue.destinationViewController as? CardDetailsViewController {
-                        
                         detailsVC.cardOID = card.objectID
                     }
                 }
@@ -362,52 +343,27 @@ class SetDetailsViewController: UIViewController {
     }
     
     func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
-        cell.selectionStyle = .None
+        cell.selectionStyle = .Default
+        cell.accessoryType = .None
         
         switch indexPath.section {
         case 0:
-            segmentedControl.removeFromSuperview()
-            segmentedControl.frame = CGRect(x: 5, y: (cell.contentView.frame.size.height-segmentedControl.frame.size.height)/2, width: cell.contentView.frame.size.width-10, height: segmentedControl.frame.size.height)
-            cell.contentView.addSubview(segmentedControl)
+            let set = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(setOID!) as! Set
+            cell.textLabel?.text = set.name
+//            cell.detailTextLabel?.text = "MTG Salvation Wiki"
+            cell.accessoryType = .DisclosureIndicator
         default:
-            switch segmentedControl.selectedSegmentIndex {
-            case 0:
-                if fetchRequest != nil,
-                    let sections = fetchedResultsController.sections,
-                    let c = cell as? CardSummaryTableViewCell {
-                    let sectionInfo = sections[indexPath.section-1]
-                    
-                    if let objects = sectionInfo.objects {
-                        if let card = objects[indexPath.row] as? Card {
-                            c.cardOID = card.objectID
-                        }
-                    }
-                    cell.selectionStyle = .Default
-                }
-            case 1:
-                if let c = cell as? BrowserTableViewCell {
-                    c.webView.delegate = self
-                    let set = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(setOID!) as! Set
-                    let urlString = "http://mtgsalvation.gamepedia.com/\(set.nameSnakeCase!)"
-                    c.displayPage(urlString)
-                }
-            default:
-                ()
-            }
-        }
-    }
-    
-    func displayCard(cardName: String) {
-        let predicate = NSPredicate(format: "name == %@", cardName)
-        let sorters = [NSSortDescriptor(key: "set.releaseDate", ascending: true)]
-        
-        if let card = ObjectManager.sharedInstance.findObjects("Card", predicate: predicate, sorters: sorters).first {
-            
-            if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("CardDetailsViewController") as? CardDetailsViewController,
-                let navigationController = navigationController {
+            if fetchRequest != nil,
+                let sections = fetchedResultsController.sections,
+                let c = cell as? CardSummaryTableViewCell {
+                let sectionInfo = sections[indexPath.section-1]
                 
-                controller.cardOID = card.objectID
-                navigationController.pushViewController(controller, animated: true)
+                if let objects = sectionInfo.objects {
+                    if let card = objects[indexPath.row] as? Card {
+                        c.cardOID = card.objectID
+                    }
+                }
+                cell.selectionStyle = .Default
             }
         }
     }
@@ -420,65 +376,49 @@ extension SetDetailsViewController: UITableViewDataSource {
         case 0:
             return 1
         default:
-            switch segmentedControl.selectedSegmentIndex {
-            case 0:
-                if fetchRequest != nil,
-                    let sections = fetchedResultsController.sections {
-                    let sectionInfo = sections[section-1]
-                    return sectionInfo.numberOfObjects
-                    
-                } else {
-                    return 0
-                }
-            case 1:
-                return 1
-            default:
+            if fetchRequest != nil,
+                let sections = fetchedResultsController.sections {
+                let sectionInfo = sections[section-1]
+                return sectionInfo.numberOfObjects
+                
+            } else {
                 return 0
             }
         }
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        switch segmentedControl.selectedSegmentIndex {
-        case 0:
-            if fetchRequest != nil,
-                let sections = fetchedResultsController.sections {
-                return sections.count
-                
-            } else {
-                return 2
-            }
-        default:
-            return 2
+        if fetchRequest != nil,
+            let sections = fetchedResultsController.sections {
+            return sections.count+1
+            
+        } else {
+            return 0
         }
     }
     
     func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
-        switch segmentedControl.selectedSegmentIndex {
-        case 0:
-            if fetchRequest != nil,
-                let sections = fetchedResultsController.sections {
-                switch sortMode! {
-                case .ByName:
-                    var indexTitles = [String]()
-                    
-                    for sectionInfo in sections {
-                        if let indexTitle = sectionInfo.indexTitle {
-                            if !indexTitles.contains(indexTitle) {
-                                indexTitles.append(indexTitle)
-                            }
+        if fetchRequest != nil,
+            let sections = fetchedResultsController.sections {
+            switch sortMode! {
+            case .ByName:
+                var indexTitles = [String]()
+                
+                indexTitles.append("")
+                for sectionInfo in sections {
+                    if let indexTitle = sectionInfo.indexTitle {
+                        if !indexTitles.contains(indexTitle) {
+                            indexTitles.append(indexTitle)
                         }
                     }
-                    return indexTitles
-                    
-                default:
-                    return nil
                 }
+                return indexTitles
                 
-            } else {
+            default:
                 return nil
             }
-        default:
+            
+        } else {
             return nil
         }
     }
@@ -488,27 +428,22 @@ extension SetDetailsViewController: UITableViewDataSource {
         case 0:
             return nil
         default:
-            switch segmentedControl.selectedSegmentIndex {
-            case 0:
-                if fetchRequest != nil,
-                    let sections = fetchedResultsController.sections {
-                    let sectionInfo = sections[section-1]
-                    var count = 0
-                    if let objects = sectionInfo.objects {
-                        count = objects.count
-                    }
-                    
-                    switch sortMode! {
-                    case .ByName:
-                        return "\(sectionInfo.indexTitle!) (\(count) \(count > 1 ? "items" : "item"))"
-                    default:
-                        return "\(sectionInfo.name) (\(count) \(count > 1 ? "items" : "item"))"
-                    }
-                    
-                } else {
-                    return nil
+            if fetchRequest != nil,
+                let sections = fetchedResultsController.sections {
+                let sectionInfo = sections[section-1]
+                var count = 0
+                if let objects = sectionInfo.objects {
+                    count = objects.count
                 }
-            default:
+                
+                switch sortMode! {
+                case .ByName:
+                    return "\(sectionInfo.indexTitle!) (\(count) \(count > 1 ? "items" : "item"))"
+                default:
+                    return "\(sectionInfo.name) (\(count) \(count > 1 ? "items" : "item"))"
+                }
+                
+            } else {
                 return nil
             }
         }
@@ -519,16 +454,9 @@ extension SetDetailsViewController: UITableViewDataSource {
         
         switch indexPath.section {
         case 0:
-            cell = tableView.dequeueReusableCellWithIdentifier("segmentedCell", forIndexPath: indexPath)
+            cell = UITableViewCell(style: .Subtitle, reuseIdentifier: "wikiCell")
         default:
-            switch segmentedControl.selectedSegmentIndex {
-            case 0:
-                cell = tableView.dequeueReusableCellWithIdentifier("summaryCell", forIndexPath: indexPath)
-            case 1:
-                cell = tableView.dequeueReusableCellWithIdentifier("browserCell", forIndexPath: indexPath)
-            default:
-                ()
-            }
+            cell = tableView.dequeueReusableCellWithIdentifier("summaryCell", forIndexPath: indexPath)
         }
         
         configureCell(cell!, indexPath: indexPath)
@@ -543,33 +471,16 @@ extension SetDetailsViewController: UITableViewDelegate {
         case 0:
             return UITableViewAutomaticDimension
         default:
-            switch segmentedControl.selectedSegmentIndex {
-            case 0:
-                return CardSummaryTableViewCell.CellHeight
-            case 1:
-                var height = tableView.frame.size.height - UITableViewAutomaticDimension
-                if let navigationController = navigationController {
-                    height -= navigationController.navigationBar.frame.size.height
-                }
-                return height
-            default:
-                return UITableViewAutomaticDimension
-            }
+            return CardSummaryTableViewCell.CellHeight
         }
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         switch indexPath.section {
         case 0:
-            return
+            performSegueWithIdentifier("showSetWiki", sender: indexPath.row)
         default:
-            switch segmentedControl.selectedSegmentIndex {
-            case 0:
-                performSegueWithIdentifier("showCardDetails", sender: indexPath.row)
-                
-            default:
-                return
-            }
+            performSegueWithIdentifier("showCardDetails", sender: indexPath.row)
         }
     }
 }
@@ -619,56 +530,3 @@ extension SetDetailsViewController : NSFetchedResultsControllerDelegate {
     }
 }
 
-// MARK: UIWebViewDelegate
-extension SetDetailsViewController : UIWebViewDelegate {
-    func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-
-        if let url = request.URL {
-            let requestString = url.absoluteString
-            
-            if requestString.hasPrefix("http://www.magiccards.info/query") {
-                let urlComponents = NSURLComponents(string: requestString)
-                let queryItems = urlComponents?.queryItems
-                let q = queryItems?.filter({$0.name == "q"}).first
-                if let value = q?.value {
-                    let r = value.startIndex.advancedBy(1)
-                    let cardName = value.substringFromIndex(r).stringByReplacingOccurrencesOfString("+", withString: " ")
-                    displayCard(cardName)
-                }
-                
-                return false
-            }
-            
-            return true
-        }
-        
-        return false
-    }
-    
-    func webViewDidStartLoad(webView: UIWebView) {
-        MBProgressHUD.showHUDAddedTo(webView, animated: true)
-        
-        if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 1)) as? BrowserTableViewCell {
-            cell.updateButtons()
-        }
-    }
-    
-    func webViewDidFinishLoad(webView: UIWebView) {
-        MBProgressHUD.hideHUDForView(webView, animated: true)
-        
-        if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 1)) as? BrowserTableViewCell {
-            cell.updateButtons()
-        }
-    }
-    
-    func webView(webView: UIWebView, didFailLoadWithError error: NSError?) {
-        MBProgressHUD.hideHUDForView(webView, animated: true)
-        
-        if let error = error {
-            if let message = error.userInfo[NSLocalizedDescriptionKey] {
-                let html = "<html>\(message)</html>"
-                webView.loadHTMLString(html, baseURL: nil)
-            }
-        }
-    }
-}
