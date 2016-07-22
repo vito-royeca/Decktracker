@@ -49,6 +49,7 @@ class RulingsViewController: UIViewController {
         
         return fetchedResultsController
     }()
+    var formatter:NSDateFormatter?
     
     // MARK: Outlets
     @IBOutlet weak var tableView: UITableView!
@@ -58,6 +59,10 @@ class RulingsViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         navigationItem.title = "Rulings"
+        tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "Cell")
+        
+        formatter = NSDateFormatter()
+        formatter!.dateFormat = "YYYY-MM-dd"
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -95,10 +100,23 @@ class RulingsViewController: UIViewController {
             let sectionInfo = sections[indexPath.section]
             
             if let objects = sectionInfo.objects {
-                if let ruling = objects[indexPath.row] as? Ruling {
-                    cell.textLabel!.text = ruling.text
+                if let ruling = objects[indexPath.row] as? Ruling,
+                    let c = cell as? DynamicHeightTableViewCell {
+                    
+                    c.dynamicLabel.text = "\(formatter!.stringFromDate(ruling.date!))\n\n\(ruling.text!)"
                 }
             }
+        }
+    }
+    
+    func dynamicHeightForCell(identifier: String, indexPath: NSIndexPath) -> CGFloat {
+        if let cell = tableView.dequeueReusableCellWithIdentifier(identifier) {
+            configureCell(cell, indexPath: indexPath)
+            cell.layoutIfNeeded()
+            let size = cell.contentView.systemLayoutSizeFittingSize(UILayoutFittingExpandedSize)
+            return size.height + (size.height/4)
+        } else {
+            return UITableViewAutomaticDimension
         }
     }
 }
@@ -153,7 +171,7 @@ extension RulingsViewController: UITableViewDataSource {
 // MARK: UITableVIewDelegate
 extension RulingsViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+        return dynamicHeightForCell("Cell", indexPath: indexPath)
     }
 }
 

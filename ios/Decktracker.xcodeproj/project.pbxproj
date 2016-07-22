@@ -39,6 +39,12 @@
 		8C24C06B1D3BE09900B56373 /* BrowserTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C24C0671D3BE09900B56373 /* BrowserTableViewCell.xib */; };
 		8C24C06C1D3BE09900B56373 /* BrowserTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C24C0671D3BE09900B56373 /* BrowserTableViewCell.xib */; };
 		8C24C06D1D3BE09900B56373 /* BrowserTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C24C0671D3BE09900B56373 /* BrowserTableViewCell.xib */; };
+		8C39A5111D4201430021F1B0 /* DynamicHeightTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C39A50F1D4201430021F1B0 /* DynamicHeightTableViewCell.swift */; };
+		8C39A5121D4201430021F1B0 /* DynamicHeightTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C39A50F1D4201430021F1B0 /* DynamicHeightTableViewCell.swift */; };
+		8C39A5131D4201430021F1B0 /* DynamicHeightTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C39A50F1D4201430021F1B0 /* DynamicHeightTableViewCell.swift */; };
+		8C39A5141D4201430021F1B0 /* DynamicHeightTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C39A5101D4201430021F1B0 /* DynamicHeightTableViewCell.xib */; };
+		8C39A5151D4201430021F1B0 /* DynamicHeightTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C39A5101D4201430021F1B0 /* DynamicHeightTableViewCell.xib */; };
+		8C39A5161D4201430021F1B0 /* DynamicHeightTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C39A5101D4201430021F1B0 /* DynamicHeightTableViewCell.xib */; };
 		8C5D4D371D37336A008E6B2B /* TCGPlayerPricing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5D4D351D37336A008E6B2B /* TCGPlayerPricing.swift */; };
 		8C5D4D381D37336A008E6B2B /* TCGPlayerPricing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5D4D351D37336A008E6B2B /* TCGPlayerPricing.swift */; };
 		8C5D4D391D37336A008E6B2B /* TCGPlayerPricing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5D4D351D37336A008E6B2B /* TCGPlayerPricing.swift */; };
@@ -202,6 +208,8 @@
 		8C24C05F1D3BD94400B56373 /* PricingTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PricingTableViewCell.xib; sourceTree = "<group>"; };
 		8C24C0661D3BE09900B56373 /* BrowserTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowserTableViewCell.swift; sourceTree = "<group>"; };
 		8C24C0671D3BE09900B56373 /* BrowserTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BrowserTableViewCell.xib; sourceTree = "<group>"; };
+		8C39A50F1D4201430021F1B0 /* DynamicHeightTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicHeightTableViewCell.swift; sourceTree = "<group>"; };
+		8C39A5101D4201430021F1B0 /* DynamicHeightTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DynamicHeightTableViewCell.xib; sourceTree = "<group>"; };
 		8C5D4D351D37336A008E6B2B /* TCGPlayerPricing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TCGPlayerPricing.swift; path = ../../osx/DataSource/DataSource/TCGPlayerPricing.swift; sourceTree = "<group>"; };
 		8C5D4D361D37336A008E6B2B /* TCGPlayerPricing+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "TCGPlayerPricing+CoreDataProperties.swift"; path = "../../osx/DataSource/DataSource/TCGPlayerPricing+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		8CAE82801D3886E000569778 /* CardSummaryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardSummaryTableViewCell.swift; sourceTree = "<group>"; };
@@ -440,6 +448,8 @@
 				8C24C0571D3A6AA400B56373 /* CardImageTableViewCell.xib */,
 				8CAE82801D3886E000569778 /* CardSummaryTableViewCell.swift */,
 				8CAE82811D3886E000569778 /* CardSummaryTableViewCell.xib */,
+				8C39A50F1D4201430021F1B0 /* DynamicHeightTableViewCell.swift */,
+				8C39A5101D4201430021F1B0 /* DynamicHeightTableViewCell.xib */,
 				8CE7B7211D334684008BBB53 /* LaunchScreen.storyboard */,
 				8CE7B71C1D334684008BBB53 /* Main.storyboard */,
 				8C24C05E1D3BD94400B56373 /* PricingTableViewCell.swift */,
@@ -630,6 +640,7 @@
 				8CE7B7201D334684008BBB53 /* Assets.xcassets in Resources */,
 				8CEC11971D33F1CF009D3B2D /* Decktracker.sqlite in Resources */,
 				8C24C0631D3BD94400B56373 /* PricingTableViewCell.xib in Resources */,
+				8C39A5141D4201430021F1B0 /* DynamicHeightTableViewCell.xib in Resources */,
 				8CEC11911D33E2A0009D3B2D /* SetCollectionViewCell.xib in Resources */,
 				8C24C06B1D3BE09900B56373 /* BrowserTableViewCell.xib in Resources */,
 				8CEFCEB61D3492AE0046184F /* ThumbnailTableViewCell.xib in Resources */,
@@ -645,6 +656,7 @@
 				8C1A2AC31D3C80CA007C8A4B /* decktracker.plist in Resources */,
 				8C24C0641D3BD94400B56373 /* PricingTableViewCell.xib in Resources */,
 				8CEC119C1D33F792009D3B2D /* images in Resources */,
+				8C39A5151D4201430021F1B0 /* DynamicHeightTableViewCell.xib in Resources */,
 				8C24C06C1D3BE09900B56373 /* BrowserTableViewCell.xib in Resources */,
 				8C24C05C1D3A6AA400B56373 /* CardImageTableViewCell.xib in Resources */,
 				8CEC11981D33F1CF009D3B2D /* Decktracker.sqlite in Resources */,
@@ -662,6 +674,7 @@
 				8C1A2AC41D3C80CA007C8A4B /* decktracker.plist in Resources */,
 				8C24C0651D3BD94400B56373 /* PricingTableViewCell.xib in Resources */,
 				8CEC119D1D33F792009D3B2D /* images in Resources */,
+				8C39A5161D4201430021F1B0 /* DynamicHeightTableViewCell.xib in Resources */,
 				8C24C06D1D3BE09900B56373 /* BrowserTableViewCell.xib in Resources */,
 				8C24C05D1D3A6AA400B56373 /* CardImageTableViewCell.xib in Resources */,
 				8CEC11991D33F1CF009D3B2D /* Decktracker.sqlite in Resources */,
@@ -874,6 +887,7 @@
 				8CE7B77D1D334D55008BBB53 /* Color.swift in Sources */,
 				8CE7B78A1D334D55008BBB53 /* Rarity.swift in Sources */,
 				8CE7B7851D334D55008BBB53 /* Language+CoreDataProperties.swift in Sources */,
+				8C39A5111D4201430021F1B0 /* DynamicHeightTableViewCell.swift in Sources */,
 				8CE7B7821D334D55008BBB53 /* Format.swift in Sources */,
 				8CE7B7731D334D55008BBB53 /* Block.swift in Sources */,
 				8C24C0581D3A6AA400B56373 /* CardImageTableViewCell.swift in Sources */,
@@ -924,6 +938,7 @@
 				8CEFCEB41D3492AE0046184F /* ThumbnailTableViewCell.swift in Sources */,
 				8CE7B7AF1D336186008BBB53 /* MoreViewController.swift in Sources */,
 				8CAE82831D3886E000569778 /* CardSummaryTableViewCell.swift in Sources */,
+				8C39A5121D4201430021F1B0 /* DynamicHeightTableViewCell.swift in Sources */,
 				8CEC11751D33C99F009D3B2D /* Constants.swift in Sources */,
 				8CDCA1051D3FC0BD00850272 /* RulingsViewController.swift in Sources */,
 				8CCD10CF1D3DB14F003B7484 /* TCGPlayerManager.swift in Sources */,
@@ -958,6 +973,7 @@
 				8CEFCEB51D3492AE0046184F /* ThumbnailTableViewCell.swift in Sources */,
 				8CE7B7B01D336186008BBB53 /* MoreViewController.swift in Sources */,
 				8CAE82841D3886E000569778 /* CardSummaryTableViewCell.swift in Sources */,
+				8C39A5131D4201430021F1B0 /* DynamicHeightTableViewCell.swift in Sources */,
 				8CEC11761D33C99F009D3B2D /* Constants.swift in Sources */,
 				8CDCA1061D3FC0BD00850272 /* RulingsViewController.swift in Sources */,
 				8CCD10D01D3DB14F003B7484 /* TCGPlayerManager.swift in Sources */,
