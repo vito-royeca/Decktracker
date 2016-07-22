@@ -9,6 +9,7 @@
 import UIKit
 import Fabric
 import Crashlytics
+import JJJUtils
 import TwitterKit
 
 @UIApplicationMain
@@ -30,6 +31,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // TCGPlayer Pricing
         TCGPlayerManager.sharedInstance.setup(Constants.TCGPlayerPartnerKey)
+        
+        // custom colors
+        UINavigationBar.appearance().barTintColor = JJJUtil.colorFromRGB(0x691F01)
+        UINavigationBar.appearance().tintColor = UIColor.whiteColor()
+        UINavigationBar.appearance().titleTextAttributes = [
+            NSForegroundColorAttributeName : UIColor.whiteColor()]
+        UITabBar.appearance().barTintColor = JJJUtil .colorFromRGB(0x691F01)
+        UITabBar.appearance().tintColor = UIColor.whiteColor()
+        UISearchBar.appearance().tintColor = JJJUtil.colorFromRGB(0x691F01)
+        UISegmentedControl.appearance().tintColor = UIColor.grayColor()
+        
+        // remove the "Back" title in  back buttons
+        UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(0, -60), forBarMetrics:.Default)
         
         return true
     }

@@ -49,7 +49,7 @@
         <relationship name="printings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Set" inverseName="printings" inverseEntity="Set" syncable="YES"/>
         <relationship name="rarity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Rarity" inverseName="cards" inverseEntity="Rarity" syncable="YES"/>
         <relationship name="ratings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Rating" inverseName="card" inverseEntity="Rating" syncable="YES"/>
-        <relationship name="rulings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Ruling" inverseName="cards" inverseEntity="Ruling" syncable="YES"/>
+        <relationship name="rulings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Ruling" inverseName="card" inverseEntity="Ruling" syncable="YES"/>
         <relationship name="set" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Set" inverseName="cards" inverseEntity="Set" syncable="YES"/>
         <relationship name="source" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Source" inverseName="cards" inverseEntity="Source" syncable="YES"/>
         <relationship name="subtypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CardType" inverseName="subtypes" inverseEntity="CardType" syncable="YES"/>
@@ -112,7 +112,7 @@
     <entity name="Ruling" representedClassName=".Ruling" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Card" inverseName="rulings" inverseEntity="Card" syncable="YES"/>
+        <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Card" inverseName="rulings" inverseEntity="Card" syncable="YES"/>
     </entity>
     <entity name="Set" representedClassName=".Set" syncable="YES">
         <attribute name="code" optional="YES" attributeType="String" syncable="YES"/>

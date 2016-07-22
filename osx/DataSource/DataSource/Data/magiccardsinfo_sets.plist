@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>S00</key>
+	<string>st2k</string>
+	<key>DDQ</key>
+	<string>ddq</string>
+	<key>EMN</key>
+	<string></string>
+	<key>EMA</key>
+	<string></string>
+	<key>RQS</key>
+	<string></string>
+	<key>SOI</key>
+	<string>soi</string>
+	<key>VAN</key>
+	<string></string>
+	<key>W16</key>
+	<string></string>
+</dict>
+</plist>

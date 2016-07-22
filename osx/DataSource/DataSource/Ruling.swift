@@ -38,4 +38,14 @@ class Ruling: NSManagedObject {
         }
     }
 
+    var yearKeyPath: String? {
+        if let date = date {
+            let formatter = NSDateFormatter()
+            formatter.dateFormat = "YYYY"
+            
+            return formatter.stringFromDate(date)
+        }
+        
+        return nil
+    }
 }

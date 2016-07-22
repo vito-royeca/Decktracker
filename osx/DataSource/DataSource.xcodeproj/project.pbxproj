@@ -64,7 +64,8 @@
 		8C877F4A1B4D0BD8004302D2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C877F491B4D0BD8004302D2 /* SystemConfiguration.framework */; };
 		8C877F4C1B4D0BE4004302D2 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C877F4B1B4D0BE4004302D2 /* libsqlite3.dylib */; };
 		8C877F4E1B4D0BEC004302D2 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C877F4D1B4D0BEC004302D2 /* libz.dylib */; };
-		8C9AC1621D0F89F600E302F6 /* Decktracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8C9AC1601D0F89F600E302F6 /* Decktracker.xcdatamodeld */; };
+		8CC890421D40B4DC00587E4D /* Decktracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8CC8903E1D40B4DC00587E4D /* Decktracker.xcdatamodeld */; };
+		8CC890431D40C8C600587E4D /* magiccardsinfo_sets.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C24C06E1D3BFDA200B56373 /* magiccardsinfo_sets.plist */; };
 		8CE75CB01AB96D40001EB70E /* AllSets-x.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C87AB311A7F1F6C00E901DE /* AllSets-x.json */; };
 		8CE75CB41AB96DBB001EB70E /* MagicCompRules_20140926.htm in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C87AB321A7F1F6C00E901DE /* MagicCompRules_20140926.htm */; };
 		8CF9CE52199F9A22008127E5 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF9CE51199F9A22008127E5 /* AppKit.framework */; };
@@ -77,6 +78,7 @@
 			dstPath = Data;
 			dstSubfolderSpec = 16;
 			files = (
+				8CC890431D40C8C600587E4D /* magiccardsinfo_sets.plist in CopyFiles */,
 				8CE75CB41AB96DBB001EB70E /* MagicCompRules_20140926.htm in CopyFiles */,
 				8CE75CB01AB96D40001EB70E /* AllSets-x.json in CopyFiles */,
 				8C4B9D0E1A515D0B00F727E7 /* tcgplayer_sets.plist in CopyFiles */,
@@ -138,7 +140,7 @@
 		8C1B4DD0198CF0C000B4C948 /* DataSource-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DataSource-Prefix.pch"; sourceTree = "<group>"; };
 		8C22BA381D26B95E00FD8702 /* CardLegality+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CardLegality+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		8C22BA391D26B95E00FD8702 /* CardLegality.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardLegality.swift; sourceTree = "<group>"; };
-		8C24C06E1D3BFDA200B56373 /* mtgsalvation_sets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = mtgsalvation_sets.plist; sourceTree = "<group>"; };
+		8C24C06E1D3BFDA200B56373 /* magiccardsinfo_sets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = magiccardsinfo_sets.plist; sourceTree = "<group>"; };
 		8C4B9D091A51384400F727E7 /* tcgplayer_sets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = tcgplayer_sets.plist; sourceTree = "<group>"; };
 		8C5D4D311D373312008E6B2B /* TCGPlayerPricing+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TCGPlayerPricing+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		8C5D4D321D373312008E6B2B /* TCGPlayerPricing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TCGPlayerPricing.swift; sourceTree = "<group>"; };
@@ -149,10 +151,11 @@
 		8C877F491B4D0BD8004302D2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		8C877F4B1B4D0BE4004302D2 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		8C877F4D1B4D0BEC004302D2 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		8C877F571B4D5238004302D2 /* Investigate.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Investigate.txt; sourceTree = "<group>"; };
 		8C87AB311A7F1F6C00E901DE /* AllSets-x.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "AllSets-x.json"; path = "../../../../data/AllSets-x.json"; sourceTree = "<group>"; };
 		8C87AB321A7F1F6C00E901DE /* MagicCompRules_20140926.htm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = MagicCompRules_20140926.htm; path = ../../../../data/MagicCompRules_20140926.htm; sourceTree = "<group>"; };
-		8C9AC1611D0F89F600E302F6 /* Decktracker.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Decktracker.xcdatamodel; sourceTree = "<group>"; };
+		8CC8903F1D40B4DC00587E4D /* Decktracker.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Decktracker.xcdatamodel; sourceTree = "<group>"; };
+		8CC890401D40B4DC00587E4D /* Jul 18, 2016.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Jul 18, 2016.xcdatamodel"; sourceTree = "<group>"; };
+		8CC890411D40B4DC00587E4D /* Jul 19, 2016.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Jul 19, 2016.xcdatamodel"; sourceTree = "<group>"; };
 		8CEF64DE1B0081260056450F /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		8CF9CE4B199F982A008127E5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		8CF9CE51199F9A22008127E5 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -274,7 +277,7 @@
 				8C0D16481D2375DA00165F3A /* CardType+CoreDataProperties.swift */,
 				8C0D16651D2375DA00165F3A /* Color.swift */,
 				8C0D16641D2375DA00165F3A /* Color+CoreDataProperties.swift */,
-				8C9AC1601D0F89F600E302F6 /* Decktracker.xcdatamodeld */,
+				8CC8903E1D40B4DC00587E4D /* Decktracker.xcdatamodeld */,
 				8C0D164D1D2375DA00165F3A /* ForeignName.swift */,
 				8C0D164C1D2375DA00165F3A /* ForeignName+CoreDataProperties.swift */,
 				8C0D16631D2375DA00165F3A /* Format.swift */,
@@ -309,9 +312,8 @@
 			isa = PBXGroup;
 			children = (
 				8C87AB311A7F1F6C00E901DE /* AllSets-x.json */,
-				8C877F571B4D5238004302D2 /* Investigate.txt */,
 				8C87AB321A7F1F6C00E901DE /* MagicCompRules_20140926.htm */,
-				8C24C06E1D3BFDA200B56373 /* mtgsalvation_sets.plist */,
+				8C24C06E1D3BFDA200B56373 /* magiccardsinfo_sets.plist */,
 				8C4B9D091A51384400F727E7 /* tcgplayer_sets.plist */,
 			);
 			path = Data;
@@ -423,6 +425,7 @@
 				8C0D16681D2375DA00165F3A /* Watermark+CoreDataProperties.swift in Sources */,
 				8C0D16841D2375DA00165F3A /* Language+CoreDataProperties.swift in Sources */,
 				8C0D16891D2375DA00165F3A /* Format.swift in Sources */,
+				8CC890421D40B4DC00587E4D /* Decktracker.xcdatamodeld in Sources */,
 				8C0D168D1D2375DA00165F3A /* Set.swift in Sources */,
 				8C0D166B1D2375DA00165F3A /* Card.swift in Sources */,
 				8C0D169A1D2376EB00165F3A /* JSONLoader.swift in Sources */,
@@ -445,7 +448,6 @@
 				8C0D16741D2375DA00165F3A /* Block+CoreDataProperties.swift in Sources */,
 				8C5D4D331D373312008E6B2B /* TCGPlayerPricing+CoreDataProperties.swift in Sources */,
 				8C0D16771D2375DA00165F3A /* Rarity.swift in Sources */,
-				8C9AC1621D0F89F600E302F6 /* Decktracker.xcdatamodeld in Sources */,
 				8C5D4D341D373312008E6B2B /* TCGPlayerPricing.swift in Sources */,
 				8C0D169C1D23A2F600165F3A /* Constants.swift in Sources */,
 				8C0D16731D2375DA00165F3A /* ForeignName.swift in Sources */,
@@ -644,12 +646,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		8C9AC1601D0F89F600E302F6 /* Decktracker.xcdatamodeld */ = {
+		8CC8903E1D40B4DC00587E4D /* Decktracker.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				8C9AC1611D0F89F600E302F6 /* Decktracker.xcdatamodel */,
+				8CC8903F1D40B4DC00587E4D /* Decktracker.xcdatamodel */,
+				8CC890401D40B4DC00587E4D /* Jul 18, 2016.xcdatamodel */,
+				8CC890411D40B4DC00587E4D /* Jul 19, 2016.xcdatamodel */,
 			);
-			currentVersion = 8C9AC1611D0F89F600E302F6 /* Decktracker.xcdatamodel */;
+			currentVersion = 8CC890411D40B4DC00587E4D /* Jul 19, 2016.xcdatamodel */;
 			path = Decktracker.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

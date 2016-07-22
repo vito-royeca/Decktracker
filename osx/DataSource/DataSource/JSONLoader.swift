@@ -58,7 +58,7 @@ class JSONLoader: NSObject {
                         }
                     }
                     
-                    // parse extra info
+//                     parse extra info
                     var dateStart = NSDate()
                     print("Start parsing variations...")
                     for setName in dict.keys {
@@ -98,18 +98,18 @@ class JSONLoader: NSObject {
                     timeDifference = dateEnd.timeIntervalSinceDate(dateStart)
                     print("Time Elapsed: \(JJJUtil.formatInterval(timeDifference))")
                     
-                    dateStart = NSDate()
-                    print("Start parsing foreign names...")
-                    for setName in dict.keys {
-                        if let dictSets = dict[setName] as? [String: AnyObject] {
-                            if let dictCards = dictSets["cards"] as? [[String: AnyObject]] {
-                                parseForeignNames(dictCards)
-                            }
-                        }
-                    }
-                    dateEnd = NSDate()
-                    timeDifference = dateEnd.timeIntervalSinceDate(dateStart)
-                    print("Time Elapsed: \(JJJUtil.formatInterval(timeDifference))")
+//                    dateStart = NSDate()
+//                    print("Start parsing foreign names...")
+//                    for setName in dict.keys {
+//                        if let dictSets = dict[setName] as? [String: AnyObject] {
+//                            if let dictCards = dictSets["cards"] as? [[String: AnyObject]] {
+//                                parseForeignNames(dictCards)
+//                            }
+//                        }
+//                    }
+//                    dateEnd = NSDate()
+//                    timeDifference = dateEnd.timeIntervalSinceDate(dateStart)
+//                    print("Time Elapsed: \(JJJUtil.formatInterval(timeDifference))")
                 }
             } catch {
                 
@@ -146,18 +146,33 @@ class JSONLoader: NSObject {
         if let _ = dict[SetType.Keys.Name] as? String {
             set.type = ObjectManager.sharedInstance.findOrCreateSetType(dict)
         }
-        set.tcgPlayerName = getTcgPlayerName(set)
+        set.tcgPlayerName = getTcgPlayerName(set.name!)
         
+        if set.magicCardsInfoCode == nil {
+           set.magicCardsInfoCode = getMagicCardsInfoCode(set.code!)
+        }
         CoreDataManager.sharedInstance.savePrivateContext()
         return set
     }
     
-    func getTcgPlayerName(set: Set) -> String? {
-    
+    func getTcgPlayerName(name: String) -> String? {
         let filePath = "\(NSBundle.mainBundle().resourcePath!)/Data/tcgplayer_sets.plist"
+        
         if let dict = NSDictionary(contentsOfFile: filePath) as? [String: AnyObject] {
-            if let tcgPlayerName = dict[set.name!] as? String {
+            if let tcgPlayerName = dict[name] as? String {
                 return tcgPlayerName
+            }
+        }
+        
+        return nil
+    }
+    
+    func getMagicCardsInfoCode(code: String) -> String? {
+        let filePath = "\(NSBundle.mainBundle().resourcePath!)/Data/magiccardsinfo_sets.plist"
+        
+        if let dict = NSDictionary(contentsOfFile: filePath) as? [String: AnyObject] {
+            if let magicCardsInfoCode = dict[code] as? String {
+                return magicCardsInfoCode.characters.count > 0 ? magicCardsInfoCode : nil
             }
         }
         
@@ -323,9 +338,7 @@ class JSONLoader: NSObject {
             if let dictRulings = dictCard["rulings"] as? [[String: AnyObject]] {
                 let card = ObjectManager.sharedInstance.findOrCreateCard(dictCard)
                 let rulings = card.mutableSetValueForKey("rulings")
-                let formatter = NSDateFormatter()
                 
-                formatter.dateFormat = "YYYY-MM-dd"
                 for ruling in dictRulings {
                     let cardRuling = ObjectManager.sharedInstance.findOrCreateRuling(ruling)
                     rulings.addObject(cardRuling)

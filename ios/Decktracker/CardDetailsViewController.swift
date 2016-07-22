@@ -59,6 +59,7 @@ class CardDetailsViewController: UIViewController {
         tableView.registerNib(UINib(nibName: "CardSummaryTableViewCell", bundle: nil), forCellReuseIdentifier: "summaryCell")
         tableView.registerNib(UINib(nibName: "PricingTableViewCell", bundle: nil), forCellReuseIdentifier: "pricingCell")
         tableView.registerNib(UINib(nibName: "CardImageTableViewCell", bundle: nil), forCellReuseIdentifier: "imageCell")
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "numberCell")
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "textsCell")
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "artistCell")
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "legalitiesCell")
@@ -77,16 +78,21 @@ class CardDetailsViewController: UIViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showTexts" {
             if let detailsVC = segue.destinationViewController as? TextsViewController {
-                
                 detailsVC.cardOID = cardOID
-//                detailsVC.navigationItem.title = set.name!
             }
+            
         } else if segue.identifier == "showArtist" {
             
+        
         } else if segue.identifier == "showLegalities" {
-            
+            if let detailsVC = segue.destinationViewController as? LegalitiesViewController {
+                detailsVC.cardOID = cardOID
+            }
+        
         } else if segue.identifier == "showRulings" {
-            
+            if let detailsVC = segue.destinationViewController as? RulingsViewController {
+                detailsVC.cardOID = cardOID
+            }
         }
     }
     
@@ -110,6 +116,9 @@ class CardDetailsViewController: UIViewController {
     func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
         cell.accessoryType = .None
         cell.selectionStyle = .None
+        cell.accessoryView = nil
+        
+        let card = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(cardOID!) as! Card
         
         switch indexPath.section {
         case 0:
@@ -129,23 +138,34 @@ class CardDetailsViewController: UIViewController {
                     c.cardOID = cardOID
                 }
             case 3:
+                if let number = card.number {
+                    cell.textLabel?.text = "Card Number: \(number) / \(card.set!.numberOfCards!)"
+                } else {
+                    cell.textLabel?.text = "Card Number: "
+                }
+            case 4:
                 cell.textLabel?.text = "Texts"
                 cell.accessoryType = .DisclosureIndicator
                 cell.selectionStyle = .Default
-            case 4:
-                let card = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(cardOID!) as! Card
+            case 5:
                 cell.textLabel?.text = card.artist!.name
                 cell.detailTextLabel?.text = "Artist"
                 cell.accessoryType = .DisclosureIndicator
                 cell.selectionStyle = .Default
-            case 5:
+            case 6:
                 cell.textLabel?.text = "Legalities"
                 cell.accessoryType = .DisclosureIndicator
                 cell.selectionStyle = .Default
-            case 6:
+                if let legalities = card.legalities {
+                    addBadgeToCell(cell, count: legalities.allObjects.count)
+                }
+            case 7:
                 cell.textLabel?.text = "Rulings"
                 cell.accessoryType = .DisclosureIndicator
                 cell.selectionStyle = .Default
+                if let rulings = card.rulings {
+                    addBadgeToCell(cell, count: rulings.allObjects.count)
+                }
             default:
                 ()
             }
@@ -180,6 +200,20 @@ class CardDetailsViewController: UIViewController {
             ()
         }
     }
+    
+    func addBadgeToCell(cell: UITableViewCell, count: Int) {
+        let size: CGFloat = 26
+        let digits = CGFloat("\(count)".characters.count) // digits in the label
+        let width = max(size, 0.7 * size * digits) // perfect circle is smallest allowed
+        let badge = UILabel(frame: CGRectMake(0, 0, width, size))
+        badge.text = "\(count)"
+        badge.layer.cornerRadius = size / 2
+        badge.layer.masksToBounds = true
+        badge.textAlignment = .Center
+        badge.textColor = UIColor.whiteColor()
+        badge.backgroundColor = UIColor.redColor()
+        cell.accessoryView = badge
+    }
 }
 
 // MARK: UITableViewDataSource
@@ -187,7 +221,7 @@ extension CardDetailsViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return 7
+            return 8
         case 1:
             if setsFetchRequest != nil,
                 let sections = setsFetchedResultsController.sections {
@@ -258,12 +292,14 @@ extension CardDetailsViewController: UITableViewDataSource {
             case 2:
                 cell = tableView.dequeueReusableCellWithIdentifier("imageCell", forIndexPath: indexPath)
             case 3:
-                cell = UITableViewCell(style: .Subtitle, reuseIdentifier: "textsCell")
+                cell = UITableViewCell(style: .Subtitle, reuseIdentifier: "numberCell")
             case 4:
-                cell = UITableViewCell(style: .Subtitle, reuseIdentifier: "artistCell")
+                cell = UITableViewCell(style: .Subtitle, reuseIdentifier: "textsCell")
             case 5:
-                cell = UITableViewCell(style: .Subtitle, reuseIdentifier: "legalitiesCell")
+                cell = UITableViewCell(style: .Subtitle, reuseIdentifier: "artistCell")
             case 6:
+                cell = UITableViewCell(style: .Subtitle, reuseIdentifier: "legalitiesCell")
+            case 7:
                 cell = UITableViewCell(style: .Subtitle, reuseIdentifier: "rulingsCell")
             default:
                 ()
@@ -298,7 +334,7 @@ extension CardDetailsViewController: UITableViewDelegate {
                 var height = tableView.frame.size.height -
                     CardSummaryTableViewCell.CellHeight -
                     UITableViewAutomaticDimension -
-                    22 // visual clue for the user to scroll down
+                    33 // visual clue for the user to scroll down
                 
                 if let navigationController = navigationController {
                     height -= navigationController.navigationBar.frame.size.height
@@ -336,13 +372,13 @@ extension CardDetailsViewController: UITableViewDelegate {
                     }
                 }
                 
-            case 3:
-                performSegueWithIdentifier("showTexts", sender: self)
             case 4:
-                performSegueWithIdentifier("showArtist", sender: self)
+                performSegueWithIdentifier("showTexts", sender: self)
             case 5:
-                performSegueWithIdentifier("showLegalities", sender: self)
+                performSegueWithIdentifier("showArtist", sender: self)
             case 6:
+                performSegueWithIdentifier("showLegalities", sender: self)
+            case 7:
                 performSegueWithIdentifier("showRulings", sender: self)
             default:
                 ()

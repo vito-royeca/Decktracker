@@ -16,6 +16,6 @@ extension Ruling {
 
     @NSManaged var date: NSDate?
     @NSManaged var text: String?
-    @NSManaged var cards: NSSet?
+    @NSManaged var card: Card?
 
 }

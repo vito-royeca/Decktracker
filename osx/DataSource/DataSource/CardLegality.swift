@@ -20,5 +20,13 @@ class CardLegality: NSManagedObject {
         let entity =  NSEntityDescription.entityForName("CardLegality", inManagedObjectContext: context)!
         super.init(entity: entity,insertIntoManagedObjectContext: context)
     }
+    
+    var legalityKeyPath: String? {
+        if let legality = legality {
+            return legality.name!.capitalizedString
+        }
+        
+        return nil
+    }
 
 }
