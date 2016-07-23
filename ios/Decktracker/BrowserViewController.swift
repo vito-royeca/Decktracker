@@ -55,7 +55,7 @@ class BrowserViewController: UIViewController {
         if let html = html {
             webView.loadHTMLString(html, baseURL: NSURL(fileURLWithPath: "\(NSBundle.mainBundle().bundlePath)/web"))
             
-        } else if let urlString = urlString {
+        } else if let _ = urlString {
             displayPage()
         }
         

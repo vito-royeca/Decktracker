@@ -73,6 +73,28 @@ class LegalitiesViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "showFormatWiki" {
+            if let detailsVC = segue.destinationViewController as? BrowserViewController,
+                let indexPath = sender as? NSIndexPath,
+                let sections = fetchedResultsController.sections {
+                
+                let sectionInfo = sections[indexPath.section]
+                
+                if let objects = sectionInfo.objects {
+                    if let legality = objects[indexPath.row] as? CardLegality {
+                        if let format = legality.format {
+            
+                            let urlString = "http://mtgsalvation.gamepedia.com/\(format.nameSnakeCase!)"
+                            detailsVC.urlString = urlString
+                            detailsVC.navigationTitle = format.name
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     // MARK: Custom methods
     func loadLegalities() {
         let card = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(cardOID!) as! Card
@@ -103,6 +125,8 @@ class LegalitiesViewController: UIViewController {
                 if let legality = objects[indexPath.row] as? CardLegality {
                     if let format = legality.format {
                         cell.textLabel!.text = format.name
+                        cell.imageView!.image = UIImage(named: "Wikipedia")
+                        cell.accessoryType = .DisclosureIndicator
                     }
                 }
             }
@@ -180,6 +204,10 @@ extension LegalitiesViewController: UITableViewDataSource {
 extension LegalitiesViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        performSegueWithIdentifier("showFormatWiki", sender: indexPath)
     }
 }
 

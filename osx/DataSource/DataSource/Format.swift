@@ -31,4 +31,11 @@ class Format: NSManagedObject {
         name = dictionary[Keys.Name] as? String
     }
 
+    var nameSnakeCase: String? {
+        if let name = name {
+            return name.stringByReplacingOccurrencesOfString(" ", withString: "_")
+        }
+        
+        return nil
+    }
 }

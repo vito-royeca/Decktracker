@@ -350,8 +350,8 @@ class SetDetailsViewController: UIViewController {
         case 0:
             let set = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(setOID!) as! Set
             cell.textLabel?.text = set.name
-//            cell.detailTextLabel?.text = "MTG Salvation Wiki"
             cell.accessoryType = .DisclosureIndicator
+            cell.imageView?.image = UIImage(named: "Wikipedia")
         default:
             if fetchRequest != nil,
                 let sections = fetchedResultsController.sections,
@@ -454,7 +454,8 @@ extension SetDetailsViewController: UITableViewDataSource {
         
         switch indexPath.section {
         case 0:
-            cell = UITableViewCell(style: .Subtitle, reuseIdentifier: "wikiCell")
+//            cell = UITableViewCell(style: .Subtitle, reuseIdentifier: "wikiCell")
+            cell = tableView.dequeueReusableCellWithIdentifier("wikiCell", forIndexPath: indexPath)
         default:
             cell = tableView.dequeueReusableCellWithIdentifier("summaryCell", forIndexPath: indexPath)
         }
