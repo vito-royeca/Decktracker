@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import IDMPhotoBrowser
 import JJJUtils
 import SafariServices
 
@@ -15,7 +16,7 @@ class CardDetailsViewController: UIViewController {
 
     // MARK: Variables
     var cardOID:NSManagedObjectID?
-    var swiperFetchRequest:NSFetchRequest?
+    var browseFetchRequest:NSFetchRequest?
     
     private var _setsFetchRequest:NSFetchRequest? = nil
     var setsFetchRequest:NSFetchRequest? {
@@ -309,6 +310,38 @@ class CardDetailsViewController: UIViewController {
         newText = newText.stringByReplacingOccurrencesOfString(")", withString:"</i>)")
         return JJJUtil.stringWithNewLinesAsBRs(newText)
     }
+    
+    func showCardBrowser() {
+        var photos = [IDMPhoto]()
+        var i = UInt(0)
+        var index = UInt(0)
+        
+        if let browseFetchRequest = browseFetchRequest {
+            do {
+                let cards = try CoreDataManager.sharedInstance.mainObjectContext.executeFetchRequest(browseFetchRequest)
+                
+                for card in cards {
+                    if let c = card as? Card {
+                        if c.objectID == cardOID {
+                            index = i
+                        }
+                        if let urlPath = c.urlPath {
+                            let photo = IDMPhoto(URL: urlPath)
+                            photos.append(photo)
+                        }
+                        i += 1
+                    }
+                }
+            } catch {}
+//
+            let backgroundImage = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/Gray_Patterned_BG.jpg")
+            let browser = IDMPhotoBrowser(photos: photos)
+            browser.setInitialPageIndex(index)
+            browser.view.backgroundColor = UIColor(patternImage: backgroundImage!)
+            browser.delegate = self
+            presentViewController(browser, animated:true, completion:nil)
+        }
+    }
 }
 
 // MARK: UITableViewDataSource
@@ -467,6 +500,9 @@ extension CardDetailsViewController: UITableViewDelegate {
                     }
                 }
                 
+            case 2:
+                showCardBrowser()
+                
             case 4:
                 performSegueWithIdentifier("showCardTexts", sender: self)
             case 5:
@@ -564,5 +600,20 @@ extension CardDetailsViewController : NSFetchedResultsControllerDelegate {
 extension CardDetailsViewController : SFSafariViewControllerDelegate {
     func safariViewControllerDidFinish(controller: SFSafariViewController) {
         controller.dismissViewControllerAnimated(true, completion: nil)
+    }
+}
+
+// MARK: IDMPhotoBrowserDelegate
+extension CardDetailsViewController : IDMPhotoBrowserDelegate {
+    func photoBrowser(photoBrowser: IDMPhotoBrowser, didShowPhotoAtIndex index: UInt) {
+        do {
+            let cards = try CoreDataManager.sharedInstance.mainObjectContext.executeFetchRequest(browseFetchRequest!)
+
+            if let card = cards[Int(index)] as? Card {
+                cardOID = card.objectID
+//                tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: false)
+                loadSets()
+            }
+        } catch {}
     }
 }

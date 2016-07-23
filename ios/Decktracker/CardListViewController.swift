@@ -312,6 +312,7 @@ class CardListViewController: UIViewController {
                     if let card = objects[indexPath.row] as? Card,
                         let detailsVC = segue.destinationViewController as? CardDetailsViewController {
                         detailsVC.cardOID = card.objectID
+                        detailsVC.browseFetchRequest = fetchRequest
                     }
                 }
             }

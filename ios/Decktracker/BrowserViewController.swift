@@ -79,7 +79,6 @@ class BrowserViewController: UIViewController {
     func updateButtons() {
         backButton.enabled = webView.canGoBack
         forwardButton.enabled = webView.canGoForward
-        refreshButton.enabled = true
     }
     
     func displayCard(cardName: String) {
@@ -130,6 +129,7 @@ extension BrowserViewController : UIWebViewDelegate {
     func webViewDidFinishLoad(webView: UIWebView) {
         MBProgressHUD.hideHUDForView(webView, animated: true)
         updateButtons()
+        refreshButton.enabled = true
     }
     
     func webView(webView: UIWebView, didFailLoadWithError error: NSError?) {
@@ -141,5 +141,8 @@ extension BrowserViewController : UIWebViewDelegate {
                 webView.loadHTMLString(html, baseURL: nil)
             }
         }
+        
+        updateButtons()
+        refreshButton.enabled = true
     }
 }
