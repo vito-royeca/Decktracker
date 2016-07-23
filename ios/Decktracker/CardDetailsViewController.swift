@@ -77,9 +77,10 @@ class CardDetailsViewController: UIViewController {
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let card = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(cardOID!) as! Card
+        
         if segue.identifier == "showCardTexts" {
             if let detailsVC = segue.destinationViewController as? BrowserViewController {
-                let card = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(cardOID!) as! Card
                 var html:String?
                 var text = ""
                 
@@ -106,8 +107,10 @@ class CardDetailsViewController: UIViewController {
                 detailsVC.html = html
             }
             
-        } else if segue.identifier == "showArtist" {
-            
+        } else if segue.identifier == "showArtistWiki" {
+            if let detailsVC = segue.destinationViewController as? ArtistViewController {
+                detailsVC.artistOID = card.artist!.objectID
+            }
         
         } else if segue.identifier == "showLegalities" {
             if let detailsVC = segue.destinationViewController as? LegalitiesViewController {
@@ -467,7 +470,7 @@ extension CardDetailsViewController: UITableViewDelegate {
             case 4:
                 performSegueWithIdentifier("showCardTexts", sender: self)
             case 5:
-                performSegueWithIdentifier("showArtist", sender: self)
+                performSegueWithIdentifier("showArtistWiki", sender: self)
             case 6:
                 performSegueWithIdentifier("showLegalities", sender: self)
             case 7:
