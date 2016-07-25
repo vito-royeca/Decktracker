@@ -34,7 +34,7 @@ class SetDetailsViewController: CardListViewController {
         return set.name!
     }
     override func getNavigationTitle() -> String {
-        return "Set Details"
+        return "Set Wiki"
     }
     
     override func loadCards(predicate: NSPredicate?) {

@@ -39,7 +39,7 @@ class ArtistViewController: CardListViewController {
         return artist.name!
     }
     override func getNavigationTitle() -> String {
-        return "Artist Details"
+        return "Artist Wiki"
     }
     
     override func loadCards(predicate: NSPredicate?) {

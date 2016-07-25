@@ -252,6 +252,7 @@ class SetsViewController: UIViewController {
                     } else {
                         cell.imageView!.image = UIImage(named: "blank")
                     }
+                    cell.imageView!.contentMode = .ScaleAspectFit
                     cell.textLabel!.text = set.name
                     cell.detailTextLabel!.text = "Released: \(formatter!.stringFromDate(set.releaseDate!)) (\(set.numberOfCards!) card\(set.numberOfCards!.intValue > 1 ? "s": ""))"
                     cell.accessoryType = .DisclosureIndicator
