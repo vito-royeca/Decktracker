@@ -24,17 +24,62 @@ class CoreDataManager: NSObject {
         self.sqliteFile = sqliteFile
         self.modelFile = modelFile
         
+        let plistPath = "\(NSBundle.mainBundle().bundlePath)/decktracker.plist"
+        let plistDict = NSDictionary(contentsOfFile: plistPath)
         let documentPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first
+        let cachePath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first
         let storePath = "\(documentPath!)/\(sqliteFile)"
-        
-        if !NSFileManager.defaultManager().fileExistsAtPath(storePath) {
-            let preloadPath = "\(NSBundle.mainBundle().bundlePath)/\(sqliteFile)"
+
+        // delete all cards from mtgimage.com
+        let mtgImageKey = "mtgimage.com images"
+        if !NSUserDefaults.standardUserDefaults().boolForKey(mtgImageKey) {
+            let path = "\(cachePath)/images"
             
-            if NSFileManager.defaultManager().fileExistsAtPath(preloadPath) {
+            if NSFileManager.defaultManager().fileExistsAtPath(path) {
                 do {
-                    try NSFileManager.defaultManager().copyItemAtPath(preloadPath, toPath: storePath)
+                    try NSFileManager.defaultManager().removeItemAtPath(path)
+                } catch {}
+            }
+        }
+        NSUserDefaults.standardUserDefaults().setBool(true, forKey:mtgImageKey)
+
+        // copy Sqlite file to documents dir
+        if !NSFileManager.defaultManager().fileExistsAtPath(storePath) {
+            let path = "\(NSBundle.mainBundle().bundlePath)/\(sqliteFile)"
+            
+            if NSFileManager.defaultManager().fileExistsAtPath(path) {
+                do {
+                    try NSFileManager.defaultManager().copyItemAtPath(path, toPath: storePath)
+                    if let jsonVersion = plistDict!["JSON Version"] as? String {
+                        NSUserDefaults.standardUserDefaults().setValue(jsonVersion, forKey:"JSON Version")
+                        NSUserDefaults.standardUserDefaults().synchronize()
+                    }
                 } catch {
                     print("Error copying \(sqliteFile)")
+                }
+            }
+        } else {
+            
+            if let jsonVersion = plistDict!["JSON Version"] as? String {
+                if let currentJSONVersion = NSUserDefaults.standardUserDefaults().valueForKey("JSON Version") as? String {
+                    if jsonVersion != currentJSONVersion {
+                        do {
+                            for file in try NSFileManager.defaultManager().contentsOfDirectoryAtPath(documentPath!) {
+                                if file.hasPrefix("decktracker.") || file.hasPrefix("Decktracker.") {
+                                    try NSFileManager.defaultManager().removeItemAtPath("\(documentPath)/\(file)")
+                                }
+                            }
+                        } catch {}
+                        
+                        NSUserDefaults.standardUserDefaults().setValue(jsonVersion, forKey:"JSON Version")
+                        NSUserDefaults.standardUserDefaults().synchronize()
+                        setup(sqliteFile, modelFile: modelFile)
+                    }
+                    
+                } else {
+                    NSUserDefaults.standardUserDefaults().setValue(jsonVersion, forKey:"JSON Version")
+                    NSUserDefaults.standardUserDefaults().synchronize()
+                    setup(sqliteFile, modelFile: modelFile)
                 }
             }
         }
