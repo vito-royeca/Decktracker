@@ -246,9 +246,13 @@ class CardDetailsViewController: UIViewController {
     
     func replaceSymbolsInText(text: String) -> String {
         var newText = text
+        newText = newText.stringByReplacingOccurrencesOfString("\n", withString:"<br/> ")
+        newText = newText.stringByReplacingOccurrencesOfString("(", withString:"(<i>")
+        newText = newText.stringByReplacingOccurrencesOfString(")", withString:"</i>)")
+        
         var arrSymbols = [AnyObject]()
         
-        var temp = text.stringByReplacingOccurrencesOfString("{", withString: "")
+        var temp = newText.stringByReplacingOccurrencesOfString("{", withString: "")
         temp = temp.stringByReplacingOccurrencesOfString("}", withString: " ")
         temp = JJJUtil.trim(temp)
         arrSymbols = temp.componentsSeparatedByString(" ")
@@ -306,9 +310,7 @@ class CardDetailsViewController: UIViewController {
             }
         }
         
-        newText = newText.stringByReplacingOccurrencesOfString("(", withString:"(<i>")
-        newText = newText.stringByReplacingOccurrencesOfString(")", withString:"</i>)")
-        return JJJUtil.stringWithNewLinesAsBRs(newText)
+        return newText
     }
     
     func showCardBrowser() {

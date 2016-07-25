@@ -158,14 +158,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NIu-l6-JrF">
+                            <webView contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NIu-l6-JrF">
                                 <rect key="frame" x="0.0" y="64" width="600" height="487"/>
                                 <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="deviceRGB"/>
                                 <connections>
                                     <outlet property="delegate" destination="KcJ-iv-BdV" id="Je5-pW-6lU"/>
                                 </connections>
                             </webView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pe3-Gn-q8N">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Pe3-Gn-q8N">
                                 <rect key="frame" x="0.0" y="507" width="600" height="44"/>
                                 <items>
                                     <barButtonItem image="back" id="N5N-Ei-AyQ">
@@ -214,7 +214,7 @@
         <!--Card Details-->
         <scene sceneID="sdM-77-EfC">
             <objects>
-                <viewController storyboardIdentifier="CardDetailsViewController" automaticallyAdjustsScrollViewInsets="NO" id="SZ3-8U-pUv" customClass="CardDetailsViewController" customModule="Decktracker" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CardDetailsViewController" automaticallyAdjustsScrollViewInsets="NO" hidesBottomBarWhenPushed="YES" id="SZ3-8U-pUv" customClass="CardDetailsViewController" customModule="Decktracker" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="6sa-wC-3sz"/>
                         <viewControllerLayoutGuide type="bottom" id="DRd-y2-O3S"/>
@@ -322,10 +322,10 @@
             </objects>
             <point key="canvasLocation" x="3731" y="-432"/>
         </scene>
-        <!--Artist Details-->
+        <!--Artist Cards-->
         <scene sceneID="BXM-RH-7b6">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="EGa-8u-1n7" customClass="ArtistViewController" customModule="Decktracker" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" hidesBottomBarWhenPushed="YES" id="EGa-8u-1n7" customClass="ArtistViewController" customModule="Decktracker" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="L8l-la-LpJ"/>
                         <viewControllerLayoutGuide type="bottom" id="KLh-zu-ejZ"/>
@@ -334,7 +334,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hyJ-lZ-Xjq">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hyJ-lZ-Xjq">
                                 <rect key="frame" x="0.0" y="64" width="600" height="487"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -370,7 +370,7 @@
                             <constraint firstItem="hyJ-lZ-Xjq" firstAttribute="top" secondItem="L8l-la-LpJ" secondAttribute="bottom" id="wSQ-Ay-1UR"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Artist Details" id="gVg-t9-CFY">
+                    <navigationItem key="navigationItem" title="Artist Cards" id="gVg-t9-CFY">
                         <rightBarButtonItems>
                             <barButtonItem image="sortOptions" id="gkq-tg-DvG">
                                 <connections>
@@ -399,7 +399,7 @@
         <!--Legalities-->
         <scene sceneID="j3E-oe-Axv">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="hBG-jd-pof" customClass="LegalitiesViewController" customModule="Decktracker" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" hidesBottomBarWhenPushed="YES" id="hBG-jd-pof" customClass="LegalitiesViewController" customModule="Decktracker" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="s2J-SI-7Et"/>
                         <viewControllerLayoutGuide type="bottom" id="Vk8-z9-IJ6"/>
@@ -408,7 +408,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="o8U-D4-cn2">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="o8U-D4-cn2">
                                 <rect key="frame" x="0.0" y="64" width="600" height="487"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -457,7 +457,7 @@
         <!--Rulings-->
         <scene sceneID="dVU-db-zbk">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="joh-3B-onB" customClass="RulingsViewController" customModule="Decktracker" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" hidesBottomBarWhenPushed="YES" id="joh-3B-onB" customClass="RulingsViewController" customModule="Decktracker" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="bpv-Qo-xK5"/>
                         <viewControllerLayoutGuide type="bottom" id="l9A-er-QEG"/>
@@ -466,7 +466,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="edN-kA-fey">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="edN-kA-fey">
                                 <rect key="frame" x="0.0" y="64" width="600" height="487"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -727,10 +727,10 @@
             </objects>
             <point key="canvasLocation" x="6941" y="-432"/>
         </scene>
-        <!--Set Details-->
+        <!--Set Cards-->
         <scene sceneID="WGK-Rl-uFB">
             <objects>
-                <viewController storyboardIdentifier="SetDetailsViewController" automaticallyAdjustsScrollViewInsets="NO" id="fXU-8e-mfI" customClass="SetDetailsViewController" customModule="Decktracker" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SetDetailsViewController" automaticallyAdjustsScrollViewInsets="NO" hidesBottomBarWhenPushed="YES" id="fXU-8e-mfI" customClass="SetDetailsViewController" customModule="Decktracker" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Zzr-fy-n9Q"/>
                         <viewControllerLayoutGuide type="bottom" id="LGo-6q-cv7"/>
@@ -775,7 +775,7 @@
                             <constraint firstItem="Hbi-xq-RvR" firstAttribute="bottom" secondItem="LGo-6q-cv7" secondAttribute="top" id="UNU-0V-lb4"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Set Details" id="dhW-YE-2C3">
+                    <navigationItem key="navigationItem" title="Set Cards" id="dhW-YE-2C3">
                         <rightBarButtonItems>
                             <barButtonItem image="sortOptions" id="zAL-Tb-UBv">
                                 <connections>
@@ -812,7 +812,7 @@
         <image name="upload" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="RRh-g2-Wo8"/>
-        <segue reference="RZ1-T1-RTM"/>
+        <segue reference="XDF-CJ-0q1"/>
+        <segue reference="wVK-bS-XOG"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -87,7 +87,7 @@ class LegalitiesViewController: UIViewController {
             
                             let urlString = "http://mtgsalvation.gamepedia.com/\(format.nameSnakeCase!)"
                             detailsVC.urlString = urlString
-                            detailsVC.navigationTitle = format.name
+                            detailsVC.navigationTitle = "Format Wiki"
                         }
                     }
                 }

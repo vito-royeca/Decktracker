@@ -43,6 +43,9 @@ enum CardListSortMode: CustomStringConvertible  {
 
 class CardListViewController: UIViewController {
     // MARK: Things to override for subclasses
+    func hasWiki() -> Bool {
+        return false
+    }
     func getWikiSegueName() -> String {
         return ""
     }
@@ -306,7 +309,8 @@ class CardListViewController: UIViewController {
                 let _ = fetchRequest {
                 
                 let sections = fetchedResultsController.sections
-                let sectionInfo = sections![indexPath.section-1]
+                let sectionOffset = hasWiki() ? 1 : 0
+                let sectionInfo = sections![indexPath.section-sectionOffset]
                 
                 if let objects = sectionInfo.objects {
                     if let card = objects[indexPath.row] as? Card,
@@ -324,16 +328,32 @@ class CardListViewController: UIViewController {
         cell.selectionStyle = .Default
         cell.accessoryType = .None
         
-        switch indexPath.section {
-        case 0:
-            cell.textLabel?.text = getCellTitle()
-            cell.accessoryType = .DisclosureIndicator
-            cell.imageView?.image = UIImage(named: "Wikipedia")
-        default:
+        if hasWiki() {
+            switch indexPath.section {
+            case 0:
+                cell.textLabel?.text = getCellTitle()
+                cell.accessoryType = .DisclosureIndicator
+                cell.imageView?.image = UIImage(named: "Wikipedia")
+            default:
+                if fetchRequest != nil,
+                    let sections = fetchedResultsController.sections,
+                    let c = cell as? CardSummaryTableViewCell {
+                    let sectionInfo = sections[indexPath.section-1]
+                    
+                    if let objects = sectionInfo.objects {
+                        if let card = objects[indexPath.row] as? Card {
+                            c.cardOID = card.objectID
+                        }
+                    }
+                    cell.selectionStyle = .Default
+                }
+            }
+            
+        } else {
             if fetchRequest != nil,
                 let sections = fetchedResultsController.sections,
                 let c = cell as? CardSummaryTableViewCell {
-                let sectionInfo = sections[indexPath.section-1]
+                let sectionInfo = sections[indexPath.section]
                 
                 if let objects = sectionInfo.objects {
                     if let card = objects[indexPath.row] as? Card {
@@ -349,13 +369,25 @@ class CardListViewController: UIViewController {
 // MARK: UITableViewDataSource
 extension CardListViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0:
-            return 1
-        default:
+        if hasWiki() {
+            switch section {
+            case 0:
+                return 1
+            default:
+                if fetchRequest != nil,
+                    let sections = fetchedResultsController.sections {
+                    let sectionInfo = sections[section-1]
+                    return sectionInfo.numberOfObjects
+                    
+                } else {
+                    return 0
+                }
+            }
+        
+        } else {
             if fetchRequest != nil,
                 let sections = fetchedResultsController.sections {
-                let sectionInfo = sections[section-1]
+                let sectionInfo = sections[section]
                 return sectionInfo.numberOfObjects
                 
             } else {
@@ -367,7 +399,7 @@ extension CardListViewController: UITableViewDataSource {
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         if fetchRequest != nil,
             let sections = fetchedResultsController.sections {
-            return sections.count+1
+            return sections.count + (hasWiki() ? 1 : 0)
             
         } else {
             return 0
@@ -381,7 +413,9 @@ extension CardListViewController: UITableViewDataSource {
             case .ByName:
                 var indexTitles = [String]()
                 
-                indexTitles.append("")
+                if hasWiki() {
+                    indexTitles.append("")
+                }
                 for sectionInfo in sections {
                     if let indexTitle = sectionInfo.indexTitle {
                         if !indexTitles.contains(indexTitle) {
@@ -401,13 +435,35 @@ extension CardListViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-        case 0:
-            return nil
-        default:
+        if hasWiki() {
+            switch section {
+            case 0:
+                return nil
+            default:
+                if fetchRequest != nil,
+                    let sections = fetchedResultsController.sections {
+                    let sectionInfo = sections[section-1]
+                    var count = 0
+                    if let objects = sectionInfo.objects {
+                        count = objects.count
+                    }
+                    
+                    switch sortMode! {
+                    case .ByName:
+                        return "\(sectionInfo.indexTitle!) (\(count) \(count > 1 ? "items" : "item"))"
+                    default:
+                        return "\(sectionInfo.name) (\(count) \(count > 1 ? "items" : "item"))"
+                    }
+                    
+                } else {
+                    return nil
+                }
+            }
+            
+        } else {
             if fetchRequest != nil,
                 let sections = fetchedResultsController.sections {
-                let sectionInfo = sections[section-1]
+                let sectionInfo = sections[section]
                 var count = 0
                 if let objects = sectionInfo.objects {
                     count = objects.count
@@ -429,10 +485,15 @@ extension CardListViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:UITableViewCell?
         
-        switch indexPath.section {
-        case 0:
-            cell = tableView.dequeueReusableCellWithIdentifier("wikiCell", forIndexPath: indexPath)
-        default:
+        if hasWiki() {
+            switch indexPath.section {
+            case 0:
+                cell = tableView.dequeueReusableCellWithIdentifier("wikiCell", forIndexPath: indexPath)
+            default:
+                cell = tableView.dequeueReusableCellWithIdentifier("summaryCell", forIndexPath: indexPath)
+            }
+        
+        } else {
             cell = tableView.dequeueReusableCellWithIdentifier("summaryCell", forIndexPath: indexPath)
         }
         
@@ -444,19 +505,29 @@ extension CardListViewController: UITableViewDataSource {
 // MARK: UITableVIewDelegate
 extension CardListViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        switch indexPath.section {
-        case 0:
-            return UITableViewAutomaticDimension
-        default:
+        if hasWiki() {
+            switch indexPath.section {
+            case 0:
+                return UITableViewAutomaticDimension
+            default:
+                return CardSummaryTableViewCell.CellHeight
+            }
+            
+        } else {
             return CardSummaryTableViewCell.CellHeight
         }
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        switch indexPath.section {
-        case 0:
-            performSegueWithIdentifier(getWikiSegueName(), sender: indexPath.row)
-        default:
+        if hasWiki() {
+            switch indexPath.section {
+            case 0:
+                performSegueWithIdentifier(getWikiSegueName(), sender: indexPath.row)
+            default:
+                performSegueWithIdentifier("showCardDetails", sender: indexPath.row)
+            }
+            
+        } else {
             performSegueWithIdentifier("showCardDetails", sender: indexPath.row)
         }
     }

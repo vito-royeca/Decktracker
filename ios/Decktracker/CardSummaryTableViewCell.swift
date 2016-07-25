@@ -8,15 +8,18 @@
 
 import UIKit
 import CoreData
-import EDStarRating
 import SDWebImage
 
 class CardSummaryTableViewCell: UITableViewCell {
 
     // MARK: Constants
     static let CellHeight = CGFloat(80)
-    let preEightEditionFont = UIFont(name: "Magic:the Gathering", size: 17.0)
-    let eightEditionFont = UIFont(name: "Matrix-Bold", size: 17.0)
+    let preEightEditionFont      = UIFont(name: "Magic:the Gathering", size: 17.0)
+    let preEightEditionFontSmall = UIFont(name: "Magic:the Gathering", size: 14.0)
+    let eightEditionFont         = UIFont(name: "Matrix-Bold", size: 17.0)
+    let eightEditionFontSmall    = UIFont(name: "Matrix-Bold", size: 14.0)
+    let magic2015Font            = UIFont(name: "Beleren", size: 17.0)
+    let magic2015FontSmall       = UIFont(name: "Beleren", size: 14.0)
     
     // MARK: Variables
     private var _cardOID: NSManagedObjectID?
@@ -32,15 +35,12 @@ class CardSummaryTableViewCell: UITableViewCell {
             }
         }
     }
-    var ratingControl:EDStarRating?
     var cardBackImage:UIImage?
     
     // MARK: Outlets
     @IBOutlet weak var cropImage: UIImageView!
-    @IBOutlet weak var ratingView: UIView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var castingCostView: UIView!
-    @IBOutlet weak var typeImage: UIImageView!
     @IBOutlet weak var typeLabel: UILabel!
     @IBOutlet weak var setImage: UIImageView!
     @IBOutlet weak var setLabel: UILabel!
@@ -52,7 +52,7 @@ class CardSummaryTableViewCell: UITableViewCell {
         
         cardBackImage = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/cropback.hq.jpg")
         
-        cropImage.layer.cornerRadius = 15.0
+        cropImage.layer.cornerRadius = 10.0
         cropImage.layer.masksToBounds = true
         
         nameLabel.adjustsFontSizeToFitWidth = true
@@ -60,15 +60,16 @@ class CardSummaryTableViewCell: UITableViewCell {
         setLabel.adjustsFontSizeToFitWidth = true
         setLabel.sizeToFit()
         
-        ratingControl = EDStarRating(frame: ratingView.frame)
-        ratingControl!.userInteractionEnabled = false
-        ratingControl!.starImage = UIImage(named: "starRating")
-        ratingControl!.starHighlightedImage = UIImage(named: "starRatingHighlighted")
-        ratingControl!.maxRating = 5
-        ratingControl!.backgroundColor = UIColor.clearColor()
+        // removed the star rating: July 25, 2016
+//        ratingControl = EDStarRating(frame: ratingView.frame)
+//        ratingControl!.userInteractionEnabled = false
+//        ratingControl!.starImage = UIImage(named: "starRating")
+//        ratingControl!.starHighlightedImage = UIImage(named: "starRatingHighlighted")
+//        ratingControl!.maxRating = 5
+//        ratingControl!.backgroundColor = UIColor.clearColor()
 //        ratingControl!.displayMode = EDStarRatingDisplayHalf
-        ratingView.removeFromSuperview()
-        addSubview(ratingControl!)
+//        ratingView.removeFromSuperview()
+//        addSubview(ratingControl!)
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
@@ -114,19 +115,32 @@ class CardSummaryTableViewCell: UITableViewCell {
             }
             
             nameLabel.text = card.name
-            nameLabel.font = card.modern!.boolValue ? eightEditionFont : preEightEditionFont
-            
-            if let typePath = card.typePath {
-                if NSFileManager.defaultManager().fileExistsAtPath(typePath.path!) {
-                    let image = UIImage(contentsOfFile: typePath.path!)
-                    typeImage.image = image
-                    typeImage.contentMode = .ScaleAspectFit
+            if let releaseDate = card.set!.releaseDate {
+                let formatter = NSDateFormatter()
+                formatter.dateFormat = "YYYY-MM-dd"
+                let m15Date = formatter.dateFromString("2014-07-18")
+                
+                if releaseDate.compare(m15Date!) == .OrderedSame ||
+                    releaseDate.compare(m15Date!) == .OrderedDescending {
+                    nameLabel.font = magic2015Font
+                    typeLabel.font = magic2015FontSmall
                 } else {
-                    typeImage.image = nil
+                    nameLabel.font = card.modern!.boolValue ? eightEditionFont : preEightEditionFont
+                    typeLabel.font = card.modern!.boolValue ? eightEditionFontSmall : preEightEditionFontSmall
                 }
-            } else {
-                typeImage.image = nil
             }
+            
+//            if let typePath = card.typePath {
+//                if NSFileManager.defaultManager().fileExistsAtPath(typePath.path!) {
+//                    let image = UIImage(contentsOfFile: typePath.path!)
+//                    typeImage.image = image
+//                    typeImage.contentMode = .ScaleAspectFit
+//                } else {
+//                    typeImage.image = nil
+//                }
+//            } else {
+//                typeImage.image = nil
+//            }
             
             if let type = card.type {
                 var text = type.name!
@@ -156,7 +170,12 @@ class CardSummaryTableViewCell: UITableViewCell {
                     setImage.image = nil
                 }
                 
-                setLabel.text = "\(card.set!.name!) (\(rarity.name!))"
+                var text = "\(card.set!.name!)"
+                if let number = card.number {
+                    text += "\n#\(number) / \(card.set!.numberOfCards!)"
+                }
+                setLabel.text = text
+                
             } else {
                 setImage.image = nil
                 setLabel.text = nil

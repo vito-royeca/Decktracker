@@ -19,7 +19,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1F8F</string>
+	<string>1FB7</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -96,6 +96,7 @@
 		<string>web/fonts/MPlantin.ttf</string>
 		<string>web/fonts/Matrix Bold.ttf</string>
 		<string>web/fonts/Goudy Medieval.ttf</string>
+		<string>web/fonts/beleren-bold-webfont.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
