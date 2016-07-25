@@ -326,14 +326,20 @@ class CardDetailsViewController: UIViewController {
                             index = i
                         }
                         if let urlPath = c.urlPath {
-                            let photo = IDMPhoto(URL: urlPath)
-                            photos.append(photo)
+                            var photo:IDMPhoto?
+                            
+                            if let cachedImage = SDImageCache.sharedImageCache().imageFromDiskCacheForKey(urlPath.path!) {
+                                photo = IDMPhoto(image: cachedImage)
+                            } else {
+                                photo = IDMPhoto(URL: urlPath)
+                            }
+                            photos.append(photo!)
                         }
                         i += 1
                     }
                 }
             } catch {}
-//
+
             let backgroundImage = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/Gray_Patterned_BG.jpg")
             let browser = IDMPhotoBrowser(photos: photos)
             browser.setInitialPageIndex(index)
@@ -605,13 +611,12 @@ extension CardDetailsViewController : SFSafariViewControllerDelegate {
 
 // MARK: IDMPhotoBrowserDelegate
 extension CardDetailsViewController : IDMPhotoBrowserDelegate {
-    func photoBrowser(photoBrowser: IDMPhotoBrowser, didShowPhotoAtIndex index: UInt) {
+    func photoBrowser(photoBrowser: IDMPhotoBrowser, willDismissAtPageIndex index: UInt) {
         do {
             let cards = try CoreDataManager.sharedInstance.mainObjectContext.executeFetchRequest(browseFetchRequest!)
 
             if let card = cards[Int(index)] as? Card {
                 cardOID = card.objectID
-//                tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: false)
                 loadSets()
             }
         } catch {}

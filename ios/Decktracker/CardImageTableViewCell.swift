@@ -53,7 +53,6 @@ class CardImageTableViewCell: UITableViewCell {
         if let _cardOID = _cardOID {
             let card = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(_cardOID) as! Card
             
-            
             if let urlPath = card.urlPath {
                 if let cachedImage = SDImageCache.sharedImageCache().imageFromDiskCacheForKey(urlPath.path!) {
                     cardImage.image = cachedImage
@@ -74,13 +73,6 @@ class CardImageTableViewCell: UITableViewCell {
                     let downloader = SDWebImageDownloader.sharedDownloader()
                     downloader.downloadImageWithURL(urlPath, options: .UseNSURLCache, progress: nil, completed: completedBlock)
                 }
-                
-//                let completionBlock = { (image: UIImage?, error: NSError?, cacheType: SDImageCacheType, imageURL: NSURL?) -> Void in
-//                    if let image = image {
-//                        self.cardImage.image = image
-//                    }
-//                }
-//                cardImage.sd_setImageWithURL(urlPath, placeholderImage: cardBackImage, completed: completionBlock)
             }
             
         } else {
