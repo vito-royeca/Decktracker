@@ -89,7 +89,6 @@ extension FeaturedViewController : ThumbnailDelegate {
         case 0: // Sets
             if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("SetDetailsViewController") as? SetDetailsViewController,
                 let navigationController = navigationController {
-                let set = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(objectID) as! Set
                 
                 controller.setOID = objectID
                 navigationController.pushViewController(controller, animated: true)

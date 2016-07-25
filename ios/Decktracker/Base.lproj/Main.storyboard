@@ -730,7 +730,7 @@
         <!--Set Details-->
         <scene sceneID="WGK-Rl-uFB">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="fXU-8e-mfI" customClass="SetDetailsViewController" customModule="Decktracker" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SetDetailsViewController" automaticallyAdjustsScrollViewInsets="NO" id="fXU-8e-mfI" customClass="SetDetailsViewController" customModule="Decktracker" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Zzr-fy-n9Q"/>
                         <viewControllerLayoutGuide type="bottom" id="LGo-6q-cv7"/>
@@ -813,6 +813,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="RRh-g2-Wo8"/>
-        <segue reference="iYG-Jn-xTg"/>
+        <segue reference="RZ1-T1-RTM"/>
     </inferredMetricsTieBreakers>
 </document>
