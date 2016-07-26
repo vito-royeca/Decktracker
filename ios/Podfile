@@ -5,79 +5,82 @@ platform :ios, "9.0"
 use_frameworks!
 
 target "Decktracker" do
-pod "ActionSheetPicker"
-pod "AFNetworking"
-pod "Appirater"
-pod "CAAnimationBlocks"
-pod "CAAnimation-EasingEquations"
-pod "CorePlot"
-pod "CSStickyHeaderFlowLayout"
-pod "EDStarRating"
-pod 'Eureka'
-pod 'Fabric'
-pod 'Crashlytics'
-pod "HMSegmentedControl"
-pod 'IDMPhotoBrowser'
-pod "hpple"
-pod "InAppSettingsKit"
-pod "JJJUtils"
-pod "MBProgressHUD"
-pod "PureLayout"
-pod 'SDWebImage'
-pod 'SimulatorStatusMagic', :configurations => ['Debug']
-pod 'TwitterKit'
-pod 'TwitterCore'
-#pod "vfrReader", '~> 2.8.5'
+    pod "ActionSheetPicker"
+    pod "AFNetworking"
+    pod "Appirater"
+    pod "CAAnimationBlocks"
+    pod "CAAnimation-EasingEquations"
+    pod "CorePlot"
+    pod "CSStickyHeaderFlowLayout"
+    pod "EDStarRating"
+    pod "Eureka"
+    pod "Fabric"
+    pod "Crashlytics"
+    pod "HMSegmentedControl"
+    pod "IDMPhotoBrowser"
+    pod "hpple"
+    pod "InAppSettingsKit"
+    pod "JJJUtils"
+    pod "MBProgressHUD"
+    pod "MMDrawerController"
+    pod "MMDrawerController+Storyboard"
+    pod "PureLayout"
+    pod "SDWebImage"
+    pod "SimulatorStatusMagic", :configurations => ['Debug']
+    pod "TwitterKit"
+    pod "TwitterCore"
 end
 
 target "DecktrackerTests" do
-pod "ActionSheetPicker"
-pod "AFNetworking"
-pod "Appirater"
-pod "CAAnimationBlocks"
-pod "CAAnimation-EasingEquations"
-pod "CorePlot"
-pod "CSStickyHeaderFlowLayout"
-pod "EDStarRating"
-pod 'Eureka'
-pod 'Fabric'
-pod 'Crashlytics'
-pod "HMSegmentedControl"
-pod 'IDMPhotoBrowser'
-pod "hpple"
-pod "InAppSettingsKit"
-pod "JJJUtils"
-pod "MBProgressHUD"
-pod "PureLayout"
-pod 'SDWebImage'
-pod 'SimulatorStatusMagic', :configurations => ['Debug']
-pod 'TwitterKit'
-pod 'TwitterCore'
-#pod "vfrReader", '~> 2.8.5'
+    pod "ActionSheetPicker"
+    pod "AFNetworking"
+    pod "Appirater"
+    pod "CAAnimationBlocks"
+    pod "CAAnimation-EasingEquations"
+    pod "CorePlot"
+    pod "CSStickyHeaderFlowLayout"
+    pod "EDStarRating"
+    pod "Eureka"
+    pod "Fabric"
+    pod "Crashlytics"
+    pod "HMSegmentedControl"
+    pod "IDMPhotoBrowser"
+    pod "hpple"
+    pod "InAppSettingsKit"
+    pod "JJJUtils"
+    pod "MBProgressHUD"
+    pod "MMDrawerController"
+    pod "MMDrawerController+Storyboard"
+    pod "PureLayout"
+    pod "SDWebImage"
+    pod "SimulatorStatusMagic", :configurations => ['Debug']
+    pod "TwitterKit"
+    pod "TwitterCore"
 end
 
 target "DecktrackerUITests" do
-pod "ActionSheetPicker"
-pod "AFNetworking"
-pod "Appirater"
-pod "CAAnimationBlocks"
-pod "CAAnimation-EasingEquations"
-pod "CorePlot"
-pod "CSStickyHeaderFlowLayout"
-pod "EDStarRating"
-pod 'Eureka'
-pod 'Fabric'
-pod 'Crashlytics'
-pod "HMSegmentedControl"
-pod 'IDMPhotoBrowser'
-pod "hpple"
-pod "InAppSettingsKit"
-pod "JJJUtils"
-pod "MBProgressHUD"
-pod "PureLayout"
-pod 'SDWebImage'
-pod 'SimulatorStatusMagic', :configurations => ['Debug']
-pod 'TwitterKit'
-pod 'TwitterCore'
-#pod "vfrReader", '~> 2.8.5'
+    pod "ActionSheetPicker"
+    pod "AFNetworking"
+    pod "Appirater"
+    pod "CAAnimationBlocks"
+    pod "CAAnimation-EasingEquations"
+    pod "CorePlot"
+    pod "CSStickyHeaderFlowLayout"
+    pod "EDStarRating"
+    pod "Eureka"
+    pod "Fabric"
+    pod "Crashlytics"
+    pod "HMSegmentedControl"
+    pod "IDMPhotoBrowser"
+    pod "hpple"
+    pod "InAppSettingsKit"
+    pod "JJJUtils"
+    pod "MBProgressHUD"
+    pod "MMDrawerController"
+    pod "MMDrawerController+Storyboard"
+    pod "PureLayout"
+    pod "SDWebImage"
+    pod "SimulatorStatusMagic", :configurations => ['Debug']
+    pod "TwitterKit"
+    pod "TwitterCore"
 end

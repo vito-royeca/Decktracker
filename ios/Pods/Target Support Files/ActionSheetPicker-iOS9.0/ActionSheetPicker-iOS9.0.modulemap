@@ -1,6 +1,0 @@
-framework module ActionSheetPicker {
-  umbrella header "ActionSheetPicker-iOS9.0-umbrella.h"
-
-  export *
-  module * { export * }
-}

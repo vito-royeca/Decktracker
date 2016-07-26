@@ -1,0 +1,6 @@
+framework module CAAnimation_EasingEquations {
+  umbrella header "CAAnimation-EasingEquations-umbrella.h"
+
+  export *
+  module * { export * }
+}

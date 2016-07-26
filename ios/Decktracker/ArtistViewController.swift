@@ -27,6 +27,9 @@ class ArtistViewController: CardListViewController {
     }
     
     // MARK: CardlistViewController
+    override func hasWiki() -> Bool {
+        return true
+    }
     override func getWikiSegueName() -> String {
         return "showArtistWiki"
     }
@@ -34,11 +37,11 @@ class ArtistViewController: CardListViewController {
         let artist = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(artistOID!) as! Artist
         return "http://mtgsalvation.gamepedia.com/\(artist.nameSnakeCase!)"
     }
-    override func getCellTitle() -> String {
+    override func getWikiCellTitle() -> String {
         let artist = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(artistOID!) as! Artist
         return artist.name!
     }
-    override func getNavigationTitle() -> String {
+    override func getWikiNavigationTitle() -> String {
         return "Artist Wiki"
     }
     

@@ -22,6 +22,9 @@ class SetDetailsViewController: CardListViewController {
     }
     
     // MARK: CardlistViewController
+    override func hasWiki() -> Bool {
+        return true
+    }
     override func getWikiSegueName() -> String {
         return "showSetWiki"
     }
@@ -29,14 +32,15 @@ class SetDetailsViewController: CardListViewController {
         let set = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(setOID!) as! Set
         return "http://mtgsalvation.gamepedia.com/\(set.nameSnakeCase!)"
     }
-    override func getCellTitle() -> String {
+    override func getWikiCellTitle() -> String {
         let set = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(setOID!) as! Set
         return set.name!
     }
-    override func getNavigationTitle() -> String {
+    override func getWikiNavigationTitle() -> String {
         return "Set Wiki"
     }
     
+    // MARK: Custom methods
     override func loadCards(predicate: NSPredicate?) {
         var cardPredicate:NSPredicate?
         var sorters:[NSSortDescriptor]?

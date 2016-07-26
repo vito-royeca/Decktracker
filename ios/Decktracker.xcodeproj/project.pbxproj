@@ -24,6 +24,9 @@
 		8C1A85401D46515200744865 /* RatingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C1A853C1D46515200744865 /* RatingTableViewCell.xib */; };
 		8C1A85411D46515200744865 /* RatingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C1A853C1D46515200744865 /* RatingTableViewCell.xib */; };
 		8C1A85421D46515200744865 /* RatingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C1A853C1D46515200744865 /* RatingTableViewCell.xib */; };
+		8C1A85441D466FEE00744865 /* SearchSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1A85431D466FEE00744865 /* SearchSettingsViewController.swift */; };
+		8C1A85451D466FEE00744865 /* SearchSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1A85431D466FEE00744865 /* SearchSettingsViewController.swift */; };
+		8C1A85461D466FEE00744865 /* SearchSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1A85431D466FEE00744865 /* SearchSettingsViewController.swift */; };
 		8C24C0531D3A668600B56373 /* CardDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C24C0521D3A668600B56373 /* CardDetailsViewController.swift */; };
 		8C24C0541D3A668600B56373 /* CardDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C24C0521D3A668600B56373 /* CardDetailsViewController.swift */; };
 		8C24C0551D3A668600B56373 /* CardDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C24C0521D3A668600B56373 /* CardDetailsViewController.swift */; };
@@ -203,6 +206,7 @@
 		8C1A2AC81D3CCD8F007C8A4B /* CardListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardListViewController.swift; sourceTree = "<group>"; };
 		8C1A853B1D46515200744865 /* RatingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingTableViewCell.swift; sourceTree = "<group>"; };
 		8C1A853C1D46515200744865 /* RatingTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RatingTableViewCell.xib; sourceTree = "<group>"; };
+		8C1A85431D466FEE00744865 /* SearchSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchSettingsViewController.swift; sourceTree = "<group>"; };
 		8C24C0521D3A668600B56373 /* CardDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardDetailsViewController.swift; sourceTree = "<group>"; };
 		8C24C0561D3A6AA400B56373 /* CardImageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardImageTableViewCell.swift; sourceTree = "<group>"; };
 		8C24C0571D3A6AA400B56373 /* CardImageTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CardImageTableViewCell.xib; sourceTree = "<group>"; };
@@ -475,6 +479,7 @@
 				8CDCA0FF1D3FC0B100850272 /* LegalitiesViewController.swift */,
 				8CE7B7AD1D336186008BBB53 /* MoreViewController.swift */,
 				8CDCA1031D3FC0BD00850272 /* RulingsViewController.swift */,
+				8C1A85431D466FEE00744865 /* SearchSettingsViewController.swift */,
 				8CE7B7A91D336177008BBB53 /* SearchViewController.swift */,
 				8CEFCEBD1D35010E0046184F /* SetDetailsViewController.swift */,
 				8CEFCEB91D34A7E40046184F /* SetsViewController.swift */,
@@ -855,6 +860,7 @@
 				8CEFCEBA1D34A7E40046184F /* SetsViewController.swift in Sources */,
 				8CE7B7781D334D55008BBB53 /* Card+CoreDataProperties.swift in Sources */,
 				8CE7B7AA1D336177008BBB53 /* SearchViewController.swift in Sources */,
+				8C1A85441D466FEE00744865 /* SearchSettingsViewController.swift in Sources */,
 				8CE7B7891D334D55008BBB53 /* Legality+CoreDataProperties.swift in Sources */,
 				8CE7B78B1D334D55008BBB53 /* Rarity+CoreDataProperties.swift in Sources */,
 				8CE7B7861D334D55008BBB53 /* Layout.swift in Sources */,
@@ -930,6 +936,7 @@
 				8CEFCEBF1D35010E0046184F /* SetDetailsViewController.swift in Sources */,
 				8CEFCEBB1D34A7E40046184F /* SetsViewController.swift in Sources */,
 				8CDCA1011D3FC0B100850272 /* LegalitiesViewController.swift in Sources */,
+				8C1A85451D466FEE00744865 /* SearchSettingsViewController.swift in Sources */,
 				8C1A853E1D46515200744865 /* RatingTableViewCell.swift in Sources */,
 				8C24C0611D3BD94400B56373 /* PricingTableViewCell.swift in Sources */,
 				8CEC118F1D33E2A0009D3B2D /* SetCollectionViewCell.swift in Sources */,
@@ -965,6 +972,7 @@
 				8CEFCEC01D35010E0046184F /* SetDetailsViewController.swift in Sources */,
 				8CEFCEBC1D34A7E40046184F /* SetsViewController.swift in Sources */,
 				8CDCA1021D3FC0B100850272 /* LegalitiesViewController.swift in Sources */,
+				8C1A85461D466FEE00744865 /* SearchSettingsViewController.swift in Sources */,
 				8C1A853F1D46515200744865 /* RatingTableViewCell.swift in Sources */,
 				8C24C0621D3BD94400B56373 /* PricingTableViewCell.swift in Sources */,
 				8CEC11901D33E2A0009D3B2D /* SetCollectionViewCell.swift in Sources */,

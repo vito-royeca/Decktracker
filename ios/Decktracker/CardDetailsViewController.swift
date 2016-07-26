@@ -260,8 +260,10 @@ class CardDetailsViewController: UIViewController {
         for s in arrSymbols {
             
             let symbol = s as! String
-            var noCurlies = symbol.stringByReplacingOccurrencesOfString("/", withString: "")
+            let noCurlies = symbol.stringByReplacingOccurrencesOfString("/", withString: "")
             let noCurliesReverse = JJJUtil.reverseString(noCurlies)
+            var code = noCurlies
+            var codeReverse = noCurliesReverse
             
             var bFound = false
             var width:Float = 0.0
@@ -277,7 +279,8 @@ class CardDetailsViewController: UIViewController {
                 height = 13.0
                 pngSize = 96
             } else if noCurlies == "∞" || noCurliesReverse == "∞" {
-                noCurlies = "Infinity"
+                code = "Infinity"
+                codeReverse = "Infinity"
                 width = 16.0
                 height = 16.0
                 pngSize = 32
@@ -288,22 +291,22 @@ class CardDetailsViewController: UIViewController {
             }
             
             for mana in Card.ManaSymbols {
-                if mana == noCurlies {
-                    newText = newText.stringByReplacingOccurrencesOfString("{\(noCurlies)}", withString: "<img src='\(NSBundle.mainBundle().bundlePath)/images/mana/\(noCurlies)/\(pngSize).png' width='\(width)' height='\(height)' />")
+                if mana == code {
+                    newText = newText.stringByReplacingOccurrencesOfString("{\(noCurlies)}", withString: "<img src='\(NSBundle.mainBundle().bundlePath)/images/mana/\(code)/\(pngSize).png' width='\(width)' height='\(height)' />")
                     bFound = true
-                } else if mana == noCurliesReverse {
-                    newText = newText.stringByReplacingOccurrencesOfString("{\(noCurliesReverse)}", withString: "<img src='\(NSBundle.mainBundle().bundlePath)/images/mana/\(noCurliesReverse)/\(pngSize).png' width='\(width)' height='\(height)' />")
+                } else if mana == codeReverse {
+                    newText = newText.stringByReplacingOccurrencesOfString("{\(noCurliesReverse)}", withString: "<img src='\(NSBundle.mainBundle().bundlePath)/images/mana/\(codeReverse)/\(pngSize).png' width='\(width)' height='\(height)' />")
                     bFound = true
                 }
             }
             
             if !bFound {
                 for mana in Card.OtherSymbols {
-                    if mana == noCurlies {
-                        newText = newText.stringByReplacingOccurrencesOfString("{\(noCurlies)}", withString: "<img src='\(NSBundle.mainBundle().bundlePath)/images/other/\(noCurlies)/\(pngSize).png' width='\(width)' height='\(height)' />")
+                    if mana == code {
+                        newText = newText.stringByReplacingOccurrencesOfString("{\(noCurlies)}", withString: "<img src='\(NSBundle.mainBundle().bundlePath)/images/other/\(code)/\(pngSize).png' width='\(width)' height='\(height)' />")
                         bFound = true
-                    } else if mana == noCurliesReverse {
-                        newText = newText.stringByReplacingOccurrencesOfString("{\(noCurliesReverse)}", withString: "<img src='\(NSBundle.mainBundle().bundlePath)/images/other/\(noCurliesReverse)/\(pngSize).png' width='\(width)' height='\(height)' />")
+                    } else if mana == codeReverse {
+                        newText = newText.stringByReplacingOccurrencesOfString("{\(noCurliesReverse)}", withString: "<img src='\(NSBundle.mainBundle().bundlePath)/images/other/\(codeReverse)/\(pngSize).png' width='\(width)' height='\(height)' />")
                         bFound = true
                     }
                 }

@@ -52,10 +52,10 @@ class CardListViewController: UIViewController {
     func  getWikiURLString() -> String {
         return ""
     }
-    func getCellTitle() -> String {
+    func getWikiCellTitle() -> String {
         return ""
     }
-    func getNavigationTitle() -> String {
+    func getWikiNavigationTitle() -> String {
         return ""
     }
     func loadCards(predicate: NSPredicate?) {
@@ -282,10 +282,6 @@ class CardListViewController: UIViewController {
         default:
             sortMode = .ByName
         }
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
         
         loadCards(nil)
         tableView.reloadData()
@@ -300,7 +296,7 @@ class CardListViewController: UIViewController {
         if segue.identifier == getWikiSegueName() {
             if let detailsVC = segue.destinationViewController as? BrowserViewController {
                 detailsVC.urlString = getWikiURLString()
-                detailsVC.navigationTitle = getNavigationTitle()
+                detailsVC.navigationTitle = getWikiNavigationTitle()
             }
             
         } else if segue.identifier == "showCardDetails" {
@@ -331,7 +327,7 @@ class CardListViewController: UIViewController {
         if hasWiki() {
             switch indexPath.section {
             case 0:
-                cell.textLabel?.text = getCellTitle()
+                cell.textLabel?.text = getWikiCellTitle()
                 cell.accessoryType = .DisclosureIndicator
                 cell.imageView?.image = UIImage(named: "Wikipedia")
             default:

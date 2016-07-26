@@ -36,6 +36,20 @@ PODS:
   - JJJUtils (0.3.2):
     - JJJUtils/OSX (= 0.3.2)
   - MBProgressHUD (0.9.2)
+  - MMDrawerController (0.6.0):
+    - MMDrawerController/Core (= 0.6.0)
+    - MMDrawerController/MMDrawerBarButtonItem (= 0.6.0)
+    - MMDrawerController/MMDrawerVisualStates (= 0.6.0)
+    - MMDrawerController/Subclass (= 0.6.0)
+  - MMDrawerController+Storyboard (0.0.2):
+    - MMDrawerController
+  - MMDrawerController/Core (0.6.0)
+  - MMDrawerController/MMDrawerBarButtonItem (0.6.0):
+    - MMDrawerController/Core
+  - MMDrawerController/MMDrawerVisualStates (0.6.0):
+    - MMDrawerController/Core
+  - MMDrawerController/Subclass (0.6.0):
+    - MMDrawerController/Core
   - pop (1.0.9)
   - PureLayout (3.0.2)
   - SDWebImage (3.8.1):
@@ -65,6 +79,8 @@ DEPENDENCIES:
   - InAppSettingsKit
   - JJJUtils
   - MBProgressHUD
+  - MMDrawerController
+  - MMDrawerController+Storyboard
   - PureLayout
   - SDWebImage
   - SimulatorStatusMagic
@@ -90,6 +106,8 @@ SPEC CHECKSUMS:
   InAppSettingsKit: 2b9fcdb82cdff2f99c51cae544e9f4df0df7afbf
   JJJUtils: 5abcb911388dc05e24cecdde9d4a3e18f1b1510e
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
+  MMDrawerController: e3a54a5570388463ad3b36975251575b50c4e1a0
+  MMDrawerController+Storyboard: c98f86c0f32cdef1d466d19a7da3ad2fc6c6ac00
   pop: f667631a5108a2e60d9e8797c9b32ddaf2080bce
   PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
   SDWebImage: 35f9627a3e44b4f292a8a8ce6a531fa488239b91
@@ -97,6 +115,6 @@ SPEC CHECKSUMS:
   TwitterCore: 817eae3e291fa4125b47789e26a4f6f024115c1f
   TwitterKit: 8a383da8d9c21b0423716381ea8bbfce20622d91
 
-PODFILE CHECKSUM: e202191ac45d58490a97f75fc21bce612d0ba2b5
+PODFILE CHECKSUM: df85fa1d2e51aece303dff888eed7c3616c46ebf
 
 COCOAPODS: 1.0.1
