@@ -59,41 +59,40 @@ class CoreDataManager: NSObject {
                 }
             }
         } else {
-            
-            if let jsonVersion = plistDict!["JSON Version"] as? String {
-                if let currentJSONVersion = NSUserDefaults.standardUserDefaults().valueForKey("JSON Version") as? String {
-                    if jsonVersion != currentJSONVersion {
-                        do {
-                            for file in try NSFileManager.defaultManager().contentsOfDirectoryAtPath(documentPath!) {
-                                if file.hasPrefix("decktracker.") || file.hasPrefix("Decktracker.") {
-                                    try NSFileManager.defaultManager().removeItemAtPath("\(documentPath!)/\(file)")
+            if let plistDict = plistDict {
+                if let jsonVersion = plistDict["JSON Version"] as? String {
+                    if let currentJSONVersion = NSUserDefaults.standardUserDefaults().valueForKey("JSON Version") as? String {
+                        if jsonVersion != currentJSONVersion {
+                            do {
+                                for file in try NSFileManager.defaultManager().contentsOfDirectoryAtPath(documentPath!) {
+                                    if file.hasPrefix("decktracker.") || file.hasPrefix("Decktracker.") {
+                                        try NSFileManager.defaultManager().removeItemAtPath("\(documentPath!)/\(file)")
+                                    }
                                 }
-                            }
-                        } catch {}
+                            } catch {}
+                            
+                            NSUserDefaults.standardUserDefaults().setValue(jsonVersion, forKey:"JSON Version")
+                            NSUserDefaults.standardUserDefaults().synchronize()
+                            setup(sqliteFile, modelFile: modelFile)
+                        }
                         
-                        NSUserDefaults.standardUserDefaults().setValue(jsonVersion, forKey:"JSON Version")
-                        NSUserDefaults.standardUserDefaults().synchronize()
-                        setup(sqliteFile, modelFile: modelFile)
-                    }
-                    
-                } else {
-                    let path = "\(NSBundle.mainBundle().bundlePath)/\(sqliteFile)"
-                    
-                    if NSFileManager.defaultManager().fileExistsAtPath(path) {
-                        do {
-                            for file in try NSFileManager.defaultManager().contentsOfDirectoryAtPath(documentPath!) {
-                                if file.hasPrefix("decktracker.") || file.hasPrefix("Decktracker.") {
-                                    try NSFileManager.defaultManager().removeItemAtPath("\(documentPath!)/\(file)")
+                    } else {
+                        let path = "\(NSBundle.mainBundle().bundlePath)/\(sqliteFile)"
+                        
+                        if NSFileManager.defaultManager().fileExistsAtPath(path) {
+                            do {
+                                for file in try NSFileManager.defaultManager().contentsOfDirectoryAtPath(documentPath!) {
+                                    if file.hasPrefix("decktracker.") || file.hasPrefix("Decktracker.") {
+                                        try NSFileManager.defaultManager().removeItemAtPath("\(documentPath!)/\(file)")
+                                    }
                                 }
-                            }
-      
-                            try NSFileManager.defaultManager().copyItemAtPath(path, toPath: storePath)
-                            if let jsonVersion = plistDict!["JSON Version"] as? String {
+          
+                                try NSFileManager.defaultManager().copyItemAtPath(path, toPath: storePath)
                                 NSUserDefaults.standardUserDefaults().setValue(jsonVersion, forKey:"JSON Version")
                                 NSUserDefaults.standardUserDefaults().synchronize()
+                            } catch {
+                                print("Error: \(sqliteFile)")
                             }
-                        } catch {
-                            print("Error: \(sqliteFile)")
                         }
                     }
                 }

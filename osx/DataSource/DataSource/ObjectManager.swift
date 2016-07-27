@@ -134,16 +134,13 @@ class ObjectManager: NSObject {
         return findOrCreateObject(dict, entityName: "Legality", objectFinder: ["name": dict[Legality.Keys.Name]!], initializer: initializer) as! Legality
     }
     
-    func findOrCreateRuling(dict: [String: AnyObject]) -> Ruling {
-        let initializer = { (dict: [String: AnyObject], context: NSManagedObjectContext) -> Ruling in
-            return Ruling(dictionary: dict, context: context)
-        }
+    func findOrCreateRuling(card: Card, dict: [String: AnyObject]) -> Ruling {
         
-        let formatter = NSDateFormatter()
-        formatter.dateFormat = "YYYY-MM-dd"
-        let date = formatter.dateFromString(dict[Ruling.Keys.Date] as! String)
+        let ruling = Ruling(dictionary: dict, context: privateContext)
+        ruling.card = card
+        CoreDataManager.sharedInstance.savePrivateContext()
         
-        return findOrCreateObject(dict, entityName: "Ruling", objectFinder: ["date": date!, "text": dict[Ruling.Keys.Text]!], initializer: initializer) as! Ruling
+        return ruling
     }
     
     func findOrCreateCardLegality(card: Card, dict: [String: AnyObject]) -> CardLegality {
@@ -180,6 +177,7 @@ class ObjectManager: NSObject {
     }
     
     // MARK: Core methods
+    
     func findOrCreateObject(dict: [String: AnyObject], entityName: String, objectFinder: [String: AnyObject], initializer: (dict: [String: AnyObject], context: NSManagedObjectContext) -> AnyObject) -> AnyObject {
         var object:AnyObject?
         var predicate:NSPredicate?
