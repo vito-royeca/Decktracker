@@ -63,6 +63,7 @@ class SearchViewController: CardListViewController {
         case .ByRarity:
             sorters = [NSSortDescriptor(key: "rarity.name", ascending: true)]
         }
+        sorters!.append(NSSortDescriptor(key: "set.releaseDate", ascending: true))
         
         fetchRequest = NSFetchRequest(entityName: "Card")
         fetchRequest!.predicate = predicate

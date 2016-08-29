@@ -2,198 +2,50 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>Alara Reborn</key>
-	<string>Alara Reborn</string>
-	<key>Alliances</key>
-	<string>Alliances</string>
-	<key>Anthologies</key>
-	<string>Anthologies</string>
-	<key>Antiquities</key>
-	<string>Antiquities</string>
-	<key>Apocalypse</key>
-	<string>Apocalypse</string>
-	<key>Arabian Nights</key>
-	<string>Arabian Nights</string>
-	<key>Archenemy</key>
-	<string>Archenemy</string>
 	<key>Arena League</key>
 	<string>Arena Promos</string>
 	<key>Asia Pacific Land Program</key>
 	<string>APAC Lands</string>
-	<key>Avacyn Restored</key>
-	<string>Avacyn Restored</string>
-	<key>Battle for Zendikar</key>
-	<string>Battle for Zendikar</string>
-	<key>Battle Royale Box Set</key>
-	<string>Battle Royale Box Set</string>
-	<key>Beatdown Box Set</key>
-	<string>Beatdown Box Set</string>
-	<key>Betrayers of Kamigawa</key>
-	<string>Betrayers of Kamigawa</string>
-	<key>Born of the Gods</key>
-	<string>Born of the Gods</string>
 	<key>Celebration</key>
 	<string>Special Occasion</string>
-	<key>Champions of Kamigawa</key>
-	<string>Champions of Kamigawa</string>
 	<key>Champs and States</key>
 	<string>Champs Promos</string>
-	<key>Chronicles</key>
-	<string>Chronicles</string>
-	<key>Clash Pack</key>
-	<string>Clash Pack</string>
-	<key>Classic Sixth Edition</key>
-	<string>Classic Sixth Edition</string>
-	<key>Coldsnap</key>
-	<string>Coldsnap</string>
 	<key>Coldsnap Theme Decks</key>
 	<string>Coldsnap Theme Deck Reprints</string>
-	<key>Collector&apos;s Edition</key>
-	<string>Collector&apos;s Edition</string>
 	<key>Commander 2013 Edition</key>
 	<string>Commander 2013</string>
-	<key>Commander 2014</key>
-	<string>Commander 2014</string>
-	<key>Commander 2015</key>
-	<string>Commander 2015</string>
-	<key>Commander&apos;s Arsenal</key>
-	<string>Commander&apos;s Arsenal</string>
-	<key>Conflux</key>
-	<string>Conflux</string>
-	<key>Dark Ascension</key>
-	<string>Dark Ascension</string>
-	<key>Darksteel</key>
-	<string>Darksteel</string>
 	<key>Deckmasters</key>
 	<string>Deckmasters Garfield vs Finkel</string>
-	<key>Dissension</key>
-	<string>Dissension</string>
-	<key>Dragon&apos;s Maze</key>
-	<string>Dragon&apos;s Maze</string>
-	<key>Dragons of Tarkir</key>
-	<string>Dragons of Tarkir</string>
-	<key>Duel Decks: Ajani vs. Nicol Bolas</key>
-	<string>Duel Decks: Ajani vs. Nicol Bolas</string>
 	<key>Duel Decks Anthology, Divine vs. Demonic</key>
 	<string>Duel Decks: Divine vs. Demonic</string>
-	<key>Duel Decks: Blessed vs. Cursed</key>
-	<string>Duel Decks: Blessed vs. Cursed</string>
-	<key>Duel Decks: Divine vs. Demonic</key>
-	<string>Duel Decks: Divine vs. Demonic</string>
-	<key>Duel Decks: Elspeth vs. Kiora</key>
-	<string>Duel Decks: Elspeth vs. Kiora</string>
-	<key>Duel Decks: Elspeth vs. Tezzeret</key>
-	<string>Duel Decks: Elspeth vs Tezzeret</string>
 	<key>Duel Decks Anthology, Elves vs. Goblins</key>
-	<string>Duel Decks: Elves vs. Goblins</string>
-	<key>Duel Decks: Elves vs. Goblins</key>
 	<string>Duel Decks: Elves vs. Goblins</string>
 	<key>Duel Decks Anthology, Garruk vs. Liliana</key>
 	<string>Duel Decks: Garruk vs. Liliana</string>
-	<key>Duel Decks: Garruk vs. Liliana</key>
-	<string>Duel Decks: Garruk vs. Liliana</string>
-	<key>Duel Decks: Heroes vs. Monsters</key>
-	<string>Duel Decks: Heroes vs Monsters</string>
-	<key>Duel Decks: Izzet vs. Golgari</key>
-	<string>Duel Decks: Izzet vs Golgari</string>
 	<key>Duel Decks Anthology, Jace vs. Chandra</key>
 	<string>Duel Decks: Jace vs. Chandra</string>
-	<key>Duel Decks: Jace vs. Chandra</key>
-	<string>Duel Decks: Jace vs. Chandra</string>
-	<key>Duel Decks: Jace vs. Vraska</key>
-	<string>Duel Decks: Jace vs Vraska</string>
-	<key>Duel Decks: Knights vs. Dragons</key>
-	<string>Duel Decks: Knights vs Dragons</string>
-	<key>Duel Decks: Phyrexia vs. the Coalition</key>
-	<string>Duel Decks: Phyrexia vs the Coalition</string>
-	<key>Duel Decks: Sorin vs. Tibalt</key>
-	<string>Duel Decks: Sorin vs Tibalt</string>
-	<key>Duel Decks: Speed vs. Cunning</key>
-	<string>Duel Decks: Speed vs Cunning</string>
-	<key>Duel Decks: Venser vs. Koth</key>
-	<string>Duel Decks: Venser vs Koth</string>
-	<key>Duel Decks: Zendikar vs. Eldrazi</key>
-	<string>Duel Decks: Zendikar vs. Eldrazi</string>
-	<key>Duels of the Planeswalkers</key>
-	<string>Duels of the Planeswalkers</string>
 	<key>Eighth Edition</key>
 	<string>8th Edition</string>
-	<key>Eternal Masters</key>
-	<string>Eternal Masters</string>
 	<key>European Land Program</key>
 	<string>European Lands</string>
-	<key>Eventide</key>
-	<string>Eventide</string>
-	<key>Exodus</key>
-	<string>Exodus</string>
-	<key>Fallen Empires</key>
-	<string>Fallen Empires</string>
-	<key>Fate Reforged</key>
-	<string>Fate Reforged</string>
-	<key>Fifth Dawn</key>
-	<string>Fifth Dawn</string>
-	<key>Fifth Edition</key>
-	<string>Fifth Edition</string>
-	<key>Fourth Edition</key>
-	<string>Fourth Edition</string>
 	<key>Friday Night Magic</key>
 	<string>FNM Promos</string>
-	<key>From the Vault: Angels</key>
-	<string>From the Vault: Angels</string>
 	<key>From the Vault: Annihilation (2014)</key>
 	<string>From the Vault: Annihilation</string>
-	<key>From the Vault: Dragons</key>
-	<string>From the Vault: Dragons</string>
-	<key>From the Vault: Exiled</key>
-	<string>From the Vault: Exiled</string>
-	<key>From the Vault: Legends</key>
-	<string>From the Vault: Legends</string>
-	<key>From the Vault: Realms</key>
-	<string>From the Vault: Realms</string>
-	<key>From the Vault: Relics</key>
-	<string>From the Vault: Relics</string>
-	<key>From the Vault: Twenty</key>
-	<string>From the Vault: Twenty</string>
-	<key>Future Sight</key>
-	<string>Future Sight</string>
-	<key>Gatecrash</key>
-	<string>Gatecrash</string>
 	<key>Grand Prix</key>
 	<string>Grand Prix Promos</string>
-	<key>Guildpact</key>
-	<string>Guildpact</string>
 	<key>Guru</key>
 	<string>Guru Lands</string>
-	<key>Homelands</key>
-	<string>Homelands</string>
-	<key>Ice Age</key>
-	<string>Ice Age</string>
-	<key>Innistrad</key>
-	<string>Innistrad</string>
 	<key>International Collector&apos;s Edition</key>
 	<string>International Edition</string>
-	<key>Invasion</key>
-	<string>Invasion</string>
-	<key>Journey into Nyx</key>
-	<string>Journey Into Nyx</string>
 	<key>Judge Gift Program</key>
 	<string>Judge Promos</string>
-	<key>Judgment</key>
-	<string>Judgment</string>
-	<key>Khans of Tarkir</key>
-	<string>Khans of Tarkir</string>
 	<key>Launch Parties</key>
 	<string>Launch Party Cards</string>
-	<key>Legends</key>
-	<string>Legends</string>
-	<key>Legions</key>
-	<string>Legions</string>
 	<key>Limited Edition Alpha</key>
 	<string>Alpha Edition</string>
 	<key>Limited Edition Beta</key>
 	<string>Beta Edition</string>
-	<key>Lorwyn</key>
-	<string>Lorwyn</string>
 	<key>Magic 2010</key>
 	<string>Magic 2010 (M10)</string>
 	<key>Magic 2011</key>
@@ -208,141 +60,35 @@
 	<string>Magic 2015 (M15)</string>
 	<key>Magic Game Day</key>
 	<string>Game Day Promos</string>
-	<key>Magic Origins</key>
-	<string>Magic Origins</string>
-	<key>Magic Player Rewards</key>
-	<string>Magic Player Rewards</string>
 	<key>Magic: The Gathering-Commander</key>
 	<string>Commander</string>
 	<key>Magic: The Gathering—Conspiracy</key>
 	<string>Conspiracy</string>
 	<key>Media Inserts</key>
 	<string>Media Promos</string>
-	<key>Mercadian Masques</key>
-	<string>Mercadian Masques</string>
-	<key>Mirage</key>
-	<string>Mirage</string>
-	<key>Mirrodin</key>
-	<string>Mirrodin</string>
-	<key>Mirrodin Besieged</key>
-	<string>Mirrodin Besieged</string>
 	<key>Modern Event Deck 2014</key>
 	<string>Magic Modern Event Deck</string>
-	<key>Modern Masters</key>
-	<string>Modern Masters</string>
 	<key>Modern Masters 2015 Edition</key>
 	<string>Modern Masters 2015</string>
-	<key>Morningtide</key>
-	<string>Morningtide</string>
-	<key>Nemesis</key>
-	<string>Nemesis</string>
-	<key>New Phyrexia</key>
-	<string>New Phyrexia</string>
 	<key>Ninth Edition</key>
 	<string>9th Edition</string>
-	<key>Oath of the Gatewatch</key>
-	<string>Oath of the Gatewatch</string>
-	<key>Odyssey</key>
-	<string>Odyssey</string>
-	<key>Onslaught</key>
-	<string>Onslaught</string>
-	<key>Planar Chaos</key>
-	<string>Planar Chaos</string>
-	<key>Planechase</key>
-	<string>Planechase</string>
 	<key>Planechase 2012 Edition</key>
 	<string>Planechase 2012</string>
-	<key>Planeshift</key>
-	<string>Planeshift</string>
-	<key>Portal</key>
-	<string>Portal</string>
-	<key>Portal Second Age</key>
-	<string>Portal Second Age</string>
-	<key>Portal Three Kingdoms</key>
-	<string>Portal Three Kingdoms</string>
-	<key>Premium Deck Series: Fire and Lightning</key>
-	<string>Premium Deck Series: Fire and Lightning</string>
-	<key>Premium Deck Series: Graveborn</key>
-	<string>Premium Deck Series: Graveborn</string>
-	<key>Premium Deck Series: Slivers</key>
-	<string>Premium Deck Series: Slivers</string>
 	<key>Prerelease Events</key>
 	<string>Prerelease Cards</string>
 	<key>Pro Tour</key>
 	<string>Pro Tour Promos</string>
-	<key>Prophecy</key>
-	<string>Prophecy</string>
 	<key>Ravnica: City of Guilds</key>
 	<string>Ravnica</string>
 	<key>Release Events</key>
 	<string>Release Event Cards</string>
-	<key>Return to Ravnica</key>
-	<string>Return to Ravnica</string>
-	<key>Revised Edition</key>
-	<string>Revised Edition</string>
-	<key>Rise of the Eldrazi</key>
-	<string>Rise of the Eldrazi</string>
-	<key>Saviors of Kamigawa</key>
-	<string>Saviors of Kamigawa</string>
-	<key>Scars of Mirrodin</key>
-	<string>Scars of Mirrodin</string>
-	<key>Scourge</key>
-	<string>Scourge</string>
 	<key>Seventh Edition</key>
 	<string>7th Edition</string>
-	<key>Shadowmoor</key>
-	<string>Shadowmoor</string>
-	<key>Shadows over Innistrad</key>
-	<string>Shadows over Innistrad</string>
-	<key>Shards of Alara</key>
-	<string>Shards of Alara</string>
-	<key>Starter 1999</key>
-	<string>Starter 1999</string>
-	<key>Starter 2000</key>
-	<string>Starter 2000</string>
-	<key>Stronghold</key>
-	<string>Stronghold</string>
-	<key>Tempest</key>
-	<string>Tempest</string>
 	<key>Tenth Edition</key>
 	<string>10th Edition</string>
-	<key>The Dark</key>
-	<string>The Dark</string>
-	<key>Theros</key>
-	<string>Theros</string>
-	<key>Time Spiral</key>
-	<string>Time Spiral</string>
 	<key>Time Spiral &quot;Timeshifted&quot;</key>
 	<string>Timeshifted</string>
-	<key>Torment</key>
-	<string>Torment</string>
 	<key>Ugin&apos;s Fate promos</key>
 	<string>Ugin&apos;s Fate Promos</string>
-	<key>Unglued</key>
-	<string>Unglued</string>
-	<key>Unhinged</key>
-	<string>Unhinged</string>
-	<key>Unlimited Edition</key>
-	<string>Unlimited Edition</string>
-	<key>Urza&apos;s Destiny</key>
-	<string>Urza&apos;s Destiny</string>
-	<key>Urza&apos;s Legacy</key>
-	<string>Urza&apos;s Legacy</string>
-	<key>Urza&apos;s Saga</key>
-	<string>Urza&apos;s Saga</string>
-	<key>Vanguard</key>
-	<string>Vanguard</string>
-	<key>Visions</key>
-	<string>Visions</string>
-	<key>Weatherlight</key>
-	<string>Weatherlight</string>
-	<key>Welcome Deck 2016</key>
-	<string>Welcome Deck 2016</string>
-	<key>Worldwake</key>
-	<string>Worldwake</string>
-	<key>Zendikar</key>
-	<string>Zendikar</string>
-	<key>Zendikar Expeditions</key>
-	<string>Zendikar Expeditions</string>
 </dict>
 </plist>

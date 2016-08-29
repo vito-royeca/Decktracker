@@ -330,10 +330,12 @@ class CardDetailsViewController: UIViewController {
                         if c.objectID == cardOID {
                             index = i
                         }
-                        if let urlPath = c.urlPath {
+                        if let urlPath = c.urlPath,
+                            let imageCacheKey = c.imageCacheKey {
+                            
                             var photo:IDMPhoto?
                             
-                            if let cachedImage = SDImageCache.sharedImageCache().imageFromDiskCacheForKey(urlPath.path!) {
+                            if let cachedImage = SDImageCache.sharedImageCache().imageFromDiskCacheForKey(imageCacheKey) {
                                 photo = IDMPhoto(image: cachedImage)
                             } else {
                                 photo = IDMPhoto(URL: urlPath)

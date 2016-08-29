@@ -226,19 +226,7 @@ class CardSummaryTableViewCell: UITableViewCell {
     
     func createCardCropForImage(card: Card, image: UIImage) -> UIImage? {
         // write the image to disk first
-        let path = SDImageCache.sharedImageCache().defaultCachePathForKey(card.urlPath!.path!)
-        if !NSFileManager.defaultManager().fileExistsAtPath(path) {
-            let parentPath = NSURL(string: path)!.URLByDeletingLastPathComponent
-            if !NSFileManager.defaultManager().fileExistsAtPath(parentPath!.path!) {
-                do {
-                    try NSFileManager.defaultManager().createDirectoryAtPath(parentPath!.path!,
-                                                                             withIntermediateDirectories: true,
-                                                                             attributes: nil)
-                } catch {}
-                
-            }
-            UIImageJPEGRepresentation(image, 1.0)!.writeToFile(path, atomically: true)
-        }
+        SDImageCache.sharedImageCache().storeImage(image, forKey: card.imageCacheKey)
         
         // then create a cropped image
         if let cropPath = card.cropPath {

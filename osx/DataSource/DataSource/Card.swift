@@ -125,7 +125,7 @@ class Card: NSManagedObject {
     var cropPath: NSURL? {
         let paths = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)
         let cacheDirectory = paths.first
-        let path = "\(cacheDirectory!)/images/crop/\(set!.code!)/\(cardID!).crop.hq.jpg"
+        let path = "\(cacheDirectory!)/images/crop/\(set!.code!)/\(cardID!).crop.jpg"
         return NSURL(string: path)
     }
     
@@ -147,9 +147,28 @@ class Card: NSManagedObject {
     }
     
     var urlPath: NSURL? {
-        if let magicCardsInfoCode = set!.magicCardsInfoCode,
-            let number = number {
-            return NSURL(string: "http://magiccards.info/scans/en/\(magicCardsInfoCode)/\(number).jpg")!
+//        if let magicCardsInfoCode = set!.magicCardsInfoCode,
+//            let number = number {
+//            return NSURL(string: "http://magiccards.info/scans/en/\(magicCardsInfoCode)/\(number).jpg")!
+//        } else {
+//            return nil
+//        }
+        
+      
+        if let multiverseID = multiverseID {
+            return NSURL(string: "http://gatherer.wizards.com/Handlers/Image.ashx?size=small&type=card&multiverseid=\(multiverseID)");
+        } else {
+            return NSURL(string: "http://gatherer.wizards.com/Handlers/Image.ashx?size=small&type=card&name=\(name!)&set=\(set!.code!)");
+        }
+    }
+    
+    var imageCacheKey: String? {
+        if let urlPath = urlPath {
+            let lastPath = urlPath.lastPathComponent
+            let query = urlPath.query
+            
+//            return urlPath.lastPathComponent!.stringByReplacingOccurrencesOfString("Image", withString: cardID!, options: .LiteralSearch, range: nil)
+            return "\(lastPath!)?\(query!)"
         }
         
         return nil

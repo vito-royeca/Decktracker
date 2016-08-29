@@ -36,41 +36,41 @@ class JSONLoader: NSObject {
                 if let dict = json as? [String: AnyObject] {
                     
                     // parse the sets
-//                    for setName in dict.keys {
-//                        if let dictSets = dict[setName] as? [String: AnyObject] {
-//                            parseSet(dictSets)
-//                        }
-//                    }
+                    for setName in dict.keys {
+                        if let dictSets = dict[setName] as? [String: AnyObject] {
+                            parseSet(dictSets)
+                        }
+                    }
                     
                     // parse the cards
-//                    for setName in dict.keys {
-//                        if let dictSets = dict[setName] as? [String: AnyObject] {
-//                            let set = parseSet(dictSets)
-////                            if set.code != "LEA" {
-////                                continue
-////                            }
-//                            
-//                            if let dictCards = dictSets["cards"] as? [[String: AnyObject]] {
-//                                let cards = parseCards(dictCards, forSet: set)
-//                                set.numberOfCards = NSNumber(integer: cards.count)
-//                                CoreDataManager.sharedInstance.saveMainContext()
+                    for setName in dict.keys {
+                        if let dictSets = dict[setName] as? [String: AnyObject] {
+                            let set = parseSet(dictSets)
+//                            if set.code != "LEA" {
+//                                continue
 //                            }
-//                        }
-//                    }
+                            
+                            if let dictCards = dictSets["cards"] as? [[String: AnyObject]] {
+                                let cards = parseCards(dictCards, forSet: set)
+                                set.numberOfCards = NSNumber(integer: cards.count)
+                                CoreDataManager.sharedInstance.saveMainContext()
+                            }
+                        }
+                    }
                     
 //                     parse extra info
                     var dateStart = NSDate()
-//                    print("Start parsing variations...")
-//                    for setName in dict.keys {
-//                        if let dictSets = dict[setName] as? [String: AnyObject] {
-//                            if let dictCards = dictSets["cards"] as? [[String: AnyObject]] {
-//                                parseVariations(dictCards)
-//                            }
-//                        }
-//                    }
+                    print("Start parsing variations...")
+                    for setName in dict.keys {
+                        if let dictSets = dict[setName] as? [String: AnyObject] {
+                            if let dictCards = dictSets["cards"] as? [[String: AnyObject]] {
+                                parseVariations(dictCards)
+                            }
+                        }
+                    }
                     var dateEnd = NSDate()
                     var timeDifference = dateEnd.timeIntervalSinceDate(dateStart)
-//                    print("Time Elapsed: \(JJJUtil.formatInterval(timeDifference))")
+                    print("Time Elapsed: \(JJJUtil.formatInterval(timeDifference))")
                     
                     dateStart = NSDate()
                     print("Start parsing rulings...")
@@ -85,18 +85,18 @@ class JSONLoader: NSObject {
                     timeDifference = dateEnd.timeIntervalSinceDate(dateStart)
                     print("Time Elapsed: \(JJJUtil.formatInterval(timeDifference))")
                     
-//                    dateStart = NSDate()
-//                    print("Start parsing legalities...")
-//                    for setName in dict.keys {
-//                        if let dictSets = dict[setName] as? [String: AnyObject] {
-//                            if let dictCards = dictSets["cards"] as? [[String: AnyObject]] {
-//                                parseLegalities(dictCards)
-//                            }
-//                        }
-//                    }
-//                    dateEnd = NSDate()
-//                    timeDifference = dateEnd.timeIntervalSinceDate(dateStart)
-//                    print("Time Elapsed: \(JJJUtil.formatInterval(timeDifference))")
+                    dateStart = NSDate()
+                    print("Start parsing legalities...")
+                    for setName in dict.keys {
+                        if let dictSets = dict[setName] as? [String: AnyObject] {
+                            if let dictCards = dictSets["cards"] as? [[String: AnyObject]] {
+                                parseLegalities(dictCards)
+                            }
+                        }
+                    }
+                    dateEnd = NSDate()
+                    timeDifference = dateEnd.timeIntervalSinceDate(dateStart)
+                    print("Time Elapsed: \(JJJUtil.formatInterval(timeDifference))")
                     
 //                    dateStart = NSDate()
 //                    print("Start parsing foreign names...")

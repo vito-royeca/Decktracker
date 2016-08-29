@@ -46,6 +46,8 @@ class TCGPlayerManager: NSObject {
             var setName = ""
             if let tcgPlayerName = card.set!.tcgPlayerName {
                 setName = tcgPlayerName
+            } else {
+                setName = card.set!.name
             }
             
             let httpMethod:HTTPMethod = .Get

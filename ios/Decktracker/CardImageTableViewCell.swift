@@ -53,14 +53,17 @@ class CardImageTableViewCell: UITableViewCell {
         if let _cardOID = _cardOID {
             let card = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(_cardOID) as! Card
             
-            if let urlPath = card.urlPath {
-                if let cachedImage = SDImageCache.sharedImageCache().imageFromDiskCacheForKey(urlPath.path!) {
+            if let urlPath = card.urlPath,
+                let imageCacheKey = card.imageCacheKey {
+                
+                if let cachedImage = SDImageCache.sharedImageCache().imageFromDiskCacheForKey(imageCacheKey) {
                     cardImage.image = cachedImage
                 } else {
                     cardImage.image = cardBackImage
                     
                     let completedBlock = { (image: UIImage?, data: NSData?, error: NSError?, finished: Bool) -> Void in
                         if let image = image {
+                            SDImageCache.sharedImageCache().storeImage(image, forKey: imageCacheKey)
                             
                             performUIUpdatesOnMain {
                                 UIView.transitionWithView(self.cardImage, duration: 1.0, options: .TransitionFlipFromRight, animations: {
