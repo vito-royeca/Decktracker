@@ -5,15 +5,15 @@ This project is deprecated and no longer maintained. See successor project: [Car
 # <strike>Decktracker</strike>
 <strike>A database app for Magic: the Gathering</strike>.
 
-## Features
-* All sets from Alpha to the latest.
-* View card details
-* Construct a deck
-* Card collections
+## <strike>Features</strike>
+* <strike>All sets from Alpha to the latest.</strike>
+* <strike>View card details</strike>
+* <strike>Construct a deck</strike>
+* <strike>Card collections</strike>
 
-## Cloning
+## <strike>Cloning</strike>
 
-Clone the GitHub repository and open the project workspace `Decktracker.xcworkspace`. You may not need to install the Cocoapod dependencies as they are already inluded in the project repository.
+<strike>Clone the GitHub repository and open the project workspace `Decktracker.xcworkspace`. You may not need to install the Cocoapod dependencies as they are already inluded in the project repository.</strike>
 
 ```
 $ git clone https://github.com/jovito-royeca/Decktracker.git
@@ -21,13 +21,14 @@ $ cd decktracker
 $ open ios/Decktracker.xcworkspace
 ```
 
-## Website
+## <strike>Website</strike>
 
-http://decktracker.jovitoroyeca.com
+<strike>http://decktracker.jovitoroyeca.com</strike>
 
-## App Store
-https://itunes.apple.com/us/app/decktracker/id913992761?mt=8
+## <strike>App Store</strike>
+<strike>https://itunes.apple.com/us/app/decktracker/id913992761?mt=8</strike>
 
-## Author
-Jovito Royeca http://jovitoroyeca.com
+## <strike>Author</strike>
+<strike>Jovito Royeca</strike>
 
+<strike>http://jovitoroyeca.com</strike>
