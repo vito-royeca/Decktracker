@@ -2,7 +2,7 @@
 
 This project is deprecated and no longer maintained. See successor project: [Card Magus](https://github.com/jovito-royeca/CardMagus).
 
-# Decktracker
+# <strike>Decktracker</strike>
 <strike>A database app for Magic: the Gathering</strike>.
 
 ## Features
