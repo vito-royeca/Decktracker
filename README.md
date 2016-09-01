@@ -16,9 +16,9 @@ This project is deprecated and no longer maintained. See successor project: [Car
 <strike>Clone the GitHub repository and open the project workspace `Decktracker.xcworkspace`. You may not need to install the Cocoapod dependencies as they are already inluded in the project repository.</strike>
 
 ```
-<strike>$ git clone https://github.com/jovito-royeca/Decktracker.git</strike>
-<strike>$ cd decktracker</strike>
-<strike>$ open ios/Decktracker.xcworkspace</strike>
+$ git clone https://github.com/jovito-royeca/Decktracker.git
+$ cd decktracker
+$ open ios/Decktracker.xcworkspace
 ```
 
 ## <strike>Website</strike>
