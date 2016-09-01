@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -14,15 +15,15 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JTp-8I-lUK">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="299"/>
+                        <rect key="frame" x="8" y="8" width="304" height="283"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </imageView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="JTp-8I-lUK" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="TFh-HW-a7n"/>
-                    <constraint firstAttribute="bottom" secondItem="JTp-8I-lUK" secondAttribute="bottom" id="dJK-pV-zTh"/>
-                    <constraint firstItem="JTp-8I-lUK" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="jT2-hk-7tK"/>
-                    <constraint firstAttribute="trailing" secondItem="JTp-8I-lUK" secondAttribute="trailing" id="rMR-qa-sYl"/>
+                    <constraint firstItem="JTp-8I-lUK" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="7wI-4h-Q9Z"/>
+                    <constraint firstItem="JTp-8I-lUK" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="JwH-uY-qb6"/>
+                    <constraint firstItem="JTp-8I-lUK" firstAttribute="bottom" secondItem="H2p-sc-9uM" secondAttribute="bottomMargin" id="sZI-oW-2tS"/>
+                    <constraint firstItem="JTp-8I-lUK" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="urc-nK-qp8"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>

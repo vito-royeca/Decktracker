@@ -26,7 +26,7 @@ class CardImageTableViewCell: UITableViewCell {
             }
         }
     }
-    var backgroundImage:UIImage?
+//    var backgroundImage:UIImage?
     var cardBackImage:UIImage?
     
     // MARK: Outlets
@@ -37,9 +37,9 @@ class CardImageTableViewCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         
-        backgroundImage = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/Gray_Patterned_BG.jpg")
+//        backgroundImage = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/Gray_Patterned_BG.jpg")
         cardBackImage = UIImage(contentsOfFile: "\(NSBundle.mainBundle().bundlePath)/images/cardback.hq.jpg")
-        cardImage.backgroundColor = UIColor(patternImage: backgroundImage!)
+//        cardImage.backgroundColor = UIColor(patternImage: backgroundImage!)
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
@@ -70,12 +70,18 @@ class CardImageTableViewCell: UITableViewCell {
                                         self.cardImage.image = image
                                     }, completion: nil)
                             }
+                        } else {
+                            performUIUpdatesOnMain {
+                                self.cardImage.image = self.cardBackImage
+                            }
                         }
                     }
                     
                     let downloader = SDWebImageDownloader.sharedDownloader()
                     downloader.downloadImageWithURL(urlPath, options: .UseNSURLCache, progress: nil, completed: completedBlock)
                 }
+            } else {
+                cardImage.image = cardBackImage
             }
             
         } else {

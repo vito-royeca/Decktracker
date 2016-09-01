@@ -130,18 +130,6 @@ class CardSummaryTableViewCell: UITableViewCell {
                 }
             }
             
-//            if let typePath = card.typePath {
-//                if NSFileManager.defaultManager().fileExistsAtPath(typePath.path!) {
-//                    let image = UIImage(contentsOfFile: typePath.path!)
-//                    typeImage.image = image
-//                    typeImage.contentMode = .ScaleAspectFit
-//                } else {
-//                    typeImage.image = nil
-//                }
-//            } else {
-//                typeImage.image = nil
-//            }
-            
             if let type = card.type {
                 var text = type.name!
                 
